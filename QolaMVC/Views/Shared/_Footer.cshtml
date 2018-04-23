@@ -1,0 +1,147 @@
+<!-- START FOOTER -->
+<div class="container-fluid container-fixed-lg footer">
+    <div class="copyright sm-text-center">
+        <p class="small no-margin pull-left sm-pull-reset">
+            <span class="hint-text">Copyright © 2018</span>
+            <span class="font-montserrat">Qola</span>.
+            <span class="hint-text">All rights reserved.</span>
+            <!-- <span class="sm-block"><a href="#" class="m-l-10 m-r-10">Terms of use</a> | <a href="#" class="m-l-10">Privacy Policy</a>   </span>-->
+        </p>
+        <div class="small no-margin pull-right sm-pull-reset">
+            <!-- <img alt="" class="m-t-5" data-src="assets/img/qola_logo.png" data-src-retina="assets/img/qola_logo_2x.png" height="30" src="assets/img/qola_logo.png" width="30"> -->
+            <!-- <a href="#">Hand-crafted</a>
+            <span class="hint-text">&amp; Made with Love ®</span> -->
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<!-- END FOOTER -->
+      </div>
+<!-- END PAGE CONTENT WRAPPER -->
+    </div>
+<!-- END PAGE CONTAINER -->
+<!-- BEGIN VENDOR JS -->
+<!-- BEGIN VENDOR JS -->
+<script src="~/Content/assets/plugins/pace/pace.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/modernizr.custom.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/tether/js/tether.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/jquery/jquery-easy.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/jquery-unveil/jquery.unveil.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/jquery-bez/jquery.bez.min.js"></script>
+<script src="~/Content/assets/plugins/jquery-ios-list/jquery.ioslist.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/imagesloaded/imagesloaded.pkgd.min.js"></script>
+<script src="~/Content/assets/plugins/jquery-actual/jquery.actual.min.js"></script>
+<script src="~/Content/assets/plugins/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+<!-- END VENDOR JS -->
+<!-- BEGIN CORE TEMPLATE JS -->
+<script src="~/Content/pages/js/pages.js" type="text/javascript"></script>
+<!-- END CORE TEMPLATE JS -->
+<!-- BEGIN PAGE LEVEL JS -->
+<script src="~/Content/assets/js/scripts.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL JS -->
+<script src="~/Content/assets/js/FileAPI/FileAPI.js"></script>
+<script src="~/Content/assets/js/datatables.min.js"></script>
+
+<!-- uploding of file -->
+<script>
+    (function () {
+        // Ссылка на uploader
+        var form = document.forms.userpic;
+
+        // Ссылка на инпут, через который юзер будет выбирать файл
+        var input = form.photo;
+
+        // Ссылка на DOM-элемент, где будем отображать preview
+        var preview = document.getElementById('preview');
+
+        // Параметры предварительного просмотра
+        var previewOpts = {
+            width: 195
+            , height: 185
+        };
+
+        // Параметры загрузки
+        var uploadOpts = {
+            url: '~/upload' // куда грузить
+            , data: {} // дополнительный POST-параметры
+            , name: 'userpic' // название POST-параметра загружаемого файла
+            , activeClassName: 'upload_active' // класс, который будем добавлять общему контейнеру при загрузке
+        };
+
+        // Функция, которая будет срабатывать при выборе файла
+        var _onSelectFile = function (evt/**Event*/) {
+            // Получаем выбранный файл
+            var file = FileAPI.getFiles(evt)[0];
+
+            if (file) {
+                // Строим preview для изображений
+                _createPreview(file);
+
+                // Загружаем файл на сервер
+                _uploadFile(file);
+            }
+        };
+
+        // Функция создающая preview для изображения
+        var _createPreview = function (file/**File*/) {
+            FileAPI.Image(file)
+                .preview(previewOpts.width, previewOpts.height)
+                .get(function (err, image) {
+                    // Если не было ошибок, то вставляем изображение
+                    if (!err) {
+                        // Отчищаем контейнер от текущего изображения
+                        preview.innerHTML = '';
+
+                        // Вставляем новое
+                        preview.appendChild(image);
+                    }
+                })
+                ;
+        };
+
+        // Функция загрузки файла на сервер
+        var _uploadFile = function (file) {
+            // Подготавливаем опции для загрузки
+            var opts = FileAPI.extend(uploadOpts, {
+                files: {},
+
+                // событие "начало загрузки"
+                upload: function () {
+                    form.className += ' ' + uploadOpts.activeClassName;
+                },
+
+                // событие "конец загрузки"
+                complete: function (err, xhr) {
+                    form.className = (' ' + form.className + ' ').replace(' ' + uploadOpts.activeClassName + ' ', ' ');
+
+                    if (err) {
+              < !--alert('Увы, произошла ошибка сервера.'); -->
+            } else {
+                        // всё успешно загрузилось
+                    }
+                }
+            });
+
+            // Добавляем файл, который будем загружать
+            opts.files[opts.name] = file;
+
+            // Загружаем на сервер
+            FileAPI.upload(opts);
+        };
+
+        // Подписываемся на событие "change", оно будет срабатывать при выборе файла
+        FileAPI.event.on(input, "change", _onSelectFile);
+    })();
+</script>
+
+<!-- END VENDOR JS -->
+<!-- BEGIN CORE TEMPLATE JS -->
+<script src="~/Content/pages/js/pages.js" type="text/javascript"></script>
+<!-- END CORE TEMPLATE JS -->
+<!-- BEGIN PAGE LEVEL JS -->
+<script src="~/Content/assets/js/scripts.js" type="text/javascript"></script>
+  </body>
+</html>
