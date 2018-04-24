@@ -1,4 +1,5 @@
-﻿using QolaMVC.Models;
+﻿using QolaMVC.DAL;
+using QolaMVC.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,9 @@ namespace QolaMVC.Controllers
     {
         public ActionResult Index()
         {
+            HomeDAL DALHome = new HomeDAL();
+            List<HomeModel> l_Homes = DALHome.GetHomes();
+            UserModel l_User = UserDAL.GetUserById(78);
             return View();
         }
 
