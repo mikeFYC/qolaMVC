@@ -10,18 +10,18 @@ namespace QolaMVC.Models
         #region "Activity"
         #region "Fields"
         private int _id;
-        private int _residentId;
+        private ResidentModel _resident;
         private DateTime _date;
         private string _title;
         private string _note;
-        private int _modifiedBy;
+        private UserModel _modifiedBy;
         private DateTime _modifiedOn;
         private int _progressNotesVerifyId;
-        private string _suiteNo;
+        private SuiteModel _suiteNo;
         private Int16 _category;
         private Int16 _remainIn;
         private string _acknowledgeNote;
-        private int _acknowlededBy;
+        private UserModel _acknowlededBy;
         private DateTime _acknowlededOn;
 
         private char _fallDateType;
@@ -43,10 +43,10 @@ namespace QolaMVC.Models
             set { _id = value; }
         }
 
-        public int ResidentId
+        public ResidentModel Resident
         {
-            get { return _residentId; }
-            set { _residentId = value; }
+            get { return _resident; }
+            set { _resident = value; }
         }
 
         public DateTime Date
@@ -67,7 +67,7 @@ namespace QolaMVC.Models
             set { _note = value; }
         }
 
-        public int ModifiedBy
+        public UserModel ModifiedBy
         {
             get { return _modifiedBy; }
             set { _modifiedBy = value; }
@@ -85,7 +85,7 @@ namespace QolaMVC.Models
             set { _progressNotesVerifyId = value; }
         }
 
-        public string Suite
+        public SuiteModel Suite
         {
             get { return _suiteNo; }
             set { _suiteNo = value; }
@@ -106,7 +106,7 @@ namespace QolaMVC.Models
             get { return _acknowledgeNote; }
             set { _acknowledgeNote = value; }
         }
-        public int AcknowledgedBy
+        public UserModel AcknowledgedBy
         {
             get { return _acknowlededBy; }
             set { _acknowlededBy = value; }

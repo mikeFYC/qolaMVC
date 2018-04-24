@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using static QolaMVC.Constants.EnumerationTypes;
 
 namespace QolaMVC.Models
 {
@@ -27,13 +28,14 @@ namespace QolaMVC.Models
             private int _ext;
             private string _homePhone;
             private string _mobile;
-           // private AvailabilityStatus _status = AvailabilityStatus.A;
+            private AvailabilityStatus _status = AvailabilityStatus.A;
             private DateTime _modifiedOn;
             private int _modifiedBy;
             private string _userTypeName;
             private string _homeName;
             private string _country;
             private string _userFirstLastName;
+            private bool _rememberMe = false;
             #endregion
             #region "Properties"
 
@@ -145,13 +147,13 @@ namespace QolaMVC.Models
                 set { _mobile = value; }
             }
 
-            //public AvailabilityStatus Status
-            //{
-            //    get { return _status; }
-            //    set { _status = value; }
-            //}
+        public AvailabilityStatus Status
+        {
+            get { return _status; }
+            set { _status = value; }
+        }
 
-            public DateTime ModifiedOn
+        public DateTime ModifiedOn
             {
                 get { return _modifiedOn; }
                 set { _modifiedOn = value; }
@@ -180,7 +182,12 @@ namespace QolaMVC.Models
                 get { return _country; }
                 set { _country = value; }
             }
-            #endregion
-            #endregion
-        }
+            public bool RememberMe
+            {
+                get { return _rememberMe; }
+                set { _rememberMe = value; }
+            }
+        #endregion
+        #endregion
+    }
     }

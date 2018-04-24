@@ -16,7 +16,7 @@ namespace QolaMVC.Models
         public string Code { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
-        public int Province { get; set; }
+        public ProvinceModel Province { get; set; }
         public string ProvinceName { get; set; }
         public string PostalCode { get; set; }
         public string Country { get; set; }
@@ -37,7 +37,7 @@ namespace QolaMVC.Models
                 string p_Code,
                 string p_Address,
                 string p_City,
-                int p_Province,
+                ProvinceModel p_Province,
                 string p_ProvinceName,
                 string p_PostalCode,
                 string p_Country,

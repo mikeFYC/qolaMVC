@@ -3,6 +3,8 @@ using QolaMVC.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 
@@ -12,10 +14,25 @@ namespace QolaMVC.Controllers
     {
         public ActionResult Index()
         {
-            HomeDAL DALHome = new HomeDAL();
-            List<HomeModel> l_Homes = DALHome.GetHomes();
-            UserModel l_User = UserDAL.GetUserById(78);
-            return View();
+            var identity = (ClaimsPrincipal) Thread.CurrentPrincipal;
+            var l_Name = identity.Claims.Where(c => c.Type == ClaimTypes.Name)
+                   .Select(c => c.Value).SingleOrDefault();
+            var l_UserId = identity.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier)
+                               .Select(c => c.Value).SingleOrDefault();
+
+            if(l_Name != null && l_UserId != null)
+            {
+                HomeDAL DALHome = new HomeDAL();
+                List<HomeModel> l_Homes = DALHome.GetHomes();
+                UserModel l_User = UserDAL.GetUserById(Convert.ToInt32(l_UserId));
+
+                ViewBag.User = l_User;
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
         }
 
         public ActionResult Menu()
