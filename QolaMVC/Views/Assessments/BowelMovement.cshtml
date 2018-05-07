@@ -1,3 +1,5 @@
+@model QolaMVC.Models.BowelMovementModel
+
 @RenderPage("~/Views/Shared/_Header.cshtml")
 @RenderPage("~/Views/Shared/_SideBar.cshtml")
 <style>
@@ -36,149 +38,88 @@
             <!-- START CONTAINER FLUID -->
             <div class="container-fluid container-fixed-lg">
                 <!-- BEGIN PlACE PAGE CONTENT HERE -->
-                <div class="card">
-                    <div class="card-block">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h5>Days</h5>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="staticEmail" class="col-form-label">Type</label>
-                                    <select class="form-control">
-                                        <option selected="selected" value="0">Select</option>
-                                        <option value="Type 1">Type 1</option>
-                                        <option value="Type 2">Type 2</option>
-                                        <option value="Type 3">Type 3</option>
-                                        <option value="Type 4">Type 4</option>
-                                        <option value="Type 5">Type 5</option>
-                                        <option value="Type 6">Type 6</option>
-                                        <option value="Type 7">Type 7</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="staticEmail" class="col-form-label">Observe by</label>
-                                    <select class="form-control">
-                                        <option selected="selected" value="0">Select</option>
-                                        <option value="Record R">Record R</option>
-                                        <option value="Record S">Record S</option>
-                                        <option value="Record O">Record O</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="staticEmail" class="col-form-label">Initials</label>
-                                    <input type="text" class="form-control" />
-                                </div>
-                            </div>
+                @{
+                    if (ViewBag.Message != null && ViewBag.Message != string.Empty)
+                    {
+                        <div class="alert alert-success" role="alert">
+                            <button class="close" data-dismiss="alert"></button>
+                            <strong>Success: </strong> @ViewBag.Message
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h5>Evening</h5>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="staticEmail" class="col-form-label">Type</label>
-                                    <select class="form-control">
-                                        <option selected="selected" value="0">Select</option>
-                                        <option value="Type 1">Type 1</option>
-                                        <option value="Type 2">Type 2</option>
-                                        <option value="Type 3">Type 3</option>
-                                        <option value="Type 4">Type 4</option>
-                                        <option value="Type 5">Type 2</option>
-                                        <option value="Type 6">Type 3</option>
-                                        <option value="Type 7">Type 4</option>
+                    }
+                }
+
+                @using (Html.BeginForm("AddBowelMovement", "Assessments", new { p_ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "p-t-15", @role = "form" }))
+                {
+                    <div class="card">
+                        <div class="card-block">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label for="staticEmail" class="col-form-label">Resident: </label>
+                                    <label><b>@Model.Resident.FirstName @Model.Resident.LastName </b></label>
+                                    <input type="hidden" name="Resident" value="@Model.Resident.ID" />
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="staticEmail" class="col-form-label">Period</label>
+                                    <select class="form-control" name="Period">
+                                        <option selected="selected" value="Days">Days</option>
+                                        <option value="Evening">Evening</option>
+                                        <option value="Night">Night</option>
                                     </select>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="staticEmail" class="col-form-label">Observe by</label>
-                                    <select class="form-control">
-                                        <option selected="selected" value="0">Select</option>
-                                        <option value="Record R">Record R</option>
-                                        <option value="Record S">Record S</option>
-                                        <option value="Record O">Record O</option>
-                                    </select>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="staticEmail" class="col-form-label">Type</label>
+                                        <select class="form-control" name="Type">
+                                            <option selected="selected" value="0">Select</option>
+                                            <option value="Type 1">Type 1</option>
+                                            <option value="Type 2">Type 2</option>
+                                            <option value="Type 3">Type 3</option>
+                                            <option value="Type 4">Type 4</option>
+                                            <option value="Type 5">Type 5</option>
+                                            <option value="Type 6">Type 6</option>
+                                            <option value="Type 7">Type 7</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="staticEmail" class="col-form-label">Observe by</label>
+                                        <select class="form-control" name="ObservedBy">
+                                            <option selected="selected" value="0">Select</option>
+                                            <option value="Record R">Record R</option>
+                                            <option value="Record S">Record S</option>
+                                            <option value="Record O">Record O</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="staticEmail" class="col-form-label">Initials</label>
+                                        <input type="text" class="form-control" name="Initials" value="@Model.EnteredBy.FirstName" />
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="staticEmail" class="col-form-label">Initials</label>
-                                    <select class="form-control">
-                                        <option selected="selected" value="0">Select</option>
-                                        <option value="Record R">Record R</option>
-                                        <option value="Record S">Record S</option>
-                                        <option value="Record O">Record O</option>
-                                    </select>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <br>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label for="staticEmail" class="col-form-label">Follow Up</label>
+                                        <input type="text" class="form-control" id="staticEmail">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h5>Night</h5>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="staticEmail" class="col-form-label">Type</label>
-                                    <select class="form-control">
-                                        <option selected="selected" value="0">Select</option>
-                                        <option value="Type 1">Type 1</option>
-                                        <option value="Type 2">Type 2</option>
-                                        <option value="Type 3">Type 3</option>
-                                        <option value="Type 4">Type 4</option>
-                                        <option value="Type 5">Type 2</option>
-                                        <option value="Type 6">Type 3</option>
-                                        <option value="Type 7">Type 4</option>
-                                    </select>
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <br>
+                                    <button class="btn btn-danger btn-lg">SAVE</button>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="staticEmail" class="col-form-label">Observe by</label>
-                                    <select class="form-control">
-                                        <option selected="selected" value="0">Select</option>
-                                        <option value="Record R">Record R</option>
-                                        <option value="Record S">Record S</option>
-                                        <option value="Record O">Record O</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="staticEmail" class="col-form-label">Initials</label>
-                                    <select class="form-control">
-                                        <option selected="selected" value="0">Select</option>
-                                        <option value="Record R">Record R</option>
-                                        <option value="Record S">Record S</option>
-                                        <option value="Record O">Record O</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <br>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="form-group">
-                                    <label for="staticEmail" class="col-form-label">Follow Up</label>
-                                    <input type="text" class="form-control" id="staticEmail">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12 text-right">
-                                <br>
-                                <button class="btn btn-danger btn-lg">SAVE</button>
                             </div>
                         </div>
                     </div>
-                </div>
-
+                }
                 <!-- END PLACE PAGE CONTENT HERE -->
             </div>
             <!-- END CONTAINER FLUID -->

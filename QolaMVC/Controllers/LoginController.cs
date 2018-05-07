@@ -61,7 +61,8 @@ namespace QolaMVC.Controllers
                 new Claim(ClaimTypes.NameIdentifier, user.ID.ToString()),
                 // can add more claims
             };
-
+                TempData["User"] = user;
+                
                 var identity = new ClaimsIdentity(claims, "ApplicationCookie");
                 var claimsPrincipal = new ClaimsPrincipal(identity);
 

@@ -1,4 +1,6 @@
-﻿@RenderPage("~/Views/Shared/_Header.cshtml")
+﻿@model IEnumerable<QolaMVC.Models.HomeModel>
+
+@RenderPage("~/Views/Shared/_Header.cshtml")
 @RenderPage("~/Views/Shared/_SideBar.cshtml")
 
 <style>
@@ -23,7 +25,7 @@
                     <!-- <div class="inner"> -->
                     <div class="row align-items-center">
                         <div class="col-md-8">
-                            <h3>Pronvice Homes</h3>
+                            <h3>Province Homes</h3>
                         </div>
                         <div class="col-md-2 text-right">
                             <h4 class="text-danger bold pr-3">
@@ -41,60 +43,63 @@
             <div class="container-fluid container-fixed-lg">
                 <!-- BEGIN PlACE PAGE CONTENT HERE -->
                 @{
-                    String[] l_Homes = { "Alberta", "Manitoba", "Ontario" };
+                    IEnumerable<string> l_Provinces = Model.Select(x => x.ProvinceName).Distinct();
                 }
-                @foreach (var place in l_Homes)
+                @foreach (var prov in l_Provinces)
                 {
                     <div class="row mb-5">
                         <div class="col-md-12">
-                            <h2>
-                                @place</h2>
+                            <h2>@prov</h2>
                             <hr />
-                    </div>
+                        </div>
 
-                    @for (int i = 1; i <= 6; i++)
-                    {
+                        @{
+                            IEnumerable<QolaMVC.Models.HomeModel> l_Homes = Model.Where(x => x.Province.Name == prov);
+                        }
 
-                        string l_Image = "/Content/assets/img/residents/resident" + @i + ".jpg";
-                        <div class="col-md-3 mb-3">
-                            <a href="~/Home/Menu/">
-                                <div class="card no-border  no-margin">
-                                    <div class="padding-15">
-                                        <div class="item-header clearfix">
-                                            <div class="inline m-l-10">
-                                                <p class="no-margin">
-                                                    <strong>Summer Village Residents</strong>
-                                                </p>
-                                                <p class="no-margin hint-text">
-                                                    <span class="location semi-bold">
-                                                        <i class="fa fa-map-marker"></i>
-                                                        23 Sample street, sample town
-                                                    </span>
-                                                </p>
+                        @foreach (var home in l_Homes)
+                        {
+
+                            string l_Image = "/Content/assets/" + home.IconImage;
+                            <div class="col-md-3 mb-3">
+                                <a href="~/Home/Menu/?p_HomeId=@home.Id">
+                                    <div class="card no-border  no-margin">
+                                        <div class="padding-15">
+                                            <div class="item-header clearfix">
+                                                <div class="inline m-l-10">
+                                                    <p class="no-margin">
+                                                        <strong>@home.Name</strong>
+                                                    </p>
+                                                    <p class="no-margin hint-text">
+                                                        <span class="location semi-bold">
+                                                            <i class="fa fa-map-marker"></i>
+                                                            @home.Address
+                                                        </span>
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="relative">
-                                        <div class="no-overflow home-box" style="background-image: url(@l_Image)">
-                                            <!-- <img src="assets/img/residents/resident<?php echo $i ?>.jpg" class="block center-margin relative w-100" alt="Post"> -->
+                                        <div class="relative">
+                                            <div class="no-overflow home-box" style="background-image: url(@l_Image)">
+                                                <!-- <img src="assets/img/residents/resident<?php echo $i ?>.jpg" class="block center-margin relative w-100" alt="Post"> -->
+                                            </div>
+                                        </div>
+                                        <div class="padding-15">
+                                            <div class="list-inline pull-left no-margin">
+                                                Open
+                                            </div>
+                                            <div class="list-inline pull-right no-margin">
+                                                <div class="badge badge-danger fs-14 px-3">@home.OccupiedSuites/@home.TotalSuites</div>
+                                            </div>
+                                            <div class="clearfix"></div>
                                         </div>
                                     </div>
-                                    <div class="padding-15">
-                                        <div class="list-inline pull-left no-margin">
-                                            Open
-                                        </div>
-                                        <div class="list-inline pull-right no-margin">
-                                            <div class="badge badge-danger fs-14 px-3">122/306</div>
-                                        </div>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    }
+                                </a>
+                            </div>
+                        }
 
-                </div>
-            }
+                    </div>
+                }
 
                 <!-- END PLACE PAGE CONTENT HERE -->
             </div>

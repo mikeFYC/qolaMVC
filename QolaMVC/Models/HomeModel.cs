@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using static QolaMVC.Constants.EnumerationTypes;
 
 namespace QolaMVC.Models
 {
@@ -20,11 +21,13 @@ namespace QolaMVC.Models
         public string ProvinceName { get; set; }
         public string PostalCode { get; set; }
         public string Country { get; set; }
-        public byte NumberOfFloors { get; set; }
-        public short NumberOfSuites { get; set; }
+        public int NumberOfFloors { get; set; }
+        public int NumberOfSuites { get; set; }
+        public int OccupiedSuites { get; set; }
+        public int TotalSuites { get; set; }
         public string IconImage { get; set; }
-        public string Status { get; set; }
-        public int ModifiedBy { get; set; }
+        public AvailabilityStatus Status { get; set; }
+        public UserModel ModifiedBy { get; set; }
         public DateTime ModifiedOn { get; set; }
         public string DineTimeIds { get; set; } //comma separated value for the meal time ides. refers to tbl_dine_time
         public string Phone { get; set; }
@@ -41,11 +44,11 @@ namespace QolaMVC.Models
                 string p_ProvinceName,
                 string p_PostalCode,
                 string p_Country,
-                byte p_NumberOfFloors,
-                short p_NumberOfSuites,
+                int p_NumberOfFloors,
+                int p_NumberOfSuites,
                 string p_IconImage,
-                string p_Status,
-                int p_ModifiedBy,
+                AvailabilityStatus p_Status,
+                UserModel p_ModifiedBy,
                 DateTime p_ModifiedOn,
                 string p_DineTimeIds,
                 string p_Phone,
@@ -72,6 +75,11 @@ namespace QolaMVC.Models
             Phone = p_Phone;
             GUID = p_GUID;
             PassTimeIds = p_PassTimeIds;
+        }
+
+        public HomeModel()
+        {
+
         }
     }
 }

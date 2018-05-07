@@ -1,3 +1,5 @@
+@model QolaMVC.Models.FamilyConfrenceNoteModel
+
 @RenderPage("~/Views/Shared/_Header.cshtml")
 @RenderPage("~/Views/Shared/_SideBar.cshtml")
 
@@ -38,140 +40,137 @@
             <!-- START CONTAINER FLUID -->
             <div class="container-fluid container-fixed-lg">
                 <!-- BEGIN PlACE PAGE CONTENT HERE -->
-                <div class="card">
-                    <div class="card-block">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group row">
-                                    <label for="staticEmail" class="col-md-5 col-form-label">Date</label>
-                                    <div class="col-md-7">
-                                        <input type="text" class="form-control" id="staticEmail">
+                <form action="/Assessments/AddFamilyConferenceNote" method="post">
+                    <div class="card">
+                        <div class="card-block">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-5 col-form-label">Name</label>
+                                        <div class="col-md-7">
+                                            <input type="text" value="@ViewBag.Resident.FirstName @ViewBag.Resident.LastName" class="form-control" id="staticEmail">
+                                            <input type="hidden" value="@ViewBag.Resident.ID" name="ResidentId" class="form-control" id="staticEmail">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-5 col-form-label">PHN</label>
+                                        <div class="col-md-7">
+                                            <input type="text" name="PHN" value="@Model.PHN" class="form-control" id="staticEmail">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label for="staticEmail" class="col-md-5 col-form-label">Name</label>
-                                    <div class="col-md-7">
-                                        <input type="text" class="form-control" id="staticEmail">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-5 col-form-label">Suite Number</label>
+                                        <div class="col-md-7">
+                                            <input type="text" value="@ViewBag.Resident.SuiteNo" disabled="disabled" name="SN" class="form-control" id="staticEmail">
+                                            <input type="hidden" value="@ViewBag.Resident.SuiteNo" name="SuiteNumber" class="form-control" id="staticEmail">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="staticEmail" class="col-md-5 col-form-label">PHN</label>
-                                    <div class="col-md-7">
-                                        <input type="text" class="form-control" id="staticEmail">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group row">
-                                    <label for="staticEmail" class="col-md-5 col-form-label">Suite Number</label>
-                                    <div class="col-md-7">
-                                        <input type="text" class="form-control" id="staticEmail">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="staticEmail" class="col-md-5 col-form-label">DOB</label>
-                                    <div class="col-md-7">
-                                        <input type="text" class="form-control" id="staticEmail">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <br><br>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group row">
-                                    <label for="staticEmail" class="col-md-2 col-form-label">CARE and GCD/ACP</label>
-                                    <div class="col-md-10">
-                                        <textarea class="textarea" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-5 col-form-label">DOB</label>
+                                        <div class="col-md-7">
+                                            <input type="text" name="DOB" value="@ViewBag.Resident.BirthDate.ToShortDateString()" disabled="disabled" class="form-control" id="staticEmail">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <br><br>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group row">
-                                    <label for="staticEmail" class="col-md-2 col-form-label">MEDICATION</label>
-                                    <div class="col-md-10">
-                                        <textarea class="textarea" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
+                            <br><br>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-2 col-form-label">CARE and GCD/ACP</label>
+                                        <div class="col-md-10">
+                                            <textarea class="textarea" name="CareAndGCD" rows="5" style="width: 95% !important; margin-left: 47px">@Model.CareandGCD</textarea>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <br><br>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group row">
-                                    <label for="staticEmail" class="col-md-2 col-form-label">RECREATION</label>
-                                    <div class="col-md-10">
-                                        <textarea class="textarea" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
+                            <br><br>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-2 col-form-label">MEDICATION</label>
+                                        <div class="col-md-10">
+                                            <textarea class="textarea" name="Medication" rows="5" style="width: 95% !important; margin-left: 47px">@Model.Medication</textarea>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <br><br>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group row">
-                                    <label for="staticEmail" class="col-md-2 col-form-label">DIET</label>
-                                    <div class="col-md-10">
-                                        <textarea class="textarea" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
+                            <br><br>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-2 col-form-label">RECREATION</label>
+                                        <div class="col-md-10">
+                                            <textarea class="textarea" name="Recreation" rows="5" style="width: 95% !important; margin-left: 47px">@Model.Recreation</textarea>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <br><br>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group row">
-                                    <label for="staticEmail" class="col-md-2 col-form-label">COMMENTS</label>
-                                    <div class="col-md-10">
-                                        <textarea class="textarea" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
+                            <br><br>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-2 col-form-label">DIET</label>
+                                        <div class="col-md-10">
+                                            <textarea class="textarea" name="Diet" rows="5" style="width: 95% !important; margin-left: 47px">@Model.Diet</textarea>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <br><br>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group row">
-                                    <label for="staticEmail" class="col-md-2 col-form-label">GOALS</label>
-                                    <div class="col-md-10">
-                                        <textarea class="textarea" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
+                            <br><br>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-2 col-form-label">COMMENTS</label>
+                                        <div class="col-md-10">
+                                            <textarea class="textarea" name="Comments" rows="5" style="width: 95% !important; margin-left: 47px">@Model.Comments</textarea>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <br><br>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h5>Presents</h5>
+                            <br><br>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-2 col-form-label">GOALS</label>
+                                        <div class="col-md-10">
+                                            <textarea class="textarea" name="Goals" rows="5" style="width: 95% !important; margin-left: 47px">@Model.Goals</textarea>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <input type="text" class="form-control" id="staticEmail" placeholder="Name">
+                            <br><br>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5>Presents</h5>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <input type="text" name="Presents1" value="@Model.Presents1" class="form-control" id="staticEmail" placeholder="Name">
 
-                                    </div>
-                                    <div class="col-md-4">
-                                        <input type="text" class="form-control" id="staticEmail" placeholder="Name">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <input type="text" class="form-control" id="staticEmail" placeholder="Name">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="text" name="Presents2" value="@Model.Presents2" class="form-control" id="staticEmail" placeholder="Name">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="text" name="Presents3" class="form-control" value="@Model.Presents3" id="staticEmail" placeholder="Name">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12 text-right">
-                                <br>
-                                <button class="btn btn-danger btn-lg">SAVE</button>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <br>
+                                    <button type="submit" class="btn btn-danger btn-lg">SAVE</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
+                </form>
                 <!-- END PLACE PAGE CONTENT HERE -->
             </div>
             <!-- END CONTAINER FLUID -->

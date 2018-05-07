@@ -1,4 +1,6 @@
-﻿using System;
+﻿using QolaMVC.DAL;
+using QolaMVC.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -16,7 +18,21 @@ namespace QolaMVC.Controllers
 
         public ActionResult BowelMovement()
         {
-            return View();
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            ViewBag.Resident = resident;
+            
+            var bowelMovements = AssessmentDAL.GetResidentsBowelAssessments(resident.ID);
+            
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            return View(bowelMovements);
         }
 
         public ActionResult ExerciseActivity()

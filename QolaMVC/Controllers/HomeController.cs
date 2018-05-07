@@ -2,6 +2,7 @@
 using QolaMVC.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading;
@@ -14,20 +15,28 @@ namespace QolaMVC.Controllers
     {
         public ActionResult Index()
         {
-            var identity = (ClaimsPrincipal) Thread.CurrentPrincipal;
-            var l_Name = identity.Claims.Where(c => c.Type == ClaimTypes.Name)
-                   .Select(c => c.Value).SingleOrDefault();
-            var l_UserId = identity.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier)
-                               .Select(c => c.Value).SingleOrDefault();
+            //var context = Request.GetOwinContext();
+            //var authManager = context.Authentication;
 
-            if(l_Name != null && l_UserId != null)
+            //var identity = (ClaimsIdentity)authManager.User.Identity;
+            //IEnumerable<Claim> claims = identity.Claims;
+
+            //var l_Name = identity.Claims.Where(c => c.Type == ClaimTypes.Name)
+            //       .Select(c => c.Value).SingleOrDefault();
+            //var l_UserId = identity.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier)
+            //                   .Select(c => c.Value).SingleOrDefault();
+
+            var user = (UserModel)TempData["User"];
+
+            if (user != null)
             {
-                HomeDAL DALHome = new HomeDAL();
-                List<HomeModel> l_Homes = DALHome.GetHomes();
-                UserModel l_User = UserDAL.GetUserById(Convert.ToInt32(l_UserId));
+                Collection<HomeModel> l_Homes = HomeDAL.GetHomeFill(user.ID, 1);// Convert.ToInt32(l_UserId));
+                UserModel l_User = UserDAL.GetUserById(user.ID);// Convert.ToInt32(l_UserId));
+                TempData["User"] = l_User;
 
                 ViewBag.User = l_User;
-                return View();
+                TempData.Keep("User");
+                return View(l_Homes);
             }
             else
             {
@@ -35,14 +44,43 @@ namespace QolaMVC.Controllers
             }
         }
 
-        public ActionResult Menu()
+        public ActionResult Menu(int p_HomeId)
         {
-            return View();
+            var user = (UserModel)TempData["User"];
+            TempData["Home"] = HomeDAL.GetHomeById(p_HomeId);
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            ViewBag.User = user;
+            HomeModel l_Home = HomeDAL.GetHomeById(p_HomeId);
+            return View(l_Home);
         }
 
-        public ActionResult ManageResidents()
+        public ActionResult ResidentMenu(int p_ResidentId)
         {
-            return View();
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            var resident = ResidentsDAL.GetResidentById(p_ResidentId);
+            var progressNotes = ProgressNotesDAL.GetProgressNotesCollections(resident.ID, DateTime.Now, DateTime.Now, "A");
+
+            ViewBag.Message = TempData["Message"];
+
+            TempData["Resident"] = resident;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            ViewBag.Resident = resident;
+            ViewBag.ProgressNotes = progressNotes;
+
+            return View(resident);
+        }
+        public ActionResult ManageResidents(int p_HomeId)
+        {
+            var l_Residents = ResidentsDAL.GetResidentCollections(p_HomeId);
+            return View(l_Residents);
         }
 
         public ActionResult AddNewResident()

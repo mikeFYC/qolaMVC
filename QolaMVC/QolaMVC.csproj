@@ -64,6 +64,9 @@
     <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.4.0.0\lib\net451\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
@@ -144,9 +147,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.ApplicationInsights">
       <HintPath>..\packages\Microsoft.ApplicationInsights.2.2.0\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
     </Reference>
@@ -180,8 +180,12 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
+    <Compile Include="Controllers\ResidentsController.cs" />
+    <Compile Include="DAL\AssessmentDAL.cs" />
+    <Compile Include="DAL\DietaryAssessmentDAL.cs" />
     <Compile Include="DAL\HomeDAL.cs" />
     <Compile Include="DAL\ProgressNotesDAL.cs" />
+    <Compile Include="DAL\ResidentsDAL.cs" />
     <Compile Include="DAL\UserDAL.cs" />
     <Compile Include="EF_DAL\QolaEFContext.cs" />
     <Compile Include="EF_DAL\tbl_Activity.cs" />
@@ -254,12 +258,18 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ActivityEventModel.cs" />
+    <Compile Include="Models\AdmissionHeadToToeModel.cs" />
+    <Compile Include="Models\AllergiesModel.cs" />
+    <Compile Include="Models\BowelMovementModel.cs" />
+    <Compile Include="Models\DietaryAssessmentModel.cs" />
+    <Compile Include="Models\FamilyConfrenceNoteModel.cs" />
     <Compile Include="Models\HomeModel.cs" />
     <Compile Include="Models\NamevalueIntModel.cs" />
     <Compile Include="Models\ProgressNotesModel.cs" />
     <Compile Include="Models\ProvinceHomeModel.cs" />
     <Compile Include="Models\ProvinceModel.cs" />
     <Compile Include="Models\ResidentModel.cs" />
+    <Compile Include="Models\SpecialDietModel.cs" />
     <Compile Include="Models\SuiteModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\UserRightsModel.cs" />
@@ -1911,6 +1921,7 @@
     <None Include="Views\Assessments\ProgressNotes.cshtml" />
     <None Include="Views\Assessments\UnusualIncident.cshtml" />
     <Content Include="Views\Home\ActivityCalendar.cshtml" />
+    <Content Include="Views\Home\ResidentMenu.cshtml" />
     <None Include="Views\Index.cshtml" />
     <None Include="Views\Login\Index.cshtml" />
     <None Include="Views\Home\Menu.cshtml" />
@@ -1947,6 +1958,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\assets\css\themes\" />
+    <Folder Include="Views\Residents\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

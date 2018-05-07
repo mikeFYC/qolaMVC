@@ -428,5 +428,15 @@ namespace QolaMVC.Constants
         public const string USP_GET_HEAD_OFFICE_USER = "Get_HeadOffice_User";
 
         public const string USP_GET_Resident_Activity_Interest_Report = "Get_Resident_Activity_Interest_Report";
+
+        //Alberta SP
+        public const string USP_ADD_BOWEL_MOVEMENT_ASSESSMENT = "spAB_AddBowelMovement";
+        public const string USP_GET_BOWEL_MOVEMENT_ASSESSMENT = "spAB_GetBowelMovement";
+
+        public const string USP_ADD_FAMILY_CONFERENCE_NOTES = "spAB_FamilyConferenceNote";
+        public const string USP_GET_FAMILY_CONFERENCE_NOTES = "spAB_GetFamilyConferenceNotes";
+
+        public const string USP_ADD_ADMISSION_HEADTOTOE_ASSESSMENT = "spAB_AddHeadToToeAssessment";
+        public const string USP_GET_ADMISSION_HEADTOTOE_ASSESSMENT = "spAB_Get_Admission_Head_To_Toe_Assessments_By_ResidentId";
     }
 }

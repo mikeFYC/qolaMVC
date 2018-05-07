@@ -30,7 +30,7 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@date", p_ProgressNotes.Date);
                 l_Cmd.Parameters.AddWithValue("@title", p_ProgressNotes.Title);
                 l_Cmd.Parameters.AddWithValue("@note", p_ProgressNotes.Note);
-                l_Cmd.Parameters.AddWithValue("@createdby", p_ProgressNotes.ModifiedBy);
+                l_Cmd.Parameters.AddWithValue("@createdby", p_ProgressNotes.ModifiedBy.ID);
                 l_Cmd.Parameters.AddWithValue("@category", p_ProgressNotes.Category);
                 l_Cmd.Parameters.AddWithValue("@reminIn", p_ProgressNotes.RemainIn);
 
@@ -156,7 +156,8 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@type", stype);
                 l_Cmd.Parameters.AddWithValue("@userType", iUserType);
                 l_Cmd.Parameters.AddWithValue("@category", iCategory);
-                
+                l_Cmd.CommandTimeout = 900;
+
                 DataSet progressNotesReceive = new DataSet();
                 l_DA.SelectCommand = l_Cmd;
                 l_DA.Fill(progressNotesReceive);
