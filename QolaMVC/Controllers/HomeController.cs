@@ -36,7 +36,7 @@ namespace QolaMVC.Controllers
 
                 ViewBag.User = l_User;
                 TempData.Keep("User");
-                return View(l_Homes);
+                return View(l_Homes.Where(m => m.ProvinceName == "Alberta"));
             }
             else
             {
@@ -73,6 +73,7 @@ namespace QolaMVC.Controllers
             ViewBag.User = user;
             ViewBag.Home = home;
             ViewBag.Resident = resident;
+            
             ViewBag.ProgressNotes = progressNotes;
 
             return View(resident);

@@ -16,7 +16,7 @@ namespace QolaMVC.Controllers
             return View();
         }
 
-        public ActionResult BowelMovement()
+        public ActionResult BowelMovementReport()
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];

@@ -19,6 +19,7 @@ namespace QolaMVC.Controllers
 
             ViewBag.User = user;
             ViewBag.Home = home;
+            ViewBag.Resident = resident;
 
             TempData.Keep("User");
             TempData.Keep("Home");
@@ -39,6 +40,7 @@ namespace QolaMVC.Controllers
             }
             ViewBag.User = user;
             ViewBag.Home = home;
+            ViewBag.Resident = resident;
             ViewBag.ReturnUrl = "/Assessments/BowelMovement";
 
             var bowelMovement = new BowelMovementModel();
@@ -60,6 +62,7 @@ namespace QolaMVC.Controllers
             var resident = (ResidentModel)TempData["Resident"];
 
             ViewBag.User = user;
+            ViewBag.Resident = resident;
             ViewBag.Home = home;
             
             p_BowelMovement.Resident = resident;
@@ -115,6 +118,7 @@ namespace QolaMVC.Controllers
 
             ViewBag.User = user;
             ViewBag.Home = home;
+            ViewBag.Resident = resident;
 
             p_FamilyConferenceNote.Resident = resident;
             p_FamilyConferenceNote.EnteredBy = user;

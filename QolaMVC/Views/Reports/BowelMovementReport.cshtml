@@ -1,0 +1,284 @@
+﻿@model IEnumerable<QolaMVC.Models.BowelMovementModel>
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+
+<style>
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+</style>
+
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+
+    <!-- START PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3>Bowel Movement Tracking Report</h3>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+
+            <div style="height: 60px;"></div>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn btn-default print">PRINT</button>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <input type="hidden" value="bowelmovementreport" name="" class="filename">
+
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg" id="fromHTMLtestdiv">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+
+                <div class="card">
+                    <div class="card-block">
+
+                        <br>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <img src="/Content/assets/img/QOLA_Support_rgb.png" style="width: 80px; margin-right: 40px">
+                                <img src="/Content/assets/img/logo (2).png" style="width: 120px;">
+                            </div>
+                            <div class="col-md-8 tableBorder">
+
+                                <div class="row">
+                                    <h5>Building Name:  @ViewBag.Home.Name</h5>
+                                   
+                                    @*<div class="col-md-6 pads">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                            <label class="form-check-label checkspace" for="defaultCheck1">
+                                                Rutherford Heights
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                            <label class="form-check-label checkspace" for="defaultCheck1">
+                                                Summerwood Village
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                            <label class="form-check-label checkspace" for="defaultCheck1">
+                                                Lewis Estate
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                            <label class="form-check-label checkspace" for="defaultCheck1">
+                                                Sage Hill
+                                            </label>
+                                        </div>
+                                    </div>*@
+
+                                    @*<div class="col-md-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                            <label class="form-check-label checkspace" for="defaultCheck1">
+                                                Laurel Heights
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                            <label class="form-check-label checkspace" for="defaultCheck1">
+                                                Auburn Heights
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                            <label class="form-check-label checkspace" for="defaultCheck1">
+                                                St Albert
+                                            </label>
+                                        </div>
+                                    </div>*@
+
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <br>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-5 col-form-label">Residents's Name</label>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control" id="staticEmail" value="@ViewBag.Resident.FirstName @ViewBag.Resident.LastName">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-5 col-form-label">Month</label>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control" id="staticEmail" value="@DateTime.Now.Month">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-5 col-form-label text-center">Suite</label>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control" id="staticEmail" value="@ViewBag.Resident.SuiteNo">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3><b>Bowel Movement Tracking</b></h3>
+                            </div>
+
+                        </div>
+
+                        <table class="table table-bordered">
+                            <thead class="">
+                                <tr>
+                                    <th class="text-center colorBlack">DATE</th>
+                                    <th class="text-center colorBlack" colspan="3">Days</th>
+                                    <th class=" text-center colorBlack" colspan="3">EVENING</th>
+                                    <th class="text-center colorBlack" colspan="3">NIGHT</th>
+                                    <th class="text-center colorBlack">FOLLOW UP</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="align-middle"></td>
+                                    <td class="align-middle">Type</td>
+                                    <td class="align-middle">Observe by</td>
+                                    <td class="align-middle">Initails</td>
+                                    <td class="align-middle">Type</td>
+                                    <td class="align-middle">Observe by</td>
+                                    <td class="align-middle">Initails</td>
+                                    <td class="align-middle">Type</td>
+                                    <td class="align-middle">Observe by</td>
+                                    <td class="align-middle">Initails</td>
+                                    <td class="align-middle"></td>
+                                </tr>
+                                @{
+        List<string> _Done = new List<string>();
+                                }
+                                @foreach (var bowelMovement in Model)
+    {
+        if (_Done.Contains(bowelMovement.TimeStamp.ToShortDateString()))
+        {
+
+        }
+        else
+        {
+            _Done.Add(bowelMovement.TimeStamp.ToShortDateString());
+
+
+                            <tr>
+                                <td class="align-middle">@bowelMovement.TimeStamp.ToShortDateString()</td>
+                                @{
+        var days = Model.FirstOrDefault(m => m.TimeStamp.Date == bowelMovement.TimeStamp.Date && m.Period == "Days");
+        if (days != null)
+        {
+                            <td class="align-middle">@days.Type</td>
+                            <td class="align-middle">@days.ObservedBy</td>
+                            <td class="align-middle">@days.Initials</td>
+}
+else
+{
+                            <td class="align-middle">nan</td>
+                            <td class="align-middle">nan</td>
+                            <td class="align-middle">nan</td>
+}
+                                }
+                                @{
+        var evening = Model.FirstOrDefault(m => m.TimeStamp.Date == bowelMovement.TimeStamp.Date && m.Period == "Evening");
+
+        if (evening != null)
+        {
+                            <td class="align-middle">@evening.Type</td>
+                            <td class="align-middle">@evening.ObservedBy</td>
+                            <td class="align-middle">@evening.Initials</td>
+}
+else
+{
+                            <td class="align-middle">nan</td>
+                            <td class="align-middle">nan</td>
+                            <td class="align-middle">nan</td>
+}
+                                }
+                                @{
+        var night = Model.FirstOrDefault(m => m.TimeStamp.Date == bowelMovement.TimeStamp.Date && m.Period == "Night");
+
+        if (night != null)
+        {
+                            <td class="align-middle">@night.Type</td>
+                            <td class="align-middle">@night.ObservedBy</td>
+                            <td class="align-middle">@night.Initials</td>
+}
+else
+{
+                            <td class="align-middle">nan</td>
+                            <td class="align-middle">nan</td>
+                            <td class="align-middle">nan</td>
+}
+                                }
+                            </tr>
+}
+}
+                            </tbody>
+                        </table>
+                        <br>
+                        <table class="table table-bordered">
+                            <thead class="">
+                                <tr>
+                                    <th class="text-center colorBlack">NAME</th>
+                                    <th class="text-center colorBlack">Signature</th>
+                                    <th class=" text-center colorBlack">Initials</th>
+                                    <th class="text-center colorBlack">Designation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < 4; i++)
+                            {
+                                int j = i + 1;
+
+                                <tr>
+                                    <td class="align-middle"></td>
+                                    <td class="align-middle"></td>
+                                    <td class="align-middle"></td>
+                                    <td class="align-middle"></td>
+                                </tr>
+                        }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                <!-- END PLACE PAGE CONTENT HERE -->
+            </div>
+            <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+
+        @RenderPage("~/Views/Shared/_Footer.cshtml")

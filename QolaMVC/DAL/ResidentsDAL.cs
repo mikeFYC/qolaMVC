@@ -471,7 +471,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static ResidentModel GetResidentById(int residentId, int IsPrint = 0)
+        public static ResidentModel GetResidentById(int residentId, int IsPrint = 1)
         {
             string exception = string.Empty;
             ResidentModel resident = new ResidentModel();
@@ -1498,7 +1498,7 @@ namespace QolaMVC.DAL
                 DataSet residentsReceive = new DataSet();
                 l_DA.SelectCommand = l_Cmd;
                 l_DA.Fill(residentsReceive);
-                if (residentsReceive.Tables[0].Rows.Count > 0)
+                if (residentsReceive != null && residentsReceive.Tables.Count > 0 && residentsReceive.Tables[0].Rows.Count > 0)
                 {
                     if(status == 'N')
                     {

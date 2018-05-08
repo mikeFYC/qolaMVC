@@ -44,11 +44,10 @@
 <!-- END PAGE LEVEL JS -->
 <script src="~/Content/assets/js/FileAPI/FileAPI.js"></script>
 <script src="~/Content/assets/js/datatables.min.js"></script>
-
-<!-- END VENDOR JS -->
+<script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
+<script src="~/Content/assets/js/html2canvas.js" crossorigin="anonymous"></script>
+<!-- uploding of file -->
 <script>
-
-
     $('.searchresidents').keyup(function () {
         val = $(this).val();
         if (val.length > 1) {
@@ -60,7 +59,6 @@
                         '<img src="/Content/assets/' + data[i][5].Value + '" class="searchimg">' +
                         '<p class="ml-3">' + data[i][0].Value + '<br></p>' +
                         '</a>');
-                    //alert(data[i][0].Value);
                 }
             });
             $('.searchBox').show();
@@ -70,10 +68,69 @@
 
 
     })
+</script >
+<script >
+    $('.print').click(function () {
+
+        var srcEl = document.getElementById("fromHTMLtestdiv");
+        var scaleFactor = 2;
+
+        var originalWidth = srcEl.offsetWidth;
+        var originalHeight = srcEl.offsetHeight;
+        // Force px size (no %, EMs, etc)
+        srcEl.style.width = originalWidth + "px";
+        srcEl.style.height = originalHeight + "px";
+
+        // Position the element at the top left of the document because of bugs in html2canvas. The bug exists when supplying a custom canvas, and   //the rendering on the custom canvas based on the offset of the source element on the page; thus the source element MUST be at 0, 0.
+        // See html2canvas issues #790, #820, #893, #922
+        srcEl.style.position = "absolute";
+        srcEl.style.top = "0";
+        srcEl.style.left = "0";
+
+        // Create scaled canvas
+        var scaledCanvas = document.createElement("canvas");
+        scaledCanvas.width = originalWidth * scaleFactor;
+        scaledCanvas.height = originalHeight * scaleFactor;
+        scaledCanvas.style.width = originalWidth + "px";
+        scaledCanvas.style.height = originalHeight + "px";
+        var scaledContext = scaledCanvas.getContext("2d");
+        scaledContext.scale(scaleFactor, scaleFactor);
+
+        html2canvas(srcEl, { canvas: scaledCanvas })
+            .then(function (canvas) {
+                var imgData = canvas.toDataURL('image/png');
+                var imgWidth = 210;
+                var pageHeight = 295;
+                var imgHeight = canvas.height * imgWidth / canvas.width;
+                var heightLeft = imgHeight;
+
+                var doc = new jsPDF('p', 'mm');
+                var position = 0;
+
+                doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                doc.setTextColor('#000');
+                var context = canvas.getContext('2d');
+                context.scale(2, 2);
+                heightLeft -= pageHeight;
+
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    doc.addPage();
+                    doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                    var context = canvas.getContext('2d');
+                    context.scale(2, 2);
+                    doc.setTextColor('#000');
+                    heightLeft -= pageHeight;
+                }
+                var filename = $('.filename').val();
+                doc.save(filename + '.pdf');
+            });
+        
+    })
 
 
 </script>
-
+<!-- END VENDOR JS -->
 <!-- BEGIN CORE TEMPLATE JS -->
 <script src="~/Content/pages/js/pages.js" type="text/javascript"></script>
 <!-- END CORE TEMPLATE JS -->

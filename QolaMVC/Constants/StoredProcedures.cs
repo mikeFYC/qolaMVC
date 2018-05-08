@@ -438,5 +438,15 @@ namespace QolaMVC.Constants
 
         public const string USP_ADD_ADMISSION_HEADTOTOE_ASSESSMENT = "spAB_AddHeadToToeAssessment";
         public const string USP_GET_ADMISSION_HEADTOTOE_ASSESSMENT = "spAB_Get_Admission_Head_To_Toe_Assessments_By_ResidentId";
+
+        public const string USP_ADD_EXCERCISE_ACTIVITY_SUMMARY = "spAB_Add_Excercise_Activity_Summary";
+        public const string USP_GET_EXCERCISE_ACTIVITY_SUMMARY = "spAB_Get_Excercise_Activity_Summary";
+
+        public const string USP_ADD_EXCERCISE_ACTIVITY_DETAIL = "spAB_Add_Excercise_Activity_Detail";
+        public const string USP_GET_EXCERCISE_ACTIVITY_DETAIL = "spAB_Get_Excercise_Activity_Detail";
+
+        public const string USP_ADD_HSEP_DETAIL = "spAB_Add_HSEP_Detail";
+        public const string USP_GET_HSEP_DETAIL = "spAB_Get_HSEP_Detail";
+        
     }
 }
