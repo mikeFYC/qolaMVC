@@ -35,12 +35,12 @@ namespace QolaMVC.Controllers
             return View(bowelMovements);
         }
 
-        public ActionResult ExerciseActivity()
+        public ActionResult ExerciseActivityReport()
         {
             return View();
         }
 
-        public ActionResult FamilyConference()
+        public ActionResult FamilyConferenceReport()
         {
             return View();
         }
