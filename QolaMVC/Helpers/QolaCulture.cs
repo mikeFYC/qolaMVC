@@ -12,6 +12,7 @@ using System.IO;
 using System.Text;
 using System.Web.Configuration;
 using System.Configuration;
+using QolaMVC.ViewModels;
 
 namespace QolaMVC.Helpers
 {
@@ -291,6 +292,37 @@ namespace QolaMVC.Helpers
         public static string Sha1HashOld(string password)
         {
             return Encoding.UTF8.GetString(new SHA1Managed().ComputeHash(new UTF8Encoding().GetBytes(password)));
+        }
+
+        public static void InitExcerciseActivity(ref ExcerciseActivityViewModel vm)
+        {
+            if (vm.Detail.Count == 0)
+            {
+                string[] activities = new string[]{"Walking",
+                                                    "Wall Push-ups",
+                                                    "Rise Up on toes",
+                                                    "Toe Taps",
+                                                    "Seat Walk",
+                                                    "Get up from chair",
+                                                    "Leg Lift",
+                                                    "Reaching",
+                                                    "Standing Stretch",
+                                                    "Seated Stretch"
+                                                };
+
+                foreach(var a in activities)
+                {
+                    var ex = new Models.ExcerciseActivityDetailModel();
+                    ex.ActivityName = a;
+                    ex.DateEntered = DateTime.Now;
+
+                    vm.Detail.Add(ex);
+                    var hsep = new Models.HSEPDetailModel();
+                    hsep.ActivityName = a;
+
+                    vm.HSEPDetail.Add(hsep);
+                }
+            }
         }
     }
 }

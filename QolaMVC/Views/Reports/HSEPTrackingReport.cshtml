@@ -19,6 +19,7 @@
 
     @RenderPage("~/Views/Shared/_NavBar.cshtml")
 
+    <!-- START PAGE CONTENT WRAPPER -->
     <div class="page-content-wrapper">
         <!-- START PAGE CONTENT -->
         <div class="content">
@@ -28,7 +29,7 @@
                     <!-- <div class="inner"> -->
                     <div class="row align-items-center">
                         <div class="col-md-8">
-                            <h3>Exercise Activity Report</h3>
+                            <h3>HSEP Tracking Record Report</h3>
                         </div>
                     </div>
                     <!-- </div> -->
@@ -38,6 +39,9 @@
 
             <div style="height: 60px;"></div>
 
+            <!-- START CONTAINER FLUID -->
+
+
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
@@ -46,68 +50,79 @@
                 </div>
             </div>
             <br>
-            <input type="hidden" value="exerciseactivityreport" name="" class="filename">
+            <input type="hidden" value="hseptrackingreport" name="" class="filename">
 
-            <!-- START CONTAINER FLUID -->
             <div class="container-fluid container-fixed-lg" id="fromHTMLtestdiv">
                 <!-- BEGIN PlACE PAGE CONTENT HERE -->
 
                 <div class="card">
                     <div class="card-block">
 
+
                         <div class="row">
                             <div class="col-md-12">
                                 <img src="~/Content/assets/img/ahs.png" class="img-responsive">
-
+                                <br /> <br />
                             </div>
                         </div>
+
                         <div class="row">
-                            <div class="col-md-5">
+                            <div class="col-md-3">
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-3 col-form-label">Date:</label>
+                                    <div class="col-md-7">
+                                        @Html.DisplayFor(modelItem => Model.ExcerciseSummary.DateEntered)
+                                    </div>
+                                </div>
+                            </div>
+                            @*<div class="col-md-3">
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-3 col-form-label">Year:</label>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control" id="staticEmail">
+                                    </div>
+                                </div>
+                            </div>*@
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
                                 <table class="table table-bordered">
-                                    <thead class="">
+                                    <thead class="bg-primary">
                                         <tr>
-                                            <th class="colorBlack text-center"></th>
-                                            <th class="colorBlack text-center">Baseline</th>
-                                            <th class="colorBlack text-center">3 Month</th>
-                                            <th class="colorBlack text-center">6 Month</th>
+                                            <td></td>
+                                            @if (Model != null && Model.HSEPDetail != null)
+                                            {
+                                                for (int i = 0; i < Model.HSEPDetail.Count; i++)
+                                                {
+                                                    @Html.HiddenFor(m => Model.HSEPDetail[i].ActivityName)
+                                                    <th class="text-white text-center">@Model.HSEPDetail[i].ActivityName</th>
+                                                }
+                                            }
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>Date</td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => Model.ExcerciseSummary.BaselineDate)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => Model.ExcerciseSummary.TMonthDate)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => Model.ExcerciseSummary.SMonthDate)
-                                            </td>
+                                            <td>DATE OF INITIAL TEACHING</td>
+                                            @if (Model != null && Model.HSEPDetail != null)
+                                            {
+                                                for (int i = 0; i < Model.HSEPDetail.Count; i++)
+                                                {
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => Model.HSEPDetail[i].DateOfTeaching, new { @class = "form-control" })
+                                                    </td>
+                                                }
+                                            }
                                         </tr>
                                         <tr>
-                                            <td>TUG</td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => Model.ExcerciseSummary.BaselineTug)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => Model.ExcerciseSummary.TMonthTug)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => Model.ExcerciseSummary.SMonthTug)
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>VPS</td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => Model.ExcerciseSummary.BaselineVPS)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => Model.ExcerciseSummary.TMonthVPS)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => Model.ExcerciseSummary.SMonthVPS)
-                                            </td>
+                                            <td>TRAINER SIGNATURE</td>
+                                            @if (Model != null && Model.HSEPDetail != null)
+                                            {
+                                                for (int i = 0; i < Model.HSEPDetail.Count; i++)
+                                                {
+                                                    <td></td>
+                                                }
+                                            }
                                         </tr>
                                     </tbody>
                                 </table>
@@ -167,9 +182,9 @@
 }
 
                             </tbody>
-                          
+
                         </table>
-                        <br><br><br><br><br><br>
+                        <br><br><br>
                         <table class="table table-bordered">
                             <tr>
                                 <td>
@@ -184,6 +199,7 @@
                             </tr>
                         </table>
                     </div>
+
                 </div>
 
 
@@ -192,6 +208,7 @@
             <!-- END CONTAINER FLUID -->
         </div>
         <!-- END PAGE CONTENT -->
+
 
 
         @RenderPage("~/Views/Shared/_Footer.cshtml")

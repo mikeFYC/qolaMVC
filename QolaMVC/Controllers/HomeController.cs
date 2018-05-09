@@ -46,7 +46,7 @@ namespace QolaMVC.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "//Login");
+                return RedirectToAction("Index", "/Login");
             }
         }
 

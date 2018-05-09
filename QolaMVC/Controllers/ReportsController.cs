@@ -1,5 +1,7 @@
 ﻿using QolaMVC.DAL;
+using QolaMVC.Helpers;
 using QolaMVC.Models;
+using QolaMVC.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,9 +37,31 @@ namespace QolaMVC.Controllers
             return View(bowelMovements);
         }
 
-        public ActionResult ExerciseActivityReport()
+        public ActionResult ExcerciseActivityReport()
         {
-            return View();
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            var vm = new ExcerciseActivityViewModel();
+
+            vm.Detail = AssessmentDAL.GetExcerciseActivityDetail(resident.ID);
+            vm.ExcerciseSummary = AssessmentDAL.GetExcerciseActivitySummary(resident.ID);
+            vm.HSEPDetail = AssessmentDAL.GetHSEPDetail(resident.ID);
+
+            if (vm.Detail.Count == 0 || vm.HSEPDetail.Count == 0)
+            {
+                QolaCulture.InitExcerciseActivity(ref vm);
+            }
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            return View(vm);
         }
 
         public ActionResult FamilyConferenceReport()
@@ -50,9 +74,31 @@ namespace QolaMVC.Controllers
             return View();
         }
 
-        public ActionResult HSEPTracking()
+        public ActionResult HSEPTrackingReport()
         {
-            return View();
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            var vm = new ExcerciseActivityViewModel();
+
+            vm.Detail = AssessmentDAL.GetExcerciseActivityDetail(resident.ID);
+            vm.ExcerciseSummary = AssessmentDAL.GetExcerciseActivitySummary(resident.ID);
+            vm.HSEPDetail = AssessmentDAL.GetHSEPDetail(resident.ID);
+
+            if (vm.Detail.Count == 0 || vm.HSEPDetail.Count == 0)
+            {
+                QolaCulture.InitExcerciseActivity(ref vm);
+            }
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            return View(vm);
         }
 
         public ActionResult PostFallClinicalMonitoring_A()
@@ -69,6 +115,5 @@ namespace QolaMVC.Controllers
         {
             return View();
         }
-
     }
 }

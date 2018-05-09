@@ -10,7 +10,7 @@ namespace QolaMVC.Models
         public int Id { get; set; }
         public ResidentModel Resident { get; set; }
         public string ActivityName { get; set; }
-        public DateTime DateOfTeaching { get; set; }
+        public string DateOfTeaching { get; set; }
         public UserModel EnteredBy { get; set; }
     }
 }

@@ -492,8 +492,8 @@ namespace QolaMVC.DAL
                         l_Model.Tuesday = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["Tuesday"]);
                         l_Model.Wednesday = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["Wednesday"]);
                         l_Model.Thursday = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["Thursday"]);
-                        l_Model.Friday = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["SMonthTug"]);
-                        l_Model.Saturday = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["SMonthVPS"]);
+                        l_Model.Friday = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["Friday"]);
+                        l_Model.Saturday = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["Saturday"]);
                         l_Resident.ID = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
                         l_Resident.SuiteNo = Convert.ToString(dataReceive.Tables[0].Rows[index]["SuiteNumber"]);
                         l_Resident.FirstName = Convert.ToString(dataReceive.Tables[0].Rows[index]["ResidentFirstName"]);
@@ -548,7 +548,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static HSEPDetailModel GetHSEPDetail(int p_ResidentId)
+        public static Collection<HSEPDetailModel> GetHSEPDetail(int p_ResidentId)
         {
             string exception = string.Empty;
             Collection<HSEPDetailModel> l_Models = new Collection<HSEPDetailModel>();
@@ -576,7 +576,7 @@ namespace QolaMVC.DAL
                         HSEPDetailModel l_Model = new HSEPDetailModel();
                         l_Model.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
                         l_Model.ActivityName = Convert.ToString(dataReceive.Tables[0].Rows[index]["ActivityName"]);
-                        l_Model.DateOfTeaching = Convert.ToDateTime(dataReceive.Tables[0].Rows[index]["DateOfTeaching"]);
+                        l_Model.DateOfTeaching = Convert.ToString(dataReceive.Tables[0].Rows[index]["DateOfTeaching"]);
                         l_Resident.ID = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
                         l_Resident.SuiteNo = Convert.ToString(dataReceive.Tables[0].Rows[index]["SuiteNumber"]);
                         l_Resident.FirstName = Convert.ToString(dataReceive.Tables[0].Rows[index]["ResidentFirstName"]);
@@ -589,7 +589,7 @@ namespace QolaMVC.DAL
                         l_Models.Add(l_Model);
                     }
                 }
-                return l_Models.LastOrDefault();
+                return l_Models;
             }
             catch (Exception ex)
             {

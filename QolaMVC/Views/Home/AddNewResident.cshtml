@@ -1,3 +1,5 @@
+@model QolaMVC.Models.ResidentModel
+
 @RenderPage("~/Views/Shared/_Header.cshtml")
 @RenderPage("~/Views/Shared/_SideBar.cshtml")
 <style>
@@ -61,25 +63,25 @@
                                             <div class="form-group row">
                                                 <label for="staticEmail" class="col-md-5 col-form-label">First Name</label>
                                                 <div class="col-md-7">
-                                                    <input type="text" class="form-control" id="staticEmail">
+                                                    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "First Name" })
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label for="staticEmail" class="col-md-5 col-form-label">Last Name</label>
                                                 <div class="col-md-7">
-                                                    <input type="text" class="form-control" id="staticEmail">
+                                                    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Last Name" })
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label for="staticEmail" class="col-md-5 col-form-label">Also Known As</label>
                                                 <div class="col-md-7">
-                                                    <input type="text" class="form-control" id="staticEmail">
+                                                    @Html.TextBoxFor(m => m.ShortName, new { @class = "form-control", placeholder = "Short Name" })
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label for="staticEmail" class="col-md-5 col-form-label">Birth Date</label>
                                                 <div class="col-md-7">
-                                                    <input type="text" class="form-control" id="staticEmail">
+                                                    @Html.TextBoxFor(m => m.BirthDate, new { @class = "form-control", placeholder = "Date of Birth" })
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -87,11 +89,11 @@
                                                     <label class="col-md-5 col-form-label">Gender</label>
                                                     <div class="col-md-7 pads">
                                                         <div class="form-check form-check-inline movesp" ">
-                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                            @Html.RadioButtonFor(m => m.Gendar, "Male", new { @class = "form-check-input" })
                                                             <label class="form-check-label" for="">Male</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                            @Html.RadioButtonFor(m => m.Gendar, "Female", new { @class = "form-check-input" })
                                                             <label class="form-check-label" for="inlineRadio2">Female</label>
                                                         </div>
                                                     </div>
@@ -100,7 +102,7 @@
                                             <div class="form-group row">
                                                 <label for="staticEmail" class="col-md-5 col-form-label">Occupancy</label>
                                                 <div class="col-md-7">
-                                                    <select class="form-control">
+                                                    <select name="Occupancy" class="form-control">
                                                         <option>Select</option>
                                                         <option>Single</option>
                                                         <option>Double</option>
@@ -113,7 +115,7 @@
                                                 <div class="col-md-7">
                                                     <div class="row">
                                                         <div class="col-md-7">
-                                                            <input type="text" class="form-control" id="staticEmail">
+                                                            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", placeholder = "Phone Number" })
                                                         </div>
                                                         <div class="col-md-5">
                                                             <div class="form-check">
@@ -129,13 +131,14 @@
                                             <div class="form-group row">
                                                 <label for="staticEmail" class="col-md-5 col-form-label">Birth Place</label>
                                                 <div class="col-md-7">
-                                                    <input type="text" class="form-control" id="staticEmail">
+                                                    @Html.TextBoxFor(m => m.BirthPlace, new { @class = "form-control", placeholder = "Place of Birth" })
+
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label for="staticEmail" class="col-md-5 col-form-label">Marital Status</label>
                                                 <div class="col-md-7">
-                                                    <select class="form-control">
+                                                    <select name="MaritalStatus" class="form-control">
                                                         <option>Select</option>
                                                         <option>Married</option>
                                                         <option>Widowed</option>
@@ -147,7 +150,7 @@
                                             <div class="form-group row">
                                                 <label for="staticEmail" class="col-md-5 col-form-label">Religious affiliation</label>
                                                 <div class="col-md-7">
-                                                    <select class="form-control">
+                                                    <select name="ReligiousAffiliation" class="form-control">
                                                         <option>Select</option>
                                                         <option>Prefer not to say</option>
                                                         <option>Christian</option>
@@ -162,13 +165,13 @@
                                             <div class="form-group row">
                                                 <label for="staticEmail" class="col-md-5 col-form-label">Religious affiliation-Other</label>
                                                 <div class="col-md-7">
-                                                    <input type="text" class="form-control" id="staticEmail">
+                                                    <input type="text" name="ReligiousAffiliationOther" class="form-control" id="staticEmail">
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label for="staticEmail" class="col-md-5 col-form-label">Ability to read</label>
                                                 <div class="col-md-7">
-                                                    <select class="form-control">
+                                                    <select name="AbilityToRead" class="form-control">
                                                         <option>Select</option>
                                                         <option>Very Well</option>
                                                         <option>Good</option>
@@ -181,13 +184,15 @@
                                             <div class="form-group row">
                                                 <label for="staticEmail" class="col-md-5 col-form-label">Res.Relationship with family</label>
                                                 <div class="col-md-7">
-                                                    <input type="text" class="form-control" id="staticEmail">
+                                                    @Html.TextBoxFor(m => m.RelationshipWithFamily, new { @class = "form-control", placeholder = "Relationship with family" })
+
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label for="staticEmail" class="col-md-5 col-form-label">Past Occupations & jobs</label>
                                                 <div class="col-md-7">
-                                                    <input type="text" class="form-control" id="staticEmail">
+                                                    @Html.TextBoxFor(m => m.PastOccupationJobs, new { @class = "form-control", placeholder = "Past occupations and jobs" })
+
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -197,33 +202,36 @@
                                                         <div class="row pad2">
                                                             <div class="col-md-12">
                                                                 <div class="form-check form-check-inline movesp" ">
-                                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                                    @Html.RadioButtonFor(m => m.Vetaran, "Army", new { @class = "form-check-input" })
                                                                     <label class="form-check-label" for="">Army</label>
                                                                 </div>
                                                                 <div class="form-check form-check-inline movesp">
-                                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                                    @Html.RadioButtonFor(m => m.Vetaran, "Navy", new { @class = "form-check-input" })
+
                                                                     <label class="form-check-label" for="inlineRadio2">Navy</label>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-12">
                                                                 <div class="form-check form-check-inline movesp">
-                                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                                    @Html.RadioButtonFor(m => m.Vetaran, "Air Force", new { @class = "form-check-input" })
+
                                                                     <label class="form-check-label" for="inlineRadio2">Air Force</label>
                                                                 </div>
                                                                 <div class="form-check form-check-inline movesp">
-                                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                                    @Html.RadioButtonFor(m => m.Vetaran, "Other", new { @class = "form-check-input" })
+
                                                                     <label class="form-check-label" for="inlineRadio2">Other</label>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-12">
                                                                 <div class="form-check form-check-inline movesp">
-                                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                                    @Html.RadioButtonFor(m => m.Vetaran, "None", new { @class = "form-check-input" })
                                                                     <label class="form-check-label" for="inlineRadio2">None of the above </label>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-12">
                                                                 Other<br>
-                                                                <input type="text" class="form-control" id="staticEmail">
+                                                                <input type="text" name="VeteranOther" class="form-control" id="staticEmail">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1130,7 +1138,6 @@
                                             <a href="~/Home/DietaryHistory" class="btn btn-danger btn-lg btnfull">Dietary History</a><br>
                                             <button class="btn btn-danger btn-lg btnfull">Resident Care Assessment</button><br>
                                             <button class="btn btn-danger btn-lg btnfull">Resident Specific Goals</button><br>
-                                            <button class="btn btn-danger btn-lg btnfull">Fall Risk Assessment</button><br>
                                             <button class="btn btn-danger btn-lg btnfull">Activity Assessment</button><br>
                                             <button class="btn btn-default btn-lg btnfull">Print QOLAFIED resident</button>
                                         </div>
