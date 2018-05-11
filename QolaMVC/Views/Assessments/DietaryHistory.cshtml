@@ -49,7 +49,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="staticEmail" class="col-form-label">Appetite</label>
-                                    <select name="Appitite" class="form-control">
+                                    <select name="Apetite" class="form-control">
                                         <option>Select</option>
                                         <option>Good</option>
                                         <option>Fair</option>
@@ -105,7 +105,7 @@
                                 for (int i = 0; i < Model.Diet.Count; i++)
                                 {
                                     <div class="form-check">
-                                        <input name="Diet[@i]" class="form-check-input" type="checkbox" value="@Model.Diet[i]" id="defaultCheck1">
+                                        <input name="Diet[]" class="form-check-input" type="checkbox" value="@Model.Diet[i]" id="defaultCheck1">
                                         <label class="form-check-label" for="defaultCheck1">
                                             @Model.Diet[i]
                                         </label>
@@ -152,19 +152,21 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-3 col-form-label">Allergies/Sensitivities</label>
                                     <div class="col-md-6">
-                                        <select id="SelectedAllergy">
+                                        <select class="form-control" id="SelectedAllergy">
                                             <option>Select</option>
-                                            @{ 
-                                                foreach(var allergy in ViewBag.Allergies)
-                                                {
-                                                    <option value="@allergy.ID">@allergy.Name</option>
-                                                }
+                                            @{
+                foreach (var allergy in ViewBag.Allergies)
+                {
+                                <option value="@allergy.ID">@allergy.Name</option>
+}
                                             }
                                         </select>
                                     </div>
                                     <div class="col-md-1">
                                         <a href="#" id="AddAllergy" class="btn btn-danger">ADD</a>
-                                        <a href="#" id="AddAllergy" class="btn btn-danger">DELETE</a>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <a href="#" id="DeleteAllergy" class="btn btn-danger">DELETE</a>
                                     </div>
                                 </div>
                             </div>
@@ -223,15 +225,14 @@
 
         @RenderPage("~/Views/Shared/_Footer.cshtml")
         <script type="text/javascript">
-    $(document).ready(function(){
+            $(document).ready(function () {
+                var count = 0;
         $("#AddAllergy").click(function(){
             var name = $("#SelectedAllergy :selected").text();
             var id = $("#SelectedAllergy").val();
-            var markup = "<tr><td>"+
-                +"< input type = 'hidden' name = 'Allergies[" + count + "].Name' value = '" + name + "' >" +
-                +"<input type='hidden' name='Allergies[" + count + "].Name' value='" + name + "'>" +
-                +"name</td > <td><input type='text' name='AllergyNotes[" + count +"]' /></td> <td><input type='checkbox' name='record'></td></tr > ";
+            var markup = "<tr><td><input type='hidden' name='Allergies[" + count + "].ID' value='" + id + "'/><input type='hidden' name='Allergies[" + count + "].Name' value='" + name + "'/>"+ name + "</td> <td><input type='text' class='form-control' name='AllergyNotes[" + count +"]' /></td> <td><input type='checkbox' name='record'></td></tr > ";
             $("#Allergies").append(markup);
+            count++;
         });
 
         // Find and remove selected table rows
