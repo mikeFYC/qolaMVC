@@ -13,6 +13,7 @@ using System.Text;
 using System.Web.Configuration;
 using System.Configuration;
 using QolaMVC.ViewModels;
+using QolaMVC.Models;
 
 namespace QolaMVC.Helpers
 {
@@ -321,6 +322,29 @@ namespace QolaMVC.Helpers
                     hsep.ActivityName = a;
 
                     vm.HSEPDetail.Add(hsep);
+                }
+            }
+        }
+
+        public static void InitDiets(ref nDietaryAssessmentModel vm)
+        {
+            if (vm.Diet.Count == 0)
+            {
+                string[] Diets = new string[]{"Regular Diet",
+                                                    "Diabetic",
+                                                    "Low Fat",
+                                                    "Low Cholesterol",
+                                                    "Low Potassium",
+                                                    "Glutten Free",
+                                                    "Vegetarian Diet",
+                                                    "Low Sodium",
+                                                    "Low Vitamin K",
+                                                    "Other"
+                                                };
+
+                foreach (var a in Diets)
+                {
+                    vm.Diet.Add(a);
                 }
             }
         }

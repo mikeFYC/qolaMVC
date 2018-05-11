@@ -81,9 +81,48 @@ namespace QolaMVC.Controllers
 
         public ActionResult DietaryHistory()
         {
-            return View();
+            ViewBag.Allergies = AssessmentDAL.GetAllergiesCollections();
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            var vm = new nDietaryAssessmentModel();
+            vm.Diet = new System.Collections.ObjectModel.Collection<string>();
+            vm.Allergies = new System.Collections.ObjectModel.Collection<AllergiesModel>();
+            QolaCulture.InitDiets(ref vm);
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            return View(vm);
         }
 
+        [HttpPost]
+        public ActionResult AddDietaryAssessment(nDietaryAssessmentModel model)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            ViewBag.Resident = resident;
+
+            model.Resident = resident;
+            model.EnteredBy = user;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            AssessmentDAL.AddDieterayAssesment(model);
+            TempData["Message"] = "Added Dietary Assessment Note";
+            return RedirectToAction("DietaryHistory");
+        }
         public ActionResult ExerciseActivity()
         {
             var home = (HomeModel)TempData["Home"];
@@ -241,7 +280,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("Resident");
 
             ProgressNotesDAL.AddNewProgressNotes(p_Model);
-            TempData["Message"] = "Progress not added successfully";
+            TempData["Message"] = "Successfully added new Progress note";
 
             return Redirect("/Home/ResidentMenu/?p_ResidentId="+resident.ID);
         }

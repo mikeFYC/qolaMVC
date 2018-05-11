@@ -1495,6 +1495,7 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@homeId", homeId);
                 l_Cmd.Parameters.AddWithValue("@key", Key);
                 l_Cmd.Parameters.AddWithValue("@status", status);
+                l_Cmd.CommandTimeout = 900;
                 DataSet residentsReceive = new DataSet();
                 l_DA.SelectCommand = l_Cmd;
                 l_DA.Fill(residentsReceive);

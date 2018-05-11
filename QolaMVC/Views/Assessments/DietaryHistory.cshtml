@@ -1,4 +1,4 @@
-@model QolaMVC.Models.DietaryAssessmentModel
+@model QolaMVC.Models.nDietaryAssessmentModel
 
 @RenderPage("~/Views/Shared/_Header.cshtml")
 @RenderPage("~/Views/Shared/_SideBar.cshtml")
@@ -40,6 +40,8 @@
                 <!-- BEGIN PlACE PAGE CONTENT HERE -->
                 <div class="card">
                     <div class="card-block">
+                        @using (Html.BeginForm("AddDietaryAssessment", "Assessments", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
                         <div class="col-md-12">
                             <h5>Nutrition</h5>
                         </div>
@@ -49,7 +51,10 @@
                                     <label for="staticEmail" class="col-form-label">Appetite</label>
                                     <select name="Appitite" class="form-control">
                                         <option>Select</option>
-                                      
+                                        <option>Good</option>
+                                        <option>Fair</option>
+                                        <option>Poor</option>
+
                                     </select>
                                 </div>
                             </div>
@@ -58,7 +63,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="staticEmail" class="col-form-label">Nutritional Status</label>
-                                    <select name="" class="form-control">
+                                    <select name="NutritionalStatus" class="form-control">
                                         <option selected="selected" value="0">Select</option>
                                         <option value="10SI">Independent</option>
                                         <option value="11SS">Supervised</option>
@@ -73,19 +78,19 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="staticEmail" class="col-form-label">Risk</label>
-                                    <select class="form-control">
+                                    <select name="Risk" class="form-control">
                                         <option selected="selected" value="0">Select</option>
-                                        <option value="11NN">N/A</option>
-                                        <option value="3NS">Swallowing</option>
-                                        <option value="4NH">Choking risk</option>
-                                        <option value="2NC">Difficulty in Chewing</option>
+                                        <option value="N/A">N/A</option>
+                                        <option value="Swallowing">Swallowing</option>
+                                        <option value="Choking Risk">Choking risk</option>
+                                        <option value="Difficulty in Chewing">Difficulty in Chewing</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="staticEmail" class="col-form-label">Assistive Devices</label>
-                                    <input type="text" class="form-control" id="staticEmail">
+                                    <input name="AssistiveDevices" type="text" class="form-control" id="staticEmail">
                                 </div>
                             </div>
                         </div>
@@ -96,95 +101,38 @@
 
                             <br>
                             <div class="col-md-3 pads">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                    <label class="form-check-label" for="defaultCheck1">
-                                        Regular Diet
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                    <label class="form-check-label" for="defaultCheck1">
-                                        Diabetic
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                    <label class="form-check-label" for="defaultCheck1">
-                                        Low Fat
-                                    </label>
-                                </div>
+                                @{
+                                for (int i = 0; i < Model.Diet.Count; i++)
+                                {
+                                    <div class="form-check">
+                                        <input name="Diet[@i]" class="form-check-input" type="checkbox" value="@Model.Diet[i]" id="defaultCheck1">
+                                        <label class="form-check-label" for="defaultCheck1">
+                                            @Model.Diet[i]
+                                        </label>
+                                    </div>
+                            }
+                                }
                             </div>
-                            <div class="col-md-3 pads">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                    <label class="form-check-label" for="defaultCheck1">
-                                        Low Cholesterol
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                    <label class="form-check-label" for="defaultCheck1">
-                                        Low Potassium
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                    <label class="form-check-label" for="defaultCheck1">
-                                        Gluten Free
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-3 pads">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                    <label class="form-check-label" for="defaultCheck1">
-                                        Vegetarian Diet
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                    <label class="form-check-label" for="defaultCheck1">
-                                        Low Sodium
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                    <label class="form-check-label" for="defaultCheck1">
-                                        Low Vitamin K
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-check pads">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                    <label class="form-check-label" for="defaultCheck1">
-                                        Other
-                                    </label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" id="staticEmail">
-                                </div>
-                            </div>
+
                         </div>
                         <br>
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="staticEmail" class="col-form-label">Texture</label>
-                                    <select class="form-control">
+                                    <select name="texture" class="form-control">
                                         <option selected="selected" value="0">Select</option>
-                                        <option value="11NN">N/A</option>
-                                        <option value="3NS">Swallowing</option>
-                                        <option value="4NH">Choking risk</option>
-                                        <option value="2NC">Difficulty in Chewing</option>
+                                        <option value="N/A">N/A</option>
+                                        <option value="Swallowing">Swallowing</option>
+                                        <option value="Choking Risk">Choking risk</option>
+                                        <option value="Difficulty in Chewing">Difficulty in Chewing</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="staticEmail" class="col-form-label">Other</label>
-                                    <input type="text" class="form-control" id="staticEmail">
+                                    <input name="Other" type="text" class="form-control" id="staticEmail">
                                 </div>
                             </div>
                         </div>
@@ -204,24 +152,33 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-3 col-form-label">Allergies/Sensitivities</label>
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control" id="staticEmail">
+                                        <select id="SelectedAllergy">
+                                            <option>Select</option>
+                                            @{ 
+                                                foreach(var allergy in ViewBag.Allergies)
+                                                {
+                                                    <option value="@allergy.ID">@allergy.Name</option>
+                                                }
+                                            }
+                                        </select>
                                     </div>
                                     <div class="col-md-1">
-                                        <button type="submit" class="btn btn-danger">ADD</button>
+                                        <a href="#" id="AddAllergy" class="btn btn-danger">ADD</a>
+                                        <a href="#" id="AddAllergy" class="btn btn-danger">DELETE</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-4">
-                                <h5>Diet Allergy</h5>
-                            </div>
-                            <div class="col-md-4">
-                                <h5>Notes</h5>
-                            </div>
-                            <div class="col-md-4">
-                                <h5>Actions</h5>
-                            </div>
+                            <table>
+                                <tbody id="Allergies">
+                                    <tr>
+                                        <th>Diet Allergy</th>
+                                        <th>Notes</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
@@ -230,11 +187,11 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="staticEmail" class="col-form-label">Likes</label><br>
-                                    <textarea class="textarea col-md-12" rows="5" style="width: 95% !important;"></textarea>
+                                    <textarea name="likes" class="textarea col-md-12" rows="5" style="width: 95% !important;"></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label for="staticEmail" class="col-form-label">Dislikes</label><br>
-                                    <textarea class="textarea col-md-12" rows="5" style="width: 95% !important;"></textarea>
+                                    <textarea name="dislikes" class="textarea col-md-12" rows="5" style="width: 95% !important;"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -244,7 +201,7 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <textarea class="textarea col-md-12" rows="5" style="width: 95% !important;"></textarea>
+                                    <textarea name="notes" class="textarea col-md-12" rows="5" style="width: 95% !important;"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -254,6 +211,7 @@
                                 <button class="btn btn-danger btn-lg">SAVE</button>
                             </div>
                         </div>
+                }
                     </div>
                 </div>
 
@@ -264,3 +222,25 @@
         <!-- END PAGE CONTENT -->
 
         @RenderPage("~/Views/Shared/_Footer.cshtml")
+        <script type="text/javascript">
+    $(document).ready(function(){
+        $("#AddAllergy").click(function(){
+            var name = $("#SelectedAllergy :selected").text();
+            var id = $("#SelectedAllergy").val();
+            var markup = "<tr><td>"+
+                +"< input type = 'hidden' name = 'Allergies[" + count + "].Name' value = '" + name + "' >" +
+                +"<input type='hidden' name='Allergies[" + count + "].Name' value='" + name + "'>" +
+                +"name</td > <td><input type='text' name='AllergyNotes[" + count +"]' /></td> <td><input type='checkbox' name='record'></td></tr > ";
+            $("#Allergies").append(markup);
+        });
+
+        // Find and remove selected table rows
+        $("#DeleteAllergy").click(function(){
+            $("#Allergies").find('input[name="record"]').each(function(){
+                if($(this).is(":checked")){
+                    $(this).parents("tr").remove();
+                }
+            });
+        });
+    });
+        </script>

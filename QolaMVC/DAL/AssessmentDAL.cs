@@ -601,5 +601,119 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
+
+        public static void AddDieterayAssesment(nDietaryAssessmentModel p_Model)
+        {
+            string exception = string.Empty;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Add_DietaryAssessment", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@Residentid", p_Model.Resident.ID);
+                l_Cmd.Parameters.AddWithValue("@Likes", p_Model.Likes);
+                l_Cmd.Parameters.AddWithValue("@DisLikes", p_Model.DisLikes);
+                l_Cmd.Parameters.AddWithValue("@Enteredby", p_Model.EnteredBy.ID);
+                l_Cmd.Parameters.AddWithValue("@Notes", p_Model.Notes);
+                l_Cmd.Parameters.AddWithValue("@AssistiveDevices", p_Model.AssistiveDevices);
+                l_Cmd.Parameters.AddWithValue("@Risk", p_Model.Risk);
+                l_Cmd.Parameters.AddWithValue("@Texture", p_Model.Texture);
+
+                l_Cmd.Parameters.AddWithValue("@Other", p_Model.Other);
+                l_Cmd.Parameters.AddWithValue("@NutritionalStatus", p_Model.NutritionalStatus);
+                l_Cmd.Parameters.AddWithValue("@Apetite", p_Model.Apetite);
+                DataSet dataReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(dataReceive);
+                int l_AssessmentId = 0;
+                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
+                {
+                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_AssessmentId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
+                    }
+
+                    foreach(var diet in p_Model.Diet)
+                    {
+                        SqlCommand l_Cmd_Diet = new SqlCommand("spAB_Add_DietaryAssessment_Diets", l_Conn);
+                        l_Conn.Open();
+                        l_Cmd_Diet.CommandType = System.Data.CommandType.StoredProcedure;
+                        l_Cmd_Diet.Parameters.AddWithValue("@Residentid", p_Model.Resident.ID);
+                        l_Cmd_Diet.Parameters.AddWithValue("@Diet", diet);
+                        l_Cmd_Diet.Parameters.AddWithValue("@AssessmentId", l_AssessmentId);
+                        l_Cmd_Diet.Parameters.AddWithValue("@Enteredby", p_Model.EnteredBy.ID);
+                        l_Cmd_Diet.ExecuteNonQuery();
+                    }
+
+                    foreach (var allergy in p_Model.Allergies)
+                    {
+                        SqlCommand l_Cmd_Diet = new SqlCommand("spAB_Add_DietaryAssessment_Allergies", l_Conn);
+                        l_Conn.Open();
+                        l_Cmd_Diet.CommandType = System.Data.CommandType.StoredProcedure;
+                        l_Cmd_Diet.Parameters.AddWithValue("@Residentid", p_Model.Resident.ID);
+                        l_Cmd_Diet.Parameters.AddWithValue("@Allergy", allergy.Name);
+                        l_Cmd_Diet.Parameters.AddWithValue("@AllergyId", allergy.ID);
+                        l_Cmd_Diet.Parameters.AddWithValue("@AssessmentId", l_AssessmentId);
+                        l_Cmd_Diet.Parameters.AddWithValue("@Enteredby", p_Model.EnteredBy.ID);
+                        l_Cmd_Diet.ExecuteNonQuery();
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                exception = "AddDieterayAssesment |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+        public static Collection<AllergiesModel> GetAllergiesCollections()
+        {
+            string exception = string.Empty;
+            
+            Collection<AllergiesModel> allergiess = new Collection<AllergiesModel>();
+            AllergiesModel allergies;
+            ResidentModel l_Resident = new ResidentModel();
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand(Constants.StoredProcedureName.USP_GET_ALLERGIES, l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                DataSet AllergiesReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(AllergiesReceive);
+                if (AllergiesReceive.Tables[0].Rows.Count > 0)
+                {
+                    for (int index = 0; index <= AllergiesReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        allergies = new AllergiesModel();
+                        allergies.ID = Convert.ToInt32(AllergiesReceive.Tables[0].Rows[index]["fd_id"]);
+                        allergies.Name = Convert.ToString(AllergiesReceive.Tables[0].Rows[index]["fd_name"]);
+                        allergies.Catogery = Convert.ToInt32(AllergiesReceive.Tables[0].Rows[index]["fd_category"]);
+                        allergiess.Add(allergies);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                exception = "GetAllergiesCollections |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            return allergiess;
+        }
+
     }
 }
