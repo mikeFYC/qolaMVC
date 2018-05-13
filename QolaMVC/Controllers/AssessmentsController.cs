@@ -298,5 +298,15 @@ namespace QolaMVC.Controllers
         {
             return View();
         }
+
+        public ActionResult CarePlan()
+        {
+            return View();
+        }
+
+        public ActionResult SpecificGoals()
+        {
+            return View();
+        }
     }
 }
