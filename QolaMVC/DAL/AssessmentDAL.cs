@@ -715,5 +715,44 @@ namespace QolaMVC.DAL
             return allergiess;
         }
 
+        public static Collection<nDietaryAssessmentModel> GetResidentDieterayAssesments(ResidentModel p_Resident)
+        {
+            string exception = string.Empty;
+
+            Collection<nDietaryAssessmentModel> l_Assessments = new Collection<nDietaryAssessmentModel>();
+            nDietaryAssessmentModel l_Assessment;
+            ResidentModel l_Resident = new ResidentModel();
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand(Constants.StoredProcedureName.USP_GET_ALLERGIES, l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                DataSet AllergiesReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(AllergiesReceive);
+                if (AllergiesReceive.Tables[0].Rows.Count > 0)
+                {
+                    for (int index = 0; index <= AllergiesReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_Assessment = new nDietaryAssessmentModel();
+                        l_Assessment.ID = Convert.ToInt32(AllergiesReceive.Tables[0].Rows[index]["fd_id"]);
+                        l_Assessment.Name = Convert.ToString(AllergiesReceive.Tables[0].Rows[index]["fd_name"]);
+                        l_Assessment.Catogery = Convert.ToInt32(AllergiesReceive.Tables[0].Rows[index]["fd_category"]);
+                        l_Assessments.Add(l_Assessment);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                exception = "GetAllergiesCollections |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            return l_Assessments;
+        }
+
     }
 }
