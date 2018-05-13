@@ -214,14 +214,15 @@ GO
 CREATE TABLE [dbo].[tbl_AB_DietaryAssessment](
 	Id int NOT NULL Identity,
 	ResidentId int NOT NULL,
-	NutritionalStatus nvarchar(200) NOT NULL,
-	Risk nvarchar(200) NOT NULL,
-	AssistiveDevices nvarchar(200) NOT NULL,
-	Texture nvarchar(200) NOT NULL,
-	Other nvarchar(200) NOT NULL,
-	Likes nvarchar(max) NOT NULL,
-	DisLikes nvarchar(max) NOT NULL,
-	Notes nvarchar(max) NOT NULL,
+	NutritionalStatus nvarchar(200) NULL,
+	Risk nvarchar(200) NULL,
+	AssistiveDevices nvarchar(200) NULL,
+	Texture nvarchar(200) NULL,
+	Apetite nvarchar(200) NULL,
+	Other nvarchar(200) NULL,
+	Likes nvarchar(max) NULL,
+	DisLikes nvarchar(max) NULL,
+	Notes nvarchar(max) NULL,
 	EnteredBy int not null,
 	DateEntered datetime
 	PRIMARY KEY (Id)

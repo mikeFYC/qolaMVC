@@ -617,6 +617,7 @@ CREATE PROCEDURE [dbo].[spAB_Add_DietaryAssessment]
 @Risk nvarchar(200) = NULL,
 @AssistiveDevices nvarchar(200) = NULL,
 @Texture nvarchar(200) = NULL,
+@Apetite nvarchar(200) = NULL,
 @Other nvarchar(200) = NULL,
 @Likes nvarchar(max) = NULL,
 @DisLikes nvarchar(max) = NULL,
@@ -625,8 +626,8 @@ CREATE PROCEDURE [dbo].[spAB_Add_DietaryAssessment]
 AS
 --20180507 chime created
 BEGIN
-	INSERT INTO [tbl_AB_DietaryAssessment] (ResidentId, NutritionalStatus, Risk, AssistiveDevices, Texture, Other, Likes, DisLikes, Notes, EnteredBy, DateEntered) 
-	VALUES (@ResidentId, @NutritionalStatus, @Risk, @AssistiveDevices, @Texture, @Other, @Likes, @DisLikes, @Notes, @EnteredBy, GETDATE())
+	INSERT INTO [tbl_AB_DietaryAssessment] (ResidentId, NutritionalStatus, Risk, AssistiveDevices, Texture, Apetite, Other, Likes, DisLikes, Notes, EnteredBy, DateEntered) 
+	VALUES (@ResidentId, @NutritionalStatus, @Risk, @AssistiveDevices, @Texture, @Apetite, @Other, @Likes, @DisLikes, @Notes, @EnteredBy, GETDATE())
 
 	SELECT @@IDENTITY as Id
 END
@@ -698,3 +699,52 @@ BEGIN
 	WHERE ResidentId = @ResidentId
 END
 GO
+
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_Resident_DietaryAssessmentDiets]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_Resident_DietaryAssessmentDiets]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_Resident_DietaryAssessmentDiets]
+@ResidentId int,
+@AssessmentId int
+AS
+--20180507 chime created
+BEGIN
+	SELECT
+	Id,
+	ResidentId,
+	AssessmentId,
+	Diet,
+	EnteredBy,
+	DateEntered
+	FROM [tbl_AB_Diet]
+	WHERE ResidentId = @ResidentId AND AssessmentId = @AssessmentId
+END
+GO
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_Resident_DietaryAssessmentAllergies]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_Resident_DietaryAssessmentAllergies]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_Resident_DietaryAssessmentAllergies]
+@ResidentId int,
+@AssessmentId int
+AS
+--20180507 chime created
+BEGIN
+	SELECT
+	Id,
+	ResidentId,
+	AssessmentId,
+	AllergyId,
+	Allergy,
+	EnteredBy,
+	DateEntered
+	FROM [tbl_AB_DietaryAssessment_Allergy]
+	WHERE ResidentId = @ResidentId AND AssessmentId = @AssessmentId
+END
+GO
+

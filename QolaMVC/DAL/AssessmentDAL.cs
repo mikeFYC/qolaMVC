@@ -602,7 +602,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static void AddDieterayAssesment(nDietaryAssessmentModel p_Model)
+        public static void AddDietaryAssesment(nDietaryAssessmentModel p_Model)
         {
             string exception = string.Empty;
 
@@ -715,39 +715,90 @@ namespace QolaMVC.DAL
             return allergiess;
         }
 
-        public static Collection<nDietaryAssessmentModel> GetResidentDieterayAssesments(ResidentModel p_Resident)
+        public static Collection<nDietaryAssessmentModel> GetResidentDietaryAssesments(int p_ResidentId)
         {
             string exception = string.Empty;
 
             Collection<nDietaryAssessmentModel> l_Assessments = new Collection<nDietaryAssessmentModel>();
             nDietaryAssessmentModel l_Assessment;
+            AllergiesModel l_Allergy;
             ResidentModel l_Resident = new ResidentModel();
             SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
             try
             {
                 SqlDataAdapter l_DA = new SqlDataAdapter();
-                SqlCommand l_Cmd = new SqlCommand(Constants.StoredProcedureName.USP_GET_ALLERGIES, l_Conn);
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_Resident_DietaryAssessments", l_Conn);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                DataSet AllergiesReceive = new DataSet();
-
+                l_Cmd.Parameters.AddWithValue("@ResidentId", p_ResidentId);
+                DataSet AssesmentsReceive = new DataSet();
+                
                 l_DA.SelectCommand = l_Cmd;
-                l_DA.Fill(AllergiesReceive);
-                if (AllergiesReceive.Tables[0].Rows.Count > 0)
+                l_DA.Fill(AssesmentsReceive);
+                if (AssesmentsReceive.Tables[0].Rows.Count > 0)
                 {
-                    for (int index = 0; index <= AllergiesReceive.Tables[0].Rows.Count - 1; index++)
+                    for (int index = 0; index <= AssesmentsReceive.Tables[0].Rows.Count - 1; index++)
                     {
                         l_Assessment = new nDietaryAssessmentModel();
-                        l_Assessment.ID = Convert.ToInt32(AllergiesReceive.Tables[0].Rows[index]["fd_id"]);
-                        l_Assessment.Name = Convert.ToString(AllergiesReceive.Tables[0].Rows[index]["fd_name"]);
-                        l_Assessment.Catogery = Convert.ToInt32(AllergiesReceive.Tables[0].Rows[index]["fd_category"]);
+                        l_Assessment.Id = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["Id"]);
+                        l_Resident.ID = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_Assessment.NutritionalStatus = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["NutritionalStatus"]);
+                        l_Assessment.Risk = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Risk"]);
+                        l_Assessment.AssistiveDevices = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["AssistiveDevices"]);
+                        l_Assessment.Texture = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Texture"]);
+
+                        l_Assessment.Other = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Other"]);
+                        l_Assessment.Likes = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Likes"]);
+                        l_Assessment.DisLikes = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["DisLikes"]);
+                        l_Assessment.Notes = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Notes"]);
+                        l_Assessment.DateEntered = Convert.ToDateTime(AssesmentsReceive.Tables[0].Rows[index]["DateEntered"]);
+
+                        SqlDataAdapter l_DA_Diets = new SqlDataAdapter();
+                        SqlCommand l_Cmd_Diets = new SqlCommand("spAB_Get_Resident_DietaryAssessmentDiets", l_Conn);
+                        l_Cmd_Diets.CommandType = System.Data.CommandType.StoredProcedure;
+                        l_Cmd_Diets.Parameters.AddWithValue("@ResidentId", p_ResidentId);
+                        l_Cmd_Diets.Parameters.AddWithValue("@AssessmentId", l_Assessment.Id);
+                        DataSet DietsReceive = new DataSet();
+
+                        l_DA_Diets.SelectCommand = l_Cmd_Diets;
+                        l_DA_Diets.Fill(DietsReceive);
+                        if (DietsReceive.Tables[0].Rows.Count > 0)
+                        {
+                            for (int index_Diets = 0; index_Diets <= DietsReceive.Tables[0].Rows.Count - 1; index_Diets++)
+                            {
+                                l_Assessment.Diet.Add(Convert.ToString(DietsReceive.Tables[0].Rows[index_Diets]["Diet"]));
+                            }
+                        }
+
+                        SqlDataAdapter l_DA_Allergies = new SqlDataAdapter();
+                        SqlCommand l_Cmd_Allergies = new SqlCommand("spAB_Get_Resident_DietaryAssessmentAllergies", l_Conn);
+                        l_Cmd_Allergies.CommandType = System.Data.CommandType.StoredProcedure;
+                        l_Cmd_Allergies.Parameters.AddWithValue("@ResidentId", p_ResidentId);
+                        l_Cmd_Allergies.Parameters.AddWithValue("@AssessmentId", l_Assessment.Id);
+                        DataSet AllergyReceive = new DataSet();
+
+                        l_DA_Allergies.SelectCommand = l_Cmd_Allergies;
+                        l_DA_Allergies.Fill(AllergyReceive);
+                        if (AllergyReceive.Tables[0].Rows.Count > 0)
+                        {
+                            for (int index_Diets = 0; index_Diets <= AllergyReceive.Tables[0].Rows.Count - 1; index_Diets++)
+                            {
+                                l_Allergy = new AllergiesModel();
+
+                                l_Allergy.ID = Convert.ToInt32(AllergyReceive.Tables[0].Rows[index_Diets]["AllergyId"]);
+                                l_Allergy.Name = Convert.ToString(AllergyReceive.Tables[0].Rows[index_Diets]["Allergy"]);
+
+                                l_Assessment.Allergies.Add(l_Allergy);
+                            }
+                        }
                         l_Assessments.Add(l_Assessment);
                     }
+
                 }
             }
             catch (Exception ex)
             {
-                exception = "GetAllergiesCollections |" + ex.ToString();
+                exception = "GetResidentDietaryAssesments |" + ex.ToString();
                 //Log.Write(exception);
                 throw;
             }

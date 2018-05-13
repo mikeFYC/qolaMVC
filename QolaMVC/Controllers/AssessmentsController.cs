@@ -4,6 +4,7 @@ using QolaMVC.Models;
 using QolaMVC.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -90,10 +91,18 @@ namespace QolaMVC.Controllers
             ViewBag.Resident = resident;
             ViewBag.Home = home;
 
-            var vm = new nDietaryAssessmentModel();
-            vm.Diet = new System.Collections.ObjectModel.Collection<string>();
-            vm.Allergies = new System.Collections.ObjectModel.Collection<AllergiesModel>();
-            QolaCulture.InitDiets(ref vm);
+            Collection<nDietaryAssessmentModel> vm = new Collection<nDietaryAssessmentModel>();
+
+            vm = AssessmentDAL.GetResidentDietaryAssesments(resident.ID);
+
+            if(vm == null || vm.Count == 0)
+            {
+                var m = new nDietaryAssessmentModel();
+                m.Diet = new System.Collections.ObjectModel.Collection<string>();
+                m.Allergies = new System.Collections.ObjectModel.Collection<AllergiesModel>();
+                QolaCulture.InitDiets(ref m);
+                vm.Add(m);
+            }
 
             TempData.Keep("User");
             TempData.Keep("Home");
@@ -119,7 +128,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
-            AssessmentDAL.AddDieterayAssesment(model);
+            AssessmentDAL.AddDietaryAssesment(model);
             TempData["Message"] = "Added Dietary Assessment Note";
             return RedirectToAction("DietaryHistory");
         }
