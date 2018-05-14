@@ -1,4 +1,5 @@
 ﻿using QolaMVC.DAL;
+using QolaMVC.EF_DAL;
 using QolaMVC.Helpers;
 using QolaMVC.Models;
 using QolaMVC.ViewModels;
@@ -198,14 +199,230 @@ namespace QolaMVC.Controllers
             return View();
         }
 
-        public ActionResult PostFallClinicalMonitoring_A()
+        public ActionResult PostFallClinicalMonitoring_A(int? Id)
         {
+            if (TempData["clinicaldetails"] != null)
+            {
+                var details = (List<tbl_PostfallClinicalMonitoringDetails>)TempData["clinicaldetails"];
+                TempData.Keep("clinicaldetails");
+                return View(details);
+            }
+            else
+            {
+                Id = 1234;
+                string residentId = Convert.ToString(Id);
+                tbl_PostfallClinicalMonitoringDetails postdetails = new tbl_PostfallClinicalMonitoringDetails();
+                using (var dbContext = new test_qolaEntities())
+                {
+                    dbContext.Configuration.LazyLoadingEnabled = false;
+                    //var qm = dbContext.tbl_PostfallClinicalMonitoringVitalSigns.Include("")
+                    var getPostMedicaLClinical = dbContext.tbl_PostfallClinicalMonitoringDetails.Include("tbl_PostfallClinicalMonitoringVitalSigns").Where(m => m.category.ToLower() == "a" && m.tbl_PostfallClinicalMonitoringVitalSigns.residentid == residentId).ToList();
+                    if (getPostMedicaLClinical.Count() == 0)
+                    {
+                        return View();
+                    }
+                    return View(getPostMedicaLClinical.ToList());
+                }
+            }
+           
+        }
+
+        [HttpPost]
+        public ActionResult FindAssessment(string Id, string date_created)
+        {
+            using (var dbContext = new test_qolaEntities())
+            {
+                var residentId = "1234";
+                dbContext.Configuration.LazyLoadingEnabled = false;
+                //var qm = dbContext.tbl_PostfallClinicalMonitoringVitalSigns.Include("")
+                var getPostMedicaLClinical = dbContext.tbl_PostfallClinicalMonitoringDetails.Include("tbl_PostfallClinicalMonitoringVitalSigns").Where(m => m.category.ToLower() == Id && (m.tbl_PostfallClinicalMonitoringVitalSigns.residentid == residentId && m.tbl_PostfallClinicalMonitoringVitalSigns.date_created == date_created)).ToList();
+                TempData["clinicaldetails"] = getPostMedicaLClinical;
+                return RedirectToAction("PostFallClinicalMonitoring_A");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult PostFallClinicalMonitoring_A(tbl_PostfallClinicalMonitoringVitalSigns vitalSigns, tbl_PostfallClinicalMonitoringDetails monitoringDetails, int? Id)
+        {
+            using (var dbContext = new test_qolaEntities())
+            {
+                //var residentId = Convert.ToString(Id);
+                var residentId = "1234";
+                var getVitalsign = dbContext.tbl_PostfallClinicalMonitoringVitalSigns.SingleOrDefault(m => m.residentid == residentId && (m.category.ToLower() == "a" && m.vitalsign.ToLower() == vitalSigns.vitalsign.ToLower()));
+                if (getVitalsign == null)
+                {
+                    vitalSigns.residentid = "1234";
+                    vitalSigns.date_created = DateTime.Now.ToShortDateString();
+                    dbContext.tbl_PostfallClinicalMonitoringVitalSigns.Add(vitalSigns);
+                    dbContext.tbl_PostfallClinicalMonitoringDetails.Add(monitoringDetails);
+                }
+                else
+                {
+                    var getDetails = dbContext.tbl_PostfallClinicalMonitoringDetails.SingleOrDefault(m => m.category.ToLower() == monitoringDetails.category && m.tbl_PostfallClinicalMonitoringVitalSigns.Id == getVitalsign.Id);
+                    getDetails.firstcheck = monitoringDetails.firstcheck;
+                    getDetails.fourtyeighthoursfifthcheck = monitoringDetails.fourtyeighthoursfifthcheck;
+                    getDetails.fourtyeighthoursfirstcheck = monitoringDetails.fourtyeighthoursfirstcheck;
+                    getDetails.fourtyeighthoursfourthcheck = monitoringDetails.fourtyeighthoursfourthcheck;
+                    getDetails.fourtyeighthourssecondcheck = monitoringDetails.fourtyeighthourssecondcheck;
+                    getDetails.fourtyeighthoursthirdcheck = monitoringDetails.fourtyeighthoursthirdcheck;
+                    getDetails.onehourfirstcheck = monitoringDetails.onehourfirstcheck;
+                    getDetails.onehoursecondcheck = monitoringDetails.onehoursecondcheck;
+                    getDetails.threehoursfirstcheck = monitoringDetails.threehoursfirstcheck;
+                    getDetails.threehourssecondcheck = monitoringDetails.threehourssecondcheck;
+                    getDetails.threehoursthirdcheck = monitoringDetails.threehoursthirdcheck;
+                    
+                }
+                
+                dbContext.SaveChanges();
+            }
+            return RedirectToAction("PostFallClinicalMonitoring_A");
+        }
+
+
+        public ActionResult PostFallClinicalMonitoring_B(int? Id)
+        {
+            if (TempData["clinicaldetailsb"] != null)
+            {
+                var details = (List<tbl_PostfallClinicalMonitoringDetails>)TempData["clinicaldetailsb"];
+                TempData.Keep("clinicaldetailsb");
+                return View(details);
+            }
+            else
+            {
+                Id = 1234;
+                string residentId = Convert.ToString(Id);
+                tbl_PostfallClinicalMonitoringDetails postdetails = new tbl_PostfallClinicalMonitoringDetails();
+                using (var dbContext = new test_qolaEntities())
+                {
+                    dbContext.Configuration.LazyLoadingEnabled = false;
+                    //var qm = dbContext.tbl_PostfallClinicalMonitoringVitalSigns.Include("")
+                    var getPostMedicaLClinical = dbContext.tbl_PostfallClinicalMonitoringDetails.Include("tbl_PostfallClinicalMonitoringVitalSigns").Where(m => m.category.ToLower() == "b" && m.tbl_PostfallClinicalMonitoringVitalSigns.residentid == residentId).ToList();
+                    if (getPostMedicaLClinical.Count() == 0)
+                    {
+                        return View();
+                    }
+                    return View(getPostMedicaLClinical.ToList());
+                }
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult PostFallClinicalMonitoring_B(tbl_PostfallClinicalMonitoringVitalSigns vitalSigns, tbl_PostfallClinicalMonitoringDetails monitoringDetails, int? Id)
+        {
+            using (var dbContext = new test_qolaEntities())
+            {
+                //var residentId = Convert.ToString(Id);
+                var residentId = "1234";
+                var getVitalsign = dbContext.tbl_PostfallClinicalMonitoringVitalSigns.SingleOrDefault(m => m.residentid == residentId && (m.category.ToLower() == "b" && m.vitalsign.ToLower() == vitalSigns.vitalsign.ToLower()));
+                if (getVitalsign == null)
+                {
+                    vitalSigns.residentid = "1234";
+                    vitalSigns.date_created = DateTime.Now.ToShortDateString();
+                    dbContext.tbl_PostfallClinicalMonitoringVitalSigns.Add(vitalSigns);
+                    dbContext.tbl_PostfallClinicalMonitoringDetails.Add(monitoringDetails);
+                }
+                else
+                {
+                    var getDetails = dbContext.tbl_PostfallClinicalMonitoringDetails.SingleOrDefault(m => m.category.ToLower() == monitoringDetails.category && m.tbl_PostfallClinicalMonitoringVitalSigns.Id == getVitalsign.Id);
+                    getDetails.firstcheck = monitoringDetails.firstcheck;
+                    getDetails.fourtyeighthoursfifthcheck = monitoringDetails.fourtyeighthoursfifthcheck;
+                    getDetails.fourtyeighthoursfirstcheck = monitoringDetails.fourtyeighthoursfirstcheck;
+                    getDetails.fourtyeighthoursfourthcheck = monitoringDetails.fourtyeighthoursfourthcheck;
+                    getDetails.fourtyeighthourssecondcheck = monitoringDetails.fourtyeighthourssecondcheck;
+                    getDetails.fourtyeighthoursthirdcheck = monitoringDetails.fourtyeighthoursthirdcheck;
+                    getDetails.onehourfirstcheck = monitoringDetails.onehourfirstcheck;
+                    getDetails.onehoursecondcheck = monitoringDetails.onehoursecondcheck;
+                    getDetails.threehoursfirstcheck = monitoringDetails.threehoursfirstcheck;
+                    getDetails.threehourssecondcheck = monitoringDetails.threehourssecondcheck;
+                    getDetails.threehoursthirdcheck = monitoringDetails.threehoursthirdcheck;
+
+                }
+
+                dbContext.SaveChanges();
+            }
+            return RedirectToAction("PostFallClinicalMonitoring_B");
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult PostFallClinicalMonitoring_BPage2(tbl_postfallclinicalmonitoringBpage2 model)
+        {
+            var residentId = "1234";
+            using (var dbContext = new test_qolaEntities())
+            {
+                var resident = dbContext.tbl_postfallclinicalmonitoringBpage2.SingleOrDefault(m => m.residentid == residentId && m.category.ToLower() == model.category.ToLower());
+                if (resident == null)
+                {
+                    model.residentid = residentId;
+                    dbContext.tbl_postfallclinicalmonitoringBpage2.Add(model);
+                }
+                else
+                {
+                    var updatepage2 = UpdateAssessmentPage2(model, resident);
+                }
+               
+                dbContext.SaveChanges();
+                //dbContext.
+            }
             return View();
         }
 
-        public ActionResult PostFallClinicalMonitoring_B()
+        public tbl_postfallclinicalmonitoringBpage2 UpdateAssessmentPage2(tbl_postfallclinicalmonitoringBpage2 model, tbl_postfallclinicalmonitoringBpage2 residentdata)
         {
-            return View();
+            residentdata.abnormalareasdescription = model.abnormalareasdescription;
+            residentdata.adlsdescription = model.adlsdescription;
+            residentdata.bowelsoundsheard = model.bowelsoundsheard;
+            residentdata.bruising = model.bruising;
+            residentdata.category = model.category;
+            residentdata.chest = model.chest;
+            residentdata.chestother = model.chestother;
+            residentdata.completedby = model.completedby;
+            residentdata.date_completed = model.date_completed;
+            residentdata.edmafeet = model.edmafeet;
+            residentdata.edmafeetdescription = model.edmafeetdescription;
+            residentdata.edmafeetposition = model.edmafeetposition;
+            residentdata.hands = model.hands;
+            residentdata.handsdescription = model.handsdescription;
+            residentdata.handsother = model.handsother;
+            residentdata.handsotherdescription = model.handsotherdescription;
+            residentdata.handsposition = model.handsposition;
+            residentdata.heartsounds = model.heartsounds;
+            residentdata.heartsoundsdescribe = model.heartsoundsdescribe;
+            residentdata.ispainsurfacewithdl = model.ispainsurfacewithdl;
+            residentdata.lastbowelmovement = model.lastbowelmovement;
+            residentdata.longsounds = model.longsounds;
+            residentdata.longsoundsdescribe = model.longsoundsdescribe;
+            residentdata.longsoundsequal = model.longsoundsequal;
+            residentdata.openareas = model.openareas;
+            residentdata.painful = model.painful;
+            residentdata.painfuldescribe = model.painfuldescribe;
+            residentdata.painlocation = model.painlocation;
+            residentdata.painother = model.painother;
+            residentdata.painscale = model.painscale;
+            residentdata.painwhatmakesitbetter = model.painwhatmakesitbetter;
+            residentdata.painwhatmakesitworse = model.painwhatmakesitworse;
+            residentdata.p_qaching = model.p_qaching;
+            residentdata.p_qdull = model.p_qdull;
+            residentdata.p_qradiating = model.p_qradiating;
+            residentdata.p_qsharp = model.p_qsharp;
+            residentdata.rashes = model.rashes;
+            residentdata.redness = model.redness;
+            residentdata.residentishavingpain = model.residentishavingpain;
+            residentdata.residentpaindescription = model.residentpaindescription;
+            residentdata.skinfeet = model.skinfeet;
+            residentdata.skinfeetdescription = model.skinfeetdescription;
+            residentdata.soft = model.soft;
+            residentdata.softdescribe = model.softdescribe;
+            residentdata.voiding = model.voiding;
+            residentdata.voidingdesciption = model.voidingdesciption;
+            residentdata.voidingincontinentpadsused = model.voidingincontinentpadsused;
+            residentdata.voidingiscather = model.voidingiscather;
+            residentdata.voidingiscontinent = model.voidingiscontinent;
+            residentdata.wonddescription = model.wonddescription;
+            residentdata.wound = model.wound;
+
+            return residentdata;
         }
 
         public ActionResult ProgressNotes()
