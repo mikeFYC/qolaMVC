@@ -16,7 +16,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>QolaMVC</RootNamespace>
     <AssemblyName>QolaMVC</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
@@ -27,6 +27,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -76,6 +77,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -83,11 +85,8 @@
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
@@ -129,6 +128,7 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -192,73 +192,394 @@
     <Compile Include="DAL\ProgressNotesDAL.cs" />
     <Compile Include="DAL\ResidentsDAL.cs" />
     <Compile Include="DAL\UserDAL.cs" />
+    <Compile Include="EF_DAL\AppSetting.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\ELMAH_Error.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF_DAL\QolaEFContext.cs" />
-    <Compile Include="EF_DAL\tbl_Activity.cs" />
-    <Compile Include="EF_DAL\tbl_Activity_Calendar_Names.cs" />
-    <Compile Include="EF_DAL\tbl_Activity_Category.cs" />
-    <Compile Include="EF_DAL\tbl_Activity_Display_Name.cs" />
-    <Compile Include="EF_DAL\tbl_Activity_Events.cs" />
-    <Compile Include="EF_DAL\tbl_Activity_Event_Attendance.cs" />
-    <Compile Include="EF_DAL\tbl_Administer_Medication.cs" />
-    <Compile Include="EF_DAL\tbl_Allergy.cs" />
-    <Compile Include="EF_DAL\tbl_Bathing_Attendance.cs" />
-    <Compile Include="EF_DAL\tbl_Careplan_P2_Category.cs" />
-    <Compile Include="EF_DAL\tbl_Careplan_P2_Subcategory.cs" />
-    <Compile Include="EF_DAL\tbl_Care_Plan_P2.cs" />
-    <Compile Include="EF_DAL\tbl_Care_Plan_P2_Details.cs" />
-    <Compile Include="EF_DAL\tbl_Daily_Reports.cs" />
-    <Compile Include="EF_DAL\tbl_Dementia_CheckList.cs" />
-    <Compile Include="EF_DAL\tbl_Dementia_Questions.cs" />
-    <Compile Include="EF_DAL\tbl_Dietary_Assessment.cs" />
-    <Compile Include="EF_DAL\tbl_Dine_Attendance.cs" />
-    <Compile Include="EF_DAL\tbl_Dine_Time.cs" />
-    <Compile Include="EF_DAL\tbl_Direction.cs" />
-    <Compile Include="EF_DAL\tbl_Drug.cs" />
-    <Compile Include="EF_DAL\tbl_Fall_Risk_Assessment.cs" />
-    <Compile Include="EF_DAL\tbl_Food.cs" />
-    <Compile Include="EF_DAL\tbl_Food_Connecting_Word.cs" />
-    <Compile Include="EF_DAL\tbl_Form.cs" />
-    <Compile Include="EF_DAL\tbl_Goal_Sheet.cs" />
-    <Compile Include="EF_DAL\tbl_Goal_Sheet_Details.cs" />
-    <Compile Include="EF_DAL\tbl_Goal_Sheet_Follow_Up.cs" />
-    <Compile Include="EF_DAL\tbl_Home.cs" />
-    <Compile Include="EF_DAL\tbl_Immunization.cs" />
-    <Compile Include="EF_DAL\tbl_Initial_Activity_Assessment.cs" />
-    <Compile Include="EF_DAL\tbl_Initial_Activity_Assessment_20150131.cs" />
-    <Compile Include="EF_DAL\tbl_Meal_Calendar.cs" />
-    <Compile Include="EF_DAL\tbl_Meal_Planner.cs" />
-    <Compile Include="EF_DAL\tbl_Meal_Planner_Menu.cs" />
-    <Compile Include="EF_DAL\tbl_Medication.cs" />
-    <Compile Include="EF_DAL\tbl_Medication_Detail.cs" />
-    <Compile Include="EF_DAL\tbl_Pass_Times.cs" />
-    <Compile Include="EF_DAL\tbl_Plan_Of_Care.cs" />
-    <Compile Include="EF_DAL\tbl_Prescription.cs" />
-    <Compile Include="EF_DAL\tbl_Prescription_Details.cs" />
-    <Compile Include="EF_DAL\tbl_Progress_Notes.cs" />
-    <Compile Include="EF_DAL\tbl_Progress_Notes_Acknowledgement.cs" />
-    <Compile Include="EF_DAL\tbl_Province.cs" />
-    <Compile Include="EF_DAL\tbl_Resident.cs" />
-    <Compile Include="EF_DAL\tbl_Resident_Away_Schedule.cs" />
-    <Compile Include="EF_DAL\tbl_Resident_Diet_Allergy.cs" />
-    <Compile Include="EF_DAL\tbl_Resident_Medical_Allergy.cs" />
-    <Compile Include="EF_DAL\tbl_Resident_Profile_Image.cs" />
-    <Compile Include="EF_DAL\tbl_Resident_Satisfaction_Survey.cs" />
-    <Compile Include="EF_DAL\tbl_Resident_Satisfaction_Survey_Category.cs" />
-    <Compile Include="EF_DAL\tbl_Resident_Satisfaction_Survey_Question.cs" />
-    <Compile Include="EF_DAL\tbl_Resident_Satisfaction_Survey_Response.cs" />
-    <Compile Include="EF_DAL\tbl_Resident_Special_Diet.cs" />
-    <Compile Include="EF_DAL\tbl_Resident_Temp.cs" />
-    <Compile Include="EF_DAL\tbl_Resident_Track_Record.cs" />
-    <Compile Include="EF_DAL\tbl_SpecialDiet.cs" />
-    <Compile Include="EF_DAL\tbl_Suite.cs" />
-    <Compile Include="EF_DAL\tbl_Suite_Handler.cs" />
-    <Compile Include="EF_DAL\tbl_Suite_Handler_Status.cs" />
-    <Compile Include="EF_DAL\tbl_Suite_Handler_Temp.cs" />
-    <Compile Include="EF_DAL\tbl_User.cs" />
-    <Compile Include="EF_DAL\tbl_User_IP_MAC.cs" />
-    <Compile Include="EF_DAL\tbl_User_Type.cs" />
-    <Compile Include="EF_DAL\tbl_Venue.cs" />
-    <Compile Include="EF_DAL\tbl_Version.cs" />
+    <Compile Include="EF_DAL\QolaModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QolaModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\QolaModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\QolaModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QolaModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\sysdiagram.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Activity.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Activity_20150131.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Activity_Calendar_Names.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Activity_Category.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Activity_Category_20150131.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Activity_Display_Name.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Activity_Events.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Activity_Events_20150131.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Activity_Event_Attendance.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Activity_Event_Attendance_20150131.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Administer_Medication.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Administer_Medication_Old.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Allergy.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Bathing_Attendance.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Careplan_P2_Category.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Careplan_P2_Subcategory.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Care_Plan_P2.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Care_Plan_P2_Details.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Daily_Reports.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Dementia_CheckList.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Dementia_Questions.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Dietary_Assessment.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Dine_Attendance.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Dine_Time.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Direction.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Doctor_Appointment.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Doctor_Apppoinment_History.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Doctor_Resident_Communication.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Drug.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Additional_Options.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Additional_Option_Select.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Emar_Allergy.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Emar_Audit_Trail.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Controlled_Drug_Schedule.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Diet.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Drug.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Emar_Erx.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Follow_Up_Note.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Frequency.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_KrollDocs.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Emar_KrollHomes.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Emar_KrollPatients.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Emar_KrollRxs.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Kroll_Order.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Emar_MARTAR_Frequency_CustomCycle.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Emar_MedicalCondition.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Medical_Directives.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Medication_Order.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Medication_Order_MARTAR.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Medication_Order_MARTAR_Frequency.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Medication_Order_temp.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Nursing_Wards.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Pass_Time.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Patient_as_Store_Kroll.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Physician_Order_Type.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Prescription_Admin.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Prescription_Discontinue.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Prescription_Discontinue_Kroll.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Prescription_Hold.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Emar_Prescription_Hold_Kroll.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Prescription_Inventory.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Emar_Prescription_LOA.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Prescription_Remove_From_MAR.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Prescription_Reorder.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Resident_Local_Stock.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Resident_Vital_Signs.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Resident_Vital_Signs_Prescription.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Resident_Vital_Signs_Prescription_Frequency.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Resident_Vital_Signs_Prescription_FrequencyDropdownValue.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Resident_Vital_Signs_Prescription_RxLink.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Emar_Sig.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Emar_Topical_Admin.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_emar_Waste_Dosage_Order.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Fall_Risk_Assessment.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Food.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Food_Connecting_Word.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Form.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Goal_Sheet.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Goal_Sheet_Details.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Goal_Sheet_Follow_Up.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Home.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Immunization.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Initial_Activity_Assessment.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Initial_Activity_Assessment_20150131.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Meal_Calendar.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Meal_Planner.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Meal_Planner_Menu.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Medication.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Medication_Detail.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Pass_Times.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Plan_Of_Care.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_postfallclinicalmonitoringBpage2.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_PostfallClinicalMonitoringDetails.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_PostfallClinicalMonitoringVitalSigns.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Prescription.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Prescription_Details.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Progress_Notes.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Progress_Notes_Acknowledgement.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Province.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Resident.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Resident_Away_Schedule.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Resident_Diet_Allergy.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Resident_Medical_Allergy.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Resident_Profile_Image.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Resident_Satisfaction_Survey.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Resident_Satisfaction_Survey_Category.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Resident_Satisfaction_Survey_Question.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Resident_Satisfaction_Survey_Response.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Resident_Special_Diet.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Resident_Temp.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Resident_Track_Record.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_SpecialDiet.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Suite.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Suite_Handler.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Suite_Handler_Status.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Suite_Handler_Temp.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_User.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_User_IP_MAC.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_User_Type.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Venue.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF_DAL\tbl_Version.cs">
+      <DependentUpon>QolaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1728,6 +2049,16 @@
     <Content Include="Content\pages\js\pages.min.js" />
     <Content Include="Content\pages\js\pages.social.js" />
     <Content Include="Content\pages\js\pages.social.min.js" />
+    <Content Include="EF_DAL\QolaModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>QolaModel.edmx</DependentUpon>
+      <LastGenOutput>QolaModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="EF_DAL\QolaModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>QolaModel.edmx</DependentUpon>
+      <LastGenOutput>QolaModel.cs</LastGenOutput>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -2009,6 +2340,26 @@
     <Content Include="Views\Reports\HSEPTrackingReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <EntityDeploy Include="EF_DAL\QolaModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>QolaModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="EF_DAL\QolaModel.edmx.diagram">
+      <DependentUpon>QolaModel.edmx</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_PostFallClinicalAssessmentPartAPartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_PostFallClinicalAssessmentPartAPartialModel.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Views\Reports\CarePlan.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -2031,7 +2382,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>56272</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
