@@ -118,7 +118,20 @@ namespace QolaMVC.Controllers
 
         public ActionResult CarePlan()
         {
-            return View();
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            return new Rotativa.ViewAsPdf("CarePlan", resident);
+            //return new MvcRazorToPdf.PdfActionResult(resident);
         }
     }
 }

@@ -14,11 +14,17 @@ using System.Web;
 using System.Web.Mvc;
 using QolaMVC.Helpers;
 using static QolaMVC.Helpers.ProgressNotesHelper;
+using System.Data;
+using System.Collections;
 
 namespace QolaMVC.Controllers
 {
     public class HomeController : Controller
     {
+        private string _colorCode = "W";
+        private string _mobiltySelectedValue = string.Empty;
+        private string _previousValue = string.Empty;
+
         public ActionResult Index()
         {
             //var context = Request.GetOwinContext();
@@ -79,7 +85,7 @@ namespace QolaMVC.Controllers
             ViewBag.User = user;
             ViewBag.Home = home;
             ViewBag.Resident = resident;
-            
+
             ViewBag.ProgressNotes = progressNotes;
             ProgressNotesHelper.RegisterSession(resident);
             return View(resident);
@@ -169,7 +175,7 @@ namespace QolaMVC.Controllers
                         DateTime fromDate = QolaCulture.stringToDateFormat(Request.Form["From"].ToString());
                         DateTime toDate = QolaCulture.stringToDateFormat(Request.Form["To"].ToString());
                         residentId = l_Resident.ID;
-                       progressNotes = ProgressNotesDAL.GetProgressNotesCollections(residentId, fromDate, toDate, "R", selectedUserType, selectedCategory);
+                        progressNotes = ProgressNotesDAL.GetProgressNotesCollections(residentId, fromDate, toDate, "R", selectedUserType, selectedCategory);
                     }
                     if (progressNotes != null)
                     {
@@ -300,5 +306,1267 @@ namespace QolaMVC.Controllers
             }
         }
 
+        public ActionResult EmergencyList()
+        {
+            return View();
+        }
+
+        #region emergency list print
+
+
+
+        public void btnPdf_Click_EmergencyList()
+        {
+            string sException = string.Empty;
+            int iHomeId = 0;
+            DataSet ds = null;
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            //Int32.TryParse(Session["HomeId"].ToString(), out iHomeId
+            try
+            {
+                if (home != null)
+                {
+                    iHomeId = home.Id;
+                    ds = new DataSet();
+                    ds = ResidentsDAL.GetEmergencyResidentDetails(iHomeId, "0");
+                    if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                    {
+                        Document doc = new Document(PageSize.A4, 30f, 30f, 40f, 20f);
+                        doc.SetPageSize(iTextSharp.text.PageSize.A4.Rotate());
+                        System.IO.MemoryStream mStream = new System.IO.MemoryStream();
+                        PdfWriter writer = PdfWriter.GetInstance(doc, mStream);
+
+
+                        writer.PageEvent = new pdfHeaderFooter();
+
+                        doc.Open();
+
+                        iTextSharp.text.Font fontCellSize12 = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 12, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize12B = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 12, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize11 = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 11, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize11B = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 12, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize10 = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 10, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize10B = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 10, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize9 = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 9, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize9B = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 9, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize8 = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 12, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize8B = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 12, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize7 = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 7, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize7B = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 7, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+
+                        Paragraph paragraph = new Paragraph("EmergencyResidentDetails", fontCellSize11B);
+                        paragraph.Alignment = Element.TITLE;
+
+
+
+                        if (ds.Tables[0].Rows.Count > 0)
+                        {
+                            string sReason = string.Empty;
+                            string sReasonValue = string.Empty;
+
+                            PdfPTable PdfTable1;
+
+                            PdfTable1 = new PdfPTable(10);
+                            float[] wthtbl1 = new float[] { .8f, 3f, 10f, 5f, 8f, 10f, 8f, .8f, 7.9f, 10f };
+                            PdfTable1.SetWidths(wthtbl1);
+                            PdfTable1.WidthPercentage = 100f;
+                            PdfTable1.HorizontalAlignment = Element.ALIGN_LEFT;
+                            PdfTable1.SpacingAfter = 5f;
+                            PdfTable1.SpacingBefore = 5f;
+
+                            PdfPCell cell = new PdfPCell(new Phrase("EmergencyResidentDetails", fontCellSize11B));
+                            cell.Border = 0;
+                            cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                            cell.Colspan = 10;
+                            cell.PaddingBottom = 10f;
+                            PdfTable1.AddCell(cell);
+
+                            PdfPCell PdfTable1HeaderSuitNo = new PdfPCell(new Phrase("SuiteNo", fontCellSize9B));
+                            PdfTable1HeaderSuitNo.Colspan = 2;
+                            PdfTable1HeaderSuitNo.HorizontalAlignment = Element.ALIGN_CENTER;
+                            PdfTable1.AddCell(PdfTable1HeaderSuitNo);
+
+                            PdfPCell PdfTable1HeaderName = new PdfPCell(new Phrase("Name", fontCellSize9B));
+                            PdfTable1HeaderName.HorizontalAlignment = Element.ALIGN_CENTER;
+                            PdfTable1.AddCell(PdfTable1HeaderName);
+
+                            PdfPCell PdfTable1HeaderGender = new PdfPCell(new Phrase("Gender", fontCellSize9B));
+                            PdfTable1HeaderGender.HorizontalAlignment = Element.ALIGN_CENTER;
+                            PdfTable1.AddCell(PdfTable1HeaderGender);
+
+                            PdfPCell PdfTable1HeaderPhone = new PdfPCell(new Phrase("Phone", fontCellSize9B));
+                            PdfTable1HeaderPhone.HorizontalAlignment = Element.ALIGN_CENTER;
+                            PdfTable1.AddCell(PdfTable1HeaderPhone);
+
+                            PdfPCell PdfTable1HeaderContactPerson = new PdfPCell(new Phrase("ContactPerson", fontCellSize9B));
+                            PdfTable1HeaderContactPerson.HorizontalAlignment = Element.ALIGN_CENTER;
+                            PdfTable1.AddCell(PdfTable1HeaderContactPerson);
+
+                            PdfPCell PdfTable1HeaderEmergencyContact = new PdfPCell(new Phrase("EmergencyContact", fontCellSize9B));
+                            PdfTable1HeaderEmergencyContact.HorizontalAlignment = Element.ALIGN_CENTER;
+                            PdfTable1.AddCell(PdfTable1HeaderEmergencyContact);
+
+                            PdfPCell PdfTable1HeaderMobilty = new PdfPCell(new Phrase("Mobility", fontCellSize9B));
+                            PdfTable1HeaderMobilty.Colspan = 2;
+                            PdfTable1HeaderMobilty.HorizontalAlignment = Element.ALIGN_CENTER;
+                            PdfTable1.AddCell(PdfTable1HeaderMobilty);
+
+                            PdfPCell PdfTable1HeaderComment = new PdfPCell(new Phrase("Comments", fontCellSize9B));
+                            PdfTable1HeaderComment.HorizontalAlignment = Element.ALIGN_CENTER;
+                            PdfTable1.AddCell(PdfTable1HeaderComment);
+
+                            if (Convert.ToInt32(Session["CarePlanP2HomeId"]) == Convert.ToInt32(Session["HomeId"]))
+                            {
+                                PrintCarePlanEmergencyDetails(ds, fontCellSize9B, fontCellSize9, PdfTable1);
+                            }
+                            else
+                            {
+                                int ActualOrder = 1; // ddlResidentCareAssessment.SelectedValue == "H" ? 1 : ddlResidentCareAssessment.SelectedValue == "M" ? 2 : ddlResidentCareAssessment.SelectedValue == "L" ? 3 : ddlResidentCareAssessment.SelectedValue == "N" ? 4 : 0;
+                                for (int iRow = 0; iRow < ds.Tables[0].Rows.Count; iRow++)
+                                {
+
+                                    sReasonValue = string.Empty;
+                                    sReason = string.Empty;
+                                    sReason = sReason + ds.Tables[0].Rows[iRow]["fd_SA_vision"] + ds.Tables[0].Rows[iRow]["fd_mobility"] + ds.Tables[0].Rows[iRow]["fd_SA_hearing"] + ds.Tables[0].Rows[iRow]["fd_cognitive_function"] + ds.Tables[0].Rows[iRow]["fd_risk_level"].ToString() + ",";
+                                    if (sReason != string.Empty && sReason != null)
+                                    {
+                                        sReason = sReason.Remove(sReason.Length - 1);
+                                        string sResult;
+                                        string[] sValue = sReason.Split(',');
+                                        foreach (string word in sValue)
+                                        {
+                                            if (word == "0MA" || word == "0MD" || word == "0MI" || word == "0MS")
+                                            {
+                                                GetMobilityValue(word);
+                                            }
+                                            sResult = Get_bindResidentCareAssessment(word, "");
+                                            if (sResult != string.Empty && sResult != null)
+                                            {
+                                                if (sReasonValue.Length > 0)
+                                                {
+                                                    sReasonValue = sReasonValue + ',' + ' ' + Get_bindResidentCareAssessment(word, "W");
+                                                }
+                                                else
+                                                {
+                                                    sReasonValue = Get_bindResidentCareAssessment(word, "W");
+                                                }
+                                            }
+
+                                            sResult = string.Empty;
+                                        }
+                                    }
+                                    int order = Convert.ToInt32(ds.Tables[0].Rows[iRow]["fd_risk_order"]);
+                                    int AcceptedOrder = 0;
+                                    if (ActualOrder > 0)
+                                    {
+                                        AcceptedOrder = _colorCode == "R" || order == 1 ? 1 : _colorCode == "Y" || order == 2 ? 2 : _colorCode == "G" ? 3 : 4;
+                                        if (AcceptedOrder != ActualOrder)
+                                        {
+                                            _colorCode = "W";
+                                            _mobiltySelectedValue = string.Empty;
+                                            continue;
+                                        }
+                                    }
+                                    PdfPCell suiteColorCell = new PdfPCell();
+                                    string level = string.Empty;
+                                    switch (order)
+                                    {
+                                        case 1:
+                                            level = "HighFallRisk";
+                                            break;
+                                        case 2:
+                                            level = "MediumFallingRisk";
+                                            break;
+                                        case 3:
+                                            level = "LowFallingRisk";
+                                            break;
+                                        default:
+                                            level = string.Empty;
+                                            break;
+                                    }
+                                    if (_colorCode == "R" || order == 1)
+                                    {
+                                        suiteColorCell.BackgroundColor = BaseColor.RED;
+                                    }
+                                    else if (_colorCode == "Y" || order == 2)
+                                    {
+                                        suiteColorCell.BackgroundColor = BaseColor.YELLOW;
+                                    }
+                                    else if (_colorCode == "G")
+                                    {
+                                        suiteColorCell.BackgroundColor = BaseColor.GREEN;
+                                    }
+                                    PdfTable1.AddCell(suiteColorCell);
+                                    _colorCode = "W";
+                                    PdfPCell PdfTable1SuitNoValue = new PdfPCell(new Phrase(ds.Tables[0].Rows[iRow]["fd_suite_no"].ToString(), fontCellSize9));
+                                    PdfTable1SuitNoValue.HorizontalAlignment = Element.ALIGN_LEFT;
+                                    PdfTable1.AddCell(PdfTable1SuitNoValue);
+
+                                    PdfPCell PdfTable1NameValue = new PdfPCell(new Phrase(ds.Tables[0].Rows[iRow]["fd_first_name"] + " " + ds.Tables[0].Rows[iRow]["fd_last_name"], fontCellSize9));
+                                    PdfTable1NameValue.HorizontalAlignment = Element.ALIGN_LEFT;
+                                    PdfTable1.AddCell(PdfTable1NameValue);
+
+                                    PdfPCell PdfTable1GenderValue = new PdfPCell(new Phrase(ds.Tables[0].Rows[iRow]["fd_gender"].ToString(), fontCellSize9));
+                                    PdfTable1GenderValue.HorizontalAlignment = Element.ALIGN_CENTER;
+                                    PdfTable1.AddCell(PdfTable1GenderValue);
+
+                                    string phone = ds.Tables[0].Rows[iRow]["fd_phone"].ToString().Trim().Length > 0 ? ds.Tables[0].Rows[iRow]["fd_phone"].ToString() : "NoPhone";
+                                    PdfPCell PdfTable1AttendeesValue = new PdfPCell(new Phrase(phone, fontCellSize9));
+                                    PdfTable1AttendeesValue.HorizontalAlignment = Element.ALIGN_LEFT;
+                                    PdfTable1.AddCell(PdfTable1AttendeesValue);
+
+                                    PdfPCell PdfTable1PhoneValue = new PdfPCell(new Phrase(ds.Tables[0].Rows[iRow]["fd_contact_1"].ToString(), fontCellSize9));
+                                    PdfTable1PhoneValue.HorizontalAlignment = Element.ALIGN_LEFT;
+                                    PdfTable1.AddCell(PdfTable1PhoneValue);
+
+                                    PdfPCell PdfTable1EmergencyContact = new PdfPCell(new Phrase(ds.Tables[0].Rows[iRow]["fd_home_phone_1"].ToString(), fontCellSize9));
+                                    PdfTable1EmergencyContact.HorizontalAlignment = Element.ALIGN_LEFT;
+                                    PdfTable1.AddCell(PdfTable1EmergencyContact);
+
+                                    PdfTable1.AddCell(suiteColorCell);
+
+
+
+                                    PdfPCell PdfTable1Mobility = new PdfPCell(new Phrase(_mobiltySelectedValue, fontCellSize9B));
+                                    PdfTable1Mobility.HorizontalAlignment = Element.ALIGN_LEFT;
+                                    PdfTable1.AddCell(PdfTable1Mobility);
+                                    _mobiltySelectedValue = string.Empty;
+
+                                    PdfPCell PdfTable1Comment = new PdfPCell(new Phrase(level + "," + sReasonValue.Replace("<b>", string.Empty).Replace("</b>", string.Empty), fontCellSize9));
+                                    PdfTable1Comment.HorizontalAlignment = Element.ALIGN_LEFT;
+                                    PdfTable1.AddCell(PdfTable1Comment);
+                                }
+                            }
+                            doc.Add(PdfTable1);
+                        }
+
+                        doc.Close();
+                        string reportName = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+                        Response.ContentType = "application/octet-stream";
+                        Response.AddHeader("Content-Disposition", "attachment; filename=Emergency_Resident_Details_" + reportName + ".pdf");
+                        Response.Clear();
+                        Response.BinaryWrite(mStream.ToArray());
+                        //HttpContext.Current.ApplicationInstance.CompleteRequest();
+                    }
+                    else
+                    {
+                        //AlertMessage.ShowErrorMsg(this.Page, Resources.Qola.CustomMessages.NoRecord, Resources.Qola.UIverbiage.EmergencyResidentDetails);
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                sException = "frmEmergencyResidentDetails btnPdf_Click |" + Ex.Message.ToString();
+                //Log.Write(sException);
+               
+            }
+        }
+
+        private string Get_bindResidentCareAssessment(string sCareAssessment, string colorCode)
+        {
+            string[] redColor = { "5HS", "6HA", "0MA", "0MD", "2WS", "8CS", "9CA", "2VI", "3VB", "3HD", "6CI" };
+            string[] yellowColor = { "4HI", "22HM", "23HE", "3WA", "1WI", "0MS", "7CI", "7CG", "2HI" };
+            string[] greenColor = { "8VIL", "9VIR", "6VL", "7VR", "9HM", "10HP", "11HE", "12HA" };
+
+            string sValue = string.Empty;
+            DataTable dt = new DataTable();
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            string colorValue = "W";
+            dt.Columns.Add("CareAssessmentValue", typeof(string));
+            dt.Columns.Add("CareAssessment", typeof(string));
+            dt.Rows.Add("<b>" + "Mobility" + "</b>(Assistance)", "0MA");
+            dt.Rows.Add("<b>Mobility </b>(Dependent)", "0MD");
+            dt.Rows.Add("<b>Mobility</b>(Supervision)", "0MS");
+            dt.Rows.Add("<b>Mobility</b>(Independent)", "0MI");
+            dt.Rows.Add("<b>Walker</b>(Independent)", "1WI");
+            dt.Rows.Add("<b>Walker</b>(Supervised)", "2WS");
+            dt.Rows.Add("<b>Walker</b>(Assisted)", "3WA");
+            dt.Rows.Add("<b>Wheelchair</b>(Independent)", "4HI");
+            dt.Rows.Add("<b>Wheelchair</b>(Supervised)", "5HS");
+            dt.Rows.Add("<b>Wheelchair</b>(Assisted)", "6HA");
+            dt.Rows.Add("<b>Wheelchair</b>(Manual)", "22HM");
+            dt.Rows.Add("<b>Wheelchair</b>(Electric)", "23HE");
+            dt.Rows.Add("<b>Cane</b>(Independent)", "7CI");
+            dt.Rows.Add("<b>Cane</b>(Supervised)", "8CS");
+            dt.Rows.Add("<b>Cane</b>(Assisted)", "9CA");
+            dt.Rows.Add("<b>SensoryAbilities</b>(Impaired)", "2VI");
+            dt.Rows.Add("<b>SensoryAbilities</b>(ImpairedLeft)", "8VIL");
+            dt.Rows.Add("<b>SensoryAbilities</b>(ImpairedRight)", "9VIR");
+            dt.Rows.Add("<b>SensoryAbilities</b>(Blind)", "3VB");
+            dt.Rows.Add("<b>SensoryAbilities</b>(BlindLeft)", "6VL");
+            dt.Rows.Add("<b>SensoryAbilities</b>(BlindRight)", "7VR");
+            dt.Rows.Add("<b>Hearing</b>(Impaired)", "2HI");
+            dt.Rows.Add("<b>Hearing</b>(ImpairedLeft)", "9HM");
+            dt.Rows.Add("<b>Hearing</b>(ImpairedRight)", "10HP");
+            dt.Rows.Add("<b>Hearing</b>(Deaf)", "3HD");
+            dt.Rows.Add("<b>Hearing</b>(DeafLeft)", "11HE");
+            dt.Rows.Add("<b>Hearing</b>(DeafRight)", "12HA");
+            dt.Rows.Add("<b>Cognitivefunction</b>(Confused)", "4CC");
+            dt.Rows.Add("<b>Cognitivefunction</b>(Shorttermloss)", "5CS");
+            dt.Rows.Add("<b>Cognitivefunction</b>(Significantimpairment)", "6CI");
+            dt.Rows.Add("<b>Cognitivefunction</b>(Cuing)", "7CG");
+
+
+            bool isAffected = false;
+            foreach (DataRow Drow in dt.Rows)
+            {
+                if (Drow["CareAssessment"].ToString() == sCareAssessment)
+                {
+                    sValue = Drow["CareAssessmentValue"].ToString();
+                    colorValue = Drow["CareAssessment"].ToString();
+                    if (isAffected == false)
+                    {
+                        foreach (string red in redColor)
+                        {
+                            if (red == colorValue)
+                            {
+
+                                _colorCode = "R";
+                                isAffected = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (isAffected == false && _colorCode != "R")
+                    {
+                        foreach (string yellow in yellowColor)
+                        {
+                            if (yellow == colorValue)
+                            {
+
+                                _colorCode = "Y";
+                                isAffected = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (isAffected == false && _colorCode != "R" && _colorCode != "G")
+                    {
+                        foreach (string green in greenColor)
+                        {
+                            if (green == colorValue)
+                            {
+                                _colorCode = "G";
+                                isAffected = true;
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+                isAffected = false;
+            }
+            return sValue;
+        }
+
+        protected void ddlResidentCareAssessment_Change(object sender, EventArgs e)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            int homeId = home.Id;
+            string exception = string.Empty;
+            DataSet ds = null;
+            string sTick = string.Empty;
+            string sUntick = string.Empty;
+            bool bDataFlag = false;
+            string sReason = string.Empty;
+            string sReasonValue = string.Empty;
+            string color = "W";
+            try
+            {
+                int ActualOrder = 1;// ddlResidentCareAssessment.SelectedValue == "H" ? 1 : ddlResidentCareAssessment.SelectedValue == "M" ? 2 : ddlResidentCareAssessment.SelectedValue == "L" ? 3 : ddlResidentCareAssessment.SelectedValue == "N" ? 4 : 0;
+                System.Text.StringBuilder sbReport = new System.Text.StringBuilder();
+                ds = new DataSet();
+                ds = ResidentsDAL.GetEmergencyResidentDetails(homeId, "0");
+               // divEmergencyResidentDetails.Visible = true;
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        sbReport.Append("<div> <script src='JS/jquery-ui.min.js' type='text/javascript'></script><script src='JS/tableSorting.js' type='text/javascript'></script><table width='100%' class='tableStatic' id='tblSort'><thead><th  style='width:.1px;' data-sort='string'>RiskLevel</th><th style='width:10px;' data-sort='int'>SuiteNo </th><th style='width:25px;' data-sort='string' class=''>Name </th><th style='text-align: center;width:10px;'data-sort='string'  class=''>Gender </th><th style='width:10px;'data-sort='string'  class=''>Phone </th> <th style='width:10px;' data-sort='string' class=''>ContactPerson </th> <th style='width:15px;' data-sort='string'  class=''>EmergencyContact </th><th style='width:.1px;' data-sort='string'>RiskLevel </th><th style='width:15px;'data-sort='string'  class=''>Mobility </th> <th style='width:25px;' data-sort='string'>Comments </th> </thead><tbody>");
+                        if (Convert.ToInt32(Session["CarePlanP2HomeId"]) == Convert.ToInt32(Session["HomeId"]))
+                        {
+                            bDataFlag = true;
+                            sbReport.Append(BindCarePlanEmergencyDetails(ds));
+                            sbReport.Append("</tbody></table><script>$(function  () {$('#tblSort').stupidtable();});</script></div>");
+                        }
+                        else
+                        {
+                            bDataFlag = true;
+
+                            for (int iRow = 0; iRow < ds.Tables[0].Rows.Count; iRow++)
+                            {
+                                sReasonValue = string.Empty;
+                                sReason = string.Empty;
+                                sReason = sReason + ds.Tables[0].Rows[iRow]["fd_SA_vision"] + ds.Tables[0].Rows[iRow]["fd_mobility"] + ds.Tables[0].Rows[iRow]["fd_SA_hearing"] + ds.Tables[0].Rows[iRow]["fd_cognitive_function"] + ds.Tables[0].Rows[iRow]["fd_risk_level"].ToString() + ",";
+                                if (sReason != string.Empty && sReason != null && !String.IsNullOrEmpty(sReason) && !String.IsNullOrWhiteSpace(sReason))
+                                {
+                                    sReason = sReason.Remove(sReason.Length - 1);
+                                    string sResult;
+                                    string[] sValue = sReason.Split(',');
+                                    foreach (string word in sValue)
+                                    {
+                                        if (!String.IsNullOrEmpty(sReason) && !String.IsNullOrWhiteSpace(sReason))
+                                        {
+                                            if (word == "0MA" || word == "0MD" || word == "0MI" || word == "0MS")
+                                            {
+                                                GetMobilityValue(word);
+                                            }
+                                            sResult = Get_bindResidentCareAssessment(word, color);
+                                            if (sResult != string.Empty && sResult != null)
+                                            {
+                                                if (sReasonValue.Length > 0)
+                                                {
+                                                    sReasonValue = sReasonValue + ',' + ' ' + Get_bindResidentCareAssessment(word, color);
+                                                }
+                                                else
+                                                {
+                                                    sReasonValue = Get_bindResidentCareAssessment(word, color);
+                                                }
+                                            }
+                                        }
+                                        sResult = string.Empty;
+                                    }
+                                }
+
+                                int order = Convert.ToInt32(ds.Tables[0].Rows[iRow]["fd_risk_order"]);
+                                int AcceptedOrder = 0;
+                                if (ActualOrder > 0)
+                                {
+                                    AcceptedOrder = _colorCode == "R" || order == 1 ? 1 : _colorCode == "Y" || order == 2 ? 2 : _colorCode == "G" ? 3 : 4;
+                                    if (AcceptedOrder != ActualOrder)
+                                    {
+                                        _colorCode = "W";
+                                        _mobiltySelectedValue = string.Empty;
+                                        continue;
+                                    }
+                                }
+
+                                string phone = ds.Tables[0].Rows[iRow]["fd_phone"].ToString().Trim().Length > 0 ? ds.Tables[0].Rows[iRow]["fd_phone"].ToString() : "NoPhone";
+                                string level = string.Empty;
+                                int sortOrder = 1;
+                                switch (order)
+                                {
+                                    case 1:
+                                        level = "HighFallRisk";
+                                        break;
+                                    case 2:
+                                        level = "MediumFallingRisk";
+                                        break;
+                                    case 3:
+                                        level = "LowFallingRisk";
+                                        break;
+                                    default:
+                                        level = string.Empty;
+                                        break;
+                                }
+
+                                string colorQuery = "<td style='background-color:white; width:2px;'></td>";
+
+                                if (_colorCode == "R" || order == 1)
+                                {
+                                    sortOrder = 4;
+                                    colorQuery = "<td style='background-color:red;width:3px;'><span style='color:red;'>" + sortOrder + "</span></td>";
+                                }
+                                else if (_colorCode == "Y" || order == 2)
+                                {
+                                    sortOrder = 3;
+                                    colorQuery = "<td style='background-color:yellow'><span style='color:yellow;'>" + sortOrder + "</span></td>";
+                                }
+                                else if (_colorCode == "G")
+                                {
+                                    sortOrder = 2;
+                                    colorQuery = "<td style='background-color:green'><span style='color:green;'>" + sortOrder + "</span></td>";
+                                }
+                                string designString = "<tr style='text-align:left;'>" + colorQuery + "<td style='width:5px;'>" + ds.Tables[0].Rows[iRow]["fd_suite_no"] + "</td>";
+                                designString += "<td>" + ds.Tables[0].Rows[iRow]["fd_first_name"] + " " + ds.Tables[0].Rows[iRow]["fd_last_name"] + "</td><td>"
+                                    + ds.Tables[0].Rows[iRow]["fd_gender"] + "</td><td>" + phone + "</td><td>" + ds.Tables[0].Rows[iRow]["fd_contact_1"] + "</td><td>"
+                                    + ds.Tables[0].Rows[iRow]["fd_home_phone_1"] + "</td>"
+                                    + colorQuery
+                                    + "<td style='width:10px;'><b>" + _mobiltySelectedValue + "</b></td><td><b>" + level + "</b>";
+                                if (sReasonValue.Length > 0 && level.Length > 0)
+                                {
+                                    designString += "<b>, </b>";
+                                }
+                                designString += sReasonValue + "</td></tr>";
+                                sbReport.Append(designString);
+                                _colorCode = "W";
+                                _mobiltySelectedValue = string.Empty;
+
+                            }
+                            sbReport.Append("</tbody></table><script>$(function  () {$('#tblSort').stupidtable();});</script></div>");
+                        }
+                    }
+                    else
+                    {
+                        sbReport.Append("<div><table width='100%' class='tableStatic'><tr><th>No Record</th></tr></table></div>");
+                    }
+                    if (!bDataFlag)
+                    {
+                        //AlertMessage.ShowErrorMsg(this.Page, Resources.Qola.CustomMessages.NoRecord, Resources.Qola.UIverbiage.EmergencyResidentDetails);
+                    }
+                    //divEmergencyResidentDetails.InnerHtml = sbReport.ToString();
+                }
+                else
+                {
+                    //AlertMessage.ShowErrorMsg(this.Page, Resources.Qola.CustomMessages.NoRecord, Resources.Qola.UIverbiage.EmergencyResidentDetails);
+                }
+            }
+
+            catch (Exception Ex)
+            {
+                exception = "frmEmergencyResidentDetails EmergencyResidentDetails |" + Ex.Message.ToString();
+                //Log.Write(exception);
+               
+            }
+        }
+
+        protected void ddlResidentCareAssessment_Change_Old(object sender, EventArgs e)
+        {
+            int iHomeId = 0;
+            string exception = string.Empty;
+            DataSet ds = null;
+            string sTick = string.Empty;
+            string sUntick = string.Empty;
+            bool bDataFlag = false;
+            string sReason = string.Empty;
+            string sReasonValue = string.Empty;
+
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            try
+            {
+                if (home != null == true)
+                {
+                    iHomeId = home.Id;
+                    int ActualOrder = 1; // ddlResidentCareAssessment.SelectedValue == "H" ? 1 : ddlResidentCareAssessment.SelectedValue == "M" ? 2 : ddlResidentCareAssessment.SelectedValue == "L" ? 3 : ddlResidentCareAssessment.SelectedValue == "N" ? 4 : 0;
+                    System.Text.StringBuilder sbReport = new System.Text.StringBuilder();
+                    ds = new DataSet();
+                    ds = ResidentsDAL.GetEmergencyResidentDetails(iHomeId, "0");
+
+                    //divEmergencyResidentDetails.Visible = true;
+                    if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                    {
+                        if (ds.Tables[0].Rows.Count > 0)
+                        {
+                            sbReport.Append("<div> <script src='JS/jquery-ui.min.js' type='text/javascript'></script><script src='JS/tableSorting.js' type='text/javascript'></script><table width='100%' class='tableStatic' id='tblSort'><thead><th  style='width:.1px;' data-sort='string'>RiskLevel</th><th style='width:10px;' data-sort='int'>SuiteNo </th><th style='width:25px;' data-sort='string' class=''>Name </th><th style='text-align: center;width:10px;'data-sort='string'  class=''>Gender</th><th style='width:10px;'data-sort='string'  class=''>Phone </th> <th style='width:10px;' data-sort='string' class=''>ContactPerson </th> <th style='width:20px;' data-sort='string'  class=''>EmergencyContact </th><th style='width:.1px;' data-sort='string'>RiskLevel </th><th style='width:15px;'data-sort='string'  class=''>Mobility </th> <th style='width:25px;' data-sort='string'>Comments </th> </thead><tbody>");
+                            if (Convert.ToInt32(Session["CarePlanP2HomeId"]) == Convert.ToInt32(Session["HomeId"]))
+                            {
+                                bDataFlag = true;
+                                sbReport.Append(BindCarePlanEmergencyDetails(ds));
+                                sbReport.Append("</tbody></table><script>$(function  () {$('#tblSort').stupidtable();});</script></div>");
+                            }
+                            else
+                            {
+
+                                bDataFlag = true;
+
+                                for (int iRow = 0; iRow < ds.Tables[0].Rows.Count; iRow++)
+                                {
+                                    sReasonValue = string.Empty;
+                                    sReason = string.Empty;
+
+                                    sReason = sReason + ds.Tables[0].Rows[iRow]["fd_SA_vision"] + ds.Tables[0].Rows[iRow]["fd_mobility"] + ds.Tables[0].Rows[iRow]["fd_SA_hearing"] + ds.Tables[0].Rows[iRow]["fd_cognitive_function"] + ds.Tables[0].Rows[iRow]["fd_risk_level"].ToString() + ",";
+
+                                    if (sReason != string.Empty && sReason != null)
+                                    {
+                                        sReason = sReason.Remove(sReason.Length - 1);
+                                        string sResult = "";
+                                        string[] sValue = sReason.Split(',');
+                                        foreach (string word in sValue)
+                                        {
+
+                                            if (word == "0MA" || word == "0MD" || word == "0MI" || word == "0MS")
+                                            {
+                                                GetMobilityValue(word);
+                                            }
+                                            sResult = Get_bindResidentCareAssessment(word, "W");
+
+
+                                            if (sResult != string.Empty && sResult != null)
+                                            {
+
+                                                if (sReasonValue.Length > 0)
+                                                {
+                                                    sReasonValue = sReasonValue + ',' + ' ' + Get_bindResidentCareAssessment(word, _colorCode);
+                                                }
+                                                else
+                                                {
+                                                    sReasonValue = Get_bindResidentCareAssessment(word, _colorCode);
+                                                }
+
+                                            }
+
+                                            sResult = string.Empty;
+                                        }
+                                    }
+
+                                    int order = Convert.ToInt32(ds.Tables[0].Rows[iRow]["fd_risk_order"]);
+                                    int AcceptedOrder = 0;
+                                    if (ActualOrder > 0)
+                                    {
+                                        AcceptedOrder = _colorCode == "R" || order == 1 ? 1 : _colorCode == "Y" || order == 2 ? 2 : _colorCode == "G" || order == 3 ? 3 : 4;
+                                        if (AcceptedOrder != ActualOrder)
+                                        {
+                                            _colorCode = "W";
+                                            _previousValue = _mobiltySelectedValue;
+                                            _mobiltySelectedValue = string.Empty;
+                                            continue;
+                                        }
+                                    }
+
+                                    int sortOrder = 1;
+                                    string phone = ds.Tables[0].Rows[iRow]["fd_phone"].ToString().Trim().Length > 0 ? ds.Tables[0].Rows[iRow]["fd_phone"].ToString() : "NoPhone";
+                                    string colorQuery = "<td style='background-color:white; width:2px;' ></td>";
+                                    string level = string.Empty;
+                                    switch (order)
+                                    {
+                                        case 1:
+                                            level = "HighFallRisk";
+                                            break;
+                                        case 2:
+                                            level = "MediumFallingRisk";
+                                            break;
+                                        case 3:
+                                            level = "LowFallingRisk";
+                                            break;
+                                        default:
+                                            level = string.Empty;
+                                            break;
+                                    }
+                                    if (_colorCode == "R" || order == 1)
+                                    {
+                                        sortOrder = 4;
+                                        colorQuery = "<td style='background-color:red;width:3px;'><span style='color:red;'>" + sortOrder + "</span></td>";
+                                    }
+                                    else if (_colorCode == "Y" || order == 2)
+                                    {
+                                        sortOrder = 3;
+                                        colorQuery = "<td style='background-color:yellow'><span style='color:yellow;'>" + sortOrder + "</span></td>";
+                                    }
+                                    else if (_colorCode == "G" || order == 3)
+                                    {
+                                        sortOrder = 2;
+                                        colorQuery = "<td style='background-color:green'><span style='color:green;'>" + sortOrder + "</span></td>";
+                                    }
+                                    else if (order == 3 && sReasonValue == "")
+                                    {
+                                        sortOrder = 1;
+                                        colorQuery = "<td style='background-color:white; width:2px;'></td>";
+                                    }
+                                    string designString = "<tr style='text-align:left;'>" + colorQuery + "<td style='width:5px;'>" + ds.Tables[0].Rows[iRow]["fd_suite_no"] + "</td>";
+                                    designString += "<td>" + ds.Tables[0].Rows[iRow]["fd_first_name"] + " " + ds.Tables[0].Rows[iRow]["fd_last_name"] + "</td><td>"
+                                        + ds.Tables[0].Rows[iRow]["fd_gender"] + "</td><td>" + phone + "</td><td>" + ds.Tables[0].Rows[iRow]["fd_contact_1"] + "</td><td>"
+                                        + ds.Tables[0].Rows[iRow]["fd_home_phone_1"] + "</td>"
+                                        + colorQuery
+                                        + "<td style='width:10px;'><b>" + _mobiltySelectedValue + "</b></td><td>" + "<b>" + level + "</b>";
+                                    if (sReasonValue.Length > 0 && level.Length > 0)
+                                    {
+                                        designString += "<b>, </b>";
+                                    }
+                                    designString += sReasonValue + "</td></tr>";
+                                    sbReport.Append(designString);
+                                    _colorCode = "W";
+                                    _previousValue = _mobiltySelectedValue;
+                                    _mobiltySelectedValue = string.Empty;
+                                }
+                                string style = "<style type='text/css'>th[data-sort]{cursor:pointer;}</style>";
+                                sbReport.Append("</tbody></table><script>$(function  () {$('#tblSort').stupidtable();});</script>" + style + "</div>");
+                            }
+                        }
+                        else
+                        {
+                            sbReport.Append("<div><table width='100%' class='tableStatic'><tr><th>No Record</th></tr></table></div>");
+                        }
+                        if (!bDataFlag)
+                        {
+                           // AlertMessage.ShowErrorMsg(this.Page, Resources.Qola.CustomMessages.NoRecord, Resources.Qola.UIverbiage.EmergencyResidentDetails);
+                        }
+                        //divEmergencyResidentDetails.InnerHtml = sbReport.ToString();
+                    }
+                    else
+                    {
+                        //divEmergencyResidentDetails.InnerHtml = sbReport.ToString();
+                       // AlertMessage.ShowErrorMsg(this.Page, Resources.Qola.CustomMessages.NoRecord, Resources.Qola.UIverbiage.EmergencyResidentDetails);
+                    }
+                }
+            }
+
+            catch (Exception Ex)
+            {
+                exception = "frmEmergencyResidentDetails EmergencyResidentDetails |" + Ex.Message.ToString();
+               // Log.Write(exception);
+               
+            }
+
+        }
+
+        private string GetMobilityValue(string dataValue)
+        {
+            switch (dataValue)
+            {
+                case "0MI":
+                    if (_mobiltySelectedValue == "Assisted" || _mobiltySelectedValue == "Dependent" ||
+                          _mobiltySelectedValue == "Supervised")
+                    {
+                        _mobiltySelectedValue = _previousValue;
+                    }
+                    else
+                    {
+                        _mobiltySelectedValue = "Independent";
+                        _previousValue = _mobiltySelectedValue;
+                    }
+                    break;
+                case "0MS":
+                    if (_mobiltySelectedValue == "Assisted" || _mobiltySelectedValue == "Dependent")
+                    {
+                        _previousValue = _mobiltySelectedValue;
+                    }
+                    else
+                    {
+                        _mobiltySelectedValue = "Supervised";
+                        _previousValue = _mobiltySelectedValue;
+                    }
+                    break;
+                case "0MA":
+                    _mobiltySelectedValue = "Assisted";
+                    _previousValue = _mobiltySelectedValue;
+                    break;
+                case "0MD":
+                    _mobiltySelectedValue = "Dependent";
+                    _previousValue = _mobiltySelectedValue;
+                    break;
+                default:
+                    if (_mobiltySelectedValue != string.Empty)
+                    {
+                        _mobiltySelectedValue = string.Empty;
+                    }
+                    break;
+            }
+
+            return _mobiltySelectedValue;
+        }
+
+        private void GetCategoryValue()
+        {
+            string[] redColor = { "14.4", "11.7", "11.6", "8.2", "7.6", "6.6", "6.5" };
+            string[] yellowColor = { "14.3", "11.5", "11.4", "7.3", "6.3" };
+            string[] greenColor = { "14.2", "11.3", "11.2", "7.2", "6.2" };
+            string exception = string.Empty;
+            try
+            {
+                ArrayList list = new ArrayList();
+                list.Add(new System.Web.UI.WebControls.ListItem("6.1" + "-Aucune intervention", "6.1"));
+                list.Add(new System.Web.UI.WebControls.ListItem("6.2" + "-Légère vérification avec ou sans adaptation", "6.2"));
+                list.Add(new System.Web.UI.WebControls.ListItem("6.3" + "-Encadrer, rappeler, stimuler, surveiller", "6.3"));
+                list.Add(new System.Web.UI.WebControls.ListItem("6.5" + "-Accompagner un usager présentant un risque ou une difficulté à  faire ses transferts", "6.5"));
+                list.Add(new System.Web.UI.WebControls.ListItem("6.6" + "-Procéder aux transferts d’un usager présentant un risque ou une difficulté", "6.6"));
+                list.Add(new System.Web.UI.WebControls.ListItem("7.1" + "-Aucune intervention", "7.1"));
+                list.Add(new System.Web.UI.WebControls.ListItem("7.2" + "-Légère vérification avec ou sans adaptation", "7.2"));
+                list.Add(new System.Web.UI.WebControls.ListItem("7.3" + "-Encadrer, rappeler, stimuler, surveiller", "7.3"));
+                list.Add(new System.Web.UI.WebControls.ListItem("7.5" + "-Accompagner un usager présentant un risque ou une difficulté dans  ses déplacements", "7.5"));
+                list.Add(new System.Web.UI.WebControls.ListItem("8.1" + "-Aucune intervention", "8.1"));
+                list.Add(new System.Web.UI.WebControls.ListItem("8.2" + "-En cas d’urgence", "8.2"));
+                list.Add(new System.Web.UI.WebControls.ListItem("11.1" + "-Aucune intervention", "11.1"));
+                list.Add(new System.Web.UI.WebControls.ListItem("11.2" + "-Légère vérification avec ou sans adaptation", "11.2"));
+                list.Add(new System.Web.UI.WebControls.ListItem("11.3" + "-Aider, conseiller, encadrer, prévenir, rappeler, sensibiliser", "11.3"));
+                list.Add(new System.Web.UI.WebControls.ListItem("11.4" + "-Favoriser la sollicitation", "11.4"));
+                list.Add(new System.Web.UI.WebControls.ListItem("11.5" + "-Apprendre à l’usager à développer de meilleures habiletés sociales et de résolution de problème", "11.5"));
+                list.Add(new System.Web.UI.WebControls.ListItem("11.6" + "-Accompagner a un usager présentant un risque ou une difficulté à développer de meilleures habiletés qui et de résolution de problème", "11.6"));
+                list.Add(new System.Web.UI.WebControls.ListItem("11.7" + "-Contrôler les troubles relationnels de l’usager", "11.7"));
+                list.Add(new System.Web.UI.WebControls.ListItem("14.1" + "-Aucune intervention", "14.1"));
+                list.Add(new System.Web.UI.WebControls.ListItem("14.2" + "-Légère vérification avec ou sans adaptation de l’usager dans ses activités de la vie domestique", "14.2"));
+                list.Add(new System.Web.UI.WebControls.ListItem("14.3" + "-Aider, conseiller, encadrer, favoriser, rappeler, stimuler, surveiller, vérifier", "14.3"));
+                list.Add(new System.Web.UI.WebControls.ListItem("14.4" + "-Accompagner l’usager dans ses activités de la vie domestique", "14.4"));
+
+                list = new ArrayList();
+                list.Add(new System.Web.UI.WebControls.ListItem("HighRisk", "H"));
+                list.Add(new System.Web.UI.WebControls.ListItem("ModerateRisk", "M"));
+                list.Add(new System.Web.UI.WebControls.ListItem("LowRisk", "L"));
+                list.Add(new System.Web.UI.WebControls.ListItem("NoRisk", "N"));
+
+                //ddlResidentCareAssessment.DataSource = list;
+                //ddlResidentCareAssessment.DataTextField = "Text";
+                //ddlResidentCareAssessment.DataValueField = "Value";
+                //ddlResidentCareAssessment.DataBind();
+                //ddlResidentCareAssessment.Items.Insert(0, new System.Web.UI.WebControls.ListItem("-- ALL --", "0"));
+            }
+            catch (Exception Ex)
+            {
+                exception = "EmergencyResidentDetails GetCategoryValue |" + Ex.Message.ToString();
+              //  Log.Write(exception);
+               
+            }
+            finally
+            {
+
+            }
+        }
+
+        private string Get_bindResidentCareAssessment_CarePlan(string sCareAssessment, string colorCode)
+        {
+            string[] redColor = { "14.4", "11.7", "11.6", "8.2", "7.5", "6.6", "6.5" };
+            string[] yellowColor = { "14.3", "11.5", "11.4", "7.3", "6.3" };
+            string[] greenColor = { "14.2", "11.3", "11.2", "7.2", "6.2" };
+
+            string sValue = string.Empty;
+            DataTable dt = new DataTable();
+            string colorValue = "W";
+            dt.Columns.Add("CareAssessmentValue", typeof(string));
+            dt.Columns.Add("CareAssessment", typeof(string));
+            dt.Rows.Add("<b>14.4 - </b>Accompagner l’usager dans ses activités de la vie domestique", "14.4");
+            dt.Rows.Add("<b>11.7 - </b>Contrôler les troubles relationnels de l’usager", "11.7");
+            dt.Rows.Add("<b>11.6 - </b>Accompagner a un usager présentant un risque ou une difficulté à développer de meilleures habiletés qui et de résolution de problème", "11.6");
+            dt.Rows.Add("<b>8.2 - </b>En cas d’urgence", "8.2");
+            dt.Rows.Add("<b>7.5 - </b>Accompagner un usager présentant un risque ou une difficulté dans  ses déplacements", "7.5");
+            dt.Rows.Add("<b>6.6 - </b>Procéder aux transferts d’un usager présentant un risque ou une difficulté", "6.6");
+            dt.Rows.Add("<b>6.5 - </b>Accompagner un usager présentant un risque ou une difficulté à  faire ses transferts", "6.5");
+            dt.Rows.Add("<b>14.3 – </b>Aider, conseiller, encadrer, favoriser, rappeler, stimuler, surveiller, vérifier", "14.3");
+            dt.Rows.Add("<b>11.5 – </b>Apprendre à l’usager à développer de meilleures habiletés sociales et de résolution de problème", "11.5");
+            dt.Rows.Add("<b>11.4 - </b>Favoriser la sollicitation", "11.4");
+            dt.Rows.Add("<b>7.3 - </b>Encadrer, rappeler, stimuler, surveiller", "7.3");
+            dt.Rows.Add("<b>6.3 - </b>Encadrer, rappeler, stimuler, surveiller", "6.3");
+            dt.Rows.Add("<b>14.2 – </b>Légère vérification avec ou sans adaptation de l’usager dans ses activités de la vie domestique", "14.2");
+            dt.Rows.Add("<b>11.3 - </b>Aider, conseiller, encadrer, prévenir, rappeler, sensibiliser", "11.3");
+            dt.Rows.Add("<b>11.2 - </b>Légère vérification avec ou sans adaptation", "11.2");
+            dt.Rows.Add("<b>7.2 - </b>Légère vérification avec ou sans adaptation", "7.2");
+            dt.Rows.Add("<b>6.2 - </b>Légère vérification avec ou sans adaptation", "6.2");
+            dt.Rows.Add("<b>14.1 - </b>Aucune intervention", "14.1");
+            dt.Rows.Add("<b>11.1 - </b>Aucune intervention", "11.1");
+            dt.Rows.Add("<b>8.1 – </b>Aucune intervention", "8.1");
+            dt.Rows.Add("<b>7.1 - </b>Aucune intervention", "7.1");
+            dt.Rows.Add("<b>6.1 - </b>Aucune intervention", "6.1");
+
+
+
+            bool isAffected = false;
+            foreach (DataRow Drow in dt.Rows)
+            {
+                if (Drow["CareAssessment"].ToString() == sCareAssessment)
+                {
+                    sValue = Drow["CareAssessmentValue"].ToString();
+                    colorValue = Drow["CareAssessment"].ToString();
+                    if (isAffected == false)
+                    {
+                        foreach (string red in redColor)
+                        {
+                            if (red == colorValue)
+                            {
+
+                                _colorCode = "R";
+                                isAffected = true;
+                                break;
+                            }
+                        }
+                    }
+                    if ((isAffected == false && _colorCode != "R") || (isAffected == true && _colorCode != "R"))
+                    {
+                        foreach (string yellow in yellowColor)
+                        {
+                            if (yellow == colorValue)
+                            {
+
+                                _colorCode = "Y";
+                                isAffected = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (isAffected == false && _colorCode != "R" && _colorCode != "G")
+                    {
+                        foreach (string green in greenColor)
+                        {
+                            if (green == colorValue)
+                            {
+                                _colorCode = "G";
+                                isAffected = true;
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+                isAffected = false;
+            }
+            return sValue;
+        }
+
+        private string BindCarePlanEmergencyDetails(DataSet ds)
+        {
+            string query = string.Empty;
+            var residentList = (from residentTable in ds.Tables[0].AsEnumerable()
+                                select new
+                                {
+                                    ResId = residentTable.Field<Int32>("fd_resident_id"),
+                                    RiskOrder = residentTable.Field<Int32>("fd_risk_order")
+                                }).Distinct();
+
+            if (residentList != null)
+            {
+                foreach (var residents in residentList)
+                {
+                    query += "<tr>";
+                    var residentDetail = (from resident in ds.Tables[0].AsEnumerable()
+                                          select new
+                                          {
+                                              RID = resident.Field<Int32>("fd_resident_id"),
+                                              Suite = resident.Field<String>("fd_suite_no"),
+                                              RFname = resident.Field<String>("fd_first_name"),
+                                              RLname = resident.Field<String>("fd_last_name"),
+                                              Gender = resident.Field<String>("fd_gender"),
+                                              Phone = resident.Field<String>("fd_phone"),
+                                              Contact = resident.Field<String>("fd_contact_1"),
+                                              HomePhone = resident.Field<String>("fd_home_phone_1"),
+                                              Code = resident.Field<String>("fd_subcategory_code"),
+                                              CategoryName = resident.Field<String>("fd_category_name"),
+                                              RLevel = resident.Field<String>("fd_risk_level")
+                                          }).Where(x => x.RID == residents.ResId);
+                    int count = 0;
+                    string comment = "", residentcommon = string.Empty;
+                    string colorCell = "";
+                    string level = string.Empty;
+                    int sortOrder = 1;
+                    foreach (var objRes in residentDetail)
+                    {
+                        Get_bindResidentCareAssessment_CarePlan(objRes.Code, "");
+                        if (count == 0)
+                        {
+                            switch (residents.RiskOrder)
+                            {
+                                case 1:
+                                    level = "HighFallRisk";
+                                    break;
+                                case 2:
+                                    level = "MediumFallingRisk";
+                                    break;
+                                case 3:
+                                    level = "LowFallingRisk";
+                                    break;
+                                default:
+                                    level = string.Empty;
+                                    break;
+                            }
+                            residentcommon += "<td>" + objRes.Suite + "</td>";
+                            residentcommon += "<td>" + objRes.RFname + " " + objRes.RLname + "</td>";
+                            residentcommon += "<td>" + objRes.Gender + "</td>";
+                            string phone = objRes.Phone.Trim().Length > 0 ? objRes.Phone : "NoPhone";
+                            residentcommon += "<td>" + phone + "</td>";
+                            residentcommon += "<td>" + objRes.Contact + "</td>";
+                            residentcommon += "<td>" + objRes.HomePhone + "</td>";
+
+                            if (level != "")
+                            {
+                                comment += "<b>" + level + "</b></br>";
+                            }
+                        }
+                        if (objRes.Code != "" || objRes.CategoryName != "")
+                        {
+                            comment += "<b>" + objRes.Code + " - </b>" + objRes.CategoryName + "</br>";
+                        }
+                        count++;
+                    }
+                    if (_colorCode == "R" || residents.RiskOrder == 1)
+                    {
+
+                        colorCell = "<td style='background-color:red;width:3px;'><span style='color:red;'>" + sortOrder + "</span></td>";
+                    }
+                    else if (_colorCode == "Y" || residents.RiskOrder == 2)
+                    {
+
+                        colorCell = "<td style='background-color:yellow;width:3px;'><span style='color:yellow;'>" + sortOrder + "</span></td>";
+                    }
+                    else if (_colorCode == "G")
+                    {
+
+                        colorCell = "<td style='background-color:green;width:3px;'><span style='color:green;'>" + sortOrder + "</span></td>";
+                    }
+                    else
+                    {
+                        colorCell = "<td style='background-color:white;width:3px;'><span style='color:white;'>" + sortOrder + "</span></td>";
+                    }
+                    query += colorCell + residentcommon + colorCell + "<td></td><td>" + comment + "</td></tr>";
+                    residentcommon = string.Empty;
+                    _colorCode = "W";
+                }
+            }
+            return query;
+        }
+
+        private void PrintCarePlanEmergencyDetails(DataSet ds, Font font8B, Font font8, PdfPTable table)
+        {
+            string query = string.Empty;
+            var residentList = (from residentTable in ds.Tables[0].AsEnumerable()
+                                select new
+                                {
+                                    ResId = residentTable.Field<Int32>("fd_resident_id"),
+                                    RiskOrder = residentTable.Field<Int32>("fd_risk_order")
+                                }).Distinct();
+            if (residentList != null)
+            {
+
+
+                foreach (var residents in residentList)
+                {
+                    var residentDetail = (from resident in ds.Tables[0].AsEnumerable()
+                                          select new
+                                          {
+                                              RID = resident.Field<Int32>("fd_resident_id"),
+                                              Suite = resident.Field<String>("fd_suite_no"),
+                                              RFname = resident.Field<String>("fd_first_name"),
+                                              RLname = resident.Field<String>("fd_last_name"),
+                                              Gender = resident.Field<String>("fd_gender"),
+                                              Phone = resident.Field<String>("fd_phone"),
+                                              Contact = resident.Field<String>("fd_contact_1"),
+                                              HomePhone = resident.Field<String>("fd_home_phone_1"),
+                                              Code = resident.Field<String>("fd_subcategory_code"),
+                                              CategoryName = resident.Field<String>("fd_category_name"),
+                                              RLevel = resident.Field<String>("fd_risk_level")
+                                          }).Where(x => x.RID == residents.ResId);
+                    string suiteNo = string.Empty;
+                    string residentName = string.Empty;
+                    string gender = string.Empty;
+                    string phone = string.Empty;
+                    string contact = string.Empty;
+                    string homePhone = string.Empty;
+                    string level = string.Empty;
+                    int count = 0;
+
+                    Phrase comment = new Phrase();
+                    string residentcommon = string.Empty;
+                    foreach (var objRes in residentDetail)
+                    {
+                        Get_bindResidentCareAssessment_CarePlan(objRes.Code, "");
+                        if (count == 0)
+                        {
+                            switch (residents.RiskOrder)
+                            {
+                                case 1:
+                                    level = "HighFallRisk";
+                                    break;
+                                case 2:
+                                    level = "MediumFallingRisk";
+                                    break;
+                                case 3:
+                                    level = "LowFallingRisk";
+                                    break;
+                                default:
+                                    level = string.Empty;
+                                    break;
+                            }
+                            suiteNo = objRes.Suite;
+                            residentName = objRes.RFname + " " + objRes.RLname;
+                            residentcommon += "<td>" + objRes.Gender + "</td>";
+                            phone = objRes.Phone.Trim().Length > 0 ? objRes.Phone : "NoPhone";
+                            contact = objRes.Contact;
+                            homePhone = objRes.HomePhone;
+
+                            if (level != "")
+                            {
+                                comment.Add(new Chunk(level + "\n", font8B));
+                            }
+                        }
+                        if (objRes.Code != "" || objRes.CategoryName != "")
+                        {
+                            comment.Add(new Chunk(objRes.Code + " - ", font8B));
+                            comment.Add(new Chunk(objRes.CategoryName + "\n", font8));
+
+                        }
+                        count++;
+                    }
+                    PdfPCell cellBG = new PdfPCell();
+                    cellBG.BackgroundColor = BaseColor.WHITE;
+                    if (_colorCode == "R" || residents.RiskOrder == 1)
+                    {
+                        cellBG.BackgroundColor = BaseColor.RED;
+                    }
+                    else if (_colorCode == "Y" || residents.RiskOrder == 2)
+                    {
+                        cellBG.BackgroundColor = BaseColor.YELLOW;
+                    }
+                    else if (_colorCode == "G")
+                    {
+                        cellBG.BackgroundColor = BaseColor.GREEN;
+                    }
+
+                    table.AddCell(cellBG);
+                    table.AddCell(new PdfPCell(new Phrase(suiteNo, font8)));
+                    table.AddCell(new PdfPCell(new Phrase(residentName, font8)));
+                    table.AddCell(new PdfPCell(new Phrase(gender, font8)));
+                    table.AddCell(new PdfPCell(new Phrase(phone, font8)));
+                    table.AddCell(new PdfPCell(new Phrase(contact, font8)));
+                    table.AddCell(new PdfPCell(new Phrase(homePhone, font8)));
+                    table.AddCell(new PdfPCell(cellBG));
+                    table.AddCell(new PdfPCell());
+
+                    residentcommon = string.Empty;
+                    _colorCode = "W";
+                }
+
+            }
+
+        }
     }
 }
+
+    public class EmergencyDetailspdfData
+    {
+        public string fd_suite_no { get; set; }
+        public string fd_first_name { get; set; }
+        public string fd_last_name { get; set; }
+        public string fd_gender { get; set; }
+        public string fd_phone { get; set; }
+        public string fd_contact_1 { get; set; }
+        public string fd_home_phone_1 { get; set; }
+        public string sReason { get; set; }
+        public int fd_risk_order { get; set; }
+
+        public string MobiltySelectedValue { get; set; }
+    }
+
+    public class pdfHeaderFooter : PdfPageEventHelper
+    {
+        int i = 1;
+        public override void OnStartPage(PdfWriter writer, Document document)
+        {
+
+            base.OnOpenDocument(writer, document);
+            iTextSharp.text.Font headerFont = FontFactory.GetFont(BaseFont.TIMES_ROMAN, 10f);
+            PdfPTable tabHeader = new PdfPTable(new float[] { 1F, 1F });
+            tabHeader.SpacingAfter = 1F;
+            PdfPCell cell;
+            tabHeader.TotalWidth = 783;
+
+            PdfPCell cell1 = new PdfPCell(new Phrase("QOLA Date printed: " + DateTime.Now, headerFont));
+            cell1.Border = 0;
+            cell1.HorizontalAlignment = Element.ALIGN_LEFT;
+
+            tabHeader.AddCell(cell1);
+
+            cell = new PdfPCell(new Phrase("HomeName".ToString(), headerFont));
+            cell.Border = 0;
+
+            cell.HorizontalAlignment = Element.ALIGN_RIGHT;
+            tabHeader.AddCell(cell);
+            tabHeader.WriteSelectedRows(0, -1, 29, (document.PageSize.Height - 10), writer.DirectContent);
+        }
+        public override void OnEndPage(PdfWriter writer, Document document)
+        {
+            base.OnEndPage(writer, document);
+            base.OnEndPage(writer, document);
+            iTextSharp.text.Font footerFont = FontFactory.GetFont(BaseFont.TIMES_ROMAN, 10f);
+            PdfPTable tabFot = new PdfPTable(new float[] { 9f, 12f, 8f });
+
+            tabFot.TotalWidth = 785;
+            tabFot.WidthPercentage = 100f;
+
+            PdfPCell cell1 = new PdfPCell(new Phrase("EmergencyResidentDetails", footerFont));
+            cell1.Border = 0;
+
+            cell1.HorizontalAlignment = Element.ALIGN_LEFT;
+
+            tabFot.AddCell(cell1);
+
+            PdfPTable colorTable = new PdfPTable(8);
+            colorTable.TotalWidth = 430f;
+            colorTable.SetWidths(new float[] { .03f, .25f, .03f, .25f, .03f, .25f, .03f, .25f });
+
+
+            PdfPCell redCell = new PdfPCell();
+            redCell.BackgroundColor = BaseColor.RED;
+            colorTable.AddCell(redCell);
+
+
+            PdfPCell red = new PdfPCell(new Phrase("HighRisk", footerFont));
+            red.HorizontalAlignment = Element.ALIGN_CENTER;
+            colorTable.AddCell(red);
+
+            PdfPCell yellowCell = new PdfPCell();
+            yellowCell.BackgroundColor = BaseColor.YELLOW;
+            colorTable.AddCell(yellowCell);
+
+            PdfPCell yellow = new PdfPCell(new Phrase("ModerateRisk", footerFont));
+            yellow.HorizontalAlignment = Element.ALIGN_CENTER;
+            colorTable.AddCell(yellow);
+
+
+            PdfPCell GreenCell = new PdfPCell();
+            GreenCell.BackgroundColor = BaseColor.GREEN;
+            colorTable.AddCell(GreenCell);
+
+            PdfPCell Green = new PdfPCell(new Phrase("LowRisk", footerFont));
+            Green.HorizontalAlignment = Element.ALIGN_CENTER;
+            colorTable.AddCell(Green);
+
+            PdfPCell noRiskCell = new PdfPCell();
+            noRiskCell.BackgroundColor = BaseColor.WHITE;
+            colorTable.AddCell(noRiskCell);
+
+
+            PdfPCell noRisk = new PdfPCell(new Phrase("NoRisk", footerFont));
+            noRisk.HorizontalAlignment = Element.ALIGN_CENTER;
+            colorTable.AddCell(noRisk);
+
+
+            PdfPCell colorCell = new PdfPCell(colorTable);
+            colorCell.Border = 0;
+
+            colorCell.HorizontalAlignment = Element.ALIGN_LEFT;
+            colorCell.PaddingLeft = 30;
+            tabFot.AddCell(colorCell);
+
+            PdfPCell cell = new PdfPCell(new Phrase("Page" + " - " + i++, footerFont));
+            cell.Border = 0;
+
+            cell.HorizontalAlignment = Element.ALIGN_RIGHT;
+            tabFot.AddCell(cell);
+            tabFot.WriteSelectedRows(0, -1, 29, document.Bottom - 3, writer.DirectContent);
+        }
+
+    }
+    #endregion
+

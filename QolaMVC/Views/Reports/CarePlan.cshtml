@@ -1,6 +1,7 @@
-﻿
+﻿@model  QolaMVC.Models.ResidentModel
+
 @RenderPage("~/Views/Shared/_Header.cshtml")
-@RenderPage("~/Views/Shared/_SideBar.cshtml")
+
 
 <style>
     .form-tabs .nav-link {
@@ -13,7 +14,6 @@
     }
 </style>
 
-<!-- START PAGE CONTENT WRAPPER -->
 <div class="page-content-wrapper">
     <!-- START PAGE CONTENT -->
     <div class="content">
@@ -23,12 +23,11 @@
                 <!-- <div class="inner"> -->
                 <div class="row align-items-center">
                     <div class="col-md-8">
-                        <h3>Manage Residents</h3>
+                        <h3></h3>
                     </div>
                     <div class="col-md-2 text-right">
                         <h4 class="text-danger bold pr-3">
-                            31
-                            <small>Residents</small>
+                            
                         </h4>
                     </div>
                 </div>
@@ -42,7 +41,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <button class="btn btn-default print">GENERATE PDF</button>
+                    @*<button class="btn btn-default print">GENERATE PDF</button>*@
                 </div>
             </div>
         </div>
@@ -72,20 +71,29 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>Admission Date: 10/26/2015</td>
+                                        <td>Admission Date: @Model.AdmittedFrom</td>
                                     </tr>
                                     <tr>
-                                        <td>Date Of Birth: 05/20/1941</td>
+                                        <td>Date Of Birth: @Model.BirthDate</td>
 
                                     </tr>
                                     <tr>
-                                        <td>Gender: Male</td>
+                                        <td>Gender: @{
+                                                if (Model.Gendar == 'M') {
+                                                    <b>Male</b>
+                                                }
+                                                else
+                                                {
+                                                    <b>Female</b>
+                                                }
+                                            }
+                                        </td>
                                     </tr>
                                     <tr>
-                                        <td>Marital Status: Married</td>
+                                        <td>Marital Status: @Model.MaritalStatus</td>
                                     </tr>
                                     <tr>
-                                        <td>HC #: 1111112222222</td>
+                                        <td>HC #: @Model.MBhealthNumber</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -98,7 +106,7 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>n/a</td>
+                                        <td>@Model.HealthHistory</td>
                                     </tr>
 
                                 </tbody>
@@ -112,7 +120,7 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>n/a</td>
+                                        <td>@Model.CurrentDiagnoses</td>
                                     </tr>
 
                                 </tbody>
@@ -126,7 +134,7 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>tape:</td>
+                                        <td>@Model.Alergies</td>
                                         <td>Hydantoins:</td>
                                     </tr>
 
@@ -141,9 +149,9 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>Family Physician: Dr. Smith</td>
-                                        <td>Tel #: (416) 444-4444</td>
-                                        <td>Fax #</td>
+                                        <td>Family Physician: @Model.Physician</td>
+                                        <td>Tel #: @Model.PhysicianPhone</td>
+                                        <td>Fax #: @Model.PhysicianFaxNo</td>
                                     </tr>
 
                                 </tbody>
@@ -157,9 +165,9 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>Name: london drugs</td>
-                                        <td>Fax #:</td>
-                                        <td>Tel #:</td>
+                                        <td>Name: @Model.PharmacyName</td>
+                                        <td>Fax #: @Model.PharmaceFaxNumber</td>
+                                        <td>Tel #: @Model.PharmacePhoneNo</td>
                                     </tr>
 
                                 </tbody>
@@ -174,15 +182,15 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td colspan="3">#1 Name: Hannah Sommerville</td>
+                                        <td colspan="3">#1 Name: @Model.Contract1</td>
                                     </tr>
                                     <tr>
-                                        <td colspan="3">Relationship: daughter</td>
+                                        <td colspan="3">Relationship: @Model.Relationship1</td>
 
                                     </tr>
                                     <tr>
                                         <td>POA Care:</td>
-                                        <td>
+                                        @*<td>
                                             <div class="form-check form-check-inline movesp margin2">
                                                 <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
                                                 <label class="form-check-label checkspace" for="">Yes</label>
@@ -193,11 +201,11 @@
                                                 <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
                                                 <label class="form-check-label checkspace" for="">No</label>
                                             </div>
-                                        </td>
+                                        </td>*@
                                     </tr>
                                     <tr>
                                         <td>POA Finance: </td>
-                                        <td>
+                                        @*<td>
                                             <div class="form-check form-check-inline movesp margin2">
                                                 <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
                                                 <label class="form-check-label checkspace" for="">Yes</label>
@@ -208,7 +216,7 @@
                                                 <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
                                                 <label class="form-check-label checkspace" for="">No</label>
                                             </div>
-                                        </td>
+                                        </td>*@
                                     </tr>
                                 </tbody>
                             </table>
@@ -221,7 +229,7 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>1°#: (416) 728-1418(Home)</td>
+                                        <td>1°#: @Model.Phone (Home)</td>
                                     </tr>
                                     <tr>
                                         <td>2°#: (Others)</td>
@@ -241,22 +249,22 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td colspan="3"></td>
+                                        <td colspan="3">@Model.Address1</td>
                                     </tr>
                                     <tr>
                                         <td colspan="3">
-                                            Email: hsommerville@allseniorscare.com
+                                            Email: @Model.Email1
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="3">#2 Name:</td>
+                                        <td colspan="3">#2 Name: @Model.Contract2</td>
                                     </tr>
                                     <tr>
-                                        <td colspan="3">Relationship:</td>
+                                        <td colspan="3">Relationship: @Model.Relationship2</td>
                                     </tr>
                                     <tr>
                                         <td>POA Care: </td>
-                                        <td>
+                                        @*<td>
                                             <div class="form-check form-check-inline movesp margin2">
                                                 <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
                                                 <label class="form-check-label checkspace" for="">Yes</label>
@@ -267,11 +275,11 @@
                                                 <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
                                                 <label class="form-check-label checkspace" for="">No</label>
                                             </div>
-                                        </td>
+                                        </td>*@
                                     </tr>
                                     <tr>
                                         <td>POA Finance: </td>
-                                        <td>
+                                        @*<td>
                                             <div class="form-check form-check-inline movesp margin2">
                                                 <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
                                                 <label class="form-check-label checkspace" for="">Yes</label>
@@ -282,7 +290,7 @@
                                                 <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
                                                 <label class="form-check-label checkspace" for="">No</label>
                                             </div>
-                                        </td>
+                                        </td>*@
                                     </tr>
 
 
@@ -297,13 +305,13 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>1°#: (Others):</td>
+                                        <td>1°#: (Others): @Model.HomePhoneType1</td>
                                     </tr>
                                     <tr>
-                                        <td>2°#: (Others)</td>
+                                        <td>2°#: (Others) @Model.HomePhoneType2</td>
                                     </tr>
                                     <tr>
-                                        <td>3°#: (Others)</td>
+                                        <td>3°#: (Others) @Model.HomePhoneType3</td>
                                     </tr>
 
                                 </tbody>
@@ -428,7 +436,7 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>P Partial Assist</td>
+                                        <td></td>
                                     </tr>
 
                                 </tbody>
@@ -442,13 +450,13 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>Buddhist</td>
+                                        <td>@Model.ReligionType</td>
                                     </tr>
 
                                 </tbody>
                                 <thead class="">
                                     <tr>
-                                        <th class="colorBlack text-center">Code Status</td>
+                                        <th class="colorBlack text-center">Code Status</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -458,12 +466,12 @@
                                     <tr>
                                         <th class="colorBlack text-center">
                                             Cultural Preferences / Customary Routines /
-                                            Traditions</td>
+                                            Traditions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>baking bread on fridays</td>
+                                        <td>@Model.CulturalPreferences</td>
                                     </tr>
 
                                 </tbody>
@@ -889,6 +897,7 @@
     </div>
     <!-- END PAGE CONTENT -->
     <!-- New Resident Modal -->
+
 
     @RenderPage("~/Views/Shared/_Footer.cshtml")
 
