@@ -313,6 +313,7 @@ BEGIN
 		ResidentName = R.fd_first_name + ' ' + R.fd_last_name,
 		ResidentFirstName = R.fd_first_name,
 		ResidentLastName = R.fd_last_name, 
+		SuiteNumber = S.fd_suite_no,
 		ActivityName, 
 		WeekId, 
 		Sunday, 
@@ -344,7 +345,7 @@ GO
 CREATE PROCEDURE [dbo].[spAB_Add_HSEP_Detail]
 @ResidentId int,
 @ActivityName [nvarchar](200),
-@DateOfTeaching [datetime] null,
+@DateOfTeaching [datetime] = null,
 @EnteredBy int
 AS
 --20180507 chime created
@@ -369,6 +370,7 @@ BEGIN
 		ResidentName = R.fd_first_name + ' ' + R.fd_last_name,
 		ResidentFirstName = R.fd_first_name,
 		ResidentLastName = R.fd_last_name, 
+		SuiteNumber = S.fd_suite_no,
 		ActivityName, 
 		DateOfTeaching, 
 		EnteredBy = U.fd_id,
@@ -425,6 +427,7 @@ BEGIN
 		ResidentName = R.fd_first_name + ' ' + R.fd_last_name,
 		ResidentFirstName = R.fd_first_name,
 		ResidentLastName = R.fd_last_name, 
+		SuiteNumber = S.fd_suite_no,
 		BaselineDate,
 		BaselineTug,
 		BaselineVPS,
@@ -487,6 +490,7 @@ BEGIN
 		ResidentName = R.fd_first_name + ' ' + R.fd_last_name,
 		ResidentFirstName = R.fd_first_name,
 		ResidentLastName = R.fd_last_name, 
+		SuiteNumber = S.fd_suite_no,
 		BaselineDate,
 		BaselineTug,
 		BaselineVPS,
