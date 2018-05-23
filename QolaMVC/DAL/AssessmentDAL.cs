@@ -1,4 +1,5 @@
 ﻿using QolaMVC.Models;
+using QolaMVC.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,7 +15,7 @@ namespace QolaMVC.DAL
         public static void AddNewBowelMovement(BowelMovementModel p_BowelMovement)
         {
             string exception = string.Empty;
-            
+
             SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
             try
             {
@@ -45,8 +46,8 @@ namespace QolaMVC.DAL
         public static Collection<BowelMovementModel> GetResidentsBowelAssessments(int p_ResidentId)
         {
             string exception = string.Empty;
-            Collection<BowelMovementModel> l_BowelMovements = new Collection<BowelMovementModel>(); 
-            
+            Collection<BowelMovementModel> l_BowelMovements = new Collection<BowelMovementModel>();
+
             ResidentModel l_Resident = new ResidentModel();
             SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
             try
@@ -134,6 +135,69 @@ namespace QolaMVC.DAL
             }
         }
 
+
+        public static Collection<PostFallClinicalMonitoringViewModel> GetPostFall(int? residentId, string category, string date_created)
+        {
+            string exception = string.Empty;
+            var postFalldetails = new Collection<PostFallClinicalMonitoringViewModel>();
+            using (var connection = new SqlConnection(Constants.ConnectionString.PROD))
+            {
+
+                try
+                {
+                    var sqlAdapter = new SqlDataAdapter();
+                    //var reader
+                    var sqlCommand = new SqlCommand(Constants.StoredProcedureName.USP_GetPostFall, connection);
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    connection.Open();
+                    sqlCommand.Parameters.AddWithValue("@Id", residentId);
+                    sqlCommand.Parameters.AddWithValue("@category", category);
+                    sqlCommand.Parameters.AddWithValue("@date_created", date_created);
+                    DataSet getData = new DataSet();
+                    sqlAdapter.SelectCommand = sqlCommand;
+                    sqlAdapter.Fill(getData);
+                    if (getData != null && getData.Tables.Count > 0)
+                    {
+                        for (int i = 0; i <= getData.Tables[0].Rows.Count - 1; i++)
+                        {
+                            var postFallDetail = new PostFallClinicalMonitoringViewModel();
+                            postFallDetail.residentid = Convert.ToString(getData.Tables[0].Rows[i]["residentid"]);
+                            postFallDetail.vitalsign = Convert.ToString(getData.Tables[0].Rows[i]["vitalsign"]);
+                            postFallDetail.date_created = Convert.ToString(getData.Tables[0].Rows[i]["date_created"]);
+                            postFallDetail.category = Convert.ToString(getData.Tables[0].Rows[i]["category"]);
+                            postFallDetail.firstcheck = Convert.ToString(getData.Tables[0].Rows[i]["firstcheck"]);
+                            postFallDetail.onehourfirstcheck = Convert.ToString(getData.Tables[0].Rows[i]["onehourfirstcheck"]);
+                            postFallDetail.onehoursecondcheck = Convert.ToString(getData.Tables[0].Rows[i]["onehoursecondcheck"]);
+                            postFallDetail.threehoursfirstcheck = Convert.ToString(getData.Tables[0].Rows[i]["threehoursfirstcheck"]);
+                            postFallDetail.threehourssecondcheck = Convert.ToString(getData.Tables[0].Rows[i]["threehourssecondcheck"]);
+                            postFallDetail.threehoursthirdcheck = Convert.ToString(getData.Tables[0].Rows[i]["threehoursthirdcheck"]);
+                            postFallDetail.fourtyeighthoursfirstcheck = Convert.ToString(getData.Tables[0].Rows[i]["fourtyeighthoursfirstcheck"]);
+                            postFallDetail.fourtyeighthourssecondcheck = Convert.ToString(getData.Tables[0].Rows[i]["fourtyeighthourssecondcheck"]);
+                            postFallDetail.fourtyeighthoursthirdcheck = Convert.ToString(getData.Tables[0].Rows[i]["fourtyeighthoursthirdcheck"]);
+                            postFallDetail.fourtyeighthoursfourthcheck = Convert.ToString(getData.Tables[0].Rows[i]["fourtyeighthoursfourthcheck"]);
+                            postFallDetail.fourtyeighthoursfifthcheck = Convert.ToString(getData.Tables[0].Rows[i]["fourtyeighthoursfifthcheck"]);
+                            postFalldetails.Add(postFallDetail);
+                            //var a  = Convert.ToString(getData.Tables[0].Rows[i]["residentid"]);
+                            //postFalldetails.onehourfirstcheck[i] = Convert.ToString(getData.Tables[0].Rows[i]["onehourfirstcheck"]);
+
+                        }
+                    }
+                    
+                    return postFalldetails;
+                }
+                catch (Exception ex)
+                {
+                    exception = "PostFallClinicalMonitoring |" + ex.ToString();
+                    //Log.Write(exception);
+                    throw;
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
+
         public static Collection<FamilyConfrenceNoteModel> GetFamilyConferenceNotes(int p_ResidentId)
         {
             string exception = string.Empty;
@@ -173,7 +237,6 @@ namespace QolaMVC.DAL
                         l_FamilyConferenceNote.Presents3 = Convert.ToString(dataReceive.Tables[0].Rows[index]["Present3"]);
                         l_FamilyConferenceNote.Recreation = Convert.ToString(dataReceive.Tables[0].Rows[index]["Recreation"]);
                         l_FamilyConferenceNote.SuiteNumber = Convert.ToString(dataReceive.Tables[0].Rows[index]["SuiteNumber"]);
-
                         l_Resident.ID = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
                         l_Resident.SuiteNo = Convert.ToString(dataReceive.Tables[0].Rows[index]["SuiteNumber"]);
                         l_Resident.FirstName = Convert.ToString(dataReceive.Tables[0].Rows[index]["ResidentFirstName"]);
@@ -192,6 +255,104 @@ namespace QolaMVC.DAL
             finally
             {
                 l_Conn.Close();
+            }
+        }
+
+        //SE add postfallclinicalmonitoring assessment
+        public static PostFallClinicalMonitoringModel AddPostFall(PostFallClinicalMonitoringModel model, VitalSignsModel vitalSigns, int? Id)
+        {
+            string exception = string.Empty;
+
+            using (var connection = new SqlConnection(Constants.ConnectionString.PROD))
+            {
+
+                try
+                {
+                    var sqlAdapter = new SqlDataAdapter();
+                    var sqlCommand = new SqlCommand(Constants.StoredProcedureName.USP_AddPostFall, connection);
+                    connection.Open();
+                    for (int i = 0; i < model.firstcheck.Count(); i++)
+                    {
+                        var vitalSignId = AddVitalSign(vitalSigns, i);
+                        sqlCommand.CommandType = CommandType.StoredProcedure;
+                        sqlCommand.Parameters.AddWithValue("@firstcheck", model.firstcheck[i]);
+                        sqlCommand.Parameters.AddWithValue("@onehourfirstcheck", model.onehourfirstcheck[i]);
+                        sqlCommand.Parameters.AddWithValue("@onehoursecondcheck", model.onehoursecondcheck[i]);
+                        sqlCommand.Parameters.AddWithValue("@threehoursfirstcheck", model.threehoursfirstcheck[i]);
+                        sqlCommand.Parameters.AddWithValue("@threehourssecondcheck", model.threehourssecondcheck[i]);
+                        sqlCommand.Parameters.AddWithValue("@threehoursthirdcheck", model.threehoursthirdcheck[i]);
+                        sqlCommand.Parameters.AddWithValue("@fourtyeighthoursfirstcheck", model.fourtyeighthoursfirstcheck[i]);
+                        sqlCommand.Parameters.AddWithValue("@fourtyeighthourssecondcheck", model.fourtyeighthourssecondcheck[i]);
+                        sqlCommand.Parameters.AddWithValue("@fourtyeighthoursthirdcheck", model.fourtyeighthoursthirdcheck[i]);
+                        sqlCommand.Parameters.AddWithValue("@fourtyeighthoursfourthcheck", model.fourtyeighthoursfourthcheck[i]);
+                        sqlCommand.Parameters.AddWithValue("@fourtyeighthoursfifthcheck", model.fourtyeighthoursfifthcheck[i]);
+                        sqlCommand.Parameters.AddWithValue("@category", model.category);
+                        sqlCommand.Parameters.AddWithValue("@vitalsign", vitalSignId);
+                        sqlCommand.ExecuteNonQuery();
+                        sqlCommand.Parameters.Clear();
+                    }
+                    return model;
+                }
+                catch (Exception ex)
+                {
+                    exception = "PostFallClinicalMonitoring |" + ex.ToString();
+                    //Log.Write(exception);
+                    throw;
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
+
+        public static string AddVitalSign(VitalSignsModel model, int index)
+        {
+            string exception = string.Empty;
+            using (var connection = new SqlConnection(Constants.ConnectionString.PROD))
+            {
+                try
+                {
+
+                    model.date_created = DateTime.Now.ToShortDateString();
+                    var sqlAdapter = new SqlDataAdapter();
+                    var sqlCommand = new SqlCommand(Constants.StoredProcedureName.USP_AddPostFallVitalSign, connection);
+                    connection.Open();
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    
+                    sqlCommand.Parameters.AddWithValue("@residentid", "1234");
+                    sqlCommand.Parameters.AddWithValue("@vitalsign", model.vitalsign[index]);
+                    sqlCommand.Parameters.AddWithValue("@category", model.category);
+                    sqlCommand.Parameters.AddWithValue("@date_created", model.date_created);
+                    //SqlParameter myid = new SqlParameter("@myid", SqlDbType.Int);
+                    //myid.Direction = ParameterDirection.Output;
+                    //sqlCommand.Parameters.Add(myid);
+                    sqlCommand.Parameters.Add("@myid", SqlDbType.Int).Direction = ParameterDirection.Output;
+
+                    DataSet getData = new DataSet();
+                    sqlAdapter.SelectCommand = sqlCommand;
+                    sqlAdapter.Fill(getData);
+
+                    if (getData != null && getData.Tables.Count > 0)
+                    {
+                        return Convert.ToString(getData.Tables[0].Rows[0]["Id"].ToString());
+                    }
+                    else
+                    {
+                        //sqlCommand.ExecuteNonQuery();
+
+                        string id = sqlCommand.Parameters["@myid"].Value.ToString();
+                        return id;
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    exception = "PostFallClinicalMonitoringVitalSigns |" + ex.ToString();
+                    //Log.Write(exception);
+                    throw;
+                }
+
             }
         }
 
@@ -422,7 +583,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static void AddExcerciseActivityDetail (ExcerciseActivityDetailModel p_Model)
+        public static void AddExcerciseActivityDetail(ExcerciseActivityDetailModel p_Model)
         {
             string exception = string.Empty;
 

@@ -1,4 +1,4 @@
-@model IEnumerable<QolaMVC.EF_DAL.tbl_PostfallClinicalMonitoringDetails>
+@model IEnumerable<QolaMVC.ViewModels.PostFallClinicalMonitoringViewModel>
 @RenderPage("~/Views/Shared/_Header.cshtml")
 @RenderPage("~/Views/Shared/_SideBar.cshtml")
 
@@ -55,21 +55,20 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-4 offset-md-4">
-
-
                                         @{
                                             if (Model != null)
                                             {
                                                 using (Html.BeginForm("FindAssessment", "Assessments", FormMethod.Post))
                                                 {
-                                                    <input type="hidden" name="Id" value="a" />
+                                                    <input type="hidden" name="category" value="a" />
+
                                                     <div class="form-group">
                                                         <label>Select date</label>
                                                         <select name="date_created" class="form-control">
-                                                            @foreach (var item in Model)
+                                                            @foreach (var item in Model.GroupBy(m => m.date_created))
                                                             {
 
-                                                                <option value="@item.tbl_PostfallClinicalMonitoringVitalSigns.date_created">@item.tbl_PostfallClinicalMonitoringVitalSigns.date_created</option>
+                                                                <option value="@item.Key">@item.Key</option>
                                                             }
                                                         </select>
                                                     </div>
@@ -83,737 +82,700 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <table class="table table-bordered">
-                                        <thead class="bg-primary">
-                                            <tr>
-                                                <th class="text-white text-center">Vital Signs</th>
-                                                <th class="text-white text-center">1st Check</th>
-                                                <th class="text-white text-center" colspan="2">Q 30 mins * 1 hour</th>
-                                                <th class="text-white text-center" colspan="3">Q 30 hours * 3 hours</th>
-                                                <th class="text-white text-center" colspan="5">Q 8 hours * 48 hours</th>
-                                                <th class="text-white text-center">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Date</td>
-                                                @using (Html.BeginForm("PostFallClinicalMonitoring_A", "Assessments", FormMethod.Post))
-                                                {
-                                                    @Html.AntiForgeryToken()
+                                    <form action="/Assessments/PostFallClinicalMonitoring_A" method="post">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="category" value="a" />
 
+                                        <table class="table table-bordered">
 
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">Vital Signs</th>
+                                                    <th class="text-white text-center">1st Check</th>
+                                                    <th class="text-white text-center" colspan="2">Q 30 mins * 1 hour</th>
+                                                    <th class="text-white text-center" colspan="3">Q 30 hours * 3 hours</th>
+                                                    <th class="text-white text-center" colspan="5">Q 8 hours * 48 hours</th>
+                                                    @*<th class="text-white text-center">Action</th>*@
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Date</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="date1" />
+                                                        }
 
-                                                    if (Model == null || Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "date1") == null)
-                                                    {
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="date1" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
-                                                    }
-                                                    else
-                                                    {
-                                                        var date1 = Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "date1");
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "date1")
+                                                                {
 
-                                                        <td><input type="text" name="firstcheck" value="@date1.firstcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="onehourfirstcheck" value="@date1.onehourfirstcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="onehoursecondcheck" value="@date1.onehoursecondcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="threehoursfirstcheck" value="@date1.threehoursfirstcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="threehourssecondcheck" value="@date1.threehourssecondcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="threehoursthirdcheck" value="@date1.threehoursthirdcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="fourtyeighthoursfirstcheck" value="@date1.fourtyeighthoursfirstcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="fourtyeighthourssecondcheck" value="@date1.fourtyeighthourssecondcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="fourtyeighthoursthirdcheck" value="@date1.fourtyeighthoursthirdcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="fourtyeighthoursfourthcheck" value="@date1.fourtyeighthoursfourthcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="fourtyeighthoursfifthcheck" value="@date1.fourtyeighthoursfifthcheck" class="form-control" id="staticEmail"></td>
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="date1" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="date1" />
+                                                                    break;
+                                                                }
+
+                                                            }
+
+                                                        }
                                                     }
 
-                                                }
+                                                </tr>
+                                                <tr>
+                                                    <td>Time</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="time1" />
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "time1")
+                                                                {
 
-                                            </tr>
-                                            <tr>
-                                                <td>Time</td>
-                                                @using (Html.BeginForm("PostFallClinicalMonitoring_A", "Assessments", FormMethod.Post))
-                                                {
-                                                    @Html.AntiForgeryToken()
-                                                    if (Model == null || Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "time1") == null)
-                                                    {
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="time1" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="time1" />
+                                                                    break;
+                                                                }
 
-                                                    }
-                                                    else
-                                                    {
-                                                        var date1 = Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "time1");
-
-                                                        <td><input type="text" name="firstcheck" value="@date1.firstcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="onehourfirstcheck" value="@date1.onehourfirstcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="onehoursecondcheck" value="@date1.onehoursecondcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="threehoursfirstcheck" value="@date1.threehoursfirstcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="threehourssecondcheck" value="@date1.threehourssecondcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="threehoursthirdcheck" value="@date1.threehoursthirdcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="fourtyeighthoursfirstcheck" value="@date1.fourtyeighthoursfirstcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="fourtyeighthourssecondcheck" value="@date1.fourtyeighthourssecondcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="fourtyeighthoursthirdcheck" value="@date1.fourtyeighthoursthirdcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="fourtyeighthoursfourthcheck" value="@date1.fourtyeighthoursfourthcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="fourtyeighthoursfifthcheck" value="@date1.fourtyeighthoursfifthcheck" class="form-control" id="staticEmail"></td>
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="time1" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
-                                                    }
-
-                                                }
-                                            </tr>
-                                            <tr>
-                                                <td>BP</td>
-                                                @using (Html.BeginForm("PostFallClinicalMonitoring_A", "Assessments", FormMethod.Post))
-                                                {
-                                                    @Html.AntiForgeryToken()
-
-                                                    if (Model == null || Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "bp") == null)
-                                                    {
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="bp" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
+                                                            }
+                                                        }
 
                                                     }
-                                                    else
-                                                    {
-                                                        var date1 = Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "bp");
+                                                </tr>
+                                                <tr>
+                                                    <td>BP</td>
+                                                    @{ if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="bp" />
 
-                                                        <td><input type="text" name="firstcheck" value="@date1.firstcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="onehourfirstcheck" value="@date1.onehourfirstcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="onehoursecondcheck" value="@date1.onehoursecondcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="threehoursfirstcheck" value="@date1.threehoursfirstcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="threehourssecondcheck" value="@date1.threehourssecondcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="threehoursthirdcheck" value="@date1.threehoursthirdcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="fourtyeighthoursfirstcheck" value="@date1.fourtyeighthoursfirstcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="fourtyeighthourssecondcheck" value="@date1.fourtyeighthourssecondcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="fourtyeighthoursthirdcheck" value="@date1.fourtyeighthoursthirdcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="fourtyeighthoursfourthcheck" value="@date1.fourtyeighthoursfourthcheck" class="form-control" id="staticEmail"></td>
-                                                        <td><input type="text" name="fourtyeighthoursfifthcheck" value="@date1.fourtyeighthoursfifthcheck" class="form-control" id="staticEmail"></td>
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="bp" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "bp")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="bp" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
+                                                    }
+                                                </tr>
+                                                <tr>
+                                                    <td>Pulse</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="pulse" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "pulse")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="pulse" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
+                                                    }
+                                                </tr>
+                                                <tr>
+                                                    <td>RESP. rate</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="resprate" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "resprate")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="resprate" />
+                                                                    break;
+                                                                }
+
+                                                            }
+
+                                                        }
                                                     }
 
+                                                </tr>
+                                                <tr>
+                                                    <td>TEMP</td>
+                                                    @{
 
-                                                }
-                                            </tr>
-                                            <tr>
-                                                <td>Pulse</td>
-                                                @using (Html.BeginForm("PostFallClinicalMonitoring_A", "Assessments", FormMethod.Post))
-                                                {
-                                                    @Html.AntiForgeryToken()
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="temp" />
 
-                                                    if (Model == null || Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "pulse") == null)
-                                                    {
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="pulse" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "temp")
+                                                                {
 
-                                                    }
-                                                    else
-                                                    {
-                                                        var date1 = Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "pulse");
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", date1);
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="temp" />
+                                                                    break;
+                                                                }
 
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="pulse" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
-                                                    }
-
-
-                                                }
-                                            </tr>
-                                            <tr>
-                                                <td>RESP. rate</td>
-                                                @using (Html.BeginForm("PostFallClinicalMonitoring_A", "Assessments", FormMethod.Post))
-                                                {
-                                                    @Html.AntiForgeryToken()
-                                                    if (Model == null || Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "resprate") == null)
-                                                    {
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
-
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="resprate" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
-                                                    }
-                                                    else
-                                                    {
-                                                        var date1 = Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "resprate");
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", date1);
-
-
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="resprate" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
-                                                    }
-
-                                                }
-                                            </tr>
-                                            <tr>
-                                                <td>TEMP</td>
-                                                @using (Html.BeginForm("PostFallClinicalMonitoring_A", "Assessments", FormMethod.Post))
-                                                {
-                                                    @Html.AntiForgeryToken()
-                                                    if (Model == null || Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "temp") == null)
-                                                    {
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="temp" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
+                                                            }
+                                                        }
 
                                                     }
-                                                    else
-                                                    {
-                                                        var date1 = Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "temp");
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", date1);
+                                                </tr>
+                                                <tr>
+                                                    <td>02 SAT</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="02sat" />
 
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="temp" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
-                                                    }
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "02sat")
+                                                                {
 
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="02sat" />
+                                                                    break;
+                                                                }
 
-
-                                                }
-                                            </tr>
-                                            <tr>
-                                                <td>02 SAT</td>
-                                                @using (Html.BeginForm("PostFallClinicalMonitoring_A", "Assessments", FormMethod.Post))
-                                                {
-                                                    @Html.AntiForgeryToken()
-                                                    if (Model == null || Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "02sat") == null)
-                                                    {
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="02sat" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
-
-                                                    }
-                                                    else
-                                                    {
-                                                        var date1 = Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "02sat");
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", date1);
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="02sat" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
-
-                                                    }
-
-                                                }
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <br><br>
-                                    <table class="table table-bordered">
-                                        <thead class="bg-primary">
-                                            <tr>
-                                                <th class="text-white text-center">Vital Signs</th>
-                                                <th class="text-white text-center">1st Check</td>
-                                                <th class="text-white text-center" colspan="4">Q 1 hour * 4 hours</th>
-                                                <th class="text-white text-center" colspan="6">Q 30 hours * 3 hours</th>
-                                                <th class="text-white text-center">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Date</td>
-                                                @using (Html.BeginForm("PostFallClinicalMonitoring_A", "Assessments", FormMethod.Post))
-                                                {
-                                                    @Html.AntiForgeryToken()
-                                                    if (Model == null || Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "date2") == null)
-                                                    {
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="date2" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
-
-                                                    }
-                                                    else
-                                                    {
-                                                        var date1 = Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "date2");
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", date1);
-
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="date2" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
+                                                            }
+                                                        }
 
                                                     }
 
 
-                                                }
-                                            </tr>
-                                            <tr>
-                                                <td>Time</td>
-                                                @using (Html.BeginForm("PostFallClinicalMonitoring_A", "Assessments", FormMethod.Post))
-                                                {
-                                                    @Html.AntiForgeryToken()
-                                                    if (Model == null || Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "time2") == null)
-                                                    {
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <br><br>
+                                        <table class="table table-bordered">
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">Vital Signs</th>
+                                                    <th class="text-white text-center">1st Check</td>
+                                                    <th class="text-white text-center" colspan="4">Q 1 hour * 4 hours</th>
+                                                    <th class="text-white text-center" colspan="6">Q 30 hours * 3 hours</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Date</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="date2" />
 
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="time2" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "date2")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="date2" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
                                                     }
-                                                    else
-                                                    {
-                                                        var date1 = Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "time2");
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", date1);
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="time2" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Time</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="time2" />
 
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "time2")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="time2" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
                                                     }
+                                                </tr>
+                                                <tr>
+                                                    <td>PAIN (Y/N)</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="pain" />
 
-                                                }
-                                            </tr>
-                                            <tr>
-                                                <td>PAIN (Y/N)</td>
-                                                @using (Html.BeginForm("PostFallClinicalMonitoring_A", "Assessments", FormMethod.Post))
-                                                {
-                                                    @Html.AntiForgeryToken()
-                                                    if (Model == null || Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "pain") == null)
-                                                    {
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "pain")
+                                                                {
 
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="pain" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="pain" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
                                                     }
-                                                    else
-                                                    {
-                                                        var date1 = Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "pain");
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", date1);
+                                                </tr>
+                                                <tr>
+                                                    <td>PAIN SCALE(0-10)</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="painscale" />
 
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "painscale")
+                                                                {
 
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="pain" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="painscale" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
                                                     }
+                                                </tr>
+                                                <tr>
+                                                    <td>LOCATION</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="location" />
 
-                                                }
-                                            </tr>
-                                            <tr>
-                                                <td>PAIN SCALE(0-10)</td>
-                                                @using (Html.BeginForm("PostFallClinicalMonitoring_A", "Assessments", FormMethod.Post))
-                                                {
-                                                    @Html.AntiForgeryToken()
-                                                    if (Model == null || Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "painscale") == null)
-                                                    {
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="painscale" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "location")
+                                                                {
 
-                                                    }
-                                                    else
-                                                    {
-                                                        var date1 = Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "painscale");
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", date1);
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="location" />
+                                                                    break;
+                                                                }
 
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="painscale" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
-
-                                                    }
-
-
-
-                                                }
-                                            </tr>
-                                            <tr>
-                                                <td>LOCATION</td>
-                                                @using (Html.BeginForm("PostFallClinicalMonitoring_A", "Assessments", FormMethod.Post))
-                                                {
-                                                    @Html.AntiForgeryToken()
-                                                    if (Model == null || Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "location") == null)
-                                                    {
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="location" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
-
-
-                                                    }
-                                                    else
-                                                    {
-                                                        var date1 = Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "location");
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", date1);
-
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="location" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
-
-                                                    }
-
-
-
-                                                }
-                                            </tr>
-                                            <tr>
-                                                <td>STAFF INITAILS</td>
-                                                @using (Html.BeginForm("PostFallClinicalMonitoring_A", "Assessments", FormMethod.Post))
-                                                {
-                                                    @Html.AntiForgeryToken()
-                                                    if (Model == null || Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "staffinitials") == null)
-                                                    {
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="staffinitials" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
-
-                                                    }
-                                                    else
-                                                    {
-                                                        var date1 = Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "staffinitials");
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", date1);
-
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="staffinitials" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
-
-                                                    }
-
-
-
-                                                }
-                                            </tr>
-                                        </tbody>
-                                    </table>
-
-                                    <br><br>
-                                    <table class="table table-bordered">
-                                        <thead class="bg-primary">
-                                            <tr>
-                                                <th class="text-white text-center">Vital Signs</th>
-                                                <th class="text-white text-center">1st Check</td>
-                                                <th class="text-white text-center" colspan="4">Q 1 hour * 4 hours</th>
-                                                <th class="text-white text-center" colspan="6">Q 30 hours * 3 hours</th>
-                                                <th class="text-white text-center">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Date</td>
-                                                @using (Html.BeginForm("PostFallClinicalMonitoring_A", "Assessments", FormMethod.Post))
-                                                {
-                                                    @Html.AntiForgeryToken()
-                                                    if (Model == null || Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "date3") == null)
-                                                    {
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="date3" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
-
-                                                    }
-                                                    else
-                                                    {
-                                                        var date1 = Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "date3");
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", date1);
-
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="date3" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
+                                                            }
+                                                        }
                                                     }
 
+                                                </tr>
+                                                <tr>
+                                                    <td>STAFF INITAILS</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="staffinitials" />
 
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "staffinitials")
+                                                                {
 
-                                                }
-                                            </tr>
-                                            <tr>
-                                                <td>Time</td>
-                                                @using (Html.BeginForm("PostFallClinicalMonitoring_A", "Assessments", FormMethod.Post))
-                                                {
-                                                    @Html.AntiForgeryToken()
-                                                    if (Model == null || Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "time3") == null)
-                                                    {
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="staffinitials" />
+                                                                    break;
+                                                                }
 
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="time3" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
-                                                    }
-                                                    else
-                                                    {
-                                                        var date1 = Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "time3");
-
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", date1);
-
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="time3" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
-
-                                                    }
-
-                                                }
-                                            </tr>
-                                            <tr>
-                                                <td colspan="12">ORIENTED TO:</td>
-                                            </tr>
-                                            <tr>
-                                                <td>PERSON</td>
-                                                @using (Html.BeginForm("PostFallClinicalMonitoring_A", "Assessments", FormMethod.Post))
-                                                {
-                                                    @Html.AntiForgeryToken()
-                                                    if (Model == null || Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "person") == null)
-                                                    {
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="person" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
-
-                                                    }
-                                                    else
-                                                    {
-                                                        var date1 = Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "person");
-
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", date1);
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="person" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
+                                                            }
+                                                        }
 
                                                     }
 
 
+                                                </tr>
+                                            </tbody>
+                                        </table>
 
-                                                }
-                                            </tr>
-                                            <tr>
-                                                <td>PLACE</td>
-                                                @using (Html.BeginForm("PostFallClinicalMonitoring_A", "Assessments", FormMethod.Post))
-                                                {
-                                                    @Html.AntiForgeryToken()
-                                                    if (Model == null || Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "place") == null)
-                                                    {
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                        <br><br>
+                                        <table class="table table-bordered">
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">Vital Signs</th>
+                                                    <th class="text-white text-center">1st Check</td>
+                                                    <th class="text-white text-center" colspan="4">Q 1 hour * 4 hours</th>
+                                                    <th class="text-white text-center" colspan="6">Q 30 hours * 3 hours</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Date</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="date3" />
 
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="place" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "date3")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="date3" />
+
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
                                                     }
-                                                    else
-                                                    {
-                                                        var date1 = Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "place");
+                                                </tr>
+                                                <tr>
+                                                    <td>Time</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="time3" />
 
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", date1);
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "time3")
+                                                                {
 
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="place" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="time3" />
+                                                                    break;
+                                                                }
 
+                                                            }
+                                                        }
                                                     }
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="12">ORIENTED TO:</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>PERSON</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="person" />
 
-                                                }
-                                            </tr>
-                                            <tr>
-                                                <td>TIME</td>
-                                                @using (Html.BeginForm("PostFallClinicalMonitoring_A", "Assessments", FormMethod.Post))
-                                                {
-                                                    @Html.AntiForgeryToken()
-                                                    if (Model == null || Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "time4") == null)
-                                                    {
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "person")
+                                                                {
 
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="time4" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
-                                                    }
-                                                    else
-                                                    {
-                                                        var date1 = Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "time4");
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", date1);
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="person" />
+                                                                    break;
+                                                                }
 
+                                                            }
+                                                        }
 
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="time4" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
-                                                    }
-
-                                                }
-                                            </tr>
-                                            <tr>
-                                                <td>BEHAVIOUR CHANGE</td>
-                                                @using (Html.BeginForm("PostFallClinicalMonitoring_A", "Assessments", FormMethod.Post))
-                                                {
-                                                    @Html.AntiForgeryToken()
-                                                    if (Model == null || Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "bvchange") == null)
-                                                    {
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
-
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="bvchange" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
-                                                    }
-                                                    else
-                                                    {
-                                                        var date1 = Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "bvchange");
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", date1);
-
-
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="bvchange" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
-                                                    }
-
-                                                }
-                                            </tr>
-                                            <tr>
-                                                <td>CONFUSED</td>
-                                                @using (Html.BeginForm("PostFallClinicalMonitoring_A", "Assessments", FormMethod.Post))
-                                                {
-                                                    @Html.AntiForgeryToken()
-
-                                                    if (Model == null || Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "confused") == null)
-                                                    {
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="confused" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
-                                                    }
-                                                    else
-                                                    {
-                                                        var date1 = Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "confused");
-
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", date1);
-
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="confused" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
                                                     }
 
-                                                }
-                                            </tr>
-                                            <tr>
-                                                <td>DROWSY</td>
-                                                @using (Html.BeginForm("PostFallClinicalMonitoring_A", "Assessments", FormMethod.Post))
-                                                {
-                                                    @Html.AntiForgeryToken()
-                                                    if (Model == null || Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "drowsy") == null)
-                                                    {
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="drowsy" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>PLACE</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="place" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "place")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="place" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
 
                                                     }
-                                                    else
-                                                    {
-                                                        var date1 = Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "drowsy");
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", date1);
+                                                </tr>
+                                                <tr>
+                                                    <td>TIME</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="time4" />
 
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "time4")
+                                                                {
 
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="drowsy" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="time4" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
                                                     }
+                                                </tr>
+                                                <tr>
+                                                    <td>BEHAVIOUR CHANGE</td>
 
-                                                }
-                                            </tr>
-                                            <tr>
-                                                <td>RESTLESS / AGITATED</td>
-                                                @using (Html.BeginForm("PostFallClinicalMonitoring_A", "Assessments", FormMethod.Post))
-                                                {
-                                                    @Html.AntiForgeryToken()
-                                                    if (Model == null || Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "restless") == null)
-                                                    {
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="restless" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
+                                                    @{
 
-                                                    }
-                                                    else
-                                                    {
-                                                        var date1 = Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "restless");
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", date1);
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="bvchange" />
 
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "bvchange")
+                                                                {
 
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="restless" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
-                                                    }
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="bvchange" />
+                                                                    break;
+                                                                }
 
-                                                }
-                                            </tr>
-                                            <tr>
-                                                <td>OTHER BEHAVIOUR</td>
-                                                @using (Html.BeginForm("PostFallClinicalMonitoring_A", "Assessments", FormMethod.Post))
-                                                {
-                                                    @Html.AntiForgeryToken()
-                                                    if (Model == null || Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "otherbv") == null)
-                                                    {
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="otherbv" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
-
-                                                    }
-                                                    else
-                                                    {
-                                                        var date1 = Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "otherbv");
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", date1);
-
-
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="otherbv" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
-                                                    }
-
-                                                }
-                                            </tr>
-                                            <tr>
-                                                <td>STAFF INITIALS</td>
-                                                @using (Html.BeginForm("PostFallClinicalMonitoring_A", "Assessments", FormMethod.Post))
-                                                {
-                                                    @Html.AntiForgeryToken()
-                                                    if (Model == null || Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "staffinitials2") == null)
-                                                    {
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="staffinitials2" />
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
+                                                            }
+                                                        }
 
                                                     }
-                                                    else
-                                                    {
-                                                        var date1 = Model.SingleOrDefault(m => m.tbl_PostfallClinicalMonitoringVitalSigns.vitalsign == "staffinitials2");
+                                                </tr>
+                                                <tr>
+                                                    <td>CONFUSED</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="confused" />
 
-                                                        @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", date1);
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "confused")
+                                                                {
 
-                                                        <input type="hidden" name="category" value="a" />
-                                                        <input type="hidden" name="vitalsign" value="staffinitials2" />
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="confused" />
+                                                                    break;
+                                                                }
 
-                                                        <td><button type="submit" class="btn btn-primary">Save</button></td>
+                                                            }
+                                                        }
+
                                                     }
 
-                                                }
-                                            </tr>
 
-                                        </tbody>
-                                    </table>
+                                                </tr>
+                                                <tr>
+                                                    <td>DROWSY</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="drowsy" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "drowsy")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="drowsy" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
+                                                    }
+                                                </tr>
+                                                <tr>
+                                                    <td>RESTLESS / AGITATED</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="restless" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "restless")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="restless" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
+                                                    }
+                                                </tr>
+                                                <tr>
+                                                    <td>OTHER BEHAVIOUR</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="otherbv" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "otherbv")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="otherbv" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
+                                                    }
+
+                                                </tr>
+                                                <tr>
+                                                    <td>STAFF INITIALS</td>
 
 
-                                    <div class="row">
-                                        <div class="col-md-12 text-right">
-                                            <br>
-                                            <a class="btn btn-danger" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Next</a>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="staffinitials2" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "staffinitials2")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="staffinitials2" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
+                                                    }
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+
+                                        <div class="row">
+                                            <div class="col-md-6 text-right">
+                                                <br />
+                                                <button type="submit" class="btn btn-primary">Save</button>
+                                            </div>
+                                            <div class="col-md-6 text-right">
+                                                <br>
+                                                <a class="btn btn-danger" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Next</a>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </form>
                                 </div>
                             </div>
 
 
                             <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                              
+
                                 <div class="row">
                                     <form action="/Assessments/PostFallClinicalMonitoring_BPage2" method="post">
                                         @Html.AntiForgeryToken()
