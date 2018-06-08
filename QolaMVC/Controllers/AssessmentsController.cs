@@ -38,7 +38,7 @@ namespace QolaMVC.Controllers
             var user = (UserModel)TempData["User"];
             var resident = (ResidentModel)TempData["Resident"];
 
-            if(TempData["Message"] != null)
+            if (TempData["Message"] != null)
             {
                 ViewBag.Message = TempData["Message"];
             }
@@ -68,7 +68,7 @@ namespace QolaMVC.Controllers
             ViewBag.User = user;
             ViewBag.Resident = resident;
             ViewBag.Home = home;
-            
+
             p_BowelMovement.Resident = resident;
             p_BowelMovement.EnteredBy = user;
 
@@ -96,7 +96,7 @@ namespace QolaMVC.Controllers
 
             vm = AssessmentDAL.GetResidentDietaryAssesments(resident.ID);
 
-            if(vm == null || vm.Count == 0)
+            if (vm == null || vm.Count == 0)
             {
                 var m = new nDietaryAssessmentModel();
                 m.Diet = new System.Collections.ObjectModel.Collection<string>();
@@ -179,8 +179,8 @@ namespace QolaMVC.Controllers
             vm.Detail = AssessmentDAL.GetExcerciseActivityDetail(resident.ID);
             vm.ExcerciseSummary = AssessmentDAL.GetExcerciseActivitySummary(resident.ID);
             vm.HSEPDetail = AssessmentDAL.GetHSEPDetail(resident.ID);
-            
-            if(vm.Detail.Count == 0 || vm.HSEPDetail.Count == 0)
+
+            if (vm.Detail.Count == 0 || vm.HSEPDetail.Count == 0)
             {
                 QolaCulture.InitExcerciseActivity(ref vm);
             }
@@ -208,7 +208,7 @@ namespace QolaMVC.Controllers
                 d.Resident = resident;
                 AssessmentDAL.AddExcerciseActivityDetail(d);
             }
-            
+
             foreach (var hs in vm.HSEPDetail)
             {
                 hs.EnteredBy = user;
@@ -238,7 +238,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            if(familyConference.Count == 0)
+            if (familyConference.Count == 0)
             {
                 familyConference.Add(new FamilyConfrenceNoteModel());
             }
@@ -342,7 +342,7 @@ namespace QolaMVC.Controllers
                     return View(getPostMedicaLClinical.ToList());
                 }
             }
-           
+
         }
 
         [HttpPost]
@@ -415,9 +415,9 @@ namespace QolaMVC.Controllers
                     getDetails.threehoursfirstcheck = monitoringDetails.threehoursfirstcheck;
                     getDetails.threehourssecondcheck = monitoringDetails.threehourssecondcheck;
                     getDetails.threehoursthirdcheck = monitoringDetails.threehoursthirdcheck;
-                    
+
                 }
-                
+
                 dbContext.SaveChanges();
             }
             return RedirectToAction("PostFallClinicalMonitoring_A");
@@ -544,7 +544,7 @@ namespace QolaMVC.Controllers
                 {
                     var updatepage2 = UpdateAssessmentPage2(model, resident);
                 }
-               
+
                 dbContext.SaveChanges();
                 //dbContext.
             }
@@ -631,12 +631,11 @@ namespace QolaMVC.Controllers
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
             var resident = (ResidentModel)TempData["Resident"];
-
             p_Model.Date = DateTime.Now;
             p_Model.Resident = resident;
             p_Model.ModifiedBy = user;
             p_Model.ModifiedOn = DateTime.Now;
-            
+
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
@@ -644,7 +643,7 @@ namespace QolaMVC.Controllers
             ProgressNotesDAL.AddNewProgressNotes(p_Model);
             TempData["Message"] = "Successfully added new Progress note";
 
-            return Redirect("/Home/ResidentMenu/?p_ResidentId="+resident.ID);
+            return Redirect("/Home/ResidentMenu/?p_ResidentId=" + resident.ID);
         }
 
         public ActionResult UnusualIncident()
@@ -680,7 +679,25 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
-            return View();
+            var careplan = AssessmentDAL.GetCarePlan("1234");
+
+            return View(careplan);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CarePlan(CarePlan_VitalSignModel model)
+        {
+            //var resident_sess = (ResidentModel)TempData["Resident"];
+
+            //resident_sess.ID = 1234;
+
+            AssessmentDAL.AddCarePlan(model, "1234");
+
+            TempData.Keep("Resident");
+
+            return RedirectToAction("CarePlan");
+
         }
 
         public ActionResult SpecificGoals()

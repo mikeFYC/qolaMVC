@@ -94,6 +94,193 @@ namespace QolaMVC.DAL
             }
         }
 
+        public static void AddCarePlan(CarePlan_VitalSignModel model, string id)
+        {
+            string exception = string.Empty;
+            var location = String.Join(",", model.Location);
+            var Teeth = String.Join(",", model.Teeth);
+            var Behaviour = String.Join(",", model.Behaviour);
+            var Behaviour2 = String.Join(",", model.Behaviour2);
+            var Behaviour3 = String.Join(",", model.Behaviour3);
+            var CognitiveFunction = String.Join(",", model.CognitiveFunction);
+            var Orientation = String.Join(",", model.Orientation);
+            var Diet = String.Join(",", model.Diet);
+            var Allergies = String.Join(",", model.Allergies);
+            var Bladder = String.Join(",", model.Bladder);
+            var Bowel = String.Join(",", model.Bowel);
+            var ToiletingBathroom = String.Join(",", model.ToiletingBathroom);
+            var ToiletingCommode = String.Join(",", model.ToiletingCommode);
+            var ToiletingBedpan = String.Join(",", model.ToiletingBedpan);
+            var MedicationAllergies = String.Join(",", model.MedicationAllergies);
+            var OtherMedicationAllergies = String.Join(",", model.OtherMedicationAllergies);
+            var SensoryAbilitiesHearing = String.Join(",", model.SensoryAbilitiesHearing);
+            var SensoryAbilitiesVision = String.Join(",", model.SensoryAbilitiesVision);
+
+            var Communication = String.Join(",", model.Communication);
+            var SpecialEquipment = String.Join(",", model.SpecialEquipment);
+            
+            try
+            {
+                using (var connection = new SqlConnection(Constants.ConnectionString.PROD))
+                {
+                    var sqlAdapter = new SqlDataAdapter();
+                    var sqlCommand = new SqlCommand(Constants.StoredProcedureName.USP_ADD_CARE_PLAN, connection);
+                    connection.Open();
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                    sqlCommand.Parameters.AddWithValue("@AssessedStatus", model.AssessedStatus);
+                    sqlCommand.Parameters.AddWithValue("@LevelOfCare", model.LevelOfCare);
+                    sqlCommand.Parameters.AddWithValue("@Bpsystolic", model.Bpsystolic);
+                    sqlCommand.Parameters.AddWithValue("@BpDiastolic",model.BpDiastolic);
+                    sqlCommand.Parameters.AddWithValue("@BpDateCompleted", model.BpDateCompleted);
+                    sqlCommand.Parameters.AddWithValue("@Temperature", model.Temperature);
+                    sqlCommand.Parameters.AddWithValue("@TemperatureDateCompleted", model.TemperatureDateCompleted);
+                    sqlCommand.Parameters.AddWithValue("@Weight_Lbs", model.Weight_Lbs);
+                    sqlCommand.Parameters.AddWithValue("@WeightDateCompleted", model.WeightDateCompleted);
+                    sqlCommand.Parameters.AddWithValue("@HeightCentimeters", model.HeightCentimeters);
+                    sqlCommand.Parameters.AddWithValue("@HeightInches", model.HeightInches);
+                    sqlCommand.Parameters.AddWithValue("@HeightDateCompleted", model.HeightDateCompleted);
+                    sqlCommand.Parameters.AddWithValue("@Pulse", model.Pulse);
+                    sqlCommand.Parameters.AddWithValue("@PulsedateCompleted", model.PulsedateCompleted);
+                    sqlCommand.Parameters.AddWithValue("@Oxygen_02", model.Oxygen_02);
+                    sqlCommand.Parameters.AddWithValue("@Oxygen_02_rate", model.Oxygen_02_rate);
+                    sqlCommand.Parameters.AddWithValue("@ResidentId", id);
+                    sqlCommand.Parameters.AddWithValue("@AmCare", model.AmCare);
+                    sqlCommand.Parameters.AddWithValue("@AmCareAssistedBy", model.AmCareAssistedBy);
+                    sqlCommand.Parameters.AddWithValue("@AmcareAgencyName", model.AmcareAgencyName);
+                    sqlCommand.Parameters.AddWithValue("@AmCarePreferredTime", model.AmCarePreferredTime);
+                    sqlCommand.Parameters.AddWithValue("@AmCarePreferredType", model.AmCarePreferredType);
+                    sqlCommand.Parameters.AddWithValue("@PmCare", model.PmCare);
+                    sqlCommand.Parameters.AddWithValue("@PmCareAssistedBy", model.PmCareAssistedBy);
+                    sqlCommand.Parameters.AddWithValue("@PmcareAgencyNPme", model.PmcareAgencyNPme);
+                    sqlCommand.Parameters.AddWithValue("@PmCarePreferredTime", model.PmCarePreferredTime);
+                    sqlCommand.Parameters.AddWithValue("@PmCarePreferredType", model.PmCarePreferredType);
+                    sqlCommand.Parameters.AddWithValue("@BathingCare", model.BathingCare);
+                    sqlCommand.Parameters.AddWithValue("@BathingCareAssistedBy", model.BathingCareAssistedBy);
+                    sqlCommand.Parameters.AddWithValue("@BathingcareAgencyNBathinge", model.BathingcareAgencyNBathinge);
+                    sqlCommand.Parameters.AddWithValue("@BathingCarePreferredTime", model.BathingCarePreferredTime);
+                    sqlCommand.Parameters.AddWithValue("@BathingCarePreferredType", model.BathingCarePreferredType);
+                    sqlCommand.Parameters.AddWithValue("@CarePlanLocation", location);
+                    sqlCommand.Parameters.AddWithValue("@Dressing", model.Dressing);
+                    sqlCommand.Parameters.AddWithValue("@NailCare", model.NailCare);
+                    sqlCommand.Parameters.AddWithValue("@Shaving", model.Shaving);
+                    sqlCommand.Parameters.AddWithValue("@FootCare", model.FootCare);
+                    sqlCommand.Parameters.AddWithValue("@DressingPreferredTime", model.DressingPreferredTime);
+                    sqlCommand.Parameters.AddWithValue("@NailCarePreferredTime", model.NailCarePreferredTime);
+                    sqlCommand.Parameters.AddWithValue("@ShavingPreferredTime", model.ShavingPreferredTime);
+                    sqlCommand.Parameters.AddWithValue("@FootCarePreferredTime", model.FootCarePreferredTime);
+                    sqlCommand.Parameters.AddWithValue("@OralHygiene", model.OralHygiene);
+                    sqlCommand.Parameters.AddWithValue("@OralHygienePreferredTime", model.OralHygienePreferredTime);
+                    sqlCommand.Parameters.AddWithValue("@Teeth", Teeth);
+                    sqlCommand.Parameters.AddWithValue("@Mobility", model.Mobility);
+                    sqlCommand.Parameters.AddWithValue("@Transfers", model.Transfers);
+                    sqlCommand.Parameters.AddWithValue("@Mechanical_Left", model.MechanicalLeft);
+                    sqlCommand.Parameters.AddWithValue("@Walker", model.Walker);
+                    sqlCommand.Parameters.AddWithValue("@WheelChair", model.WheelChair);
+                    sqlCommand.Parameters.AddWithValue("@Cane", model.Cane);
+                    sqlCommand.Parameters.AddWithValue("@CarePlan_Left", model.Left);
+                    sqlCommand.Parameters.AddWithValue("@Scooter", model.Scooter);
+                    sqlCommand.Parameters.AddWithValue("@WalkerType", model.WalkerType);
+                    sqlCommand.Parameters.AddWithValue("@WheelChairType", model.WheelChairType);
+                    sqlCommand.Parameters.AddWithValue("@CaneType", model.CaneType);
+                    sqlCommand.Parameters.AddWithValue("@ScooterType", model.ScooterType);
+                    sqlCommand.Parameters.AddWithValue("@Pt", model.Pt);
+                    sqlCommand.Parameters.AddWithValue("@PtFrequency", model.PtFrequency);
+                    sqlCommand.Parameters.AddWithValue("@PtProvider", model.PtProvider);
+                    sqlCommand.Parameters.AddWithValue("@Ot", model.Ot);
+                    sqlCommand.Parameters.AddWithValue("@OtFrequency", model.OtFrequency);
+                    sqlCommand.Parameters.AddWithValue("@OtProvider", model.OtProvider);
+                    sqlCommand.Parameters.AddWithValue("@SafetyPasds", model.SafetyPasds);
+                    sqlCommand.Parameters.AddWithValue("@Rails", model.Rails);
+                    sqlCommand.Parameters.AddWithValue("@Other", model.Other);
+                    sqlCommand.Parameters.AddWithValue("@LightOnly", model.LightOnly);
+                    sqlCommand.Parameters.AddWithValue("@Lunch", model.Lunch);
+                    sqlCommand.Parameters.AddWithValue("@Dinner", model.Dinner);
+                    sqlCommand.Parameters.AddWithValue("@Breakfast", model.Breakfast);
+                    sqlCommand.Parameters.AddWithValue("@Behaviour", Behaviour);
+                    sqlCommand.Parameters.AddWithValue("@RiskOfHarmToSelf", model.RiskOfHarmToSelf);
+                    sqlCommand.Parameters.AddWithValue("@Smoker", model.Smoker);
+                    sqlCommand.Parameters.AddWithValue("@CognitiveStatus", model.CognitiveStatus);
+                    sqlCommand.Parameters.AddWithValue("@RiskOfWandering", model.RiskOfWandering);
+                    sqlCommand.Parameters.AddWithValue("@OtherPhysicalInfo", model.OtherPhysicalInfo);
+                    sqlCommand.Parameters.AddWithValue("@CognitiveFunction", CognitiveFunction);
+                    sqlCommand.Parameters.AddWithValue("@Orientation", Orientation);
+                    sqlCommand.Parameters.AddWithValue("@NutritionStatus", model.NutritionStatus);
+                    sqlCommand.Parameters.AddWithValue("@NutritionRisk", model.NutritionRisk);
+                    sqlCommand.Parameters.AddWithValue("@AssistiveDevices", model.AssistiveDevices);
+                    sqlCommand.Parameters.AddWithValue("@NutritionTexture", model.NutritionTexture);
+                    sqlCommand.Parameters.AddWithValue("@NutritionOther", model.NutritionOther);
+                    sqlCommand.Parameters.AddWithValue("@Diet", Diet);
+                    sqlCommand.Parameters.AddWithValue("@OtherDiet", model.OtherDiet);
+                    sqlCommand.Parameters.AddWithValue("@NutritionOtherPhysicalInfo", model.NutritionOtherPhysicalInfo);
+                    sqlCommand.Parameters.AddWithValue("@Allergies", Allergies);
+                    sqlCommand.Parameters.AddWithValue("@Appetite", model.Appetite);
+                    sqlCommand.Parameters.AddWithValue("@MealsLunch", model.MealsLunch);
+                    sqlCommand.Parameters.AddWithValue("@MealsDinner", model.MealsDinner);
+                    sqlCommand.Parameters.AddWithValue("@MealsBreakfast", model.MealsBreakfast);
+                    sqlCommand.Parameters.AddWithValue("@Bladder", Bladder);
+                    sqlCommand.Parameters.AddWithValue("@Bowel", Bowel);
+                    sqlCommand.Parameters.AddWithValue("@ContinenceProducts", model.ContinenceProducts);
+                    sqlCommand.Parameters.AddWithValue("@ContinenceProductsName", model.ContinenceProductsName);
+                    sqlCommand.Parameters.AddWithValue("@ContinenceProductsAssistiveDevices", model.ContinenceProductsAssistiveDevices);
+                    sqlCommand.Parameters.AddWithValue("@ContinenceProductsSupplier", model.ContinenceProductsSupplier);
+                    sqlCommand.Parameters.AddWithValue("@AssesmentBy", model.AssesmentBy);
+                    sqlCommand.Parameters.AddWithValue("@DateCompleted", model.DateCompleted);
+                    sqlCommand.Parameters.AddWithValue("@Toileting", model.Toileting);
+                    sqlCommand.Parameters.AddWithValue("@ToiletingStatus", model.ToiletingStatus);
+                    sqlCommand.Parameters.AddWithValue("@MedicationAssistace", model.MedicationAssistace);
+                    sqlCommand.Parameters.AddWithValue("@MedicationAdministration", model.MedicationAdministration);
+                    sqlCommand.Parameters.AddWithValue("@MedicationCOmpletedBy", model.MedicationCOmpletedBy);
+                    sqlCommand.Parameters.AddWithValue("@MedicationAgency", model.MedicationAgency);
+                    sqlCommand.Parameters.AddWithValue("@MedicationPharmacy", model.MedicationPharmacy);
+                    sqlCommand.Parameters.AddWithValue("@MedicationAllergies", MedicationAllergies);
+                    sqlCommand.Parameters.AddWithValue("@OtherMedicationAllergies", OtherMedicationAllergies);
+                    sqlCommand.Parameters.AddWithValue("@MedicationTape", model.MedicationTape);
+                    sqlCommand.Parameters.AddWithValue("@MedicationHydantoins", model.MedicationHydantoins);
+                    sqlCommand.Parameters.AddWithValue("@SensoryAbilitiesHearing", SensoryAbilitiesHearing);
+                    sqlCommand.Parameters.AddWithValue("@SensoryAbilitiesVision", SensoryAbilitiesVision);
+                    sqlCommand.Parameters.AddWithValue("@Language", model.Language);
+                    sqlCommand.Parameters.AddWithValue("@Communication", Communication);
+                    sqlCommand.Parameters.AddWithValue("@CommunicationNotes", model.CommunicationNotes);
+                    sqlCommand.Parameters.AddWithValue("@WondCare", model.WondCare);
+                    sqlCommand.Parameters.AddWithValue("@WondCareAssistedBy", model.WondCareAssistedBy);
+                    sqlCommand.Parameters.AddWithValue("@WondCareAgencyName", model.WondCareAgencyName);
+                    sqlCommand.Parameters.AddWithValue("@SkinCare", model.SkinCare);
+                    sqlCommand.Parameters.AddWithValue("@SkinCareTreatments", model.SkinCareTreatments);
+                    sqlCommand.Parameters.AddWithValue("@SpecialNeedSupplier", model.SpecialNeedSupplier);
+                    sqlCommand.Parameters.AddWithValue("@SpecialNeedNotes", model.SpecialNeedNotes);
+                    sqlCommand.Parameters.AddWithValue("@SpecialNeedCpap", model.SpecialNeedCpap);
+                    sqlCommand.Parameters.AddWithValue("@SpecialEquipment", SpecialEquipment);
+                    sqlCommand.Parameters.AddWithValue("@SpecialEquipmentOtherMentalInfo", model.SpecialEquipmentOtherMentalInfo);
+                    sqlCommand.Parameters.AddWithValue("@SpecialEquipmentOther", model.SpecialEquipmentOther);
+                    sqlCommand.Parameters.AddWithValue("@ResidentFamilyMeeting", model.ResidentFamilyMeeting);
+                    sqlCommand.Parameters.AddWithValue("@ResidentFamilyInvolvement", model.ResidentFamilyInvolvement);
+                    sqlCommand.Parameters.AddWithValue("@Mantoux", model.Mantoux);
+                    sqlCommand.Parameters.AddWithValue("@ChestXray", model.ChestXray);
+                    sqlCommand.Parameters.AddWithValue("@Pneumonia", model.Pneumonia);
+                    sqlCommand.Parameters.AddWithValue("@FluVaccine", model.FluVaccine);
+                    sqlCommand.Parameters.AddWithValue("@Tetanus", model.Tetanus);
+                    sqlCommand.Parameters.AddWithValue("@MantouxDateComplete", model.MantouxDateComplete);
+                    sqlCommand.Parameters.AddWithValue("@ChestXrayDateComplete", model.ChestXrayDateComplete);
+                    sqlCommand.Parameters.AddWithValue("@PneumoniaDateComplete", model.PneumoniaDateComplete);
+                    sqlCommand.Parameters.AddWithValue("@FluVaccineDateComplete", model.FluVaccineDateComplete);
+                    sqlCommand.Parameters.AddWithValue("@TetanusDateComplete", model.TetanusDateComplete);
+
+                    sqlCommand.ExecuteNonQuery();
+
+                }
+            }
+            
+            catch (Exception ex)
+            {
+                exception = "AddCarePlan |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            
+        }
+
+       
+
         public static void AddFamilyConferenceNote(FamilyConfrenceNoteModel p_FamilyConferenceNote)
         {
             string exception = string.Empty;
@@ -131,6 +318,66 @@ namespace QolaMVC.DAL
             finally
             {
                 l_Conn.Close();
+            }
+        }
+
+        public static CarePlan_VitalSignModel GetCarePlan(string id)
+        {
+            string exception = string.Empty;
+            try
+            {
+                var CarePlans = new Collection<CarePlan_VitalSignModel>();
+
+                using (var connection = new SqlConnection(Constants.ConnectionString.PROD))
+                {
+                    var sqlAdapter = new SqlDataAdapter();
+                    var sqlCommand = new SqlCommand(Constants.StoredProcedureName.USP_GET_CARE_PLAN, connection);
+                    connection.Open();
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    sqlCommand.Parameters.AddWithValue("@ResidentId", id);
+
+                    DataSet getData = new DataSet();
+
+                    sqlAdapter.SelectCommand = sqlCommand;
+                    sqlAdapter.Fill(getData);
+
+                    if ((getData != null) & getData.Tables.Count > 0)
+                    {
+                        for (int index = 0; index <= getData.Tables[0].Rows.Count - 1; index++)
+                        {
+                            var plan = new CarePlan_VitalSignModel();
+                            plan.Id = Convert.ToInt32(getData.Tables[0].Rows[index]["Id"]);
+                            //plan.EnteredBy = Convert.ToInt32(getData.Tables[0].Rows[index]["EnteredBy"]);
+                            plan.AssessedStatus = Convert.ToString(getData.Tables[0].Rows[index]["AssessedStatus"]);
+                            plan.LevelOfCare = Convert.ToString(getData.Tables[0].Rows[index]["LevelOfCare"]);
+                            plan.Bpsystolic = Convert.ToString(getData.Tables[0].Rows[index]["Bpsystolic"]);
+                            plan.BpDiastolic = Convert.ToString(getData.Tables[0].Rows[index]["BpDiastolic"]);
+                            plan.BpDateCompleted = Convert.ToString(getData.Tables[0].Rows[index]["BpDateCompleted"]);
+                            plan.Temperature = Convert.ToString(getData.Tables[0].Rows[index]["Temperature"]);
+                            plan.TemperatureDateCompleted = Convert.ToString(getData.Tables[0].Rows[index]["TemperatureDateCompleted"]);
+                            plan.Weight_Lbs = Convert.ToString(getData.Tables[0].Rows[index]["Weight_Lbs"]);
+                            plan.WeightDateCompleted = Convert.ToString(getData.Tables[0].Rows[index]["WeightDateCompleted"]);
+                            plan.HeightCentimeters = Convert.ToString(getData.Tables[0].Rows[index]["HeightCentimeters"]);
+                            plan.HeightInches = Convert.ToString(getData.Tables[0].Rows[index]["HeightInches"]);
+                            plan.HeightDateCompleted = Convert.ToString(getData.Tables[0].Rows[index]["HeightDateCompleted"]);
+                            plan.Pulse = Convert.ToString(getData.Tables[0].Rows[index]["Pulse"]);
+                            plan.PulsedateCompleted = Convert.ToString(getData.Tables[0].Rows[index]["PulsedateCompleted"]);
+                            plan.Oxygen_02 = Convert.ToString(getData.Tables[0].Rows[index]["Oxygen_02"]);
+                            plan.Oxygen_02_rate = Convert.ToString(getData.Tables[0].Rows[index]["Oxygen_02_rate"]); ;
+                            plan.ResidentId = Convert.ToString(getData.Tables[0].Rows[index]["ResidentId"]);
+                            CarePlans.Add(plan);
+                        }
+                    }
+
+                    return CarePlans.ToList().OrderByDescending(m => m.Id).FirstOrDefault();
+                }
+            }
+
+            catch (Exception ex)
+            {
+                exception = "GetCarePlan |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
             }
         }
 
