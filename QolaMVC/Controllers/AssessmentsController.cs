@@ -112,6 +112,37 @@ namespace QolaMVC.Controllers
         }
 
         [HttpPost]
+        public ActionResult DietaryHistory(FormCollection collection)
+        {
+            ViewBag.Allergies = AssessmentDAL.GetAllergiesCollections();
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            Collection<nDietaryAssessmentModel> vm = new Collection<nDietaryAssessmentModel>();
+            vm = AssessmentDAL.GetResidentDietaryAssesments(resident.ID);
+            DateTime l_DateEntered = Convert.ToDateTime(collection["DateEntered"]);
+
+           // if (vm == null || vm.Count == 0)
+            //{
+                var m = new nDietaryAssessmentModel();
+                m.Diet = new System.Collections.ObjectModel.Collection<string>();
+                m.Allergies = new System.Collections.ObjectModel.Collection<AllergiesModel>();
+                QolaCulture.InitDiets(ref m);
+                vm.Add(m);
+            //}
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            return View(vm.Where(m2 => m2.DateEntered == l_DateEntered));
+        }
+
+        [HttpPost]
         public ActionResult AddDietaryAssessment(nDietaryAssessmentModel model)
         {
             var home = (HomeModel)TempData["Home"];

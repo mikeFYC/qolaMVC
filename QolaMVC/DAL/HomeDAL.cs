@@ -624,5 +624,126 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
+
+        public static Collection<DietaryAllergyReportModel> GetDietaryAllergyReport(int p_HomeId)
+        {
+            string exception = string.Empty;
+            Collection<DietaryAllergyReportModel> l_Reports = new Collection<DietaryAllergyReportModel>();
+            DietaryAllergyReportModel l_Report;
+            UserModel l_User;
+            ResidentModel l_Resident;
+            SuiteModel l_Suite;
+            AllergiesModel l_Allergy;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_DietaryAssessmentAllergies", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@HomeId", p_HomeId);
+                DataSet homeReceive = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(homeReceive);
+
+                if ((homeReceive != null) && (homeReceive.Tables.Count > 0) && (homeReceive.Tables[0].Rows.Count > 0))
+                {
+                    foreach (DataRow homeTypeRow in homeReceive.Tables[0].Rows)
+                    {
+                        l_Report = new DietaryAllergyReportModel();
+                        l_User = new UserModel();
+                        l_Resident = new ResidentModel();
+                        l_Suite = new SuiteModel();
+                        l_Allergy = new AllergiesModel();
+                        
+                        l_Report.Id = Convert.ToInt32(homeTypeRow["Id"]);
+                        l_Resident.ShortName = Convert.ToString(homeTypeRow["ResidentName"]);
+                        l_Resident.ID = Convert.ToInt32(homeTypeRow["ResidentId"]);
+                        l_Suite.SuiteNo = Convert.ToString(homeTypeRow["Suite"]);
+                        l_Allergy.ID = Convert.ToInt32(homeTypeRow["AllergyId"]);
+                        l_Allergy.Name = Convert.ToString(homeTypeRow["Allergy"]);
+                        l_User.ID = Convert.ToInt16(homeTypeRow["EnteredBy"]);
+                        l_Report.DateEntered = Convert.ToDateTime(homeTypeRow["DateEntered"]);
+
+                        l_Report.Allergy = l_Allergy;
+                        l_Report.Resident = l_Resident;
+                        l_Report.Suite = l_Suite;
+
+                        l_Reports.Add(l_Report);
+                    }
+                }
+                return l_Reports;
+            }
+            catch (Exception ex)
+            {
+                exception = "GetDietaryAllergyReport |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+        public static Collection<SpecialDietReportModel> GetSpecialDietReport(int p_HomeId)
+        {
+            string exception = string.Empty;
+            Collection<SpecialDietReportModel> l_Reports = new Collection<SpecialDietReportModel>();
+            SpecialDietReportModel l_Report;
+            UserModel l_User;
+            ResidentModel l_Resident;
+            SuiteModel l_Suite;
+            
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_DietaryAssessmentDiets", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@HomeId", p_HomeId);
+                DataSet homeReceive = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(homeReceive);
+
+                if ((homeReceive != null) && (homeReceive.Tables.Count > 0) && (homeReceive.Tables[0].Rows.Count > 0))
+                {
+                    foreach (DataRow homeTypeRow in homeReceive.Tables[0].Rows)
+                    {
+                        l_Report = new SpecialDietReportModel();
+                        l_User = new UserModel();
+                        l_Resident = new ResidentModel();
+                        l_Suite = new SuiteModel();
+                        
+                        l_Report.Id = Convert.ToInt32(homeTypeRow["Id"]);
+                        l_Resident.ShortName = Convert.ToString(homeTypeRow["ResidentName"]);
+                        l_Resident.ID = Convert.ToInt32(homeTypeRow["ResidentId"]);
+                        l_Suite.SuiteNo = Convert.ToString(homeTypeRow["Suite"]);
+                        l_Report.Diet = Convert.ToString(homeTypeRow["Diet"]);
+                        l_User.ID = Convert.ToInt16(homeTypeRow["EnteredBy"]);
+                        l_Report.DateEntered = Convert.ToDateTime(homeTypeRow["DateEntered"]);
+
+                        l_Report.Resident = l_Resident;
+                        l_Report.Suite = l_Suite;
+
+                        l_Reports.Add(l_Report);
+                    }
+                }
+                return l_Reports;
+            }
+            catch (Exception ex)
+            {
+                exception = "GetSpecialDietReport |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
     }
 }

@@ -752,3 +752,59 @@ BEGIN
 END
 GO
 
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_DietaryAssessmentAllergies]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_DietaryAssessmentAllergies]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_DietaryAssessmentAllergies]
+@HomeId int
+AS
+--20180602 chime created
+BEGIN
+	SELECT
+	Id,
+	ResidentId,
+	ResidentName = R.fd_first_name + ' ' + R.fd_last_name,
+	Suite = S.fd_suite_no,
+	AssessmentId,
+	AllergyId,
+	Allergy,
+	EnteredBy,
+	DateEntered
+	FROM [tbl_AB_DietaryAssessment_Allergy] A
+	LEFT OUTER JOIN tbl_Resident R ON
+	R.fd_id = A.ResidentId
+	LEFT OUTER JOIN tbl_Suite S ON
+	S.fd_id = R.fd_suite_id
+	WHERE R.fd_home_id = @HomeId
+END
+GO
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_DietaryAssessmentDiets]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_DietaryAssessmentDiets]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_DietaryAssessmentDiets]
+@HomeId int
+AS
+--20180507 chime created
+BEGIN
+	SELECT
+	Id,
+	ResidentId,
+	ResidentName = R.fd_first_name + ' ' + R.fd_last_name,
+	Suite = S.fd_suite_no,
+	AssessmentId,
+	Diet,
+	EnteredBy,
+	DateEntered
+	FROM [tbl_AB_Diet] D
+	LEFT OUTER JOIN tbl_Resident R ON
+	R.fd_id = D.ResidentId
+	LEFT OUTER JOIN tbl_Suite S ON
+	S.fd_id = R.fd_suite_id
+	WHERE R.fd_home_id = @HomeId
+END
+GO
+

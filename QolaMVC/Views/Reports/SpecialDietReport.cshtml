@@ -1,0 +1,126 @@
+﻿@model IEnumerable<QolaMVC.Models.SpecialDietReportModel>
+
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+<style>
+
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+</style>
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+
+    <!-- START PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3>Special Diet Report</h3>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+
+            <div style="height: 60px;"></div>
+
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+                <div class="row">
+                    <div class="col-md-8 py-4 text-left">
+                        <form class="form-inline">
+                            <div class="form-group pr-1">
+                                <div class="input-group">
+                                    <label>Home: </label>
+                                    <select class="form-control">
+                                        <option>All fields</option>
+                                        <option>First Name</option>
+                                        <option>Last Name</option>
+                                        <option>Suite No</option>
+                                        <option>Emergency Contact</option>
+                                        <option>Physician</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Diet Allergy: </label>
+                                    <select class="form-control">
+                                        <option>All fields</option>
+                                        <option>First Name</option>
+                                        <option>Last Name</option>
+                                        <option>Suite No</option>
+                                        <option>Emergency Contact</option>
+                                        <option>Physician</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Floor: </label>
+                                    <select class="form-control">
+                                        <option>All fields</option>
+                                        <option>First Name</option>
+                                        <option>Last Name</option>
+                                        <option>Suite No</option>
+                                        <option>Emergency Contact</option>
+                                        <option>Physician</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">View</button>
+                        </form>
+                    </div>
+                    <div class="col-md-4 py-4 text-right">
+                        <a class="btn btn-lg btn-primary" href="addallergy.php">Print PDF</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-block">
+                        <table class="table table-bordered">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th class="text-white">Name</th>
+                                    <th class="text-white">Suite</th>
+                                    <th class="text-white">Resident Name</th>
+                                    <th class="text-white">Assessed Date</th>
+                                    <th class="text-white">Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var m in Model)
+                                {
+                                    <tr>
+                                        <td class="align-middle">@m.Diet</td>
+                                        <td class="align-middle">@m.Suite.SuiteNo</td>
+                                        <td class="align-middle">@m.Resident.ShortName</td>
+                                        <td class="align-middle">@m.DateEntered</td>
+                                        <td class="align-middle"></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                <!-- END PLACE PAGE CONTENT HERE -->
+            </div>
+            <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+
+
+        @RenderPage("~/Views/Shared/_Footer.cshtml")
