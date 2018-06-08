@@ -98,9 +98,32 @@ namespace QolaMVC.Controllers
 
         public ActionResult AddNewResident()
         {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            ViewBag.User = user;
+
             return View();
         }
 
+        [HttpPost]
+        public ActionResult CreateNewResident(ResidentModel p_Model)
+        {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            ViewBag.User = user;
+
+            p_Model.ModifiedBy = user;
+            p_Model.ModifiedOn = DateTime.Now;
+            p_Model.Home = home;
+
+            ResidentsDAL.AddNewResidentGeneralInfo(p_Model);
+
+            return RedirectToAction("AddNewResident");
+        }
         public ActionResult ActivityCalendar()
         {
             List<ActivityEventModel> data = new List<ActivityEventModel> {

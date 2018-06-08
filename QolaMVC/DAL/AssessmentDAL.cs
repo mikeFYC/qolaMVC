@@ -1009,6 +1009,7 @@ namespace QolaMVC.DAL
 
                         l_DA_Diets.SelectCommand = l_Cmd_Diets;
                         l_DA_Diets.Fill(DietsReceive);
+                        l_Assessment.Diet = new Collection<string>();
                         if (DietsReceive.Tables[0].Rows.Count > 0)
                         {
                             for (int index_Diets = 0; index_Diets <= DietsReceive.Tables[0].Rows.Count - 1; index_Diets++)
@@ -1023,6 +1024,7 @@ namespace QolaMVC.DAL
                         l_Cmd_Allergies.Parameters.AddWithValue("@ResidentId", p_ResidentId);
                         l_Cmd_Allergies.Parameters.AddWithValue("@AssessmentId", l_Assessment.Id);
                         DataSet AllergyReceive = new DataSet();
+                        l_Assessment.Allergies = new Collection<AllergiesModel>();
 
                         l_DA_Allergies.SelectCommand = l_Cmd_Allergies;
                         l_DA_Allergies.Fill(AllergyReceive);

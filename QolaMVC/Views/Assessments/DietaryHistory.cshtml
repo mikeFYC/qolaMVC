@@ -40,180 +40,275 @@
                 <!-- BEGIN PlACE PAGE CONTENT HERE -->
                 <div class="card">
                     <div class="card-block">
-                        @using (Html.BeginForm("AddDietaryAssessment", "Assessments", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        <div class="col-md-12">
-                            <h5>Nutrition</h5>
-                        </div>
                         <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="staticEmail" class="col-form-label">Appetite</label>
-                                    <select name="Apetite" class="form-control">
-                                        <option>Select</option>
-                                        <option>Good</option>
-                                        <option>Fair</option>
-                                        <option>Poor</option>
-
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="staticEmail" class="col-form-label">Nutritional Status</label>
-                                    <select name="NutritionalStatus" class="form-control">
-                                        <option selected="selected" value="0">Select</option>
-                                        <option value="10SI">Independent</option>
-                                        <option value="11SS">Supervised</option>
-                                        <option value="12SA">Assisted</option>
-                                        <option value="13SD">Dependant</option>
-                                        <option value="15TS4">SL4</option>
-                                        <option value="16SD4">SL4D</option>
-                                        <option value="17TP">Private (Supportive)</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="staticEmail" class="col-form-label">Risk</label>
-                                    <select name="Risk" class="form-control">
-                                        <option selected="selected" value="0">Select</option>
-                                        <option value="N/A">N/A</option>
-                                        <option value="Swallowing">Swallowing</option>
-                                        <option value="Choking Risk">Choking risk</option>
-                                        <option value="Difficulty in Chewing">Difficulty in Chewing</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="staticEmail" class="col-form-label">Assistive Devices</label>
-                                    <input name="AssistiveDevices" type="text" class="form-control" id="staticEmail">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h5>Diet</h5>
-                            </div>
-
-                            <br>
-                            <div class="col-md-3 pads">
-                                @{
-                                for (int i = 0; i < Model.FirstOrDefault().Diet.Count; i++)
-                                {
-                                    <div class="form-check">
-                                        <input name="Diet[]" class="form-check-input" type="checkbox" value="@Model.FirstOrDefault().Diet[i]" id="defaultCheck1">
-                                        <label class="form-check-label" for="defaultCheck1">
-                                            @Model.FirstOrDefault().Diet[i]
-                                        </label>
-                                    </div>
-                            }
-                                }
-                            </div>
-
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="staticEmail" class="col-form-label">Texture</label>
-                                    <select name="texture" class="form-control">
-                                        <option selected="selected" value="0">Select</option>
-                                        <option value="N/A">N/A</option>
-                                        <option value="Swallowing">Swallowing</option>
-                                        <option value="Choking Risk">Choking risk</option>
-                                        <option value="Difficulty in Chewing">Difficulty in Chewing</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="staticEmail" class="col-form-label">Other</label>
-                                    <input name="Other" type="text" class="form-control" id="staticEmail">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h5>Allergies/Sensitivities</h5>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-check pads">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                    <label class="form-check-label" for="defaultCheck1">
-                                        No Allergy
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="form-group row">
-                                    <label for="staticEmail" class="col-md-3 col-form-label">Allergies/Sensitivities</label>
-                                    <div class="col-md-6">
-                                        <select class="form-control" id="SelectedAllergy">
-                                            <option>Select</option>
-                                            @{
-                foreach (var allergy in ViewBag.Allergies)
-                {
-                                <option value="@allergy.ID">@allergy.Name</option>
-}
+                            
+                            <div class="col-2">
+                                Assessment History: 
+                                <select class="form-control">
+                                    <option>New</option>
+                                    @{
+                                        if (Model.Count() > 0)
+                                        {
+                                            foreach (var d in Model)
+                                            {
+                                                <option>@d.DateEntered</option>
                                             }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                <button class="btn btn-danger">GO</button>
+                            </div>
+                        </div>
+                    
+                        @using (Html.BeginForm("AddDietaryAssessment", "Assessments", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                           
+                            <div class="col-md-12">
+                                <h5>Nutrition</h5>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="staticEmail" class="col-form-label">Appetite</label>
+                                        <select name="Apetite" class="form-control">
+                                            @{
+                                                if (Model.Count() > 0)
+                                                {
+                                                    <option selected>@Model.LastOrDefault().Apetite</option>
+                                                }
+                                            }
+                                            <option>Select</option>
+                                            <option>Good</option>
+                                            <option>Fair</option>
+                                            <option>Poor</option>
+
                                         </select>
                                     </div>
-                                    <div class="col-md-1">
-                                        <a href="#" id="AddAllergy" class="btn btn-danger">ADD</a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="staticEmail" class="col-form-label">Nutritional Status</label>
+                                        <select name="NutritionalStatus" class="form-control">
+                                            @{
+                                                if (Model.Count() > 0)
+                                                {
+                                                    <option selected>@Model.LastOrDefault().NutritionalStatus</option>
+                                                }
+                                            }
+                                            <option value="0">Select</option>
+                                            <option value="10SI">Independent</option>
+                                            <option value="11SS">Supervised</option>
+                                            <option value="12SA">Assisted</option>
+                                            <option value="13SD">Dependant</option>
+                                            <option value="15TS4">SL4</option>
+                                            <option value="16SD4">SL4D</option>
+                                            <option value="17TP">Private (Supportive)</option>
+                                        </select>
                                     </div>
-                                    <div class="col-md-1">
-                                        <a href="#" id="DeleteAllergy" class="btn btn-danger">DELETE</a>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="staticEmail" class="col-form-label">Risk</label>
+                                        <select name="Risk" class="form-control">
+                                            @{
+                                                if (Model.Count() > 0)
+                                                {
+                                                    <option selected>@Model.LastOrDefault().Risk</option>
+                                                }
+                                            }
+                                            <option value="0">Select</option>
+                                            <option value="N/A">N/A</option>
+                                            <option value="Swallowing">Swallowing</option>
+                                            <option value="Choking Risk">Choking risk</option>
+                                            <option value="Difficulty in Chewing">Difficulty in Chewing</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="staticEmail" class="col-form-label">Assistive Devices</label>
+                                        @{
+                                            if (Model.Count() > 0)
+                                            {
+                                                <input name="AssistiveDevices" value="@Model.LastOrDefault().AssistiveDevices" type="text" class="form-control" id="staticEmail">
+                                            }
+                                            else
+                                            {
+                                                <input name="AssistiveDevices" type="text" class="form-control" id="staticEmail">
+                                            }
+                                        }
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <table>
-                                <tbody id="Allergies">
-                                    <tr>
-                                        <th>Diet Allergy</th>
-                                        <th>Notes</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h5>Personal Preferences</h5>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="staticEmail" class="col-form-label">Likes</label><br>
-                                    <textarea name="likes" class="textarea col-md-12" rows="5" style="width: 95% !important;"></textarea>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5>Diet</h5>
                                 </div>
-                                <div class="form-group">
-                                    <label for="staticEmail" class="col-form-label">Dislikes</label><br>
-                                    <textarea name="dislikes" class="textarea col-md-12" rows="5" style="width: 95% !important;"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h5>Notes</h5>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <textarea name="notes" class="textarea col-md-12" rows="5" style="width: 95% !important;"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12 text-right">
+
                                 <br>
-                                <button class="btn btn-danger btn-lg">SAVE</button>
+                                <div class="col-md-3 pads">
+                                    @{
+                                        for (int i = 0; i < Model.LastOrDefault().Diet.Count; i++)
+                                        {
+                                            <div class="form-check">
+                                                <input name="Diet[]" class="form-check-input" type="checkbox" checked value="@Model.FirstOrDefault().Diet[i]" id="defaultCheck1">
+                                                <label class="form-check-label" for="defaultCheck1">
+                                                    @Model.FirstOrDefault().Diet[i]
+                                                </label>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+
                             </div>
-                        </div>
-                }
+                            <br>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="staticEmail" class="col-form-label">Texture</label>
+                                        <select name="texture" class="form-control">
+                                            @{
+                                                if (Model.Count() > 0)
+                                                {
+                                                    <option selected>@Model.LastOrDefault().Texture</option>
+                                                }
+                                            }
+                                            <option value="0">Select</option>
+                                            <option value="N/A">N/A</option>
+                                            <option value="Swallowing">Swallowing</option>
+                                            <option value="Choking Risk">Choking risk</option>
+                                            <option value="Difficulty in Chewing">Difficulty in Chewing</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="staticEmail" class="col-form-label">Other</label>
+                                        @{
+                                            if (Model.Count() > 0)
+                                            {
+                                                <input name="Other" value="@Model.LastOrDefault().Other" type="text" class="form-control" id="staticEmail">
+                                            }
+                                            else
+                                            {
+                                                <input name="Other" type="text" class="form-control" id="staticEmail">
+                                            }
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5>Allergies/Sensitivities</h5>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-check pads">
+                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                        <label class="form-check-label" for="defaultCheck1">
+                                            No Allergy
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-3 col-form-label">Allergies/Sensitivities</label>
+                                        <div class="col-md-6">
+                                            <select class="form-control" id="SelectedAllergy">
+                                                <option>Select</option>
+                                                @{
+                                                    foreach (var allergy in ViewBag.Allergies)
+                                                    {
+                                                        <option value="@allergy.ID">@allergy.Name</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <a href="#" id="AddAllergy" class="btn btn-danger">ADD</a>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <a href="#" id="DeleteAllergy" class="btn btn-danger">DELETE</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <table>
+                                    <tbody id="Allergies">
+                                        <tr>
+                                            <th>Diet Allergy</th>
+                                            <th>Notes</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5>Personal Preferences</h5>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="staticEmail" class="col-form-label">Likes</label><br>
+                                        @{
+                                            if (Model.Count() > 0)
+                                            {
+                                                <textarea name="likes" class="textarea col-md-12" rows="5" style="width: 95% !important;">@Model.LastOrDefault().Likes</textarea>
+                                            }
+                                            else
+                                            {
+                                                <textarea name="likes" class="textarea col-md-12" rows="5" style="width: 95% !important;"></textarea>
+                                            }
+                                        }
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="staticEmail" class="col-form-label">Dislikes</label><br>
+                                        @{
+                                            if (Model.Count() > 0)
+                                            {
+                                                <textarea name="dislikes" class="textarea col-md-12" rows="5" style="width: 95% !important;">@Model.LastOrDefault().DisLikes</textarea>
+                                            }
+                                            else
+                                            {
+                                                <textarea name="dislikes" class="textarea col-md-12" rows="5" style="width: 95% !important;"></textarea>
+                                            }
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5>Notes</h5>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        @{
+                                            if (Model.Count() > 0)
+                                            {
+                                                <textarea name="notes" class="textarea col-md-12" rows="5" style="width: 95% !important;">@Model.LastOrDefault().Notes</textarea>
+                                            }
+                                            else
+                                            {
+                                                <textarea name="notes" class="textarea col-md-12" rows="5" style="width: 95% !important;"></textarea>
+                                            }
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <br>
+                                    <button class="btn btn-danger btn-lg">SAVE</button>
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
 

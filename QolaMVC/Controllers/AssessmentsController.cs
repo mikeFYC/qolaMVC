@@ -600,7 +600,7 @@ namespace QolaMVC.Controllers
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
             var resident = (ResidentModel)TempData["Resident"];
-
+            p_Model.Date = DateTime.Now;
             p_Model.Resident = resident;
             p_Model.ModifiedBy = user;
             p_Model.ModifiedOn = DateTime.Now;
