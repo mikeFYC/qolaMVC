@@ -7,7 +7,9 @@ namespace QolaMVC.Constants
 {
     public class StoredProcedureName
     {
-
+        public const String USP_ADD_CARE_PLAN = "spAB_Add_CarePlan";
+        public const String USP_GET_CARE_PLAN = "spAB_Get_CarePlan";
+        
         public const string USP_ADD_HOME = "Add_Home";
         public const string USP_GET_HOME = "Get_Home";
         public const string USP_GET_PROVINCE_HOMES = "Get_Province_Homes";
