@@ -283,9 +283,42 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
-            return View();
+            var l_Assessments = AssessmentDAL.GetAdmissionHeadToToe(resident.ID);
+            return View(l_Assessments.LastOrDefault());
         }
+        
+        [HttpPost]
+        public ActionResult AddHeadToToeAssessment(AdmissionHeadToToeModel p_Model)
+        {
+            try
+            {
+                var home = (HomeModel)TempData["Home"];
+                var user = (UserModel)TempData["User"];
+                var resident = (ResidentModel)TempData["Resident"];
 
+                ViewBag.User = user;
+                ViewBag.Resident = resident;
+                ViewBag.Home = home;
+
+
+                TempData.Keep("User");
+                TempData.Keep("Home");
+                TempData.Keep("Resident");
+
+                p_Model.Resident = resident;
+                p_Model.EnteredBy = user;
+                AssessmentDAL.AddAdmissionHeadToToe(p_Model);
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+
+            }
+            return RedirectToAction("HeadToToeAssessment");
+        }
         public ActionResult HSEPTracking()
         {
             var home = (HomeModel)TempData["Home"];

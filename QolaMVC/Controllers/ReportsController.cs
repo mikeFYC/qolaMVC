@@ -176,5 +176,46 @@ namespace QolaMVC.Controllers
             //return new MvcRazorToPdf.PdfActionResult(resident);
         }
 
+        public ActionResult LikesReport()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            var l_SpecialDietReport = HomeDAL.GetLikesReport(home.Id);
+            return View(l_SpecialDietReport);
+            //return new Rotativa.ViewAsPdf("CarePlan", resident);
+            //return new MvcRazorToPdf.PdfActionResult(resident);
+        }
+
+        public ActionResult DislikesReport()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            var l_SpecialDietReport = HomeDAL.GetLikesReport(home.Id);
+            return View(l_SpecialDietReport);
+            //return new Rotativa.ViewAsPdf("CarePlan", resident);
+            //return new MvcRazorToPdf.PdfActionResult(resident);
+        }
     }
 }

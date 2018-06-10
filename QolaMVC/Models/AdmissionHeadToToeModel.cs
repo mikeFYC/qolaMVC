@@ -10,14 +10,16 @@ namespace QolaMVC.Models
         public int Id { get; set; }
         public ResidentModel Resident { get; set; }
         public DateTime Date { get; set; }
-        public bool AdmissionStatus { get; set; }
+        public string AdmissionStatus { get; set; }
         public string ReturnedFromHospital { get; set; }
         public string DiagnosisFromHospital { get; set; }
         public string Medications { get; set; }
         public string BP { get; set; }
         public string BPLocation { get; set; }
+        public string BPPosition { get; set; }
         public string RedialPulse { get; set; }
         public string PulseLocation { get; set; }
+        public string PulseStrength { get; set; }
         public string Temp { get; set; }
         public string TempLocation { get; set; }
         public string Resp { get; set; }

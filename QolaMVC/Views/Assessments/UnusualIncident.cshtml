@@ -1,982 +1,867 @@
-<?php include("../config.php") ?>
-<?php $title = "Manage Residents"; ?>
-<?php include("../_partials/header.php") ?>
-<?php include("../_partials/sidebar.php") ?>
 
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
 <style>
-    .form-tabs .nav-link{
+    .form-tabs .nav-link {
         font-size: 1rem;
     }
-    .modal-xlg{
+
+    .modal-xlg {
         width: 900px !important;
         max-width: 1000px !important;
     }
 </style>
 
-    <!-- START PAGE-CONTAINER -->
-    <div class="page-container">
-        
-        <?php include("../_partials/navHeader.php") ?>
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
 
-        <!-- START PAGE CONTENT WRAPPER -->
-        <div class="page-content-wrapper">
-            <!-- START PAGE CONTENT -->
-            <div class="content">
-                <!-- START JUMBOTRON -->
-                <div class="jumbotron w-100" style="position: fixed; z-index: 400">
-                    <div class="container-fluid container-fixed-lg">
-                        <!-- <div class="inner"> -->
-                            <div class="row align-items-center">
-                                <div class="col-md-8">
-                                    <h3>Unusual Incident Report</h3>
-                                </div>
-                            </div>
-                        <!-- </div> -->
-                    </div>
-                </div>
-                <!-- END JUMBOTRON -->
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
 
-                <div style="height: 60px;"></div>
-
-                <!-- START CONTAINER FLUID -->
+    <!-- START PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
                 <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3>Unusual Incident Report</h3>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+
+            <div style="height: 60px;"></div>
+
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg">
                 <!-- BEGIN PlACE PAGE CONTENT HERE -->
 
-                    <div class="card p-3">
-                        <div class="card-block">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-3 col-form-label">Date</label>
-                                        <div class="col-md-9">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-3 col-form-label">Time</label>
-                                        <div class="col-md-9">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-4 col-form-label">Report by (author)</label>
-                                        <div class="col-md-8">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="row">
-                                      <div class="col-md-12 text-center">
-                                        <br><br>
-                                        <h5><b>Section A: Details of Incident</b></h5>
-                                      </div>
-                                    </div>
-                                    
-                                <hr>
-                                </div>
-                                <div class="col-md-4">
-                                    Location:
-                                    <div class="form-check margin">
-                                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                      <label class="form-check-label" for="defaultCheck1">
-                                        Resident Room
-                                      </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                      <label class="form-check-label" for="defaultCheck1">
-                                        Bathroom
-                                      </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                      <label class="form-check-label" for="defaultCheck1">
-                                        Corridor/Hallway
-                                      </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                      <label class="form-check-label" for="defaultCheck1">
-                                        Lounge/common area
-                                      </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                      <label class="form-check-label" for="defaultCheck1">
-                                        Dinning Room
-                                      </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                      <label class="form-check-label" for="defaultCheck1">
-                                        Facility Grounds
-                                      </label>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-5 col-form-label">Other</label>
-                                        <div class="col-md-7">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    Name of Person involved
-                                    <div class="row">
-                                        <div class="col-md-8">
-                                            <div class="">
-                                              <div class=" row">
-                                                <label for="inputPassword6" class="col-md-4 col-form-label">Resident</label>
-                                                <div class="col-md-8">
-                                                <input type="text" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">
-                                                </div>
-                                              </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="">
-                                              <div class=" row">
-                                                <label for="inputPassword6" class="col-md-4 col-form-label">RM#</label>
-                                                <div class="col-md-8">
-                                                <input type="text" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">
-                                                </div>
-                                              </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <div class="row">
-                                        <div class="col-md-8">
-                                            <div class="">
-                                              <div class="row">
-                                                <label for="inputPassword6" class="col-md-4 col-form-label">Employee</label>
-                                                <div class="col-md-8">
-                                                <input type="text" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">
-                                                </div>
-                                              </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="">
-                                              <div class="row">
-                                                <label for="inputPassword6" class="col-md-4 col-form-label">Dept</label>
-                                                <div class="col-md-8">
-                                                <input type="text" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">
-                                                </div>
-                                              </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <div class="row">
-                                        <div class="col-md-8">
-                                            <div class="">
-                                              <div class="row">
-                                                <label for="inputPassword6" class="col-md-4 col-form-label">Visitor</label>
-                                                <div class="col-md-8">
-                                                <input type="text" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">
-                                                </div>
-                                              </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="">
-                                              <div class="row">
-                                                <label for="inputPassword6" class="col-md-4 col-form-label">RM#</label>
-                                                <div class="col-md-8">
-                                                <input type="text" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">
-                                                </div>
-
-                                              </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="">
-                                              <div class="row">
-                                                <label for="inputPassword6" class="col-md-4 col-form-label">Other</label>
-                                                <div class="col-md-8">
-                                                <input type="text" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">
-                                                </div>
-                                              </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <br>
-                                    Section B: Witnessed or Unwitnessed
-
-                                    <div class="form-check margin">
-                                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                      <label class="form-check-label" for="defaultCheck1">
-                                        NO
-                                      </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                      <label class="form-check-label" for="defaultCheck1">
-                                        YES
-                                      </label>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-3 col-form-label">Name</label>
-                                        <div class="col-md-9">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    Resident Status/Condition prior to incident(check all that apply)
-                                    <div class="form-check margin">
-                                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                      <label class="form-check-label" for="defaultCheck1">
-                                        Cognitively impaired
-                                      </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                      <label class="form-check-label" for="defaultCheck1">
-                                        Alert
-                                      </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                      <label class="form-check-label" for="defaultCheck1">
-                                        Self ambulated
-                                      </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                      <label class="form-check-label" for="defaultCheck1">
-                                        Sedated
-                                      </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                      <label class="form-check-label" for="defaultCheck1">
-                                        Requires assistance
-                                      </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                      <label class="form-check-label" for="defaultCheck1">
-                                        Agitated
-                                      </label>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-5 col-form-label">Mobility Aid in use: (specify)</label>
-                                        <div class="col-md-7">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-12">
-                                  <div class="row">
-                                      <div class="col-md-12 text-center">
-                                        <br><br><br>
-                                       <h5><b>Section C: Type of Incident</b></h5>
-                                      </div>
-                                    </div>
-                                    <hr>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-check margin">
-                                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                      <label class="form-check-label" for="defaultCheck1">
-                                        Fall
-                                      </label>
-                                    </div>
-                                    <p>witnessed / unwitnessed</p>
-                                    <div class="form-check margin">
-                                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                      <label class="form-check-label" for="defaultCheck1">
-                                        Elopement
-                                      </label>
-
-                                        <div class="form-check margin">
-                                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                          <label class="form-check-label" for="defaultCheck1">
-                                            returned by own
-                                          </label>
-                                        </div>
-                                        <div class="form-check margin">
-                                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                          <label class="form-check-label" for="defaultCheck1">
-                                            assisted by police
-                                          </label>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="staticEmail" class="col-md-5 col-form-label">assisted by Other</label>
-                                            <div class="col-md-7">
-                                              <input type="text" class="form-control" id="staticEmail">
-                                            </div>
-                                        </div>
-                                          
-                                    </div>
-                                    <br>
-                                    
-                                    <div class="form-check margin">
-                                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                      <label class="form-check-label" for="defaultCheck1">
-                                        Unsual Behaviour
-                                      </label>
-
-                                        <div class="form-check margin">
-                                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                          <label class="form-check-label" for="defaultCheck1">
-                                            returned by resident
-                                          </label>
-                                        </div>
-
-                                        <div class="form-check margin">
-                                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                          <label class="form-check-label" for="defaultCheck1">
-                                            returned by staff
-                                          </label>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="staticEmail" class="col-md-5 col-form-label">assisted by Other</label>
-                                            <div class="col-md-7">
-                                              <input type="text" class="form-control" id="staticEmail">
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-                                    
-                                </div>
-                                <div class="col-md-4">
-                                   <div class="form-check margin">
-                                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                      <label class="form-check-label" for="defaultCheck1">
-                                        Physical Injury(must complete section E)
-                                      </label>
-
-                                        <div class="form-check margin">
-                                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                          <label class="form-check-label" for="defaultCheck1">
-                                            skin tear
-                                          </label>
-                                        </div>
-                                        <div class="form-check margin">
-                                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                          <label class="form-check-label" for="defaultCheck1">
-                                            bruise
-                                          </label>
-                                        </div>
-                                          
-                                    </div>
-                                    <br>
-                                    <div class="form-check margin">
-                                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                      <label class="form-check-label" for="defaultCheck1">
-                                        Property Loss or Damage
-                                      </label>
-
-                                        <div class="form-check margin">
-                                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                          <label class="form-check-label" for="defaultCheck1">
-                                            resident
-                                          </label>
-                                        </div>
-                                        <div class="form-check margin">
-                                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                          <label class="form-check-label" for="defaultCheck1">
-                                            staff
-                                          </label>
-                                        </div>
-                                        <div class="form-check margin">
-                                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                          <label class="form-check-label" for="defaultCheck1">
-                                            facility
-                                          </label>
-                                        </div>
-                                         <div class="form-group row">
-                                            <label for="staticEmail" class="col-md-5 col-form-label">Other (specify)</label>
-                                            <div class="col-md-7">
-                                              <input type="text" class="form-control" id="staticEmail">
-                                            </div>
-                                        </div>
-                                          
-                                    </div>
-
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-check margin">
-                                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                      <label class="form-check-label" for="defaultCheck1">
-                                        Treatment/Medication (must complete Section D & E)
-                                      </label>
-                                      <div class="form-check margin">
-                                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                          <label class="form-check-label" for="defaultCheck1">
-                                            omission
-                                          </label>
-                                        </div>
-                                        <div class="form-check margin">
-                                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                          <label class="form-check-label" for="defaultCheck1">
-                                            error
-                                          </label>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="staticEmail" class="col-md-5 col-form-label">Which right was voilated</label>
-                                            <div class="col-md-7">
-                                              <input type="text" class="form-control" id="staticEmail">
-                                            </div>
-                                        </div>
-                                            <div class="form-check margin">
-                                              <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                              <label class="form-check-label" for="defaultCheck1">
-                                                apparent result
-                                              </label>
-                                            </div>
-                                            <div class="form-check margin">
-                                              <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                              <label class="form-check-label" for="defaultCheck1">
-                                                no observed result
-                                              </label>
-                                            </div>
-                                        <div class="form-check margin">
-                                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                          <label class="form-check-label" for="defaultCheck1">
-                                            near miss: (must complete section D)
-                                          </label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-5 col-form-label">Other: (specify)</label>
-                                        <div class="col-md-7">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                    </div>
-
-                                   
-                                </div>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <div class="col-md-12">
-
-                                    <div class="row">
-                                      <div class="col-md-12 text-center">
-                                        <br><br><br>
-                                       <h5><b>Section D: Description of Incident (include time, witness, surrounding conditions, position of resident, etc)</b></h5>
-                                      </div>
-                                    </div>
-                                    <hr>
-                                </div>
-                                <div class="col-md-12">
-                                    <textarea class="textarea" rows="7" style="width: 100% !important;"></textarea>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label for="staticEmail" class="col-md-3 col-form-label">Date</label>
-                                                <div class="col-md-9">
-                                                  <input type="text" class="form-control" id="staticEmail">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label for="staticEmail" class="col-md-3 col-form-label">Time</label>
-                                                <div class="col-md-9">
-                                                  <input type="text" class="form-control" id="staticEmail">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="row">
-                                      <div class="col-md-12 text-center">
-                                        <br><br><br>
-                                       <h5><b>Section E: Assessment of Injury and Treatment Required</b></h5>
-                                      </div>
-                                    </div>
-                                    <hr>
-                                </div>
-                                <div class="col-md-12">
-                                    <textarea class="textarea" rows="7" style="width: 100% !important;"></textarea>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label for="staticEmail" class="col-md-3 col-form-label">Date</label>
-                                                <div class="col-md-9">
-                                                  <input type="text" class="form-control" id="staticEmail">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label for="staticEmail" class="col-md-3 col-form-label">Time</label>
-                                                <div class="col-md-9">
-                                                  <input type="text" class="form-control" id="staticEmail">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="row">
-                                      <div class="col-md-12 text-center">
-                                        <br><br><br>
-                                       <h5><b>Section F: Other Notes</b></h5>
-                                      </div>
-                                    </div>
-                                    <hr>
-                                </div>
-                                <div class="col-md-12">
-                                    <textarea class="textarea" rows="7" style="width: 100% !important;"></textarea>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label for="staticEmail" class="col-md-3 col-form-label">Date</label>
-                                                <div class="col-md-9">
-                                                  <input type="text" class="form-control" id="staticEmail">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row">
-                                                <label for="staticEmail" class="col-md-3 col-form-label">Time</label>
-                                                <div class="col-md-9">
-                                                  <input type="text" class="form-control" id="staticEmail">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="row">
-                                      <div class="col-md-12 text-center">
-                                        <br><br><br>
-                                       <h5><b>Section G: Notification</b></h5>
-                                      </div>
-                                    </div>
-                                    <hr>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="row">
-                                        <div class="col-md-2"></div>
-                                        <div class="col-md-2">Name</div>
-                                        <div class="col-md-2">Date</div>
-                                        <div class="col-md-2">Time</div>
-                                        <div class="col-md-2">By Whom</div>
-                                        <div class="col-md-2">Via</div>
-                                    </div>
-                                    <br>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-2 col-form-label">Physician</label>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-2 col-form-label">Family</label>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-2 col-form-label">Albeerta Health Services</label>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-2 col-form-label">On Call Manager</label>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-2 col-form-label">Director of Care</label>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-2 col-form-label">Maintenance</label>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-2 col-form-label">General Service Mgr.</label>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-2 col-form-label">Senior Management</label>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-2 col-form-label">Other</label>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                        <div class="col-md-2">
-                                          <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row">
+                <div class="card p-3">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Date</label>
                                     <div class="col-md-12">
-
-                                        <div class="row">
-                                      <div class="col-md-12 text-center">
-                                        <br><br><br>
-                                       <h5><b>Section H: Action taken to prevent similar incident from re-occuring</b></h5>
-                                      </div>
-                                    </div>
-                                    <hr>
-                                        
-                                    </div>
-                                    <div class="col-md-12">
-                                        <textarea class="textarea" rows="7" style="width: 100% !important;"></textarea>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group row">
-                                                    <label for="staticEmail" class="col-md-3 col-form-label">Date</label>
-                                                    <div class="col-md-9">
-                                                      <input type="text" class="form-control" id="staticEmail">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group row">
-                                                    <label for="staticEmail" class="col-md-3 col-form-label">Time</label>
-                                                    <div class="col-md-9">
-                                                      <input type="text" class="form-control" id="staticEmail">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <input type="text" class="form-control" id="staticEmail">
                                     </div>
                                 </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="row">
-                                      <div class="col-md-12 text-center">
-                                        <br><br><br>
-                                       <h5><b>Section I: Quality Assurance</b></h5>
-                                      </div>
-                                    </div>
-                                      <hr>  
-                                    </div>
-                                    <div class="col-md-12">
-                                        
-                                        <div class="form-group">
-                                            <div class="row">
-                                            <label class="col-md-5 col-form-label">Incident documented on Health Record:</label>
-                                            <div class="col-md-7 pads">
-                                                <div class="form-check form-check-inline movesp"">
-                                                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                  <label class="form-check-label" for="inlineRadio1">YES</label>
-                                                </div>
-                                                <div class="form-check form-check-inline pad3">
-                                                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                  <label class="form-check-label" for="inlineRadio2">NO</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                  <label class="form-check-label" for="inlineRadio2">NA</label>
-                                                </div>
-                                            </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="row">
-                                            <label class="col-md-5 col-form-label">Changes made to resident care plan (as appropriate):</label>
-                                            <div class="col-md-7 pads">
-                                                <div class="form-check form-check-inline movesp"">
-                                                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                  <label class="form-check-label" for="inlineRadio1">YES</label>
-                                                </div>
-                                                <div class="form-check form-check-inline pad3">
-                                                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                  <label class="form-check-label" for="inlineRadio2">NO</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                  <label class="form-check-label" for="inlineRadio2">NA</label>
-                                                </div>
-                                            </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="row">
-                                            <label class="col-md-5 col-form-label">Referral consult to the Interdisciplinary Team was made:</label>
-                                            <div class="col-md-7 pads">
-                                                <div class="form-check form-check-inline movesp"">
-                                                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                  <label class="form-check-label" for="inlineRadio1">YES</label>
-                                                </div>
-                                                <div class="form-check form-check-inline pad3">
-                                                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                  <label class="form-check-label" for="inlineRadio2">NO</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                  <label class="form-check-label" for="inlineRadio2">NA</label>
-                                                </div>
-                                            </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="row">
-                                            <label class="col-md-5 col-form-label">OHS Committee informed if applicable:</label>
-                                            <div class="col-md-7 pads">
-                                                <div class="form-check form-check-inline movesp"">
-                                                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                  <label class="form-check-label" for="inlineRadio1">YES</label>
-                                                </div>
-                                                <div class="form-check form-check-inline pad3">
-                                                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                  <label class="form-check-label" for="inlineRadio2">NO</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                  <label class="form-check-label" for="inlineRadio2">NA</label>
-                                                </div>
-                                            </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="row">
-                                            <label class="col-md-5 col-form-label">Record Tracking Form:</label>
-                                            <div class="col-md-7 pads">
-                                                <div class="form-check form-check-inline movesp"">
-                                                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                  <label class="form-check-label" for="inlineRadio1">YES</label>
-                                                </div>
-                                                <div class="form-check form-check-inline pad3">
-                                                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                  <label class="form-check-label" for="inlineRadio2">NO</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                  <label class="form-check-label" for="inlineRadio2">NA</label>
-                                                </div>
-                                            </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="row">
-                                            <label class="col-md-5 col-form-label">Incident information discussed in QA Meeting:</label>
-                                            <div class="col-md-7 pads">
-                                                <div class="form-check form-check-inline movesp"">
-                                                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                  <label class="form-check-label" for="inlineRadio1">YES</label>
-                                                </div>
-                                                <div class="form-check form-check-inline pad3">
-                                                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                  <label class="form-check-label" for="inlineRadio2">NO</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                  <label class="form-check-label" for="inlineRadio2">NA</label>
-                                                </div>
-                                            </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <br>
-                                
-
                             </div>
-                            <br>
-                            <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Time</label>
                                     <div class="col-md-12">
-
-                                        <div class="row">
-                                      <div class="col-md-12 text-center">
-                                        <br><br><br>
-                                       <h5><b>Section J: Executive Director or Designate</b></h5>
-                                      </div>
-                                    </div>
-                                    <hr>
-                                        
-                                    </div>
-                                    <div class="col-md-12">
-                                        <textarea class="textarea" rows="7" style="width: 100% !important;"></textarea>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group row">
-                                                    <label for="staticEmail" class="col-md-3 col-form-label">Date</label>
-                                                    <div class="col-md-9">
-                                                      <input type="text" class="form-control" id="staticEmail">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group row">
-                                                    <label for="staticEmail" class="col-md-3 col-form-label">Time</label>
-                                                    <div class="col-md-9">
-                                                      <input type="text" class="form-control" id="staticEmail">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <input type="text" class="form-control" id="staticEmail">
                                     </div>
                                 </div>
-                                <br>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Report by (author)</label>
+                                    <div class="col-md-12">
+                                        <input type="text" class="form-control" id="staticEmail">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="row">
-                                        <div class="col-md-12 text-right">
-                                            <br>
-                                            <button class="btn btn-danger btn-lg">SAVE</button>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <br><br>
+                                        <h4><b>Section A: Details of Incident</b></h4>
+                                    </div>
+                                </div>
+
+                                <hr>
+                            </div>
+                            <div class="col-md-4 border">
+                                <b>Location:</b>
+                                <br><br>
+                                <div class="form-check margin">
+                                    <input class="form-check-input" type="checkbox" value="" id="">
+                                    <label class="form-check-label checkspace" for="">
+                                        Resident Room
+                                    </label>
+                                </div>
+                                <div class="form-check margin">
+                                    <input class="form-check-input" type="checkbox" value="" id="">
+                                    <label class="form-check-label checkspace" for="">
+                                        Bathroom
+                                    </label>
+                                </div>
+                                <div class="form-check margin">
+                                    <input class="form-check-input" type="checkbox" value="" id="">
+                                    <label class="form-check-label checkspace" for="">
+                                        Corridor/Hallway
+                                    </label>
+                                </div>
+                                <div class="form-check margin">
+                                    <input class="form-check-input" type="checkbox" value="" id="">
+                                    <label class="form-check-label checkspace" for="">
+                                        Lounge/common area
+                                    </label>
+                                </div>
+                                <div class="form-check margin">
+                                    <input class="form-check-input" type="checkbox" value="" id="">
+                                    <label class="form-check-label checkspace" for="">
+                                        Dinning Room
+                                    </label>
+                                </div>
+                                <div class="form-check margin">
+                                    <input class="form-check-input" type="checkbox" value="" id="">
+                                    <label class="form-check-label checkspace" for="">
+                                        Facility Grounds
+                                    </label>
+                                </div>
+                                <div class="form-group form-group-default">
+                                    <label>Other:</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-4 border">
+                                <b>Name of Person involved</b>
+                                <br><br>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group form-group-default">
+                                            <label>Resident</label>
+                                            <input type="text" class="form-control">
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group form-group-default">
+                                            <label>RM#</label>
+                                            <input type="text" class="form-control">
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group form-group-default">
+                                            <label>Employee</label>
+                                            <input type="text" class="form-control">
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group form-group-default">
+                                            <label>Dept</label>
+                                            <input type="text" class="form-control">
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group form-group-default">
+                                            <label>Visitor</label>
+                                            <input type="text" class="form-control">
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group form-group-default">
+                                            <label>RM#</label>
+                                            <input type="text" class="form-control">
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group form-group-default">
+                                            <label>Other</label>
+                                            <input type="text" class="form-control">
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <br>
+
+                            </div>
+                            <div class="col-md-4">
+                                <b>Resident Status/Condition prior to incident(check all that apply)</b>
+                                <br><br>
+                                <div class="form-check margin">
+                                    <input class="form-check-input" type="checkbox" value="" id="">
+                                    <label class="form-check-label checkspace" for="">
+                                        Cognitively impaired
+                                    </label>
+                                </div>
+                                <div class="form-check margin">
+                                    <input class="form-check-input" type="checkbox" value="" id="">
+                                    <label class="form-check-label checkspace" for="">
+                                        Alert
+                                    </label>
+                                </div>
+                                <div class="form-check margin">
+                                    <input class="form-check-input" type="checkbox" value="" id="">
+                                    <label class="form-check-label checkspace" for="">
+                                        Self ambulated
+                                    </label>
+                                </div>
+                                <div class="form-check margin">
+                                    <input class="form-check-input" type="checkbox" value="" id="">
+                                    <label class="form-check-label checkspace" for="">
+                                        Sedated
+                                    </label>
+                                </div>
+                                <div class="form-check margin">
+                                    <input class="form-check-input" type="checkbox" value="" id="">
+                                    <label class="form-check-label checkspace" for="">
+                                        Requires assistance
+                                    </label>
+                                </div>
+                                <div class="form-check margin">
+                                    <input class="form-check-input" type="checkbox" value="" id="">
+                                    <label class="form-check-label checkspace" for="">
+                                        Agitated
+                                    </label>
+                                </div>
+                                <div class="form-group form-group-default">
+                                    <label>Mobility Aid in use: (specify)</label>
+                                    <input type="text" class="form-control">
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <br><br><br>
+                                <h4>Section B: Witnessed or Unwitnessed</h4>
+                            </div>
+                            <div class="col-md-4">
+
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+
+                                        <div class="form-check form-check-inline movesp margin2">
+                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                            <label class="form-check-label checkspace" for="">Yes</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                            <label class="form-check-label checkspace" for="">No</label>
+                                        </div><br>
+                                        <div class="form-group form-group-default">
+                                            <label>Name</label>
+                                            <input type="text" class="form-control">
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <br><br><br>
+                                        <h4><b>Section C: Type of Incident</b></h4>
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                            <div class="col-md-4 border">
+                                <div class="form-check margin">
+                                    <input class="form-check-input" type="checkbox" value="" id="">
+                                    <label class="form-check-label checkspace" for="">
+                                        Fall
+                                    </label>
+                                </div>
+                                <p>witnessed / unwitnessed</p>
+                                <div class="form-check margin">
+                                    <input class="form-check-input" type="checkbox" value="" id="">
+                                    <label class="form-check-label checkspace" for="">
+                                        Elopement
+                                    </label>
+
+                                    <div class="form-check margin">
+                                        <input class="form-check-input" type="checkbox" value="" id="">
+                                        <label class="form-check-label checkspace" for="">
+                                            returned by own
+                                        </label>
+                                    </div>
+                                    <div class="form-check margin">
+                                        <input class="form-check-input" type="checkbox" value="" id="">
+                                        <label class="form-check-label checkspace" for="">
+                                            assisted by police
+                                        </label>
+                                    </div>
+                                    <div class="form-group form-group-default">
+                                        <label>assisted by Other</label>
+                                        <input type="text" class="form-control">
+                                    </div>
+
+
+                                </div>
+                                <br>
+
+                                <div class="form-check margin">
+                                    <input class="form-check-input" type="checkbox" value="" id="">
+                                    <label class="form-check-label checkspace" for="">
+                                        Unsual Behaviour
+                                    </label>
+
+                                    <div class="form-check margin">
+                                        <input class="form-check-input" type="checkbox" value="" id="">
+                                        <label class="form-check-label checkspace" for="">
+                                            returned by resident
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check margin">
+                                        <input class="form-check-input" type="checkbox" value="" id="">
+                                        <label class="form-check-label checkspace" for="">
+                                            returned by staff
+                                        </label>
+                                    </div>
+                                    <div class="form-group form-group-default">
+                                        <label>assisted by Other</label>
+                                        <input type="text" class="form-control">
+                                    </div>
+
+
+
+                                </div>
+
+                            </div>
+                            <div class="col-md-4 border">
+                                <div class="form-check margin">
+                                    <input class="form-check-input" type="checkbox" value="" id="">
+                                    <label class="form-check-label checkspace" for="">
+                                        Physical Injury(must complete section E)
+                                    </label>
+
+                                    <div class="form-check margin">
+                                        <input class="form-check-input" type="checkbox" value="" id="">
+                                        <label class="form-check-label checkspace" for="">
+                                            skin tear
+                                        </label>
+                                    </div>
+                                    <div class="form-check margin">
+                                        <input class="form-check-input" type="checkbox" value="" id="">
+                                        <label class="form-check-label checkspace" for="">
+                                            bruise
+                                        </label>
+                                    </div>
+
+                                </div>
+                                <br>
+                                <div class="form-check margin">
+                                    <input class="form-check-input" type="checkbox" value="" id="">
+                                    <label class="form-check-label checkspace" for="">
+                                        Property Loss or Damage
+                                    </label>
+
+                                    <div class="form-check margin">
+                                        <input class="form-check-input" type="checkbox" value="" id="">
+                                        <label class="form-check-label checkspace" for="">
+                                            resident
+                                        </label>
+                                    </div>
+                                    <div class="form-check margin">
+                                        <input class="form-check-input" type="checkbox" value="" id="">
+                                        <label class="form-check-label checkspace" for="">
+                                            staff
+                                        </label>
+                                    </div>
+                                    <div class="form-check margin">
+                                        <input class="form-check-input" type="checkbox" value="" id="">
+                                        <label class="form-check-label checkspace" for="">
+                                            facility
+                                        </label>
+                                    </div>
+                                    <div class="form-group form-group-default">
+                                        <label>Other (specify)</label>
+                                        <input type="text" class="form-control">
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check margin">
+                                    <input class="form-check-input" type="checkbox" value="" id="">
+                                    <label class="form-check-label checkspace" for="">
+                                        Treatment/Medication (must complete Section D & E)
+                                    </label>
+                                    <div class="form-check margin">
+                                        <input class="form-check-input" type="checkbox" value="" id="">
+                                        <label class="form-check-label checkspace" for="">
+                                            omission
+                                        </label>
+                                    </div>
+                                    <div class="form-check margin">
+                                        <input class="form-check-input" type="checkbox" value="" id="">
+                                        <label class="form-check-label checkspace" for="">
+                                            error
+                                        </label>
+                                    </div>
+                                    <div class="form-group form-group-default">
+                                        <label>Which right was voilated</label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                    <br>
+                                    <div class="form-check margin">
+                                        <input class="form-check-input" type="checkbox" value="" id="">
+                                        <label class="form-check-label checkspace" for="">
+                                            apparent result
+                                        </label>
+                                    </div>
+                                    <div class="form-check margin">
+                                        <input class="form-check-input" type="checkbox" value="" id="">
+                                        <label class="form-check-label checkspace" for="">
+                                            no observed result
+                                        </label>
+                                    </div>
+                                    <div class="form-check margin">
+                                        <input class="form-check-input" type="checkbox" value="" id="">
+                                        <label class="form-check-label checkspace" for="">
+                                            near miss: (must complete section D)
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group form-group-default">
+                                    <label>Other: (specify)</label>
+                                    <input type="text" class="form-control">
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <br><br><br>
+                                        <h4><b>Section D: Description of Incident (include time, witness, surrounding conditions, position of resident, etc)</b></h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <textarea class="textarea" rows="7" style="width: 100% !important;"></textarea>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Date</label>
+                                            <div class="col-md-12">
+                                                <input type="text" class="form-control" id="staticEmail">
+                                            </div>
                                         </div>
                                     </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Time</label>
+                                            <div class="col-md-12">
+                                                <input type="text" class="form-control" id="staticEmail">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <br><br><br>
+                                        <h4><b>Section E: Assessment of Injury and Treatment Required</b></h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <textarea class="textarea" rows="7" style="width: 100% !important;"></textarea>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Date</label>
+                                            <div class="col-md-12">
+                                                <input type="text" class="form-control" id="staticEmail">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Time</label>
+                                            <div class="col-md-12">
+                                                <input type="text" class="form-control" id="staticEmail">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <br><br><br>
+                                        <h4><b>Section F: Other Notes</b></h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <textarea class="textarea" rows="7" style="width: 100% !important;"></textarea>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Date</label>
+                                            <div class="col-md-12">
+                                                <input type="text" class="form-control" id="staticEmail">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Time</label>
+                                            <div class="col-md-12">
+                                                <input type="text" class="form-control" id="staticEmail">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <br><br><br>
+                                        <h4><b>Section G: Notification</b></h4>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <table class="table table-bordered table-responsive">
+                                <thead class="bg-primary">
+                                    <tr>
+                                        <th class="text-white"></th>
+                                        <th class="text-center text-white">Name</th>
+                                        <th class="text-center text-white">Date</th>
+                                        <th class="text-center text-white">Time</th>
+                                        <th class="text-center text-white">By Whom</th>
+                                        <th class="text-center text-white">Via</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="align-middle">PHYSICIAN</td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-middle">Family</td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-middle">Albeerta Health Services</td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-middle">On Call Manager</td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-middle">Director of Care</td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-middle">Maintenance</td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-middle">General Service Mgr.</td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-middle">Senior Management</td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="align-middle">Other</td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                        <td><input type="text" class="form-control"></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <br><br><br>
+                                        <h4><b>Section H: Action taken to prevent similar incident from re-occuring</b></h4>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-12">
+                                <textarea class="textarea" rows="7" style="width: 100% !important;"></textarea>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Date</label>
+                                            <div class="col-md-12">
+                                                <input type="text" class="form-control" id="staticEmail">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Time</label>
+                                            <div class="col-md-12">
+                                                <input type="text" class="form-control" id="staticEmail">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <br><br><br>
+                                        <h4><b>Section I: Quality Assurance</b></h4>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="col-md-12">
+
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label class="col-md-5 col-form-label">Incident documented on Health Record:</label>
+                                        <div class="col-md-7 pads">
+                                            <div class="form-check form-check-inline movesp" ">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                <label class="form-check-label checkspace" for="inlineRadio1">YES</label>
+                                            </div>
+                                            <div class="form-check form-check-inline pad4">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                <label class="form-check-label checkspace" for="inlineRadio2">NO</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                <label class="form-check-label checkspace" for="inlineRadio2">NA</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label class="col-md-5 col-form-label">Changes made to resident care plan (as appropriate):</label>
+                                        <div class="col-md-7 pads">
+                                            <div class="form-check form-check-inline movesp" ">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                <label class="form-check-label checkspace" for="inlineRadio1">YES</label>
+                                            </div>
+                                            <div class="form-check form-check-inline pad4">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                <label class="form-check-label checkspace" for="inlineRadio2">NO</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                <label class="form-check-label checkspace" for="inlineRadio2">NA</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label class="col-md-5 col-form-label">Referral consult to the Interdisciplinary Team was made:</label>
+                                        <div class="col-md-7 pads">
+                                            <div class="form-check form-check-inline movesp" ">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                <label class="form-check-label checkspace" for="inlineRadio1">YES</label>
+                                            </div>
+                                            <div class="form-check form-check-inline pad4">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                <label class="form-check-label checkspace" for="inlineRadio2">NO</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                <label class="form-check-label checkspace" for="inlineRadio2">NA</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label class="col-md-5 col-form-label">OHS Committee informed if applicable:</label>
+                                        <div class="col-md-7 pads">
+                                            <div class="form-check form-check-inline movesp" ">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                <label class="form-check-label checkspace" for="inlineRadio1">YES</label>
+                                            </div>
+                                            <div class="form-check form-check-inline pad4">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                <label class="form-check-label checkspace" for="inlineRadio2">NO</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                <label class="form-check-label checkspace" for="inlineRadio2">NA</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label class="col-md-5 col-form-label">Record Tracking Form:</label>
+                                        <div class="col-md-7 pads">
+                                            <div class="form-check form-check-inline movesp" ">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                <label class="form-check-label checkspace" for="inlineRadio1">YES</label>
+                                            </div>
+                                            <div class="form-check form-check-inline pad4">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                <label class="form-check-label checkspace" for="inlineRadio2">NO</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                <label class="form-check-label checkspace" for="inlineRadio2">NA</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label class="col-md-5 col-form-label">Incident information discussed in QA Meeting:</label>
+                                        <div class="col-md-7 pads">
+                                            <div class="form-check form-check-inline movesp" ">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                <label class="form-check-label checkspace" for="inlineRadio1">YES</label>
+                                            </div>
+                                            <div class="form-check form-check-inline pad4">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                <label class="form-check-label checkspace" for="inlineRadio2">NO</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                <label class="form-check-label checkspace" for="inlineRadio2">NA</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <br>
+
+
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <br><br><br>
+                                        <h4><b>Section J: Executive Director or Designate</b></h4>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-12">
+                                <textarea class="textarea" rows="7" style="width: 100% !important;"></textarea>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Date</label>
+                                            <div class="col-md-12">
+                                                <input type="text" class="form-control" id="staticEmail">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Time</label>
+                                            <div class="col-md-12">
+                                                <input type="text" class="form-control" id="staticEmail">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
                     </div>
-
-                
-                <!-- END PLACE PAGE CONTENT HERE -->
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <br>
+                            <button class="btn btn-danger btn-lg">SAVE</button>
+                        </div>
+                    </div>
                 </div>
-                <!-- END CONTAINER FLUID -->
+
+
+                <!-- END PLACE PAGE CONTENT HERE -->
             </div>
-            <!-- END PAGE CONTENT -->
-
-            
-
-    <?php include("../_partials/footer.php") ?>
+            <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+        @RenderPage("~/Views/Shared/_Footer.cshtml")

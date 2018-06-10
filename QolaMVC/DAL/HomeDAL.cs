@@ -745,5 +745,62 @@ namespace QolaMVC.DAL
             }
         }
 
+        public static Collection<DietaryLikesModel> GetLikesReport(int p_HomeId)
+        {
+            string exception = string.Empty;
+            Collection<DietaryLikesModel> l_Reports = new Collection<DietaryLikesModel>();
+            DietaryLikesModel l_Report;
+            UserModel l_User;
+            ResidentModel l_Resident;
+            SuiteModel l_Suite;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_DietaryAssessment_Likes", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@HomeId", p_HomeId);
+                DataSet homeReceive = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(homeReceive);
+
+                if ((homeReceive != null) && (homeReceive.Tables.Count > 0) && (homeReceive.Tables[0].Rows.Count > 0))
+                {
+                    foreach (DataRow homeTypeRow in homeReceive.Tables[0].Rows)
+                    {
+                        l_Report = new DietaryLikesModel();
+                        l_User = new UserModel();
+                        l_Resident = new ResidentModel();
+                        l_Suite = new SuiteModel();
+
+                        l_Resident.ShortName = Convert.ToString(homeTypeRow["ResidentName"]);
+                        l_Resident.ID = Convert.ToInt32(homeTypeRow["ResidentId"]);
+                        l_Suite.SuiteNo = Convert.ToString(homeTypeRow["Suite"]);
+                        l_Report.Likes = Convert.ToString(homeTypeRow["Likes"]);
+                        l_Report.DisLikes = Convert.ToString(homeTypeRow["DisLikes"]);
+                        l_Report.DateEntered = Convert.ToDateTime(homeTypeRow["DateEntered"]);
+
+                        l_Report.Resident = l_Resident;
+                        l_Report.Suite = l_Suite;
+
+                        l_Reports.Add(l_Report);
+                    }
+                }
+                return l_Reports;
+            }
+            catch (Exception ex)
+            {
+                exception = "GetLikesReport |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
     }
 }

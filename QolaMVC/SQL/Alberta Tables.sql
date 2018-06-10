@@ -254,3 +254,65 @@ CREATE TABLE [dbo].[tbl_AB_DietaryAssessment](
 	PRIMARY KEY (Id)
 	)
 	GO
+
+	
+GO
+CREATE TABLE [dbo].[tbl_AB_UnusualIncident](
+	Id [int] IDENTITY(1,1) NOT NULL,
+	ResidentId [int] NOT NULL,
+	strLocation [nvarchar](200) null,
+	Employee [nvarchar](200) null,
+	Dept [nvarchar](200) null,
+	Visitor [nvarchar](200) null,
+	Room [nvarchar](200) null,
+	Other [nvarchar](200) null,
+	WasWitnessed [nvarchar](200) null,
+	WitnessName [nvarchar](200) null,
+	IsFall bit null,
+	IsElopement bit null,
+	ElopementValue nvarchar(50) null,
+	IsUnusualBehavior bit null,
+	UnusualBehaviorvalue nvarchar(50),
+	IsPhysicalInjury bit null,
+	PhysicalInjuryValue nvarchar(50) null,
+	IsPropertyLoss bit null,
+	PropertyLossValue nvarchar(50) null,
+	IsSuspicious bit null,
+	SuspicionValue nvarchar(50) null,
+	IsTreatment bit null,
+	TreatmentValue nvarchar(50) null,
+	IsOther bit null,
+	SectionD nvarchar(max) null,
+	SectionE nvarchar(max) null,
+	SectionF nvarchar(max) null,
+	SectionH nvarchar(max) null,
+	IncidentDocumented nvarchar(20) null,
+	ChangesMade nvarchar(20) null,
+	ReferralConsult nvarchar(20) null,
+	OHSCommitteeInformed nvarchar(20) null,
+	RecordTrackingForm nvarchar(20) null,
+	IncidentInformation nvarchar(20) null,
+	SectionJ nvarchar(max) null,
+
+	EnteredBy [int] not null,
+	DateEntered [datetime],
+	PRIMARY KEY (Id)
+	)
+GO
+
+	
+GO
+CREATE TABLE [dbo].[tbl_AB_UnusualIncident_SectionG](
+	Id [int] IDENTITY(1,1) NOT NULL,
+	ResidentId [int] NOT NULL,
+	IncidentId [int] NOT null,
+	Notify [nvarchar](200) null,
+	strName [nvarchar](200) null,
+	dtmDate [nvarchar](200) null,
+	ByWhom [nvarchar](200) null,
+	Via [nvarchar](200) null,
+	EnteredBy [int] not null,
+	DateEntered [datetime],
+	PRIMARY KEY (Id)
+	)
+GO

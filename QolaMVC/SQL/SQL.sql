@@ -126,33 +126,37 @@ GO
 CREATE PROCEDURE [dbo].[spAB_AddHeadToToeAssessment]
 @ResidentId int,
 @dtmDate datetime,
-@AdmissionStatus bit,
-@ReturnedFromHospital [varchar](max) NULL,
-@DiagnosisFromHospital [varchar](max) NULL,
-@Medications [varchar](max) NULL,
-@BP [nvarchar](10) null,
-@BPLocation [nvarchar](20) null,
-@RedialPulse [nvarchar](10) null,
-@PulseLocation [nvarchar](20) null,
-@Temp [nvarchar](10) null,
-@TempLocation [nvarchar](20) null,
-@Resp [nvarchar](10) null,
-@RespLocation [nvarchar](20) null,
-@SP02 [nvarchar](10) null,
-@SP02Location [nvarchar](20) null,
-@Person [nvarchar](10) null,
-@Place [nvarchar](10) null,
-@strTime [nvarchar](10) null,
-@Speech [nvarchar](10) null,
-@PrimaryLanguage [nvarchar](10) null,
-@PulpilsEquals [nvarchar](10) null,
-@PulpilsReactive [nvarchar](10) null,
-@Eyes [nvarchar](10) null,
-@GeneralFace [nvarchar](10) null,
+@AdmissionStatus nvarchar(20),
+@ReturnedFromHospital [varchar](max) = NULL,
+@DiagnosisFromHospital [varchar](max) = NULL,
+@Medications [varchar](max) = NULL,
+@BP [nvarchar](10) = null,
+@BPLocation [nvarchar](20) = null,
+@RedialPulse [nvarchar](10) = null,
+@PulseLocation [nvarchar](20) = null,
+@Temp [nvarchar](10) = null,
+@TempLocation [nvarchar](20) = null,
+@Resp [nvarchar](10) = null,
+@RespLocation [nvarchar](20) = null,
+@SP02 [nvarchar](10) = null,
+@SP02Location [nvarchar](20) = null,
+@Person [nvarchar](10) = null,
+@Place [nvarchar](10) = null,
+@strTime [nvarchar](10) = null,
+@Speech [nvarchar](10) = null,
+@PrimaryLanguage [nvarchar](10) = null,
+@PulpilsEquals [nvarchar](10) = null,
+@PulpilsReactive [nvarchar](10) = null,
+@Eyes [nvarchar](10) = null,
+@GeneralFace [nvarchar](10) = null,
 @EnteredBy int
 AS
 --20180506 chime created
 BEGIN
+	
+	--ALTER TABLE [tbl_AB_Admission_Head_To_Toe_Assessment]
+	--ALTER COLUMN AdmissionStatus nvarchar(100);
+
 	INSERT INTO [dbo].[tbl_AB_Admission_Head_To_Toe_Assessment] (ResidentId, dtmDate, AdmissionStatus, ReturnedFromHospital, DiagnosisFromHospital, Medications, BP, BPLocation, RedialPulse, PulseLocation, Temp,
 				TempLocation, Resp, RespLocation, SP02, SP02Location, Person, Place, strTime, Speech, PrimaryLanguage, PulpilsEquals, PulpilsReactive, Eyes, GeneralFace, DateEntered, EnteredBy) 
 	VALUES (@ResidentId, @dtmDate, @AdmissionStatus, @ReturnedFromHospital, @DiagnosisFromHospital, @Medications, @BP, @BPLocation, @RedialPulse, @PulseLocation, @Temp, @TempLocation, @Resp, @RespLocation,
@@ -175,6 +179,7 @@ BEGIN
 		ResidentName = R.fd_first_name + ' ' + R.fd_last_name,
 		ResidentFirstName = R.fd_first_name,
 		ResidentLastName = R.fd_last_name, 
+		SuiteNumber = S.fd_suite_no,
 		dtmDate, 
 		AdmissionStatus, 
 		ReturnedFromHospital, 
@@ -200,7 +205,8 @@ BEGIN
 		Eyes, 
 		GeneralFace, 
 		DateEntered, 
-		EnteredBy
+		EnteredBy,
+		EnteredByName = U.fd_first_name + ' ' + U.fd_last_name
 	FROM [tbl_AB_Admission_Head_To_Toe_Assessment] HTT 
 	LEFT OUTER JOIN [tbl_Resident] R ON
 	HTT.ResidentId = R.fd_id
@@ -218,15 +224,15 @@ DROP PROCEDURE [dbo].[spAB_Add_Excercise_Activity_Summary]
 GO
 CREATE PROCEDURE [dbo].[spAB_Add_Excercise_Activity_Summary]
 @ResidentId int,
-@BaselineDate [nvarchar](200) null,
-@BaselineTug [nvarchar](200) null,
-@BaselineVPS [nvarchar](200) NULL,
-@TMonthDate [nvarchar](200) null,
-@TMonthTug [nvarchar](200) null,
-@TMonthVPS [nvarchar](200) NULL,
-@SMonthDate [nvarchar](200) null,
-@SMonthTug [nvarchar](200) null,
-@SMonthVPS [nvarchar](200) NULL,
+@BaselineDate [nvarchar](200) = null,
+@BaselineTug [nvarchar](200) = null,
+@BaselineVPS [nvarchar](200) = null,
+@TMonthDate [nvarchar](200) = null,
+@TMonthTug [nvarchar](200) = null,
+@TMonthVPS [nvarchar](200) = null,
+@SMonthDate [nvarchar](200) = null,
+@SMonthTug [nvarchar](200) = null,
+@SMonthVPS [nvarchar](200) = null,
 @EnteredBy int
 AS
 --20180507 chime created
@@ -808,3 +814,162 @@ BEGIN
 END
 GO
 
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_DietaryAssessment_Likes]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_DietaryAssessment_Likes]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_DietaryAssessment_Likes]
+@HomeId int
+AS
+--20180507 chime created
+BEGIN
+	SELECT
+	ResidentId,
+	ResidentName = R.fd_first_name + ' ' + R.fd_last_name,
+	Suite = S.fd_suite_no,
+	Likes = Max(Likes),
+	DateEntered = max(DateEntered)
+	FROM [tbl_AB_DietaryAssessment] D
+	LEFT OUTER JOIN tbl_Resident R ON
+	R.fd_id = D.ResidentId
+	LEFT OUTER JOIN tbl_Suite S ON
+	S.fd_id = R.fd_suite_id
+	WHERE R.fd_home_id = @HomeId
+	group by ResidentId, R.fd_first_name, R.fd_last_name, S.fd_suite_no
+END
+GO
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_DietaryAssessment_DisLikes]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_DietaryAssessment_DisLikes]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_DietaryAssessment_DisLikes]
+@HomeId int
+AS
+--20180507 chime created
+BEGIN
+	SELECT
+	ResidentId,
+	ResidentName = R.fd_first_name + ' ' + R.fd_last_name,
+	Suite = S.fd_suite_no,
+	DisLikes = max(DisLikes),
+	DateEntered = max(DateEntered)
+	FROM [tbl_AB_DietaryAssessment] D
+	LEFT OUTER JOIN tbl_Resident R ON
+	R.fd_id = D.ResidentId
+	LEFT OUTER JOIN tbl_Suite S ON
+	S.fd_id = R.fd_suite_id
+	WHERE R.fd_home_id = @HomeId
+	group by ResidentId, R.fd_first_name, R.fd_last_name, S.fd_suite_no
+END
+GO
+
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_UnusualIncident]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_UnusualIncident]
+GO
+CREATE PROCEDURE [dbo].[spAB_Add_UnusualIncident]
+@ResidentId int,
+@strLocation [nvarchar](200) = null,
+@Employee [nvarchar](200) = null,
+@Dept [nvarchar](200) = null,
+@Visitor [nvarchar](200) = null,
+@Room [nvarchar](200) = null,
+@Other [nvarchar](200) = null,
+@WasWitnessed [nvarchar](200) = null,
+@WitnessName [nvarchar](200) = null,
+@IsFall bit null,
+@IsElopement bit null,
+@ElopementValue nvarchar(50) = null,
+@IsUnusualBehavior bit null,
+@UnusualBehaviorvalue nvarchar(50),
+@IsPhysicalInjury bit null,
+@PhysicalInjuryValue nvarchar(50) = null,
+@IsPropertyLoss bit null,
+@PropertyLossValue nvarchar(50) = null,
+@IsSuspicious bit null,
+@SuspicionValue nvarchar(50) = null,
+@IsTreatment bit null,
+@TreatmentValue nvarchar(50) = null,
+@IsOther bit null,
+@SectionD nvarchar(max) = null,
+@SectionE nvarchar(max) = null,
+@SectionF nvarchar(max) = null,
+@SectionH nvarchar(max) = null,
+@IncidentDocumented nvarchar(20) = null,
+@ChangesMade nvarchar(20) = null,
+@ReferralConsult nvarchar(20) = null,
+@OHSCommitteeInformed nvarchar(20) = null,
+@RecordTrackingForm nvarchar(20) = null,
+@IncidentInformation nvarchar(20) = null,
+@SectionJ nvarchar(max) = null,
+@EnteredBy int
+AS
+--20180507 chime created
+BEGIN
+	INSERT INTO [tbl_AB_UnusualIncident] (ResidentId, strLocation, Employee, Dept, Visitor, Room, Other, WasWitnessed, WitnessName, IsFall, IsElopement, ElopementValue, IsUnusualBehavior,
+											UnusualBehaviorvalue, IsPhysicalInjury, PhysicalInjuryValue, IsPropertyLoss, PropertyLossValue, IsSuspicious, SuspicionValue, IsTreatment,
+											TreatmentValue, IsOther, SectionD, SectionE, SectionF, SectionH, IncidentDocumented, ChangesMade, ReferralConsult, OHSCommitteeInformed,
+											RecordTrackingForm, IncidentInformation, SectionJ, EnteredBy, DateEntered) 
+	VALUES (@ResidentId, @strLocation, @Employee, @Dept, @Visitor, @Room, @Other, @WasWitnessed, @WitnessName, @IsFall, @IsElopement, @ElopementValue, @IsUnusualBehavior,
+				@UnusualBehaviorvalue, @IsPhysicalInjury, @PhysicalInjuryValue, @IsPropertyLoss, @PropertyLossValue, @IsSuspicious, @SuspicionValue, @IsTreatment,
+				@TreatmentValue, @IsOther, @SectionD, @SectionE, @SectionF, @SectionH, @IncidentDocumented, @ChangesMade, @ReferralConsult, @OHSCommitteeInformed,
+				@RecordTrackingForm, @IncidentInformation, @SectionJ, @EnteredBy, GETDATE())
+
+END
+GO
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_Resident_DietaryAssessments]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_Resident_DietaryAssessments]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_Resident_DietaryAssessments]
+@ResidentId int
+AS
+--20180507 chime created
+BEGIN
+	SELECT
+	Id,
+	ResidentId,
+	strLocation, 
+	Employee, 
+	Dept, 
+	Visitor, 
+	Room, 
+	Other, 
+	WasWitnessed, 
+	WitnessName, 
+	IsFall, 
+	IsElopement, 
+	ElopementValue, 
+	IsUnusualBehavior,
+	UnusualBehaviorvalue, 
+	IsPhysicalInjury, 
+	PhysicalInjuryValue, 
+	IsPropertyLoss, 
+	PropertyLossValue, 
+	IsSuspicious, 
+	SuspicionValue, 
+	IsTreatment,
+	TreatmentValue, 
+	IsOther, 
+	SectionD, 
+	SectionE, 
+	SectionF, 
+	SectionH, 
+	IncidentDocumented, 
+	ChangesMade, 
+	ReferralConsult, 
+	OHSCommitteeInformed,
+	RecordTrackingForm, 
+	IncidentInformation, 
+	SectionJ,
+	EnteredBy,
+	DateEntered
+	FROM [tbl_AB_UnusualIncident]
+	WHERE ResidentId = @ResidentId
+END
+GO

@@ -478,7 +478,7 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@PulpilsEquals", p_Model.PulpilsEquals);
                 l_Cmd.Parameters.AddWithValue("@PulpilsReactive", p_Model.PulpilsReactive);
                 l_Cmd.Parameters.AddWithValue("@Eyes", p_Model.Eyes);
-                l_Cmd.Parameters.AddWithValue("@PulpilsEquals", p_Model.PulpilsEquals);
+               // l_Cmd.Parameters.AddWithValue("@PulpilsEquals", p_Model.PulpilsEquals);
                 l_Cmd.Parameters.AddWithValue("@GeneralFace", p_Model.GeneralFace);
                 l_Cmd.Parameters.AddWithValue("@EnteredBy", p_Model.EnteredBy.ID);
                 l_Cmd.ExecuteNonQuery();
@@ -523,7 +523,7 @@ namespace QolaMVC.DAL
                         AdmissionHeadToToeModel l_AdmissionHeadToToe = new AdmissionHeadToToeModel();
                         l_AdmissionHeadToToe.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
                         l_AdmissionHeadToToe.Date = Convert.ToDateTime(dataReceive.Tables[0].Rows[index]["dtmDate"]);
-                        l_AdmissionHeadToToe.AdmissionStatus = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["AdmissionStatus"]);
+                        l_AdmissionHeadToToe.AdmissionStatus = Convert.ToString(dataReceive.Tables[0].Rows[index]["AdmissionStatus"]);
                         //l_FamilyConferenceNote.DOB = Convert.ToString(dataReceive.Tables[0].Rows[index]["Diet"]);
                         l_AdmissionHeadToToe.ReturnedFromHospital = Convert.ToString(dataReceive.Tables[0].Rows[index]["ReturnedFromHospital"]);
                         l_AdmissionHeadToToe.DiagnosisFromHospital = Convert.ToString(dataReceive.Tables[0].Rows[index]["DiagnosisFromHospital"]);
@@ -531,7 +531,7 @@ namespace QolaMVC.DAL
                         l_AdmissionHeadToToe.BP = Convert.ToString(dataReceive.Tables[0].Rows[index]["BP"]);
                         l_AdmissionHeadToToe.BPLocation = Convert.ToString(dataReceive.Tables[0].Rows[index]["BPLocation"]);
                         l_AdmissionHeadToToe.RedialPulse = Convert.ToString(dataReceive.Tables[0].Rows[index]["RedialPulse"]);
-                        l_AdmissionHeadToToe.PulseLocation = Convert.ToString(dataReceive.Tables[0].Rows[index]["Recreation"]);
+                        l_AdmissionHeadToToe.PulseLocation = Convert.ToString(dataReceive.Tables[0].Rows[index]["PulseLocation"]);
                         l_AdmissionHeadToToe.Temp = Convert.ToString(dataReceive.Tables[0].Rows[index]["Temp"]);
                         l_AdmissionHeadToToe.TempLocation = Convert.ToString(dataReceive.Tables[0].Rows[index]["TempLocation"]);
                         l_AdmissionHeadToToe.Resp = Convert.ToString(dataReceive.Tables[0].Rows[index]["Resp"]);
@@ -1053,6 +1053,108 @@ namespace QolaMVC.DAL
             }
             return l_Assessments;
         }
+
+        //public static void AddHeadToToeAssessment(AdmissionHeadToToeModel p_Model)
+        //{
+        //    string exception = string.Empty;
+
+        //    SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+        //    try
+        //    {
+        //        SqlDataAdapter l_DA = new SqlDataAdapter();
+        //        SqlCommand l_Cmd = new SqlCommand("spAB_AddHeadToToeAssessment", l_Conn);
+        //        l_Conn.Open();
+        //        l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+        //        l_Cmd.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
+        //        l_Cmd.Parameters.AddWithValue("@dtmDate", DateTime.Now);
+        //        l_Cmd.Parameters.AddWithValue("@AdmissionStatus", p_Model.AdmissionStatus);
+        //        l_Cmd.Parameters.AddWithValue("@ReturnedFromHospital", p_Model.ReturnedFromHospital);
+        //        l_Cmd.Parameters.AddWithValue("@DiagnosisFromHospital", p_Model.DiagnosisFromHospital);
+        //        l_Cmd.Parameters.AddWithValue("@Medications", p_Model.Medications);
+        //        l_Cmd.Parameters.AddWithValue("@BP", p_Model.BP);
+        //        l_Cmd.Parameters.AddWithValue("@BPLocation", p_Model.BPLocation);
+        //        l_Cmd.Parameters.AddWithValue("@RedialPulse", p_Model.RedialPulse);
+        //        l_Cmd.Parameters.AddWithValue("@PulseLocation", p_Model.PulseLocation);
+        //        l_Cmd.Parameters.AddWithValue("@Temp", p_Model.Temp);
+        //        l_Cmd.Parameters.AddWithValue("@TempLocation", p_Model.TempLocation);
+        //        l_Cmd.Parameters.AddWithValue("@Resp", p_Model.Resp);
+        //        l_Cmd.Parameters.AddWithValue("@RespLocation", p_Model.RespLocation);
+        //        l_Cmd.Parameters.AddWithValue("@SP02", p_Model.SP02);
+        //        l_Cmd.Parameters.AddWithValue("@SP02Location", p_Model.SP02Location);
+        //        l_Cmd.Parameters.AddWithValue("@Person", p_Model.Person);
+        //        l_Cmd.Parameters.AddWithValue("@Place", p_Model.Place);
+
+        //        l_Cmd.Parameters.AddWithValue("@strTime", p_Model.Time);
+        //        l_Cmd.Parameters.AddWithValue("@Speech", p_Model.Speech);
+        //        l_Cmd.Parameters.AddWithValue("@PrimaryLanguage", p_Model.PrimaryLanguage);
+        //        l_Cmd.Parameters.AddWithValue("@PulpilsEquals", p_Model.PulpilsEquals);
+        //        l_Cmd.Parameters.AddWithValue("@PulpilsReactive", p_Model.PulpilsReactive);
+        //        l_Cmd.Parameters.AddWithValue("@Eyes", p_Model.Eyes);
+        //        l_Cmd.Parameters.AddWithValue("@GeneralFace", p_Model.GeneralFace);
+        //        l_Cmd.Parameters.AddWithValue("@EnteredBy", p_Model.EnteredBy.ID);
+        //        l_Cmd.ExecuteNonQuery();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        exception = "AddHeadToToeAssessment |" + ex.ToString();
+        //        //Log.Write(exception);
+        //        throw;
+        //    }
+        //    finally
+        //    {
+        //        l_Conn.Close();
+        //    }
+        //}
+
+        //public static Collection<AdmissionHeadToToeModel> GetResidentHeadToToeAssessment(int p_ResidentId)
+        //{
+        //    string exception = string.Empty;
+
+        //    Collection<AdmissionHeadToToeModel> l_Assessments = new Collection<AdmissionHeadToToeModel>();
+        //    AdmissionHeadToToeModel l_Assessment;
+        //    ResidentModel l_Resident = new ResidentModel();
+        //    SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+        //    try
+        //    {
+        //        SqlDataAdapter l_DA = new SqlDataAdapter();
+        //        SqlCommand l_Cmd = new SqlCommand("spAB_Get_Admission_Head_To_Toe_Assessments_By_ResidentId", l_Conn);
+        //        l_Conn.Open();
+        //        l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+        //        l_Cmd.Parameters.AddWithValue("@ResidentId", p_ResidentId);
+        //        DataSet AssesmentsReceive = new DataSet();
+
+        //        l_DA.SelectCommand = l_Cmd;
+        //        l_DA.Fill(AssesmentsReceive);
+        //        if (AssesmentsReceive.Tables[0].Rows.Count > 0)
+        //        {
+        //            for (int index = 0; index <= AssesmentsReceive.Tables[0].Rows.Count - 1; index++)
+        //            {
+        //                l_Assessment = new AdmissionHeadToToeModel();
+        //                l_Assessment.Id = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["Id"]);
+        //                l_Resident.ID = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["ResidentId"]);
+        //                //l_Assessment.NutritionalStatus = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["NutritionalStatus"]);
+        //                //l_Assessment.Risk = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Risk"]);
+        //                //l_Assessment.AssistiveDevices = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["AssistiveDevices"]);
+        //                //l_Assessment.Texture = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Texture"]);
+        //                //l_Assessment.Other = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Other"]);
+        //                //l_Assessment.Likes = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Likes"]);
+        //                //l_Assessment.DisLikes = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["DisLikes"]);
+        //                //l_Assessment.Notes = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Notes"]);
+        //                //l_Assessment.DateEntered = Convert.ToDateTime(AssesmentsReceive.Tables[0].Rows[index]["DateEntered"]);
+
+        //                l_Assessments.Add(l_Assessment);
+        //            }
+
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        exception = "GetResidentDietaryAssesments |" + ex.ToString();
+        //        //Log.Write(exception);
+        //        throw;
+        //    }
+        //    return l_Assessments;
+        //}
 
     }
 }
