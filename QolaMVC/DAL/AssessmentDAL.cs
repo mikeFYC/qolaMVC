@@ -1054,107 +1054,206 @@ namespace QolaMVC.DAL
             return l_Assessments;
         }
 
-        //public static void AddHeadToToeAssessment(AdmissionHeadToToeModel p_Model)
-        //{
-        //    string exception = string.Empty;
+        public static void AddUnusualIncident(UnusualIncidentModel p_Model)
+        {
+            string exception = string.Empty;
 
-        //    SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
-        //    try
-        //    {
-        //        SqlDataAdapter l_DA = new SqlDataAdapter();
-        //        SqlCommand l_Cmd = new SqlCommand("spAB_AddHeadToToeAssessment", l_Conn);
-        //        l_Conn.Open();
-        //        l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
-        //        l_Cmd.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
-        //        l_Cmd.Parameters.AddWithValue("@dtmDate", DateTime.Now);
-        //        l_Cmd.Parameters.AddWithValue("@AdmissionStatus", p_Model.AdmissionStatus);
-        //        l_Cmd.Parameters.AddWithValue("@ReturnedFromHospital", p_Model.ReturnedFromHospital);
-        //        l_Cmd.Parameters.AddWithValue("@DiagnosisFromHospital", p_Model.DiagnosisFromHospital);
-        //        l_Cmd.Parameters.AddWithValue("@Medications", p_Model.Medications);
-        //        l_Cmd.Parameters.AddWithValue("@BP", p_Model.BP);
-        //        l_Cmd.Parameters.AddWithValue("@BPLocation", p_Model.BPLocation);
-        //        l_Cmd.Parameters.AddWithValue("@RedialPulse", p_Model.RedialPulse);
-        //        l_Cmd.Parameters.AddWithValue("@PulseLocation", p_Model.PulseLocation);
-        //        l_Cmd.Parameters.AddWithValue("@Temp", p_Model.Temp);
-        //        l_Cmd.Parameters.AddWithValue("@TempLocation", p_Model.TempLocation);
-        //        l_Cmd.Parameters.AddWithValue("@Resp", p_Model.Resp);
-        //        l_Cmd.Parameters.AddWithValue("@RespLocation", p_Model.RespLocation);
-        //        l_Cmd.Parameters.AddWithValue("@SP02", p_Model.SP02);
-        //        l_Cmd.Parameters.AddWithValue("@SP02Location", p_Model.SP02Location);
-        //        l_Cmd.Parameters.AddWithValue("@Person", p_Model.Person);
-        //        l_Cmd.Parameters.AddWithValue("@Place", p_Model.Place);
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Add_UnusualIncident", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
+                l_Cmd.Parameters.AddWithValue("@strLocation", p_Model.Location);
+                l_Cmd.Parameters.AddWithValue("@Employee", p_Model.Employee);
+                l_Cmd.Parameters.AddWithValue("@Dept", p_Model.Dept);
+                l_Cmd.Parameters.AddWithValue("@Visitor", p_Model.Visitor);
+                l_Cmd.Parameters.AddWithValue("@Room", p_Model.Room);
+                l_Cmd.Parameters.AddWithValue("@Other", p_Model.Other);
+                l_Cmd.Parameters.AddWithValue("@WasWitnessed", p_Model.WasWitnessed);
+                l_Cmd.Parameters.AddWithValue("@WitnessName", p_Model.WitnessName);
+                l_Cmd.Parameters.AddWithValue("@IsFall", p_Model.IsFall);
+                l_Cmd.Parameters.AddWithValue("@IsElopement", p_Model.IsElopement);
+                l_Cmd.Parameters.AddWithValue("@ElopementValue", p_Model.Elopement);
+                l_Cmd.Parameters.AddWithValue("@IsUnusualBehavior", p_Model.IsUnusualBehaviour);
+                l_Cmd.Parameters.AddWithValue("@UnusualBehaviorvalue", p_Model.UnusualBehaviour);
+                l_Cmd.Parameters.AddWithValue("@IsPhysicalInjury", p_Model.IsPhysicalInjury);
+                l_Cmd.Parameters.AddWithValue("@PhysicalInjuryValue", p_Model.PhysicalInjury);
+                l_Cmd.Parameters.AddWithValue("@IsPropertyLoss", p_Model.IsPropertyLoss);
+                l_Cmd.Parameters.AddWithValue("@PropertyLossValue", p_Model.PropertyLoss);
+                l_Cmd.Parameters.AddWithValue("@IsSuspicious", p_Model.IsSuspicious);
+                l_Cmd.Parameters.AddWithValue("@SuspicionValue", p_Model.Suspicion);
+                l_Cmd.Parameters.AddWithValue("@IsTreatment", p_Model.IsTreatment);
+                l_Cmd.Parameters.AddWithValue("@TreatmentValue", p_Model.Treatment);
+                l_Cmd.Parameters.AddWithValue("@IsOther", p_Model.IsOther);
+                l_Cmd.Parameters.AddWithValue("@SectionD", p_Model.SectionD);
+                l_Cmd.Parameters.AddWithValue("@SectionE", p_Model.SectionE);
+                l_Cmd.Parameters.AddWithValue("@SectionF", p_Model.SectionF);
+                l_Cmd.Parameters.AddWithValue("@SectionH", p_Model.SectionH);
+                l_Cmd.Parameters.AddWithValue("@IncidentDocumented", p_Model.IncidentDocumented);
+                l_Cmd.Parameters.AddWithValue("@ChangesMade", p_Model.ChangesMade);
+                l_Cmd.Parameters.AddWithValue("@ReferralConsult", p_Model.ReferralConsult);
+                l_Cmd.Parameters.AddWithValue("@OHSCommitteeInformed", p_Model.OHSCommitteeInformed);
+                l_Cmd.Parameters.AddWithValue("@RecordTrackingForm", p_Model.RecordTrackingForm);
 
-        //        l_Cmd.Parameters.AddWithValue("@strTime", p_Model.Time);
-        //        l_Cmd.Parameters.AddWithValue("@Speech", p_Model.Speech);
-        //        l_Cmd.Parameters.AddWithValue("@PrimaryLanguage", p_Model.PrimaryLanguage);
-        //        l_Cmd.Parameters.AddWithValue("@PulpilsEquals", p_Model.PulpilsEquals);
-        //        l_Cmd.Parameters.AddWithValue("@PulpilsReactive", p_Model.PulpilsReactive);
-        //        l_Cmd.Parameters.AddWithValue("@Eyes", p_Model.Eyes);
-        //        l_Cmd.Parameters.AddWithValue("@GeneralFace", p_Model.GeneralFace);
-        //        l_Cmd.Parameters.AddWithValue("@EnteredBy", p_Model.EnteredBy.ID);
-        //        l_Cmd.ExecuteNonQuery();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        exception = "AddHeadToToeAssessment |" + ex.ToString();
-        //        //Log.Write(exception);
-        //        throw;
-        //    }
-        //    finally
-        //    {
-        //        l_Conn.Close();
-        //    }
-        //}
+                l_Cmd.Parameters.AddWithValue("@IncidentInformation", p_Model.IncidentInformation);
+                l_Cmd.Parameters.AddWithValue("@SectionJ", p_Model.SectionJ);
+                l_Cmd.Parameters.AddWithValue("@EnteredBy", p_Model.EnteredBy.ID);
 
-        //public static Collection<AdmissionHeadToToeModel> GetResidentHeadToToeAssessment(int p_ResidentId)
-        //{
-        //    string exception = string.Empty;
+                DataSet dataReceive = new DataSet();
 
-        //    Collection<AdmissionHeadToToeModel> l_Assessments = new Collection<AdmissionHeadToToeModel>();
-        //    AdmissionHeadToToeModel l_Assessment;
-        //    ResidentModel l_Resident = new ResidentModel();
-        //    SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
-        //    try
-        //    {
-        //        SqlDataAdapter l_DA = new SqlDataAdapter();
-        //        SqlCommand l_Cmd = new SqlCommand("spAB_Get_Admission_Head_To_Toe_Assessments_By_ResidentId", l_Conn);
-        //        l_Conn.Open();
-        //        l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
-        //        l_Cmd.Parameters.AddWithValue("@ResidentId", p_ResidentId);
-        //        DataSet AssesmentsReceive = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(dataReceive);
+                int l_IncidentId = 0;
+                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
+                {
+                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_IncidentId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
+                    }
 
-        //        l_DA.SelectCommand = l_Cmd;
-        //        l_DA.Fill(AssesmentsReceive);
-        //        if (AssesmentsReceive.Tables[0].Rows.Count > 0)
-        //        {
-        //            for (int index = 0; index <= AssesmentsReceive.Tables[0].Rows.Count - 1; index++)
-        //            {
-        //                l_Assessment = new AdmissionHeadToToeModel();
-        //                l_Assessment.Id = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["Id"]);
-        //                l_Resident.ID = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["ResidentId"]);
-        //                //l_Assessment.NutritionalStatus = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["NutritionalStatus"]);
-        //                //l_Assessment.Risk = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Risk"]);
-        //                //l_Assessment.AssistiveDevices = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["AssistiveDevices"]);
-        //                //l_Assessment.Texture = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Texture"]);
-        //                //l_Assessment.Other = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Other"]);
-        //                //l_Assessment.Likes = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Likes"]);
-        //                //l_Assessment.DisLikes = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["DisLikes"]);
-        //                //l_Assessment.Notes = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Notes"]);
-        //                //l_Assessment.DateEntered = Convert.ToDateTime(AssesmentsReceive.Tables[0].Rows[index]["DateEntered"]);
+                    if(p_Model.SectionG != null)
+                    {
+                        foreach (var sectionG in p_Model.SectionG)
+                        {
+                            SqlCommand l_Cmd_SectionG = new SqlCommand("spAB_Add_UnusualIncident_SectionG", l_Conn);
+                            // l_Conn.Open();
+                            l_Cmd_SectionG.CommandType = System.Data.CommandType.StoredProcedure;
+                            l_Cmd_SectionG.Parameters.AddWithValue("@Residentid", p_Model.Resident.ID);
+                            l_Cmd_SectionG.Parameters.AddWithValue("@IncidentId", l_IncidentId);
+                            l_Cmd_SectionG.Parameters.AddWithValue("@Notify", sectionG.Notify);
+                            l_Cmd_SectionG.Parameters.AddWithValue("@Name", sectionG.Name);
+                            l_Cmd_SectionG.Parameters.AddWithValue("@Date", sectionG.Date);
+                            l_Cmd_SectionG.Parameters.AddWithValue("@ByWhom", sectionG.ByWhom);
+                            l_Cmd_SectionG.Parameters.AddWithValue("@Via", sectionG.Via);
+                            l_Cmd_SectionG.Parameters.AddWithValue("@Enteredby", p_Model.EnteredBy.ID);
+                            l_Cmd_SectionG.ExecuteNonQuery();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                exception = "AddUnusualIncident |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
 
-        //                l_Assessments.Add(l_Assessment);
-        //            }
+        public static Collection<UnusualIncidentModel> GetUnusualIncidentReports(int p_ResidentId)
+        {
+            string exception = string.Empty;
 
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        exception = "GetResidentDietaryAssesments |" + ex.ToString();
-        //        //Log.Write(exception);
-        //        throw;
-        //    }
-        //    return l_Assessments;
-        //}
+            Collection<UnusualIncidentModel> l_Assessments = new Collection<UnusualIncidentModel>();
+            UnusualIncidentModel l_Assessment;
+
+            UnusualIncidentSectionGModel l_SectionG;
+            ResidentModel l_Resident = new ResidentModel();
+            UserModel l_User = new UserModel();
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_UnusualIncident", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@ResidentId", p_ResidentId);
+                DataSet AssesmentsReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(AssesmentsReceive);
+                if (AssesmentsReceive.Tables[0].Rows.Count > 0)
+                {
+                    for (int index = 0; index <= AssesmentsReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_Assessment = new UnusualIncidentModel();
+                        l_Assessment.Id = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["Id"]);
+                        l_Resident.ID = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_Assessment.Location = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["strLocation"]);
+                        l_Assessment.Employee = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Employee"]);
+                        l_Assessment.Dept = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Dept"]);
+                        l_Assessment.Visitor = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Visitor"]);
+                        l_Assessment.Other = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Other"]);
+                        l_Assessment.Room = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Room"]);
+                        l_Assessment.WasWitnessed = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["WasWitnessed"]);
+                        l_Assessment.WitnessName = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["WitnessName"]);
+                        l_Assessment.IsFall = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["IsFall"]);
+                        l_Assessment.IsElopement = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["IsElopement"]);
+                        l_Assessment.Elopement = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["ElopementValue"]);
+                        l_Assessment.IsUnusualBehaviour = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["IsUnusualBehavior"]);
+                        l_Assessment.UnusualBehaviour = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["UnusualBehaviorvalue"]);
+                        l_Assessment.IsPhysicalInjury = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["IsPhysicalInjury"]);
+                        l_Assessment.PhysicalInjury = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["PhysicalInjuryValue"]);
+                        l_Assessment.IsPropertyLoss = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["IsPropertyLoss"]);
+                        l_Assessment.PropertyLoss = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["PropertyLossValue"]);
+                        l_Assessment.IsSuspicious = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["IsSuspicious"]);
+                        l_Assessment.Suspicion = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["SuspicionValue"]);
+                        l_Assessment.IsTreatment = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["IsTreatment"]);
+                        l_Assessment.Treatment = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["TreatmentValue"]);
+                        l_Assessment.IsOther = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["IsOther"]);
+                        l_Assessment.SectionD = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["SectionD"]);
+                        l_Assessment.SectionE = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["SectionE"]);
+                        l_Assessment.SectionF = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["SectionF"]);
+                        l_Assessment.SectionH = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["SectionH"]);
+                        l_Assessment.IncidentDocumented = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["IncidentDocumented"]);
+                        l_Assessment.ChangesMade = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["ChangesMade"]);
+                        l_Assessment.ReferralConsult = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["ReferralConsult"]);
+                        l_Assessment.OHSCommitteeInformed = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["OHSCommitteeInformed"]);
+                        l_Assessment.RecordTrackingForm = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["RecordTrackingForm"]);
+                        l_Assessment.IncidentInformation = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["IncidentInformation"]);
+                        l_Assessment.SectionJ = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["SectionJ"]);
+                        l_Assessment.DateEntered = Convert.ToDateTime(AssesmentsReceive.Tables[0].Rows[index]["DateEntered"]);
+
+                        l_User.ID = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["EnteredBy"]);
+                        l_Assessment.EnteredBy = l_User;
+
+                        SqlDataAdapter l_DA_SectionG = new SqlDataAdapter();
+                        SqlCommand l_Cmd_SectionG = new SqlCommand("spAB_Get_UnusualIncident_SectionG", l_Conn);
+                        l_Cmd_SectionG.CommandType = System.Data.CommandType.StoredProcedure;
+                        l_Cmd_SectionG.Parameters.AddWithValue("@IncidentId", l_Assessment.Id);
+                        DataSet SectionGReceive = new DataSet();
+
+                        l_DA_SectionG.SelectCommand = l_Cmd_SectionG;
+                        l_DA_SectionG.Fill(SectionGReceive);
+                        l_Assessment.SectionG = new Collection<UnusualIncidentSectionGModel>();
+                        if (SectionGReceive.Tables[0].Rows.Count > 0)
+                        {
+                            for (int index_Diets = 0; index_Diets <= SectionGReceive.Tables[0].Rows.Count - 1; index_Diets++)
+                            {
+                                l_SectionG = new UnusualIncidentSectionGModel();
+
+                                l_SectionG.IncidentId = l_Assessment.Id;
+                                l_SectionG.Notify = Convert.ToString(SectionGReceive.Tables[0].Rows[index_Diets]["Notify"]);
+                                l_SectionG.Name = Convert.ToString(SectionGReceive.Tables[0].Rows[index_Diets]["strName"]);
+                                l_SectionG.Date = Convert.ToString(SectionGReceive.Tables[0].Rows[index_Diets]["dtmDate"]);
+                                l_SectionG.ByWhom = Convert.ToString(SectionGReceive.Tables[0].Rows[index_Diets]["ByWhom"]);
+                                l_SectionG.Via = Convert.ToString(SectionGReceive.Tables[0].Rows[index_Diets]["Via"]);
+                                l_SectionG.EnteredBy = Convert.ToInt32(SectionGReceive.Tables[0].Rows[index_Diets]["EnteredBy"]);
+                                l_SectionG.DateEntered = Convert.ToDateTime(SectionGReceive.Tables[0].Rows[index_Diets]["DateEntered"]);
+
+                                l_Assessment.SectionG.Add(l_SectionG);
+                            }
+                        }
+
+                        l_Assessments.Add(l_Assessment);
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                exception = "GetUnusualIncidentReports |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            return l_Assessments;
+        }
 
     }
 }

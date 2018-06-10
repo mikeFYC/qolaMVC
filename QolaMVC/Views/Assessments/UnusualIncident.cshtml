@@ -1,3 +1,4 @@
+@model QolaMVC.Models.UnusualIncidentModel
 
 @RenderPage("~/Views/Shared/_Header.cshtml")
 @RenderPage("~/Views/Shared/_SideBar.cshtml")
@@ -42,6 +43,7 @@
                 <!-- BEGIN PlACE PAGE CONTENT HERE -->
 
                 <div class="card p-3">
+                    <form action="~/Assessments/AddUnusualIncident" method="Post" >
                     <div class="card-block">
                         <div class="row">
                             <div class="col-md-4">
@@ -83,42 +85,42 @@
                             <div class="col-md-4 border">
                                 <b>Location:</b>
                                 <br><br>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Resident Room
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Bathroom
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Corridor/Hallway
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Lounge/common area
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Dinning Room
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Facility Grounds
-                                    </label>
-                                </div>
+                                    <div class="form-check margin">
+                                        @Html.RadioButtonFor(m => m.Location, "Resident Room", new { @class = "form-check-input" })
+                                        <label class="form-check-label checkspace" for="">
+                                            Resident Room
+                                        </label>
+                                    </div>
+                                    <div class="form-check margin">
+                                        @Html.RadioButtonFor(m => m.Location, "Bathroom", new { @class = "form-check-input" })
+                                        <label class="form-check-label checkspace" for="">
+                                            Bathroom
+                                        </label>
+                                    </div>
+                                    <div class="form-check margin">
+                                        @Html.RadioButtonFor(m => m.Location, "Cirrudor/Hallway", new { @class = "form-check-input" })
+                                        <label class="form-check-label checkspace" for="">
+                                            Corridor/Hallway
+                                        </label>
+                                    </div>
+                                    <div class="form-check margin">
+                                        @Html.RadioButtonFor(m => m.Location, "Lounge/Common Area", new { @class = "form-check-input" })
+                                        <label class="form-check-label checkspace" for="">
+                                            Lounge/common area
+                                        </label>
+                                    </div>
+                                    <div class="form-check margin">
+                                        @Html.RadioButtonFor(m => m.Location, "Dinning Room", new { @class = "form-check-input" })
+                                        <label class="form-check-label checkspace" for="">
+                                            Dinning Room
+                                        </label>
+                                    </div>
+                                    <div class="form-check margin">
+                                        @Html.RadioButtonFor(m => m.Location, "Facility Grounds", new { @class = "form-check-input" })
+                                        <label class="form-check-label checkspace" for="">
+                                            Facility Grounds
+                                        </label>
+                                    </div>
                                 <div class="form-group form-group-default">
                                     <label>Other:</label>
                                     <input type="text" class="form-control">
@@ -148,14 +150,14 @@
                                     <div class="col-md-8">
                                         <div class="form-group form-group-default">
                                             <label>Employee</label>
-                                            <input type="text" class="form-control">
+                                            @Html.TextBoxFor(m => m.Employee, new { @class = "form-control", placeholder = "Employee Name" })
                                         </div>
 
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group form-group-default">
                                             <label>Dept</label>
-                                            <input type="text" class="form-control">
+                                            @Html.TextBoxFor(m => m.Dept, new { @class = "form-control", placeholder = "Dept" })
                                         </div>
 
                                     </div>
@@ -165,14 +167,14 @@
                                     <div class="col-md-8">
                                         <div class="form-group form-group-default">
                                             <label>Visitor</label>
-                                            <input type="text" class="form-control">
+                                            @Html.TextBoxFor(m => m.Visitor, new { @class = "form-control", placeholder = "Visitor Name" })
                                         </div>
 
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group form-group-default">
                                             <label>RM#</label>
-                                            <input type="text" class="form-control">
+                                            @Html.TextBoxFor(m => m.Room, new { @class = "form-control", placeholder = "Room#" })
                                         </div>
 
                                     </div>
@@ -182,7 +184,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group form-group-default">
                                             <label>Other</label>
-                                            <input type="text" class="form-control">
+                                            @Html.TextBoxFor(m => m.Other, new { @class = "form-control", placeholder = "Other" })
                                         </div>
 
                                     </div>
@@ -248,18 +250,17 @@
                                     <div class="col-md-12">
 
                                         <div class="form-check form-check-inline movesp margin2">
-                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                            @Html.RadioButtonFor(m => m.WasWitnessed, "Yes", new { @class = "form-check-input" })
                                             <label class="form-check-label checkspace" for="">Yes</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                            @Html.RadioButtonFor(m => m.WasWitnessed, "No", new { @class = "form-check-input" })
                                             <label class="form-check-label checkspace" for="">No</label>
                                         </div><br>
-                                        <div class="form-group form-group-default">
-                                            <label>Name</label>
-                                            <input type="text" class="form-control">
-                                        </div>
-
+                                              <div class="form-group form-group-default">
+                                                  <label>Name</label>
+                                                  @Html.TextBoxFor(m => m.WitnessName, new { @class = "form-control", placeholder = "Witnaees Name" })
+                                              </div>
                                     </div>
                                 </div>
 
@@ -278,26 +279,26 @@
                             </div>
                             <div class="col-md-4 border">
                                 <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
+                                    @Html.CheckBoxFor(m => m.IsFall, new { @class = "form-check-input" })
                                     <label class="form-check-label checkspace" for="">
                                         Fall
                                     </label>
                                 </div>
                                 <p>witnessed / unwitnessed</p>
                                 <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
+                                    @Html.CheckBoxFor(m => m.IsElopement, new { @class = "form-check-input" })
                                     <label class="form-check-label checkspace" for="">
                                         Elopement
                                     </label>
 
                                     <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
+                                        @Html.RadioButtonFor(m => m.Elopement, "Returned by own", new { @class = "form-check-input" })
                                         <label class="form-check-label checkspace" for="">
                                             returned by own
                                         </label>
                                     </div>
                                     <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
+                                        @Html.RadioButtonFor(m => m.Elopement, "Assisted by police", new { @class = "form-check-input" })
                                         <label class="form-check-label checkspace" for="">
                                             assisted by police
                                         </label>
@@ -312,20 +313,20 @@
                                 <br>
 
                                 <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
+                                    @Html.CheckBoxFor(m => m.IsUnusualBehaviour, new { @class = "form-check-input" })
                                     <label class="form-check-label checkspace" for="">
                                         Unsual Behaviour
                                     </label>
 
                                     <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
+                                        @Html.RadioButtonFor(m => m.UnusualBehaviour, "Returned by resident", new { @class = "form-check-input" })
                                         <label class="form-check-label checkspace" for="">
                                             returned by resident
                                         </label>
                                     </div>
 
                                     <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
+                                        @Html.RadioButtonFor(m => m.UnusualBehaviour, "Returned by staff", new { @class = "form-check-input" })
                                         <label class="form-check-label checkspace" for="">
                                             returned by staff
                                         </label>
@@ -342,19 +343,19 @@
                             </div>
                             <div class="col-md-4 border">
                                 <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
+                                    @Html.CheckBoxFor(m => m.IsPhysicalInjury, new { @class = "form-check-input" })
                                     <label class="form-check-label checkspace" for="">
                                         Physical Injury(must complete section E)
                                     </label>
 
                                     <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
+                                        @Html.RadioButtonFor(m => m.PhysicalInjury, "Skin Tear", new { @class = "form-check-input" })
                                         <label class="form-check-label checkspace" for="">
                                             skin tear
                                         </label>
                                     </div>
                                     <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
+                                        @Html.RadioButtonFor(m => m.PhysicalInjury, "Bruise", new { @class = "form-check-input" })
                                         <label class="form-check-label checkspace" for="">
                                             bruise
                                         </label>
@@ -363,25 +364,25 @@
                                 </div>
                                 <br>
                                 <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
+                                    @Html.CheckBoxFor(m => m.IsPropertyLoss, new { @class = "form-check-input" })
                                     <label class="form-check-label checkspace" for="">
                                         Property Loss or Damage
                                     </label>
 
                                     <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
+                                        @Html.RadioButtonFor(m => m.PropertyLoss, "Resident", new { @class = "form-check-input" })
                                         <label class="form-check-label checkspace" for="">
                                             resident
                                         </label>
                                     </div>
                                     <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
+                                        @Html.RadioButtonFor(m => m.PropertyLoss, "Staff", new { @class = "form-check-input" })
                                         <label class="form-check-label checkspace" for="">
                                             staff
                                         </label>
                                     </div>
                                     <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
+                                        @Html.RadioButtonFor(m => m.PropertyLoss, "Facility", new { @class = "form-check-input" })
                                         <label class="form-check-label checkspace" for="">
                                             facility
                                         </label>
@@ -396,18 +397,18 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
+                                    @Html.CheckBoxFor(m => m.IsTreatment, new { @class = "form-check-input" })
                                     <label class="form-check-label checkspace" for="">
                                         Treatment/Medication (must complete Section D & E)
                                     </label>
                                     <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
+                                        @Html.RadioButtonFor(m => m.Treatment, "Omission", new { @class = "form-check-input" })
                                         <label class="form-check-label checkspace" for="">
                                             omission
                                         </label>
                                     </div>
                                     <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
+                                        @Html.RadioButtonFor(m => m.Treatment, "Error", new { @class = "form-check-input" })
                                         <label class="form-check-label checkspace" for="">
                                             error
                                         </label>
@@ -418,19 +419,19 @@
                                     </div>
                                     <br>
                                     <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
+                                        @Html.RadioButtonFor(m => m.Treatment, "Apparent Result", new { @class = "form-check-input" })
                                         <label class="form-check-label checkspace" for="">
                                             apparent result
                                         </label>
                                     </div>
                                     <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
+                                        @Html.RadioButtonFor(m => m.Treatment, "No Observed Result", new { @class = "form-check-input" })
                                         <label class="form-check-label checkspace" for="">
                                             no observed result
                                         </label>
                                     </div>
                                     <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
+                                        @Html.RadioButtonFor(m => m.Treatment, "Near miss", new { @class = "form-check-input" })
                                         <label class="form-check-label checkspace" for="">
                                             near miss: (must complete section D)
                                         </label>
@@ -456,7 +457,8 @@
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <textarea class="textarea" rows="7" style="width: 100% !important;"></textarea>
+                                @*<textarea class="textarea col-md-12" rows="7" style="width: 100% !important;"></textarea>*@
+                                @Html.TextAreaFor(m => m.SectionD, new { @class = "form-control textarea col-md-12", placeholder = "Description of Incident", style = "width: 100% !important;" })
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group row">
@@ -488,7 +490,8 @@
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <textarea class="textarea" rows="7" style="width: 100% !important;"></textarea>
+                                @*<textarea class="textarea" rows="7" style="width: 100% !important;"></textarea>*@
+                                @Html.TextAreaFor(m => m.SectionE, new { @class = "form-control textarea col-md-12", placeholder = "Assessment of injury and treatment required", style = "width: 100% !important;" })
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group row">
@@ -520,7 +523,8 @@
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <textarea class="textarea" rows="7" style="width: 100% !important;"></textarea>
+                                @*<textarea class="textarea" rows="7" style="width: 100% !important;"></textarea>*@
+                                @Html.TextAreaFor(m => m.SectionF, new { @class = "form-control textarea col-md-12", placeholder = "Other Notes", style = "width: 100% !important;" })
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group row">
@@ -565,76 +569,185 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="align-middle">PHYSICIAN</td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
+                                        <td class="align-middle">
+                                            PHYSICIAN
+                                            @Html.HiddenFor(m => m.SectionG[0].Notify)
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[0].Name, new { @class = "form-control"})
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[0].Date, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                           @* @Html.TextBoxFor(m => m.SectionG[0].Time, new { @class = "form-control" })*@
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[0].ByWhom, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[0].Via, new { @class = "form-control" })
+                                        </td>
                                     </tr>
                                     <tr>
-                                        <td class="align-middle">Family</td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
+                                        <td class="align-middle">
+                                            Family
+                                            @Html.HiddenFor(m => m.SectionG[1].Notify)
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[1].Name, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[1].Date, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @* @Html.TextBoxFor(m => m.SectionG[1].Time, new { @class = "form-control" })*@
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[1].ByWhom, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[1].Via, new { @class = "form-control" })
                                     </tr>
                                     <tr>
-                                        <td class="align-middle">Albeerta Health Services</td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
+                                        <td class="align-middle">
+                                            Albeerta Health Services
+                                            @Html.HiddenFor(m => m.SectionG[2].Notify)
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[2].Name, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[2].Date, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @* @Html.TextBoxFor(m => m.SectionG[2].Time, new { @class = "form-control" })*@
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[2].ByWhom, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[2].Via, new { @class = "form-control" })
                                     </tr>
                                     <tr>
-                                        <td class="align-middle">On Call Manager</td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
+                                        <td class="align-middle">
+                                            On Call Manager
+                                            @Html.HiddenFor(m => m.SectionG[3].Notify)
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[3].Name, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[3].Date, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @* @Html.TextBoxFor(m => m.SectionG[3].Time, new { @class = "form-control" })*@
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[3].ByWhom, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[3].Via, new { @class = "form-control" })
                                     </tr>
                                     <tr>
-                                        <td class="align-middle">Director of Care</td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
+                                        <td class="align-middle">
+                                            Director of Care
+                                            @Html.HiddenFor(m => m.SectionG[4].Notify)
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[4].Name, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[4].Date, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @* @Html.TextBoxFor(m => m.SectionG[4].Time, new { @class = "form-control" })*@
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[4].ByWhom, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[4].Via, new { @class = "form-control" })
                                     </tr>
                                     <tr>
-                                        <td class="align-middle">Maintenance</td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
+                                        <td class="align-middle">
+                                            Maintenance
+                                            @Html.HiddenFor(m => m.SectionG[5].Notify)
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[5].Name, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[5].Date, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @* @Html.TextBoxFor(m => m.SectionG[5].Time, new { @class = "form-control" })*@
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[5].ByWhom, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[5].Via, new { @class = "form-control" })
                                     </tr>
                                     <tr>
-                                        <td class="align-middle">General Service Mgr.</td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
+                                        <td class="align-middle">
+                                            General Service Mgr.
+                                            @Html.HiddenFor(m => m.SectionG[6].Notify)
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[6].Name, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[6].Date, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @* @Html.TextBoxFor(m => m.SectionG[6].Time, new { @class = "form-control" })*@
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[6].ByWhom, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[6].Via, new { @class = "form-control" })
                                     </tr>
                                     <tr>
-                                        <td class="align-middle">Senior Management</td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
+                                        <td class="align-middle">
+                                            Senior Management
+                                            @Html.HiddenFor(m => m.SectionG[7].Notify)
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[7].Name, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[7].Date, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @* @Html.TextBoxFor(m => m.SectionG[7].Time, new { @class = "form-control" })*@
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[7].ByWhom, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[7].Via, new { @class = "form-control" })
                                     </tr>
                                     <tr>
-                                        <td class="align-middle">Other</td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
-                                        <td><input type="text" class="form-control"></td>
+                                        <td class="align-middle">
+                                            Other
+                                            @Html.HiddenFor(m => m.SectionG[8].Notify)
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[8].Name, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[8].Date, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @* @Html.TextBoxFor(m => m.SectionG[8].Time, new { @class = "form-control" })*@
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[8].ByWhom, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.SectionG[8].Via, new { @class = "form-control" })
                                     </tr>
 
                                 </tbody>
@@ -654,7 +767,8 @@
 
                             </div>
                             <div class="col-md-12">
-                                <textarea class="textarea" rows="7" style="width: 100% !important;"></textarea>
+                                @*<textarea class="textarea" rows="7" style="width: 100% !important;"></textarea>*@
+                                @Html.TextAreaFor(m => m.SectionH, new { @class = "form-control textarea col-md-12", placeholder = "Action taken to prevent similar incident from re-occuring", style = "width: 100% !important;" })
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group row">
@@ -694,16 +808,16 @@
                                         <label class="col-md-5 col-form-label">Incident documented on Health Record:</label>
                                         <div class="col-md-7 pads">
                                             <div class="form-check form-check-inline movesp" ">
-                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                @Html.RadioButtonFor(m => m.IncidentDocumented, "Yes", new { @class = "form-check-input" })
                                                 <label class="form-check-label checkspace" for="inlineRadio1">YES</label>
                                             </div>
                                             <div class="form-check form-check-inline pad4">
-                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                @Html.RadioButtonFor(m => m.IncidentDocumented, "No", new { @class = "form-check-input" })
                                                 <label class="form-check-label checkspace" for="inlineRadio2">NO</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                <label class="form-check-label checkspace" for="inlineRadio2">NA</label>
+                                                @Html.RadioButtonFor(m => m.IncidentDocumented, "N/A", new { @class = "form-check-input" })
+                                                <label class="form-check-label checkspace" for="inlineRadio2">N/A</label>
                                             </div>
                                         </div>
                                     </div>
@@ -714,16 +828,16 @@
                                         <label class="col-md-5 col-form-label">Changes made to resident care plan (as appropriate):</label>
                                         <div class="col-md-7 pads">
                                             <div class="form-check form-check-inline movesp" ">
-                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                @Html.RadioButtonFor(m => m.ChangesMade, "Yes", new { @class = "form-check-input" })
                                                 <label class="form-check-label checkspace" for="inlineRadio1">YES</label>
                                             </div>
                                             <div class="form-check form-check-inline pad4">
-                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                @Html.RadioButtonFor(m => m.ChangesMade, "No", new { @class = "form-check-input" })
                                                 <label class="form-check-label checkspace" for="inlineRadio2">NO</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                <label class="form-check-label checkspace" for="inlineRadio2">NA</label>
+                                                @Html.RadioButtonFor(m => m.ChangesMade, "N/A", new { @class = "form-check-input" })
+                                                <label class="form-check-label checkspace" for="inlineRadio2">N/A</label>
                                             </div>
                                         </div>
                                     </div>
@@ -734,15 +848,15 @@
                                         <label class="col-md-5 col-form-label">Referral consult to the Interdisciplinary Team was made:</label>
                                         <div class="col-md-7 pads">
                                             <div class="form-check form-check-inline movesp" ">
-                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                @Html.RadioButtonFor(m => m.ReferralConsult, "Yes", new { @class = "form-check-input" })
                                                 <label class="form-check-label checkspace" for="inlineRadio1">YES</label>
                                             </div>
                                             <div class="form-check form-check-inline pad4">
-                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                @Html.RadioButtonFor(m => m.ReferralConsult, "No", new { @class = "form-check-input" })
                                                 <label class="form-check-label checkspace" for="inlineRadio2">NO</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                @Html.RadioButtonFor(m => m.ReferralConsult, "N/A", new { @class = "form-check-input" })
                                                 <label class="form-check-label checkspace" for="inlineRadio2">NA</label>
                                             </div>
                                         </div>
@@ -753,16 +867,16 @@
                                     <div class="row">
                                         <label class="col-md-5 col-form-label">OHS Committee informed if applicable:</label>
                                         <div class="col-md-7 pads">
-                                            <div class="form-check form-check-inline movesp" ">
-                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                            <div class="form-check form-check-inline movesp">
+                                                @Html.RadioButtonFor(m => m.OHSCommitteeInformed, "Yes", new { @class = "form-check-input" })
                                                 <label class="form-check-label checkspace" for="inlineRadio1">YES</label>
                                             </div>
                                             <div class="form-check form-check-inline pad4">
-                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                @Html.RadioButtonFor(m => m.OHSCommitteeInformed, "No", new { @class = "form-check-input" })
                                                 <label class="form-check-label checkspace" for="inlineRadio2">NO</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                @Html.RadioButtonFor(m => m.OHSCommitteeInformed, "N/A", new { @class = "form-check-input" })
                                                 <label class="form-check-label checkspace" for="inlineRadio2">NA</label>
                                             </div>
                                         </div>
@@ -774,15 +888,15 @@
                                         <label class="col-md-5 col-form-label">Record Tracking Form:</label>
                                         <div class="col-md-7 pads">
                                             <div class="form-check form-check-inline movesp" ">
-                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                @Html.RadioButtonFor(m => m.RecordTrackingForm, "Yes", new { @class = "form-check-input" })
                                                 <label class="form-check-label checkspace" for="inlineRadio1">YES</label>
                                             </div>
                                             <div class="form-check form-check-inline pad4">
-                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                @Html.RadioButtonFor(m => m.RecordTrackingForm, "No", new { @class = "form-check-input" })
                                                 <label class="form-check-label checkspace" for="inlineRadio2">NO</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                @Html.RadioButtonFor(m => m.RecordTrackingForm, "N/A", new { @class = "form-check-input" })
                                                 <label class="form-check-label checkspace" for="inlineRadio2">NA</label>
                                             </div>
                                         </div>
@@ -794,15 +908,15 @@
                                         <label class="col-md-5 col-form-label">Incident information discussed in QA Meeting:</label>
                                         <div class="col-md-7 pads">
                                             <div class="form-check form-check-inline movesp" ">
-                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                @Html.RadioButtonFor(m => m.IncidentInformation, "Yes", new { @class = "form-check-input" })
                                                 <label class="form-check-label checkspace" for="inlineRadio1">YES</label>
                                             </div>
                                             <div class="form-check form-check-inline pad4">
-                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                @Html.RadioButtonFor(m => m.IncidentInformation, "No", new { @class = "form-check-input" })
                                                 <label class="form-check-label checkspace" for="inlineRadio2">NO</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                @Html.RadioButtonFor(m => m.IncidentInformation, "N/A", new { @class = "form-check-input" })
                                                 <label class="form-check-label checkspace" for="inlineRadio2">NA</label>
                                             </div>
                                         </div>
@@ -827,7 +941,8 @@
 
                             </div>
                             <div class="col-md-12">
-                                <textarea class="textarea" rows="7" style="width: 100% !important;"></textarea>
+                                @*<textarea class="textarea" rows="7" style="width: 100% !important;"></textarea>*@
+                                @Html.TextAreaFor(m => m.SectionJ, new { @class = "form-control textarea col-md-12", placeholder = "Executive Director or Designate", style = "width: 100% !important;" })
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group row">
@@ -856,6 +971,7 @@
                             <button class="btn btn-danger btn-lg">SAVE</button>
                         </div>
                     </div>
+                    </form>
                 </div>
 
 

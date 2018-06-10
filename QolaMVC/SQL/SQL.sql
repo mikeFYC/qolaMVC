@@ -918,15 +918,18 @@ BEGIN
 				@TreatmentValue, @IsOther, @SectionD, @SectionE, @SectionF, @SectionH, @IncidentDocumented, @ChangesMade, @ReferralConsult, @OHSCommitteeInformed,
 				@RecordTrackingForm, @IncidentInformation, @SectionJ, @EnteredBy, GETDATE())
 
+			--return the id of the record just inserted
+	SELECT Id = @@IDENTITY
+
 END
 GO
 
 
 
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_Resident_DietaryAssessments]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
-DROP PROCEDURE [dbo].[spAB_Get_Resident_DietaryAssessments]
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_UnusualIncident]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_UnusualIncident]
 GO
-CREATE PROCEDURE [dbo].[spAB_Get_Resident_DietaryAssessments]
+CREATE PROCEDURE [dbo].[spAB_Get_UnusualIncident]
 @ResidentId int
 AS
 --20180507 chime created
@@ -971,5 +974,315 @@ BEGIN
 	DateEntered
 	FROM [tbl_AB_UnusualIncident]
 	WHERE ResidentId = @ResidentId
+END
+GO
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_UnusualIncident_SectionG]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_UnusualIncident_SectionG]
+GO
+CREATE PROCEDURE [dbo].[spAB_Add_UnusualIncident_SectionG]
+@ResidentId int,
+@IncidentId [int],
+@Notify [nvarchar](200) = null,
+@Name [nvarchar](200) = null,
+@Date [nvarchar](200) = null,
+@ByWhom [nvarchar](200) = null,
+@Via [nvarchar](200) = null,
+@EnteredBy int
+AS
+--20180610 chime created
+BEGIN
+	INSERT INTO [tbl_AB_UnusualIncident_SectionG] (ResidentId, IncidentId, Notify, strName, dtmDate, ByWhom, Via, EnteredBy, DateEntered) 
+	VALUES (@ResidentId, @IncidentId, @Notify, @Name, @Date, @ByWhom, @Via, @EnteredBy, GETDATE())
+
+END
+GO
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_UnusualIncident_SectionG]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_UnusualIncident_SectionG]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_UnusualIncident_SectionG]
+@IncidentId int
+AS
+--20180507 chime created
+BEGIN
+	SELECT
+	Id,
+	ResidentId,
+	IncidentId, 
+	Notify, 
+	strName, 
+	dtmDate, 
+	ByWhom, 
+	Via,
+	EnteredBy,
+	DateEntered
+	FROM [tbl_AB_UnusualIncident_SectionG]
+	WHERE IncidentId = @IncidentId
+END
+GO
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_PlanOfCare]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_PlanOfCare]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_PlanOfCare]
+@ResidentId int
+AS
+--20180610 chime created
+BEGIN
+	SELECT
+	CP.Id,
+	CP.ResidentId,
+	CP.Assessed,
+	CP.LevelOfCare,
+	CP.CompleteStatus,
+	VitalSigns.BP_Systolic,
+	VitalSigns.BP_Diastolic,
+	VitalSigns.BP_DateCompleted,
+	VitalSigns.Temperature,
+	VitalSigns.Temp_DateCompleted,
+	VitalSigns.WeightLBS,
+	VitalSigns.Weight_DateCompleted,
+	VitalSigns.Height_Feet,
+	VitalSigns.Height_Inches,
+	VitalSigns.Height_DateCompleted,
+	VitalSigns.Pulse,
+	VitalSigns.Pulse_DateCompleted,
+	VitalSigns.PulseRegular,
+	PersonalHygiene.AMCare,
+	PersonalHygiene.PMCare,
+	PersonalHygiene.Bathing,
+	PersonalHygiene.AM_AssistedBy,
+	PersonalHygiene.PM_AssistedBy,
+	PersonalHygiene.Bathing_AssistedBy,
+	PersonalHygiene.AM_AgencyName,
+	PersonalHygiene.PM_AgencyName,
+	PersonalHygiene.Bathing_AgencyName,
+	PersonalHygiene.AM_PreferredTime,
+	PersonalHygiene.PM_PreferredTime,
+	PersonalHygiene.Bathing_PreferredTime,
+	PersonalHygiene.AM_PreferredType,
+	PersonalHygiene.PM_PreferredType,
+	PersonalHygiene.Bathing_PreferredType,
+	PersonalHygiene.PreferredDays,
+	AW.Dressing,
+	AW.Dressing_PreferredTime,
+	AW.NailCare,
+	AW.NailCare_PreferredTime,
+	AW.Shaving,
+	AW.Shaving_PreferredTime,
+	AW.FootCare,
+	AW.FootCare_PreferredTime,
+	AW.OralHygiene,
+	AW.OralHygiene_PreferredTime,
+	AW.Teeth,
+	CPM.Mobility,
+	CPM.Transfers,
+	CPM.MechanicalLift,
+	CPM.Lift,
+	CPM.Walker,
+	CPM.Walker_Type,
+	CPM.WheelChair,
+	CPM.WheelChair_Type,
+	CPM.Cane,
+	CPM.Cane_Type,
+	CPM.Scooter,
+	CPM.Scooter_Type,
+	CPM.PT,
+	CPM.PT_Frequency,
+	CPM.PT_Provider,
+	CPM.OT,
+	CPM.OT_Frequency,
+	CPM.OT_Provider,
+	CPS.SafetyPASD,
+	CPS.Other,
+	CPS.Rails,
+	CPS.NightOnly,
+	CPME.BreakFast,
+	CPME.Lunch,
+	CPME.Dinner,
+	CPB.Behavior,
+	CPB.HarmToSelf,
+	CPB.smoker,
+	CPB.RiskOfWandering,
+	CPB.CognitiveStatus,
+	CPB.OtherInfo,
+	CPCF.CognitiveFunction,
+	CPO.IsPerson,
+	CPO.IsPlace,
+	CPO.IsTime,
+	CPO.IsDementiaCare,
+	CPN.NutritionStatus,
+	CPN.Risk,
+	CPN.AssistiveDevices,
+	CPN.Texture,
+	CPN.Other,
+	CPN.Diet,
+	CPN.OtherDiet,
+	CPN.Notes,
+	CPN.Allergies,
+	CPMeals.Appetite,
+	CPMeals.BreakFast,
+	CPMeals.Lunch,
+	CPMeals.Dinner,
+	CPE.Bladder,
+	CPE.Bowel,
+	CPE.NameCode,
+	CPE.ContinenceProducts,
+	CPE.AssistiveDevices,
+	CPE.Supplier,
+	CPE.AssessmentCompletedBy,
+	CPE.AssessmentDate,
+	CPT.Bathroom,
+	CPT.Commode,
+	CPT.Bedpan,
+	CPT.Toileting,
+	CPMedication.Assistance,
+	CPMedication.Administration,
+	CPMedication.CompletedBy,
+	CPMedication.Agency,
+	CPMedication.Pharmacy,
+	CPMedication.Allergies,
+	CPSA.Vision,
+	CPSA.Hearing,
+	CPSA.Communication,
+	CPSA.Notes,
+	CPWC.WoundCare,
+	CPWC.AssistedBy,
+	CPWC.Agency,
+	CPSC.SkinCare,
+	CPSC.SpecialTreatments,
+	CPSN.Oxygen,
+	CPSN.Oxygen_Supplier,
+	CPSN.Oxygen_Rate,
+	CPSN.Oxygen_Notes,
+	CPSN.CPAP,
+	CPSN.CPAP_Supplier,
+	CPSN.CPAP_Notes,
+	CPSE.SpecialEquipment,
+	CPSE.Details,
+	CPFS.FamilyMeeting,
+	CPFS.FamilyInvolvment,
+	CPI.TB,
+	CPI.TB_Date,
+	CPI.ChestXRay,
+	CPI.ChestXRay_Date,
+	CPI.Pneumonia,
+	CPI.Pneumonia_Date,
+	CPI.FluVaccine,
+	CPI.FluVaccine_Date,
+	CPI.Tetanus,
+	CPI.Tetanus_Date,
+	CPID.MRSA,
+	CPID.MRSA_Diagnosed_Date,
+	CPID.MRSA_Resolved_Date,
+	CPID.VRE,
+	CPID.VRE_Diagnosed_Date,
+	CPID.VRE_Resolved_Date,
+	CPID.CDiff,
+	CPID.CDiff_Diagnosed_Date,
+	CPID.CDiff_Resolved_Date,
+	CPID.Other,
+	CPID.Other_Diagnosed_Date,
+	CPID.Other_Resolved_Date,
+
+	CP.EnteredBy,
+	CP.DateEntered
+	FROM 
+		[tbl_AB_CarePlan] CP 
+	LEFT OUTER JOIN 
+		[tbl_AB_CarePlan_VitalSigns] VitalSigns ON
+		VitalSigns.ResidentId = CP.ResidentId AND
+		VitalSigns.CarePlanId = CP.Id
+	LEFT OUTER JOIN
+		[tbl_AB_CarePlan_PersonalHygiene] PersonalHygiene ON
+		PersonalHygiene.ResidentId = CP.ResidentId AND
+		PersonalHygiene.CarePlanId = CP.Id
+	LEFT OUTER JOIN
+		[tbl_AB_CarePlan_AssistanceWith] AW ON
+		AW.ResidentId = CP.ResidentId AND
+		AW.CarePlanId = CP.Id
+	LEFT OUTER JOIN
+		[tbl_AB_CarePlan_Mobility] CPM ON
+		CPM.ResidentId = CP.ResidentId AND
+		CPM.CarePlanId = CP.Id
+	LEFT OUTER JOIN
+		[tbl_AB_CarePlan_Safety] CPS ON
+		CPS.ResidentId = CP.ResidentId AND
+		CPS.CarePlanId = CP.Id
+	LEFT OUTER JOIN
+		[tbl_AB_CarePlan_MealEscort] CPME ON
+		CPME.ResidentId = CP.ResidentId AND
+		CPME.CarePlanId = CP.Id
+	LEFT OUTER JOIN
+		[tbl_AB_CarePlan_Behaviour] CPB ON
+		CPB.ResidentId = CP.ResidentId AND
+		CPB.CarePlanId = CP.Id
+	LEFT OUTER JOIN
+		[tbl_AB_CarePlan_CognitiveFunction] CPCF ON
+		CPCF.ResidentId = CP.ResidentId AND
+		CPCF.CarePlanId = CP.Id
+	LEFT OUTER JOIN
+		[tbl_AB_CarePlan_Orientation] CPO ON
+		CPO.ResidentId = CP.ResidentId AND
+		CPO.CarePlanId = CP.Id
+	LEFT OUTER JOIN
+		[tbl_AB_CarePlan_Nutrition] CPN ON
+		CPN.ResidentId = CP.ResidentId AND
+		CPN.CarePlanId = CP.Id
+	LEFT OUTER JOIN
+		[tbl_AB_CarePlan_Meals] CPMeals ON
+		CPMeals.ResidentId = CP.ResidentId AND
+		CPMeals.CarePlanId = CP.Id
+	LEFT OUTER JOIN
+		[tbl_AB_CarePlan_Elimination] CPE ON
+		CPE.ResidentId = CP.ResidentId AND
+		CPE.CarePlanId = CP.Id
+	LEFT OUTER JOIN
+		[tbl_AB_CarePlan_Toileting] CPT ON
+		CPT.ResidentId = CP.ResidentId AND
+		CPT.CarePlanId = CP.Id
+	LEFT OUTER JOIN
+		[tbl_AB_CarePlan_Medication] CPMedication ON
+		CPMedication.ResidentId = CP.ResidentId AND
+		CPMedication.CarePlanId = CP.Id
+	LEFT OUTER JOIN
+		[tbl_AB_CarePlan_SensoryAbilities] CPSA ON
+		CPSA.ResidentId = CP.ResidentId AND
+		CPSA.CarePlanId = CP.Id
+	LEFT OUTER JOIN
+		[tbl_AB_CarePlan_WoundCare] CPWC ON
+		CPWC.ResidentId = CP.ResidentId AND
+		CPWC.CarePlanId = CP.Id
+	LEFT OUTER JOIN
+		[tbl_AB_CarePlan_SkinCare] CPSC ON
+		CPSC.ResidentId = CP.ResidentId AND
+		CPSC.CarePlanId = CP.Id
+	LEFT OUTER JOIN
+		[tbl_AB_CarePlan_SpecialNeeds] CPSN ON
+		CPSN.ResidentId = CP.ResidentId AND
+		CPSN.CarePlanId = CP.Id
+	LEFT OUTER JOIN
+		[tbl_AB_CarePlan_SpecialEquipment] CPSE ON
+		CPSE.ResidentId = CP.ResidentId AND
+		CPSE.CarePlanId = CP.Id
+	LEFT OUTER JOIN
+		[tbl_AB_CarePlan_FamilySupport] CPFS ON
+		CPFS.ResidentId = CP.ResidentId AND
+		CPFS.CarePlanId = CP.Id
+	LEFT OUTER JOIN
+		[tbl_AB_CarePlan_Immunization] CPI ON
+		CPI.ResidentId = CP.ResidentId AND
+		CPI.CarePlanId = CP.Id
+	LEFT OUTER JOIN
+		[tbl_AB_CarePlan_InfectiousDiseases] CPID ON
+		CPID.ResidentId = CP.ResidentId AND
+		CPID.CarePlanId = CP.Id
+		
+	WHERE CP.ResidentId = @ResidentId
 END
 GO

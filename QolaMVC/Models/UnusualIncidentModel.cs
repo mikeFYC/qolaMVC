@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Web;
 
@@ -19,6 +20,7 @@ namespace QolaMVC.Models
         public string WitnessName { get; set; }
         public bool IsFall { get; set; }
         public bool IsElopement { get; set; }
+        public string Elopement { get; set; }
         public bool IsUnusualBehaviour { get; set; }
         public string UnusualBehaviour { get; set; }
         public bool IsPhysicalInjury { get; set; }
@@ -33,7 +35,7 @@ namespace QolaMVC.Models
         public string SectionD { get; set; }
         public string SectionE { get; set; }
         public string SectionF { get; set; }
-        //public Collection<UnusualIncidentSectionGModel> SectionG { get; set; } 
+        public Collection<UnusualIncidentSectionGModel> SectionG { get; set; }
         public string SectionH { get; set; }
         public string IncidentDocumented { get; set; }
         public string ChangesMade { get; set; }

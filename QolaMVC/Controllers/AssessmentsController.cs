@@ -683,10 +683,10 @@ namespace QolaMVC.Controllers
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
-            var resident_sess = (ResidentModel)TempData["Resident"];
+            var resident = (ResidentModel)TempData["Resident"];
 
             ViewBag.User = user;
-            ViewBag.Resident = resident_sess;
+            ViewBag.Resident = resident;
             ViewBag.Home = home;
 
 
@@ -694,7 +694,50 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
-            return View();
+            var l_IncidentReports = AssessmentDAL.GetUnusualIncidentReports(resident.ID);
+
+            if(l_IncidentReports.LastOrDefault() != null && ((l_IncidentReports.LastOrDefault().SectionG == null) || (l_IncidentReports.LastOrDefault().SectionG.Count == 0)))
+            {
+                var l_Array = new string[]{ "Physician", "Family", "Alberta Health Services", "On Call Manager", "Director of Care", "Maintenance", "General Service Mgr", "Senior Management", "Other" };
+
+                foreach(var l_Item in l_Array)
+                {
+                    var l_SectionG = new UnusualIncidentSectionGModel();
+                    l_SectionG.Notify = l_Item;
+                    l_SectionG.Name = string.Empty;
+                    l_SectionG.IncidentId = 0;
+                    l_SectionG.ResidentId = resident.ID;
+                    l_SectionG.Via = string.Empty;
+
+                    l_IncidentReports.LastOrDefault().SectionG.Add(l_SectionG);
+                }
+
+            }
+            return View(l_IncidentReports.LastOrDefault());
+        }
+
+        [HttpPost]
+        public ActionResult AddUnusualIncident(UnusualIncidentModel p_Model)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            p_Model.EnteredBy = user;
+            p_Model.Resident = resident;
+            p_Model.DateEntered = DateTime.Now;
+
+            AssessmentDAL.AddUnusualIncident(p_Model);
+
+            return RedirectToAction("UnusualIncident");
         }
 
         public ActionResult CarePlan()
