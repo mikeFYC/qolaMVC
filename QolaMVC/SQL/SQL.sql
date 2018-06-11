@@ -1026,10 +1026,10 @@ END
 GO
 
 
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_PlanOfCare]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
-DROP PROCEDURE [dbo].[spAB_Get_PlanOfCare]
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_PlanOfCare_OLD]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_PlanOfCare_OLD]
 GO
-CREATE PROCEDURE [dbo].[spAB_Get_PlanOfCare]
+CREATE PROCEDURE [dbo].[spAB_Get_PlanOfCare_OLD]
 @ResidentId int
 AS
 --20180610 chime created
@@ -1502,5 +1502,453 @@ BEGIN
 	WHERE CPME.CarePlanId = @CarePlanId
 END
 GO
+	
+		
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_PlanOfCare_Behaviour]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_PlanOfCare_Behaviour]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_PlanOfCare_Behaviour]
+@CarePlanId int
+AS
+--20180610 chime created
+BEGIN
+	SELECT
+	CPB.Id,
+	CPB.ResidentId,
+	CPB.CarePlanId,
+	CPB.Behavior,
+	CPB.HarmToSelf,
+	CPB.smoker,
+	CPB.RiskOfWandering,
+	CPB.CognitiveStatus,
+	CPB.OtherInfo
+	FROM 
+		[tbl_AB_CarePlan_Behaviour] CPB 
+	WHERE CPB.CarePlanId = @CarePlanId
+END
+GO
+		
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_PlanOfCare_CognitiveFunction]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_PlanOfCare_CognitiveFunction]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_PlanOfCare_CognitiveFunction]
+@CarePlanId int
+AS
+--20180610 chime created
+BEGIN
+	SELECT
+	CPCF.Id,
+	CPCF.ResidentId,
+	CPCF.CarePlanId,
+	CPCF.CognitiveFunction
+	FROM 
+		[tbl_AB_CarePlan_CognitiveFunction] CPCF 
+	WHERE CPCF.CarePlanId = @CarePlanId
+END
+GO
+
+	
+		
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_PlanOfCare_Orientation]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_PlanOfCare_Orientation]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_PlanOfCare_Orientation]
+@CarePlanId int
+AS
+--20180610 chime created
+BEGIN
+	SELECT
+	CPO.Id,
+	CPO.ResidentId,
+	CPO.CarePlanId,
+	CPO.IsPerson,
+	CPO.IsPlace,
+	CPO.IsTime,
+	CPO.IsDementiaCare
+	FROM 
+		[tbl_AB_CarePlan_Orientation] CPO 
+	WHERE CPO.CarePlanId = @CarePlanId
+END
+GO
 
 
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_PlanOfCare_Nutrition]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_PlanOfCare_Nutrition]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_PlanOfCare_Nutrition]
+@CarePlanId int
+AS
+--20180610 chime created
+BEGIN
+	SELECT
+	CPN.Id,
+	CPN.ResidentId,
+	CPN.CarePlanId,
+	CPN.NutritionStatus,
+	CPN.Risk,
+	CPN.AssistiveDevices,
+	CPN.Texture,
+	CPN.Other,
+	CPN.Diet,
+	CPN.OtherDiet,
+	CPN.Notes,
+	CPN.Allergies
+	FROM 
+		[tbl_AB_CarePlan_Nutrition] CPN 
+	WHERE CPN.CarePlanId = @CarePlanId
+END
+GO
+
+		
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_PlanOfCare_Meals]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_PlanOfCare_Meals]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_PlanOfCare_Meals]
+@CarePlanId int
+AS
+--20180610 chime created
+BEGIN
+	SELECT
+	CPMeals.Id,
+	CPMeals.ResidentId,
+	CPMeals.CarePlanId,
+	CPMeals.Appetite,
+	CPMeals.BreakFast,
+	CPMeals.Lunch,
+	CPMeals.Dinner
+	FROM 
+		[tbl_AB_CarePlan_Meals] CPMeals 
+	WHERE CPMeals.CarePlanId = @CarePlanId
+END
+GO
+
+
+	
+		
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_PlanOfCare_Elimination]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_PlanOfCare_Elimination]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_PlanOfCare_Elimination]
+@CarePlanId int
+AS
+--20180610 chime created
+BEGIN
+	SELECT
+	CPE.Id,
+	CPE.ResidentId,
+	CPE.CarePlanId,
+	CPE.Bladder,
+	CPE.Bowel,
+	CPE.NameCode,
+	CPE.ContinenceProducts,
+	CPE.AssistiveDevices,
+	CPE.Supplier,
+	CPE.AssessmentCompletedBy,
+	CPE.AssessmentDate
+	FROM 
+		[tbl_AB_CarePlan_Elimination] CPE 
+	WHERE CPE.CarePlanId = @CarePlanId
+END
+GO
+
+	
+		
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_PlanOfCare_Toileting]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_PlanOfCare_Toileting]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_PlanOfCare_Toileting]
+@CarePlanId int
+AS
+--20180610 chime created
+BEGIN
+	SELECT
+	CPT.Id,
+	CPT.ResidentId,
+	CPT.CarePlanId,
+	CPT.Bathroom,
+	CPT.Commode,
+	CPT.Bedpan,
+	CPT.Toileting
+	FROM 
+		[tbl_AB_CarePlan_Toileting] CPT 
+	WHERE CPT.CarePlanId = @CarePlanId
+END
+GO
+
+	
+		
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_PlanOfCare_Medication]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_PlanOfCare_Medication]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_PlanOfCare_Medication]
+@CarePlanId int
+AS
+--20180610 chime created
+BEGIN
+	SELECT
+	CPMedication.Id,
+	CPMedication.ResidentId,
+	CPMedication.CarePlanId,
+	CPMedication.Assistance,
+	CPMedication.Administration,
+	CPMedication.CompletedBy,
+	CPMedication.Agency,
+	CPMedication.Pharmacy,
+	CPMedication.Allergies
+	FROM 
+		[tbl_AB_CarePlan_Medication] CPMedication 
+	WHERE CPMedication.CarePlanId = @CarePlanId
+END
+GO
+	
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_PlanOfCare_SensoryAbilities]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_PlanOfCare_SensoryAbilities]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_PlanOfCare_SensoryAbilities]
+@CarePlanId int
+AS
+--20180610 chime created
+BEGIN
+	SELECT
+	CPSA.Id,
+	CPSA.ResidentId,
+	CPSA.CarePlanId,
+	CPSA.Vision,
+	CPSA.Hearing,
+	CPSA.Communication,
+	CPSA.Notes
+	FROM 
+		[tbl_AB_CarePlan_SensoryAbilities] CPSA 
+	WHERE CPSA.CarePlanId = @CarePlanId
+END
+GO
+	
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_PlanOfCare_WoundCare]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_PlanOfCare_WoundCare]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_PlanOfCare_WoundCare]
+@CarePlanId int
+AS
+--20180610 chime created
+BEGIN
+	SELECT
+	CPWC.Id,
+	CPWC.ResidentId,
+	CPWC.CarePlanId,
+	CPWC.WoundCare,
+	CPWC.AssistedBy,
+	CPWC.Agency
+	FROM 
+		[tbl_AB_CarePlan_WoundCare] CPWC 
+	WHERE CPWC.CarePlanId = @CarePlanId
+END
+GO
+
+		
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_PlanOfCare_SkinCare]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_PlanOfCare_SkinCare]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_PlanOfCare_SkinCare]
+@CarePlanId int
+AS
+--20180610 chime created
+BEGIN
+	SELECT
+	CPSC.Id,
+	CPSC.ResidentId,
+	CPSC.CarePlanId,
+	CPSC.SkinCare,
+	CPSC.SpecialTreatments
+	FROM 
+		[tbl_AB_CarePlan_SkinCare] CPSC 
+	WHERE CPSC.CarePlanId = @CarePlanId
+END
+GO
+	
+		
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_PlanOfCare_SpecialNeeds]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_PlanOfCare_SpecialNeeds]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_PlanOfCare_SpecialNeeds]
+@CarePlanId int
+AS
+--20180610 chime created
+BEGIN
+	SELECT
+	CPSN.Id,
+	CPSN.ResidentId,
+	CPSN.CarePlanId,
+	CPSN.Oxygen,
+	CPSN.Oxygen_Supplier,
+	CPSN.Oxygen_Rate,
+	CPSN.Oxygen_Notes,
+	CPSN.CPAP,
+	CPSN.CPAP_Supplier,
+	CPSN.CPAP_Notes
+	FROM 
+		[tbl_AB_CarePlan_SpecialNeeds] CPSN 
+	WHERE CPSN.CarePlanId = @CarePlanId
+END
+GO
+
+		
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_PlanOfCare_SpecialEquipment]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_PlanOfCare_SpecialEquipment]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_PlanOfCare_SpecialEquipment]
+@CarePlanId int
+AS
+--20180610 chime created
+BEGIN
+	SELECT
+	CPSE.Id,
+	CPSE.ResidentId,
+	CPSE.CarePlanId,
+	CPSE.SpecialEquipment,
+	CPSE.Details
+	FROM 
+		[tbl_AB_CarePlan_SpecialEquipment] CPSE 
+	WHERE CPSE.CarePlanId = @CarePlanId
+END
+GO	
+		
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_PlanOfCare_FamilySupport]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_PlanOfCare_FamilySupport]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_PlanOfCare_FamilySupport]
+@CarePlanId int
+AS
+--20180610 chime created
+BEGIN
+	SELECT
+	CPFS.Id,
+	CPFS.ResidentId,
+	CPFS.CarePlanId,
+	CPFS.FamilyMeeting,
+	CPFS.FamilyInvolvment
+	FROM 
+		[tbl_AB_CarePlan_FamilySupport] CPFS 
+	WHERE CPFS.CarePlanId = @CarePlanId
+END
+GO	
+		
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_PlanOfCare_Immunization]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_PlanOfCare_Immunization]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_PlanOfCare_Immunization]
+@CarePlanId int
+AS
+--20180610 chime created
+BEGIN
+	SELECT
+	CPI.Id,
+	CPI.ResidentId,
+	CPI.CarePlanId,
+	CPI.TB,
+	CPI.TB_Date,
+	CPI.ChestXRay,
+	CPI.ChestXRay_Date,
+	CPI.Pneumonia,
+	CPI.Pneumonia_Date,
+	CPI.FluVaccine,
+	CPI.FluVaccine_Date,
+	CPI.Tetanus,
+	CPI.Tetanus_Date
+	FROM 
+		[tbl_AB_CarePlan_Immunization] CPI 
+	WHERE CPI.CarePlanId = @CarePlanId
+END
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_PlanOfCare_InfectiousDiseases]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_PlanOfCare_InfectiousDiseases]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_PlanOfCare_InfectiousDiseases]
+@CarePlanId int
+AS
+--20180610 chime created
+BEGIN
+	SELECT
+	CPID.Id,
+	CPID.ResidentId,
+	CPID.CarePlanId,
+	CPID.MRSA,
+	CPID.MRSA_Diagnosed_Date,
+	CPID.MRSA_Resolved_Date,
+	CPID.VRE,
+	CPID.VRE_Diagnosed_Date,
+	CPID.VRE_Resolved_Date,
+	CPID.CDiff,
+	CPID.CDiff_Diagnosed_Date,
+	CPID.CDiff_Resolved_Date,
+	CPID.Other,
+	CPID.Other_Diagnosed_Date,
+	CPID.Other_Resolved_Date
+	FROM 
+		[tbl_AB_CarePlan_InfectiousDiseases] CPID 
+	WHERE CPID.CarePlanId = @CarePlanId
+END
+GO
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_PlanOfCare]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_PlanOfCare]
+GO
+CREATE PROCEDURE [dbo].[spAB_Add_PlanOfCare]
+@ResidentId int,
+@Assessed nvarchar(50),
+@LevelOfCare nvarchar(50),
+@CompleteStatus nvarchar(20),
+@EnteredBy int
+AS
+--20180610 chime created
+BEGIN
+	INSERT INTO tbl_ab_careplan (ResidentId, Assessed, LevelOfCare, CompleteStatus, EnteredBy, DateEntered) VALUES (@ResidentId, @Assessed, @LevelOfCare, @CompleteStatus, @EnteredBy, getdate())
+END
+GO
+	
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_PlanOfCare_VitalSigns]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_PlanOfCare_VitalSigns]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_PlanOfCare_VitalSigns]
+@CarePlanId int,
+@ResidentId int,
+@BP_Systolic nvarchar(20),
+@BP_Diastolic nvarchar(20),
+@BP_DateCompleted nvarchar(20),
+@Temperature nvarchar(20),
+@Temp_DateCompleted nvarchar(20),
+@WeightLBS nvarchar(20),
+@Weight_DateCompleted nvarchar(20),
+@Height_Feet nvarchar(20),
+@Height_Inches nvarchar(20),
+@Height_DateCompleted nvarchar(20),
+@Pulse nvarchar(20),
+@Pulse_DateCompleted nvarchar(20),
+@PulseRegular nvarchar(20)
+AS
+--20180610 chime created
+BEGIN
+	INSERT INTO tbl_AB_CarePlan_VitalSigns (ResidentId, CarePlanId, BP_Systolic, BP_Diastolic, BP_DateCompleted, Temperature, Temp_DateCompleted, WeightLBS, Weight_DateCompleted, Height_Feet,
+				Height_Inches, Height_DateCompleted, Pulse, Pulse_DateCompleted, PulseRegular)
+	VALUES
+	(@ResidentId, @CarePlanId, @BP_Systolic, @BP_Diastolic, @BP_DateCompleted, @Temperature, @Temp_DateCompleted, @WeightLBS, @Weight_DateCompleted, @Height_Feet,
+				@Height_Inches, @Height_DateCompleted, @Pulse, @Pulse_DateCompleted, @PulseRegular)
+END
+GO
