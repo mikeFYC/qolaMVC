@@ -1952,3 +1952,107 @@ BEGIN
 				@Height_Inches, @Height_DateCompleted, @Pulse, @Pulse_DateCompleted, @PulseRegular)
 END
 GO
+
+
+	
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_PlanOfCare_PersonalHygiene]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_PlanOfCare_PersonalHygiene]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_PlanOfCare_PersonalHygiene]
+@CarePlanId int,
+@ResidentId int,
+@AMCare nvarchar(20),
+@PMCare nvarchar(20),
+@Bathing nvarchar(20),
+@AM_AssistedBy nvarchar(20),
+@PM_AssistedBy nvarchar(20),
+@Bathing_AssistedBy nvarchar(20),
+@AM_AgencyName nvarchar(20),
+@PM_AgencyName nvarchar(20),
+@Bathing_AgencyName nvarchar(20),
+@AM_PreferredTime nvarchar(20),
+@PM_PreferredTime nvarchar(20),
+@Bathing_PreferredTime nvarchar(20),
+@AM_PreferredType nvarchar(20),
+@PM_PreferredType nvarchar(20),
+@Bathing_PreferredType nvarchar(20),
+@PreferredDays nvarchar(200)
+AS
+--20180610 chime created
+BEGIN
+	INSERT INTO tbl_AB_CarePlan_PersonalHygiene (ResidentId, CarePlanId, AMCare, PMCare, Bathing, AM_AssistedBy, PM_AssistedBy, Bathing_AssistedBy, AM_AgencyName, PM_AgencyName, Bathing_AgencyName,
+					AM_PreferredTime, PM_PreferredTime, Bathing_PreferredTime, AM_PreferredType, PM_PreferredType, Bathing_PreferredType, PreferredDays	)
+	VALUES
+	(@ResidentId, @CarePlanId, @AMCare, @PMCare, @Bathing, @AM_AssistedBy, @PM_AssistedBy, @Bathing_AssistedBy, @AM_AgencyName, @PM_AgencyName, @Bathing_AgencyName,
+					@AM_PreferredTime, @PM_PreferredTime, @Bathing_PreferredTime, @AM_PreferredType, @PM_PreferredType, @Bathing_PreferredType, @PreferredDays	)
+END
+GO
+	
+		
+		
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_PlanOfCare_AssistanceWith]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_PlanOfCare_AssistanceWith]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_PlanOfCare_AssistanceWith]
+@CarePlanId int,
+@ResidentId int,
+@Dressing nvarchar(20),
+@Dressing_PreferredTime nvarchar(20),
+@NailCare nvarchar(20),
+@NailCare_PreferredTime nvarchar(20),
+@Shaving nvarchar(20),
+@Shaving_PreferredTime nvarchar(20),
+@FootCare nvarchar(20),
+@FootCare_PreferredTime nvarchar(20),
+@OralHygiene nvarchar(20),
+@OralHygiene_PreferredTime nvarchar(20),
+@Teeth nvarchar(200)
+AS
+--20180610 chime created
+BEGIN
+	INSERT INTO tbl_AB_CarePlan_AssistanceWith (ResidentId, CarePlanId, Dressing, Dressing_PreferredTime, NailCare, NailCare_PreferredTime, Shaving, Shaving_PreferredTime, FootCare, FootCare_PreferredTime,
+			OralHygiene, OralHygiene_PreferredTime, Teeth )
+	VALUES (@ResidentId, @CarePlanId, @Dressing, @Dressing_PreferredTime, @NailCare, @NailCare_PreferredTime, @Shaving, @Shaving_PreferredTime, @FootCare, @FootCare_PreferredTime,
+			@OralHygiene, @OralHygiene_PreferredTime, @Teeth )
+END
+GO
+
+
+	
+		
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_PlanOfCare_Mobility]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_PlanOfCare_Mobility]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_PlanOfCare_Mobility]
+@CarePlanId int,
+@ResidentId INT,
+@Mobility nvarchar(20),
+@Transfers nvarchar(20),
+@MechanicalLift nvarchar(20),
+@Lift nvarchar(20),
+@Walker nvarchar(20),
+@Walker_Type nvarchar(20),
+@WheelChair nvarchar(20),
+@WheelChair_Type nvarchar(20),
+@Cane nvarchar(20),
+@Cane_Type nvarchar(20),
+@Scooter nvarchar(20),
+@Scooter_Type nvarchar(20),
+@PT nvarchar(20),
+@PT_Frequency nvarchar(20),
+@PT_Provider nvarchar(20),
+@OT nvarchar(20),
+@OT_Frequency nvarchar(20),
+@OT_Provider nvarchar(20)
+AS
+--20180610 chime created
+BEGIN
+	INSERT INTO tbl_AB_CarePlan_Mobility (ResidentId, CarePlanId, Mobility, Transfers, MechanicalLift, Lift, Walker, Walker_Type, WheelChair, WheelChair_Type, Cane, Cane_Type, Scooter, Scooter_Type,
+				PT, PT_Frequency, PT_Provider, OT, OT_Frequency, OT_Provider)
+	VALUES(@ResidentId, @CarePlanId, @Mobility, @Transfers, @MechanicalLift, @Lift, @Walker, @Walker_Type, @WheelChair, @WheelChair_Type, @Cane, @Cane_Type, @Scooter, @Scooter_Type,
+				@PT, @PT_Frequency, @PT_Provider, @OT, @OT_Frequency, @OT_Provider)
+END
+GO
