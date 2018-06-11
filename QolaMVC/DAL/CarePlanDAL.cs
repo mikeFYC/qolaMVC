@@ -11,7 +11,7 @@ namespace QolaMVC.DAL
 {
     public class CarePlanDAL
     {
-        public static void AddNewBowelMovement(BowelMovementModel p_BowelMovement)
+        public static void AddCarePlan(PlanOfCareModel p_Model)
         {
             string exception = string.Empty;
 
@@ -19,20 +19,120 @@ namespace QolaMVC.DAL
             try
             {
                 SqlDataAdapter l_DA = new SqlDataAdapter();
-                SqlCommand l_Cmd = new SqlCommand(Constants.StoredProcedureName.USP_ADD_BOWEL_MOVEMENT_ASSESSMENT, l_Conn);
+                SqlCommand l_Cmd = new SqlCommand("spAB_Add_PlanOfCare", l_Conn);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                l_Cmd.Parameters.AddWithValue("@ResidentId", p_BowelMovement.Resident.ID);
-                l_Cmd.Parameters.AddWithValue("@Type", p_BowelMovement.Type);
-                l_Cmd.Parameters.AddWithValue("@ObservedBy", p_BowelMovement.ObservedBy);
-                l_Cmd.Parameters.AddWithValue("@Initials", p_BowelMovement.Initials);
-                l_Cmd.Parameters.AddWithValue("@EnteredBy", p_BowelMovement.EnteredBy.ID);
-                l_Cmd.Parameters.AddWithValue("@Period", p_BowelMovement.Period);
-                l_Cmd.ExecuteNonQuery();
+                l_Cmd.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
+                l_Cmd.Parameters.AddWithValue("@Assessed", p_Model.Assessed);
+                l_Cmd.Parameters.AddWithValue("@LevelOfCare", p_Model.LevelOfCare);
+                l_Cmd.Parameters.AddWithValue("@CompleteStatus", p_Model.CompleteStatus);
+                l_Cmd.Parameters.AddWithValue("@EnteredBy", p_Model.EnteredBy.ID);
+                DataSet dataReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(dataReceive);
+                int l_AssessmentId = 0;
+                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
+                {
+                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_AssessmentId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
+                    }
+
+                    //VITAL SIGNS
+                    SqlCommand l_Cmd_VitalSigns = new SqlCommand("spAB_Get_PlanOfCare_VitalSigns", l_Conn);
+                    // l_Conn.Open();
+                    l_Cmd_VitalSigns.CommandType = System.Data.CommandType.StoredProcedure;
+                    l_Cmd_VitalSigns.Parameters.AddWithValue("@CarePlanId", l_AssessmentId);
+                    l_Cmd_VitalSigns.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
+                    l_Cmd_VitalSigns.Parameters.AddWithValue("@BP_Systolic", p_Model.VitalSigns.BPSystolic);
+                    l_Cmd_VitalSigns.Parameters.AddWithValue("@BP_Diastolic", p_Model.VitalSigns.BPDiastolic);
+                    l_Cmd_VitalSigns.Parameters.AddWithValue("@BP_DateCompleted", p_Model.VitalSigns.BPDateCompleted);
+                    l_Cmd_VitalSigns.Parameters.AddWithValue("@Temperature", p_Model.VitalSigns.Temperature);
+                    l_Cmd_VitalSigns.Parameters.AddWithValue("@Temp_DateCompleted", p_Model.VitalSigns.TempDateCompleted);
+                    l_Cmd_VitalSigns.Parameters.AddWithValue("@WeightLBS", p_Model.VitalSigns.Weight);
+                    l_Cmd_VitalSigns.Parameters.AddWithValue("@Weight_DateCompleted", p_Model.VitalSigns.WeightDateCompleted);
+                    l_Cmd_VitalSigns.Parameters.AddWithValue("@Height_Feet", p_Model.VitalSigns.HeightFeet);
+                    l_Cmd_VitalSigns.Parameters.AddWithValue("@Height_Inches", p_Model.VitalSigns.HeightInches);
+                    l_Cmd_VitalSigns.Parameters.AddWithValue("@Height_DateCompleted", p_Model.VitalSigns.HeightDateCompleted);
+                    l_Cmd_VitalSigns.Parameters.AddWithValue("@Pulse", p_Model.VitalSigns.Pulse);
+                    l_Cmd_VitalSigns.Parameters.AddWithValue("@Pulse_DateCompleted", p_Model.VitalSigns.PulseDateCompleted);
+                    l_Cmd_VitalSigns.Parameters.AddWithValue("@PulseRegular", p_Model.VitalSigns.PulseRegular);
+                    l_Cmd_VitalSigns.ExecuteNonQuery();
+
+                    //Personal Hygiene
+                    SqlCommand l_Cmd_PersonalHygiene = new SqlCommand("spAB_Get_PlanOfCare_PersonalHygiene", l_Conn);
+                    // l_Conn.Open();
+                    l_Cmd_PersonalHygiene.CommandType = System.Data.CommandType.StoredProcedure;
+                    l_Cmd_PersonalHygiene.Parameters.AddWithValue("@CarePlanId", l_AssessmentId);
+                    l_Cmd_PersonalHygiene.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
+                    l_Cmd_PersonalHygiene.Parameters.AddWithValue("@AMCare", p_Model.PersonalHygiene.AMCare);
+                    l_Cmd_PersonalHygiene.Parameters.AddWithValue("@PMCare", p_Model.PersonalHygiene.PMCare);
+                    l_Cmd_PersonalHygiene.Parameters.AddWithValue("@Bathing", p_Model.PersonalHygiene.Bathing);
+                    l_Cmd_PersonalHygiene.Parameters.AddWithValue("@AM_AssistedBy", p_Model.PersonalHygiene.AMAssistedBy);
+                    l_Cmd_PersonalHygiene.Parameters.AddWithValue("@PM_AssistedBy", p_Model.PersonalHygiene.PMAssistedBy);
+                    l_Cmd_PersonalHygiene.Parameters.AddWithValue("@Bathing_AssistedBy", p_Model.PersonalHygiene.BathingAssistedBy);
+                    l_Cmd_PersonalHygiene.Parameters.AddWithValue("@AM_AgencyName", p_Model.PersonalHygiene.AMAgencyName);
+                    l_Cmd_PersonalHygiene.Parameters.AddWithValue("@PM_AgencyName", p_Model.PersonalHygiene.PMAgencyName);
+                    l_Cmd_PersonalHygiene.Parameters.AddWithValue("@Bathing_AgencyName", p_Model.PersonalHygiene.BathingAgencyName);
+                    l_Cmd_PersonalHygiene.Parameters.AddWithValue("@AM_PreferredTime", p_Model.PersonalHygiene.AMPreferredTime);
+                    l_Cmd_PersonalHygiene.Parameters.AddWithValue("@PM_PreferredTime", p_Model.PersonalHygiene.PMPreferredTime);
+                    l_Cmd_PersonalHygiene.Parameters.AddWithValue("@Bathing_PreferredTime", p_Model.PersonalHygiene.BathingPreferredTime);
+                    l_Cmd_PersonalHygiene.Parameters.AddWithValue("@AM_PreferredType", p_Model.PersonalHygiene.AMPreferredType);
+                    l_Cmd_PersonalHygiene.Parameters.AddWithValue("@PM_PreferredType", p_Model.PersonalHygiene.PMPreferredType);
+                    l_Cmd_PersonalHygiene.Parameters.AddWithValue("@Bathing_PreferredType", p_Model.PersonalHygiene.BathingPreferredType);
+                    l_Cmd_PersonalHygiene.Parameters.AddWithValue("@PreferredDays", p_Model.PersonalHygiene.PreferredDays);
+                    l_Cmd_PersonalHygiene.ExecuteNonQuery();
+
+                    //Assistance with
+                    SqlCommand l_Cmd_AssistanceWith = new SqlCommand("spAB_Get_PlanOfCare_AssistanceWith", l_Conn);
+                    // l_Conn.Open();
+                    l_Cmd_AssistanceWith.CommandType = System.Data.CommandType.StoredProcedure;
+                    l_Cmd_AssistanceWith.Parameters.AddWithValue("@CarePlanId", l_AssessmentId);
+                    l_Cmd_AssistanceWith.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
+                    l_Cmd_AssistanceWith.Parameters.AddWithValue("@Dressing", p_Model.AssistanceWith.Dressing);
+                    l_Cmd_AssistanceWith.Parameters.AddWithValue("@Dressing_PreferredTime", p_Model.AssistanceWith.DressingPreferredTime);
+                    l_Cmd_AssistanceWith.Parameters.AddWithValue("@NailCare", p_Model.AssistanceWith.NailCare);
+                    l_Cmd_AssistanceWith.Parameters.AddWithValue("@NailCare_PreferredTime", p_Model.AssistanceWith.NailCarePreferredTime);
+                    l_Cmd_AssistanceWith.Parameters.AddWithValue("@Shaving", p_Model.AssistanceWith.Shaving);
+                    l_Cmd_AssistanceWith.Parameters.AddWithValue("@Shaving_PreferredTime", p_Model.AssistanceWith.ShavingPreferredTime);
+                    l_Cmd_AssistanceWith.Parameters.AddWithValue("@FootCare", p_Model.AssistanceWith.FootCare);
+                    l_Cmd_AssistanceWith.Parameters.AddWithValue("@FootCare_PreferredTime", p_Model.AssistanceWith.FootCarePreferredTime);
+                    l_Cmd_AssistanceWith.Parameters.AddWithValue("@OralHygiene", p_Model.AssistanceWith.OralHygiene);
+                    l_Cmd_AssistanceWith.Parameters.AddWithValue("@OralHygiene_PreferredTime", p_Model.AssistanceWith.OralHygienePreferredTime);
+                    l_Cmd_AssistanceWith.Parameters.AddWithValue("@Teeth", p_Model.AssistanceWith.Teeth);
+                    l_Cmd_AssistanceWith.ExecuteNonQuery();
+
+                    //Mobility
+                    SqlCommand l_Cmd_Mobility = new SqlCommand("spAB_Get_PlanOfCare_Mobility", l_Conn);
+                    // l_Conn.Open();
+                    l_Cmd_Mobility.CommandType = System.Data.CommandType.StoredProcedure;
+                    l_Cmd_Mobility.Parameters.AddWithValue("@CarePlanId", l_AssessmentId);
+                    l_Cmd_Mobility.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
+                    l_Cmd_Mobility.Parameters.AddWithValue("@Mobility", p_Model.Mobility.Mobility);
+                    l_Cmd_Mobility.Parameters.AddWithValue("@Transfers", p_Model.Mobility.Transfers);
+                    l_Cmd_Mobility.Parameters.AddWithValue("@MechanicalLift", p_Model.Mobility.Lift);
+                    l_Cmd_Mobility.Parameters.AddWithValue("@Lift", p_Model.Mobility.Lift);
+                    l_Cmd_Mobility.Parameters.AddWithValue("@Walker", p_Model.Mobility.Walker);
+                    l_Cmd_Mobility.Parameters.AddWithValue("@Walker_Type", p_Model.Mobility.WalkerType);
+                    l_Cmd_Mobility.Parameters.AddWithValue("@WheelChair", p_Model.Mobility.WheelChair);
+                    l_Cmd_Mobility.Parameters.AddWithValue("@WheelChair_Type", p_Model.Mobility.WheelChairType);
+                    l_Cmd_Mobility.Parameters.AddWithValue("@Cane", p_Model.Mobility.Cane);
+                    l_Cmd_Mobility.Parameters.AddWithValue("@Cane_Type", p_Model.Mobility.caneType);
+                    l_Cmd_Mobility.Parameters.AddWithValue("@Scooter", p_Model.Mobility.Scooter);
+                    l_Cmd_Mobility.Parameters.AddWithValue("@Scooter_Type", p_Model.Mobility.ScooterType);
+                    l_Cmd_Mobility.Parameters.AddWithValue("@PT", p_Model.Mobility.PT);
+                    l_Cmd_Mobility.Parameters.AddWithValue("@PT_Frequency", p_Model.Mobility.PTFrequency);
+                    l_Cmd_Mobility.Parameters.AddWithValue("@PT_Provider", p_Model.Mobility.PTProvider);
+                    l_Cmd_Mobility.Parameters.AddWithValue("@OT", p_Model.Mobility.OT);
+                    l_Cmd_Mobility.Parameters.AddWithValue("@OT_Frequency", p_Model.Mobility.OTFrequency);
+                    l_Cmd_Mobility.Parameters.AddWithValue("@OT_Provider", p_Model.Mobility.OTProvider);
+                    l_Cmd_Mobility.ExecuteNonQuery();
+                }
             }
             catch (Exception ex)
             {
-                exception = "AddNewResidentGeneralInfo |" + ex.ToString();
+                exception = "AddCarePlan |" + ex.ToString();
                 //Log.Write(exception);
                 throw;
             }

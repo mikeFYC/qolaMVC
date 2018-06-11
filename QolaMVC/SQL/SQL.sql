@@ -797,19 +797,23 @@ AS
 --20180507 chime created
 BEGIN
 	SELECT
-	Id,
-	ResidentId,
+	D.Id,
+	D.ResidentId,
 	ResidentName = R.fd_first_name + ' ' + R.fd_last_name,
 	Suite = S.fd_suite_no,
-	AssessmentId,
-	Diet,
-	EnteredBy,
-	DateEntered
+	D.AssessmentId,
+	D.Diet,
+	DA.Likes,
+	DA.DisLikes,
+	D.EnteredBy,
+	D.DateEntered
 	FROM [tbl_AB_Diet] D
 	LEFT OUTER JOIN tbl_Resident R ON
 	R.fd_id = D.ResidentId
 	LEFT OUTER JOIN tbl_Suite S ON
 	S.fd_id = R.fd_suite_id
+	LEFT OUTER JOIN [tbl_AB_DietaryAssessment] DA ON
+	DA.Id = D.AssessmentId
 	WHERE R.fd_home_id = @HomeId
 END
 GO

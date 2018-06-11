@@ -776,6 +776,50 @@ namespace QolaMVC.Controllers
 
         }
 
+        //public ActionResult CarePlan()
+        //{
+        //    var home = (HomeModel)TempData["Home"];
+        //    var user = (UserModel)TempData["User"];
+        //    var resident = (ResidentModel)TempData["Resident"];
+
+        //    ViewBag.User = user;
+        //    ViewBag.Resident = resident;
+        //    ViewBag.Home = home;
+
+
+        //    TempData.Keep("User");
+        //    TempData.Keep("Home");
+        //    TempData.Keep("Resident");
+
+        //    var careplan = CarePlanDAL.GetResidentsPlanOfCare(resident.ID);
+
+        //    return View(careplan.LastOrDefault());
+        //}
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult CarePlan(PlanOfCareModel p_Model)
+        //{
+        //    var home = (HomeModel)TempData["Home"];
+        //    var user = (UserModel)TempData["User"];
+        //    var resident = (ResidentModel)TempData["Resident"];
+
+        //    ViewBag.User = user;
+        //    ViewBag.Resident = resident;
+        //    ViewBag.Home = home;
+
+        //    TempData.Keep("User");
+        //    TempData.Keep("Home");
+        //    TempData.Keep("Resident");
+
+        //    p_Model.EnteredBy = user;
+        //    p_Model.Resident = resident;
+        //    p_Model.DateEntered = DateTime.Now;
+
+        //    CarePlanDAL.AddCarePlan(p_Model);
+        //    return RedirectToAction("CarePlan");
+        //}
+
         public ActionResult SpecificGoals()
         {
             var home = (HomeModel)TempData["Home"];

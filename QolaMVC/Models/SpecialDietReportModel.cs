@@ -11,6 +11,8 @@ namespace QolaMVC.Models
         public ResidentModel Resident { get; set; }
         public SuiteModel Suite { get; set; }
         public string Diet { get; set; }
+        public string Likes { get; set; }
+        public string DisLikes { get; set; }
         public DateTime DateEntered { get; set; }
     }
 }

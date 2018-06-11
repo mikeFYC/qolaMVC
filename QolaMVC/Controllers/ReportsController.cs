@@ -164,6 +164,7 @@ namespace QolaMVC.Controllers
             ViewBag.User = user;
             ViewBag.Resident = resident;
             ViewBag.Home = home;
+            ViewBag.HomeId = home.Id;
 
 
             TempData.Keep("User");
@@ -185,7 +186,7 @@ namespace QolaMVC.Controllers
             ViewBag.User = user;
             ViewBag.Resident = resident;
             ViewBag.Home = home;
-
+            ViewBag.HomeId = home.Id;
 
             TempData.Keep("User");
             TempData.Keep("Home");
@@ -206,13 +207,13 @@ namespace QolaMVC.Controllers
             ViewBag.User = user;
             ViewBag.Resident = resident;
             ViewBag.Home = home;
-
+            ViewBag.HomeId = home.Id;
 
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
-            var l_SpecialDietReport = HomeDAL.GetLikesReport(home.Id);
+            var l_SpecialDietReport = HomeDAL.GetDisLikesReport(home.Id);
             return View(l_SpecialDietReport);
             //return new Rotativa.ViewAsPdf("CarePlan", resident);
             //return new MvcRazorToPdf.PdfActionResult(resident);
