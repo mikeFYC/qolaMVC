@@ -1,4 +1,4 @@
-@model IEnumerable<QolaMVC.Models.nDietaryAssessmentModel>
+@model QolaMVC.Models.nDietaryAssessmentModel
 
 @RenderPage("~/Views/Shared/_Header.cshtml")
 @RenderPage("~/Views/Shared/_SideBar.cshtml")
@@ -45,27 +45,37 @@
                     <div class="card-block">
                         <div class="row">
                             
-                            <div class="col-2">
+                            <div class="col-12">
                                 Assessment History: 
                             </div>
                         </div>
                         <div class="row">
                             <form action="~/Assessments/DietaryHistory" method="post">
-                                <div class="col-2">
-                                    <select class="form-control" name="DateEntered">
-                                        <option>New</option>
+                                <div class="col-10">
+                                    <select class="form-control col-12" name="DateEntered">
                                         @{
-                                            if (Model.Count() > 0)
+                                            if (Model.DateEntered != null)
                                             {
-                                                foreach (var d in Model)
+                                                <option selected>@Model.DateEntered</option>
+                                            }
+                                            else
+                                            {
+                                                <option>New</option>
+                                            }
+                                        }
+
+                                        @{
+                                            if (ViewBag.AssessmentDates.Count > 0)
+                                            {
+                                                foreach (var d in ViewBag.AssessmentDates)
                                                 {
-                                                    <option>@d.DateEntered</option>
+                                                    <option>@d</option>
                                                 }
                                             }
                                         }
                                     </select>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-2">
                                     <button class="btn btn-danger">GO</button>
                                 </div>
                             </form>
@@ -83,9 +93,9 @@
                                         <label for="staticEmail" class="col-form-label">Appetite</label>
                                         <select name="Apetite" class="form-control">
                                             @{
-                                                if (Model.Count() > 0)
+                                                if (Model.Apetite != null && Model.Apetite != string.Empty)
                                                 {
-                                                    <option selected>@Model.LastOrDefault().Apetite</option>
+                                                    <option selected>@Model.Apetite</option>
                                                 }
                                             }
                                             <option>Select</option>
@@ -103,9 +113,9 @@
                                         <label for="staticEmail" class="col-form-label">Nutritional Status</label>
                                         <select name="NutritionalStatus" class="form-control">
                                             @{
-                                                if (Model.Count() > 0)
+                                                if (Model.NutritionalStatus != null && Model.NutritionalStatus != string.Empty)
                                                 {
-                                                    <option selected>@Model.LastOrDefault().NutritionalStatus</option>
+                                                    <option selected>@Model.NutritionalStatus</option>
                                                 }
                                             }
                                             <option value="0">Select</option>
@@ -124,9 +134,9 @@
                                         <label for="staticEmail" class="col-form-label">Risk</label>
                                         <select name="Risk" class="form-control">
                                             @{
-                                                if (Model.Count() > 0)
+                                                if (Model.Risk != null && Model.Risk != string.Empty)
                                                 {
-                                                    <option selected>@Model.LastOrDefault().Risk</option>
+                                                    <option selected>@Model.Risk</option>
                                                 }
                                             }
                                             <option value="0">Select</option>
@@ -140,16 +150,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="staticEmail" class="col-form-label">Assistive Devices</label>
-                                        @{
-                                            if (Model.Count() > 0)
-                                            {
-                                                <input name="AssistiveDevices" value="@Model.LastOrDefault().AssistiveDevices" type="text" class="form-control" id="staticEmail">
-                                            }
-                                            else
-                                            {
-                                                <input name="AssistiveDevices" type="text" class="form-control" id="staticEmail">
-                                            }
-                                        }
+                                        @Html.TextBoxFor(m => m.AssistiveDevices, new { @class = "form-control", placeholder = "Assistive Device" })
                                     </div>
                                 </div>
                             </div>
@@ -161,12 +162,12 @@
                                 <br>
                                 <div class="col-md-3 pads">
                                     @{
-                                        for (int i = 0; i < Model.LastOrDefault().Diet.Count; i++)
+                                        for (int i = 0; i < Model.Diet.Count; i++)
                                         {
                                             <div class="form-check">
-                                                <input name="Diet[]" class="form-check-input" type="checkbox" checked value="@Model.FirstOrDefault().Diet[i]" id="defaultCheck1">
+                                                <input name="Diet[]" class="form-check-input" type="checkbox" checked value="@Model.Diet[i]" id="defaultCheck1">
                                                 <label class="form-check-label" for="defaultCheck1">
-                                                    @Model.FirstOrDefault().Diet[i]
+                                                    @Model.Diet[i]
                                                 </label>
                                             </div>
                                         }
@@ -181,9 +182,9 @@
                                         <label for="staticEmail" class="col-form-label">Texture</label>
                                         <select name="texture" class="form-control">
                                             @{
-                                                if (Model.Count() > 0)
+                                                if (Model.Texture != null && Model.Texture != string.Empty)
                                                 {
-                                                    <option selected>@Model.LastOrDefault().Texture</option>
+                                                    <option selected>@Model.Texture</option>
                                                 }
                                             }
                                             <option value="0">Select</option>
@@ -191,22 +192,14 @@
                                             <option value="Swallowing">Swallowing</option>
                                             <option value="Choking Risk">Choking risk</option>
                                             <option value="Difficulty in Chewing">Difficulty in Chewing</option>
+                                            <option value="Other">Other</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="staticEmail" class="col-form-label">Other</label>
-                                        @{
-                                            if (Model.Count() > 0)
-                                            {
-                                                <input name="Other" value="@Model.LastOrDefault().Other" type="text" class="form-control" id="staticEmail">
-                                            }
-                                            else
-                                            {
-                                                <input name="Other" type="text" class="form-control" id="staticEmail">
-                                            }
-                                        }
+                                        @Html.TextBoxFor(m => m.Other, new { @class = "form-control"})
 
                                     </div>
                                 </div>
@@ -241,7 +234,7 @@
                                             <a href="#" id="AddAllergy" class="btn btn-danger">ADD</a>
                                         </div>
                                         <div class="col-md-1">
-                                            <a href="#" id="DeleteAllergy" class="btn btn-danger">DELETE</a>
+                                            @*<a href="#" id="DeleteAllergy" class="btn btn-danger">DELETE</a>*@
                                         </div>
                                     </div>
                                 </div>
@@ -264,30 +257,12 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="staticEmail" class="col-form-label">Likes</label><br>
-                                        @{
-                                            if (Model.Count() > 0)
-                                            {
-                                                <textarea name="likes" class="textarea col-md-12" rows="5" style="width: 95% !important;">@Model.LastOrDefault().Likes</textarea>
-                                            }
-                                            else
-                                            {
-                                                <textarea name="likes" class="textarea col-md-12" rows="5" style="width: 95% !important;"></textarea>
-                                            }
-                                        }
-                                    </div>
+                                       
+                                            @Html.TextAreaFor(m => m.Likes, new { @class = "textarea col-md-12", style = "width: 95% !important;", rows = "5" })
+                                        </div>
                                     <div class="form-group">
                                         <label for="staticEmail" class="col-form-label">Dislikes</label><br>
-                                        @{
-                                            if (Model.Count() > 0)
-                                            {
-                                                <textarea name="dislikes" class="textarea col-md-12" rows="5" style="width: 95% !important;">@Model.LastOrDefault().DisLikes</textarea>
-                                            }
-                                            else
-                                            {
-                                                <textarea name="dislikes" class="textarea col-md-12" rows="5" style="width: 95% !important;"></textarea>
-                                            }
-                                        }
-
+                                        @Html.TextAreaFor(m => m.DisLikes, new { @class = "textarea col-md-12", style = "width: 95% !important;", rows = "5" })
                                     </div>
                                 </div>
                             </div>
@@ -297,17 +272,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        @{
-                                            if (Model.Count() > 0)
-                                            {
-                                                <textarea name="notes" class="textarea col-md-12" rows="5" style="width: 95% !important;">@Model.LastOrDefault().Notes</textarea>
-                                            }
-                                            else
-                                            {
-                                                <textarea name="notes" class="textarea col-md-12" rows="5" style="width: 95% !important;"></textarea>
-                                            }
-                                        }
-
+                                        @Html.TextAreaFor(m => m.Notes, new { @class = "textarea col-md-12", style = "width: 95% !important;", rows = "5" })
                                     </div>
                                 </div>
                             </div>
@@ -334,7 +299,7 @@
         $("#AddAllergy").click(function(){
             var name = $("#SelectedAllergy :selected").text();
             var id = $("#SelectedAllergy").val();
-            var markup = "<tr><td><input type='hidden' name='Allergies[" + count + "].ID' value='" + id + "'/><input type='hidden' name='Allergies[" + count + "].Name' value='" + name + "'/>"+ name + "</td> <td><input type='text' class='form-control' name='AllergyNotes[" + count +"]' /></td> <td><input type='checkbox' name='record'></td></tr > ";
+            var markup = "<tr><td><input type='hidden' name='Allergies[" + count + "].ID' value='" + id + "'/><input type='hidden' name='Allergies[" + count + "].Name' value='" + name + "'/>"+ name + "</td> <td><input type='text' class='form-control' name='AllergyNotes[" + count +"]' /></td> <td><input type='button' value='delete' class='btn btn-danger'></td></tr > ";
             $("#Allergies").append(markup);
             count++;
         });
@@ -347,5 +312,9 @@
                 }
             });
         });
+
+        $('table').on('click', 'input[type="button"]', function (e) {
+            $(this).closest('tr').remove()
+        })
     });
         </script>

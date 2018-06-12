@@ -1510,7 +1510,7 @@ namespace QolaMVC.Controllers
 
             tabHeader.AddCell(cell1);
 
-            cell = new PdfPCell(new Phrase("HomeName".ToString(), headerFont));
+            cell = new PdfPCell(new Phrase("".ToString(), headerFont)); //removed homename
             cell.Border = 0;
 
             cell.HorizontalAlignment = Element.ALIGN_RIGHT;

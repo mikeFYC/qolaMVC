@@ -96,19 +96,19 @@ namespace QolaMVC.Controllers
 
             vm = AssessmentDAL.GetResidentDietaryAssesments(resident.ID);
 
-            if (vm == null || vm.Count == 0)
-            {
-                var m = new nDietaryAssessmentModel();
-                m.Diet = new System.Collections.ObjectModel.Collection<string>();
-                m.Allergies = new System.Collections.ObjectModel.Collection<AllergiesModel>();
-                QolaCulture.InitDiets(ref m);
-                vm.Add(m);
-            }
-
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            return View(vm);
+
+            List<DateTime> l_Dates = vm.Select(m => m.DateEntered).ToList();
+
+            ViewBag.AssessmentDates = l_Dates;
+            var model = new nDietaryAssessmentModel();
+            model.Diet = new System.Collections.ObjectModel.Collection<string>();
+            model.Allergies = new System.Collections.ObjectModel.Collection<AllergiesModel>();
+            QolaCulture.InitDiets(ref model);
+
+            return View(model);
         }
 
         [HttpPost]
@@ -127,19 +127,25 @@ namespace QolaMVC.Controllers
             vm = AssessmentDAL.GetResidentDietaryAssesments(resident.ID);
             DateTime l_DateEntered = Convert.ToDateTime(collection["DateEntered"]);
 
-           // if (vm == null || vm.Count == 0)
-            //{
-                var m = new nDietaryAssessmentModel();
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            var m = vm.FirstOrDefault(m2 => m2.DateEntered.Date == l_DateEntered.Date && m2.DateEntered.Hour == l_DateEntered.Hour && m2.DateEntered.Minute == l_DateEntered.Minute);
+            if (m == null)
+            {
+                m = new nDietaryAssessmentModel();
                 m.Diet = new System.Collections.ObjectModel.Collection<string>();
                 m.Allergies = new System.Collections.ObjectModel.Collection<AllergiesModel>();
                 QolaCulture.InitDiets(ref m);
                 vm.Add(m);
-            //}
+            }
 
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
-            return View(vm.Where(m2 => m2.DateEntered == l_DateEntered));
+            List<DateTime> l_Dates = vm.Select(x => x.DateEntered).ToList();
+
+            ViewBag.AssessmentDates = l_Dates;
+
+            return View(m);
         }
 
         [HttpPost]
@@ -238,11 +244,47 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            if (familyConference.Count == 0)
+
+            List<DateTime> l_Dates = familyConference.Select(m => m.Date).ToList();
+
+            ViewBag.AssessmentDates = l_Dates;
+            var model = new FamilyConfrenceNoteModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult FamilyConference(FormCollection collection)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            var familyConference = AssessmentDAL.GetFamilyConferenceNotes(resident.ID);
+
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            ViewBag.Resident = resident;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            List<DateTime> l_Dates = familyConference.Select(m => m.Date).ToList();
+            DateTime l_DateEntered = Convert.ToDateTime(collection["DateEntered"]);
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            var model = familyConference.FirstOrDefault(m2 => m2.Date.Date == l_DateEntered.Date && m2.Date.Hour == l_DateEntered.Hour && m2.Date.Minute == l_DateEntered.Minute);
+            if (model == null)
             {
-                familyConference.Add(new FamilyConfrenceNoteModel());
+                model = new FamilyConfrenceNoteModel();
             }
-            return View(familyConference.LastOrDefault());
+
+            ViewBag.AssessmentDates = l_Dates;
+
+            return View(model);
         }
 
         [HttpPost]
@@ -284,9 +326,50 @@ namespace QolaMVC.Controllers
             TempData.Keep("Resident");
 
             var l_Assessments = AssessmentDAL.GetAdmissionHeadToToe(resident.ID);
-            return View(l_Assessments.LastOrDefault());
+
+            List<DateTime> l_Dates = l_Assessments.Select(m => m.DateEntered).ToList();
+
+            ViewBag.AssessmentDates = l_Dates;
+            var model = new AdmissionHeadToToeModel();
+            return View(model);
         }
-        
+
+        [HttpPost]
+        public ActionResult HeadToToeAssessment(FormCollection collection)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+           
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            ViewBag.Resident = resident;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            var l_Assessments = AssessmentDAL.GetAdmissionHeadToToe(resident.ID);
+
+            List<DateTime> l_Dates = l_Assessments.Select(m => m.DateEntered).ToList();
+
+            ViewBag.AssessmentDates = l_Dates;
+            DateTime l_DateEntered = Convert.ToDateTime(collection["DateEntered"]);
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            var model = l_Assessments.FirstOrDefault(m2 => m2.DateEntered.Date == l_DateEntered.Date && m2.DateEntered.Hour == l_DateEntered.Hour && m2.DateEntered.Minute == l_DateEntered.Minute);
+            if (model == null)
+            {
+                model = new AdmissionHeadToToeModel();
+            }
+
+            return View(model);
+        }
+
         [HttpPost]
         public ActionResult AddHeadToToeAssessment(AdmissionHeadToToeModel p_Model)
         {
@@ -689,6 +772,44 @@ namespace QolaMVC.Controllers
             ViewBag.Resident = resident;
             ViewBag.Home = home;
 
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            var l_IncidentReports = AssessmentDAL.GetUnusualIncidentReports(resident.ID);
+            List<DateTime> l_Dates = l_IncidentReports.Select(m => m.DateEntered).ToList();
+            ViewBag.AssessmentDates = l_Dates;
+
+            var model = new UnusualIncidentModel();
+            model.SectionG = new Collection<UnusualIncidentSectionGModel>();
+            var l_Array = new string[]{ "Physician", "Family", "Alberta Health Services", "On Call Manager", "Director of Care", "Maintenance", "General Service Mgr", "Senior Management", "Other" };
+
+            foreach(var l_Item in l_Array)
+            {
+                var l_SectionG = new UnusualIncidentSectionGModel();
+                l_SectionG.Notify = l_Item;
+                l_SectionG.Name = string.Empty;
+                l_SectionG.IncidentId = 0;
+                l_SectionG.ResidentId = resident.ID;
+                l_SectionG.Via = string.Empty;
+
+                model.SectionG.Add(l_SectionG);
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult UnusualIncident(FormCollection collection)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            ViewBag.Resident = resident;
 
             TempData.Keep("User");
             TempData.Keep("Home");
@@ -696,11 +817,22 @@ namespace QolaMVC.Controllers
 
             var l_IncidentReports = AssessmentDAL.GetUnusualIncidentReports(resident.ID);
 
-            if(l_IncidentReports.LastOrDefault() != null && ((l_IncidentReports.LastOrDefault().SectionG == null) || (l_IncidentReports.LastOrDefault().SectionG.Count == 0)))
-            {
-                var l_Array = new string[]{ "Physician", "Family", "Alberta Health Services", "On Call Manager", "Director of Care", "Maintenance", "General Service Mgr", "Senior Management", "Other" };
+            List<DateTime> l_Dates = l_IncidentReports.Select(m => m.DateEntered).ToList();
 
-                foreach(var l_Item in l_Array)
+            ViewBag.AssessmentDates = l_Dates;
+            DateTime l_DateEntered = Convert.ToDateTime(collection["DateEntered"]);
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            var model = l_IncidentReports.FirstOrDefault(m2 => m2.DateEntered.Date == l_DateEntered.Date && m2.DateEntered.Hour == l_DateEntered.Hour && m2.DateEntered.Minute == l_DateEntered.Minute);
+            if (model == null)
+            {
+                model = new UnusualIncidentModel();
+                var l_Array = new string[] { "Physician", "Family", "Alberta Health Services", "On Call Manager", "Director of Care", "Maintenance", "General Service Mgr", "Senior Management", "Other" };
+
+                foreach (var l_Item in l_Array)
                 {
                     var l_SectionG = new UnusualIncidentSectionGModel();
                     l_SectionG.Notify = l_Item;
@@ -709,13 +841,12 @@ namespace QolaMVC.Controllers
                     l_SectionG.ResidentId = resident.ID;
                     l_SectionG.Via = string.Empty;
 
-                    l_IncidentReports.LastOrDefault().SectionG.Add(l_SectionG);
+                    model.SectionG.Add(l_SectionG);
                 }
-
             }
-            return View(l_IncidentReports.LastOrDefault());
-        }
 
+            return View(model);
+        }
         [HttpPost]
         public ActionResult AddUnusualIncident(UnusualIncidentModel p_Model)
         {
