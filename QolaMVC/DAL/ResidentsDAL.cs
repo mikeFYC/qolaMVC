@@ -1648,7 +1648,7 @@ namespace QolaMVC.DAL
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 l_Cmd.Parameters.AddWithValue("@homeId", homeId);
-                l_Cmd.Parameters.AddWithValue("@residentCare", sResidentCare);
+                //l_Cmd.Parameters.AddWithValue("@residentCare", sResidentCare);
                 residentReceive = new DataSet();
                 l_DA.SelectCommand = l_Cmd;
                 l_DA.Fill(residentReceive);

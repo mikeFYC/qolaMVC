@@ -1,7 +1,205 @@
-﻿
-@{
-    ViewBag.Title = "EmergencyList";
-}
+﻿@model System.Data.DataSet
 
-<h2>EmergencyList</h2>
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+<style>
 
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+</style>
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+
+    <!-- START PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3>Likes Report</h3>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+
+            <div style="height: 60px;"></div>
+
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+                <div class="row">
+                    <div class="col-md-8 py-4 text-left">
+                        <form class="form-inline">
+                            <div class="form-group pr-1">
+                                <div class="input-group">
+                                    <label>Home: </label>
+                                    <select class="form-control">
+                                        <option>All fields</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Diet Allergy: </label>
+                                    <select class="form-control">
+                                        <option>All fields</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Floor: </label>
+                                    <select class="form-control">
+                                        <option>All fields</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">View</button>
+                        </form>
+                    </div>
+                    <div class="col-md-4 py-4 text-right">
+                        <a class="btn btn-lg btn-primary" href="~/PDF/LikesReport/?p_HomeId=@ViewBag.HomeId">Print PDF</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-block">
+                        <table class="table table-bordered">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th class="text-white">Suite</th>
+                                    <th class="text-white">Resident Name</th>
+                                    <th class="text-white">Gender</th>
+                                    <th class="text-white">Phone</th>
+                                    <th class="text-white">Contact Person</th>
+                                    <th class="text-white">Emergency Comtact</th>
+                                    <th class="text-white">Mobility</th>
+                                    <th class="text-white">Comments</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    string query = string.Empty;
+                                    var residentList = (from residentTable in Model.Tables[0]
+                                                        select new
+                                                        {
+                                                            ResId = residentTable.Field<Int32>("fd_resident_id"),
+                                                            RiskOrder = residentTable.Field<Int32>("fd_risk_order")
+                                                        }).Distinct();
+                                    if (residentList != null)
+                                    {
+
+
+                                        foreach (var residents in residentList)
+                                        {
+                                            var residentDetail = (from resident in Model.Tables[0].AsEnumerable()
+                                                                  select new
+                                                                  {
+                                                                      RID = resident.Field<Int32>("fd_resident_id"),
+                                                                      Suite = resident.Field<String>("fd_suite_no"),
+                                                                      RFname = resident.Field<String>("fd_first_name"),
+                                                                      RLname = resident.Field<String>("fd_last_name"),
+                                                                      Gender = resident.Field<String>("fd_gender"),
+                                                                      Phone = resident.Field<String>("fd_phone"),
+                                                                      Contact = resident.Field<String>("fd_contact_1"),
+                                                                      HomePhone = resident.Field<String>("fd_home_phone_1"),
+                                                                      Code = resident.Field<String>("fd_subcategory_code"),
+                                                                      CategoryName = resident.Field<String>("fd_category_name"),
+                                                                      RLevel = resident.Field<String>("fd_risk_level")
+                                                                  }).Where(x => x.RID == residents.ResId);
+                                            string suiteNo = string.Empty;
+                                            string residentName = string.Empty;
+                                            string gender = string.Empty;
+                                            string phone = string.Empty;
+                                            string contact = string.Empty;
+                                            string homePhone = string.Empty;
+                                            string level = string.Empty;
+                                            int count = 0;
+
+                                            string comment = string.Empty;
+                                            string residentcommon = string.Empty;
+                                            foreach (var objRes in residentDetail)
+                                            {
+                                                if (count == 0)
+                                                {
+                                                    switch (residents.RiskOrder)
+                                                    {
+                                                        case 1:
+                                                            level = "HighFallRisk";
+                                                            break;
+                                                        case 2:
+                                                            level = "MediumFallingRisk";
+                                                            break;
+                                                        case 3:
+                                                            level = "LowFallingRisk";
+                                                            break;
+                                                        default:
+                                                            level = string.Empty;
+                                                            break;
+                                                    }
+                                                    suiteNo = objRes.Suite;
+                                                    residentName = objRes.RFname + " " + objRes.RLname;
+                                                    residentcommon += "<td>" + objRes.Gender + "</td>";
+                                                    phone = objRes.Phone.Trim().Length > 0 ? objRes.Phone : "NoPhone";
+                                                    contact = objRes.Contact;
+                                                    homePhone = objRes.HomePhone;
+
+                                                    if (level != "")
+                                                    {
+                                                        comment += level + "\n";
+                                                    }
+                                                }
+                                                if (objRes.Code != "" || objRes.CategoryName != "")
+                                                {
+                                                    comment += objRes.Code + " - ";
+                                                    comment += objRes.CategoryName + "\n";
+
+                                                }
+                                                count++;
+                                            }
+
+                                            //table.AddCell(cellBG);
+                                            //table.AddCell(new PdfPCell(new Phrase(suiteNo, font8)));
+                                            //table.AddCell(new PdfPCell(new Phrase(residentName, font8)));
+                                            //table.AddCell(new PdfPCell(new Phrase(gender, font8)));
+                                            //table.AddCell(new PdfPCell(new Phrase(phone, font8)));
+                                            //table.AddCell(new PdfPCell(new Phrase(contact, font8)));
+                                            //table.AddCell(new PdfPCell(new Phrase(homePhone, font8)));
+                                            //table.AddCell(new PdfPCell(cellBG));
+                                            //table.AddCell(new PdfPCell());
+
+                                <tr>
+                                    <td class="align-middle">@suiteNo</td>
+                                    <td class="align-middle">@residentName</td>
+                                    <td class="align-middle">@gender</td>
+                                    <td class="align-middle">@phone</td>
+                                    <td class="align-middle">@contact</td>
+                                    <td class="align-middle">@homePhone</td>
+                                </tr>
+                                            }
+                                        }
+                                    }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                <!-- END PLACE PAGE CONTENT HERE -->
+            </div>
+            <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+
+
+        @RenderPage("~/Views/Shared/_Footer.cshtml")

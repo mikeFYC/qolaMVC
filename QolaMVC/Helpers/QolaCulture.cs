@@ -338,8 +338,7 @@ namespace QolaMVC.Helpers
                                                     "Glutten Free",
                                                     "Vegetarian Diet",
                                                     "Low Sodium",
-                                                    "Low Vitamin K",
-                                                    "Other"
+                                                    "Low Vitamin K"
                                                 };
 
                 foreach (var a in Diets)

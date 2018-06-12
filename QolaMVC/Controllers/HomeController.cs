@@ -331,7 +331,18 @@ namespace QolaMVC.Controllers
 
         public ActionResult EmergencyList()
         {
-            return View();
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            
+            var ds = new DataSet();
+            ds = ResidentsDAL.GetEmergencyResidentDetails(home.Id, "0");
+            return View(ds);
         }
 
         #region emergency list print
@@ -452,10 +463,7 @@ namespace QolaMVC.Controllers
 
                             if (Convert.ToInt32(Session["CarePlanP2HomeId"]) == Convert.ToInt32(Session["HomeId"]))
                             {
-                                PrintCarePlanEmergencyDetails(ds, fontCellSize9B, fontCellSize9, PdfTable1);
-                            }
-                            else
-                            {
+
                                 int ActualOrder = 1; // ddlResidentCareAssessment.SelectedValue == "H" ? 1 : ddlResidentCareAssessment.SelectedValue == "M" ? 2 : ddlResidentCareAssessment.SelectedValue == "L" ? 3 : ddlResidentCareAssessment.SelectedValue == "N" ? 4 : 0;
                                 for (int iRow = 0; iRow < ds.Tables[0].Rows.Count; iRow++)
                                 {
@@ -570,7 +578,11 @@ namespace QolaMVC.Controllers
                                     PdfPCell PdfTable1Comment = new PdfPCell(new Phrase(level + "," + sReasonValue.Replace("<b>", string.Empty).Replace("</b>", string.Empty), fontCellSize9));
                                     PdfTable1Comment.HorizontalAlignment = Element.ALIGN_LEFT;
                                     PdfTable1.AddCell(PdfTable1Comment);
-                                }
+                                };
+                            }
+                            else
+                            {
+                                PrintCarePlanEmergencyDetails(ds, fontCellSize9B, fontCellSize9, PdfTable1);
                             }
                             doc.Add(PdfTable1);
                         }
