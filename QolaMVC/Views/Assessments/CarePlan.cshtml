@@ -1157,7 +1157,7 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Frequency</label>
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control" id="staticEmail">
+                                         @Html.TextBoxFor( m => m.Mobility.PTFrequency, new {  @class = "form-control"} )
                                     </div>
                                 </div>
 
@@ -1167,7 +1167,7 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Provider</label>
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control" id="staticEmail">
+                                        @Html.TextBoxFor(m => m.Mobility.PTProvider, new { @class = "form-control" })
                                     </div>
                                 </div>
 
@@ -1180,10 +1180,16 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">OT</label>
                                     <div class="col-md-12">
-                                        <select class="form-control">
-                                            <option selected="selected" value="0">Select</option>
-                                            <option value="12OY">Yes</option>
-                                            <option value="13ON">No</option>
+                                        <select name="Mobility.OT" class="form-control">
+                                            @{
+                                                if (Model.Mobility != null && Model.Mobility.OT != null && Model.Mobility.OT != string.Empty)
+                                                {
+                                                    <option selected="selected" value="@Model.Mobility.OT">@Model.Mobility.OT</option>
+                                                }
+                                            }
+                                            <option>Select</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
                                         </select>
                                     </div>
                                 </div>
@@ -1194,7 +1200,7 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Frequency</label>
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control" id="staticEmail">
+                                         @Html.TextBoxFor( m => m.Mobility.OTFrequency, new {  @class = "form-control"} )
                                     </div>
                                 </div>
 
@@ -1204,7 +1210,7 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Provider</label>
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control" id="staticEmail">
+                                        @Html.TextBoxFor(m => m.Mobility.OTProvider, new { @class = "form-control" })
                                     </div>
                                 </div>
 
@@ -1228,16 +1234,22 @@
                                     <div class="form-group row">
                                         <label for="staticEmail" class="col-md-12 col-form-label">Safety/ PASD's</label>
                                         <div class="col-md-12">
-                                            <select class="form-control">
-                                                <option selected="selected" value="0">Select</option>
-                                                <option value="18SN">N/A</option>
-                                                <option value="1SS">Seat / Lap belt</option>
-                                                <option value="7SM">Mattress on floor</option>
-                                                <option value="8ST">Transfer Pole</option>
-                                                <option value="9SB">Table / Tray</option>
-                                                <option value="10SE">Recliner</option>
-                                                <option value="11SW">Tilt wc</option>
-                                                <option value="26SO">Other</option>
+                                            <select name="Safety.Safety" class="form-control">
+                                            @{
+                                                if (Model.Safety != null && Model.Safety.Safety != null && Model.Safety.Safety != string.Empty)
+                                                {
+                                                    <option selected="selected" value="@Model.Safety.Safety">@Model.Safety.Safety</option>
+                                                }
+                                            }
+                                                <option>Select</option>
+                                                <option value="N/A">N/A</option>
+                                                <option value="Seat / Lap belt">Seat / Lap belt</option>
+                                                <option value="Mattress on floor">Mattress on floor</option>
+                                                <option value="Transfer Pole">Transfer Pole</option>
+                                                <option value="Table / Tray">Table / Tray</option>
+                                                <option value="Recliner">Recliner</option>
+                                                <option value="Tilt wc">Tilt wc</option>
+                                                <option value="Other">Other</option>
                                             </select>
                                         </div>
                                     </div>
@@ -1247,7 +1259,7 @@
                                     <div class="form-group row">
                                         <label for="staticEmail" class="col-md-12 col-form-label">Other</label>
                                         <div class="col-md-12">
-                                            <input type="text" class="form-control" id="staticEmail">
+                                            @Html.TextBoxFor( m => m.Safety.Other, new {  @class = "form-control" } )
                                         </div>
                                     </div>
                                 </div>
@@ -1258,12 +1270,18 @@
                                     <div class="form-group row">
                                         <label for="staticEmail" class="col-md-12 col-form-label">Rails</label>
                                         <div class="col-md-12">
-                                            <select class="form-control">
-                                                <option selected="selected" value="0">Select</option>
-                                                <option value="27SN">N/A</option>
-                                                <option value="28NR">Half Rails (Right)</option>
-                                                <option value="29NL">Half Rails (Left)</option>
-                                                <option value="30SF">Left and Right Half Rails</option>
+                                            <select name="Safety.Rails" class="form-control">
+                                                @{
+                                                    if (Model.Safety != null && Model.Safety.Rails != null && Model.Safety.Rails != string.Empty)
+                                                    {
+                                                        <option selected="selected" value="@Model.Safety.Rails">@Model.Safety.Rails</option>
+                                                    }
+                                                }
+                                                <option>Select</option>
+                                                <option value="N/A">N/A</option>
+                                                <option value="Half Rails (Right)">Half Rails (Right)</option>
+                                                <option value="Half Rails (Left)">Half Rails (Left)</option>
+                                                <option value="Left and Right Half Rails">Left and Right Half Rails</option>
                                             </select>
                                         </div>
                                     </div>
@@ -1271,7 +1289,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
+                                        @Html.CheckBoxFor(m => m.Safety.NightOnly, new { @class = "form-check-input" })
                                         <label class="form-check-label checkspace" for="">
                                             Night Only
                                         </label>
@@ -1295,10 +1313,16 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Breakfast</label>
                                     <div class="col-md-12">
-                                        <select class="form-control">
-                                            <option selected="selected" value="0">Select</option>
-                                            <option value="19BY">Yes</option>
-                                            <option value="20BN">No</option>
+                                         <select name="MealEscort.BreakFast" class="form-control">
+                                                @{
+                                                    if (Model.MealEscort != null && Model.MealEscort.BreakFast != null && Model.MealEscort.BreakFast != string.Empty)
+                                                    {
+                                                        <option selected="selected" value="@Model.MealEscort.BreakFast">@Model.MealEscort.BreakFast</option>
+                                                    }
+                                                }
+                                            <option>Select</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
                                         </select>
                                     </div>
                                 </div>
@@ -1309,10 +1333,16 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Lunch</label>
                                     <div class="col-md-12">
-                                        <select class="form-control">
-                                            <option selected="selected" value="0">Select</option>
-                                            <option value="19BY">Yes</option>
-                                            <option value="20BN">No</option>
+                                        <select name="MealEscort.Lunch" class="form-control">
+                                                @{
+                                                    if (Model.MealEscort != null && Model.MealEscort.Lunch != null && Model.MealEscort.Lunch != string.Empty)
+                                                    {
+                                                        <option selected="selected" value="@Model.MealEscort.Lunch">@Model.MealEscort.Lunch</option>
+                                                    }
+                                                }
+                                            <option>Select</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
                                         </select>
                                     </div>
                                 </div>
@@ -1323,10 +1353,16 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Dinner</label>
                                     <div class="col-md-12">
-                                        <select class="form-control">
-                                            <option selected="selected" value="0">Select</option>
-                                            <option value="19BY">Yes</option>
-                                            <option value="20BN">No</option>
+                                        <select name="MealEscort.Dinner" class="form-control">
+                                                @{
+                                                    if (Model.MealEscort != null && Model.MealEscort.Dinner != null && Model.MealEscort.Dinner != string.Empty)
+                                                    {
+                                                        <option selected="selected" value="@Model.MealEscort.Dinner">@Model.MealEscort.Lunch</option>
+                                                    }
+                                                }
+                                            <option>Select</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
                                         </select>
                                     </div>
                                 </div>

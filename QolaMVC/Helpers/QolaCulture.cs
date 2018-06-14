@@ -347,5 +347,33 @@ namespace QolaMVC.Helpers
                 }
             }
         }
+
+        public static void InitPreferredDays(ref CarePlanPersonalHygieneModel m)
+        {
+            if (m.PreferredDaysCollection != null && m.PreferredDaysCollection.Count == 0)
+            {
+                string[] l_Days = new string[]{"N/A",
+                                                    "Every Day",
+                                                    "Low Monday",
+                                                    "Tuesday",
+                                                    "Wednesday",
+                                                    "Thursday",
+                                                    "Friday",
+                                                    "Saturday",
+                                                    "Sunday"
+                                                };
+
+                foreach (var d in l_Days)
+                {
+                    var l_CBM = new QOLACheckboxModel();
+                    l_CBM.IsSelected = false;
+                    l_CBM.Name = d;
+                    l_CBM.Notes = string.Empty;
+
+                    m.PreferredDaysCollection.Add(l_CBM);
+                }
+            }
+        }
+
     }
 }

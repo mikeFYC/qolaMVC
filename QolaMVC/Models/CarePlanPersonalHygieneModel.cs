@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Web;
 
@@ -31,5 +32,6 @@ namespace QolaMVC.Models
         public string BathingPreferredType { get; set; }
 
         public string PreferredDays { get; set; }
+        public Collection<QOLACheckboxModel> PreferredDaysCollection { get; set; }
     }
 }
