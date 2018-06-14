@@ -37,7 +37,7 @@ CREATE TABLE [dbo].[tbl_AB_CarePlan_VitalSigns](
 	Pulse_DateCompleted nvarchar(20) null,
 	PulseRegular nvarchar(20) null,
 
-	EnteredBy [int] not null,
+	EnteredBy [int] null,
 	DateEntered [datetime],
 	PRIMARY KEY (Id)
 	)

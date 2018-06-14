@@ -871,14 +871,50 @@ namespace QolaMVC.Controllers
             return RedirectToAction("UnusualIncident");
         }
 
+        //public ActionResult CarePlan()
+        //{
+        //    var home = (HomeModel)TempData["Home"];
+        //    var user = (UserModel)TempData["User"];
+        //    var resident_sess = (ResidentModel)TempData["Resident"];
+
+        //    ViewBag.User = user;
+        //    ViewBag.Resident = resident_sess;
+        //    ViewBag.Home = home;
+
+
+        //    TempData.Keep("User");
+        //    TempData.Keep("Home");
+        //    TempData.Keep("Resident");
+
+        //    var careplan = AssessmentDAL.GetCarePlan("1234");
+
+        //    return View(careplan);
+        //}
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult CarePlan(CarePlan_VitalSignModel model)
+        //{
+        //    //var resident_sess = (ResidentModel)TempData["Resident"];
+
+        //    //resident_sess.ID = 1234;
+
+        //    AssessmentDAL.AddCarePlan(model, "1234");
+
+        //    TempData.Keep("Resident");
+
+        //    return RedirectToAction("CarePlan");
+
+        //}
+
         public ActionResult CarePlan()
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
-            var resident_sess = (ResidentModel)TempData["Resident"];
+            var resident = (ResidentModel)TempData["Resident"];
 
             ViewBag.User = user;
-            ViewBag.Resident = resident_sess;
+            ViewBag.Resident = resident;
             ViewBag.Home = home;
 
 
@@ -886,70 +922,38 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
-            var careplan = AssessmentDAL.GetCarePlan("1234");
-
-            return View(careplan);
+            var careplan = CarePlanDAL.GetResidentsPlanOfCare(resident.ID);
+            PlanOfCareModel l_Model = new PlanOfCareModel();
+            if(careplan.Count >0)
+            {
+                l_Model = careplan.LastOrDefault();
+            }
+            return View(l_Model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CarePlan(CarePlan_VitalSignModel model)
+        public ActionResult CarePlan(PlanOfCareModel p_Model)
         {
-            //var resident_sess = (ResidentModel)TempData["Resident"];
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
 
-            //resident_sess.ID = 1234;
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
 
-            AssessmentDAL.AddCarePlan(model, "1234");
-
+            TempData.Keep("User");
+            TempData.Keep("Home");
             TempData.Keep("Resident");
 
+            p_Model.EnteredBy = user;
+            p_Model.Resident = resident;
+            p_Model.DateEntered = DateTime.Now;
+
+            CarePlanDAL.AddCarePlan(p_Model);
             return RedirectToAction("CarePlan");
-
         }
-
-        //public ActionResult CarePlan()
-        //{
-        //    var home = (HomeModel)TempData["Home"];
-        //    var user = (UserModel)TempData["User"];
-        //    var resident = (ResidentModel)TempData["Resident"];
-
-        //    ViewBag.User = user;
-        //    ViewBag.Resident = resident;
-        //    ViewBag.Home = home;
-
-
-        //    TempData.Keep("User");
-        //    TempData.Keep("Home");
-        //    TempData.Keep("Resident");
-
-        //    var careplan = CarePlanDAL.GetResidentsPlanOfCare(resident.ID);
-
-        //    return View(careplan.LastOrDefault());
-        //}
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult CarePlan(PlanOfCareModel p_Model)
-        //{
-        //    var home = (HomeModel)TempData["Home"];
-        //    var user = (UserModel)TempData["User"];
-        //    var resident = (ResidentModel)TempData["Resident"];
-
-        //    ViewBag.User = user;
-        //    ViewBag.Resident = resident;
-        //    ViewBag.Home = home;
-
-        //    TempData.Keep("User");
-        //    TempData.Keep("Home");
-        //    TempData.Keep("Resident");
-
-        //    p_Model.EnteredBy = user;
-        //    p_Model.Resident = resident;
-        //    p_Model.DateEntered = DateTime.Now;
-
-        //    CarePlanDAL.AddCarePlan(p_Model);
-        //    return RedirectToAction("CarePlan");
-        //}
 
         public ActionResult SpecificGoals()
         {

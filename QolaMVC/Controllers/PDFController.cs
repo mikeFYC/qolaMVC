@@ -60,17 +60,17 @@ namespace QolaMVC.Controllers
             l_AssessedDate.HorizontalAlignment = Element.ALIGN_LEFT;
             l_AssessedDate.BackgroundColor = BaseColor.GRAY;
 
-            PdfPCell l_Likes = new PdfPCell(new Phrase("Suite", font5));
+            PdfPCell l_Likes = new PdfPCell(new Phrase("Likes", font5));
             l_Likes.Border = 0;
             l_Likes.HorizontalAlignment = Element.ALIGN_LEFT;
             l_Likes.BackgroundColor = BaseColor.GRAY;
 
-            PdfPCell l_DisLikes = new PdfPCell(new Phrase("Suite", font5));
+            PdfPCell l_DisLikes = new PdfPCell(new Phrase("Dislikes", font5));
             l_DisLikes.Border = 0;
             l_DisLikes.HorizontalAlignment = Element.ALIGN_LEFT;
             l_DisLikes.BackgroundColor = BaseColor.GRAY;
 
-            PdfPCell l_Notes = new PdfPCell(new Phrase("Suite", font5));
+            PdfPCell l_Notes = new PdfPCell(new Phrase("Notes", font5));
             l_Notes.Border = 0;
             l_Notes.HorizontalAlignment = Element.ALIGN_LEFT;
             l_Notes.BackgroundColor = BaseColor.GRAY;
@@ -144,7 +144,7 @@ namespace QolaMVC.Controllers
             l_AssessedDate.HorizontalAlignment = Element.ALIGN_LEFT;
             l_AssessedDate.BackgroundColor = BaseColor.GRAY;
 
-            PdfPCell l_Notes = new PdfPCell(new Phrase("Suite", font5));
+            PdfPCell l_Notes = new PdfPCell(new Phrase("Notes", font5));
             l_Notes.Border = 0;
             l_Notes.HorizontalAlignment = Element.ALIGN_LEFT;
             l_Notes.BackgroundColor = BaseColor.GRAY;
@@ -212,7 +212,7 @@ namespace QolaMVC.Controllers
             l_AssessedDate.HorizontalAlignment = Element.ALIGN_LEFT;
             l_AssessedDate.BackgroundColor = BaseColor.GRAY;
 
-            PdfPCell l_Notes = new PdfPCell(new Phrase("Suite", font5));
+            PdfPCell l_Notes = new PdfPCell(new Phrase("Notes", font5));
             l_Notes.Border = 0;
             l_Notes.HorizontalAlignment = Element.ALIGN_LEFT;
             l_Notes.BackgroundColor = BaseColor.GRAY;

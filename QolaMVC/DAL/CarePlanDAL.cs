@@ -40,7 +40,7 @@ namespace QolaMVC.DAL
                     }
 
                     //VITAL SIGNS
-                    SqlCommand l_Cmd_VitalSigns = new SqlCommand("spAB_Get_PlanOfCare_VitalSigns", l_Conn);
+                    SqlCommand l_Cmd_VitalSigns = new SqlCommand("spAB_Add_PlanOfCare_VitalSigns", l_Conn);
                     // l_Conn.Open();
                     l_Cmd_VitalSigns.CommandType = System.Data.CommandType.StoredProcedure;
                     l_Cmd_VitalSigns.Parameters.AddWithValue("@CarePlanId", l_AssessmentId);
@@ -61,7 +61,7 @@ namespace QolaMVC.DAL
                     l_Cmd_VitalSigns.ExecuteNonQuery();
 
                     //Personal Hygiene
-                    SqlCommand l_Cmd_PersonalHygiene = new SqlCommand("spAB_Get_PlanOfCare_PersonalHygiene", l_Conn);
+                    SqlCommand l_Cmd_PersonalHygiene = new SqlCommand("spAB_Add_PlanOfCare_PersonalHygiene", l_Conn);
                     // l_Conn.Open();
                     l_Cmd_PersonalHygiene.CommandType = System.Data.CommandType.StoredProcedure;
                     l_Cmd_PersonalHygiene.Parameters.AddWithValue("@CarePlanId", l_AssessmentId);
@@ -85,7 +85,7 @@ namespace QolaMVC.DAL
                     l_Cmd_PersonalHygiene.ExecuteNonQuery();
 
                     //Assistance with
-                    SqlCommand l_Cmd_AssistanceWith = new SqlCommand("spAB_Get_PlanOfCare_AssistanceWith", l_Conn);
+                    SqlCommand l_Cmd_AssistanceWith = new SqlCommand("spAB_Add_PlanOfCare_AssistanceWith", l_Conn);
                     // l_Conn.Open();
                     l_Cmd_AssistanceWith.CommandType = System.Data.CommandType.StoredProcedure;
                     l_Cmd_AssistanceWith.Parameters.AddWithValue("@CarePlanId", l_AssessmentId);
@@ -104,7 +104,7 @@ namespace QolaMVC.DAL
                     l_Cmd_AssistanceWith.ExecuteNonQuery();
 
                     //Mobility
-                    SqlCommand l_Cmd_Mobility = new SqlCommand("spAB_Get_PlanOfCare_Mobility", l_Conn);
+                    SqlCommand l_Cmd_Mobility = new SqlCommand("spAB_Add_PlanOfCare_Mobility", l_Conn);
                     // l_Conn.Open();
                     l_Cmd_Mobility.CommandType = System.Data.CommandType.StoredProcedure;
                     l_Cmd_Mobility.Parameters.AddWithValue("@CarePlanId", l_AssessmentId);

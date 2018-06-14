@@ -1915,37 +1915,38 @@ DROP PROCEDURE [dbo].[spAB_Add_PlanOfCare]
 GO
 CREATE PROCEDURE [dbo].[spAB_Add_PlanOfCare]
 @ResidentId int,
-@Assessed nvarchar(50),
-@LevelOfCare nvarchar(50),
-@CompleteStatus nvarchar(20),
+@Assessed nvarchar(50) = null,
+@LevelOfCare nvarchar(50) = null,
+@CompleteStatus nvarchar(20) = null,
 @EnteredBy int
 AS
 --20180610 chime created
 BEGIN
 	INSERT INTO tbl_ab_careplan (ResidentId, Assessed, LevelOfCare, CompleteStatus, EnteredBy, DateEntered) VALUES (@ResidentId, @Assessed, @LevelOfCare, @CompleteStatus, @EnteredBy, getdate())
+	SELECT Id = @@IDENTITY
 END
 GO
 	
 
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_PlanOfCare_VitalSigns]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
-DROP PROCEDURE [dbo].[spAB_Get_PlanOfCare_VitalSigns]
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_PlanOfCare_VitalSigns]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_PlanOfCare_VitalSigns]
 GO
-CREATE PROCEDURE [dbo].[spAB_Get_PlanOfCare_VitalSigns]
+CREATE PROCEDURE [dbo].[spAB_Add_PlanOfCare_VitalSigns]
 @CarePlanId int,
 @ResidentId int,
-@BP_Systolic nvarchar(20),
-@BP_Diastolic nvarchar(20),
-@BP_DateCompleted nvarchar(20),
-@Temperature nvarchar(20),
-@Temp_DateCompleted nvarchar(20),
-@WeightLBS nvarchar(20),
-@Weight_DateCompleted nvarchar(20),
-@Height_Feet nvarchar(20),
-@Height_Inches nvarchar(20),
-@Height_DateCompleted nvarchar(20),
-@Pulse nvarchar(20),
-@Pulse_DateCompleted nvarchar(20),
-@PulseRegular nvarchar(20)
+@BP_Systolic nvarchar(20) = '',
+@BP_Diastolic nvarchar(20)= '',
+@BP_DateCompleted nvarchar(20)= '',
+@Temperature nvarchar(20)= '',
+@Temp_DateCompleted nvarchar(20)= '',
+@WeightLBS nvarchar(20)= '',
+@Weight_DateCompleted nvarchar(20)= '',
+@Height_Feet nvarchar(20)= '',
+@Height_Inches nvarchar(20)= '',
+@Height_DateCompleted nvarchar(20)= '',
+@Pulse nvarchar(20)= '',
+@Pulse_DateCompleted nvarchar(20)= '',
+@PulseRegular nvarchar(20)= ''
 AS
 --20180610 chime created
 BEGIN
@@ -1960,66 +1961,66 @@ GO
 
 	
 
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_PlanOfCare_PersonalHygiene]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
-DROP PROCEDURE [dbo].[spAB_Get_PlanOfCare_PersonalHygiene]
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_PlanOfCare_PersonalHygiene]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_PlanOfCare_PersonalHygiene]
 GO
-CREATE PROCEDURE [dbo].[spAB_Get_PlanOfCare_PersonalHygiene]
+CREATE PROCEDURE [dbo].[spAB_Add_PlanOfCare_PersonalHygiene]
 @CarePlanId int,
 @ResidentId int,
-@AMCare nvarchar(20),
-@PMCare nvarchar(20),
-@Bathing nvarchar(20),
-@AM_AssistedBy nvarchar(20),
-@PM_AssistedBy nvarchar(20),
-@Bathing_AssistedBy nvarchar(20),
-@AM_AgencyName nvarchar(20),
-@PM_AgencyName nvarchar(20),
-@Bathing_AgencyName nvarchar(20),
-@AM_PreferredTime nvarchar(20),
-@PM_PreferredTime nvarchar(20),
-@Bathing_PreferredTime nvarchar(20),
-@AM_PreferredType nvarchar(20),
-@PM_PreferredType nvarchar(20),
-@Bathing_PreferredType nvarchar(20),
-@PreferredDays nvarchar(200)
+@AMCare nvarchar(20)= '',
+@PMCare nvarchar(20)= '',
+@Bathing nvarchar(20)= '',
+@AM_AssistedBy nvarchar(20)= '',
+@PM_AssistedBy nvarchar(20)= '',
+@Bathing_AssistedBy nvarchar(20)= '',
+@AM_AgencyName nvarchar(20)= '',
+@PM_AgencyName nvarchar(20)= '',
+@Bathing_AgencyName nvarchar(20)= '',
+@AM_PreferredTime nvarchar(20)= '',
+@PM_PreferredTime nvarchar(20)= '',
+@Bathing_PreferredTime nvarchar(20)= '',
+@AM_PreferredType nvarchar(20)= '',
+@PM_PreferredType nvarchar(20)= '',
+@Bathing_PreferredType nvarchar(20)= '',
+@PreferredDays nvarchar(200)= ''
 AS
 --20180610 chime created
 BEGIN
 	INSERT INTO tbl_AB_CarePlan_PersonalHygiene (ResidentId, CarePlanId, AMCare, PMCare, Bathing, AM_AssistedBy, PM_AssistedBy, Bathing_AssistedBy, AM_AgencyName, PM_AgencyName, Bathing_AgencyName,
-					AM_PreferredTime, PM_PreferredTime, Bathing_PreferredTime, AM_PreferredType, PM_PreferredType, Bathing_PreferredType, PreferredDays	)
+					AM_PreferredTime, PM_PreferredTime, Bathing_PreferredTime, AM_PreferredType, PM_PreferredType, Bathing_PreferredType, PreferredDays, EnteredBy	)
 	VALUES
 	(@ResidentId, @CarePlanId, @AMCare, @PMCare, @Bathing, @AM_AssistedBy, @PM_AssistedBy, @Bathing_AssistedBy, @AM_AgencyName, @PM_AgencyName, @Bathing_AgencyName,
-					@AM_PreferredTime, @PM_PreferredTime, @Bathing_PreferredTime, @AM_PreferredType, @PM_PreferredType, @Bathing_PreferredType, @PreferredDays	)
+					@AM_PreferredTime, @PM_PreferredTime, @Bathing_PreferredTime, @AM_PreferredType, @PM_PreferredType, @Bathing_PreferredType, 're', 0	)
 END
 GO
 	
 		
 		
 
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_PlanOfCare_AssistanceWith]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
-DROP PROCEDURE [dbo].[spAB_Get_PlanOfCare_AssistanceWith]
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_PlanOfCare_AssistanceWith]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_PlanOfCare_AssistanceWith]
 GO
-CREATE PROCEDURE [dbo].[spAB_Get_PlanOfCare_AssistanceWith]
+CREATE PROCEDURE [dbo].[spAB_Add_PlanOfCare_AssistanceWith]
 @CarePlanId int,
 @ResidentId int,
-@Dressing nvarchar(20),
-@Dressing_PreferredTime nvarchar(20),
-@NailCare nvarchar(20),
-@NailCare_PreferredTime nvarchar(20),
-@Shaving nvarchar(20),
-@Shaving_PreferredTime nvarchar(20),
-@FootCare nvarchar(20),
-@FootCare_PreferredTime nvarchar(20),
-@OralHygiene nvarchar(20),
-@OralHygiene_PreferredTime nvarchar(20),
-@Teeth nvarchar(200)
+@Dressing nvarchar(20)= '',
+@Dressing_PreferredTime nvarchar(20)= '',
+@NailCare nvarchar(20)= '',
+@NailCare_PreferredTime nvarchar(20)= '',
+@Shaving nvarchar(20)= '',
+@Shaving_PreferredTime nvarchar(20)= '',
+@FootCare nvarchar(20)= '',
+@FootCare_PreferredTime nvarchar(20)= '',
+@OralHygiene nvarchar(20)= '',
+@OralHygiene_PreferredTime nvarchar(20)= '',
+@Teeth nvarchar(200)= ''
 AS
 --20180610 chime created
 BEGIN
 	INSERT INTO tbl_AB_CarePlan_AssistanceWith (ResidentId, CarePlanId, Dressing, Dressing_PreferredTime, NailCare, NailCare_PreferredTime, Shaving, Shaving_PreferredTime, FootCare, FootCare_PreferredTime,
-			OralHygiene, OralHygiene_PreferredTime, Teeth )
+			OralHygiene, OralHygiene_PreferredTime, Teeth, EnteredBy )
 	VALUES (@ResidentId, @CarePlanId, @Dressing, @Dressing_PreferredTime, @NailCare, @NailCare_PreferredTime, @Shaving, @Shaving_PreferredTime, @FootCare, @FootCare_PreferredTime,
-			@OralHygiene, @OralHygiene_PreferredTime, @Teeth )
+			@OralHygiene, @OralHygiene_PreferredTime, @Teeth, 0 )
 END
 GO
 
@@ -2027,36 +2028,36 @@ GO
 	
 		
 
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_PlanOfCare_Mobility]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
-DROP PROCEDURE [dbo].[spAB_Get_PlanOfCare_Mobility]
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_PlanOfCare_Mobility]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_PlanOfCare_Mobility]
 GO
-CREATE PROCEDURE [dbo].[spAB_Get_PlanOfCare_Mobility]
+CREATE PROCEDURE [dbo].[spAB_Add_PlanOfCare_Mobility]
 @CarePlanId int,
 @ResidentId INT,
-@Mobility nvarchar(20),
-@Transfers nvarchar(20),
-@MechanicalLift nvarchar(20),
-@Lift nvarchar(20),
-@Walker nvarchar(20),
-@Walker_Type nvarchar(20),
-@WheelChair nvarchar(20),
-@WheelChair_Type nvarchar(20),
-@Cane nvarchar(20),
-@Cane_Type nvarchar(20),
-@Scooter nvarchar(20),
-@Scooter_Type nvarchar(20),
-@PT nvarchar(20),
-@PT_Frequency nvarchar(20),
-@PT_Provider nvarchar(20),
-@OT nvarchar(20),
-@OT_Frequency nvarchar(20),
-@OT_Provider nvarchar(20)
+@Mobility nvarchar(20)= '',
+@Transfers nvarchar(20)= '',
+@MechanicalLift nvarchar(20)= '',
+@Lift nvarchar(20)= '',
+@Walker nvarchar(20)= '',
+@Walker_Type nvarchar(20)= '',
+@WheelChair nvarchar(20)= '',
+@WheelChair_Type nvarchar(20)= '',
+@Cane nvarchar(20)= '',
+@Cane_Type nvarchar(20)= '',
+@Scooter nvarchar(20)= '',
+@Scooter_Type nvarchar(20)= '',
+@PT nvarchar(20)= '',
+@PT_Frequency nvarchar(20)= '',
+@PT_Provider nvarchar(20)= '',
+@OT nvarchar(20)= '',
+@OT_Frequency nvarchar(20)= '',
+@OT_Provider nvarchar(20)= ''
 AS
 --20180610 chime created
 BEGIN
 	INSERT INTO tbl_AB_CarePlan_Mobility (ResidentId, CarePlanId, Mobility, Transfers, MechanicalLift, Lift, Walker, Walker_Type, WheelChair, WheelChair_Type, Cane, Cane_Type, Scooter, Scooter_Type,
-				PT, PT_Frequency, PT_Provider, OT, OT_Frequency, OT_Provider)
+				PT, PT_Frequency, PT_Provider, OT, OT_Frequency, OT_Provider, EnteredBy)
 	VALUES(@ResidentId, @CarePlanId, @Mobility, @Transfers, @MechanicalLift, @Lift, @Walker, @Walker_Type, @WheelChair, @WheelChair_Type, @Cane, @Cane_Type, @Scooter, @Scooter_Type,
-				@PT, @PT_Frequency, @PT_Provider, @OT, @OT_Frequency, @OT_Provider)
+				@PT, @PT_Frequency, @PT_Provider, @OT, @OT_Frequency, @OT_Provider, 0)
 END
 GO
