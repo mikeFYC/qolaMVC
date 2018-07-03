@@ -100,7 +100,7 @@ namespace QolaMVC.DAL
                     l_Cmd_AssistanceWith.Parameters.AddWithValue("@FootCare_PreferredTime", p_Model.AssistanceWith.FootCarePreferredTime);
                     l_Cmd_AssistanceWith.Parameters.AddWithValue("@OralHygiene", p_Model.AssistanceWith.OralHygiene);
                     l_Cmd_AssistanceWith.Parameters.AddWithValue("@OralHygiene_PreferredTime", p_Model.AssistanceWith.OralHygienePreferredTime);
-                    l_Cmd_AssistanceWith.Parameters.AddWithValue("@Teeth", p_Model.AssistanceWith.Teeth);
+                    l_Cmd_AssistanceWith.Parameters.AddWithValue("@Teeth", p_Model.AssistanceWith.TeethCollection);
                     l_Cmd_AssistanceWith.ExecuteNonQuery();
 
                     //Mobility
@@ -341,7 +341,7 @@ namespace QolaMVC.DAL
                         l_Assessment.FootCarePreferredTime = Convert.ToString(dataReceive.Tables[0].Rows[index]["FootCare_PreferredTime"]);
                         l_Assessment.OralHygiene = Convert.ToString(dataReceive.Tables[0].Rows[index]["OralHygiene"]);
                         l_Assessment.OralHygienePreferredTime = Convert.ToString(dataReceive.Tables[0].Rows[index]["OralHygiene_PreferredTime"]);
-                        l_Assessment.Teeth = Convert.ToString(dataReceive.Tables[0].Rows[index]["Teeth"]);
+                        //l_Assessment.TeethCollection = Convert.ToString(dataReceive.Tables[0].Rows[index]["Teeth"]);
                     }
                 }
                 return l_Assessment;

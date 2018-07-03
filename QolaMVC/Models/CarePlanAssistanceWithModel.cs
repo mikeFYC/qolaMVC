@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Web;
 
@@ -25,6 +26,6 @@ namespace QolaMVC.Models
         public string OralHygiene { get; set; }
         public string OralHygienePreferredTime { get; set; }
 
-        public string Teeth { get; set; }
+        public Collection<QOLACheckboxModel> TeethCollection { get; set; }
     }
 }

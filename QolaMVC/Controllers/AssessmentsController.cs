@@ -924,6 +924,11 @@ namespace QolaMVC.Controllers
 
             var careplan = CarePlanDAL.GetResidentsPlanOfCare(resident.ID);
             PlanOfCareModel l_Model = new PlanOfCareModel();
+            var l_PersonalHygiene = new CarePlanPersonalHygieneModel();
+            l_PersonalHygiene.PreferredDaysCollection = new Collection<QOLACheckboxModel>();
+            QolaCulture.InitPreferredDays(ref l_PersonalHygiene);
+            l_Model.PersonalHygiene = l_PersonalHygiene;
+
             if(careplan.Count >0)
             {
                 l_Model = careplan.LastOrDefault();

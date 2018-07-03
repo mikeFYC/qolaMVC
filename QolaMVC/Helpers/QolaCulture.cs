@@ -375,5 +375,310 @@ namespace QolaMVC.Helpers
             }
         }
 
+        public static void InitAssistanceWithTeeth(ref CarePlanAssistanceWithModel m)
+        {
+            if (m.TeethCollection != null && m.TeethCollection.Count == 0)
+            {
+                string[] l_Checkboxes = new string[]{"N/A",
+                                                    "Own Teeth",
+                                                    "Full",
+                                                    "Partial",
+                                                    "Upper",
+                                                    "Lower"
+                                                };
+
+                foreach (var d in l_Checkboxes)
+                {
+                    var l_CBM = new QOLACheckboxModel();
+                    l_CBM.IsSelected = false;
+                    l_CBM.Name = d;
+                    l_CBM.Notes = string.Empty;
+
+                    m.TeethCollection.Add(l_CBM);
+                }
+            }
+        }
+
+        public static void InitBehaviour(ref CarePlanBehaviourModel m)
+        {
+            if (m.BehaviourCollection != null && m.BehaviourCollection.Count == 0)
+            {
+                string[] l_Checkboxes = new string[]{"No Concerns",
+                                                    "Agitated",
+                                                    "Aggressive",
+                                                    "Depressed",
+                                                    "Suicidal",
+                                                    "Anxious Behaviour",
+                                                    "Withdrawn",
+                                                    "Demanding",
+                                                    "Disruptive",
+                                                    "Hoarding",
+                                                    "Sad",
+                                                    "Defective Coping",
+                                                    "Resists/Refuses care and/or treatments",
+                                                    "Suspicious",
+                                                    "Ingests Foriegn Items",
+                                                    "Inappropriate Sexual Behaviour",
+                                                    "Inappropriate / Unsafe smoker",
+                                                    "Substance Abuse",
+                                                    "Alcohol Abuse",
+                                                    "Seeks Attention"
+                                                };
+
+                foreach (var d in l_Checkboxes)
+                {
+                    var l_CBM = new QOLACheckboxModel();
+                    l_CBM.IsSelected = false;
+                    l_CBM.Name = d;
+                    l_CBM.Notes = string.Empty;
+
+                    m.BehaviourCollection.Add(l_CBM);
+                }
+            }
+        }
+
+        public static void InitCognitiveFunction(ref CarePlanCognitiveFunctionModel m)
+        {
+            if (m.CognitiveFunction != null && m.CognitiveFunction.Count == 0)
+            {
+                string[] l_Checkboxes = new string[]{"Unimpaired",
+                                                    "Forgetful",
+                                                    "Poor Judgement",
+                                                    "Confused",
+                                                    "Short term loss",
+                                                    "Significant Impairment"
+                                                };
+
+                foreach (var d in l_Checkboxes)
+                {
+                    var l_CBM = new QOLACheckboxModel();
+                    l_CBM.IsSelected = false;
+                    l_CBM.Name = d;
+                    l_CBM.Notes = string.Empty;
+
+                    m.CognitiveFunction.Add(l_CBM);
+                }
+            }
+        }
+
+        public static void InitNutrition(ref CarePlanNutritionModel m)
+        {
+            if (m.Diet != null && m.Diet.Count == 0)
+            {
+                string[] l_Checkboxes = new string[]{"Regular Diet",
+                                                    "Vegetarian Diet",
+                                                    "Low Sodium",
+                                                    "Diabetic",
+                                                    "Low Fat",
+                                                    "Low Cholesterol",
+                                                    "Low Potassium",
+                                                    "Gluten Free",
+                                                    "Low Vitamin K",
+                                                    "Other"
+                                                };
+
+                foreach (var d in l_Checkboxes)
+                {
+                    var l_CBM = new QOLACheckboxModel();
+                    l_CBM.IsSelected = false;
+                    l_CBM.Name = d;
+                    l_CBM.Notes = string.Empty;
+
+                    m.Diet.Add(l_CBM);
+                }
+            }
+        }
+
+        public static void InitElimination(ref CarePlanEliminationModel m)
+        {
+
+            if (m.Bladder != null && m.Bladder.Count == 0)
+            {
+
+                string[] l_Checkboxes = new string[]{"Continent",
+                                                    "Incontinence",
+                                                    "Occasionally Incontinent",
+                                                    "Catheter"
+                                                };
+
+                foreach (var d in l_Checkboxes)
+                {
+                    var l_CBM = new QOLACheckboxModel();
+                    l_CBM.IsSelected = false;
+                    l_CBM.Name = d;
+                    l_CBM.Notes = string.Empty;
+
+                    m.Bladder.Add(l_CBM);
+                }
+            }
+
+            if (m.Bowel != null && m.Bowel.Count == 0)
+            {
+
+                string[] l_Checkboxes = new string[]{"Continent",
+                                                    "Incontinence",
+                                                    "Occasionally Incontinent",
+                                                    "Ostomy"
+                                                };
+
+                foreach (var d in l_Checkboxes)
+                {
+                    var l_CBM = new QOLACheckboxModel();
+                    l_CBM.IsSelected = false;
+                    l_CBM.Name = d;
+                    l_CBM.Notes = string.Empty;
+
+                    m.Bowel.Add(l_CBM);
+                }
+            }
+        }
+
+        public static void InitToileting(ref CarePlanToiletingModel m)
+        {
+            string[] l_Checkboxes = new string[]{"Day",
+                                                    "Evening",
+                                                    "Night"
+                                                };
+
+            if (m.Bathroom != null && m.Bathroom.Count == 0)
+            {
+
+                foreach (var d in l_Checkboxes)
+                {
+                    var l_CBM = new QOLACheckboxModel();
+                    l_CBM.IsSelected = false;
+                    l_CBM.Name = d;
+                    l_CBM.Notes = string.Empty;
+
+                    m.Bathroom.Add(l_CBM);
+                }
+            }
+
+            if (m.Commode != null && m.Commode.Count == 0)
+            {
+
+                foreach (var d in l_Checkboxes)
+                {
+                    var l_CBM = new QOLACheckboxModel();
+                    l_CBM.IsSelected = false;
+                    l_CBM.Name = d;
+                    l_CBM.Notes = string.Empty;
+
+                    m.Commode.Add(l_CBM);
+                }
+            }
+
+            if (m.Bedpan != null && m.Bedpan.Count == 0)
+            {
+
+                foreach (var d in l_Checkboxes)
+                {
+                    var l_CBM = new QOLACheckboxModel();
+                    l_CBM.IsSelected = false;
+                    l_CBM.Name = d;
+                    l_CBM.Notes = string.Empty;
+
+                    m.Bedpan.Add(l_CBM);
+                }
+            }
+        }
+
+         public static void InitSensoryAbilities(ref CarePlanSensoryAbilitiesModel m)
+        {
+            if (m.Vision != null && m.Vision.Count == 0)
+            {
+                string[] l_Checkboxes = new string[]{"Unimpaired",
+                                                    "Impaired",
+                                                    "Impaired Left",
+                                                    "Impaired Right",
+                                                    "Blind",
+                                                    "Blind Left",
+                                                    "Blind Right",
+                                                    "Glasses",
+                                                    "Contact Lens"
+                                                };
+
+                foreach (var d in l_Checkboxes)
+                {
+                    var l_CBM = new QOLACheckboxModel();
+                    l_CBM.IsSelected = false;
+                    l_CBM.Name = d;
+                    l_CBM.Notes = string.Empty;
+
+                    m.Vision.Add(l_CBM);
+                }
+            }
+
+            if (m.Hearing != null && m.Hearing.Count == 0)
+            {
+                string[] l_Checkboxes = new string[]{"Unimpaired",
+                                                    "Impaired",
+                                                    "Impaired Left",
+                                                    "Impaired Right",
+                                                    "Deaf",
+                                                    "Deaf Left",
+                                                    "Deaf Right",
+                                                    "Hearing Aid",
+                                                    "Hearing Aid - Left",
+                                                    "Hearing Aid - Right"
+                                                };
+
+                foreach (var d in l_Checkboxes)
+                {
+                    var l_CBM = new QOLACheckboxModel();
+                    l_CBM.IsSelected = false;
+                    l_CBM.Name = d;
+                    l_CBM.Notes = string.Empty;
+
+                    m.Hearing.Add(l_CBM);
+                }
+            }
+
+            if (m.Communication != null && m.Communication.Count == 0)
+            {
+                string[] l_Checkboxes = new string[]{"Unimpaired",
+                                                    "Impaired ability to communicate and understand",
+                                                    "Difficulty communicating but understands",
+                                                    "Difficulty communicating but can understand",
+                                                    "Language barrier",
+                                                    "Understands Instruction"
+                                                };
+
+                foreach (var d in l_Checkboxes)
+                {
+                    var l_CBM = new QOLACheckboxModel();
+                    l_CBM.IsSelected = false;
+                    l_CBM.Name = d;
+                    l_CBM.Notes = string.Empty;
+
+                    m.Communication.Add(l_CBM);
+                }
+            }
+        }
+
+        public static void InitSpecialEquipment(ref CarePlanSpecialEquipmentModel m)
+        {
+            if (m.SpecialEquipment != null && m.SpecialEquipment.Count == 0)
+            {
+                string[] l_Checkboxes = new string[]{"N/A",
+                                                    "Pendant",
+                                                    "TED Stocking",
+                                                    "Support brace",
+                                                    "Prosthesis",
+                                                    "Other"
+                                                };
+
+                foreach (var d in l_Checkboxes)
+                {
+                    var l_CBM = new QOLACheckboxModel();
+                    l_CBM.IsSelected = false;
+                    l_CBM.Name = d;
+                    l_CBM.Notes = string.Empty;
+
+                    m.SpecialEquipment.Add(l_CBM);
+                }
+            }
+        }
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Web;
 
@@ -15,7 +16,7 @@ namespace QolaMVC.Models
         public string AssistiveDevices { get; set; }
         public string Texture { get; set; }
         public string Other { get; set; }
-        public string Diet { get; set; }
+        public Collection<QOLACheckboxModel> Diet { get; set; }
         public string OtherDiet { get; set; }
         public string Notes { get; set; }
         public string Allergies { get; set; }
