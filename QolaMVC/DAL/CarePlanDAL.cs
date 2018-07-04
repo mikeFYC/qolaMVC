@@ -1,4 +1,5 @@
-﻿using QolaMVC.Models;
+﻿using Newtonsoft.Json;
+using QolaMVC.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -81,7 +82,7 @@ namespace QolaMVC.DAL
                     l_Cmd_PersonalHygiene.Parameters.AddWithValue("@AM_PreferredType", p_Model.PersonalHygiene.AMPreferredType);
                     l_Cmd_PersonalHygiene.Parameters.AddWithValue("@PM_PreferredType", p_Model.PersonalHygiene.PMPreferredType);
                     l_Cmd_PersonalHygiene.Parameters.AddWithValue("@Bathing_PreferredType", p_Model.PersonalHygiene.BathingPreferredType);
-                    l_Cmd_PersonalHygiene.Parameters.AddWithValue("@PreferredDays", p_Model.PersonalHygiene.PreferredDays);
+                    l_Cmd_PersonalHygiene.Parameters.AddWithValue("@PreferredDays", JsonConvert.SerializeObject(p_Model.PersonalHygiene.PreferredDaysCollection, Formatting.Indented)); // p_Model.PersonalHygiene.PreferredDays);
                     l_Cmd_PersonalHygiene.ExecuteNonQuery();
 
                     //Assistance with
@@ -100,7 +101,7 @@ namespace QolaMVC.DAL
                     l_Cmd_AssistanceWith.Parameters.AddWithValue("@FootCare_PreferredTime", p_Model.AssistanceWith.FootCarePreferredTime);
                     l_Cmd_AssistanceWith.Parameters.AddWithValue("@OralHygiene", p_Model.AssistanceWith.OralHygiene);
                     l_Cmd_AssistanceWith.Parameters.AddWithValue("@OralHygiene_PreferredTime", p_Model.AssistanceWith.OralHygienePreferredTime);
-                    l_Cmd_AssistanceWith.Parameters.AddWithValue("@Teeth", p_Model.AssistanceWith.TeethCollection);
+                    l_Cmd_AssistanceWith.Parameters.AddWithValue("@Teeth", JsonConvert.SerializeObject(p_Model.AssistanceWith.TeethCollection, Formatting.Indented));
                     l_Cmd_AssistanceWith.ExecuteNonQuery();
 
                     //Mobility
@@ -291,7 +292,7 @@ namespace QolaMVC.DAL
 
                         l_Assessment.PMPreferredType = Convert.ToString(dataReceive.Tables[0].Rows[index]["PM_PreferredType"]);
                         l_Assessment.BathingPreferredType = Convert.ToString(dataReceive.Tables[0].Rows[index]["Bathing_PreferredType"]);
-                        l_Assessment.PreferredDays = Convert.ToString(dataReceive.Tables[0].Rows[index]["PreferredDays"]);
+                        l_Assessment.PreferredDaysCollection = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["PreferredDays"]));
                     }
                 }
                 return l_Assessment;
@@ -341,7 +342,7 @@ namespace QolaMVC.DAL
                         l_Assessment.FootCarePreferredTime = Convert.ToString(dataReceive.Tables[0].Rows[index]["FootCare_PreferredTime"]);
                         l_Assessment.OralHygiene = Convert.ToString(dataReceive.Tables[0].Rows[index]["OralHygiene"]);
                         l_Assessment.OralHygienePreferredTime = Convert.ToString(dataReceive.Tables[0].Rows[index]["OralHygiene_PreferredTime"]);
-                        //l_Assessment.TeethCollection = Convert.ToString(dataReceive.Tables[0].Rows[index]["Teeth"]);
+                        l_Assessment.TeethCollection = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Teeth"]));
                     }
                 }
                 return l_Assessment;

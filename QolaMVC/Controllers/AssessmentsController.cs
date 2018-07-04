@@ -924,12 +924,18 @@ namespace QolaMVC.Controllers
 
             var careplan = CarePlanDAL.GetResidentsPlanOfCare(resident.ID);
             PlanOfCareModel l_Model = new PlanOfCareModel();
+
             var l_PersonalHygiene = new CarePlanPersonalHygieneModel();
             l_PersonalHygiene.PreferredDaysCollection = new Collection<QOLACheckboxModel>();
             QolaCulture.InitPreferredDays(ref l_PersonalHygiene);
             l_Model.PersonalHygiene = l_PersonalHygiene;
 
-            if(careplan.Count >0)
+            var l_AssistanceWith = new CarePlanAssistanceWithModel();
+            l_AssistanceWith.TeethCollection = new Collection<QOLACheckboxModel>();
+            QolaCulture.InitAssistanceWithTeeth(ref l_AssistanceWith);
+            l_Model.AssistanceWith = l_AssistanceWith;
+
+            if (careplan.Count >0)
             {
                 l_Model = careplan.LastOrDefault();
             }

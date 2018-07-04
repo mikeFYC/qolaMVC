@@ -11,6 +11,14 @@
         width: 900px !important;
         max-width: 1000px !important;
     }
+
+    .label {
+        padding-left: 20px;
+        margin-bottom: 0;
+        font-weight: normal;
+        cursor: pointer;
+    }
+
 </style>
 <!-- START PAGE-CONTAINER -->
 <div class="page-container">
@@ -217,15 +225,11 @@
                                     </div>
                                     <div class="form-check margin">
                                         @Html.RadioButtonFor(m => m.VitalSigns.PulseRegular, "Regular", new { @class = "form-check-input" })
-                                        <label class="form-check-label checkspace" for="">
-                                            Regular
-                                        </label>
+                                        <label class="label" for="">Regular</label>
                                     </div>
                                     <div class="form-check margin">
                                         @Html.RadioButtonFor(m => m.VitalSigns.PulseRegular, "Irregular", new { @class = "form-check-input" })
-                                        <label class="form-check-label checkspace" for="">
-                                            Irregular
-                                        </label>
+                                        <label class="label" for="">Irregular</label>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -516,59 +520,17 @@
                                 <div class="col-md-12 text-center">
                                     <b>Location:</b>
                                 </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        N/A
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Every Day
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Sunday
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Monday
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Tuesday
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Wednessday
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Thursday
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Friday
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">   Saturday
-                                    </label>
-                                </div>
+                                @{
+                                    for(int i=0; i<Model.PersonalHygiene.PreferredDaysCollection.Count; i++)
+                                    {
+                                        <div class="form-check margin">
+                                            @Html.CheckBoxFor(m => m.PersonalHygiene.PreferredDaysCollection[i].IsSelected, new { @class = "form-check-input" })
+                                            <label class="label" for="">@Model.PersonalHygiene.PreferredDaysCollection[i].Name</label>
+                                            @Html.HiddenFor(m => m.PersonalHygiene.PreferredDaysCollection[i].Name, new { @class = "label", value = Model.PersonalHygiene.PreferredDaysCollection[i].Name })
+                                            @Html.HiddenFor(m => m.PersonalHygiene.PreferredDaysCollection[i].Notes, new { @class = "label", value = Model.PersonalHygiene.PreferredDaysCollection[i].Notes })
+                                        </div>  
+                                    }
+                                }
                             </div>
                         </div>
                     </div>
@@ -815,43 +777,18 @@
                                 <div class="col-md-12 text-center">
                                     <b>Teeth:</b>
                                 </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Own Teeth
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Full
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Partial
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Upper
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Lower
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        N/A
-                                    </label>
-                                </div>
-
+                                @{
+                                    for (int i = 0; i < Model.AssistanceWith.TeethCollection.Count; i++)
+                                    {
+                                        <div class="form-check margin">
+                                            @Html.CheckBoxFor(m => m.AssistanceWith.TeethCollection[i].IsSelected, new { @class = "form-check-input" })
+                                            <label class="label" for="">@Model.AssistanceWith.TeethCollection[i].Name</label>
+                                            @Html.HiddenFor(m => m.AssistanceWith.TeethCollection[i].Name, new { @class = "label", value = Model.AssistanceWith.TeethCollection[i].Name })
+                                            @Html.HiddenFor(m => m.AssistanceWith.TeethCollection[i].Notes, new { @class = "label", value = Model.AssistanceWith.TeethCollection[i].Notes })
+                                        </div>
+                                    }
+                                }
+                             
                             </div>
                         </div>
                     </div>
@@ -969,12 +906,12 @@
                                                         }
                                                     <option>Select</option>
                                                     <option value="31WN">N/A</option>
-                                                    <option value="1WI">Independent</option>
-                                                    <option value="2WS">Supervised</option>
-                                                    <option value="3WA">Assisted</option>
-                                                    <option value="37WS4">SL4</option>
-                                                    <option value="38WSD4">SL4D</option>
-                                                    <option value="39WP">Private (Supportive)</option>
+                                                    <option value="Independent">Independent</option>
+                                                    <option value="Supervised">Supervised</option>
+                                                    <option value="Assisted">Assisted</option>
+                                                    <option value="SL4">SL4</option>
+                                                    <option value="SL4D">SL4D</option>
+                                                    <option value="Private (Supportive)">Private (Supportive)</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -1290,9 +1227,7 @@
                                 <div class="col-md-12">
                                     <div class="form-check margin">
                                         @Html.CheckBoxFor(m => m.Safety.NightOnly, new { @class = "form-check-input" })
-                                        <label class="form-check-label checkspace" for="">
-                                            Night Only
-                                        </label>
+                                        <label class="label" for="">Night Only</label>
                                     </div>
                                 </div>
                             </div>
@@ -1375,138 +1310,53 @@
                 <div class="card">
                     <div class="card-block">
                         <div class="row">
-                            <div class="col-md-12 text-center">
+                            <div class="col-md-12 bg text-center">
                                 <h4>Behaviour</h4>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        No Concerns
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Agitated
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Aggressive
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Depressed
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Suicidal
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Anxious Behaviour
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Withdrawn
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Demanding
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Disruptive
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Hoarding
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Sad
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Ineffective Coping
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Resist / refuses care and/or treatments
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Suspicious
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Ingests Foreign Items
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Inappropriate Sexual Behaviour
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Inappropriate / Unsafe smoker
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Substance Abuse
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Alcohol Abuse
-                                    </label>
-                                </div>
-                                <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Seeks Attention
-                                    </label>
-                                </div>
 
-                            </div>
+                            @{
+                                for (int i = 0; i < Model.Behaviour.BehaviourCollection.Count; i++)
+                                {
+                                    if (i < 7)
+                                    {
+                                        <div class="col-md-4">
+                                            <div class="form-check margin">
+                                                @Html.CheckBoxFor(m => m.Behaviour.BehaviourCollection[i].IsSelected, new { @class = "form-check-input" })
+                                                <label class="label" for="">@Model.Behaviour.BehaviourCollection[i].Name</label>
+                                                @Html.HiddenFor(m => m.Behaviour.BehaviourCollection[i].Name, new { @class = "label", value = Model.Behaviour.BehaviourCollection[i].Name })
+                                                @Html.HiddenFor(m => m.Behaviour.BehaviourCollection[i].Notes, new { @class = "label", value = Model.Behaviour.BehaviourCollection[i].Notes })
+                                            </div>
+                                        </div>
+                                    }
+                                    if (i >= 7 && i < 15)
+                                    {
+                                        <div class="col-md-4">
+                                            <div class="form-check margin">
+                                                @Html.CheckBoxFor(m => m.Behaviour.BehaviourCollection[i].IsSelected, new { @class = "form-check-input" })
+                                                <label class="label" for="">@Model.Behaviour.BehaviourCollection[i].Name</label>
+                                                @Html.HiddenFor(m => m.Behaviour.BehaviourCollection[i].Name, new { @class = "label", value = Model.Behaviour.BehaviourCollection[i].Name })
+                                                @Html.HiddenFor(m => m.Behaviour.BehaviourCollection[i].Notes, new { @class = "label", value = Model.Behaviour.BehaviourCollection[i].Notes })
+                                            </div>
+                                        </div>
+                                    }
+                                    if (i >= 15)
+                                    {
+                                        <div class="col-md-4">
+                                            <div class="form-check margin">
+                                                @Html.CheckBoxFor(m => m.Behaviour.BehaviourCollection[i].IsSelected, new { @class = "form-check-input" })
+                                                <label class="label" for="">@Model.Behaviour.BehaviourCollection[i].Name</label>
+                                                @Html.HiddenFor(m => m.Behaviour.BehaviourCollection[i].Name, new { @class = "label", value = Model.Behaviour.BehaviourCollection[i].Name })
+                                                @Html.HiddenFor(m => m.Behaviour.BehaviourCollection[i].Notes, new { @class = "label", value = Model.Behaviour.BehaviourCollection[i].Notes })
+                                            </div>
+                                        </div>
+                                    }
+
+
+                                }
+                            }
+
                             <div class="col-md-12">
                                 <br>
                                 <div class="row">
@@ -1516,16 +1366,12 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-check margin">
-                                                <input class="form-check-input" type="checkbox" value="" id="">
-                                                <label class="form-check-label checkspace" for="">
-                                                    Yes
-                                                </label>
+                                                @Html.RadioButtonFor(m => m.Behaviour.HarmToSelf, "Yes", new {  @class="form-check-input"})
+                                                <label class="label" for="">Yes</label>
                                             </div>
                                             <div class="form-check margin">
-                                                <input class="form-check-input" type="checkbox" value="" id="">
-                                                <label class="form-check-label checkspace" for="">
-                                                    No
-                                                </label>
+                                                @Html.RadioButtonFor(m => m.Behaviour.HarmToSelf, "No", new { @class = "form-check-input" })
+                                                <label class="label" for="">No</label>
                                             </div>
                                         </div>
                                     </div>
@@ -1536,16 +1382,12 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-check margin">
-                                                <input class="form-check-input" type="checkbox" value="" id="">
-                                                <label class="form-check-label checkspace" for="">
-                                                    Yes
-                                                </label>
+                                                @Html.RadioButtonFor(m => m.Behaviour.Smoker, "Yes", new {  @class="form-check-input"})
+                                                <label class="label" for="">Yes</label>
                                             </div>
                                             <div class="form-check margin">
-                                                <input class="form-check-input" type="checkbox" value="" id="">
-                                                <label class="form-check-label checkspace" for="">
-                                                    No
-                                                </label>
+                                                @Html.RadioButtonFor(m => m.Behaviour.Smoker, "No", new {  @class="form-check-input"})
+                                                <label class="label" for="">No</label>
                                             </div>
                                         </div>
 
@@ -1557,16 +1399,12 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-check margin">
-                                                <input class="form-check-input" type="checkbox" value="" id="">
-                                                <label class="form-check-label checkspace" for="">
-                                                    Yes
-                                                </label>
+                                                @Html.RadioButtonFor(m => m.Behaviour.CognitiveStatus, "Yes", new {  @class="form-check-input"})
+                                                <label class="label" for="">Yes</label>
                                             </div>
                                             <div class="form-check margin">
-                                                <input class="form-check-input" type="checkbox" value="" id="">
-                                                <label class="form-check-label checkspace" for="">
-                                                    No
-                                                </label>
+                                                @Html.RadioButtonFor(m => m.Behaviour.CognitiveStatus, "No", new { @class = "form-check-input" })
+                                                <label class="label" for="">No</label>
                                             </div>
                                         </div>
 
@@ -1579,16 +1417,12 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-check margin">
-                                                <input class="form-check-input" type="checkbox" value="" id="">
-                                                <label class="form-check-label checkspace" for="">
-                                                    Yes
-                                                </label>
+                                                @Html.RadioButtonFor(m => m.Behaviour.RiskOfWandering, "Yes", new { @class = "form-check-input" })
+                                                <label class="label" for="">Yes</label>
                                             </div>
                                             <div class="form-check margin">
-                                                <input class="form-check-input" type="checkbox" value="" id="">
-                                                <label class="form-check-label checkspace" for="">
-                                                    No
-                                                </label>
+                                                @Html.RadioButtonFor(m => m.Behaviour.RiskOfWandering, "No", new { @class = "form-check-input" })
+                                                <label class="label" for="">No</label>
                                             </div>
                                         </div>
 
@@ -1603,7 +1437,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="staticEmail" class="col-form-label">Other Mental/Physical Health Info</label><br>
-                                    <textarea class="textarea" rows="5" style="width: 100% !important;"></textarea>
+                                    @Html.TextAreaFor(m => m.Behaviour.OtherInfo, new { @class = "textarea", rows = "5", style = "width: 100% !important;" })
                                 </div>
                             </div>
                         </div>
@@ -1623,44 +1457,18 @@
                                     <h6>Cognitive function</h6>
                                 </div>
                                 <div class="col-md-12">
-
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Unimpaired
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Forgetful
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Poor Judgement
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Confused
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Short term loss
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Significant impairment
-                                        </label>
-                                    </div>
-
+                                    @{
+                                        for (int i = 0; i < Model.CognitiveFunction.CognitiveFunction.Count; i++)
+                                        {
+                                            <div class="form-check margin">
+                                                @Html.CheckBoxFor(m => m.CognitiveFunction.CognitiveFunction[i].IsSelected, new { @class = "form-check-input" })
+                                                <label class="label" for="">@Model.CognitiveFunction.CognitiveFunction[i].Name</label>
+                                                @Html.HiddenFor(m => m.CognitiveFunction.CognitiveFunction[i].Name, new { @class = "label", value = Model.CognitiveFunction.CognitiveFunction[i].Name })
+                                                @Html.HiddenFor(m => m.CognitiveFunction.CognitiveFunction[i].Notes, new { @class = "label", value = Model.CognitiveFunction.CognitiveFunction[i].Notes })
+                                            </div>
+                                        }
+                                    }
+                                   
                                 </div>
                             </div>
                         </div>
@@ -1682,22 +1490,16 @@
                                 <div class="col-md-12">
 
                                     <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Person
-                                        </label>
+                                        @Html.CheckBoxFor( m => m.Orientation.IsPerson, new {  @class="checkbox"} )
+                                        <label class="label" for="">Person</label>
                                     </div>
                                     <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Place
-                                        </label>
+                                         @Html.CheckBoxFor( m => m.Orientation.IsPlace, new {  @class="checkbox"} )
+                                        <label class="label" for="">Place</label>
                                     </div>
                                     <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Time
-                                        </label>
+                                         @Html.CheckBoxFor( m => m.Orientation.IsTime, new {  @class="checkbox"} )
+                                        <label class="label" for="">Time</label>
                                     </div>
 
 
@@ -1705,10 +1507,8 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-check margin">
-                                    <input class="form-check-input" type="checkbox" value="" id="">
-                                    <label class="form-check-label checkspace" for="">
-                                        Dementia Care
-                                    </label>
+                                    @Html.CheckBoxFor(m => m.Orientation.IsDementiaCare, new { @class = "checkbox" })
+                                    <label class="label" for="">Dementia Care</label>
                                 </div>
 
                             </div>
@@ -1729,15 +1529,21 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Status</label>
                                     <div class="col-md-12">
-                                        <select class="form-control">
-                                            <option selected="selected" value="0">Select</option>
-                                            <option value="10SI">Independent</option>
-                                            <option value="11SS">Supervised</option>
-                                            <option value="12SA">Assisted</option>
-                                            <option value="13SD">Dependant</option>
-                                            <option value="15TS4">SL4</option>
-                                            <option value="16SD4">SL4D</option>
-                                            <option value="17TP">Private (Supportive)</option>
+                                        <select name="Nutrition.NutritionStatus" class="form-control" required>
+                                            @{
+                                                if (Model.Nutrition != null && Model.Nutrition.NutritionStatus != null && Model.Nutrition.NutritionStatus != string.Empty)
+                                                {
+                                                    <option selected="selected" value="@Model.Nutrition.NutritionStatus">@Model.Nutrition.NutritionStatus</option>
+                                                }
+                                            }
+                                            <option selected="selected">Select</option>
+                                            <option value="Independent">Independent</option>
+                                            <option value="Supervised">Supervised</option>
+                                            <option value="Assisted">Assisted</option>
+                                            <option value="Dependant">Dependant</option>
+                                            <option value="SL4">SL4</option>
+                                            <option value="SL4D">SL4D</option>
+                                            <option value="Private (Supportive)">Private (Supportive)</option>
                                         </select>
                                     </div>
                                 </div>
@@ -1751,12 +1557,18 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Risk</label>
                                     <div class="col-md-12">
-                                        <select class="form-control">
-                                            <option selected="selected" value="0">Select</option>
-                                            <option value="11NN">N/A</option>
-                                            <option value="3NS">Swallowing</option>
-                                            <option value="4NH">Choking risk</option>
-                                            <option value="2NC">Difficulty in Chewing</option>
+                                        <select name="Nutrition.Risk" class="form-control" required>
+                                            @{
+                                                if (Model.Nutrition != null && Model.Nutrition.Risk != null && Model.Nutrition.Risk != string.Empty)
+                                                {
+                                                    <option selected="selected" value="@Model.Nutrition.Risk">@Model.Nutrition.Risk</option>
+                                                }
+                                            }
+                                            <option selected="selected">Select</option>
+                                            <option value="N/A">N/A</option>
+                                            <option value="Swallowing">Swallowing</option>
+                                            <option value="Choking risk">Choking risk</option>
+                                            <option value="Difficulty in Chewing">Difficulty in Chewing</option>
                                         </select>
                                     </div>
                                 </div>
@@ -1768,7 +1580,7 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Assistive Devices</label>
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control" id="staticEmail">
+                                        @Html.TextBoxFor( m => m.Nutrition.AssistiveDevices, new {  @class="form-control"})
                                     </div>
                                 </div>
 
@@ -1779,7 +1591,13 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Texture</label>
                                     <div class="col-md-12">
-                                        <select class="form-control">
+                                        <select name="Nutrition.Texture" class="form-control" required>
+                                            @{
+                                                if (Model.Nutrition != null && Model.Nutrition.Texture != null && Model.Nutrition.Texture != string.Empty)
+                                                {
+                                                    <option selected="selected" value="@Model.Nutrition.Texture">@Model.Nutrition.Texture</option>
+                                                }
+                                            }
                                             <option>Independent</option>
                                             <option>Partial Assist</option>
                                             <option>Dependent</option>
@@ -1795,7 +1613,7 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Other</label>
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control" id="staticEmail">
+                                         @Html.TextBoxFor( m => m.Nutrition.Other, new {  @class="form-control"})
                                     </div>
                                 </div>
 
@@ -1806,75 +1624,24 @@
                                     <h6>Diet</h6>
                                 </div>
                                 <div class="col-md-12">
-
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Regular Diet
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Vegetarian Diet
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Low Sodium
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Diabetic
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Low Fat
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Low Cholesterol
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Low Potassium
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Gluten Free
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Low Vitamin K
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Other
-                                        </label>
-                                    </div>
-
+                                    @{
+                                        for (int i = 0; i < Model.Nutrition.Diet.Count; i++)
+                                        {
+                                            <div class="form-check margin">
+                                                @Html.CheckBoxFor(m => m.Nutrition.Diet[i].IsSelected, new { @class = "form-check-input" })
+                                                <label class="label" for="">@Model.Nutrition.Diet[i].Name</label>
+                                                @Html.HiddenFor(m => m.Nutrition.Diet[i].Name, new { @class = "label", value = Model.Nutrition.Diet[i].Name })
+                                                @Html.HiddenFor(m => m.Nutrition.Diet[i].Notes, new { @class = "label", value = Model.Nutrition.Diet[i].Notes })
+                                            </div>
+                                        }
+                                    }
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Other Diet</label>
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control" id="staticEmail">
+                                         @Html.TextBoxFor( m => m.Nutrition.OtherDiet, new {  @class="form-control"})
                                     </div>
                                 </div>
                             </div>
@@ -1883,6 +1650,7 @@
                                     <div class="form-group">
                                         <label for="staticEmail" class="col-form-label">Other Mental/Physical Health Info</label><br>
                                         <textarea class="textarea" rows="5" style="width: 100% !important;"></textarea>
+                                        @Html.TextAreaFor(m => m.Nutrition.Notes, new { @class = "form-control" })
                                     </div>
                                 </div>
                             </div>
@@ -1904,7 +1672,7 @@
                                         <input type="text" class="form-control" id="staticEmail">
                                     </div>
                                     <div class="col-md-2">
-                                        <button class="btn btn-danger">Add</button>
+                                        <a href="#" class="btn btn-danger">Add</a>
                                     </div>
                                 </div>
                             </div>
@@ -1921,11 +1689,17 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="staticEmail" class="col-form-label">Appetite</label>
-                                    <select class="form-control">
-                                        <option selected="selected" value="0">Select</option>
-                                        <option value="1AG">Good</option>
-                                        <option value="2AF">Fair</option>
-                                        <option value="3AP">Poor</option>
+                                    <select name="Meals.Appetite" class="form-control" required>
+                                        @{
+                                            if (Model.Meals != null && Model.Meals.Appetite != null && Model.Meals.Appetite != string.Empty)
+                                            {
+                                                <option selected="selected" value="@Model.Meals.Appetite">@Model.Meals.Appetite</option>
+                                            }
+                                        }
+                                        <option>Select</option>
+                                        <option value="Good">Good</option>
+                                        <option value="Fair">Fair</option>
+                                        <option value="Poor">Poor</option>
                                     </select>
                                 </div>
                             </div>
@@ -1942,36 +1716,54 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="staticEmail" class="col-form-label">Breakfast</label>
-                                    <select class="form-control">
-                                        <option selected="selected" value="0">Select</option>
-                                        <option value="13BN">N/A</option>
-                                        <option value="14BM">Main Dining Room</option>
-                                        <option value="15BO">On unit</option>
-                                        <option value="16BT">Tray Service</option>
+                                    <select name="Meals.BreakFast" class="form-control" required>
+                                        @{
+                                            if (Model.Meals != null && Model.Meals.BreakFast != null && Model.Meals.BreakFast != string.Empty)
+                                            {
+                                                <option selected="selected" value="@Model.Meals.BreakFast">@Model.Meals.BreakFast</option>
+                                            }
+                                        }
+                                        <option>Select</option>
+                                        <option value="N/A">N/A</option>
+                                        <option value="Main Dining Room">Main Dining Room</option>
+                                        <option value="On unit">On unit</option>
+                                        <option value="Tray Service">Tray Service</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="staticEmail" class="col-form-label">Lunch</label>
-                                    <select class="form-control">
-                                        <option selected="selected" value="0">Select</option>
-                                        <option value="17LN">N/A</option>
-                                        <option value="18LM">Main Dining Room</option>
-                                        <option value="19LO">On unit</option>
-                                        <option value="20LT">Tray Service</option>
+                                    <select name="Meals.Lunch" class="form-control" required>
+                                        @{
+                                            if (Model.Meals != null && Model.Meals.Lunch != null && Model.Meals.Lunch != string.Empty)
+                                            {
+                                                <option selected="selected" value="@Model.Meals.Lunch">@Model.Meals.Lunch</option>
+                                            }
+                                        }
+                                    <option>Select</option>
+                                    <option value="N/A">N/A</option>
+                                    <option value="Main Dining Room">Main Dining Room</option>
+                                    <option value="On unit">On unit</option>
+                                    <option value="20LT">Tray Service</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="staticEmail" class="col-form-label">Dinner</label>
-                                    <select class="form-control">
-                                        <option selected="selected" value="0">Select</option>
-                                        <option value="21DN">N/A</option>
-                                        <option value="22DM">Main Dining Room</option>
-                                        <option value="23DO">On unit</option>
-                                        <option value="24DT">Tray Service</option>
+                                    <select name="Meals.Dinner" class="form-control" required>
+                                        @{
+                                            if (Model.Meals != null && Model.Meals.Dinner != null && Model.Meals.Dinner != string.Empty)
+                                            {
+                                                <option selected="selected" value="@Model.Meals.Dinner">@Model.Meals.Dinner</option>
+                                            }
+                                        }
+                                        <option>Select</option>
+                                        <option value="N/A">N/A</option>
+                                        <option value="Main Dining Room">Main Dining Room</option>
+                                        <option value="On unit">On unit</option>
+                                        <option value="Tray Service">Tray Service</option>
                                     </select>
                                 </div>
                             </div>
@@ -1992,33 +1784,18 @@
                                     <h6>Bladder</h6>
                                 </div>
                                 <div class="col-md-12">
-
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Continent
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Incontinence
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Occasionally Incontinent
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Catheter
-                                        </label>
-                                    </div>
-
-
+                                    @{
+                                        for (int i = 0; i < Model.Elimination.Bladder.Count; i++)
+                                        {
+                                            <div class="form-check margin">
+                                                @Html.CheckBoxFor(m => m.Elimination.Bladder[i].IsSelected, new { @class = "form-check-input" })
+                                                <label class="label" for="">@Model.Elimination.Bladder[i].Name</label>
+                                                @Html.HiddenFor(m => m.Elimination.Bladder[i].Name, new { @class = "label", value = Model.Elimination.Bladder[i].Name })
+                                                @Html.HiddenFor(m => m.Elimination.Bladder[i].Notes, new { @class = "label", value = Model.Elimination.Bladder[i].Notes })
+                                            </div>
+                                        }
+                                    }
+                                   
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -2026,32 +1803,17 @@
                                     <h6>Bowel</h6>
                                 </div>
                                 <div class="col-md-12">
-
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Continent
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Incontinence
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Occasionally Incontinent
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Ostomy
-                                        </label>
-                                    </div>
-
+                                    @{
+                                        for (int i = 0; i < Model.Elimination.Bowel.Count; i++)
+                                        {
+                                            <div class="form-check margin">
+                                                @Html.CheckBoxFor(m => m.Elimination.Bowel[i].IsSelected, new { @class = "form-check-input" })
+                                                <label class="label" for="">@Model.Elimination.Bowel[i].Name</label>
+                                                @Html.HiddenFor(m => m.Elimination.Bowel[i].Name, new { @class = "label", value = Model.Elimination.Bowel[i].Name })
+                                                @Html.HiddenFor(m => m.Elimination.Bowel[i].Notes, new { @class = "label", value = Model.Elimination.Bowel[i].Notes })
+                                            </div>
+                                        }
+                                    }
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -2061,19 +1823,25 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Name/Code</label>
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control" id="staticEmail">
+                                        @Html.TextBoxFor(m => m.Elimination.NameCode, new { @class="form-control" })
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="staticEmail" class="col-form-label">Continence Products</label>
-                                    <select class="form-control">
-                                        <option selected="selected" value="0">Select</option>
-                                        <option value="16BS">S ( Small )</option>
-                                        <option value="17BM">M (Medium)</option>
-                                        <option value="18BL">L (Large)</option>
-                                        <option value="19BX">XL (Extra Large)</option>
+                                    <select name="Meals.BreakFast" class="form-control" required>
+                                        @{
+                                            if (Model.Elimination != null && Model.Elimination.Products != null && Model.Elimination.Products != string.Empty)
+                                            {
+                                                <option selected="selected" value="@Model.Elimination.Products">@Model.Elimination.Products</option>
+                                            }
+                                        }
+                                        <option>Select</option>
+                                        <option value="S ( Small )">S ( Small )</option>
+                                        <option value="M (Medium)">M (Medium)</option>
+                                        <option value="L (Large)">L (Large)</option>
+                                        <option value="XL (Extra Large)">XL (Extra Large)</option>
                                     </select>
                                 </div>
                             </div>
@@ -2081,7 +1849,7 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Assistive Devices</label>
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control" id="staticEmail">
+                                        @Html.TextBoxFor(m => m.Elimination.AssistiveDevices, new { @class = "form-control" })
                                     </div>
                                 </div>
                             </div>
@@ -2089,7 +1857,7 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Supplier</label>
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control" id="staticEmail">
+                                         @Html.TextBoxFor(m => m.Elimination.Supplier, new { @class = "form-control" })
                                     </div>
                                 </div>
                             </div>
@@ -2105,7 +1873,7 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Date</label>
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control" id="staticEmail">
+                                        @Html.TextBoxFor(m => m.Elimination.AssessmentDate, new { @class = "form-control" })
                                     </div>
                                 </div>
                             </div>
@@ -2122,13 +1890,19 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="staticEmail" class="col-form-label">Toileting</label>
-                                    <select class="form-control">
-                                        <option selected="selected" value="0">Select</option>
-                                        <option value="1TI">Independent</option>
-                                        <option value="3TN">Supervised</option>
-                                        <option value="2TA">Assisted</option>
-                                        <option value="4T1">1 Person</option>
-                                        <option value="5T2">2 Person</option>
+                                    <select name="Toileting.Toileting" class="form-control" required>
+                                        @{
+                                            if (Model.Toileting != null && Model.Toileting.Toileting != null && Model.Toileting.Toileting != string.Empty)
+                                            {
+                                                <option selected="selected" value="@Model.Toileting.Toileting">@Model.Toileting.Toileting</option>
+                                            }
+                                        }
+                                        <option>Select</option>
+                                        <option value="Independent">Independent</option>
+                                        <option value="Supervised">Supervised</option>
+                                        <option value="Assisted">Assisted</option>
+                                        <option value="1 Person">1 Person</option>
+                                        <option value="2 Person">2 Person</option>
                                     </select>
                                 </div>
                             </div>
@@ -2137,26 +1911,17 @@
                                     <h6>Bathroom</h6>
                                 </div>
                                 <div class="col-md-12">
-
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            D
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            E
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            N
-                                        </label>
-                                    </div>
-
+                                     @{
+                                        for (int i = 0; i < Model.Toileting.Bathroom.Count; i++)
+                                        {
+                                            <div class="form-check margin">
+                                                @Html.CheckBoxFor(m => m.Toileting.Bathroom[i].IsSelected, new { @class = "form-check-input" })
+                                                <label class="label" for="">@Model.Toileting.Bathroom[i].Name</label>
+                                                @Html.HiddenFor(m => m.Toileting.Bathroom[i].Name, new { @class = "label", value = Model.Toileting.Bathroom[i].Name })
+                                                @Html.HiddenFor(m => m.Toileting.Bathroom[i].Notes, new { @class = "label", value = Model.Toileting.Bathroom[i].Notes })
+                                            </div>
+                                        }
+                                    }
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -2164,26 +1929,17 @@
                                     <h6>Commode</h6>
                                 </div>
                                 <div class="col-md-12">
-
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            D
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            E
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            N
-                                        </label>
-                                    </div>
-
+                                     @{
+                                         for (int i = 0; i < Model.Toileting.Commode.Count; i++)
+                                         {
+                                            <div class="form-check margin">
+                                                @Html.CheckBoxFor(m => m.Toileting.Commode[i].IsSelected, new { @class = "form-check-input" })
+                                                <label class="label" for="">@Model.Toileting.Commode[i].Name</label>
+                                                @Html.HiddenFor(m => m.Toileting.Commode[i].Name, new { @class = "label", value = Model.Toileting.Commode[i].Name })
+                                                @Html.HiddenFor(m => m.Toileting.Commode[i].Notes, new { @class = "label", value = Model.Toileting.Commode[i].Notes })
+                                            </div>
+                                        }
+                                    }
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -2191,26 +1947,17 @@
                                     <h6>Bedpan/Urinal</h6>
                                 </div>
                                 <div class="col-md-12">
-
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            D
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            E
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            N
-                                        </label>
-                                    </div>
-
+                                     @{
+                                         for (int i = 0; i < Model.Toileting.Bedpan.Count; i++)
+                                         {
+                                            <div class="form-check margin">
+                                                @Html.CheckBoxFor(m => m.Toileting.Bedpan[i].IsSelected, new { @class = "form-check-input" })
+                                                <label class="label" for="">@Model.Toileting.Bedpan[i].Name</label>
+                                                @Html.HiddenFor(m => m.Toileting.Bedpan[i].Name, new { @class = "label", value = Model.Toileting.Bedpan[i].Name })
+                                                @Html.HiddenFor(m => m.Toileting.Bedpan[i].Notes, new { @class = "label", value = Model.Toileting.Bedpan[i].Notes })
+                                            </div>
+                                        }
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -2228,21 +1975,33 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="staticEmail" class="col-form-label">Assistance</label>
-                                    <select class="form-control">
-                                        <option selected="selected" value="0">Select</option>
-                                        <option value="9AA">AB</option>
-                                        <option value="10AS">SK</option>
-                                        <option value="11AM">MB</option>
+                                    <select name="Medication.Assistance" class="form-control" required>
+                                        @{
+                                            if (Model.Medication != null && Model.Medication.Assistance != null && Model.Medication.Assistance != string.Empty)
+                                            {
+                                                <option selected="selected" value="@Model.Medication.Assistance">@Model.Medication.Assistance</option>
+                                            }
+                                        }
+                                        <option>Select</option>
+                                        <option value="AB">AB</option>
+                                        <option value="SK">SK</option>
+                                        <option value="MB">MB</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="staticEmail" class="col-form-label">Administration</label>
-                                    <select class="form-control">
-                                        <option selected="selected" value="0">Select</option>
-                                        <option value="12AO">ON</option>
-                                        <option value="13AQ">QC</option>
+                                    <select name="Medication.Administration" class="form-control" required>
+                                        @{
+                                            if (Model.Medication != null && Model.Medication.Administration != null && Model.Medication.Administration != string.Empty)
+                                            {
+                                                <option selected="selected" value="@Model.Medication.Administration">@Model.Medication.Administration</option>
+                                            }
+                                        }
+                                        <option>Select</option>
+                                        <option value="ON">ON</option>
+                                        <option value="QC">QC</option>
                                     </select>
                                 </div>
                             </div>
@@ -2251,11 +2010,17 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="staticEmail" class="col-form-label">Completed By</label>
-                                    <select class="form-control">
-                                        <option selected="selected" value="0">Select</option>
-                                        <option value="1MS">Self</option>
-                                        <option value="2ML">Home</option>
-                                        <option value="3MA">Agency</option>
+                                    <select name="Medication.Administration" class="form-control" required>
+                                        @{
+                                            if (Model.Medication != null && Model.Medication.CompletedBy != null && Model.Medication.CompletedBy != string.Empty)
+                                            {
+                                                <option selected="selected" value="@Model.Medication.CompletedBy">@Model.Medication.CompletedBy</option>
+                                            }
+                                        }
+                                        <option>Select</option>
+                                        <option value="Self">Self</option>
+                                        <option value="Home">Home</option>
+                                        <option value="Agency">Agency</option>
                                     </select>
                                 </div>
                             </div>
@@ -2263,7 +2028,7 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Agency</label>
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control" id="staticEmail">
+                                        @Html.TextBoxFor(m => m.Medication.Agency, new { @class = "form-control" })
                                     </div>
                                 </div>
                             </div>
@@ -2271,12 +2036,18 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="staticEmail" class="col-form-label">Pharmacy</label>
-                                    <select class="form-control">
+                                    <select name="Medication.Pharmacy" class="form-control" required>
+                                        @{
+                                            if (Model.Medication != null && Model.Medication.Pharmacy != null && Model.Medication.Pharmacy != string.Empty)
+                                            {
+                                                <option selected="selected" value="@Model.Medication.Pharmacy">@Model.Medication.Pharmacy</option>
+                                            }
+                                        }
                                         <option>Select</option>
-                                        <option>Pre-Admin</option>
-                                        <option>5 Month Assessment</option>
-                                        <option>Update</option>
-                                        <option>Admission</option>
+                                        <option value="Pre-Admin">Pre-Admin</option>
+                                        <option value="5 Month Assessment">5 Month Assessment</option>
+                                        <option value="Update">Update</option>
+                                        <option value="Admission">Admission</option>
                                     </select>
                                 </div>
                             </div>
@@ -2330,7 +2101,7 @@
                                 <input type="text" class="form-control" id="staticEmail">
                             </div>
                             <div class="col-md-2">
-                                <img src="../assets/img/user_logout.png" class="img-responsive">
+                                <img src="~/Content/assets/img/user_logout.png" class="img-responsive">
                             </div>
                         </div>
                         <br>
@@ -2342,7 +2113,7 @@
                                 <input type="text" class="form-control" id="staticEmail">
                             </div>
                             <div class="col-md-2">
-                                <img src="../assets/img/user_logout.png" class="img-responsive">
+                                <img src="~/Content/assets/img/user_logout.png" class="img-responsive">
                             </div>
                         </div>
                     </div>
@@ -2361,63 +2132,17 @@
                                     <h6>Vision</h6>
                                 </div>
                                 <div class="col-md-12">
-
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Unimpaired
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Impaired
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Impaired Left
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Impaired Right
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Blind
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Blind Left
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Blind Right
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Glasses
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Contact Lens
-                                        </label>
-                                    </div>
-
-
+                                    @{
+                                        for (int i = 0; i < Model.SensoryAbilities.Vision.Count; i++)
+                                        {
+                                            <div class="form-check margin">
+                                                @Html.CheckBoxFor(m => m.SensoryAbilities.Vision[i].IsSelected, new { @class = "form-check-input" })
+                                                <label class="label" for="">@Model.SensoryAbilities.Vision[i].Name</label>
+                                                @Html.HiddenFor(m => m.SensoryAbilities.Vision[i].Name, new { @class = "label", value = Model.SensoryAbilities.Vision[i].Name })
+                                                @Html.HiddenFor(m => m.SensoryAbilities.Vision[i].Notes, new { @class = "label", value = Model.SensoryAbilities.Vision[i].Notes })
+                                            </div>
+                                        }
+                                    }
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -2425,69 +2150,17 @@
                                     <h6>Hearing</h6>
                                 </div>
                                 <div class="col-md-12">
-
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Unimpaired
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Impaired
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Impaired Left
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Impaired Right
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Deaf
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Deaf Left
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Deaf Right
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Hearing Aid
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Hearing Aid - Left
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Hearing Aid - Right
-                                        </label>
-                                    </div>
-
-
+                                    @{
+                                        for (int i = 0; i < Model.SensoryAbilities.Hearing.Count; i++)
+                                        {
+                                            <div class="form-check margin">
+                                                @Html.CheckBoxFor(m => m.SensoryAbilities.Hearing[i].IsSelected, new { @class = "form-check-input" })
+                                                <label class="label" for="">@Model.SensoryAbilities.Hearing[i].Name</label>
+                                                @Html.HiddenFor(m => m.SensoryAbilities.Hearing[i].Name, new { @class = "label", value = Model.SensoryAbilities.Hearing[i].Name })
+                                                @Html.HiddenFor(m => m.SensoryAbilities.Hearing[i].Notes, new { @class = "label", value = Model.SensoryAbilities.Hearing[i].Notes })
+                                            </div>
+                                        }
+                                    }
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -2495,58 +2168,23 @@
                                     <h6>Communication/Speech</h6>
                                 </div>
                                 <div class="col-md-12">
-
-                                    <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-12 col-form-label">Language</label>
-                                        <div class="col-md-12">
-                                            <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Unimpaired
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Impaired ability to communicate and understand
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Difficulty communicating, but understands
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Difficulty understanding, but can communicate
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Language barrier
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Understands Instruction
-                                        </label>
-                                    </div>
-
-
-
+                                    @{
+                                        for (int i = 0; i < Model.SensoryAbilities.Communication.Count; i++)
+                                        {
+                                            <div class="form-check margin">
+                                                @Html.CheckBoxFor(m => m.SensoryAbilities.Communication[i].IsSelected, new { @class = "form-check-input" })
+                                                <label class="label" for="">@Model.SensoryAbilities.Communication[i].Name</label>
+                                                @Html.HiddenFor(m => m.SensoryAbilities.Communication[i].Name, new { @class = "label", value = Model.SensoryAbilities.Communication[i].Name })
+                                                @Html.HiddenFor(m => m.SensoryAbilities.Communication[i].Notes, new { @class = "label", value = Model.SensoryAbilities.Communication[i].Notes })
+                                            </div>
+                                        }
+                                    }
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="staticEmail" class="col-form-label">Notes</label><br>
-                                    <textarea class="textarea" rows="5" style="width: 100% !important;"></textarea>
+                                    @Html.TextAreaFor(m => m.SensoryAbilities.Notes, new { @class="textarea", rows = "5", style = "width: 100% !important;" })
                                 </div>
 
                             </div>
@@ -2567,10 +2205,16 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Wound care</label>
                                     <div class="col-md-12">
-                                        <select class="form-control">
-                                            <option selected="selected" value="0">Select</option>
-                                            <option value="Y">Yes</option>
-                                            <option value="N">No</option>
+                                       <select name="WoundCare.WoundCare" class="form-control" required>
+                                        @{
+                                            if (Model.WoundCare != null && Model.WoundCare.WoundCare != null && Model.WoundCare.WoundCare != string.Empty)
+                                            {
+                                                <option selected="selected" value="@Model.WoundCare.WoundCare">@Model.WoundCare.WoundCare</option>
+                                            }
+                                        }
+                                            <option>Select</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
                                         </select>
                                     </div>
                                 </div>
@@ -2581,10 +2225,16 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Assisted by</label>
                                     <div class="col-md-12">
-                                        <select class="form-control">
-                                            <option selected="selected" value="0">Select</option>
-                                            <option value="1WH">Home</option>
-                                            <option value="2WA">Agency</option>
+                                         <select name="WoundCare.AssistedBy" class="form-control" required>
+                                        @{
+                                            if (Model.WoundCare != null && Model.WoundCare.AssistedBy != null && Model.WoundCare.AssistedBy != string.Empty)
+                                            {
+                                                <option selected="selected" value="@Model.WoundCare.AssistedBy">@Model.WoundCare.AssistedBy</option>
+                                            }
+                                        }
+                                            <option>Select</option>
+                                            <option value="Home">Home</option>
+                                            <option value="Agency">Agency</option>
                                         </select>
                                     </div>
                                 </div>

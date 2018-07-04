@@ -1951,10 +1951,10 @@ AS
 --20180610 chime created
 BEGIN
 	INSERT INTO tbl_AB_CarePlan_VitalSigns (ResidentId, CarePlanId, BP_Systolic, BP_Diastolic, BP_DateCompleted, Temperature, Temp_DateCompleted, WeightLBS, Weight_DateCompleted, Height_Feet,
-				Height_Inches, Height_DateCompleted, Pulse, Pulse_DateCompleted, PulseRegular)
+				Height_Inches, Height_DateCompleted, Pulse, Pulse_DateCompleted, PulseRegular, EnteredBy)
 	VALUES
 	(@ResidentId, @CarePlanId, @BP_Systolic, @BP_Diastolic, @BP_DateCompleted, @Temperature, @Temp_DateCompleted, @WeightLBS, @Weight_DateCompleted, @Height_Feet,
-				@Height_Inches, @Height_DateCompleted, @Pulse, @Pulse_DateCompleted, @PulseRegular)
+				@Height_Inches, @Height_DateCompleted, @Pulse, @Pulse_DateCompleted, @PulseRegular, 0)
 END
 GO
 
@@ -1982,7 +1982,7 @@ CREATE PROCEDURE [dbo].[spAB_Add_PlanOfCare_PersonalHygiene]
 @AM_PreferredType nvarchar(20)= '',
 @PM_PreferredType nvarchar(20)= '',
 @Bathing_PreferredType nvarchar(20)= '',
-@PreferredDays nvarchar(200)= ''
+@PreferredDays nvarchar(max)= ''
 AS
 --20180610 chime created
 BEGIN
@@ -1990,7 +1990,7 @@ BEGIN
 					AM_PreferredTime, PM_PreferredTime, Bathing_PreferredTime, AM_PreferredType, PM_PreferredType, Bathing_PreferredType, PreferredDays, EnteredBy	)
 	VALUES
 	(@ResidentId, @CarePlanId, @AMCare, @PMCare, @Bathing, @AM_AssistedBy, @PM_AssistedBy, @Bathing_AssistedBy, @AM_AgencyName, @PM_AgencyName, @Bathing_AgencyName,
-					@AM_PreferredTime, @PM_PreferredTime, @Bathing_PreferredTime, @AM_PreferredType, @PM_PreferredType, @Bathing_PreferredType, 're', 0	)
+					@AM_PreferredTime, @PM_PreferredTime, @Bathing_PreferredTime, @AM_PreferredType, @PM_PreferredType, @Bathing_PreferredType, @PreferredDays, 0	)
 END
 GO
 	
@@ -2013,7 +2013,7 @@ CREATE PROCEDURE [dbo].[spAB_Add_PlanOfCare_AssistanceWith]
 @FootCare_PreferredTime nvarchar(20)= '',
 @OralHygiene nvarchar(20)= '',
 @OralHygiene_PreferredTime nvarchar(20)= '',
-@Teeth nvarchar(200)= ''
+@Teeth nvarchar(max)= ''
 AS
 --20180610 chime created
 BEGIN

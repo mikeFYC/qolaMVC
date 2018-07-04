@@ -70,7 +70,7 @@ CREATE TABLE [dbo].[tbl_AB_CarePlan_PersonalHygiene](
 	PM_PreferredType nvarchar(20) null,
 	Bathing_PreferredType nvarchar(20) null,
 
-	PreferredDays nvarchar(200) null,
+	PreferredDays nvarchar(max) null,
 	EnteredBy [int] not null,
 	DateEntered [datetime],
 	PRIMARY KEY (Id)
@@ -99,7 +99,7 @@ CREATE TABLE [dbo].[tbl_AB_CarePlan_AssistanceWith](
 	OralHygiene [nvarchar](50) null,
 	OralHygiene_PreferredTime [nvarchar](20) null,
 	
-	Teeth nvarchar(200) null,
+	Teeth nvarchar(max) null,
 	EnteredBy [int] not null,
 	DateEntered [datetime],
 	PRIMARY KEY (Id)
