@@ -1490,15 +1490,15 @@
                                 <div class="col-md-12">
 
                                     <div class="form-check margin">
-                                        @Html.CheckBoxFor( m => m.Orientation.IsPerson, new {  @class="checkbox"} )
+                                        @Html.CheckBoxFor( m => m.Orientation.IsPerson, new {  @class="form-check-input"} )
                                         <label class="label" for="">Person</label>
                                     </div>
                                     <div class="form-check margin">
-                                         @Html.CheckBoxFor( m => m.Orientation.IsPlace, new {  @class="checkbox"} )
+                                         @Html.CheckBoxFor( m => m.Orientation.IsPlace, new {  @class= "form-check-input" } )
                                         <label class="label" for="">Place</label>
                                     </div>
                                     <div class="form-check margin">
-                                         @Html.CheckBoxFor( m => m.Orientation.IsTime, new {  @class="checkbox"} )
+                                         @Html.CheckBoxFor( m => m.Orientation.IsTime, new {  @class= "form-check-input" } )
                                         <label class="label" for="">Time</label>
                                     </div>
 
@@ -1507,7 +1507,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-check margin">
-                                    @Html.CheckBoxFor(m => m.Orientation.IsDementiaCare, new { @class = "checkbox" })
+                                    @Html.CheckBoxFor(m => m.Orientation.IsDementiaCare, new { @class = "form-check-input" })
                                     <label class="label" for="">Dementia Care</label>
                                 </div>
 
@@ -1648,7 +1648,7 @@
                             <div class="col-md-6">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="staticEmail" class="col-form-label">Other Mental/Physical Health Info</label><br>
+                                        <label for="staticEmail" class="col-form-label">Notes</label><br>
                                         <textarea class="textarea" rows="5" style="width: 100% !important;"></textarea>
                                         @Html.TextAreaFor(m => m.Nutrition.Notes, new { @class = "form-control" })
                                     </div>
@@ -2245,7 +2245,7 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Agency name</label>
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control" id="staticEmail">
+                                        @Html.TextBoxFor(m => m.WoundCare.Agency, new { @class="form-control"})
                                     </div>
                                 </div>
 
@@ -2267,10 +2267,16 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Skin Care</label>
                                     <div class="col-md-12">
-                                        <select class="form-control">
-                                            <option selected="selected" value="0">Select</option>
-                                            <option value="68SY">Yes</option>
-                                            <option value="67SN">No</option>
+                                        <select name="SkinCare.SkinCare" class="form-control" required>
+                                            @{
+                                                if (Model.SkinCare != null && Model.SkinCare.SkinCare != null && Model.SkinCare.SkinCare != string.Empty)
+                                                {
+                                                    <option selected="selected" value="@Model.SkinCare.SkinCare">@Model.SkinCare.SkinCare</option>
+                                                }
+                                            }
+                                            <option>Select</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
                                         </select>
                                     </div>
                                 </div>
@@ -2281,7 +2287,7 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Special Treatements</label>
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control" id="staticEmail">
+                                        @Html.TextBoxFor(m => m.SkinCare.SpecialTreatments, new { @class = "form-control" })
                                     </div>
                                 </div>
 
@@ -2303,16 +2309,22 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">O2-Oxygen</label>
                                     <div class="col-md-12">
-                                        <select class="form-control">
-                                            <option selected="selected" value="0">Select</option>
-                                            <option value="7ON">N/A</option>
-                                            <option value="1OI">Independent</option>
-                                            <option value="2OS">Supervised</option>
-                                            <option value="3OA">Assisted</option>
-                                            <option value="9OD">Dependant</option>
-                                            <option value="10OS4">SL4</option>
-                                            <option value="11OSD4">SL4D</option>
-                                            <option value="120P">Private (Supportive)</option>
+                                        <select name="SpecialNeeds.Oxygen" class="form-control" required>
+                                            @{
+                                                if (Model.SpecialNeeds != null && Model.SpecialNeeds.Oxygen != null && Model.SpecialNeeds.Oxygen != string.Empty)
+                                                {
+                                                    <option selected="selected" value="@Model.SpecialNeeds.Oxygen">@Model.SpecialNeeds.Oxygen</option>
+                                                }
+                                            }
+                                            <option>Select</option>
+                                            <option value="N/A">N/A</option>
+                                            <option value="Independent">Independent</option>
+                                            <option value="Supervised">Supervised</option>
+                                            <option value="Assisted">Assisted</option>
+                                            <option value="Dependant">Dependant</option>
+                                            <option value="SL4">SL4</option>
+                                            <option value="SL4D">SL4D</option>
+                                            <option value="Private (Supportive)">Private (Supportive)</option>
                                         </select>
                                     </div>
                                 </div>
@@ -2323,7 +2335,7 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Supplier</label>
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control" id="staticEmail">
+                                       @Html.TextBoxFor(m => m.SpecialNeeds.OxygenSupplier, new { @class = "form-control" })
                                     </div>
                                 </div>
 
@@ -2333,7 +2345,7 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Rate (L/min)</label>
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control" id="staticEmail">
+                                         @Html.TextBoxFor(m => m.SpecialNeeds.OxygenRate, new { @class = "form-control" })
                                     </div>
                                 </div>
 
@@ -2343,7 +2355,7 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Notes</label>
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control" id="staticEmail">
+                                         @Html.TextBoxFor(m => m.SpecialNeeds.OxygenNotes, new { @class = "form-control" })
                                     </div>
                                 </div>
 
@@ -2353,16 +2365,22 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">CPAP</label>
                                     <div class="col-md-12">
-                                        <select class="form-control">
-                                            <option selected="selected" value="0">Select</option>
-                                            <option value="9CN">N/A</option>
-                                            <option value="4CI">Independent</option>
-                                            <option value="5CS">Supervised</option>
-                                            <option value="6CA">Assisted</option>
-                                            <option value="17CD">Dependant</option>
-                                            <option value="13CS4">SL4</option>
-                                            <option value="15CSD4">SL4D</option>
-                                            <option value="16CP">Private (Supportive)</option>
+                                        <select name="SpecialNeeds.CPAP" class="form-control" required>
+                                            @{
+                                                if (Model.SpecialNeeds != null && Model.SpecialNeeds.CPAP != null && Model.SpecialNeeds.CPAP != string.Empty)
+                                                {
+                                                    <option selected="selected" value="@Model.SpecialNeeds.CPAP">@Model.SpecialNeeds.CPAP</option>
+                                                }
+                                            }
+                                            <option>Select</option>
+                                            <option value="N/A">N/A</option>
+                                            <option value="Independent">Independent</option>
+                                            <option value="Supervised">Supervised</option>
+                                            <option value="Assisted">Assisted</option>
+                                            <option value="Dependant">Dependant</option>
+                                            <option value="SL4">SL4</option>
+                                            <option value="SL4D">SL4D</option>
+                                            <option value="Private (Supportive)">Private (Supportive)</option>
                                         </select>
                                     </div>
                                 </div>
@@ -2373,7 +2391,7 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Supplier</label>
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control" id="staticEmail">
+                                         @Html.TextBoxFor(m => m.SpecialNeeds.CPAPSupplier, new { @class = "form-control" })
                                     </div>
                                 </div>
 
@@ -2383,7 +2401,7 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Notes</label>
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control" id="staticEmail">
+                                         @Html.TextBoxFor(m => m.SpecialNeeds.CPAPNotes, new { @class = "form-control" })
                                     </div>
                                 </div>
 
@@ -2402,59 +2420,27 @@
                         </div>
                         <div class="row">
                             <div class="col-md-4">
-                                <div class="col-md-12 text-center">
+                                <div class="col-md-12 bg text-center">
                                     <h6>Special Equipment</h6>
                                 </div>
                                 <div class="col-md-12">
-
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            N/A
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Pendant
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            TED stocking
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Support brace
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Prosthesis
-                                        </label>
-                                    </div>
-                                    <div class="form-check margin">
-                                        <input class="form-check-input" type="checkbox" value="" id="">
-                                        <label class="form-check-label checkspace" for="">
-                                            Other
-                                        </label>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-12 col-form-label">Other</label>
-                                        <div class="col-md-12">
-                                            <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                    </div>
-
+                                    @{
+                                        for (int i = 0; i < Model.SpecialEquipment.SpecialEquipment.Count; i++)
+                                        {
+                                            <div class="form-check margin">
+                                                @Html.CheckBoxFor(m => m.SpecialEquipment.SpecialEquipment[i].IsSelected, new { @class = "form-check-input" })
+                                                <label class="label" for="">@Model.SpecialEquipment.SpecialEquipment[i].Name</label>
+                                                @Html.HiddenFor(m => m.SpecialEquipment.SpecialEquipment[i].Name, new { @class = "label", value = Model.SpecialEquipment.SpecialEquipment[i].Name })
+                                                @Html.HiddenFor(m => m.SpecialEquipment.SpecialEquipment[i].Notes, new { @class = "label", value = Model.SpecialEquipment.SpecialEquipment[i].Notes })
+                                            </div>
+                                        }
+                                    }
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="staticEmail" class="col-form-label">Other Mental/Physical Health Info</label><br>
+                                    <label for="staticEmail" class="col-form-label">Details</label><br>
+                                    @Html.TextAreaFor(m => m.SpecialEquipment.Details, new { @class = "form-control" })
                                     <textarea class="textarea" rows="5" style="width: 100% !important;"></textarea>
                                 </div>
                             </div>
@@ -2475,10 +2461,16 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Resident Family meeting to be arranged</label>
                                     <div class="col-md-12">
-                                        <select class="form-control">
-                                            <option selected="selected" value="0">Select</option>
-                                            <option value="Y">Yes</option>
-                                            <option value="N">No</option>
+                                         <select name="FamilySupportModel.FamilyMeeting" class="form-control" required>
+                                        @{
+                                            if (Model.FamilySupportModel != null && Model.FamilySupportModel.FamilyMeeting != null && Model.FamilySupportModel.FamilyMeeting != string.Empty)
+                                            {
+                                                <option selected="selected" value="@Model.FamilySupportModel.FamilyMeeting">@Model.FamilySupportModel.FamilyMeeting</option>
+                                            }
+                                        }
+                                            <option>Select</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
                                         </select>
                                     </div>
                                 </div>
@@ -2489,13 +2481,19 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-12 col-form-label">Family Involvement</label>
                                     <div class="col-md-12">
-                                        <select class="form-control">
-                                            <option selected="selected" value="0">Select</option>
-                                            <option value="4IN">Never</option>
-                                            <option value="1ID">Daily</option>
-                                            <option value="2IW">Weekly</option>
-                                            <option value="3IM">Monthly</option>
-                                            <option value="9FA">Annually</option>
+                                         <select name="FamilySupportModel.FamilyInvolvement" class="form-control" required>
+                                        @{
+                                            if (Model.FamilySupportModel != null && Model.FamilySupportModel.FamilyInvolvement != null && Model.FamilySupportModel.FamilyInvolvement != string.Empty)
+                                            {
+                                                <option selected="selected" value="@Model.FamilySupportModel.FamilyInvolvement">@Model.FamilySupportModel.FamilyInvolvement</option>
+                                            }
+                                        }
+                                            <option>Select</option>
+                                            <option value="Never">Never</option>
+                                            <option value="Daily">Daily</option>
+                                            <option value="Weekly">Weekly</option>
+                                            <option value="Monthly">Monthly</option>
+                                            <option value="Annually">Annually</option>
                                         </select>
                                     </div>
                                 </div>
@@ -2518,11 +2516,17 @@
                                         <div class="form-group row">
                                             <label for="staticEmail" class="col-md-12 col-form-label">Mantoux / TB</label>
                                             <div class="col-md-12">
-                                                <select class="form-control">
-                                                    <option selected="selected" value="0">Select</option>
-                                                    <option value="5MU">Unknown</option>
-                                                    <option value="20MY">Yes</option>
-                                                    <option value="40MN">No</option>
+                                                <select name="Immunization.TB" class="form-control" required>
+                                                @{
+                                                    if (Model.Immunization != null && Model.Immunization.TB != null && Model.Immunization.TB != string.Empty)
+                                                    {
+                                                        <option selected="selected" value="@Model.Immunization.TB">@Model.Immunization.TB</option>
+                                                    }
+                                                }
+                                                    <option>Select</option>
+                                                    <option value="Unknown">Unknown</option>
+                                                    <option value="Yes">Yes</option>
+                                                    <option value="No">No</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -2530,7 +2534,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group form-group-default">
                                             <label>Date</label>
-                                            <input type="text" class="form-control">
+                                           @Html.TextBoxFor(m => m.Immunization.TBDate, new { @class="Form-control"})
                                         </div>
                                     </div>
                                 </div>
@@ -2543,11 +2547,17 @@
                                         <div class="form-group row">
                                             <label for="staticEmail" class="col-md-12 col-form-label">Chest X-Ray</label>
                                             <div class="col-md-12">
-                                                <select class="form-control">
-                                                    <option selected="selected" value="0">Select</option>
-                                                    <option value="5MU">Unknown</option>
-                                                    <option value="20MY">Yes</option>
-                                                    <option value="40MN">No</option>
+                                               <select name="Immunization.ChestXRay" class="form-control" required>
+                                                @{
+                                                    if (Model.Immunization != null && Model.Immunization.ChestXRay != null && Model.Immunization.ChestXRay != string.Empty)
+                                                    {
+                                                        <option selected="selected" value="@Model.Immunization.ChestXRay">@Model.Immunization.ChestXRay</option>
+                                                    }
+                                                }
+                                                    <option>Select</option>
+                                                    <option value="Unknown">Unknown</option>
+                                                    <option value="Yes">Yes</option>
+                                                    <option value="No">No</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -2555,7 +2565,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group form-group-default">
                                             <label>Date</label>
-                                            <input type="text" class="form-control">
+                                            @Html.TextBoxFor(m => m.Immunization.ChestXRayDate, new { @class="Form-control"})
                                         </div>
                                     </div>
                                 </div>
@@ -2568,11 +2578,17 @@
                                         <div class="form-group row">
                                             <label for="staticEmail" class="col-md-12 col-form-label">Pneumonia</label>
                                             <div class="col-md-12">
-                                                <select class="form-control">
-                                                    <option selected="selected" value="0">Select</option>
-                                                    <option value="5MU">Unknown</option>
-                                                    <option value="20MY">Yes</option>
-                                                    <option value="40MN">No</option>
+                                                <select name="Immunization.Pneumonia" class="form-control" required>
+                                                    @{
+                                                        if (Model.Immunization != null && Model.Immunization.Pneumonia != null && Model.Immunization.Pneumonia != string.Empty)
+                                                        {
+                                                            <option selected="selected" value="@Model.Immunization.Pneumonia">@Model.Immunization.Pneumonia</option>
+                                                        }
+                                                    }
+                                                    <option>Select</option>
+                                                    <option value="Unknown">Unknown</option>
+                                                    <option value="Yes">Yes</option>
+                                                    <option value="No">No</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -2580,7 +2596,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group form-group-default">
                                             <label>Date</label>
-                                            <input type="text" class="form-control">
+                                             @Html.TextBoxFor(m => m.Immunization.PneumoniaDate, new { @class="Form-control"})
                                         </div>
                                     </div>
                                 </div>
@@ -2593,11 +2609,17 @@
                                         <div class="form-group row">
                                             <label for="staticEmail" class="col-md-12 col-form-label">Flu Vaccine</label>
                                             <div class="col-md-12">
-                                                <select class="form-control">
-                                                    <option selected="selected" value="0">Select</option>
-                                                    <option value="5MU">Unknown</option>
-                                                    <option value="20MY">Yes</option>
-                                                    <option value="40MN">No</option>
+                                                <select name="Immunization.FluVaccine" class="form-control" required>
+                                                    @{
+                                                        if (Model.Immunization != null && Model.Immunization.FluVaccine != null && Model.Immunization.FluVaccine != string.Empty)
+                                                        {
+                                                            <option selected="selected" value="@Model.Immunization.FluVaccine">@Model.Immunization.FluVaccine</option>
+                                                        }
+                                                    }
+                                                    <option>Select</option>
+                                                    <option value="Unknown">Unknown</option>
+                                                    <option value="Yes">Yes</option>
+                                                    <option value="No">No</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -2605,7 +2627,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group form-group-default">
                                             <label>Date</label>
-                                            <input type="text" class="form-control">
+                                            @Html.TextBoxFor(m => m.Immunization.FluVaccineDate, new { @class = "Form-control" })
                                         </div>
                                     </div>
                                 </div>
@@ -2618,11 +2640,17 @@
                                         <div class="form-group row">
                                             <label for="staticEmail" class="col-md-12 col-form-label">Tetanus</label>
                                             <div class="col-md-12">
-                                                <select class="form-control">
-                                                    <option selected="selected" value="0">Select</option>
-                                                    <option value="5MU">Unknown</option>
-                                                    <option value="20MY">Yes</option>
-                                                    <option value="40MN">No</option>
+                                                <select name="Immunization.Tetanus" class="form-control" required>
+                                                    @{
+                                                        if (Model.Immunization != null && Model.Immunization.Tetanus != null && Model.Immunization.Tetanus != string.Empty)
+                                                        {
+                                                            <option selected="selected" value="@Model.Immunization.Tetanus">@Model.Immunization.Tetanus</option>
+                                                        }
+                                                    }
+                                                    <option>Select</option>
+                                                    <option value="Unknown">Unknown</option>
+                                                    <option value="Yes">Yes</option>
+                                                    <option value="No">No</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -2630,7 +2658,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group form-group-default">
                                             <label>Date Completed</label>
-                                            <input type="text" class="form-control">
+                                            @Html.TextBoxFor(m => m.Immunization.TetanusDate, new { @class = "Form-control" })
                                         </div>
                                     </div>
                                 </div>
@@ -2654,11 +2682,17 @@
                                     <div class="form-group row">
                                         <label for="staticEmail" class="col-md-12 col-form-label">M.R.S.A</label>
                                         <div class="col-md-12">
-                                            <select class="form-control">
-                                                <option selected="selected" value="0">Select</option>
-                                                <option value="5MU">Unknown</option>
-                                                <option value="20MY">Yes</option>
-                                                <option value="40MN">No</option>
+                                            <select name="InfectiousDiseases.MRSA" class="form-control" required>
+                                                @{
+                                                    if (Model.InfectiousDiseases != null && Model.InfectiousDiseases.MRSA != null && Model.InfectiousDiseases.MRSA != string.Empty)
+                                                    {
+                                                        <option selected="selected" value="@Model.InfectiousDiseases.MRSA">@Model.InfectiousDiseases.MRSA</option>
+                                                    }
+                                                }
+                                                <option>Select</option>
+                                                <option value="Unknown">Unknown</option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
                                             </select>
                                         </div>
                                     </div>
@@ -2671,12 +2705,12 @@
                                     <div class="col-md-12">
                                         <div class="form-group form-group-default">
                                             <label>Diagnosed Date</label>
-                                            <input type="text" class="form-control">
+                                             @Html.TextBoxFor(m => m.InfectiousDiseases.MRSADiagnosedDate, new { @class = "Form-control" })
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group form-group-default">
-                                            <input type="text" class="form-control" value="Unknown">
+                                            <input type="checkbox" class="form-control" value="Unknown">
                                         </div>
                                     </div>
                                 </div>
@@ -2687,13 +2721,13 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group form-group-default">
-                                            <label>Diagnosed Date</label>
-                                            <input type="text" class="form-control">
+                                            <label>Resolved Date</label>
+                                            @Html.TextBoxFor(m => m.InfectiousDiseases.MRSAResolvedDate, new { @class = "Form-control" })
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group form-group-default">
-                                            <input type="text" class="form-control" value="Unknown">
+                                            <input type="checkbox" class="form-control" value="Unknown">
                                         </div>
                                     </div>
                                 </div>
@@ -2708,11 +2742,17 @@
                                     <div class="form-group row">
                                         <label for="staticEmail" class="col-md-12 col-form-label">V.R.E</label>
                                         <div class="col-md-12">
-                                            <select class="form-control">
-                                                <option selected="selected" value="0">Select</option>
-                                                <option value="5MU">Unknown</option>
-                                                <option value="20MY">Yes</option>
-                                                <option value="40MN">No</option>
+                                            <select name="InfectiousDiseases.VRE" class="form-control" required>
+                                                @{
+                                                    if (Model.InfectiousDiseases != null && Model.InfectiousDiseases.VRE != null && Model.InfectiousDiseases.VRE != string.Empty)
+                                                    {
+                                                        <option selected="selected" value="@Model.InfectiousDiseases.VRE">@Model.InfectiousDiseases.VRE</option>
+                                                    }
+                                                }
+                                                <option>Select</option>
+                                                <option value="Unknown">Unknown</option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
                                             </select>
                                         </div>
                                     </div>
@@ -2725,12 +2765,12 @@
                                     <div class="col-md-12">
                                         <div class="form-group form-group-default">
                                             <label>Diagnosed Date</label>
-                                            <input type="text" class="form-control">
+                                             @Html.TextBoxFor(m => m.InfectiousDiseases.VREDiagnosedDate, new { @class = "Form-control" })
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group form-group-default">
-                                            <input type="text" class="form-control" value="Unknown">
+                                            <input type="checkbox" class="form-control" value="Unknown">
                                         </div>
                                     </div>
                                 </div>
@@ -2741,13 +2781,13 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group form-group-default">
-                                            <label>Diagnosed Date</label>
-                                            <input type="text" class="form-control">
+                                            <label>Resolved Date</label>
+                                             @Html.TextBoxFor(m => m.InfectiousDiseases.VREResolvedDate, new { @class = "Form-control" })
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group form-group-default">
-                                            <input type="text" class="form-control" value="Unknown">
+                                            <input type="checkbox" class="form-control" value="Unknown">
                                         </div>
                                     </div>
                                 </div>
@@ -2762,11 +2802,17 @@
                                     <div class="form-group row">
                                         <label for="staticEmail" class="col-md-12 col-form-label">C-Diff</label>
                                         <div class="col-md-12">
-                                            <select class="form-control">
-                                                <option selected="selected" value="0">Select</option>
-                                                <option value="5MU">Unknown</option>
-                                                <option value="20MY">Yes</option>
-                                                <option value="40MN">No</option>
+                                           <select name="InfectiousDiseases.CDiff" class="form-control" required>
+                                                @{
+                                                    if (Model.InfectiousDiseases != null && Model.InfectiousDiseases.CDiff != null && Model.InfectiousDiseases.CDiff != string.Empty)
+                                                    {
+                                                        <option selected="selected" value="@Model.InfectiousDiseases.CDiff">@Model.InfectiousDiseases.CDiff</option>
+                                                    }
+                                                }
+                                                <option>Select</option>
+                                                <option value="Unknown">Unknown</option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
                                             </select>
                                         </div>
                                     </div>
@@ -2779,12 +2825,12 @@
                                     <div class="col-md-12">
                                         <div class="form-group form-group-default">
                                             <label>Diagnosed Date</label>
-                                            <input type="text" class="form-control">
+                                            @Html.TextBoxFor(m => m.InfectiousDiseases.CDiffDiagnosedDate, new { @class = "Form-control" })
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group form-group-default">
-                                            <input type="text" class="form-control" value="Unknown">
+                                            <input type="checkbox" class="form-control" value="Unknown">
                                         </div>
                                     </div>
                                 </div>
@@ -2795,13 +2841,13 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group form-group-default">
-                                            <label>Diagnosed Date</label>
-                                            <input type="text" class="form-control">
+                                            <label>Resolved Date</label>
+                                            @Html.TextBoxFor(m => m.InfectiousDiseases.CDiffResolvedDate, new { @class = "Form-control" })
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group form-group-default">
-                                            <input type="text" class="form-control" value="Unknown">
+                                            <input type="checkbox" class="form-control" value="Unknown">
                                         </div>
                                     </div>
                                 </div>
@@ -2815,7 +2861,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group form-group-default">
                                         <label>Other</label>
-                                        <input type="text" class="form-control">
+                                        @Html.TextBoxFor(m => m.InfectiousDiseases.Other, new { @class = "Form-control" })
                                     </div>
                                 </div>
 
@@ -2826,13 +2872,13 @@
                                     <div class="col-md-12">
                                         <div class="form-group form-group-default">
                                             <label>Diagnosed Date</label>
-                                            <input type="text" class="form-control">
+                                            @Html.TextBoxFor(m => m.InfectiousDiseases.OtherDiagnosedDate, new { @class = "Form-control" })
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-check margin">
                                             <input class="form-check-input" type="checkbox" value="" id="">
-                                            <label class="form-check-label checkspace" for="">
+                                            <label class="label" for="">
                                                 Unknown
                                             </label>
                                         </div>
@@ -2845,14 +2891,14 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group form-group-default">
-                                            <label>Diagnosed Date</label>
-                                            <input type="text" class="form-control">
+                                            <label>Resolved Date</label>
+                                            @Html.TextBoxFor(m => m.InfectiousDiseases.OtherResolvedDate, new { @class = "Form-control" })
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-check margin">
                                             <input class="form-check-input" type="checkbox" value="" id="">
-                                            <label class="form-check-label checkspace" for="">
+                                            <label class="label" for="">
                                                 Unknown
                                             </label>
                                         </div>
@@ -2865,12 +2911,12 @@
                         <div class="row">
                             <div class="col-md-3 offset-md-9">
                                 <div class="form-check form-check-inline" style="margin-right: 20px">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                                    <label class="form-check-label checkspace" for="inlineCheckbox1">InComplate</label>
+                                    @Html.RadioButtonFor(m => m.CompleteStatus, "InComplete", new { @class = "form-check-input" })
+                                    <label class="label" for="inlineCheckbox1">InComplete</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
-                                    <label class="form-check-label checkspace" for="inlineCheckbox2">Complate</label>
+                                    @Html.RadioButtonFor(m => m.CompleteStatus, "Complete", new { @class = "form-check-input" })
+                                    <label class="label" for="inlineCheckbox2">Complete</label>
                                 </div>
                             </div>
                         </div>

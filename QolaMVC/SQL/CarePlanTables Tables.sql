@@ -188,7 +188,7 @@ CREATE TABLE [dbo].[tbl_AB_CarePlan_Behaviour](
 	ResidentId [int] NOT NULL,
 	CarePlanId [int] NOT NULL,
 	
-	Behavior [nvarchar](500) null,
+	Behavior [nvarchar](max) null,
 	HarmToSelf bit null,
 	smoker bit null,
 	RiskOfWandering bit null,
@@ -208,7 +208,7 @@ CREATE TABLE [dbo].[tbl_AB_CarePlan_CognitiveFunction](
 	ResidentId [int] NOT NULL,
 	CarePlanId [int] NOT NULL,
 	
-	CognitiveFunction [nvarchar](500) null,
+	CognitiveFunction [nvarchar](max) null,
 	
 	EnteredBy [int] not null,
 	DateEntered [datetime],
@@ -245,7 +245,7 @@ CREATE TABLE [dbo].[tbl_AB_CarePlan_Nutrition](
 	AssistiveDevices [nvarchar](20) null,
 	Texture [nvarchar](20) null,
 	Other [nvarchar](20) null,
-	Diet [nvarchar](200) null,
+	Diet [nvarchar](max) null,
 	OtherDiet [nvarchar](20) null,
 	Notes [nvarchar](max) null,
 	Allergies nvarchar(max) null,
@@ -279,8 +279,8 @@ CREATE TABLE [dbo].[tbl_AB_CarePlan_Elimination](
 	ResidentId [int] NOT NULL,
 	CarePlanId [int] NOT NULL,
 	
-	Bladder [nvarchar](200) null,
-	Bowel [nvarchar](200) null,
+	Bladder [nvarchar](max) null,
+	Bowel [nvarchar](max) null,
 	
 	NameCode [nvarchar](100) null,
 	ContinenceProducts [nvarchar](100) null,

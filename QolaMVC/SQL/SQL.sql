@@ -2061,3 +2061,428 @@ BEGIN
 				@PT, @PT_Frequency, @PT_Provider, @OT, @OT_Frequency, @OT_Provider, 0)
 END
 GO
+
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_PlanOfCare_Safety]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_PlanOfCare_Safety]
+GO
+CREATE PROCEDURE [dbo].[spAB_Add_PlanOfCare_Safety]
+@CarePlanId int,
+@ResidentId INT,
+@SafetyPASD [nvarchar](50) = null,
+@Other [nvarchar](20) = null,
+@Rails [nvarchar](50) = null,
+@NightOnly bit = null
+AS
+--20180705 chime created
+BEGIN
+	INSERT INTO tbl_AB_CarePlan_Safety(ResidentId, CarePlanId, SafetyPASD, Other, Rails, NightOnly, EnteredBy, DateEntered)
+	VALUES (@ResidentId, @CarePlanId, @SafetyPASD, @Other, @Rails, @NightOnly, 0, getdate())
+END
+GO
+
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_PlanOfCare_MealEscort]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_PlanOfCare_MealEscort]
+GO
+CREATE PROCEDURE [dbo].[spAB_Add_PlanOfCare_MealEscort]
+@CarePlanId int,
+@ResidentId INT,
+@BreakFast [nvarchar](20) = null,
+@Lunch [nvarchar](20) = null,
+@Dinner [nvarchar](20) = null
+AS
+--20180705 chime created
+BEGIN
+	INSERT INTO tbl_AB_CarePlan_MealEscort(ResidentId, CarePlanId, BreakFast, Lunch, Dinner, EnteredBy, DateEntered)
+	VALUES (@ResidentId, @CarePlanId, @BreakFast, @Lunch, @Dinner, 0, getdate())
+END
+GO
+
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_PlanOfCare_Behaviour]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_PlanOfCare_Behaviour]
+GO
+CREATE PROCEDURE [dbo].[spAB_Add_PlanOfCare_Behaviour]
+@CarePlanId int,
+@ResidentId INT,
+@Behavior [nvarchar](max) = null,
+@HarmToSelf bit = null,
+@Smoker bit = null,
+@RiskOfWandering bit = null,
+@CognitiveStatus [nvarchar](20) = null,
+@OtherInfo nvarchar(max) = null
+AS
+--20180705 chime created
+BEGIN
+	INSERT INTO tbl_AB_CarePlan_Behaviour(ResidentId, CarePlanId, Behavior, HarmToSelf, smoker, RiskOfWandering, CognitiveStatus, OtherInfo, EnteredBy, DateEntered)
+	VALUES (@ResidentId, @CarePlanId, @Behavior, @HarmToSelf, @Smoker, @RiskOfWandering, @CognitiveStatus, @OtherInfo, 0, getdate())
+END
+GO
+
+
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_PlanOfCare_CognitiveFunction]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_PlanOfCare_CognitiveFunction]
+GO
+CREATE PROCEDURE [dbo].[spAB_Add_PlanOfCare_CognitiveFunction]
+@CarePlanId int,
+@ResidentId INT,
+@CognitiveFunction nvarchar(max) = null
+AS
+--20180705 chime created
+BEGIN
+	INSERT INTO tbl_AB_CarePlan_CognitiveFunction(ResidentId, CarePlanId, CognitiveFunction, EnteredBy, DateEntered)
+	VALUES (@ResidentId, @CarePlanId, @CognitiveFunction, 0, getdate())
+END
+GO
+
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_PlanOfCare_Orientation]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_PlanOfCare_Orientation]
+GO
+CREATE PROCEDURE [dbo].[spAB_Add_PlanOfCare_Orientation]
+@CarePlanId int,
+@ResidentId INT,
+@IsPerson bit = null,
+@IsPlace bit = null,
+@IsTime bit = null,
+@IsDementiaCare bit = null
+AS
+--20180705 chime created
+BEGIN
+	INSERT INTO tbl_AB_CarePlan_Orientation(ResidentId, CarePlanId, IsPerson, IsPlace, IsTime, IsDementiaCare, EnteredBy, DateEntered)
+	VALUES (@ResidentId, @CarePlanId, @IsPerson, @IsPlace, @IsTime, @IsDementiaCare, 0, getdate())
+END
+GO
+
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_PlanOfCare_Nutrition]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_PlanOfCare_Nutrition]
+GO
+CREATE PROCEDURE [dbo].[spAB_Add_PlanOfCare_Nutrition]
+@CarePlanId int,
+@ResidentId INT,
+@NutritionStatus [nvarchar](20) = null,
+@Risk [nvarchar](20) = null,
+@AssistiveDevices [nvarchar](20) = null,
+@Texture [nvarchar](20) = null,
+@Other [nvarchar](20) = null,
+@Diet [nvarchar](max) = null,
+@OtherDiet [nvarchar](20) = null,
+@Notes [nvarchar](max) = null,
+@Allergies nvarchar(max) = null
+AS
+--20180705 chime created
+BEGIN
+	INSERT INTO tbl_AB_CarePlan_Nutrition(ResidentId, CarePlanId, NutritionStatus, Risk, AssistiveDevices, Texture, Other, Diet, OtherDiet, Notes, Allergies, EnteredBy, DateEntered)
+	VALUES (@ResidentId, @CarePlanId, @NutritionStatus, @Risk, @AssistiveDevices, @Texture, @Other, @Diet, @OtherDiet, @Notes, @Allergies, 0, getdate())
+END
+GO
+
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_PlanOfCare_Meals]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_PlanOfCare_Meals]
+GO
+CREATE PROCEDURE [dbo].[spAB_Add_PlanOfCare_Meals]
+@CarePlanId int,
+@ResidentId INT,
+@Appetite [nvarchar](20) = null,
+@BreakFast [nvarchar](20) = null,
+@Lunch [nvarchar](20) = null,
+@Dinner [nvarchar](20) = null
+AS
+--20180705 chime created
+BEGIN
+	INSERT INTO tbl_AB_CarePlan_Meals(ResidentId, CarePlanId, Appetite, BreakFast, Lunch, Dinner, EnteredBy, DateEntered)
+	VALUES (@ResidentId, @CarePlanId, @Appetite, @BreakFast, @Lunch, @Dinner, 0, getdate())
+END
+GO
+
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_PlanOfCare_Elimination]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_PlanOfCare_Elimination]
+GO
+CREATE PROCEDURE [dbo].[spAB_Add_PlanOfCare_Elimination]
+@CarePlanId int,
+@ResidentId INT,
+@Bladder [nvarchar](max) = null,
+@Bowel [nvarchar](max) = null,
+@NameCode [nvarchar](100) = null,
+@ContinenceProducts [nvarchar](100) = null,
+@AssistiveDevices [nvarchar](100) = null,
+@Supplier [nvarchar](100) = null,
+@AssessmentCompletedBy [nvarchar](50) = null,
+@AssessmentDate [nvarchar](20) = null
+AS
+--20180705 chime created
+BEGIN
+	INSERT INTO tbl_AB_CarePlan_Elimination(ResidentId, CarePlanId, Bladder, Bowel, NameCode, ContinenceProducts, AssistiveDevices, Supplier, AssessmentCompletedBy, AssessmentDate, EnteredBy, DateEntered)
+	VALUES (@ResidentId, @CarePlanId, @Bladder, @Bowel, @NameCode, @ContinenceProducts, @AssistiveDevices, @Supplier, @AssessmentCompletedBy, @AssessmentDate, 0, getdate())
+END
+GO
+
+
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_PlanOfCare_Toileting]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_PlanOfCare_Toileting]
+GO
+CREATE PROCEDURE [dbo].[spAB_Add_PlanOfCare_Toileting]
+@CarePlanId int,
+@ResidentId INT,
+@Bathroom [nvarchar](100) = null,
+@Commode [nvarchar](100) = null,
+@Bedpan [nvarchar](100) = null,
+@Toileting [nvarchar](20) = null
+AS
+--20180705 chime created
+BEGIN
+	INSERT INTO tbl_AB_CarePlan_Toileting(ResidentId, CarePlanId, Bathroom, Commode, Bedpan, Toileting, EnteredBy, DateEntered)
+	VALUES (@ResidentId, @CarePlanId, @Bathroom, @Commode, @Bedpan, @Toileting, 0, getdate())
+END
+GO
+	
+	
+
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_PlanOfCare_Medication]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_PlanOfCare_Medication]
+GO
+CREATE PROCEDURE [dbo].[spAB_Add_PlanOfCare_Medication]
+@CarePlanId int,
+@ResidentId INT,
+@Assistance [nvarchar](50) = null,
+@Administration [nvarchar](20) = null,
+@CompletedBy [nvarchar](20) = null,
+@Agency [nvarchar](100) = null,
+@Pharmacy [nvarchar](100) = null,
+@Allergies [nvarchar](max) = null
+AS
+--20180705 chime created
+BEGIN
+	INSERT INTO tbl_AB_CarePlan_Medication(ResidentId, CarePlanId, Assistance, Administration, CompletedBy, Agency, Pharmacy, Allergies, EnteredBy, DateEntered)
+	VALUES (@ResidentId, @CarePlanId, @Assistance, @Administration, @CompletedBy, @Agency, @Pharmacy, @Allergies, 0, getdate())
+END
+GO
+	
+	
+
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_PlanOfCare_SensoryAbilities]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_PlanOfCare_SensoryAbilities]
+GO
+CREATE PROCEDURE [dbo].[spAB_Add_PlanOfCare_SensoryAbilities]
+@CarePlanId int,
+@ResidentId INT,
+@Vision [nvarchar](200) = null,
+@Hearing [nvarchar](200) = null,
+@Communication [nvarchar](200) = null,
+@Notes [nvarchar](max) = null
+AS
+--20180705 chime created
+BEGIN
+	INSERT INTO tbl_AB_CarePlan_SensoryAbilities(ResidentId, CarePlanId, Vision, Hearing, Communication, Notes, EnteredBy, DateEntered)
+	VALUES (@ResidentId, @CarePlanId, @Vision, @Hearing, @Communication, @Notes, 0, getdate())
+END
+GO
+	
+	
+
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_PlanOfCare_WoundCare]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_PlanOfCare_WoundCare]
+GO
+CREATE PROCEDURE [dbo].[spAB_Add_PlanOfCare_WoundCare]
+@CarePlanId int,
+@ResidentId INT,
+@WoundCare [nvarchar](20) = null,
+@AssistedBy [nvarchar](100) = null,
+@Agency [nvarchar](200) = null
+AS
+--20180705 chime created
+BEGIN
+	INSERT INTO tbl_AB_CarePlan_WoundCare(ResidentId, CarePlanId, WoundCare, AssistedBy, Agency, EnteredBy, DateEntered)
+	VALUES (@ResidentId, @CarePlanId, @WoundCare, @AssistedBy, @Agency, 0, getdate())
+END
+GO
+		
+	
+
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_PlanOfCare_SkinCare]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_PlanOfCare_SkinCare]
+GO
+CREATE PROCEDURE [dbo].[spAB_Add_PlanOfCare_SkinCare]
+@CarePlanId int,
+@ResidentId INT,
+@SkinCare [nvarchar](20) = null,
+@SpecialTreatments [nvarchar](100) = null
+AS
+--20180705 chime created
+BEGIN
+	INSERT INTO tbl_AB_CarePlan_SkinCare(ResidentId, CarePlanId, SkinCare, SpecialTreatments, EnteredBy, DateEntered)
+	VALUES (@ResidentId, @CarePlanId, @SkinCare, @SpecialTreatments, 0, getdate())
+END
+GO
+		
+	
+
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_PlanOfCare_SpecialNeeds]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_PlanOfCare_SpecialNeeds]
+GO
+CREATE PROCEDURE [dbo].[spAB_Add_PlanOfCare_SpecialNeeds]
+@CarePlanId int,
+@ResidentId INT,
+@Oxygen [nvarchar](20) = null,
+@Oxygen_Supplier [nvarchar](100) = null,
+@Oxygen_Rate [nvarchar](100) = null,
+@Oxygen_Notes [nvarchar](200) = null,
+@CPAP [nvarchar](20) = null,
+@CPAP_Supplier [nvarchar](100) = null,
+@CPAP_Notes [nvarchar](200) = null
+AS
+--20180705 chime created
+BEGIN
+	INSERT INTO tbl_AB_CarePlan_SpecialNeeds(ResidentId, CarePlanId, Oxygen, Oxygen_Supplier, Oxygen_Rate, Oxygen_Notes, CPAP, CPAP_Supplier, CPAP_Notes, EnteredBy, DateEntered)
+	VALUES (@ResidentId, @CarePlanId, @Oxygen, @Oxygen_Supplier, @Oxygen_Rate, @Oxygen_Notes, @CPAP, @CPAP_Supplier, @CPAP_Notes, 0, getdate())
+END
+GO
+		
+	
+
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_PlanOfCare_SpecialEquipment]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_PlanOfCare_SpecialEquipment]
+GO
+CREATE PROCEDURE [dbo].[spAB_Add_PlanOfCare_SpecialEquipment]
+@CarePlanId int,
+@ResidentId INT,
+@SpecialEquipment [nvarchar](200) = null,
+@Details [nvarchar](200) = null
+AS
+--20180705 chime created
+BEGIN
+	INSERT INTO tbl_AB_CarePlan_SpecialEquipment(ResidentId, CarePlanId, SpecialEquipment, Details, EnteredBy, DateEntered)
+	VALUES (@ResidentId, @CarePlanId, @SpecialEquipment, @Details, 0, getdate())
+END
+GO
+
+
+		
+	
+
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_PlanOfCare_Family]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_PlanOfCare_Family]
+GO
+CREATE PROCEDURE [dbo].[spAB_Add_PlanOfCare_Family]
+@CarePlanId int,
+@ResidentId INT,
+@FamilyMeeting [nvarchar](20) = null,
+@FamilyInvolvment [nvarchar](20) = null
+AS
+--20180705 chime created
+BEGIN
+	INSERT INTO tbl_AB_CarePlan_FamilySupport(ResidentId, CarePlanId, FamilyMeeting, FamilyInvolvment, EnteredBy, DateEntered)
+	VALUES (@ResidentId, @CarePlanId, @FamilyMeeting, @FamilyInvolvment, 0, getdate())
+END
+GO
+
+
+
+		
+	
+
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_PlanOfCare_Immunization]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_PlanOfCare_Immunization]
+GO
+CREATE PROCEDURE [dbo].[spAB_Add_PlanOfCare_Immunization]
+@CarePlanId int,
+@ResidentId INT,
+@TB [nvarchar](20) = null,
+@TB_Date [nvarchar](20) = null,
+@ChestXRay [nvarchar](20) = null,
+@ChestXRay_Date [nvarchar](20) = null,
+@Pneumonia [nvarchar](20) = null,
+@Pneumonia_Date [nvarchar](20) = null,
+@FluVaccine [nvarchar](20) = null,
+@FluVaccine_Date [nvarchar](20) = null,
+@Tetanus [nvarchar](20) = null,
+@Tetanus_Date [nvarchar](20) = null
+AS
+--20180705 chime created
+BEGIN
+	INSERT INTO tbl_AB_CarePlan_Immunization(ResidentId, CarePlanId, TB, TB_Date, ChestXRay, ChestXRay_Date, Pneumonia, Pneumonia_Date, FluVaccine, FluVaccine_Date, Tetanus, Tetanus_Date, EnteredBy, DateEntered)
+	VALUES (@ResidentId, @CarePlanId, @TB, @TB_Date, @ChestXRay, @ChestXRay_Date, @Pneumonia, @Pneumonia_Date, @FluVaccine, @FluVaccine_Date, @Tetanus, @Tetanus_Date, 0, getdate())
+END
+GO
+
+
+
+		
+	
+
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_PlanOfCare_InfectiousDiseases]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_PlanOfCare_InfectiousDiseases]
+GO
+CREATE PROCEDURE [dbo].[spAB_Add_PlanOfCare_InfectiousDiseases]
+@CarePlanId int,
+@ResidentId INT,
+@MRSA [nvarchar](20) = null,
+@MRSA_Diagnosed_Date [nvarchar](20) = null,
+@MRSA_Resolved_Date [nvarchar](20) = null,
+@VRE [nvarchar](20) = null,
+@VRE_Diagnosed_Date [nvarchar](20) = null,
+@VRE_Resolved_Date [nvarchar](20) = null,
+@CDiff [nvarchar](20) = null,
+@CDiff_Diagnosed_Date [nvarchar](20) = null,
+@CDiff_Resolved_Date [nvarchar](20) = null,
+@Other [nvarchar](20) = null,
+@Other_Diagnosed_Date [nvarchar](20) = null,
+@Other_Resolved_Date [nvarchar](20) = null
+AS
+--20180705 chime created
+BEGIN
+	INSERT INTO tbl_AB_CarePlan_InfectiousDiseases(ResidentId, CarePlanId, MRSA, MRSA_Diagnosed_Date, MRSA_Resolved_Date, VRE, VRE_Diagnosed_Date, VRE_Resolved_Date, CDiff, CDiff_Diagnosed_Date, CDiff_Resolved_Date, Other, Other_Diagnosed_Date, Other_Resolved_Date, EnteredBy, DateEntered)
+	VALUES (@ResidentId, @CarePlanId, @MRSA, @MRSA_Diagnosed_Date, @MRSA_Resolved_Date, @VRE, @VRE_Diagnosed_Date, @VRE_Resolved_Date, @CDiff, @CDiff_Diagnosed_Date, @CDiff_Resolved_Date, @Other, @Other_Diagnosed_Date, @Other_Resolved_Date, 0, getdate())
+END
+GO
