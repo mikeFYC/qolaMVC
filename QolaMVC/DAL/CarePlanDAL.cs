@@ -129,6 +129,128 @@ namespace QolaMVC.DAL
                     l_Cmd_Mobility.Parameters.AddWithValue("@OT_Frequency", p_Model.Mobility.OTFrequency);
                     l_Cmd_Mobility.Parameters.AddWithValue("@OT_Provider", p_Model.Mobility.OTProvider);
                     l_Cmd_Mobility.ExecuteNonQuery();
+
+                    //Safety
+                    SqlCommand l_Cmd_Safety = new SqlCommand("spAB_Add_PlanOfCare_Safety", l_Conn);
+                    // l_Conn.Open();
+                    l_Cmd_Safety.CommandType = System.Data.CommandType.StoredProcedure;
+                    l_Cmd_Safety.Parameters.AddWithValue("@CarePlanId", l_AssessmentId);
+                    l_Cmd_Safety.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
+                    l_Cmd_Safety.Parameters.AddWithValue("@SafetyPASD", p_Model.Safety.Safety);
+                    l_Cmd_Safety.Parameters.AddWithValue("@Other", p_Model.Safety.Other);
+                    l_Cmd_Safety.Parameters.AddWithValue("@Rails", p_Model.Safety.Rails);
+                    l_Cmd_Safety.Parameters.AddWithValue("@NightOnly", p_Model.Safety.NightOnly);
+                    l_Cmd_Safety.ExecuteNonQuery();
+
+
+                    //Meal Escort
+                    SqlCommand l_Cmd_MealEscort = new SqlCommand("spAB_Add_PlanOfCare_MealEscort", l_Conn);
+                    // l_Conn.Open();
+                    l_Cmd_MealEscort.CommandType = System.Data.CommandType.StoredProcedure;
+                    l_Cmd_MealEscort.Parameters.AddWithValue("@CarePlanId", l_AssessmentId);
+                    l_Cmd_MealEscort.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
+                    l_Cmd_MealEscort.Parameters.AddWithValue("@Breakfast", p_Model.MealEscort.BreakFast);
+                    l_Cmd_MealEscort.Parameters.AddWithValue("@Lunch", p_Model.MealEscort.Lunch);
+                    l_Cmd_MealEscort.Parameters.AddWithValue("@Dinner", p_Model.MealEscort.Dinner);
+                    l_Cmd_MealEscort.ExecuteNonQuery();
+
+
+                    //Beahviour
+                    SqlCommand l_Cmd_Behaviour = new SqlCommand("spAB_Add_PlanOfCare_Behaviour", l_Conn);
+                    // l_Conn.Open();
+                    l_Cmd_Behaviour.CommandType = System.Data.CommandType.StoredProcedure;
+                    l_Cmd_Behaviour.Parameters.AddWithValue("@CarePlanId", l_AssessmentId);
+                    l_Cmd_Behaviour.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
+                    l_Cmd_Behaviour.Parameters.AddWithValue("@Behavior", JsonConvert.SerializeObject(p_Model.Behaviour.BehaviourCollection, Formatting.Indented));
+                    l_Cmd_Behaviour.Parameters.AddWithValue("@HarmToSelf", p_Model.Behaviour.HarmToSelf);
+                    l_Cmd_Behaviour.Parameters.AddWithValue("@Smoker", p_Model.Behaviour.Smoker);
+                    l_Cmd_Behaviour.Parameters.AddWithValue("@RiskOfWandering", p_Model.Behaviour.RiskOfWandering);
+                    l_Cmd_Behaviour.Parameters.AddWithValue("@CognitiveStatus", p_Model.Behaviour.CognitiveStatus);
+                    l_Cmd_Behaviour.Parameters.AddWithValue("@OtherInfo", p_Model.Behaviour.OtherInfo);
+                    l_Cmd_Behaviour.ExecuteNonQuery();
+                    
+                    
+                    //Cognitive Function
+                    SqlCommand l_Cmd_CognitiveFunction = new SqlCommand("spAB_Add_PlanOfCare_CognitiveFunction", l_Conn);
+                    // l_Conn.Open();
+                    l_Cmd_CognitiveFunction.CommandType = System.Data.CommandType.StoredProcedure;
+                    l_Cmd_CognitiveFunction.Parameters.AddWithValue("@CarePlanId", l_AssessmentId);
+                    l_Cmd_CognitiveFunction.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
+                    l_Cmd_CognitiveFunction.Parameters.AddWithValue("@CognitiveFunction", JsonConvert.SerializeObject(p_Model.CognitiveFunction.CognitiveFunction, Formatting.Indented));
+                    l_Cmd_CognitiveFunction.ExecuteNonQuery();
+
+
+                    //Orientation
+                    SqlCommand l_Cmd_Orientation = new SqlCommand("spAB_Add_PlanOfCare_Orientation", l_Conn);
+                    // l_Conn.Open();
+                    l_Cmd_Orientation.CommandType = System.Data.CommandType.StoredProcedure;
+                    l_Cmd_Orientation.Parameters.AddWithValue("@CarePlanId", l_AssessmentId);
+                    l_Cmd_Orientation.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
+                    l_Cmd_Orientation.Parameters.AddWithValue("@IsPerson", p_Model.Orientation.IsPerson);
+                    l_Cmd_Orientation.Parameters.AddWithValue("@IsPlace", p_Model.Orientation.IsPlace);
+                    l_Cmd_Orientation.Parameters.AddWithValue("@IsTime", p_Model.Orientation.IsTime);
+                    l_Cmd_Orientation.Parameters.AddWithValue("@IsDementiaCare", p_Model.Orientation.IsDementiaCare);
+                    l_Cmd_Orientation.ExecuteNonQuery();
+
+
+                    //Nutrition
+                    SqlCommand l_Cmd_Nutrition = new SqlCommand("spAB_Add_PlanOfCare_Nutrition", l_Conn);
+                    // l_Conn.Open();
+                    l_Cmd_Nutrition.CommandType = System.Data.CommandType.StoredProcedure;
+                    l_Cmd_Nutrition.Parameters.AddWithValue("@CarePlanId", l_AssessmentId);
+                    l_Cmd_Nutrition.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
+                    l_Cmd_Nutrition.Parameters.AddWithValue("@NutritionStatus", p_Model.Nutrition.NutritionStatus);
+                    l_Cmd_Nutrition.Parameters.AddWithValue("@Risk", p_Model.Nutrition.Risk);
+                    l_Cmd_Nutrition.Parameters.AddWithValue("@AssistiveDevices", p_Model.Nutrition.AssistiveDevices);
+                    l_Cmd_Nutrition.Parameters.AddWithValue("@Texture", p_Model.Nutrition.Texture);
+                    l_Cmd_Nutrition.Parameters.AddWithValue("@Other", p_Model.Nutrition.Other);
+                    l_Cmd_Nutrition.Parameters.AddWithValue("@Diet", p_Model.Nutrition.Diet);
+                    l_Cmd_Nutrition.Parameters.AddWithValue("@OtherDiet", p_Model.Nutrition.OtherDiet);
+                    l_Cmd_Nutrition.Parameters.AddWithValue("@Notes", p_Model.Nutrition.Notes);
+                    l_Cmd_Nutrition.Parameters.AddWithValue("@Allergies", p_Model.Nutrition.Allergies);
+                    l_Cmd_Nutrition.ExecuteNonQuery();
+
+
+                    //Meals
+                    SqlCommand l_Cmd_Meals = new SqlCommand("spAB_Add_PlanOfCare_Meals", l_Conn);
+                    // l_Conn.Open();
+                    l_Cmd_Meals.CommandType = System.Data.CommandType.StoredProcedure;
+                    l_Cmd_Meals.Parameters.AddWithValue("@CarePlanId", l_AssessmentId);
+                    l_Cmd_Meals.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
+                    l_Cmd_Meals.Parameters.AddWithValue("@Appetite", p_Model.Meals.Appetite);
+                    l_Cmd_Meals.Parameters.AddWithValue("@BreakFast", p_Model.Meals.BreakFast);
+                    l_Cmd_Meals.Parameters.AddWithValue("@Lunch", p_Model.Meals.Lunch);
+                    l_Cmd_Meals.Parameters.AddWithValue("@Dinner", p_Model.Meals.Dinner);
+                    l_Cmd_Meals.ExecuteNonQuery();
+
+
+                    //Elimination
+                    SqlCommand l_Cmd_Elimination = new SqlCommand("spAB_Add_PlanOfCare_Elimination", l_Conn);
+                    // l_Conn.Open();
+                    l_Cmd_Elimination.CommandType = System.Data.CommandType.StoredProcedure;
+                    l_Cmd_Elimination.Parameters.AddWithValue("@CarePlanId", l_AssessmentId);
+                    l_Cmd_Elimination.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
+                    l_Cmd_Elimination.Parameters.AddWithValue("@Bladder", JsonConvert.SerializeObject(p_Model.Elimination.Bladder, Formatting.Indented));
+                    l_Cmd_Elimination.Parameters.AddWithValue("@Bowel", JsonConvert.SerializeObject(p_Model.Elimination.Bowel, Formatting.Indented));
+                    l_Cmd_Elimination.Parameters.AddWithValue("@NameCode", p_Model.Elimination.NameCode);
+                    l_Cmd_Elimination.Parameters.AddWithValue("@ContinenceProducts", p_Model.Elimination.Products);
+                    l_Cmd_Elimination.Parameters.AddWithValue("@Supplier", p_Model.Elimination.Supplier);
+                    l_Cmd_Elimination.Parameters.AddWithValue("@AssessmentCompletedBy", p_Model.Elimination.CompletedBy);
+                    l_Cmd_Elimination.Parameters.AddWithValue("@AssessmentDate", p_Model.Elimination.AssessmentDate);
+                    l_Cmd_Elimination.ExecuteNonQuery();
+
+
+                    //Toileting
+                    SqlCommand l_Cmd_Toileting = new SqlCommand("spAB_Add_PlanOfCare_Toileting", l_Conn);
+                    // l_Conn.Open();
+                    l_Cmd_Toileting.CommandType = System.Data.CommandType.StoredProcedure;
+                    l_Cmd_Toileting.Parameters.AddWithValue("@CarePlanId", l_AssessmentId);
+                    l_Cmd_Toileting.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
+                    l_Cmd_Toileting.Parameters.AddWithValue("@Bathroom", p_Model.Toileting.Bathroom);
+                    l_Cmd_Toileting.Parameters.AddWithValue("@Commode", p_Model.Toileting.Commode);
+                    l_Cmd_Toileting.Parameters.AddWithValue("@Bedpan", p_Model.Toileting.Bedpan);
+                    l_Cmd_Toileting.Parameters.AddWithValue("@Toileting", p_Model.Toileting.Toileting);
+                    l_Cmd_Toileting.ExecuteNonQuery();
                 }
             }
             catch (Exception ex)
@@ -457,3 +579,9 @@ namespace QolaMVC.DAL
         }
     }
 }
+ 
+ 
+ 
+ 
+ 
+ 
