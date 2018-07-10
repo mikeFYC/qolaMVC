@@ -246,11 +246,40 @@ namespace QolaMVC.DAL
                     l_Cmd_Toileting.CommandType = System.Data.CommandType.StoredProcedure;
                     l_Cmd_Toileting.Parameters.AddWithValue("@CarePlanId", l_AssessmentId);
                     l_Cmd_Toileting.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
-                    l_Cmd_Toileting.Parameters.AddWithValue("@Bathroom", p_Model.Toileting.Bathroom);
-                    l_Cmd_Toileting.Parameters.AddWithValue("@Commode", p_Model.Toileting.Commode);
-                    l_Cmd_Toileting.Parameters.AddWithValue("@Bedpan", p_Model.Toileting.Bedpan);
+                    l_Cmd_Toileting.Parameters.AddWithValue("@Bathroom", JsonConvert.SerializeObject(p_Model.Toileting.Bathroom, Formatting.Indented));
+                    l_Cmd_Toileting.Parameters.AddWithValue("@Commode", JsonConvert.SerializeObject(p_Model.Toileting.Commode, Formatting.Indented));
+                    l_Cmd_Toileting.Parameters.AddWithValue("@Bedpan", JsonConvert.SerializeObject(p_Model.Toileting.Bedpan, Formatting.Indented));
                     l_Cmd_Toileting.Parameters.AddWithValue("@Toileting", p_Model.Toileting.Toileting);
                     l_Cmd_Toileting.ExecuteNonQuery();
+
+
+                    //Medication
+                    SqlCommand l_Cmd_Medication = new SqlCommand("spAB_Add_PlanOfCare_Medication", l_Conn);
+                    // l_Conn.Open();
+                    l_Cmd_Medication.CommandType = System.Data.CommandType.StoredProcedure;
+                    l_Cmd_Medication.Parameters.AddWithValue("@CarePlanId", l_AssessmentId);
+                    l_Cmd_Medication.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
+                    l_Cmd_Medication.Parameters.AddWithValue("@Assistance", p_Model.Medication.Assistance);
+                    l_Cmd_Medication.Parameters.AddWithValue("@Administration", p_Model.Medication.Administration);
+                    l_Cmd_Medication.Parameters.AddWithValue("@CompletedBy", p_Model.Medication.CompletedBy);
+                    l_Cmd_Medication.Parameters.AddWithValue("@Agency", p_Model.Medication.Agency);
+                    l_Cmd_Medication.Parameters.AddWithValue("@Pharmacy", p_Model.Medication.Pharmacy);
+                    l_Cmd_Medication.Parameters.AddWithValue("@Allergies", p_Model.Medication.Allergies);
+                    l_Cmd_Medication.ExecuteNonQuery();
+
+
+                    //Sensory Abilities
+                    SqlCommand l_Cmd_SensoryAbilities = new SqlCommand("spAB_Add_PlanOfCare_SensoryAbilities", l_Conn);
+                    // l_Conn.Open();
+                    l_Cmd_SensoryAbilities.CommandType = System.Data.CommandType.StoredProcedure;
+                    l_Cmd_SensoryAbilities.Parameters.AddWithValue("@CarePlanId", l_AssessmentId);
+                    l_Cmd_SensoryAbilities.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
+                    l_Cmd_SensoryAbilities.Parameters.AddWithValue("@Vision", JsonConvert.SerializeObject(p_Model.SensoryAbilities.Vision, Formatting.Indented));
+                    l_Cmd_SensoryAbilities.Parameters.AddWithValue("@Hearing", JsonConvert.SerializeObject(p_Model.SensoryAbilities.Hearing, Formatting.Indented));
+                    l_Cmd_SensoryAbilities.Parameters.AddWithValue("@Communication", JsonConvert.SerializeObject(p_Model.SensoryAbilities.Communication, Formatting.Indented));
+                    l_Cmd_SensoryAbilities.Parameters.AddWithValue("@Notes", p_Model.SensoryAbilities.Notes);
+                    l_Cmd_SensoryAbilities.ExecuteNonQuery();
+
                 }
             }
             catch (Exception ex)
@@ -579,6 +608,8 @@ namespace QolaMVC.DAL
         }
     }
 }
+ 
+ 
  
  
  
