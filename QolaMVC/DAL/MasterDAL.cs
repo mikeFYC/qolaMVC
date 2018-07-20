@@ -155,5 +155,53 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
+
+        public static List<ActivityAssessmentCollectionViewModel> GetActivityAssessments(int p_ResidentId)
+        {
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                List<ActivityAssessmentCollectionViewModel> l_Collection = new List<ActivityAssessmentCollectionViewModel>();
+                l_Conn.Open();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_ActivityAssessmentStore", l_Conn);
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@ResidentId", p_ResidentId);
+                SqlDataReader l_Reader = l_Cmd.ExecuteReader();
+
+                while (l_Reader.Read())
+                {
+                    List<ActivityAssessmentModel> l_Assessments = new List<ActivityAssessmentModel>();
+                    ActivityAssessmentCollectionViewModel l_Model = new ActivityAssessmentCollectionViewModel();
+
+                    l_Model.Id = Convert.ToInt32(l_Reader["Id"]);
+                    l_Model.DateEntered = Convert.ToDateTime(l_Reader["DateEntered"]);
+
+                    SqlCommand l_Cmd2 = new SqlCommand("spAB_Get_ActivityAssessmentByAssessmentId", l_Conn);
+                    l_Cmd2.CommandType = System.Data.CommandType.StoredProcedure;
+                    l_Cmd2.Parameters.AddWithValue("@AssessmentId", l_Model.Id);
+                    SqlDataReader l_Reader2 = l_Cmd2.ExecuteReader();
+
+                    while (l_Reader2.Read())
+                    {
+                        ActivityAssessmentModel l_Assessment = new ActivityAssessmentModel();
+                        l_Assessment.Id = Convert.ToInt32(l_Reader["Id"]);
+                        l_Assessment.IsC = Convert.ToBoolean(l_Reader["IsC"]);
+                        l_Assessment.IsP = Convert.ToBoolean(l_Reader["IsP"]);
+                        l_Assessment.IsW = Convert.ToBoolean(l_Reader["IsW"]);
+                        l_Assessment.ResidentId = Convert.ToInt32(l_Reader["ResidentId"]);
+
+                        l_Assessments.Add(l_Assessment);
+                    }
+                        l_Collection.Add(l_Model);
+                }
+
+                return l_Collection;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(".GetAllActivity\n" + ex.Message);
+            }
+        }
+
     }
 }

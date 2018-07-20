@@ -135,6 +135,7 @@ AS
 BEGIN
 	SELECT
 		Id,
+		AssessmentId,
 		ActivityId,
 		IsP,
 		IsC,
@@ -142,7 +143,7 @@ BEGIN
 		ResidentId,
 		DateEntered
 	FROM 
-		tbl_AB_ActivityAssessment 
+		dbo.[tbl_AB_ActivityAssessment] 
 	WHERE 
 		ResidentId = @ResidentId
 END
@@ -201,5 +202,35 @@ AS
 BEGIN
 	INSERT INTO tbl_AB_ActivityAssessment (ActivityId, IsP, IsC, IsW, ResidentId, DateEntered ) 
 	VALUES (@ActivityId, @IsP, @IsC, @IsW, @ResidentId, @DateEntered )
+END
+GO
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_ActivityAssessmentStore]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_ActivityAssessmentStore]
+GO
+CREATE PROCEDURE [dbo].[spAB_Add_ActivityAssessmentStore]
+@ResidentId int,
+@EnteredBy int
+AS
+--20180718 chime created
+BEGIN
+	INSERT INTO tbl_AB_ActivityAssessment_Store (ResidentId, EnteredBy ) 
+	VALUES (@ResidentId, @EnteredBy )
+END
+GO
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_ActivityAssessmentStore]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_ActivityAssessmentStore]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_ActivityAssessmentStore]
+@ResidentId int
+AS
+--20180718 chime created
+BEGIN
+	SELECT Id, ResidentId, EnteredBy, DateEntered FROM tbl_AB_ActivityAssessment_Store where ResidentId=@ResidentId
 END
 GO
