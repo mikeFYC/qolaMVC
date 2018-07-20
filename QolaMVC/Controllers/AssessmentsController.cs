@@ -909,6 +909,7 @@ namespace QolaMVC.Controllers
 
         public ActionResult CarePlan()
         {
+            //care plan
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
             var resident = (ResidentModel)TempData["Resident"];
