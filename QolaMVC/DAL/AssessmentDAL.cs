@@ -327,62 +327,63 @@ namespace QolaMVC.DAL
         {
             string exception = string.Empty;
             var postFalldetails = new Collection<PostFallClinicalMonitoringViewModel>();
-            using (var connection = new SqlConnection(Constants.ConnectionString.PROD))
-            {
+            return postFalldetails;
+            //using (var connection = new SqlConnection(Constants.ConnectionString.PROD))
+            //{
 
-                try
-                {
-                    var sqlAdapter = new SqlDataAdapter();
-                    //var reader
-                    var sqlCommand = new SqlCommand(Constants.StoredProcedureName.USP_GetPostFall, connection);
-                    sqlCommand.CommandType = CommandType.StoredProcedure;
-                    connection.Open();
-                    sqlCommand.Parameters.AddWithValue("@Id", residentId);
-                    sqlCommand.Parameters.AddWithValue("@category", category);
-                    sqlCommand.Parameters.AddWithValue("@date_created", date_created);
-                    DataSet getData = new DataSet();
-                    sqlAdapter.SelectCommand = sqlCommand;
-                    sqlAdapter.Fill(getData);
-                    if (getData != null && getData.Tables.Count > 0)
-                    {
-                        for (int i = 0; i <= getData.Tables[0].Rows.Count - 1; i++)
-                        {
-                            var postFallDetail = new PostFallClinicalMonitoringViewModel();
-                            postFallDetail.residentid = Convert.ToString(getData.Tables[0].Rows[i]["residentid"]);
-                            postFallDetail.vitalsign = Convert.ToString(getData.Tables[0].Rows[i]["vitalsign"]);
-                            postFallDetail.date_created = Convert.ToString(getData.Tables[0].Rows[i]["date_created"]);
-                            postFallDetail.category = Convert.ToString(getData.Tables[0].Rows[i]["category"]);
-                            postFallDetail.firstcheck = Convert.ToString(getData.Tables[0].Rows[i]["firstcheck"]);
-                            postFallDetail.onehourfirstcheck = Convert.ToString(getData.Tables[0].Rows[i]["onehourfirstcheck"]);
-                            postFallDetail.onehoursecondcheck = Convert.ToString(getData.Tables[0].Rows[i]["onehoursecondcheck"]);
-                            postFallDetail.threehoursfirstcheck = Convert.ToString(getData.Tables[0].Rows[i]["threehoursfirstcheck"]);
-                            postFallDetail.threehourssecondcheck = Convert.ToString(getData.Tables[0].Rows[i]["threehourssecondcheck"]);
-                            postFallDetail.threehoursthirdcheck = Convert.ToString(getData.Tables[0].Rows[i]["threehoursthirdcheck"]);
-                            postFallDetail.fourtyeighthoursfirstcheck = Convert.ToString(getData.Tables[0].Rows[i]["fourtyeighthoursfirstcheck"]);
-                            postFallDetail.fourtyeighthourssecondcheck = Convert.ToString(getData.Tables[0].Rows[i]["fourtyeighthourssecondcheck"]);
-                            postFallDetail.fourtyeighthoursthirdcheck = Convert.ToString(getData.Tables[0].Rows[i]["fourtyeighthoursthirdcheck"]);
-                            postFallDetail.fourtyeighthoursfourthcheck = Convert.ToString(getData.Tables[0].Rows[i]["fourtyeighthoursfourthcheck"]);
-                            postFallDetail.fourtyeighthoursfifthcheck = Convert.ToString(getData.Tables[0].Rows[i]["fourtyeighthoursfifthcheck"]);
-                            postFalldetails.Add(postFallDetail);
-                            //var a  = Convert.ToString(getData.Tables[0].Rows[i]["residentid"]);
-                            //postFalldetails.onehourfirstcheck[i] = Convert.ToString(getData.Tables[0].Rows[i]["onehourfirstcheck"]);
+            //    try
+            //    {
+            //        var sqlAdapter = new SqlDataAdapter();
+            //        //var reader
+            //        var sqlCommand = new SqlCommand(Constants.StoredProcedureName.USP_GetPostFall, connection);
+            //        sqlCommand.CommandType = CommandType.StoredProcedure;
+            //        connection.Open();
+            //        sqlCommand.Parameters.AddWithValue("@Id", residentId);
+            //        sqlCommand.Parameters.AddWithValue("@category", category);
+            //        sqlCommand.Parameters.AddWithValue("@date_created", date_created);
+            //        DataSet getData = new DataSet();
+            //        sqlAdapter.SelectCommand = sqlCommand;
+            //        sqlAdapter.Fill(getData);
+            //        if (getData != null && getData.Tables.Count > 0)
+            //        {
+            //            for (int i = 0; i <= getData.Tables[0].Rows.Count - 1; i++)
+            //            {
+            //                var postFallDetail = new PostFallClinicalMonitoringViewModel();
+            //                postFallDetail.residentid = Convert.ToString(getData.Tables[0].Rows[i]["residentid"]);
+            //                postFallDetail.vitalsign = Convert.ToString(getData.Tables[0].Rows[i]["vitalsign"]);
+            //                postFallDetail.date_created = Convert.ToString(getData.Tables[0].Rows[i]["date_created"]);
+            //                postFallDetail.category = Convert.ToString(getData.Tables[0].Rows[i]["category"]);
+            //                postFallDetail.firstcheck = Convert.ToString(getData.Tables[0].Rows[i]["firstcheck"]);
+            //                postFallDetail.onehourfirstcheck = Convert.ToString(getData.Tables[0].Rows[i]["onehourfirstcheck"]);
+            //                postFallDetail.onehoursecondcheck = Convert.ToString(getData.Tables[0].Rows[i]["onehoursecondcheck"]);
+            //                postFallDetail.threehoursfirstcheck = Convert.ToString(getData.Tables[0].Rows[i]["threehoursfirstcheck"]);
+            //                postFallDetail.threehourssecondcheck = Convert.ToString(getData.Tables[0].Rows[i]["threehourssecondcheck"]);
+            //                postFallDetail.threehoursthirdcheck = Convert.ToString(getData.Tables[0].Rows[i]["threehoursthirdcheck"]);
+            //                postFallDetail.fourtyeighthoursfirstcheck = Convert.ToString(getData.Tables[0].Rows[i]["fourtyeighthoursfirstcheck"]);
+            //                postFallDetail.fourtyeighthourssecondcheck = Convert.ToString(getData.Tables[0].Rows[i]["fourtyeighthourssecondcheck"]);
+            //                postFallDetail.fourtyeighthoursthirdcheck = Convert.ToString(getData.Tables[0].Rows[i]["fourtyeighthoursthirdcheck"]);
+            //                postFallDetail.fourtyeighthoursfourthcheck = Convert.ToString(getData.Tables[0].Rows[i]["fourtyeighthoursfourthcheck"]);
+            //                postFallDetail.fourtyeighthoursfifthcheck = Convert.ToString(getData.Tables[0].Rows[i]["fourtyeighthoursfifthcheck"]);
+            //                postFalldetails.Add(postFallDetail);
+            //                //var a  = Convert.ToString(getData.Tables[0].Rows[i]["residentid"]);
+            //                //postFalldetails.onehourfirstcheck[i] = Convert.ToString(getData.Tables[0].Rows[i]["onehourfirstcheck"]);
 
-                        }
-                    }
+            //            }
+            //        }
                     
-                    return postFalldetails;
-                }
-                catch (Exception ex)
-                {
-                    exception = "PostFallClinicalMonitoring |" + ex.ToString();
-                    //Log.Write(exception);
-                    throw;
-                }
-                finally
-                {
-                    connection.Close();
-                }
-            }
+            //        return postFalldetails;
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        exception = "PostFallClinicalMonitoring |" + ex.ToString();
+            //        //Log.Write(exception);
+            //        throw;
+            //    }
+            //    finally
+            //    {
+            //        connection.Close();
+            //    }
+            //}
         }
 
         public static CarePlan_VitalSignModel GetCarePlan(string id)
