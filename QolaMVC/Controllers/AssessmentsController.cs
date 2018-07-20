@@ -5,7 +5,6 @@ using QolaMVC.Models;
 using QolaMVC.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -38,7 +37,7 @@ namespace QolaMVC.Controllers
             var user = (UserModel)TempData["User"];
             var resident = (ResidentModel)TempData["Resident"];
 
-            if (TempData["Message"] != null)
+            if(TempData["Message"] != null)
             {
                 ViewBag.Message = TempData["Message"];
             }
@@ -68,10 +67,11 @@ namespace QolaMVC.Controllers
             ViewBag.User = user;
             ViewBag.Resident = resident;
             ViewBag.Home = home;
-
+            
             p_BowelMovement.Resident = resident;
             p_BowelMovement.EnteredBy = user;
-
+            DataErrorInfoModelValidatorProvider dataErrorInfoModelValidatorProvider = new DataErrorInfoModelValidatorProvider();
+            
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
@@ -83,93 +83,9 @@ namespace QolaMVC.Controllers
 
         public ActionResult DietaryHistory()
         {
-            ViewBag.Allergies = AssessmentDAL.GetAllergiesCollections();
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
-            var resident = (ResidentModel)TempData["Resident"];
-
-            ViewBag.User = user;
-            ViewBag.Resident = resident;
-            ViewBag.Home = home;
-
-            Collection<nDietaryAssessmentModel> vm = new Collection<nDietaryAssessmentModel>();
-
-            vm = AssessmentDAL.GetResidentDietaryAssesments(resident.ID);
-
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
-
-            List<DateTime> l_Dates = vm.Select(m => m.DateEntered).ToList();
-
-            ViewBag.AssessmentDates = l_Dates;
-            var model = new nDietaryAssessmentModel();
-            model.Diet = new System.Collections.ObjectModel.Collection<string>();
-            model.Allergies = new System.Collections.ObjectModel.Collection<AllergiesModel>();
-            QolaCulture.InitDiets(ref model);
-
-            return View(model);
+            return View();
         }
 
-        [HttpPost]
-        public ActionResult DietaryHistory(FormCollection collection)
-        {
-            ViewBag.Allergies = AssessmentDAL.GetAllergiesCollections();
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
-            var resident = (ResidentModel)TempData["Resident"];
-
-            ViewBag.User = user;
-            ViewBag.Resident = resident;
-            ViewBag.Home = home;
-
-            Collection<nDietaryAssessmentModel> vm = new Collection<nDietaryAssessmentModel>();
-            vm = AssessmentDAL.GetResidentDietaryAssesments(resident.ID);
-            DateTime l_DateEntered = Convert.ToDateTime(collection["DateEntered"]);
-
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
-
-            var m = vm.FirstOrDefault(m2 => m2.DateEntered.Date == l_DateEntered.Date && m2.DateEntered.Hour == l_DateEntered.Hour && m2.DateEntered.Minute == l_DateEntered.Minute);
-            if (m == null)
-            {
-                m = new nDietaryAssessmentModel();
-                m.Diet = new System.Collections.ObjectModel.Collection<string>();
-                m.Allergies = new System.Collections.ObjectModel.Collection<AllergiesModel>();
-                QolaCulture.InitDiets(ref m);
-                vm.Add(m);
-            }
-
-            List<DateTime> l_Dates = vm.Select(x => x.DateEntered).ToList();
-
-            ViewBag.AssessmentDates = l_Dates;
-
-            return View(m);
-        }
-
-        [HttpPost]
-        public ActionResult AddDietaryAssessment(nDietaryAssessmentModel model)
-        {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
-            var resident = (ResidentModel)TempData["Resident"];
-
-            ViewBag.User = user;
-            ViewBag.Home = home;
-            ViewBag.Resident = resident;
-
-            model.Resident = resident;
-            model.EnteredBy = user;
-
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
-
-            AssessmentDAL.AddDietaryAssesment(model);
-            TempData["Message"] = "Added Dietary Assessment Note";
-            return RedirectToAction("DietaryHistory");
-        }
         public ActionResult ExerciseActivity()
         {
             var home = (HomeModel)TempData["Home"];
@@ -185,8 +101,8 @@ namespace QolaMVC.Controllers
             vm.Detail = AssessmentDAL.GetExcerciseActivityDetail(resident.ID);
             vm.ExcerciseSummary = AssessmentDAL.GetExcerciseActivitySummary(resident.ID);
             vm.HSEPDetail = AssessmentDAL.GetHSEPDetail(resident.ID);
-
-            if (vm.Detail.Count == 0 || vm.HSEPDetail.Count == 0)
+            
+            if(vm.Detail.Count == 0 || vm.HSEPDetail.Count == 0)
             {
                 QolaCulture.InitExcerciseActivity(ref vm);
             }
@@ -214,7 +130,7 @@ namespace QolaMVC.Controllers
                 d.Resident = resident;
                 AssessmentDAL.AddExcerciseActivityDetail(d);
             }
-
+            
             foreach (var hs in vm.HSEPDetail)
             {
                 hs.EnteredBy = user;
@@ -244,47 +160,11 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-
-            List<DateTime> l_Dates = familyConference.Select(m => m.Date).ToList();
-
-            ViewBag.AssessmentDates = l_Dates;
-            var model = new FamilyConfrenceNoteModel();
-            return View(model);
-        }
-
-        [HttpPost]
-        public ActionResult FamilyConference(FormCollection collection)
-        {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
-            var resident = (ResidentModel)TempData["Resident"];
-
-            var familyConference = AssessmentDAL.GetFamilyConferenceNotes(resident.ID);
-
-            ViewBag.User = user;
-            ViewBag.Home = home;
-            ViewBag.Resident = resident;
-
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
-
-            List<DateTime> l_Dates = familyConference.Select(m => m.Date).ToList();
-            DateTime l_DateEntered = Convert.ToDateTime(collection["DateEntered"]);
-
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
-
-            var model = familyConference.FirstOrDefault(m2 => m2.Date.Date == l_DateEntered.Date && m2.Date.Hour == l_DateEntered.Hour && m2.Date.Minute == l_DateEntered.Minute);
-            if (model == null)
+            if(familyConference.Count == 0)
             {
-                model = new FamilyConfrenceNoteModel();
+                familyConference.Add(new FamilyConfrenceNoteModel());
             }
-
-            ViewBag.AssessmentDates = l_Dates;
-
-            return View(model);
+            return View(familyConference.LastOrDefault());
         }
 
         [HttpPost]
@@ -312,132 +192,21 @@ namespace QolaMVC.Controllers
 
         public ActionResult HeadToToeAssessment()
         {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
-            var resident = (ResidentModel)TempData["Resident"];
-
-            ViewBag.User = user;
-            ViewBag.Resident = resident;
-            ViewBag.Home = home;
-
-
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
-
-            var l_Assessments = AssessmentDAL.GetAdmissionHeadToToe(resident.ID);
-
-            List<DateTime> l_Dates = l_Assessments.Select(m => m.DateEntered).ToList();
-
-            ViewBag.AssessmentDates = l_Dates;
-            var model = new AdmissionHeadToToeModel();
-            return View(model);
+            return View();
         }
 
-        [HttpPost]
-        public ActionResult HeadToToeAssessment(FormCollection collection)
-        {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
-            var resident = (ResidentModel)TempData["Resident"];
-
-           
-            ViewBag.User = user;
-            ViewBag.Home = home;
-            ViewBag.Resident = resident;
-
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
-
-            var l_Assessments = AssessmentDAL.GetAdmissionHeadToToe(resident.ID);
-
-            List<DateTime> l_Dates = l_Assessments.Select(m => m.DateEntered).ToList();
-
-            ViewBag.AssessmentDates = l_Dates;
-            DateTime l_DateEntered = Convert.ToDateTime(collection["DateEntered"]);
-
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
-
-            var model = l_Assessments.FirstOrDefault(m2 => m2.DateEntered.Date == l_DateEntered.Date && m2.DateEntered.Hour == l_DateEntered.Hour && m2.DateEntered.Minute == l_DateEntered.Minute);
-            if (model == null)
-            {
-                model = new AdmissionHeadToToeModel();
-            }
-
-            return View(model);
-        }
-
-        [HttpPost]
-        public ActionResult AddHeadToToeAssessment(AdmissionHeadToToeModel p_Model)
-        {
-            try
-            {
-                var home = (HomeModel)TempData["Home"];
-                var user = (UserModel)TempData["User"];
-                var resident = (ResidentModel)TempData["Resident"];
-
-                ViewBag.User = user;
-                ViewBag.Resident = resident;
-                ViewBag.Home = home;
-
-
-                TempData.Keep("User");
-                TempData.Keep("Home");
-                TempData.Keep("Resident");
-
-                p_Model.Resident = resident;
-                p_Model.EnteredBy = user;
-                AssessmentDAL.AddAdmissionHeadToToe(p_Model);
-            }
-            catch(Exception ex)
-            {
-                throw;
-            }
-            finally
-            {
-
-            }
-            return RedirectToAction("HeadToToeAssessment");
-        }
         public ActionResult HSEPTracking()
         {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
-            var resident = (ResidentModel)TempData["Resident"];
-
-            ViewBag.User = user;
-            ViewBag.Resident = resident;
-            ViewBag.Home = home;
-
-
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
-
             return View();
         }
 
         public ActionResult PostFallClinicalMonitoring_A(int? Id)
         {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
             var resident = (ResidentModel)TempData["Resident"];
-
-            ViewBag.User = user;
-            ViewBag.Resident = resident;
-            ViewBag.Home = home;
-
-
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
 
             if (TempData["clinicaldetails"] != null)
             {
-                var details = (List<tbl_PostfallClinicalMonitoringDetails>)TempData["clinicaldetails"];
+                var details = (List<PostFallClinicalMonitoringModel>)TempData["clinicaldetails"];
                 TempData.Keep("clinicaldetails");
                 return View(details);
             }
@@ -445,119 +214,76 @@ namespace QolaMVC.Controllers
             {
                 Id = resident.ID;
                 string residentId = Convert.ToString(Id);
-                tbl_PostfallClinicalMonitoringDetails postdetails = new tbl_PostfallClinicalMonitoringDetails();
-                using (var dbContext = new test_qolaEntities())
-                {
-                    dbContext.Configuration.LazyLoadingEnabled = false;
-                    //var qm = dbContext.tbl_PostfallClinicalMonitoringVitalSigns.Include("")
-                    var getPostMedicaLClinical = dbContext.tbl_PostfallClinicalMonitoringDetails.Include("tbl_PostfallClinicalMonitoringVitalSigns").Where(m => m.category.ToLower() == "a" && m.tbl_PostfallClinicalMonitoringVitalSigns.residentid == residentId).ToList();
-                    if (getPostMedicaLClinical.Count() == 0)
-                    {
-                        return View();
-                    }
-                    return View(getPostMedicaLClinical.ToList());
-                }
+                PostFallClinicalMonitoringModel postdetails = new PostFallClinicalMonitoringModel();
+                var postFallDetails = AssessmentDAL.GetPostFall(Id, "a", DateTime.Now.ToShortDateString());
+                TempData.Keep("Resident");
+                return View(postFallDetails);
             }
-
+          
         }
 
         [HttpPost]
-        public ActionResult FindAssessment(string Id, string date_created)
+        public ActionResult FindAssessment(int? Id, string category, string date_created)
         {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
             var resident = (ResidentModel)TempData["Resident"];
 
-            ViewBag.User = user;
-            ViewBag.Resident = resident;
-            ViewBag.Home = home;
-
-
-            TempData.Keep("User");
-            TempData.Keep("Home");
+            var postFallDetails = AssessmentDAL.GetPostFall(resident.ID, category, date_created);
+            TempData["clinicaldetails"] = postFallDetails;
             TempData.Keep("Resident");
-
-            using (var dbContext = new test_qolaEntities())
-            {
-                var residentId = resident.ID.ToString();
-                dbContext.Configuration.LazyLoadingEnabled = false;
-                //var qm = dbContext.tbl_PostfallClinicalMonitoringVitalSigns.Include("")
-                var getPostMedicaLClinical = dbContext.tbl_PostfallClinicalMonitoringDetails.Include("tbl_PostfallClinicalMonitoringVitalSigns").Where(m => m.category.ToLower() == Id && (m.tbl_PostfallClinicalMonitoringVitalSigns.residentid == residentId && m.tbl_PostfallClinicalMonitoringVitalSigns.date_created == date_created)).ToList();
-                TempData["clinicaldetails"] = getPostMedicaLClinical;
-                return RedirectToAction("PostFallClinicalMonitoring_A");
-            }
+            return RedirectToAction("PostFallClinicalMonitoring_A");
+         
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult PostFallClinicalMonitoring_A(tbl_PostfallClinicalMonitoringVitalSigns vitalSigns, tbl_PostfallClinicalMonitoringDetails monitoringDetails, int? Id)
+        public ActionResult PostFallClinicalMonitoring_A(VitalSignsModel vitalSigns, PostFallClinicalMonitoringModel monitoringDetails, int? Id)
         {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
             var resident = (ResidentModel)TempData["Resident"];
 
-            ViewBag.User = user;
-            ViewBag.Resident = resident;
-            ViewBag.Home = home;
+            //using (var dbContext = new test_qolaEntities())
+            //{
+            //    var residentId = Convert.ToString(Id);
+            //    var residentId = "1234";
+            //    var getVitalsign = dbContext.tbl_PostfallClinicalMonitoringVitalSigns.SingleOrDefault(m => m.residentid == residentId && (m.category.ToLower() == "a" && m.vitalsign.ToLower() == vitalSigns.vitalsign.ToLower()));
+            //    if (getVitalsign == null)
+            //    {
+            //        vitalSigns.residentid = "1234";
+            //        vitalSigns.date_created = DateTime.Now.ToShortDateString();
+            //        dbContext.tbl_PostfallClinicalMonitoringVitalSigns.Add(vitalSigns);
+            //        dbContext.tbl_PostfallClinicalMonitoringDetails.Add(monitoringDetails);
+            //    }
+            //    else
+            //    {
+            //        var getDetails = dbContext.tbl_PostfallClinicalMonitoringDetails.SingleOrDefault(m => m.category.ToLower() == monitoringDetails.category && m.tbl_PostfallClinicalMonitoringVitalSigns.Id == getVitalsign.Id);
+            //        getDetails.firstcheck = monitoringDetails.firstcheck;
+            //        getDetails.fourtyeighthoursfifthcheck = monitoringDetails.fourtyeighthoursfifthcheck;
+            //        getDetails.fourtyeighthoursfirstcheck = monitoringDetails.fourtyeighthoursfirstcheck;
+            //        getDetails.fourtyeighthoursfourthcheck = monitoringDetails.fourtyeighthoursfourthcheck;
+            //        getDetails.fourtyeighthourssecondcheck = monitoringDetails.fourtyeighthourssecondcheck;
+            //        getDetails.fourtyeighthoursthirdcheck = monitoringDetails.fourtyeighthoursthirdcheck;
+            //        getDetails.onehourfirstcheck = monitoringDetails.onehourfirstcheck;
+            //        getDetails.onehoursecondcheck = monitoringDetails.onehoursecondcheck;
+            //        getDetails.threehoursfirstcheck = monitoringDetails.threehoursfirstcheck;
+            //        getDetails.threehourssecondcheck = monitoringDetails.threehourssecondcheck;
+            //        getDetails.threehoursthirdcheck = monitoringDetails.threehoursthirdcheck;
 
+            //    }
 
-            TempData.Keep("User");
-            TempData.Keep("Home");
+            //    dbContext.SaveChanges();
+            //}
+            AssessmentDAL.AddPostFall(monitoringDetails, vitalSigns, resident.ID);
             TempData.Keep("Resident");
-
-            using (var dbContext = new test_qolaEntities())
-            {
-                //var residentId = Convert.ToString(Id);
-                var residentId = resident.ID.ToString();
-                var getVitalsign = dbContext.tbl_PostfallClinicalMonitoringVitalSigns.SingleOrDefault(m => m.residentid == residentId && (m.category.ToLower() == "a" && m.vitalsign.ToLower() == vitalSigns.vitalsign.ToLower()));
-                if (getVitalsign == null)
-                {
-                    vitalSigns.residentid = resident.ID.ToString();
-                    vitalSigns.date_created = DateTime.Now.ToShortDateString();
-                    dbContext.tbl_PostfallClinicalMonitoringVitalSigns.Add(vitalSigns);
-                    dbContext.tbl_PostfallClinicalMonitoringDetails.Add(monitoringDetails);
-                }
-                else
-                {
-                    var getDetails = dbContext.tbl_PostfallClinicalMonitoringDetails.SingleOrDefault(m => m.category.ToLower() == monitoringDetails.category && m.tbl_PostfallClinicalMonitoringVitalSigns.Id == getVitalsign.Id);
-                    getDetails.firstcheck = monitoringDetails.firstcheck;
-                    getDetails.fourtyeighthoursfifthcheck = monitoringDetails.fourtyeighthoursfifthcheck;
-                    getDetails.fourtyeighthoursfirstcheck = monitoringDetails.fourtyeighthoursfirstcheck;
-                    getDetails.fourtyeighthoursfourthcheck = monitoringDetails.fourtyeighthoursfourthcheck;
-                    getDetails.fourtyeighthourssecondcheck = monitoringDetails.fourtyeighthourssecondcheck;
-                    getDetails.fourtyeighthoursthirdcheck = monitoringDetails.fourtyeighthoursthirdcheck;
-                    getDetails.onehourfirstcheck = monitoringDetails.onehourfirstcheck;
-                    getDetails.onehoursecondcheck = monitoringDetails.onehoursecondcheck;
-                    getDetails.threehoursfirstcheck = monitoringDetails.threehoursfirstcheck;
-                    getDetails.threehourssecondcheck = monitoringDetails.threehourssecondcheck;
-                    getDetails.threehoursthirdcheck = monitoringDetails.threehoursthirdcheck;
-
-                }
-
-                dbContext.SaveChanges();
-            }
             return RedirectToAction("PostFallClinicalMonitoring_A");
         }
 
 
         public ActionResult PostFallClinicalMonitoring_B(int? Id)
         {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
             var resident = (ResidentModel)TempData["Resident"];
-
-            ViewBag.User = user;
-            ViewBag.Resident = resident;
-            ViewBag.Home = home;
-
-
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
 
             if (TempData["clinicaldetailsb"] != null)
             {
-                var details = (List<tbl_PostfallClinicalMonitoringDetails>)TempData["clinicaldetailsb"];
+                var details = (List<PostFallClinicalMonitoringModel>)TempData["clinicaldetailsb"];
                 TempData.Keep("clinicaldetailsb");
                 return View(details);
             }
@@ -565,89 +291,30 @@ namespace QolaMVC.Controllers
             {
                 Id = resident.ID;
                 string residentId = Convert.ToString(Id);
-                tbl_PostfallClinicalMonitoringDetails postdetails = new tbl_PostfallClinicalMonitoringDetails();
-                using (var dbContext = new test_qolaEntities())
-                {
-                    dbContext.Configuration.LazyLoadingEnabled = false;
-                    //var qm = dbContext.tbl_PostfallClinicalMonitoringVitalSigns.Include("")
-                    var getPostMedicaLClinical = dbContext.tbl_PostfallClinicalMonitoringDetails.Include("tbl_PostfallClinicalMonitoringVitalSigns").Where(m => m.category.ToLower() == "b" && m.tbl_PostfallClinicalMonitoringVitalSigns.residentid == residentId).ToList();
-                    if (getPostMedicaLClinical.Count() == 0)
-                    {
-                        return View();
-                    }
-                    return View(getPostMedicaLClinical.ToList());
-                }
+                PostFallClinicalMonitoringModel postdetails = new PostFallClinicalMonitoringModel();
+                var postFallDetails = AssessmentDAL.GetPostFall(Id, "b", DateTime.Now.ToShortDateString());
+                TempData.Keep("Resident");
+                return View(postFallDetails);
             }
+
+           
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult PostFallClinicalMonitoring_B(tbl_PostfallClinicalMonitoringVitalSigns vitalSigns, tbl_PostfallClinicalMonitoringDetails monitoringDetails, int? Id)
+        public ActionResult PostFallClinicalMonitoring_B(VitalSignsModel vitalSigns, PostFallClinicalMonitoringModel monitoringDetails, int? Id)
         {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
             var resident = (ResidentModel)TempData["Resident"];
-
-            ViewBag.User = user;
-            ViewBag.Resident = resident;
-            ViewBag.Home = home;
-
-
-            TempData.Keep("User");
-            TempData.Keep("Home");
+            AssessmentDAL.AddPostFall(monitoringDetails, vitalSigns, resident.ID);
             TempData.Keep("Resident");
-
-            using (var dbContext = new test_qolaEntities())
-            {
-                //var residentId = Convert.ToString(Id);
-                var residentId = resident.ID.ToString();
-                var getVitalsign = dbContext.tbl_PostfallClinicalMonitoringVitalSigns.SingleOrDefault(m => m.residentid == residentId && (m.category.ToLower() == "b" && m.vitalsign.ToLower() == vitalSigns.vitalsign.ToLower()));
-                if (getVitalsign == null)
-                {
-                    vitalSigns.residentid = resident.ID.ToString();
-                    vitalSigns.date_created = DateTime.Now.ToShortDateString();
-                    dbContext.tbl_PostfallClinicalMonitoringVitalSigns.Add(vitalSigns);
-                    dbContext.tbl_PostfallClinicalMonitoringDetails.Add(monitoringDetails);
-                }
-                else
-                {
-                    var getDetails = dbContext.tbl_PostfallClinicalMonitoringDetails.SingleOrDefault(m => m.category.ToLower() == monitoringDetails.category && m.tbl_PostfallClinicalMonitoringVitalSigns.Id == getVitalsign.Id);
-                    getDetails.firstcheck = monitoringDetails.firstcheck;
-                    getDetails.fourtyeighthoursfifthcheck = monitoringDetails.fourtyeighthoursfifthcheck;
-                    getDetails.fourtyeighthoursfirstcheck = monitoringDetails.fourtyeighthoursfirstcheck;
-                    getDetails.fourtyeighthoursfourthcheck = monitoringDetails.fourtyeighthoursfourthcheck;
-                    getDetails.fourtyeighthourssecondcheck = monitoringDetails.fourtyeighthourssecondcheck;
-                    getDetails.fourtyeighthoursthirdcheck = monitoringDetails.fourtyeighthoursthirdcheck;
-                    getDetails.onehourfirstcheck = monitoringDetails.onehourfirstcheck;
-                    getDetails.onehoursecondcheck = monitoringDetails.onehoursecondcheck;
-                    getDetails.threehoursfirstcheck = monitoringDetails.threehoursfirstcheck;
-                    getDetails.threehourssecondcheck = monitoringDetails.threehourssecondcheck;
-                    getDetails.threehoursthirdcheck = monitoringDetails.threehoursthirdcheck;
-
-                }
-
-                dbContext.SaveChanges();
-            }
+            
             return RedirectToAction("PostFallClinicalMonitoring_B");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult PostFallClinicalMonitoring_BPage2(tbl_postfallclinicalmonitoringBpage2 model)
         {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
-            var resident_sess = (ResidentModel)TempData["Resident"];
-
-            ViewBag.User = user;
-            ViewBag.Resident = resident_sess;
-            ViewBag.Home = home;
-
-
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
-
-            var residentId = resident_sess.ID.ToString();
+            var residentId = "1234";
             using (var dbContext = new test_qolaEntities())
             {
                 var resident = dbContext.tbl_postfallclinicalmonitoringBpage2.SingleOrDefault(m => m.residentid == residentId && m.category.ToLower() == model.category.ToLower());
@@ -660,7 +327,7 @@ namespace QolaMVC.Controllers
                 {
                     var updatepage2 = UpdateAssessmentPage2(model, resident);
                 }
-
+               
                 dbContext.SaveChanges();
                 //dbContext.
             }
@@ -747,299 +414,24 @@ namespace QolaMVC.Controllers
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
             var resident = (ResidentModel)TempData["Resident"];
-            p_Model.Date = DateTime.Now;
+            
             p_Model.Resident = resident;
             p_Model.ModifiedBy = user;
             p_Model.ModifiedOn = DateTime.Now;
-
+            
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
             ProgressNotesDAL.AddNewProgressNotes(p_Model);
-            TempData["Message"] = "Successfully added new Progress note";
+            TempData["Message"] = "Progress not added successfully";
 
-            return Redirect("/Home/ResidentMenu/?p_ResidentId=" + resident.ID);
+            return Redirect("/Home/ResidentMenu/?p_ResidentId="+resident.ID);
         }
 
         public ActionResult UnusualIncident()
         {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
-            var resident = (ResidentModel)TempData["Resident"];
-
-            ViewBag.User = user;
-            ViewBag.Resident = resident;
-            ViewBag.Home = home;
-
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
-
-            var l_IncidentReports = AssessmentDAL.GetUnusualIncidentReports(resident.ID);
-            List<DateTime> l_Dates = l_IncidentReports.Select(m => m.DateEntered).ToList();
-            ViewBag.AssessmentDates = l_Dates;
-
-            var model = new UnusualIncidentModel();
-            model.SectionG = new Collection<UnusualIncidentSectionGModel>();
-            var l_Array = new string[]{ "Physician", "Family", "Alberta Health Services", "On Call Manager", "Director of Care", "Maintenance", "General Service Mgr", "Senior Management", "Other" };
-
-            foreach(var l_Item in l_Array)
-            {
-                var l_SectionG = new UnusualIncidentSectionGModel();
-                l_SectionG.Notify = l_Item;
-                l_SectionG.Name = string.Empty;
-                l_SectionG.IncidentId = 0;
-                l_SectionG.ResidentId = resident.ID;
-                l_SectionG.Via = string.Empty;
-
-                model.SectionG.Add(l_SectionG);
-            }
-
-            return View(model);
-        }
-
-        [HttpPost]
-        public ActionResult UnusualIncident(FormCollection collection)
-        {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
-            var resident = (ResidentModel)TempData["Resident"];
-
-
-            ViewBag.User = user;
-            ViewBag.Home = home;
-            ViewBag.Resident = resident;
-
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
-
-            var l_IncidentReports = AssessmentDAL.GetUnusualIncidentReports(resident.ID);
-
-            List<DateTime> l_Dates = l_IncidentReports.Select(m => m.DateEntered).ToList();
-
-            ViewBag.AssessmentDates = l_Dates;
-            DateTime l_DateEntered = Convert.ToDateTime(collection["DateEntered"]);
-
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
-
-            var model = l_IncidentReports.FirstOrDefault(m2 => m2.DateEntered.Date == l_DateEntered.Date && m2.DateEntered.Hour == l_DateEntered.Hour && m2.DateEntered.Minute == l_DateEntered.Minute);
-            if (model == null)
-            {
-                model = new UnusualIncidentModel();
-                var l_Array = new string[] { "Physician", "Family", "Alberta Health Services", "On Call Manager", "Director of Care", "Maintenance", "General Service Mgr", "Senior Management", "Other" };
-
-                foreach (var l_Item in l_Array)
-                {
-                    var l_SectionG = new UnusualIncidentSectionGModel();
-                    l_SectionG.Notify = l_Item;
-                    l_SectionG.Name = string.Empty;
-                    l_SectionG.IncidentId = 0;
-                    l_SectionG.ResidentId = resident.ID;
-                    l_SectionG.Via = string.Empty;
-
-                    model.SectionG.Add(l_SectionG);
-                }
-            }
-
-            return View(model);
-        }
-        [HttpPost]
-        public ActionResult AddUnusualIncident(UnusualIncidentModel p_Model)
-        {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
-            var resident = (ResidentModel)TempData["Resident"];
-
-            ViewBag.User = user;
-            ViewBag.Resident = resident;
-            ViewBag.Home = home;
-
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
-
-            p_Model.EnteredBy = user;
-            p_Model.Resident = resident;
-            p_Model.DateEntered = DateTime.Now;
-
-            AssessmentDAL.AddUnusualIncident(p_Model);
-
-            return RedirectToAction("UnusualIncident");
-        }
-
-        //public ActionResult CarePlan()
-        //{
-        //    var home = (HomeModel)TempData["Home"];
-        //    var user = (UserModel)TempData["User"];
-        //    var resident_sess = (ResidentModel)TempData["Resident"];
-
-        //    ViewBag.User = user;
-        //    ViewBag.Resident = resident_sess;
-        //    ViewBag.Home = home;
-
-
-        //    TempData.Keep("User");
-        //    TempData.Keep("Home");
-        //    TempData.Keep("Resident");
-
-        //    var careplan = AssessmentDAL.GetCarePlan("1234");
-
-        //    return View(careplan);
-        //}
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult CarePlan(CarePlan_VitalSignModel model)
-        //{
-        //    //var resident_sess = (ResidentModel)TempData["Resident"];
-
-        //    //resident_sess.ID = 1234;
-
-        //    AssessmentDAL.AddCarePlan(model, "1234");
-
-        //    TempData.Keep("Resident");
-
-        //    return RedirectToAction("CarePlan");
-
-        //}
-
-        public ActionResult CarePlan()
-        {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
-            var resident = (ResidentModel)TempData["Resident"];
-
-            ViewBag.User = user;
-            ViewBag.Resident = resident;
-            ViewBag.Home = home;
-
-
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
-
-            var careplan = CarePlanDAL.GetResidentsPlanOfCare(resident.ID);
-            PlanOfCareModel l_Model = new PlanOfCareModel();
-
-            var l_PersonalHygiene = new CarePlanPersonalHygieneModel();
-            l_PersonalHygiene.PreferredDaysCollection = new Collection<QOLACheckboxModel>();
-            QolaCulture.InitPreferredDays(ref l_PersonalHygiene);
-            l_Model.PersonalHygiene = l_PersonalHygiene;
-
-            var l_AssistanceWith = new CarePlanAssistanceWithModel();
-            l_AssistanceWith.TeethCollection = new Collection<QOLACheckboxModel>();
-            QolaCulture.InitAssistanceWithTeeth(ref l_AssistanceWith);
-            l_Model.AssistanceWith = l_AssistanceWith;
-
-            var l_Behaviour = new CarePlanBehaviourModel();
-            l_Behaviour.BehaviourCollection = new Collection<QOLACheckboxModel>();
-            QolaCulture.InitBehaviour(ref l_Behaviour);
-            l_Model.Behaviour = l_Behaviour;
-
-            var l_CognitiveFunction = new CarePlanCognitiveFunctionModel();
-            l_CognitiveFunction.CognitiveFunction = new Collection<QOLACheckboxModel>();
-            QolaCulture.InitCognitiveFunction(ref l_CognitiveFunction);
-            l_Model.CognitiveFunction = l_CognitiveFunction;
-
-            var l_Nutrition = new CarePlanNutritionModel();
-            l_Nutrition.Diet = new Collection<QOLACheckboxModel>();
-            QolaCulture.InitNutrition(ref l_Nutrition);
-            l_Model.Nutrition = l_Nutrition;
-
-            var l_Elimination = new CarePlanEliminationModel();
-            l_Elimination.Bladder = new Collection<QOLACheckboxModel>();
-            l_Elimination.Bowel = new Collection<QOLACheckboxModel>();
-            QolaCulture.InitElimination(ref l_Elimination);
-            l_Model.Elimination = l_Elimination;
-
-            var l_Toilet = new CarePlanToiletingModel();
-            l_Toilet.Bathroom = new Collection<QOLACheckboxModel>();
-            l_Toilet.Commode = new Collection<QOLACheckboxModel>();
-            l_Toilet.Bedpan = new Collection<QOLACheckboxModel>();
-            QolaCulture.InitToileting(ref l_Toilet);
-            l_Model.Toileting = l_Toilet;
-
-            var l_Sensory = new CarePlanSensoryAbilitiesModel();
-            l_Sensory.Vision = new Collection<QOLACheckboxModel>();
-            l_Sensory.Hearing = new Collection<QOLACheckboxModel>();
-            l_Sensory.Communication = new Collection<QOLACheckboxModel>();
-            QolaCulture.InitSensoryAbilities(ref l_Sensory);
-            l_Model.SensoryAbilities = l_Sensory;
-
-            var l_SpecialEquipment = new CarePlanSpecialEquipmentModel();
-            l_SpecialEquipment.SpecialEquipment = new Collection<QOLACheckboxModel>();
-            QolaCulture.InitSpecialEquipment(ref l_SpecialEquipment);
-            l_Model.SpecialEquipment = l_SpecialEquipment;
-
-            if (careplan.Count >0)
-            {
-                l_Model = careplan.LastOrDefault();
-            }
-            return View(l_Model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult CarePlan(PlanOfCareModel p_Model)
-        {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
-            var resident = (ResidentModel)TempData["Resident"];
-
-            ViewBag.User = user;
-            ViewBag.Resident = resident;
-            ViewBag.Home = home;
-
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
-
-            p_Model.EnteredBy = user;
-            p_Model.Resident = resident;
-            p_Model.DateEntered = DateTime.Now;
-
-            CarePlanDAL.AddCarePlan(p_Model);
-            return RedirectToAction("CarePlan");
-        }
-
-        public ActionResult SpecificGoals()
-        {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
-            var resident_sess = (ResidentModel)TempData["Resident"];
-
-            ViewBag.User = user;
-            ViewBag.Resident = resident_sess;
-            ViewBag.Home = home;
-
-
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
-
             return View();
         }
-
-        public ActionResult Activity()
-        {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
-            var resident = (ResidentModel)TempData["Resident"];
-
-            ViewBag.User = user;
-            ViewBag.Resident = resident;
-            ViewBag.Home = home;
-
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
-            
-            return View();
-        }
-
     }
 }
