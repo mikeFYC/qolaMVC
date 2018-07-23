@@ -431,6 +431,281 @@ namespace QolaMVC.Controllers
 
         public ActionResult UnusualIncident()
         {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            var l_IncidentReports = AssessmentDAL.GetUnusualIncidentReports(resident.ID);
+            List<DateTime> l_Dates = l_IncidentReports.Select(m => m.DateEntered).ToList();
+            ViewBag.AssessmentDates = l_Dates;
+
+            var model = new UnusualIncidentModel();
+            model.SectionG = new Collection<UnusualIncidentSectionGModel>();
+            var l_Array = new string[]{ "Physician", "Family", "Alberta Health Services", "On Call Manager", "Director of Care", "Maintenance", "General Service Mgr", "Senior Management", "Other" };
+
+            foreach(var l_Item in l_Array)
+            {
+                var l_SectionG = new UnusualIncidentSectionGModel();
+                l_SectionG.Notify = l_Item;
+                l_SectionG.Name = string.Empty;
+                l_SectionG.IncidentId = 0;
+                l_SectionG.ResidentId = resident.ID;
+                l_SectionG.Via = string.Empty;
+
+                model.SectionG.Add(l_SectionG);
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult UnusualIncident(FormCollection collection)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            ViewBag.Resident = resident;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            var l_IncidentReports = AssessmentDAL.GetUnusualIncidentReports(resident.ID);
+
+            List<DateTime> l_Dates = l_IncidentReports.Select(m => m.DateEntered).ToList();
+
+            ViewBag.AssessmentDates = l_Dates;
+            DateTime l_DateEntered = Convert.ToDateTime(collection["DateEntered"]);
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            var model = l_IncidentReports.FirstOrDefault(m2 => m2.DateEntered.Date == l_DateEntered.Date && m2.DateEntered.Hour == l_DateEntered.Hour && m2.DateEntered.Minute == l_DateEntered.Minute);
+            if (model == null)
+            {
+                model = new UnusualIncidentModel();
+                var l_Array = new string[] { "Physician", "Family", "Alberta Health Services", "On Call Manager", "Director of Care", "Maintenance", "General Service Mgr", "Senior Management", "Other" };
+
+                foreach (var l_Item in l_Array)
+                {
+                    var l_SectionG = new UnusualIncidentSectionGModel();
+                    l_SectionG.Notify = l_Item;
+                    l_SectionG.Name = string.Empty;
+                    l_SectionG.IncidentId = 0;
+                    l_SectionG.ResidentId = resident.ID;
+                    l_SectionG.Via = string.Empty;
+
+                    model.SectionG.Add(l_SectionG);
+                }
+            }
+
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult AddUnusualIncident(UnusualIncidentModel p_Model)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            p_Model.EnteredBy = user;
+            p_Model.Resident = resident;
+            p_Model.DateEntered = DateTime.Now;
+
+            AssessmentDAL.AddUnusualIncident(p_Model);
+
+            return RedirectToAction("UnusualIncident");
+        }
+
+        //public ActionResult CarePlan()
+        //{
+        //    var home = (HomeModel)TempData["Home"];
+        //    var user = (UserModel)TempData["User"];
+        //    var resident_sess = (ResidentModel)TempData["Resident"];
+
+        //    ViewBag.User = user;
+        //    ViewBag.Resident = resident_sess;
+        //    ViewBag.Home = home;
+
+
+        //    TempData.Keep("User");
+        //    TempData.Keep("Home");
+        //    TempData.Keep("Resident");
+
+        //    var careplan = AssessmentDAL.GetCarePlan("1234");
+
+        //    return View(careplan);
+        //}
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult CarePlan(CarePlan_VitalSignModel model)
+        //{
+        //    //var resident_sess = (ResidentModel)TempData["Resident"];
+
+        //    //resident_sess.ID = 1234;
+
+        //    AssessmentDAL.AddCarePlan(model, "1234");
+
+        //    TempData.Keep("Resident");
+
+        //    return RedirectToAction("CarePlan");
+
+        //}
+
+        public ActionResult CarePlan()
+        {
+            //care plan
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            var careplan = CarePlanDAL.GetResidentsPlanOfCare(resident.ID);
+            PlanOfCareModel l_Model = new PlanOfCareModel();
+
+            var l_PersonalHygiene = new CarePlanPersonalHygieneModel();
+            l_PersonalHygiene.PreferredDaysCollection = new Collection<QOLACheckboxModel>();
+            QolaCulture.InitPreferredDays(ref l_PersonalHygiene);
+            l_Model.PersonalHygiene = l_PersonalHygiene;
+
+            var l_AssistanceWith = new CarePlanAssistanceWithModel();
+            l_AssistanceWith.TeethCollection = new Collection<QOLACheckboxModel>();
+            QolaCulture.InitAssistanceWithTeeth(ref l_AssistanceWith);
+            l_Model.AssistanceWith = l_AssistanceWith;
+
+            var l_Behaviour = new CarePlanBehaviourModel();
+            l_Behaviour.BehaviourCollection = new Collection<QOLACheckboxModel>();
+            QolaCulture.InitBehaviour(ref l_Behaviour);
+            l_Model.Behaviour = l_Behaviour;
+
+            var l_CognitiveFunction = new CarePlanCognitiveFunctionModel();
+            l_CognitiveFunction.CognitiveFunction = new Collection<QOLACheckboxModel>();
+            QolaCulture.InitCognitiveFunction(ref l_CognitiveFunction);
+            l_Model.CognitiveFunction = l_CognitiveFunction;
+
+            var l_Nutrition = new CarePlanNutritionModel();
+            l_Nutrition.Diet = new Collection<QOLACheckboxModel>();
+            QolaCulture.InitNutrition(ref l_Nutrition);
+            l_Model.Nutrition = l_Nutrition;
+
+            var l_Elimination = new CarePlanEliminationModel();
+            l_Elimination.Bladder = new Collection<QOLACheckboxModel>();
+            l_Elimination.Bowel = new Collection<QOLACheckboxModel>();
+            QolaCulture.InitElimination(ref l_Elimination);
+            l_Model.Elimination = l_Elimination;
+
+            var l_Toilet = new CarePlanToiletingModel();
+            l_Toilet.Bathroom = new Collection<QOLACheckboxModel>();
+            l_Toilet.Commode = new Collection<QOLACheckboxModel>();
+            l_Toilet.Bedpan = new Collection<QOLACheckboxModel>();
+            QolaCulture.InitToileting(ref l_Toilet);
+            l_Model.Toileting = l_Toilet;
+
+            var l_Sensory = new CarePlanSensoryAbilitiesModel();
+            l_Sensory.Vision = new Collection<QOLACheckboxModel>();
+            l_Sensory.Hearing = new Collection<QOLACheckboxModel>();
+            l_Sensory.Communication = new Collection<QOLACheckboxModel>();
+            QolaCulture.InitSensoryAbilities(ref l_Sensory);
+            l_Model.SensoryAbilities = l_Sensory;
+
+            var l_SpecialEquipment = new CarePlanSpecialEquipmentModel();
+            l_SpecialEquipment.SpecialEquipment = new Collection<QOLACheckboxModel>();
+            QolaCulture.InitSpecialEquipment(ref l_SpecialEquipment);
+            l_Model.SpecialEquipment = l_SpecialEquipment;
+
+            if (careplan.Count >0)
+            {
+                l_Model = careplan.LastOrDefault();
+            }
+            return View(l_Model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CarePlan(PlanOfCareModel p_Model)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            p_Model.EnteredBy = user;
+            p_Model.Resident = resident;
+            p_Model.DateEntered = DateTime.Now;
+
+            CarePlanDAL.AddCarePlan(p_Model);
+            return RedirectToAction("CarePlan");
+        }
+
+        public ActionResult SpecificGoals()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident_sess = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident_sess;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            return View();
+        }
+
+        public ActionResult Activity()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            
             return View();
         }
     }
