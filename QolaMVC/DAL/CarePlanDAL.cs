@@ -204,7 +204,7 @@ namespace QolaMVC.DAL
                     l_Cmd_Nutrition.Parameters.AddWithValue("@AssistiveDevices", p_Model.Nutrition.AssistiveDevices);
                     l_Cmd_Nutrition.Parameters.AddWithValue("@Texture", p_Model.Nutrition.Texture);
                     l_Cmd_Nutrition.Parameters.AddWithValue("@Other", p_Model.Nutrition.Other);
-                    l_Cmd_Nutrition.Parameters.AddWithValue("@Diet", p_Model.Nutrition.Diet);
+                    l_Cmd_Nutrition.Parameters.AddWithValue("@Diet", JsonConvert.SerializeObject(p_Model.Nutrition.Diet, Formatting.Indented));
                     l_Cmd_Nutrition.Parameters.AddWithValue("@OtherDiet", p_Model.Nutrition.OtherDiet);
                     l_Cmd_Nutrition.Parameters.AddWithValue("@Notes", p_Model.Nutrition.Notes);
                     l_Cmd_Nutrition.Parameters.AddWithValue("@Allergies", p_Model.Nutrition.Allergies);
@@ -606,6 +606,447 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
+
+        private static CarePlanMealEscortModel GetCarePlanMealEscort(int p_CarePlanId)
+        {
+            string exception = string.Empty;
+            CarePlanMealEscortModel l_Assessment = new CarePlanMealEscortModel();
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_PlanOfCare_MealEscort", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@CarePlanId", p_CarePlanId);
+                DataSet dataReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(dataReceive);
+
+                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
+                {
+                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_Assessment.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
+                        l_Assessment.ResidentId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_Assessment.CarePlanId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["CarePlanId"]);
+                        l_Assessment.BreakFast = Convert.ToString(dataReceive.Tables[0].Rows[index]["BreakFast"]);
+                        l_Assessment.Lunch = Convert.ToString(dataReceive.Tables[0].Rows[index]["Lunch"]);
+                        l_Assessment.Dinner = Convert.ToString(dataReceive.Tables[0].Rows[index]["Dinner"]);
+                    }
+                }
+                return l_Assessment;
+            }
+            catch (Exception ex)
+            {
+                exception = "CarePlanDAL GetCarePlanMealEscort |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+        private static CarePlanBehaviourModel GetCarePlanBehaviour(int p_CarePlanId)
+        {
+            string exception = string.Empty;
+            CarePlanBehaviourModel l_Assessment = new CarePlanBehaviourModel();
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_PlanOfCare_Behaviour", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@CarePlanId", p_CarePlanId);
+                DataSet dataReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(dataReceive);
+
+                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
+                {
+                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_Assessment.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
+                        l_Assessment.ResidentId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_Assessment.CarePlanId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["CarePlanId"]);
+                        l_Assessment.BehaviourCollection = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Behavior"]));
+                        l_Assessment.HarmToSelf = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["HarmToSelf"]);
+                        l_Assessment.Smoker = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["smoker"]);
+                        l_Assessment.RiskOfWandering = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["RiskOfWandering"]);
+                        l_Assessment.CognitiveStatus = Convert.ToString(dataReceive.Tables[0].Rows[index]["CognitiveStatus"]);
+                        l_Assessment.OtherInfo = Convert.ToString(dataReceive.Tables[0].Rows[index]["OtherInfo"]);
+                    }
+                }
+                return l_Assessment;
+            }
+            catch (Exception ex)
+            {
+                exception = "CarePlanDAL GetCarePlanBehaviour |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+        private static CarePlanCognitiveFunctionModel GetCarePlanCognitiveFunction(int p_CarePlanId)
+        {
+            string exception = string.Empty;
+            CarePlanCognitiveFunctionModel l_Assessment = new CarePlanCognitiveFunctionModel();
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_PlanOfCare_CognitiveFunction", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@CarePlanId", p_CarePlanId);
+                DataSet dataReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(dataReceive);
+
+                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
+                {
+                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_Assessment.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
+                        l_Assessment.ResidentId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_Assessment.CarePlanId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["CarePlanId"]);
+                        l_Assessment.CognitiveFunction = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["CognitiveFunction"]));
+                    }
+                }
+                return l_Assessment;
+            }
+            catch (Exception ex)
+            {
+                exception = "CarePlanDAL GetCarePlanCognitiveFunction |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+        private static CarePlanOrientationModel GetCarePlanOrientation(int p_CarePlanId)
+        {
+            string exception = string.Empty;
+            CarePlanOrientationModel l_Assessment = new CarePlanOrientationModel();
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_PlanOfCare_Orientation", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@CarePlanId", p_CarePlanId);
+                DataSet dataReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(dataReceive);
+
+                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
+                {
+                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_Assessment.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
+                        l_Assessment.ResidentId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_Assessment.CarePlanId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["CarePlanId"]);
+                        l_Assessment.IsDementiaCare = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["IsDementiaCare"]);
+                        l_Assessment.IsPerson = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["IsPerson"]);
+                        l_Assessment.IsPlace = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["IsPlace"]);
+                        l_Assessment.IsTime = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["IsTime"]);
+                    }
+                }
+                return l_Assessment;
+            }
+            catch (Exception ex)
+            {
+                exception = "CarePlanDAL GetCarePlanOrientation |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+        private static CarePlanNutritionModel GetCarePlanNutrition(int p_CarePlanId)
+        {
+            string exception = string.Empty;
+            CarePlanNutritionModel l_Assessment = new CarePlanNutritionModel();
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_PlanOfCare_Nutrition", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@CarePlanId", p_CarePlanId);
+                DataSet dataReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(dataReceive);
+
+                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
+                {
+                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_Assessment.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
+                        l_Assessment.ResidentId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_Assessment.CarePlanId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["CarePlanId"]);
+                        l_Assessment.NutritionStatus = Convert.ToString(dataReceive.Tables[0].Rows[index]["NutritionStatus"]);
+                        l_Assessment.Risk = Convert.ToString(dataReceive.Tables[0].Rows[index]["Risk"]);
+                        l_Assessment.AssistiveDevices = Convert.ToString(dataReceive.Tables[0].Rows[index]["AssistiveDevices"]);
+                        l_Assessment.Texture = Convert.ToString(dataReceive.Tables[0].Rows[index]["Texture"]);
+                        l_Assessment.Other = Convert.ToString(dataReceive.Tables[0].Rows[index]["Other"]);
+                        l_Assessment.Diet = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Diet"]));
+                        l_Assessment.OtherDiet = Convert.ToString(dataReceive.Tables[0].Rows[index]["OtherDiet"]);
+                        l_Assessment.Notes = Convert.ToString(dataReceive.Tables[0].Rows[index]["Notes"]);
+                        l_Assessment.Allergies = Convert.ToString(dataReceive.Tables[0].Rows[index]["Allergies"]);
+                    }
+                }
+                return l_Assessment;
+            }
+            catch (Exception ex)
+            {
+                exception = "CarePlanDAL GetCarePlanNutrition |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+        private static CarePlanMealsModel GetCarePlanMeals(int p_CarePlanId)
+        {
+            string exception = string.Empty;
+            CarePlanMealsModel l_Assessment = new CarePlanMealsModel();
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_PlanOfCare_Meals", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@CarePlanId", p_CarePlanId);
+                DataSet dataReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(dataReceive);
+
+                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
+                {
+                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_Assessment.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
+                        l_Assessment.ResidentId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_Assessment.CarePlanId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["CarePlanId"]);
+                        l_Assessment.Appetite = Convert.ToString(dataReceive.Tables[0].Rows[index]["Appetite"]);
+                        l_Assessment.BreakFast = Convert.ToString(dataReceive.Tables[0].Rows[index]["BreakFast"]);
+                        l_Assessment.Lunch = Convert.ToString(dataReceive.Tables[0].Rows[index]["Lunch"]);
+                        l_Assessment.Dinner = Convert.ToString(dataReceive.Tables[0].Rows[index]["Dinner"]);
+                    }
+                }
+                return l_Assessment;
+            }
+            catch (Exception ex)
+            {
+                exception = "CarePlanDAL GetCarePlanMeals |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+        private static CarePlanEliminationModel GetCarePlanElimination(int p_CarePlanId)
+        {
+            string exception = string.Empty;
+            CarePlanEliminationModel l_Assessment = new CarePlanEliminationModel();
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_PlanOfCare_Elimination", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@CarePlanId", p_CarePlanId);
+                DataSet dataReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(dataReceive);
+
+                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
+                {
+                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_Assessment.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
+                        l_Assessment.ResidentId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_Assessment.CarePlanId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["CarePlanId"]);
+                        l_Assessment.Bladder = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Bladder"]));
+                        l_Assessment.Bowel = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Bowel"]));
+                        l_Assessment.NameCode = Convert.ToString(dataReceive.Tables[0].Rows[index]["NameCode"]);
+                        l_Assessment.Products = Convert.ToString(dataReceive.Tables[0].Rows[index]["ContinenceProducts"]);
+                        l_Assessment.AssistiveDevices = Convert.ToString(dataReceive.Tables[0].Rows[index]["AssistiveDevices"]);
+                        l_Assessment.CompletedBy = Convert.ToString(dataReceive.Tables[0].Rows[index]["AssessmentCompletedBy"]);
+                        l_Assessment.AssessmentDate = Convert.ToString(dataReceive.Tables[0].Rows[index]["AssessmentDate"]);
+                    }
+                }
+                return l_Assessment;
+            }
+            catch (Exception ex)
+            {
+                exception = "CarePlanDAL GetCarePlanElimination |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+        private static CarePlanToiletingModel GetCarePlanToileting(int p_CarePlanId)
+        {
+            string exception = string.Empty;
+            CarePlanToiletingModel l_Assessment = new CarePlanToiletingModel();
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_PlanOfCare_Toileting", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@CarePlanId", p_CarePlanId);
+                DataSet dataReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(dataReceive);
+
+                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
+                {
+                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_Assessment.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
+                        l_Assessment.ResidentId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_Assessment.CarePlanId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["CarePlanId"]);
+                        l_Assessment.Bathroom = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Bathroom"]));
+                        l_Assessment.Commode = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Commode"]));
+                        l_Assessment.Bedpan = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Bedpan"]));
+                        l_Assessment.Toileting = Convert.ToString(dataReceive.Tables[0].Rows[index]["Toileting"]);
+                    }
+                }
+                return l_Assessment;
+            }
+            catch (Exception ex)
+            {
+                exception = "CarePlanDAL GetCarePlanToileting |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+        private static CarePlanMedication GetCarePlanMedication(int p_CarePlanId)
+        {
+            string exception = string.Empty;
+            CarePlanMedication l_Assessment = new CarePlanMedication();
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_PlanOfCare_Medication", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@CarePlanId", p_CarePlanId);
+                DataSet dataReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(dataReceive);
+
+                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
+                {
+                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_Assessment.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
+                        l_Assessment.ResidentId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_Assessment.CarePlanId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["CarePlanId"]);
+                        l_Assessment.Assistance = Convert.ToString(dataReceive.Tables[0].Rows[index]["Assistance"]);
+                        l_Assessment.Administration = Convert.ToString(dataReceive.Tables[0].Rows[index]["Administration"]);
+                        l_Assessment.CompletedBy = Convert.ToString(dataReceive.Tables[0].Rows[index]["CompletedBy"]);
+                        l_Assessment.Agency = Convert.ToString(dataReceive.Tables[0].Rows[index]["Agency"]);
+                        l_Assessment.Pharmacy = Convert.ToString(dataReceive.Tables[0].Rows[index]["Pharmacy"]);
+                        l_Assessment.Allergies = Convert.ToString(dataReceive.Tables[0].Rows[index]["Allergies"]);
+                    }
+                }
+                return l_Assessment;
+            }
+            catch (Exception ex)
+            {
+                exception = "CarePlanDAL GetCarePlanMedication |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+        private static CarePlanSensoryAbilitiesModel GetCarePlanSensoryAbilities(int p_CarePlanId)
+        {
+            string exception = string.Empty;
+            CarePlanSensoryAbilitiesModel l_Assessment = new CarePlanSensoryAbilitiesModel();
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_PlanOfCare_SensoryAbilities", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@CarePlanId", p_CarePlanId);
+                DataSet dataReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(dataReceive);
+
+                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
+                {
+                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_Assessment.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
+                        l_Assessment.ResidentId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_Assessment.CarePlanId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["CarePlanId"]);
+                        l_Assessment.Vision = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Vision"]));
+                        l_Assessment.Hearing = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Hearing"]));
+                        l_Assessment.Communication = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Communication"]));
+                        l_Assessment.Notes = Convert.ToString(dataReceive.Tables[0].Rows[index]["Notes"]);
+                    }
+                }
+                return l_Assessment;
+            }
+            catch (Exception ex)
+            {
+                exception = "CarePlanDAL GetCarePlanMedication |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
     }
 }
  
