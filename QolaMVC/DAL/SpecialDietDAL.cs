@@ -106,6 +106,38 @@ namespace QolaMVC.DAL
             }
         }
 
+
+        public static List<NEW_SpecialDietModel> GetSpecialDiet_By_Column(string column, string value)
+        {
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                List<NEW_SpecialDietModel> l_Collection = new List<NEW_SpecialDietModel>();
+                l_Conn.Open();
+                
+                SqlCommand l_Cmd = new SqlCommand("sp_get_by_column_new_tbl_special_diet", l_Conn);
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@column", column);
+                l_Cmd.Parameters.AddWithValue("@value", value);
+                SqlDataReader l_Reader = l_Cmd.ExecuteReader();
+
+                while (l_Reader.Read())
+                {
+                    NEW_SpecialDietModel l_Model = new NEW_SpecialDietModel();
+                    l_Model.Id = Convert.ToInt32(l_Reader["Id"]);
+                    l_Model.Name = Convert.ToString(l_Reader["name"]);
+                    l_Collection.Add(l_Model);
+                }
+
+                return l_Collection;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(".GetSpecialDiet_By_Column\n" + ex.Message);
+            }
+        }
+
+
         public static void EditSpecialDiet(NEW_SpecialDietModel p_Model, int id)
         {
             string exception = string.Empty;

@@ -11,9 +11,10 @@ namespace QolaMVC.Controllers
     public class DineTimeController : Controller
     {
         // GET: Suite
-        public ActionResult List()
+        public ActionResult List(string column = "*", string value = "0")
         {
-            List<NEW_DineTimeModel> l_Model = DineTimeDAL.GetAllDineTime();
+            // List<NEW_DineTimeModel> l_Model = DineTimeDAL.GetAllDineTime();
+            List<NEW_DineTimeModel> l_Model = DineTimeDAL.GetDineTime_By_Column(column, value);
             return View(l_Model);
             //return View();
         }

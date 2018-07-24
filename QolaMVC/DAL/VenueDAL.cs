@@ -112,6 +112,39 @@ namespace QolaMVC.DAL
             }
         }
 
+        public static List<NEW_VenueModel> GetVenue_By_Column(string column, string value)
+        {
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                List<NEW_VenueModel> l_Collection = new List<NEW_VenueModel>();
+                l_Conn.Open();
+                SqlCommand l_Cmd = new SqlCommand("sp_get_by_column_new_tbl_venue", l_Conn);
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@column", column);
+                l_Cmd.Parameters.AddWithValue("@value", value);
+                SqlDataReader l_Reader = l_Cmd.ExecuteReader();
+
+                while (l_Reader.Read())
+                {
+                    NEW_VenueModel l_Model = new NEW_VenueModel();
+                    l_Model.Id = Convert.ToInt32(l_Reader["Id"]);
+                    l_Model.Home = Convert.ToString(l_Reader["home"]);
+                    l_Model.Code = Convert.ToString(l_Reader["code"]);
+                    l_Model.Venue = Convert.ToString(l_Reader["venue"]);
+
+                    l_Collection.Add(l_Model);
+                }
+
+                return l_Collection;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(".GetVenue_By_Column\n" + ex.Message);
+            }
+        }
+
+
         public static void EditVenue(NEW_VenueModel p_Model, int id)
         {
             string exception = string.Empty;

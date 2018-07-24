@@ -11,9 +11,10 @@ namespace QolaMVC.Controllers
     public class SpecialDietController : Controller
     {
         // GET: Suite
-        public ActionResult List()
+        public ActionResult List(string column = "*", string value = "0")
         {
-            List<NEW_SpecialDietModel> l_Model = SpecialDietDAL.GetAllSpecialDiet();
+            //List<NEW_SpecialDietModel> l_Model = SpecialDietDAL.GetAllSpecialDiet();
+            List<NEW_SpecialDietModel> l_Model = SpecialDietDAL.GetSpecialDiet_By_Column(column, value);
             return View(l_Model);
             //return View();
         }

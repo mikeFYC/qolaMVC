@@ -11,9 +11,10 @@ namespace QolaMVC.Controllers
     public class AllergyController : Controller
     {
         // GET: Suite
-        public ActionResult List()
+        public ActionResult List(string column = "*", string value = "0")
         {
-            List<NEW_AllergyModel> l_Model = AllergyDAL.GetAllAllergy();
+            //List<NEW_AllergyModel> l_Model = AllergyDAL.GetAllAllergy();
+            List<NEW_AllergyModel> l_Model = AllergyDAL.GetAllergy_By_Column(column, value);
             return View(l_Model);
             //return View();
         }

@@ -12,17 +12,19 @@ namespace QolaMVC.Controllers
     {
         private QOLAProductionFinalsEntities db = new QOLAProductionFinalsEntities();
         // GET: Suite
-        public ActionResult List()
+        public ActionResult List(string column="*", string value="0")
         {
-            List<NEW_SuiteModel> l_Model = SuiteDAL.GetAllSuite();
+            //List<NEW_SuiteModel> l_Model = SuiteDAL.GetAllSuite();
+            List<NEW_SuiteModel> l_Model = SuiteDAL.GetSuite_By_Column(column, value);
             return View(l_Model);
             //return View();
         }
 
-        // GET: Suite/Details/5
-        public ActionResult Details(int id)
+        public ActionResult GetListByColumn(string column, string value)
         {
-            return View();
+            List<NEW_SuiteModel> l_Model = SuiteDAL.GetSuite_By_Column(column, value);
+            return View(l_Model);
+            //return View();
         }
 
         // GET: Suite/Create

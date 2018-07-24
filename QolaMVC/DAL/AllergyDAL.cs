@@ -109,6 +109,38 @@ namespace QolaMVC.DAL
             }
         }
 
+        public static List<NEW_AllergyModel> GetAllergy_By_Column(string column, string value)
+        {
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                List<NEW_AllergyModel> l_Collection = new List<NEW_AllergyModel>();
+                l_Conn.Open();
+                SqlCommand l_Cmd = new SqlCommand("sp_get_by_column_new_tbl_allergy", l_Conn);
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@column", column);
+                l_Cmd.Parameters.AddWithValue("@value", value);
+                SqlDataReader l_Reader = l_Cmd.ExecuteReader();
+
+                while (l_Reader.Read())
+                {
+                    NEW_AllergyModel l_Model = new NEW_AllergyModel();
+                    l_Model.Id = Convert.ToInt32(l_Reader["Id"]);
+                    l_Model.Allergy_Name = Convert.ToString(l_Reader["allergy_name"]);
+                    l_Model.Category = Convert.ToString(l_Reader["category"]);
+
+                    l_Collection.Add(l_Model);
+                }
+
+                return l_Collection;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(".GetAllergy_By_Column\n" + ex.Message);
+            }
+        }
+
+
         public static void EditAllergy(NEW_AllergyModel p_Model, int id)
         {
             string exception = string.Empty;

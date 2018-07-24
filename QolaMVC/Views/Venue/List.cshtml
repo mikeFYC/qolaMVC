@@ -57,20 +57,23 @@
                                     <div class="row">
                                         <div class="col-md-6 py-4 text-left">
                                             <form class="form-inline">
+@using (Html.BeginForm("List", "Venue", FormMethod.Get))
+{
                                                 <div class="form-group pr-1">
                                                     <div class="input-group">
-                                                        <select class="form-control">
-                                                            <option>All fields</option>
-                                                            <option>Home</option>
-                                                            <option>Code</option>
-                                                            <option>Venue</option>
+                                                        <select class="form-control" name="column" id="column">
+                                                            <option value="*">All fields</option>
+                                                            <option value="0">Home</option>
+                                                            <option value="1">Code</option>
+                                                            <option value="2">Venue</option>
                                                         </select>
                                                     </div>
                                                     <div class="input-group">
-                                                        <input type="text" class="form-control" id="exampleInputAmount" placeholder="Search for">
+                                                        @Html.TextBox("value", null, new { @class = "form-control", @placeholder = "Search for" })
                                                     </div>
                                                 </div>
                                                 <button type="submit" class="btn btn-danger">Search</button>
+}
                                             </form>
                                         </div>
                                         <div class="col-md-6 py-4 text-right">

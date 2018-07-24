@@ -109,6 +109,38 @@ namespace QolaMVC.DAL
             }
         }
 
+
+        public static List<NEW_DineTimeModel> GetDineTime_By_Column(string column, string value)
+        {
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                List<NEW_DineTimeModel> l_Collection = new List<NEW_DineTimeModel>();
+                l_Conn.Open();
+                SqlCommand l_Cmd = new SqlCommand("sp_get_by_column_new_tbl_dine_time", l_Conn);
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@column", column);
+                l_Cmd.Parameters.AddWithValue("@value", value);
+                SqlDataReader l_Reader = l_Cmd.ExecuteReader();
+
+                while (l_Reader.Read())
+                {
+                    NEW_DineTimeModel l_Model = new NEW_DineTimeModel();
+                    l_Model.Id = Convert.ToInt32(l_Reader["Id"]);
+                    l_Model.DineTime = Convert.ToString(l_Reader["dinetime"]);
+                    l_Model.ShortName = Convert.ToString(l_Reader["shortname"]);
+
+                    l_Collection.Add(l_Model);
+                }
+
+                return l_Collection;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(".GetAllDineTime\n" + ex.Message);
+            }
+        }
+
         public static void EditDineTime(NEW_DineTimeModel p_Model, int id)
         {
             string exception = string.Empty;

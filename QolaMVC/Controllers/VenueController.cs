@@ -11,9 +11,10 @@ namespace QolaMVC.Controllers
     public class VenueController : Controller
     {
         // GET: Suite
-        public ActionResult List()
+        public ActionResult List(string column = "*", string value = "0")
         {
-            List<NEW_VenueModel> l_Model = VenueDAL.GetAllVenue();
+            //List<NEW_VenueModel> l_Model = VenueDAL.GetAllVenue();
+            List<NEW_VenueModel> l_Model = VenueDAL.GetVenue_By_Column(column, value);
             return View(l_Model);
             //return View();
         }
