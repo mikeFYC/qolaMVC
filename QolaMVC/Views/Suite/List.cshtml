@@ -1,0 +1,140 @@
+﻿@model List<QolaMVC.Models.NEW_SuiteModel>
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+<style>
+
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+</style>
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+
+    <!-- START PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3>SUITE</h3>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+
+            <div style="height: 60px;"></div>
+
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+
+                <div class="card">
+                    <div class="card-block">
+
+                        <div class="form-tabs mt-4">
+                            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="pills-active-tab" data-toggle="pill" href="#pills-active" role="tab" aria-controls="pills-active" aria-selected="true">Active User</a>
+                                </li>
+
+
+                            </ul>
+                            <div class="tab-content" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="pills-active" role="tabpanel" aria-labelledby="pills-active-tab">
+
+                                    <div class="row">
+                                        <div class="col-md-6 py-4 text-left">
+                                            <form class="form-inline">
+                                                <div class="form-group pr-1">
+                                                    <div class="input-group">
+                                                        <select class="form-control">
+                                                            <option>All fields</option>
+                                                            <option>SUITE NO</option>
+                                                            <option>FLOOR NO</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" id="exampleInputAmount" placeholder="Search for">
+                                                    </div>
+                                                </div>
+                                                <button type="submit" class="btn btn-danger">Search</button>
+                                            </form>
+                                        </div>
+                                        <div class="col-md-6 py-4 text-right">
+                                            <a class="btn btn-lg btn-primary" href="~/Suite/AddSuite">Add New</a>
+                                        </div>
+                                    </div>
+
+                                    <table class="table table-bordered">
+                                        <thead class="bg-primary">
+                                            <tr>
+                                                <th class="text-white">S/N</th>
+                                                <th class="text-white">HOME</th>
+                                                <th class="text-white">SUITE NO</th>
+                                                <th class="text-white">FLOOR</th>
+                                                <th class="text-white"># OF ROOMS</th>
+                                                <th class="text-white">Edit</th>
+                                                <th class="text-white">Delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{ int i = 1; }
+                                            @{ foreach (var l_SUITE in Model)
+                                                {
+                                            <tr>
+                                                <td class="align-middle">@i</td>
+                                                <td class="align-middle">@l_SUITE.Home</td>
+                                                <td class="align-middle">@l_SUITE.Suite_No</td>
+                                                <td class="align-middle">@l_SUITE.Floor_No</td>
+                                                <td class="align-middle">@l_SUITE.No_Of_Rooms</td>
+                                                <td class="align-middle">
+                                                    <button class="btn btn-default btn-xs">
+                                                        <i class="fa fa-pencil"></i>
+                                                    </button>
+                                                    @Html.ActionLink("EditSuite", "EditSuite", new { id = l_SUITE.Id })
+                                                </td>
+                                                <td class="align-middle">
+
+                                                    <button class="btn btn-danger btn-xs">
+                                                        <i class="fa fa-trash-o"></i>
+                                                    </button>
+                                                    @Html.ActionLink("Delete Suite", "DeleteSuite", new { id = l_SUITE.Id })
+                                                </td>
+                                            </tr>
+
+                                                    i = i + 1;
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!-- END PLACE PAGE CONTENT HERE -->
+            </div>
+            <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+
+
+        @RenderPage("~/Views/Shared/_Footer.cshtml")

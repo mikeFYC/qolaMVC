@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="QOLAProductionFinalsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="new_tbl_suite">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Home" Type="varchar" MaxLength="200" />
+          <Property Name="suite_no" Type="int" />
+          <Property Name="floor_no" Type="int" />
+          <Property Name="no_of_rooms" Type="int" />
+        </EntityType>
+        <Function Name="sp_add_new_tbl_suite" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Home" Type="varchar" Mode="In" />
+          <Parameter Name="suite_no" Type="int" Mode="In" />
+          <Parameter Name="floor_no" Type="int" Mode="In" />
+          <Parameter Name="no_of_rooms" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_delete_new_tbl_suite" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_get_new_tbl_suite" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_update_new_tbl_suite" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Home" Type="varchar" Mode="In" />
+          <Parameter Name="suite_no" Type="int" Mode="In" />
+          <Parameter Name="floor_no" Type="int" Mode="In" />
+          <Parameter Name="no_of_rooms" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="QOLAProductionFinalsModelStoreContainer">
+          <EntitySet Name="new_tbl_suite" EntityType="Self.new_tbl_suite" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="QOLAProductionFinalsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="new_tbl_suite">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Home" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="suite_no" Type="Int32" />
+          <Property Name="floor_no" Type="Int32" />
+          <Property Name="no_of_rooms" Type="Int32" />
+        </EntityType>
+        <EntityContainer Name="QOLAProductionFinalsEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="new_tbl_suite" EntityType="Self.new_tbl_suite" />
+          <FunctionImport Name="sp_add_new_tbl_suite">
+            <Parameter Name="Home" Mode="In" Type="String" />
+            <Parameter Name="suite_no" Mode="In" Type="Int32" />
+            <Parameter Name="floor_no" Mode="In" Type="Int32" />
+            <Parameter Name="no_of_rooms" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_delete_new_tbl_suite">
+            <Parameter Name="id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_get_new_tbl_suite" ReturnType="Collection(QOLAProductionFinalsModel.sp_get_new_tbl_suite_Result)" />
+          <FunctionImport Name="sp_update_new_tbl_suite">
+            <Parameter Name="Home" Mode="In" Type="String" />
+            <Parameter Name="suite_no" Mode="In" Type="Int32" />
+            <Parameter Name="floor_no" Mode="In" Type="Int32" />
+            <Parameter Name="no_of_rooms" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="sp_get_new_tbl_suite_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="Home" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="suite_no" Nullable="true" />
+          <Property Type="Int32" Name="floor_no" Nullable="true" />
+          <Property Type="Int32" Name="no_of_rooms" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="QOLAProductionFinalsModelStoreContainer" CdmEntityContainer="QOLAProductionFinalsEntities">
+          <EntitySetMapping Name="new_tbl_suite">
+            <EntityTypeMapping TypeName="QOLAProductionFinalsModel.new_tbl_suite">
+              <MappingFragment StoreEntitySet="new_tbl_suite">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Home" ColumnName="Home" />
+                <ScalarProperty Name="suite_no" ColumnName="suite_no" />
+                <ScalarProperty Name="floor_no" ColumnName="floor_no" />
+                <ScalarProperty Name="no_of_rooms" ColumnName="no_of_rooms" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_add_new_tbl_suite" FunctionName="QOLAProductionFinalsModel.Store.sp_add_new_tbl_suite" />
+          <FunctionImportMapping FunctionImportName="sp_delete_new_tbl_suite" FunctionName="QOLAProductionFinalsModel.Store.sp_delete_new_tbl_suite" />
+          <FunctionImportMapping FunctionImportName="sp_get_new_tbl_suite" FunctionName="QOLAProductionFinalsModel.Store.sp_get_new_tbl_suite">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="QOLAProductionFinalsModel.sp_get_new_tbl_suite_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Home" ColumnName="Home" />
+                <ScalarProperty Name="suite_no" ColumnName="suite_no" />
+                <ScalarProperty Name="floor_no" ColumnName="floor_no" />
+                <ScalarProperty Name="no_of_rooms" ColumnName="no_of_rooms" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_update_new_tbl_suite" FunctionName="QOLAProductionFinalsModel.Store.sp_update_new_tbl_suite" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
