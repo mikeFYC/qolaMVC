@@ -1842,7 +1842,7 @@ BEGIN
 	CPFS.ResidentId,
 	CPFS.CarePlanId,
 	CPFS.FamilyMeeting,
-	CPFS.FamilyInvolvment
+	FamilyInvolvement = CPFS.FamilyInvolvment
 	FROM 
 		[tbl_AB_CarePlan_FamilySupport] CPFS 
 	WHERE CPFS.CarePlanId = @CarePlanId
@@ -2248,9 +2248,9 @@ GO
 CREATE PROCEDURE [dbo].[spAB_Add_PlanOfCare_Toileting]
 @CarePlanId int,
 @ResidentId INT,
-@Bathroom [nvarchar](100) = null,
-@Commode [nvarchar](100) = null,
-@Bedpan [nvarchar](100) = null,
+@Bathroom [nvarchar](max) = null,
+@Commode [nvarchar](max) = null,
+@Bedpan [nvarchar](max) = null,
 @Toileting [nvarchar](20) = null
 AS
 --20180705 chime created
@@ -2296,9 +2296,9 @@ GO
 CREATE PROCEDURE [dbo].[spAB_Add_PlanOfCare_SensoryAbilities]
 @CarePlanId int,
 @ResidentId INT,
-@Vision [nvarchar](200) = null,
-@Hearing [nvarchar](200) = null,
-@Communication [nvarchar](200) = null,
+@Vision [nvarchar](max) = null,
+@Hearing [nvarchar](max) = null,
+@Communication [nvarchar](max) = null,
 @Notes [nvarchar](max) = null
 AS
 --20180705 chime created
@@ -2388,7 +2388,7 @@ GO
 CREATE PROCEDURE [dbo].[spAB_Add_PlanOfCare_SpecialEquipment]
 @CarePlanId int,
 @ResidentId INT,
-@SpecialEquipment [nvarchar](200) = null,
+@SpecialEquipment [nvarchar](max) = null,
 @Details [nvarchar](200) = null
 AS
 --20180705 chime created

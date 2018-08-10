@@ -301,9 +301,9 @@ CREATE TABLE [dbo].[tbl_AB_CarePlan_Toileting](
 	ResidentId [int] NOT NULL,
 	CarePlanId [int] NOT NULL,
 	
-	Bathroom [nvarchar](100) null,
-	Commode [nvarchar](100) null,
-	Bedpan [nvarchar](100) null,
+	Bathroom [nvarchar](max) null,
+	Commode [nvarchar](max) null,
+	Bedpan [nvarchar](max) null,
 
 	Toileting [nvarchar](20) null,
 	
@@ -340,9 +340,9 @@ CREATE TABLE [dbo].[tbl_AB_CarePlan_SensoryAbilities](
 	ResidentId [int] NOT NULL,
 	CarePlanId [int] NOT NULL,
 	
-	Vision [nvarchar](200) null,
-	Hearing [nvarchar](200) null,
-	Communication [nvarchar](200) null,
+	Vision [nvarchar](max) null,
+	Hearing [nvarchar](max) null,
+	Communication [nvarchar](max) null,
 	Notes [nvarchar](max) null,
 	
 	EnteredBy [int] not null,
@@ -413,7 +413,7 @@ CREATE TABLE [dbo].[tbl_AB_CarePlan_SpecialEquipment](
 	ResidentId [int] NOT NULL,
 	CarePlanId [int] NOT NULL,
 	
-	SpecialEquipment [nvarchar](200) null,
+	SpecialEquipment [nvarchar](max) null,
 	Details [nvarchar](200) null,
 	
 	EnteredBy [int] not null,

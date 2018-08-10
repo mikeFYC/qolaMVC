@@ -280,6 +280,107 @@ namespace QolaMVC.DAL
                     l_Cmd_SensoryAbilities.Parameters.AddWithValue("@Notes", p_Model.SensoryAbilities.Notes);
                     l_Cmd_SensoryAbilities.ExecuteNonQuery();
 
+
+                    //Wound Care
+                    SqlCommand l_Cmd_WoundCare = new SqlCommand("spAB_Add_PlanOfCare_WoundCare", l_Conn);
+                    // l_Conn.Open();
+                    l_Cmd_WoundCare.CommandType = System.Data.CommandType.StoredProcedure;
+                    l_Cmd_WoundCare.Parameters.AddWithValue("@CarePlanId", l_AssessmentId);
+                    l_Cmd_WoundCare.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
+                    l_Cmd_WoundCare.Parameters.AddWithValue("@WoundCare", p_Model.WoundCare.WoundCare);
+                    l_Cmd_WoundCare.Parameters.AddWithValue("@AssistedBy", p_Model.WoundCare.AssistedBy);
+                    l_Cmd_WoundCare.Parameters.AddWithValue("@Agency", p_Model.WoundCare.Agency);
+                    l_Cmd_WoundCare.ExecuteNonQuery();
+
+
+                    //Skin Care
+                    SqlCommand l_Cmd_SkinCare = new SqlCommand("spAB_Add_PlanOfCare_SkinCare", l_Conn);
+                    // l_Conn.Open();
+                    l_Cmd_SkinCare.CommandType = System.Data.CommandType.StoredProcedure;
+                    l_Cmd_SkinCare.Parameters.AddWithValue("@CarePlanId", l_AssessmentId);
+                    l_Cmd_SkinCare.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
+                    l_Cmd_SkinCare.Parameters.AddWithValue("@SkinCare", p_Model.SkinCare.SkinCare);
+                    l_Cmd_SkinCare.Parameters.AddWithValue("@SpecialTreatments", p_Model.SkinCare.SpecialTreatments);
+                    l_Cmd_SkinCare.ExecuteNonQuery();
+
+
+                    //Special Needs
+                    SqlCommand l_Cmd_SpecialNeeds = new SqlCommand("spAB_Add_PlanOfCare_SpecialNeeds", l_Conn);
+                    // l_Conn.Open();
+                    l_Cmd_SpecialNeeds.CommandType = System.Data.CommandType.StoredProcedure;
+                    l_Cmd_SpecialNeeds.Parameters.AddWithValue("@CarePlanId", l_AssessmentId);
+                    l_Cmd_SpecialNeeds.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
+                    l_Cmd_SpecialNeeds.Parameters.AddWithValue("@Oxygen", p_Model.SpecialNeeds.Oxygen);
+                    l_Cmd_SpecialNeeds.Parameters.AddWithValue("@Oxygen_Supplier", p_Model.SpecialNeeds.OxygenSupplier);
+                    l_Cmd_SpecialNeeds.Parameters.AddWithValue("@Oxygen_Rate", p_Model.SpecialNeeds.OxygenRate);
+                    l_Cmd_SpecialNeeds.Parameters.AddWithValue("@Oxygen_Notes", p_Model.SpecialNeeds.OxygenNotes);
+                    l_Cmd_SpecialNeeds.Parameters.AddWithValue("@CPAP", p_Model.SpecialNeeds.CPAP);
+                    l_Cmd_SpecialNeeds.Parameters.AddWithValue("@CPAP_Supplier", p_Model.SpecialNeeds.CPAPSupplier);
+                    l_Cmd_SpecialNeeds.Parameters.AddWithValue("@CPAP_Notes", p_Model.SpecialNeeds.CPAPNotes);
+                    l_Cmd_SpecialNeeds.ExecuteNonQuery();
+
+
+                    //Special Equipment
+                    SqlCommand l_Cmd_SpecialEquipment = new SqlCommand("spAB_Add_PlanOfCare_SpecialEquipment", l_Conn);
+                    // l_Conn.Open();
+                    l_Cmd_SpecialEquipment.CommandType = System.Data.CommandType.StoredProcedure;
+                    l_Cmd_SpecialEquipment.Parameters.AddWithValue("@CarePlanId", l_AssessmentId);
+                    l_Cmd_SpecialEquipment.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
+                    l_Cmd_SpecialEquipment.Parameters.AddWithValue("@SpecialEquipment", JsonConvert.SerializeObject(p_Model.SpecialEquipment.SpecialEquipment, Formatting.Indented));
+                    l_Cmd_SpecialEquipment.Parameters.AddWithValue("@Details", p_Model.SpecialEquipment.Details);
+                    l_Cmd_SpecialEquipment.ExecuteNonQuery();
+
+
+                    //Family
+                    SqlCommand l_Cmd_Family = new SqlCommand("spAB_Add_PlanOfCare_Family", l_Conn);
+                    // l_Conn.Open();
+                    l_Cmd_Family.CommandType = System.Data.CommandType.StoredProcedure;
+                    l_Cmd_Family.Parameters.AddWithValue("@CarePlanId", l_AssessmentId);
+                    l_Cmd_Family.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
+                    l_Cmd_Family.Parameters.AddWithValue("@FamilyMeeting", p_Model.FamilySupportModel.FamilyMeeting);
+                    l_Cmd_Family.Parameters.AddWithValue("@FamilyInvolvment", p_Model.FamilySupportModel.FamilyInvolvement);
+                    l_Cmd_Family.ExecuteNonQuery();
+
+
+                    //Immunization
+                    SqlCommand l_Cmd_Immunization = new SqlCommand("spAB_Add_PlanOfCare_Immunization", l_Conn);
+                    // l_Conn.Open();
+                    l_Cmd_Immunization.CommandType = System.Data.CommandType.StoredProcedure;
+                    l_Cmd_Immunization.Parameters.AddWithValue("@CarePlanId", l_AssessmentId);
+                    l_Cmd_Immunization.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
+                    l_Cmd_Immunization.Parameters.AddWithValue("@TB", p_Model.Immunization.TB);
+                    l_Cmd_Immunization.Parameters.AddWithValue("@TB_Date", p_Model.Immunization.TBDate);
+                    l_Cmd_Immunization.Parameters.AddWithValue("@ChestXRay", p_Model.Immunization.ChestXRay);
+                    l_Cmd_Immunization.Parameters.AddWithValue("@ChestXRay_Date", p_Model.Immunization.ChestXRayDate);
+                    l_Cmd_Immunization.Parameters.AddWithValue("@Pneumonia", p_Model.Immunization.Pneumonia);
+                    l_Cmd_Immunization.Parameters.AddWithValue("@Pneumonia_Date", p_Model.Immunization.PneumoniaDate);
+                    l_Cmd_Immunization.Parameters.AddWithValue("@FluVaccine", p_Model.Immunization.FluVaccine);
+                    l_Cmd_Immunization.Parameters.AddWithValue("@FluVaccine_Date", p_Model.Immunization.FluVaccineDate);
+                    l_Cmd_Immunization.Parameters.AddWithValue("@Tetanus", p_Model.Immunization.Tetanus);
+                    l_Cmd_Immunization.Parameters.AddWithValue("@Tetanus_Date", p_Model.Immunization.TetanusDate);
+                    l_Cmd_Immunization.ExecuteNonQuery();
+
+
+                    //Infectious Diseases
+                    SqlCommand l_Cmd_InfectiousDiseases = new SqlCommand("spAB_Add_PlanOfCare_InfectiousDiseases", l_Conn);
+                    // l_Conn.Open();
+                    l_Cmd_InfectiousDiseases.CommandType = System.Data.CommandType.StoredProcedure;
+                    l_Cmd_InfectiousDiseases.Parameters.AddWithValue("@CarePlanId", l_AssessmentId);
+                    l_Cmd_InfectiousDiseases.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
+                    l_Cmd_InfectiousDiseases.Parameters.AddWithValue("@MRSA", p_Model.InfectiousDiseases.MRSA);
+                    l_Cmd_InfectiousDiseases.Parameters.AddWithValue("@MRSA_Diagnosed_Date", p_Model.InfectiousDiseases.MRSADiagnosedDate);
+                    l_Cmd_InfectiousDiseases.Parameters.AddWithValue("@MRSA_Resolved_Date", p_Model.InfectiousDiseases.MRSAResolvedDate);
+                    l_Cmd_InfectiousDiseases.Parameters.AddWithValue("@VRE", p_Model.InfectiousDiseases.VRE);
+                    l_Cmd_InfectiousDiseases.Parameters.AddWithValue("@VRE_Diagnosed_Date", p_Model.InfectiousDiseases.VREDiagnosedDate);
+                    l_Cmd_InfectiousDiseases.Parameters.AddWithValue("@VRE_Resolved_Date", p_Model.InfectiousDiseases.VREResolvedDate);
+                    l_Cmd_InfectiousDiseases.Parameters.AddWithValue("@CDiff", p_Model.InfectiousDiseases.CDiff);
+                    l_Cmd_InfectiousDiseases.Parameters.AddWithValue("@CDiff_Diagnosed_Date", p_Model.InfectiousDiseases.CDiffDiagnosedDate);
+                    l_Cmd_InfectiousDiseases.Parameters.AddWithValue("@CDiff_Resolved_Date", p_Model.InfectiousDiseases.CDiffResolvedDate);
+                    l_Cmd_InfectiousDiseases.Parameters.AddWithValue("@Other", p_Model.InfectiousDiseases.Other);
+                    l_Cmd_InfectiousDiseases.Parameters.AddWithValue("@Other_Diagnosed_Date", p_Model.InfectiousDiseases.OtherDiagnosedDate);
+                    l_Cmd_InfectiousDiseases.Parameters.AddWithValue("@Other_Resolved_Date", p_Model.InfectiousDiseases.OtherResolvedDate);
+                    l_Cmd_InfectiousDiseases.ExecuteNonQuery();
+
                 }
             }
             catch (Exception ex)
@@ -332,6 +433,23 @@ namespace QolaMVC.DAL
                         l_Assessment.AssistanceWith = GetCarePlanAssistanceWith(l_Assessment.Id);
                         l_Assessment.Mobility = GetCarePlanMobility(l_Assessment.Id);
                         l_Assessment.Safety = GetCarePlanSafety(l_Assessment.Id);
+                        l_Assessment.MealEscort = GetCarePlanMealEscort(l_Assessment.Id);
+                        l_Assessment.Behaviour = GetCarePlanBehaviour(l_Assessment.Id);
+                        l_Assessment.CognitiveFunction = GetCarePlanCognitiveFunction(l_Assessment.Id);
+                        l_Assessment.Orientation = GetCarePlanOrientation(l_Assessment.Id);
+                        l_Assessment.Nutrition = GetCarePlanNutrition(l_Assessment.Id);
+                        l_Assessment.Meals = GetCarePlanMeals(l_Assessment.Id);
+                        l_Assessment.Elimination = GetCarePlanElimination(l_Assessment.Id);
+                        l_Assessment.Toileting = GetCarePlanToileting(l_Assessment.Id);
+                        l_Assessment.Medication = GetCarePlanMedication(l_Assessment.Id);
+                        l_Assessment.SensoryAbilities = GetCarePlanSensoryAbilities(l_Assessment.Id);
+                        l_Assessment.WoundCare = GetCarePlanWoundCare(l_Assessment.Id);
+                        l_Assessment.SkinCare = GetCarePlanSkinCare(l_Assessment.Id);
+                        l_Assessment.SpecialNeeds = GetCarePlanSpecialNeeds(l_Assessment.Id);
+                        l_Assessment.SpecialEquipment = GetCarePlanSpecialEquipment(l_Assessment.Id);
+                        l_Assessment.FamilySupportModel = GetCarePlanFamilySupport(l_Assessment.Id);
+                        l_Assessment.Immunization = GetCarePlanImmunization(l_Assessment.Id);
+                        l_Assessment.InfectiousDiseases = GetCarePlanInfectiousDiseases(l_Assessment.Id);
 
                         //hold on other methods. Go and work on adding a care plan
                         l_Assessments.Add(l_Assessment);
@@ -606,7 +724,6 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-
         private static CarePlanMealEscortModel GetCarePlanMealEscort(int p_CarePlanId)
         {
             string exception = string.Empty;
@@ -694,7 +811,6 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-
         private static CarePlanCognitiveFunctionModel GetCarePlanCognitiveFunction(int p_CarePlanId)
         {
             string exception = string.Empty;
@@ -1046,9 +1162,322 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
+        private static CarePlanWoundCareModel GetCarePlanWoundCare(int p_CarePlanId)
+        {
+            string exception = string.Empty;
+            CarePlanWoundCareModel l_Assessment = new CarePlanWoundCareModel();
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_PlanOfCare_WoundCare", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@CarePlanId", p_CarePlanId);
+                DataSet dataReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(dataReceive);
+
+                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
+                {
+                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_Assessment.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
+                        l_Assessment.ResidentId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_Assessment.CarePlanId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["CarePlanId"]);
+                        l_Assessment.WoundCare = Convert.ToString(dataReceive.Tables[0].Rows[index]["WoundCare"]);
+                        l_Assessment.AssistedBy = Convert.ToString(dataReceive.Tables[0].Rows[index]["AssistedBy"]);
+                        l_Assessment.Agency = Convert.ToString(dataReceive.Tables[0].Rows[index]["Agency"]);
+                    }
+                }
+                return l_Assessment;
+            }
+            catch (Exception ex)
+            {
+                exception = "CarePlanDAL GetCarePlanWoundCare |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+        private static CarePlanSkinCareModel GetCarePlanSkinCare(int p_CarePlanId)
+        {
+            string exception = string.Empty;
+            CarePlanSkinCareModel l_Assessment = new CarePlanSkinCareModel();
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_PlanOfCare_SkinCare", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@CarePlanId", p_CarePlanId);
+                DataSet dataReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(dataReceive);
+
+                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
+                {
+                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_Assessment.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
+                        l_Assessment.ResidentId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_Assessment.CarePlanId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["CarePlanId"]);
+                        l_Assessment.SkinCare = Convert.ToString(dataReceive.Tables[0].Rows[index]["SkinCare"]);
+                        l_Assessment.SpecialTreatments = Convert.ToString(dataReceive.Tables[0].Rows[index]["SpecialTreatments"]);
+                    }
+                }
+                return l_Assessment;
+            }
+            catch (Exception ex)
+            {
+                exception = "CarePlanDAL GetCarePlanSkinCare |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+        private static CarePlanSpecialNeedsModel GetCarePlanSpecialNeeds(int p_CarePlanId)
+        {
+            string exception = string.Empty;
+            CarePlanSpecialNeedsModel l_Assessment = new CarePlanSpecialNeedsModel();
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_PlanOfCare_SpecialNeeds", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@CarePlanId", p_CarePlanId);
+                DataSet dataReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(dataReceive);
+
+                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
+                {
+                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_Assessment.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
+                        l_Assessment.ResidentId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_Assessment.CarePlanId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["CarePlanId"]);
+                        l_Assessment.Oxygen = Convert.ToString(dataReceive.Tables[0].Rows[index]["Oxygen"]);
+                        l_Assessment.OxygenSupplier = Convert.ToString(dataReceive.Tables[0].Rows[index]["Oxygen_Supplier"]);
+                        l_Assessment.OxygenRate = Convert.ToString(dataReceive.Tables[0].Rows[index]["Oxygen_Rate"]);
+                        l_Assessment.OxygenNotes = Convert.ToString(dataReceive.Tables[0].Rows[index]["Oxygen_Notes"]);
+                        l_Assessment.CPAP = Convert.ToString(dataReceive.Tables[0].Rows[index]["CPAP"]);
+                        l_Assessment.CPAPSupplier = Convert.ToString(dataReceive.Tables[0].Rows[index]["CPAP_Supplier"]);
+                        l_Assessment.CPAPNotes = Convert.ToString(dataReceive.Tables[0].Rows[index]["CPAP_Notes"]);
+                    }
+                }
+                return l_Assessment;
+            }
+            catch (Exception ex)
+            {
+                exception = "CarePlanDAL GetCarePlanSpecialNeeds |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+        private static CarePlanSpecialEquipmentModel GetCarePlanSpecialEquipment(int p_CarePlanId)
+        {
+            string exception = string.Empty;
+            CarePlanSpecialEquipmentModel l_Assessment = new CarePlanSpecialEquipmentModel();
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_PlanOfCare_SpecialEquipment", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@CarePlanId", p_CarePlanId);
+                DataSet dataReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(dataReceive);
+
+                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
+                {
+                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_Assessment.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
+                        l_Assessment.ResidentId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_Assessment.CarePlanId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["CarePlanId"]);
+                        l_Assessment.SpecialEquipment = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["SpecialEquipment"]));
+                        l_Assessment.Details = Convert.ToString(dataReceive.Tables[0].Rows[index]["Oxygen_Supplier"]);
+                    }
+                }
+                return l_Assessment;
+            }
+            catch (Exception ex)
+            {
+                exception = "CarePlanDAL GetCarePlanSpecialEquipment |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+        private static CarePlanFamilySupportModel GetCarePlanFamilySupport(int p_CarePlanId)
+        {
+            string exception = string.Empty;
+            CarePlanFamilySupportModel l_Assessment = new CarePlanFamilySupportModel();
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_PlanOfCare_FamilySupport", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@CarePlanId", p_CarePlanId);
+                DataSet dataReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(dataReceive);
+
+                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
+                {
+                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_Assessment.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
+                        l_Assessment.ResidentId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_Assessment.CarePlanId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["CarePlanId"]);
+                        l_Assessment.FamilyMeeting = Convert.ToString(dataReceive.Tables[0].Rows[index]["FamilyMeeting"]);
+                        l_Assessment.FamilyInvolvement = Convert.ToString(dataReceive.Tables[0].Rows[index]["FamilyInvolvement"]);
+                    }
+                }
+                return l_Assessment;
+            }
+            catch (Exception ex)
+            {
+                exception = "CarePlanDAL GetCarePlanFamilySupport |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+        private static CarePlanImmunizationModel GetCarePlanImmunization(int p_CarePlanId)
+        {
+            string exception = string.Empty;
+            CarePlanImmunizationModel l_Assessment = new CarePlanImmunizationModel();
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_PlanOfCare_Immunization", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@CarePlanId", p_CarePlanId);
+                DataSet dataReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(dataReceive);
+
+                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
+                {
+                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_Assessment.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
+                        l_Assessment.ResidentId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_Assessment.CarePlanId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["CarePlanId"]);
+                        l_Assessment.TB = Convert.ToString(dataReceive.Tables[0].Rows[index]["TB"]);
+                        l_Assessment.TBDate = Convert.ToString(dataReceive.Tables[0].Rows[index]["TB_Date"]);
+                        l_Assessment.ChestXRay = Convert.ToString(dataReceive.Tables[0].Rows[index]["ChestXRay"]);
+                        l_Assessment.ChestXRayDate = Convert.ToString(dataReceive.Tables[0].Rows[index]["ChestXRay_Date"]);
+                        l_Assessment.Pneumonia = Convert.ToString(dataReceive.Tables[0].Rows[index]["Pneumonia"]);
+                        l_Assessment.PneumoniaDate = Convert.ToString(dataReceive.Tables[0].Rows[index]["Pneumonia_Date"]);
+                        l_Assessment.FluVaccine = Convert.ToString(dataReceive.Tables[0].Rows[index]["FluVaccine"]);
+                        l_Assessment.FluVaccineDate = Convert.ToString(dataReceive.Tables[0].Rows[index]["FluVaccine_Date"]);
+                        l_Assessment.Tetanus = Convert.ToString(dataReceive.Tables[0].Rows[index]["Tetanus"]);
+                        l_Assessment.TetanusDate = Convert.ToString(dataReceive.Tables[0].Rows[index]["Tetanus_Date"]);
+                    }
+                }
+                return l_Assessment;
+            }
+            catch (Exception ex)
+            {
+                exception = "CarePlanDAL GetCarePlanImmunization |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+        private static CarePlanInfectiousDiseasesModel GetCarePlanInfectiousDiseases(int p_CarePlanId)
+        {
+            string exception = string.Empty;
+            CarePlanInfectiousDiseasesModel l_Assessment = new CarePlanInfectiousDiseasesModel();
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_PlanOfCare_InfectiousDiseases", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@CarePlanId", p_CarePlanId);
+                DataSet dataReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(dataReceive);
+
+                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
+                {
+                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_Assessment.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
+                        l_Assessment.ResidentId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_Assessment.CarePlanId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["CarePlanId"]);
+                        l_Assessment.MRSA = Convert.ToString(dataReceive.Tables[0].Rows[index]["MRSA"]);
+                        l_Assessment.MRSADiagnosedDate = Convert.ToString(dataReceive.Tables[0].Rows[index]["MRSA_Diagnosed_Date"]);
+                        l_Assessment.MRSAResolvedDate = Convert.ToString(dataReceive.Tables[0].Rows[index]["MRSA_Resolved_Date"]);
+                        l_Assessment.VRE = Convert.ToString(dataReceive.Tables[0].Rows[index]["VRE"]);
+                        l_Assessment.VREDiagnosedDate = Convert.ToString(dataReceive.Tables[0].Rows[index]["VRE_Diagnosed_Date"]);
+                        l_Assessment.VREResolvedDate = Convert.ToString(dataReceive.Tables[0].Rows[index]["VRE_Resolved_Date"]);
+                        l_Assessment.CDiff = Convert.ToString(dataReceive.Tables[0].Rows[index]["CDiff"]);
+                        l_Assessment.CDiffDiagnosedDate = Convert.ToString(dataReceive.Tables[0].Rows[index]["CDiff_Diagnosed_Date"]);
+                        l_Assessment.CDiffResolvedDate = Convert.ToString(dataReceive.Tables[0].Rows[index]["CDiff_Resolved_Date"]);
+                        l_Assessment.Other = Convert.ToString(dataReceive.Tables[0].Rows[index]["Other"]);
+                        l_Assessment.OtherDiagnosedDate = Convert.ToString(dataReceive.Tables[0].Rows[index]["Other_Diagnosed_Date"]);
+                        l_Assessment.OtherResolvedDate = Convert.ToString(dataReceive.Tables[0].Rows[index]["Other_Resolved_Date"]);
+                    }
+                }
+                return l_Assessment;
+            }
+            catch (Exception ex)
+            {
+                exception = "CarePlanDAL GetCarePlanInfectiousDiseases |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
 
     }
 }
+ 
+ 
  
  
  
