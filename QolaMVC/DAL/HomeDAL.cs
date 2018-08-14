@@ -326,6 +326,8 @@ namespace QolaMVC.DAL
                 {
                     l_Cmd.Parameters.AddWithValue("@flag", flag);
                 }
+                l_Cmd.CommandTimeout = 10000;
+
                 DataSet homesReceive = new DataSet();
                 l_DA.SelectCommand = l_Cmd;
                 l_DA.Fill(homesReceive);

@@ -43,6 +43,7 @@ CREATE TABLE [dbo].[tbl_AB_ActivityAssessment](
 	Id [int] IDENTITY(1,1) NOT NULL,
 	AssessmentId int,
 	ActivityId int,
+	ActivityCategoryId int,
 	IsP bit,
 	IsC bit,
 	IsW bit,

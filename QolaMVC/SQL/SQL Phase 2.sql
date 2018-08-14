@@ -129,7 +129,8 @@ IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_
 DROP PROCEDURE [dbo].[spAB_Get_Resident_ActivityAssessment]
 GO
 CREATE PROCEDURE [dbo].[spAB_Get_Resident_ActivityAssessment]
-@ResidentId int
+@ResidentId int,
+@AssessmentId int
 AS
 --20180715 chime created
 BEGIN
@@ -137,6 +138,7 @@ BEGIN
 		Id,
 		AssessmentId,
 		ActivityId,
+		ActivityCategoryId,
 		IsP,
 		IsC,
 		IsW,
@@ -145,7 +147,9 @@ BEGIN
 	FROM 
 		dbo.[tbl_AB_ActivityAssessment] 
 	WHERE 
-		ResidentId = @ResidentId
+		ResidentId = @ResidentId 
+		AND
+		AssessmentId = @AssessmentId
 END
 GO
 
@@ -232,5 +236,40 @@ AS
 --20180718 chime created
 BEGIN
 	SELECT Id, ResidentId, EnteredBy, DateEntered FROM tbl_AB_ActivityAssessment_Store where ResidentId=@ResidentId
+END
+GO
+
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_ActivityAssessmentByAssessmentId]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_ActivityAssessmentByAssessmentId]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_ActivityAssessmentByAssessmentId]
+@AssessmentId int
+AS
+--20180814 chime created
+BEGIN
+	SELECT 
+		ActivityId,
+		A.ActivityDisplayTitle,
+		A.ActivityNameEnglish,
+		A.ActivityNameFrench,
+		A.CategoryId,
+		ActivityCategoryId, 
+		IsP, 
+		IsC, 
+		IsW, 
+		ResidentId, 
+		AssessmentId, 
+		DateEntered  
+	FROM 
+		tbl_AB_ActivityAssessment AA
+	LEFT OUTER JOIN 
+		tbl_AB_Activity A 
+	ON
+		AA.ActivityId = A.Id
+	WHERE 
+		AssessmentId = @AssessmentId
 END
 GO

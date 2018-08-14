@@ -26,7 +26,7 @@ namespace QolaMVC.Controllers
         public ActionResult AddActivityCategory(ActivityCategoryModel p_Model)
         {
             MasterDAL.AddActivityCategory(p_Model);
-            return View();
+            return RedirectToAction("ActivityCategory");
         }
 
         public ActionResult AddActivityCategory()
@@ -43,12 +43,17 @@ namespace QolaMVC.Controllers
         [HttpPost]
         public ActionResult AddActivity(ActivityModel p_Model)
         {
+            var l_Category = new ActivityCategoryModel();
+            l_Category.Id = Convert.ToInt32(Request.Form["Category"]);
+            p_Model.Category = l_Category;
+
             MasterDAL.AddActivity(p_Model);
-            return View();
+            return RedirectToAction("Activity");
         }
 
         public ActionResult AddActivity()
         {
+            ViewBag.Categories = MasterDAL.GetAllActivityCategory();
             return View();
         }
     }

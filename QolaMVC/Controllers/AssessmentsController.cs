@@ -699,6 +699,12 @@ namespace QolaMVC.Controllers
             var user = (UserModel)TempData["User"];
             var resident = (ResidentModel)TempData["Resident"];
 
+            var l_Activity = MasterDAL.GetActivityAssessments(resident.ID);
+
+            if(l_Activity.Count == 0)
+            {
+                l_Activity = MasterDAL.InitActivityAssessments();
+            }
             ViewBag.User = user;
             ViewBag.Resident = resident;
             ViewBag.Home = home;
@@ -707,7 +713,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             TempData.Keep("Resident");
             
-            return View();
+            return View(l_Activity.LastOrDefault());
         }
     }
 }

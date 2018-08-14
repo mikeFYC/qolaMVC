@@ -9,7 +9,7 @@ namespace QolaMVC.Models
     public class ActivityAssessmentCollectionViewModel
     {
         public int Id { get; set; }
-        public ActivityCategoryModel Category { get; set; }
+        public Collection<ActivityCategoryModel> Category { get; set; }
         public Collection<ActivityAssessmentModel> ActivityAssessments { get; set; }
         public DateTime DateEntered { get; set; }
     }
