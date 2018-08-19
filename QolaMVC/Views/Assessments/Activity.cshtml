@@ -28,11 +28,11 @@
                             <h3>Activity Assessment</h3>
                         </div>
                         <!-- <div class="col-md-2 text-right">
-                        <h4 class="text-danger bold pr-3">
-                            31
-                            <small>Residents</small>
-                        </h4>
-                    </div> -->
+                            <h4 class="text-danger bold pr-3">
+                                31
+                                <small>Residents</small>
+                            </h4>
+                        </div> -->
                     </div>
                     <!-- </div> -->
                 </div>
@@ -44,952 +44,96 @@
             <!-- START CONTAINER FLUID -->
             <div class="container-fluid container-fixed-lg">
                 <!-- BEGIN PlACE PAGE CONTENT HERE -->
-                <!-- <div class="row">
-                <div class="col-md-6 py-4 text-left">
-                    <form class="form-inline">
-                      <div class="form-group">
-                        <div class="input-group">
-                            <select class="form-control">
-                                <option>All fields</option>
-                                <option>First Name</option>
-                                <option>Last Name</option>
-                                <option>Suite No</option>
-                                <option>Emergency Contact</option>
-                                <option>Physician</option>
-                            </select>
-                        </div>
-                        <div class="input-group">
-                          <input type="text" class="form-control" id="exampleInputAmount" placeholder="Search for">
-                        </div>
-                      </div>
-                      <button type="submit" class="btn btn-danger">Search</button>
-                    </form>
-                </div>
-                <div class="col-md-6 py-4 text-right">
-                    <a class="btn btn-lg btn-primary" href="addnewresident.php">Add a new Resident</a>
-                </div>
-            </div> -->
-
+              
                 <div class="card">
                     <div class="card-block">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <p>P = Past Interest    C = Current Interest   W = Would Like to Learn/Do</p>
+                        <form action="~/Assessments/SubmitActivityAssessment" method="post">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <p>P = Past Interest    C = Current Interest   W = Would Like to Learn/Do</p>
+                                    <input type="submit" class="btn btn-primary" value="Save" />
+                                    <a href="#" class="btn btn-primary">Print PDF</a>
+                                    <input type="reset" class="btn btn-primary" value="Clear" />
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="row">
 
-                            </div>
-                            <div class="col-md-4">
-                                <div class="row">
+                                        <div class="col-md-12 text-right">
+                                            <div class="row">
 
-                                    <div class="col-md-12 text-right">
-                                        <div class="row">
+                                                <div class="col-md-6 text-right">
+                                                    <p class="text-right">Assessment History:</p>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <select name="" id="">
+                                                        <option value="Date">Date</option>
+                                                        <option value="">05-31-2017</option>
+                                                        <option value="">05-31-2017</option>
+                                                    </select>
+                                                </div>
 
-                                            <div class="col-md-6 text-right">
-                                                <p class="text-right">Assessment History:</p>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <select name="" id="">
-                                                    <option value="Date">Date</option>
-                                                    <option value="">05-31-2017</option>
-                                                    <option value="">05-31-2017</option>
-                                                </select>
                                             </div>
 
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-4">
 
-                                @{
-                                                int i = 0; int j = 0;
-                                                foreach (var l_Category in Model.Category)
-                                                {
-                                        <table class="table table-bordered">
-                                            <thead class="bg-primary">
-                                                <tr>
-                                                    <th class="text-white text-center" colspan="4">@l_Category.EnglishName</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td class="text-center">P</td>
-                                                    <td class="text-center">C</td>
-                                                    <td class="text-center">W</td>
-                                                    <td class="text-center"></td>
-                                                </tr>
-                                        @foreach(var l_Activity in Model.ActivityAssessments.Where(m => m.Activity.Category.Id == l_Category.Id))
+                                    @{
+                                        int i = 0; int j = 0;
+                                        foreach (var l_Category in Model.Category)
                                         {
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check form-check-inline pads">
-                                                        @Html.RadioButtonFor(m => m.ActivityAssessments[j].IsP, true, new { @class = "form-check-input" })
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="form-check form-check-inline pads">
-                                                        @Html.RadioButtonFor(m => m.ActivityAssessments[j].IsC, true, new { @class = "form-check-input" })
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="form-check form-check-inline pads">
-                                                        @Html.RadioButtonFor(m => m.ActivityAssessments[j].IsW, true, new { @class = "form-check-input" })
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    @l_Activity.Activity.EnglishName
-                                                </td>
-                                            </tr>
-                                            j++;
+                                            <table class="table table-bordered">
+                                                <thead class="bg-primary">
+                                                    <tr>
+                                                        <th class="text-white text-center" colspan="4"> <!-- Hide the name @l_Category.EnglishName --></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-center">P</td>
+                                                        <td class="text-center">C</td>
+                                                        <td class="text-center">W</td>
+                                                        <td class="text-center"></td>
+                                                    </tr>
+                                                    @foreach (var l_Activity in Model.ActivityAssessments.Where(m => m.Activity.Category.Id == l_Category.Id))
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                <div class="form-check form-check-inline pads">
+                                                                    @Html.RadioButtonFor(m => m.ActivityAssessments[j].Value, "P", new { @class = "form-check-input" })
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline pads">
+                                                                    @Html.RadioButtonFor(m => m.ActivityAssessments[j].Value, "C", new { @class = "form-check-input" })
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline pads">
+                                                                    @Html.RadioButtonFor(m => m.ActivityAssessments[j].Value, "W", new { @class = "form-check-input" })
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                @l_Activity.Activity.EnglishName
+                                                            </td>
+                                                        </tr>
+                                                        j++;
+                                                    }
+
+                                                </tbody>
+                                            </table>
+                                            <br><br>
                                         }
-
-                                            </tbody>
-                                        </table>
-                                        <br><br>
                                     }
-                                }
 
+
+                                </div>
 
                             </div>
-                            @*<div class="col-md-4">
-
-                                <table class="table table-bordered">
-                                    <thead class="bg-primary">
-                                        <tr>
-                                            <th class="text-white text-center" colspan="4">Sensory Health</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="text-center">P</td>
-                                            <td class="text-center">C</td>
-                                            <td class="text-center">W</td>
-                                            <td class="text-center"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Creaming
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Music therapy
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Pet therapy
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Tactile / sensory stimulation
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Therapeutic touch
-                                            </td>
-                                        </tr>
-
-
-                                    </tbody>
-                                </table>
-                                <br><br>
-                                <table class="table table-bordered">
-                                    <thead class="bg-primary">
-                                        <tr>
-                                            <th class="text-white text-center" colspan="4">Social Health</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="text-center">P</td>
-                                            <td class="text-center">C</td>
-                                            <td class="text-center">W</td>
-                                            <td class="text-center"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Baking
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Board Games
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Bridge
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Card Games
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Church Service
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Clubs
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Euchre
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Evening News
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Happy Hour
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Intergenerational Programs
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Mah-jong
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Movie
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                OKO
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Parties / Seasonal Programs
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Socials
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Tea Party
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Watching Sports
-                                            </td>
-                                        </tr>
-
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="col-md-4">
-                                <table class="table table-bordered">
-                                    <thead class="bg-primary">
-                                        <tr>
-                                            <th class="text-white text-center" colspan="4">Special Events</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="text-center">P</td>
-                                            <td class="text-center">C</td>
-                                            <td class="text-center">W</td>
-                                            <td class="text-center"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                ASCSG
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Banking
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Compassionate Services
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Day Trip
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                In House Entertainment
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Ladies / Mens Club
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Meal clubs
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Medical Appointments
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Religious Outing
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Shopping
-                                            </td>
-                                        </tr>
-
-
-                                    </tbody>
-                                </table>
-                                <br><br>
-                                <table class="table table-bordered">
-                                    <thead class="bg-primary">
-                                        <tr>
-                                            <th class="text-white text-center" colspan="4">Spiritual/Emotional Health</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="text-center">P</td>
-                                            <td class="text-center">C</td>
-                                            <td class="text-center">W</td>
-                                            <td class="text-center"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Meditation
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Religious Music Hour
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Religious Services
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Religious / Spiritual Education
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Volunteer Group
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-check-inline pads">
-                                                    <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                Welcoming Comitee
-                                            </td>
-                                        </tr>
-
-
-                                    </tbody>
-                                </table>
-                            </div>*@
-                        </div>
-                        <br>
-
+                        </form>
                     </div>
                 </div>
 
@@ -999,6 +143,6 @@
             <!-- END CONTAINER FLUID -->
         </div>
         <!-- END PAGE CONTENT -->
-      
+
 
         @RenderPage("~/Views/Shared/_Footer.cshtml")

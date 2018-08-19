@@ -715,5 +715,23 @@ namespace QolaMVC.Controllers
             
             return View(l_Activity.LastOrDefault());
         }
+
+        [HttpPost]
+        public ActionResult SubmitActivityAssessment(ActivityAssessmentCollectionViewModel p_Model)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            return RedirectToAction("Activity");
+        }
     }
 }

@@ -12,6 +12,7 @@ namespace QolaMVC.Models
 		public bool IsP { get; set; }
         public bool IsC { get; set; }
         public bool IsW { get; set; }
+        public string Value { get; set; }
         public int ResidentId { get; set; }
         public DateTime DateEntered { get; set; }
     }
