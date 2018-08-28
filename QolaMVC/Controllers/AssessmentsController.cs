@@ -165,6 +165,15 @@ namespace QolaMVC.Controllers
             {
                 familyConference.Add(new FamilyConfrenceNoteModel());
             }
+
+            List<DateTime> l_AssessmentDates = new List<DateTime>();
+            foreach (var l_Ass in familyConference)
+            {
+                l_AssessmentDates.Add(l_Ass.Date);
+            }
+
+            ViewBag.AssessmentDates = l_AssessmentDates;
+
             return View(familyConference.LastOrDefault());
         }
 
@@ -193,7 +202,85 @@ namespace QolaMVC.Controllers
 
         public ActionResult HeadToToeAssessment()
         {
-            return View();
+            var l_Home = (HomeModel)TempData["Home"];
+            var l_User = (UserModel)TempData["User"];
+            var l_Resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = l_User;
+            ViewBag.Home = l_Home;
+            ViewBag.Resident = l_Resident;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            var l_Assessments = AssessmentDAL.GetAdmissionHeadToToe(l_Resident.ID);
+
+            List<DateTime> l_AssessmentDates = new List<DateTime>();
+            foreach( var l_Ass in l_Assessments)
+            {
+                l_AssessmentDates.Add(l_Ass.DateEntered);
+            }
+
+            ViewBag.AssessmentDates = l_AssessmentDates;
+            if(l_Assessments.Count == 0)
+            {
+                l_Assessments.Add(new AdmissionHeadToToeModel());
+            }
+            return View(l_Assessments.LastOrDefault());
+        }
+
+        [HttpPost]
+        public ActionResult HeadToToeAssessment(FormCollection p_Form)
+        {
+            var l_Home = (HomeModel)TempData["Home"];
+            var l_User = (UserModel)TempData["User"];
+            var l_Resident = (ResidentModel)TempData["Resident"];
+
+            DateTime l_DateEntered = Convert.ToDateTime(Request.Form["DateEntered"]);
+
+            ViewBag.User = l_User;
+            ViewBag.Home = l_Home;
+            ViewBag.Resident = l_Resident;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            var l_Assessments = AssessmentDAL.GetAdmissionHeadToToe(l_Resident.ID);
+
+            List<DateTime> l_AssessmentDates = new List<DateTime>();
+            foreach (var l_Ass in l_Assessments)
+            {
+                l_AssessmentDates.Add(l_Ass.DateEntered);
+            }
+
+            ViewBag.AssessmentDates = l_AssessmentDates;
+            return View(l_Assessments.Where(m => m.DateEntered == l_DateEntered).FirstOrDefault());
+        }
+
+        [HttpPost]
+        public ActionResult AddHeadToToeAssessment(AdmissionHeadToToeModel p_Model)
+        {
+            var l_Home = (HomeModel)TempData["Home"];
+            var l_User = (UserModel)TempData["User"];
+            var l_Resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = l_User;
+            ViewBag.Home = l_Home;
+            ViewBag.Resident = l_Resident;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            p_Model.DateEntered = DateTime.Now;
+            p_Model.Date = DateTime.Now;
+            p_Model.EnteredBy = l_User;
+            p_Model.Resident = l_Resident;
+
+            AssessmentDAL.AddAdmissionHeadToToe(p_Model);
+            return RedirectToAction("HeadToToeAssessment");
         }
 
         public ActionResult HSEPTracking()

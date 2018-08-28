@@ -1,22 +1,22 @@
 ﻿@model List<QolaMVC.Models.ActivityModel>
+
+
 @RenderPage("~/Views/Shared/_Header.cshtml")
 @RenderPage("~/Views/Shared/_SideBar.cshtml")
+
 <style>
 
-    .form-tabs .nav-link {
-        font-size: 1rem;
-    }
-
-    .modal-xlg {
-        width: 900px !important;
-        max-width: 1000px !important;
+    .home-box {
+        height: 250px;
+        background: center center no-repeat;
+        background-size: cover;
     }
 </style>
 <!-- START PAGE-CONTAINER -->
 <div class="page-container">
 
     @RenderPage("~/Views/Shared/_NavBar.cshtml")
-
+    <!-- START PAGE CONTENT WRAPPER -->
     <!-- START PAGE CONTENT WRAPPER -->
     <div class="page-content-wrapper">
         <!-- START PAGE CONTENT -->
@@ -81,6 +81,14 @@
                                         </div>
                                     </div>
 
+                                    @if (ViewBag.Message != null && ViewBag.Message != string.Empty)
+                                    {
+                                        <div class="alert alert-success" role="alert">
+                                            <button class="close" data-dismiss="alert"></button>
+                                            @ViewBag.Message
+                                        </div>
+                                    }
+
                                     <table class="table table-bordered">
                                         <thead class="bg-primary">
                                             <tr>
@@ -97,24 +105,24 @@
                                             @{ int i = 1; }
                                             @{ foreach (var l_AC in Model)
                                                 {
-                                            <tr>
-                                                <td class="align-middle">@i</td>
-                                                <td class="align-middle">@l_AC.Category.EnglishName</td>
-                                                <td class="align-middle">@l_AC.EnglishName</td>
-                                                <td class="align-middle">@l_AC.FrenchName</td>
-                                                <td class="align-middle">@l_AC.Province</td>
-                                                <td class="align-middle">
-                                                    <button class="btn btn-default btn-xs">
-                                                        <i class="fa fa-pencil"></i>
-                                                    </button>
-                                                </td>
-                                                <td class="align-middle">
+                                                    <tr>
+                                                        <td class="align-middle">@i</td>
+                                                        <td class="align-middle">@l_AC.Category.EnglishName</td>
+                                                        <td class="align-middle">@l_AC.EnglishName</td>
+                                                        <td class="align-middle">@l_AC.FrenchName</td>
+                                                        <td class="align-middle">@l_AC.Province</td>
+                                                        <td class="align-middle">
+                                                            <a class="btn btn-success btn-xs" href="~/Master/EditActivity/?ActivityId=@l_AC.Id">
+                                                                <i class="fa fa-pencil"></i>
+                                                            </a>
+                                                        </td>
+                                                        <td class="align-middle">
 
-                                                    <button class="btn btn-danger btn-xs">
-                                                        <i class="fa fa-trash-o"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                                            <a class="btn btn-danger btn-xs" href="~/Master/DeleteActivity/?ActivityId=@l_AC.Id">
+                                                                <i class="fa fa-trash-o"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
 
                                                     i = i + 1;
                                                 }
@@ -136,6 +144,3 @@
             <!-- END CONTAINER FLUID -->
         </div>
         <!-- END PAGE CONTENT -->
-
-
-        @RenderPage("~/Views/Shared/_Footer.cshtml")

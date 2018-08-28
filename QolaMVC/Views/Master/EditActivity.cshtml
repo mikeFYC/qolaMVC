@@ -1,0 +1,159 @@
+﻿@model QolaMVC.Models.ActivityModel
+
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+<style>
+
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+</style>
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3>Edit Activity</h3>
+                        </div>
+
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+
+            <div style="height: 60px;"></div>
+
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+
+
+                <div class="card">
+                    <div class="card-block">
+
+                        <div class="row">
+                            <div class="col-md-8 offset-md-2">
+                                @using (Html.BeginForm("EditActivity", "Master", new { p_ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "p-t-15", @role = "form" }))
+                                {
+                                    <div class="row">
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="staticEmail" class="col-form-label">Category</label>
+                                                <select name="Category" class="form-control">
+                                                    @{
+                                                        foreach (var l_Cat in (List<QolaMVC.Models.ActivityCategoryModel>)ViewBag.Categories)
+                                                        {
+                                                            if (l_Cat.Id == Model.Category.Id)
+                                                            {
+                                                                <option value="@l_Cat.Id" selected>@l_Cat.EnglishName</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@l_Cat.Id">@l_Cat.EnglishName</option>
+                                                            }
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="staticEmail" class="col-form-label">Name (English)</label>
+                                                @Html.TextBoxFor(m => m.EnglishName, new { @class = "form-control" })
+                                                @Html.HiddenFor(m => m.Id, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="staticEmail" class="col-form-label">Name (French)</label>
+                                                @Html.TextBoxFor(m => m.FrenchName, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="staticEmail" class="col-form-label">Color</label>
+                                                <input type="color" class="form-control" id="exampleInputAmount" name="Color">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="staticEmail" class="col-form-label">Fun Picture</label>
+                                                @Html.TextBoxFor(m => m.FunPicture, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="staticEmail" class="col-form-label">Province</label>
+                                                <select name="Province" class="form-control" style="height:25px;width:85%;">
+                                                    <option value="@Model.Province" selected>@Model.Province</option>
+                                                    <option value="National">National</option>
+                                                    <option value="Alberta">Alberta</option>
+                                                    <option value="British Columbia">British Columbia</option>
+                                                    <option value="Manitoba">Manitoba</option>
+                                                    <option value="New Brunswick">New Brunswick</option>
+                                                    <option value="Newfoundland and Labrador">Newfoundland and Labrador</option>
+                                                    <option value="Northwest Territories">Northwest Territories</option>
+                                                    <option value="Nova Scotia">Nova Scotia</option>
+                                                    <option value="Nunavut">Nunavut</option>
+                                                    <option value="Ontario">Ontario</option>
+                                                    <option value="Prince Edward Island">Prince Edward Island</option>
+                                                    <option value="Quebec">Quebec</option>
+                                                    <option value="Saskatchewan">Saskatchewan</option>
+                                                    <option value="Yukon">Yukon</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="staticEmail" class="col-form-label">Show this in assessment</label>
+                                                @Html.CheckBoxFor(m => m.ShowInAssessment)
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="staticEmail" class="col-form-label">Activity Display Title Ex.</label>
+                                                @Html.TextBoxFor(m => m.DisplayTitle, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <button class="btn btn-danger btn-lg">UPDATE</button>
+                                            <input type="reset" class="btn btn-danger btn-lg" value="CLEAR">
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!-- END PLACE PAGE CONTENT HERE -->
+            </div>
+            <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+
+
+
+
+        @RenderPage("~/Views/Shared/_Footer.cshtml")

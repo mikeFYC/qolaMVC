@@ -22,6 +22,33 @@ namespace QolaMVC.Controllers
             return View(l_Model);
         }
 
+        public ActionResult EditActivityCategory(int ActivityId)
+        {
+            try
+            {
+                var l_Activity = MasterDAL.GetActivityCategoryById(ActivityId);
+                return View(l_Activity);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public ActionResult EditActivityCategory(ActivityCategoryModel p_Model)
+        {
+            try
+            {
+                MasterDAL.UpdateActivityCategory(p_Model);
+                return View(l_Activity);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         [HttpPost]
         public ActionResult AddActivityCategory(ActivityCategoryModel p_Model)
         {
@@ -36,6 +63,7 @@ namespace QolaMVC.Controllers
 
         public ActionResult Activity()
         {
+            ViewBag.Message = TempData["Message"];
             List<ActivityModel> l_Model = MasterDAL.GetAllActivity();
             return View(l_Model);
         }
@@ -43,12 +71,73 @@ namespace QolaMVC.Controllers
         [HttpPost]
         public ActionResult AddActivity(ActivityModel p_Model)
         {
-            var l_Category = new ActivityCategoryModel();
-            l_Category.Id = Convert.ToInt32(Request.Form["Category"]);
-            p_Model.Category = l_Category;
+            try
+            {
+                var l_Category = new ActivityCategoryModel();
+                l_Category.Id = Convert.ToInt32(Request.Form["Category"]);
+                p_Model.Category = l_Category;
 
-            MasterDAL.AddActivity(p_Model);
-            return RedirectToAction("Activity");
+                MasterDAL.AddActivity(p_Model);
+                return RedirectToAction("Activity");
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public ActionResult EditActivity(int ActivityId)
+        {
+            try
+            {
+                ViewBag.Categories = MasterDAL.GetAllActivityCategory();
+                var l_Activity = MasterDAL.GetActivityById(ActivityId);
+                return View(l_Activity);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public ActionResult EditActivity(ActivityModel p_Model)
+        {
+            try
+            {
+                int l_CategoryId = Convert.ToInt32(Request.Form["Category"]);
+                ActivityCategoryModel l_category = new ActivityCategoryModel();
+                l_category.Id = l_CategoryId;
+
+                p_Model.Category = l_category;
+                MasterDAL.UpdateActivity(p_Model);
+
+                TempData["Message"] = "Successfully updated Activity";
+                TempData["MessageType"] = "success";
+
+                return RedirectToAction("Activity");
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public ActionResult DeleteActivity(int ActivityId)
+        {
+            try
+            {
+
+                MasterDAL.DeleteActivity(ActivityId);
+
+                TempData["Message"] = "Successfully Deleted Activity";
+                TempData["MessageType"] = "success";
+                return RedirectToAction("Activity"); ;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public ActionResult AddActivity()
