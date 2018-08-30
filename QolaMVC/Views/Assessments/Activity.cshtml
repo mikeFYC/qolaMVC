@@ -47,37 +47,50 @@
               
                 <div class="card">
                     <div class="card-block">
-                        <form action="~/Assessments/SubmitActivityAssessment" method="post">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <p>P = Past Interest    C = Current Interest   W = Would Like to Learn/Do</p>
-                                    <input type="submit" class="btn btn-primary" value="Save" />
-                                    <a href="#" class="btn btn-primary">Print PDF</a>
-                                    <input type="reset" class="btn btn-primary" value="Clear" />
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="row">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>P = Past Interest    C = Current Interest   W = Would Like to Learn/Do</p>
+                                <input type="submit" form="AssessmentForm" class="btn btn-primary" value="Save" />
+                                <a href="#" class="btn btn-primary">Print PDF</a>
+                                <input type="reset" form="AssessmentForm" class="btn btn-primary" value="Clear" />
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row">
 
-                                        <div class="col-md-12 text-right">
-                                            <div class="row">
-
+                                    <div class="col-md-12 text-right">
+                                        <div class="row">
+                                            <form action="~/Assessments/Activity" method="post">
                                                 <div class="col-md-6 text-right">
                                                     <p class="text-right">Assessment History:</p>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <select name="" id="">
-                                                        <option value="Date">Date</option>
-                                                        <option value="">05-31-2017</option>
-                                                        <option value="">05-31-2017</option>
+                                                    <select name="AssessmentDate" id="" onchange="this.form.submit()">
+                                                        @if (ViewBag.AssessmentDates != null)
+                                                        {
+                                                            <option value="new">New</option>
+                                                            foreach (var l_Date in (List<DateTime>)ViewBag.AssessmentDates)
+                                                            {
+
+                                                                if (Model.DateEntered == l_Date)
+                                                                {
+                                                                    <option value="@l_Date" selected>@l_Date</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@l_Date">@l_Date</option>
+                                                                }
+                                                            }
+                                                        }
                                                     </select>
                                                 </div>
-
-                                            </div>
-
+                                            </form>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <form action="~/Assessments/SubmitActivityAssessment" id="AssessmentForm" method="post">
                             <div class="row">
                                 <div class="col-md-4">
 
@@ -117,6 +130,7 @@
                                                                 </div>
                                                             </td>
                                                             <td>
+                                                                @Html.HiddenFor(m => m.ActivityAssessments[j].Activity.Id)
                                                                 @l_Activity.Activity.EnglishName
                                                             </td>
                                                         </tr>

@@ -146,6 +146,7 @@ namespace QolaMVC.Controllers
 
             return RedirectToAction("ExerciseActivity");
         }
+
         public ActionResult FamilyConference()
         {
             var home = (HomeModel)TempData["Home"];
@@ -792,6 +793,15 @@ namespace QolaMVC.Controllers
             {
                 l_Activity = MasterDAL.InitActivityAssessments();
             }
+
+            List<DateTime> l_AssessmentDates = new List<DateTime>();
+
+            foreach(var l_A in l_Activity)
+            {
+                l_AssessmentDates.Add(l_A.DateEntered);
+            }
+
+            ViewBag.AssessmentDates = l_AssessmentDates;
             ViewBag.User = user;
             ViewBag.Resident = resident;
             ViewBag.Home = home;
@@ -804,6 +814,50 @@ namespace QolaMVC.Controllers
         }
 
         [HttpPost]
+        public ActionResult Activity(FormCollection p_Form)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            var l_Activity = MasterDAL.GetActivityAssessments(resident.ID);
+            if (l_Activity.Count == 0)
+            {
+                l_Activity = MasterDAL.InitActivityAssessments();
+            }
+
+            List<DateTime> l_AssessmentDates = new List<DateTime>();
+            foreach (var l_A in l_Activity)
+            {
+                l_AssessmentDates.Add(l_A.DateEntered);
+            }
+
+            ViewBag.AssessmentDates = l_AssessmentDates;
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            DateTime l_Date = DateTime.Now;
+            ActivityAssessmentCollectionViewModel model = new ActivityAssessmentCollectionViewModel();
+
+            if (Request.Form["AssessmentDate"] == "new")
+            {
+                model = MasterDAL.InitActivityAssessments().LastOrDefault();
+            }
+            else
+            {
+                l_Date = Convert.ToDateTime(Request.Form["AssessmentDate"]);
+                model = l_Activity.FirstOrDefault(m2 => m2.DateEntered.Date == l_Date.Date && m2.DateEntered.Hour == l_Date.Hour && m2.DateEntered.Minute == l_Date.Minute);
+            }
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            return View(model);
+        }
+
+        [HttpPost]
         public ActionResult SubmitActivityAssessment(ActivityAssessmentCollectionViewModel p_Model)
         {
             var home = (HomeModel)TempData["Home"];
@@ -813,6 +867,8 @@ namespace QolaMVC.Controllers
             ViewBag.User = user;
             ViewBag.Resident = resident;
             ViewBag.Home = home;
+
+            MasterDAL.AddActivityAssessments(resident.ID, user.ID, p_Model);
 
             TempData.Keep("User");
             TempData.Keep("Home");

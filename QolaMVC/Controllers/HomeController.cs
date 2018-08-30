@@ -150,7 +150,6 @@ namespace QolaMVC.Controllers
             return View(data);
         }
 
-
         [HttpPost]
         public void btnPdf_Click()
         {

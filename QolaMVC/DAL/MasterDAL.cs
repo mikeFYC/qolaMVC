@@ -110,6 +110,62 @@ namespace QolaMVC.DAL
             }
         }
 
+        public static void UpdateActivityCategory(ActivityCategoryModel p_Model)
+        {
+            string exception = string.Empty;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Update_Activity_Category", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@CategoryId", p_Model.Id);
+                l_Cmd.Parameters.AddWithValue("@CategoryNameEnglish", p_Model.EnglishName);
+                l_Cmd.Parameters.AddWithValue("@CategoryNameFrench", p_Model.FrenchName);
+                l_Cmd.Parameters.AddWithValue("@MemoryCareColor", p_Model.MemoryCareColor);
+                l_Cmd.ExecuteNonQuery();
+
+            }
+            catch (Exception ex)
+            {
+                exception = "UpdateActivityCategory |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+        public static void DeleteActivityCategory(int p_CategoryId)
+        {
+            string exception = string.Empty;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Delete_Activity_Category", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@CategoryId", p_CategoryId);
+                l_Cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                exception = "DeleteActivityCategory |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
         public static List<ActivityModel> GetAllActivity()
         {
             SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
@@ -313,9 +369,7 @@ namespace QolaMVC.DAL
                     {
                         ActivityAssessmentModel l_Assessment = new ActivityAssessmentModel();
                         l_Assessment.Id = Convert.ToInt32(l_Reader2["Id"]);
-                        l_Assessment.IsC = Convert.ToBoolean(l_Reader2["IsC"]);
-                        l_Assessment.IsP = Convert.ToBoolean(l_Reader2["IsP"]);
-                        l_Assessment.IsW = Convert.ToBoolean(l_Reader2["IsW"]);
+                        l_Assessment.Value = Convert.ToString(l_Reader2["CheckedValue"]);
                         l_Assessment.ResidentId = Convert.ToInt32(l_Reader2["ResidentId"]);
 
                         var l_AssessmentActivity = new ActivityModel();
@@ -380,9 +434,6 @@ namespace QolaMVC.DAL
                 {
                     ActivityAssessmentModel l_Assessment = new ActivityAssessmentModel();
                     l_Assessment.Id = 0;
-                    l_Assessment.IsC = false;
-                    l_Assessment.IsP = true;
-                    l_Assessment.IsW = false;
                     
                     var l_AssessmentActivity = new ActivityModel();
                     l_AssessmentActivity.Id = Convert.ToInt32(l_Reader["Id"]);
@@ -423,12 +474,12 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static void AddActivityAssessments(int p_ResidentId, int p_EnteredBy)
+        public static void AddActivityAssessments(int p_ResidentId, int p_EnteredBy, ActivityAssessmentCollectionViewModel p_Model)
         {
             SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
             try
             {
-                List<ActivityAssessmentCollectionViewModel> l_Collection = new List<ActivityAssessmentCollectionViewModel>();
+                int l_AssessmentId = 0;
                 l_Conn.Open();
                 SqlCommand l_Cmd = new SqlCommand("spAB_Add_ActivityAssessmentStore", l_Conn);
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -438,60 +489,24 @@ namespace QolaMVC.DAL
 
                 while (l_Reader.Read())
                 {
-                    var AssessmentId = Convert.ToInt32(l_Reader["AssessmentStoreId"]);
-                    
-                    SqlCommand l_Cmd2 = new SqlCommand("spAB_Get_ActivityAssessmentByAssessmentId", l_Conn);
-                    l_Cmd2.CommandType = System.Data.CommandType.StoredProcedure;
-                  //  l_Cmd2.Parameters.AddWithValue("@AssessmentId", l_Model.Id);
-                    SqlDataReader l_Reader2 = l_Cmd2.ExecuteReader();
-
-                    while (l_Reader2.Read())
-                    {
-                        ActivityAssessmentModel l_Assessment = new ActivityAssessmentModel();
-                        l_Assessment.Id = Convert.ToInt32(l_Reader2["Id"]);
-                        l_Assessment.IsC = Convert.ToBoolean(l_Reader2["IsC"]);
-                        l_Assessment.IsP = Convert.ToBoolean(l_Reader2["IsP"]);
-                        l_Assessment.IsW = Convert.ToBoolean(l_Reader2["IsW"]);
-                        l_Assessment.ResidentId = Convert.ToInt32(l_Reader2["ResidentId"]);
-
-                        var l_AssessmentActivity = new ActivityModel();
-                        l_AssessmentActivity.Id = Convert.ToInt32(l_Reader2["ActivityId"]);
-                        l_AssessmentActivity.EnglishName = Convert.ToString(l_Reader2["ActivityNameEnglish"]);
-                        l_AssessmentActivity.FrenchName = Convert.ToString(l_Reader2["ActivityNameEnglish"]);
-                        l_AssessmentActivity.EnglishName = Convert.ToString(l_Reader2["ActivityNameFrench"]);
-                        l_AssessmentActivity.Category = new ActivityCategoryModel();
-                        l_AssessmentActivity.Category.Id = Convert.ToInt32(l_Reader2["CategoryId"]);
-
-                        l_Assessment.Activity = l_AssessmentActivity;
-                       // l_Assessments.Add(l_Assessment);
-                    }
-
-                    Collection<ActivityCategoryModel> l_CategoryCollection = new Collection<ActivityCategoryModel>();
-                    SqlCommand l_CmdCategory = new SqlCommand("spAB_Get_All_Activity_Category", l_Conn);
-                    l_CmdCategory.CommandType = System.Data.CommandType.StoredProcedure;
-                    SqlDataReader l_CategoryReader = l_CmdCategory.ExecuteReader();
-
-                    while (l_CategoryReader.Read())
-                    {
-                        ActivityCategoryModel l_CategoryModel = new ActivityCategoryModel();
-                        l_CategoryModel.Id = Convert.ToInt32(l_CategoryReader["Id"]);
-                        l_CategoryModel.EnglishName = Convert.ToString(l_CategoryReader["CategoryNameEnglish"]);
-                        l_CategoryModel.FrenchName = Convert.ToString(l_CategoryReader["CategoryNameFrench"]);
-                        l_CategoryModel.MemoryCareColor = Convert.ToString(l_CategoryReader["MemoryCareColor"]);
-
-                        l_CategoryCollection.Add(l_CategoryModel);
-                    }
-
-                    //l_Model.Category = l_CategoryCollection;
-                    //l_Model.ActivityAssessments = l_Assessments;
-                    //l_Collection.Add(l_Model);
+                    l_AssessmentId = Convert.ToInt32(l_Reader["AssessmentStoreId"]);
                 }
 
-               // return l_Collection;
+                foreach(var l_Assessment in p_Model.ActivityAssessments)
+                {
+                    SqlCommand l_Cmd2 = new SqlCommand("spAB_Add_ActivityAssessment", l_Conn);
+                    l_Cmd2.CommandType = System.Data.CommandType.StoredProcedure;
+                    l_Cmd2.Parameters.AddWithValue("@AssessmentId", l_AssessmentId);
+                    l_Cmd2.Parameters.AddWithValue("@ActivityId", l_Assessment.Activity.Id);
+                    l_Cmd2.Parameters.AddWithValue("@CheckedValue", l_Assessment.Value);
+                    l_Cmd2.Parameters.AddWithValue("@ResidentId", p_ResidentId);
+                    l_Cmd2.Parameters.AddWithValue("@DateEntered", DateTime.Now);
+                    SqlDataReader l_Reader2 = l_Cmd2.ExecuteReader();
+                }
             }
             catch (Exception ex)
             {
-                throw new Exception(".GetActivityAssessments\n" + ex.Message);
+                throw new Exception(".AddActivityAssessments\n" + ex.Message);
             }
         }
 

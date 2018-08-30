@@ -103,7 +103,7 @@
                                                 <div class="form-group row">
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Occupancy</label>
                                                     <div class="col-md-7">
-                                                        <select name="Occupancy" class="form-control">
+                                                        <select id="Occupancy" name="Occupancy" class="form-control" onchange="getAvailableSuites();">
                                                             <option value="0">Select</option>
                                                             <option value="1">Single</option>
                                                             <option value="2">Double</option>
@@ -242,28 +242,25 @@
                                             <div class="col-md-6">
                                                 <div class="form-group row">
                                                     <div class="col-md-12">
-                                                        <form name="userpic" class="upload ">
-                                                            <div id="preview" class="upload__preview"><canvas width="230" height="200"></canvas></div>
+                                                        <div id="preview" class="upload__preview">
+                                                                <img id="blah" src="#" alt="your image" />
+                                                            </div>
                                                             <div class="upload__progress">Uploading…</div>
                                                             <div class="upload__link">
-                                                                <a class="upload-link js-fileapi-wrapper">
-                                                                    <span class="upload-link__txt">Choose file</span>
-                                                                    <input class="upload-link__inp" name="photo" type="file" accept=".jpg,.jpeg,.gif">
-                                                                </a>
+                                                                <input type='file' onchange="readURL(this);" />
                                                             </div>
-                                                        </form>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Move In Date</label>
                                                     <div class="col-md-7">
-                                                        <input type="text" name="MoveInDate" class="form-control" id="staticEmail">(MM/DD/YYYY)
+                                                        <input type="date" name="MoveInDate" class="form-control" id="MoveInDate" onchange="getAvailableSuites();">(MM/DD/YYYY)
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Suite #</label>
                                                     <div class="col-md-7">
-                                                        <select class="form-control" name="SuiteIds">
+                                                        <select class="form-control" name="SuiteIds" id="AvailableSuites">
                                                             <option value="0">--Suite--</option>
                                                             <option value="4608">1037</option>
                                                             <option value="4610">1039</option>
@@ -1326,92 +1323,46 @@
 
         <!-- uploding of file -->
         <script>
-            (function () {
-                // Ссылка на uploader
-                var form = document.forms.userpic;
+            $("#AvailableSuites").attr("disabled", true);
 
-                // Ссылка на инпут, через который юзер будет выбирать файл
-                var input = form.photo;
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
 
-                // Ссылка на DOM-элемент, где будем отображать preview
-                var preview = document.getElementById('preview');
+                    reader.onload = function (e) {
+                        $('#blah')
+                            .attr('src', e.target.result)
+                            .width(150)
+                            .height(200);
+                    };
 
-                // Параметры предварительного просмотра
-                var previewOpts = {
-                    width: 195
-                    , height: 185
-                };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
 
-                // Параметры загрузки
-                var uploadOpts = {
-                    url: '~/upload' // куда грузить
-                    , data: {} // дополнительный POST-параметры
-                    , name: 'userpic' // название POST-параметра загружаемого файла
-                    , activeClassName: 'upload_active' // класс, который будем добавлять общему контейнеру при загрузке
-                };
+            function getAvailableSuites()
+            {
+                var occupancy = $("#Occupancy").val();
+                var moveInDate = $("#MoveInDate").val();
+                var availableSuites = $("#AvailableSuites").val();
 
-                // Функция, которая будет срабатывать при выборе файла
-                var _onSelectFile = function (evt/**Event*/) {
-                    // Получаем выбранный файл
-                    var file = FileAPI.getFiles(evt)[0];
+                if (occupancy == 0 && moveInDate != "") {
+                    alert("Please Select a valid occupancy option");
+                }
 
-                    if (file) {
-                        // Строим preview для изображений
-                        _createPreview(file);
+                if (occupancy > 0 && moveInDate == "") {
+                    alert("Please Select a valid move in date");
+                }
 
-                        // Загружаем файл на сервер
-                        _uploadFile(file);
-                    }
-                };
-
-                // Функция создающая preview для изображения
-                var _createPreview = function (file/**File*/) {
-                    FileAPI.Image(file)
-                        .preview(previewOpts.width, previewOpts.height)
-                        .get(function (err, image) {
-                            // Если не было ошибок, то вставляем изображение
-                            if (!err) {
-                                // Отчищаем контейнер от текущего изображения
-                                preview.innerHTML = '';
-
-                                // Вставляем новое
-                                preview.appendChild(image);
-                            }
-                        })
-                        ;
-                };
-
-                // Функция загрузки файла на сервер
-                var _uploadFile = function (file) {
-                    // Подготавливаем опции для загрузки
-                    var opts = FileAPI.extend(uploadOpts, {
-                        files: {},
-
-                        // событие "начало загрузки"
-                        upload: function () {
-                            form.className += ' ' + uploadOpts.activeClassName;
-                        },
-
-                        // событие "конец загрузки"
-                        complete: function (err, xhr) {
-                            form.className = (' ' + form.className + ' ').replace(' ' + uploadOpts.activeClassName + ' ', ' ');
-
-                            if (err) {
-
-                            } else {
-                                // всё успешно загрузилось
-                            }
-                        }
-                    });
-
-                    // Добавляем файл, который будем загружать
-                    opts.files[opts.name] = file;
-
-                    // Загружаем на сервер
-                    FileAPI.upload(opts);
-                };
-
-                // Подписываемся на событие "change", оно будет срабатывать при выборе файла
-                FileAPI.event.on(input, "change", _onSelectFile);
-            })();
+                if (occupancy > 0 && moveInDate != "") {
+                    $("#AvailableSuites").attr("disabled", false);
+                    $("#AvailableSuites").empty();
+                    $("#AvailableSuites").append($("<option></option>").val(0).html('--Suite--'));
+                    //$.each(objResult, function (key, value) {
+                    //    $("#AvailableSuites").append($("<option></option>").val(value.ID).html(value.SuiteNo));
+                    //});
+                }
+            }
         </script>
+
+

@@ -280,8 +280,6 @@ namespace QolaMVC.DAL
             
         }
 
-       
-
         public static void AddFamilyConferenceNote(FamilyConfrenceNoteModel p_FamilyConferenceNote)
         {
             string exception = string.Empty;
@@ -321,7 +319,6 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-
 
         public static Collection<PostFallClinicalMonitoringViewModel> GetPostFall(int? residentId, string category, string date_created)
         {

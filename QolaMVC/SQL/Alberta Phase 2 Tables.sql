@@ -44,9 +44,7 @@ CREATE TABLE [dbo].[tbl_AB_ActivityAssessment](
 	AssessmentId int,
 	ActivityId int,
 	ActivityCategoryId int,
-	IsP bit,
-	IsC bit,
-	IsW bit,
+	CheckedValue nvarchar(3),
 	ResidentId int,
 	DateEntered datetime,
 	PRIMARY KEY (Id)

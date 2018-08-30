@@ -96,6 +96,7 @@ BEGIN
 	FROM tbl_AB_Activity A
 	LEFT OUTER JOIN tbl_AB_ActivityCategory AC ON
 	AC.Id = A.CategoryId
+	WHERE AC.Id IS NOT NULL
 END
 GO
 
@@ -139,9 +140,7 @@ BEGIN
 		AssessmentId,
 		ActivityId,
 		ActivityCategoryId,
-		IsP,
-		IsC,
-		IsW,
+		CheckedValue,
 		ResidentId,
 		DateEntered
 	FROM 
@@ -175,12 +174,12 @@ GO
 CREATE PROCEDURE [dbo].[spAB_Add_Activity]
 @CategoryId int,
 @ActivityNameEnglish nvarchar(200),
-@ActivityNameFrench nvarchar(200),
-@ActivityColor nvarchar(200),
-@FunPicture nvarchar(200),
+@ActivityNameFrench nvarchar(200) = null,
+@ActivityColor nvarchar(200) = null,
+@FunPicture nvarchar(200) = null,
 @Province nvarchar(200),
 @ShowInAssessment bit,
-@ActivityDisplayTitle nvarchar(200)
+@ActivityDisplayTitle nvarchar(200) = null
 AS
 --20180712 chime created
 BEGIN
@@ -190,25 +189,23 @@ END
 GO
 
 
-
 IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_ActivityAssessment]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
 DROP PROCEDURE [dbo].[spAB_Add_ActivityAssessment]
 GO
 CREATE PROCEDURE [dbo].[spAB_Add_ActivityAssessment]
 @ActivityId int,
-@IsP bit,
-@IsC bit,
-@IsW bit,
+@AssessmentId int,
+@CheckedValue nvarchar(3),
 @ResidentId int,
 @DateEntered datetime
 AS
 --20180712 chime created
+--20180829 chimne added assessmentId
 BEGIN
-	INSERT INTO tbl_AB_ActivityAssessment (ActivityId, IsP, IsC, IsW, ResidentId, DateEntered ) 
-	VALUES (@ActivityId, @IsP, @IsC, @IsW, @ResidentId, @DateEntered )
+	INSERT INTO tbl_AB_ActivityAssessment (ActivityId, CheckedValue, ResidentId, DateEntered, AssessmentId ) 
+	VALUES (@ActivityId, @CheckedValue, @ResidentId, @DateEntered, @AssessmentId )
 END
 GO
-
 
 
 IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_ActivityAssessmentStore]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
@@ -220,8 +217,8 @@ CREATE PROCEDURE [dbo].[spAB_Add_ActivityAssessmentStore]
 AS
 --20180718 chime created
 BEGIN
-	INSERT INTO tbl_AB_ActivityAssessment_Store (ResidentId, EnteredBy ) 
-	VALUES (@ResidentId, @EnteredBy )
+	INSERT INTO tbl_AB_ActivityAssessment_Store (ResidentId, EnteredBy, DateEntered ) 
+	VALUES (@ResidentId, @EnteredBy, getdate() )
 
 	SELECT AssessmentStoreId = @@IDENTITY
 END
@@ -237,7 +234,7 @@ CREATE PROCEDURE [dbo].[spAB_Get_ActivityAssessmentStore]
 AS
 --20180718 chime created
 BEGIN
-	SELECT Id, ResidentId, EnteredBy, DateEntered FROM tbl_AB_ActivityAssessment_Store where ResidentId=@ResidentId
+	SELECT Id, ResidentId, EnteredBy, DateEntered=isnull(DateEntered, getdate()) FROM tbl_AB_ActivityAssessment_Store where ResidentId=@ResidentId
 END
 GO
 
@@ -253,15 +250,14 @@ AS
 --20180814 chime created
 BEGIN
 	SELECT 
+		AA.Id,
 		ActivityId,
 		A.ActivityDisplayTitle,
 		A.ActivityNameEnglish,
 		A.ActivityNameFrench,
 		A.CategoryId,
 		ActivityCategoryId, 
-		IsP, 
-		IsC, 
-		IsW, 
+		Checkedvalue,
 		ResidentId, 
 		AssessmentId, 
 		DateEntered  

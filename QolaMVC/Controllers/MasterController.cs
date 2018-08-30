@@ -22,11 +22,11 @@ namespace QolaMVC.Controllers
             return View(l_Model);
         }
 
-        public ActionResult EditActivityCategory(int ActivityId)
+        public ActionResult EditActivityCategory(int CategoryId)
         {
             try
             {
-                var l_Activity = MasterDAL.GetActivityCategoryById(ActivityId);
+                var l_Activity = MasterDAL.GetActivityCategoryById(CategoryId);
                 return View(l_Activity);
             }
             catch (Exception ex)
@@ -41,7 +41,22 @@ namespace QolaMVC.Controllers
             try
             {
                 MasterDAL.UpdateActivityCategory(p_Model);
-                return View(l_Activity);
+                return RedirectToAction("ActivityCategory");
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public ActionResult DeleteActivityCategory(int CategoryId)
+        {
+            try
+            {
+                MasterDAL.DeleteActivityCategory(CategoryId);
+                TempData["Message"] = "Successfully Deleted Activity Category";
+                TempData["MessageType"] = "success";
+                return RedirectToAction("ActivityCategory"); ;
             }
             catch (Exception ex)
             {
