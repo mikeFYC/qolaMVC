@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -30,6 +31,8 @@ namespace QolaMVC.Controllers
         // GET: Suite/Create
         public ActionResult AddSuite()
         {
+            Collection<HomeModel> l_Homes = HomeDAL.GetHomeCollections();
+            ViewBag.Homes = l_Homes;
             return View();
         }
 
@@ -51,6 +54,8 @@ namespace QolaMVC.Controllers
         // GET: Suite/Edit/5
         public ActionResult EditSuite(int id)
         {
+            Collection<HomeModel> l_Homes = HomeDAL.GetHomeCollections();
+            ViewBag.Homes = l_Homes;
             return View(SuiteDAL.GetSuite_By_Id(id));
             //List<NEW_SuiteModel> l_Model = SuiteDAL.GetSuite_By_Id(id);
             //return View(l_Model);
