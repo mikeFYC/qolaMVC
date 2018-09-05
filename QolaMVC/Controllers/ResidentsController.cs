@@ -44,5 +44,10 @@ namespace QolaMVC.Controllers
 
             return Json(l_Json, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult SuiteHandler()
+        {
+            return View();
+        }
     }
 }
