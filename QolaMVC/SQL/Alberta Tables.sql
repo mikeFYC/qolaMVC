@@ -1,3 +1,5 @@
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tbl_AB_HSEP_Detail]') AND type in (N'U'))
+DROP TABLE [dbo].[tbl_AB_HSEP_Detail]
 GO
 CREATE TABLE [dbo].[tbl_AB_HSEP_Detail](
 	Id [int] IDENTITY(1,1) NOT NULL,
@@ -10,7 +12,9 @@ CREATE TABLE [dbo].[tbl_AB_HSEP_Detail](
 	)
 GO
 
-
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tbl_AB_Excercise_Activity_Detail]') AND type in (N'U'))
+DROP TABLE [dbo].[tbl_AB_Excercise_Activity_Detail]
+GO
 CREATE TABLE [dbo].[tbl_AB_Excercise_Activity_Detail](
 	Id [int] IDENTITY(1,1) NOT NULL,
 	ResidentId [int] NOT NULL,
@@ -29,9 +33,8 @@ CREATE TABLE [dbo].[tbl_AB_Excercise_Activity_Detail](
 	)
 GO
 
-
-
-
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tbl_AB_Excercise_Activity_Summary]') AND type in (N'U'))
+DROP TABLE [dbo].[tbl_AB_Excercise_Activity_Summary]
 GO
 CREATE TABLE [dbo].[tbl_AB_Excercise_Activity_Summary](
 	Id [int] IDENTITY(1,1) NOT NULL,
@@ -54,6 +57,9 @@ GO
 
 
 --create Head to toe assessment table
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tbl_AB_Admission_Head_To_Toe_Assessment]') AND type in (N'U'))
+DROP TABLE [dbo].[tbl_AB_Admission_Head_To_Toe_Assessment]
+GO
 CREATE TABLE [dbo].[tbl_AB_Admission_Head_To_Toe_Assessment](
 	Id [int] IDENTITY(1,1) NOT NULL,
 	ResidentId [int] NOT NULL,
@@ -93,6 +99,9 @@ GO
 --create table for family conference Notes
 
 --create table for bowel movement tracking
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tbl_AB_FamilyConverenceNotes]') AND type in (N'U'))
+DROP TABLE [dbo].[tbl_AB_FamilyConverenceNotes]
+GO
 CREATE TABLE [dbo].[tbl_AB_FamilyConverenceNotes](
 	Id int NOT NULL Identity,
 	ResidentId int NOT NULL,
@@ -118,6 +127,9 @@ GO
 
 
 --create table for bowel movement tracking
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tbl_AB_BowelMovementTracking]') AND type in (N'U'))
+DROP TABLE [dbo].[tbl_AB_BowelMovementTracking]
+GO
 CREATE TABLE [dbo].[tbl_AB_BowelMovementTracking](
 	Id int NOT NULL Identity,
 	ResidentId int NOT NULL,
@@ -138,6 +150,9 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tbl_AB_Dietary_Assessment]') AND type in (N'U'))
+DROP TABLE [dbo].[tbl_AB_Dietary_Assessment]
+GO
 CREATE TABLE [dbo].[tbl_AB_Dietary_Assessment](
 	[fd_id] [int] NOT NULL,
 	[fd_resident_id] [int] NOT NULL,
@@ -185,6 +200,9 @@ GO
 	
 GO
 --create progress notes table
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tbl_AB_Progress_Notes]') AND type in (N'U'))
+DROP TABLE [dbo].[tbl_AB_Progress_Notes]
+GO
 CREATE TABLE [dbo].[tbl_AB_Progress_Notes](
 	Id [int] IDENTITY(1,1) NOT NULL,
 	ResidentId [int] NOT NULL,
@@ -210,7 +228,9 @@ CREATE TABLE [dbo].[tbl_AB_Progress_Notes](
 	)
 GO
 
-
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tbl_AB_DietaryAssessment]') AND type in (N'U'))
+DROP TABLE [dbo].[tbl_AB_DietaryAssessment]
+GO
 CREATE TABLE [dbo].[tbl_AB_DietaryAssessment](
 	Id int NOT NULL Identity,
 	ResidentId int NOT NULL,
@@ -229,6 +249,8 @@ CREATE TABLE [dbo].[tbl_AB_DietaryAssessment](
 	)
 	GO
 
+	IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tbl_AB_Diet]') AND type in (N'U'))
+	DROP TABLE [dbo].[tbl_AB_Diet]
 	GO
 	CREATE TABLE [dbo].[tbl_AB_Diet](
 	Id int NOT NULL Identity,
@@ -242,6 +264,8 @@ CREATE TABLE [dbo].[tbl_AB_DietaryAssessment](
 	GO
 
 
+	IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tbl_AB_DietaryAssessment_Allergy]') AND type in (N'U'))
+	DROP TABLE [dbo].[tbl_AB_DietaryAssessment_Allergy]
 	GO
 	CREATE TABLE [dbo].[tbl_AB_DietaryAssessment_Allergy](
 	Id int NOT NULL Identity,
@@ -256,6 +280,8 @@ CREATE TABLE [dbo].[tbl_AB_DietaryAssessment](
 	GO
 
 	
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tbl_AB_UnusualIncident]') AND type in (N'U'))
+DROP TABLE [dbo].[tbl_AB_UnusualIncident]
 GO
 CREATE TABLE [dbo].[tbl_AB_UnusualIncident](
 	Id [int] IDENTITY(1,1) NOT NULL,
@@ -301,6 +327,8 @@ CREATE TABLE [dbo].[tbl_AB_UnusualIncident](
 GO
 
 	
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tbl_AB_UnusualIncident_SectionG]') AND type in (N'U'))
+DROP TABLE [dbo].[tbl_AB_UnusualIncident_SectionG]
 GO
 CREATE TABLE [dbo].[tbl_AB_UnusualIncident_SectionG](
 	Id [int] IDENTITY(1,1) NOT NULL,
