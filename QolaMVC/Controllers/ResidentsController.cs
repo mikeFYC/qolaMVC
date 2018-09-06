@@ -49,5 +49,10 @@ namespace QolaMVC.Controllers
         {
             return View();
         }
+
+        public ActionResult SearchResident()
+        {
+            return View();
+        }
     }
 }
