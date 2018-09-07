@@ -1,4 +1,5 @@
 ﻿using QolaMVC.DAL;
+using QolaMVC.Helpers;
 using QolaMVC.Models;
 using System;
 using System.Collections.Generic;
@@ -45,9 +46,28 @@ namespace QolaMVC.Controllers
             return Json(l_Json, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult SuiteHandler()
+        public ActionResult SuiteHandler(int p_ResidentId)
         {
-            return View();
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            var resident = ResidentsDAL.GetResidentById(p_ResidentId);
+            var progressNotes = ProgressNotesDAL.GetProgressNotesCollections(resident.ID, DateTime.Now, DateTime.Now, "A");
+
+            ViewBag.Message = TempData["Message"];
+
+            TempData["Resident"] = resident;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            ViewBag.Resident = resident;
+
+            ViewBag.ProgressNotes = progressNotes;
+            ProgressNotesHelper.RegisterSession(resident);
+            return View(resident);
         }
 
         public ActionResult SearchResident()
