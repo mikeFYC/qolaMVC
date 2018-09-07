@@ -74,5 +74,56 @@ namespace QolaMVC.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public ActionResult AvailableSuite(DateTime term,int occu)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            List<dynamic> l_Json = new List<dynamic>();
+            var residents = ResidentsDAL.GetAvailableSuitesNumber(home.Id, term, occu);
+
+            foreach (var r in residents)
+            {
+                dynamic l_J = new System.Dynamic.ExpandoObject();
+                l_J.number = r.ToString();
+
+                l_Json.Add(l_J);
+            }
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+
+        [HttpGet]
+        public ActionResult Available2(int home_value, DateTime term, int occu)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            List<dynamic> l_Json = new List<dynamic>();
+            var residents = ResidentsDAL.GetAvailableSuitesNumber(home_value, term, occu);
+
+            foreach (var r in residents)
+            {
+                dynamic l_J = new System.Dynamic.ExpandoObject();
+                l_J.number = r.ToString();
+
+                l_Json.Add(l_J);
+            }
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+
     }
 }

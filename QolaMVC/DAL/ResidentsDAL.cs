@@ -2531,6 +2531,37 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
+
+        public static Collection<int> GetAvailableSuitesNumber(int homeId, DateTime dateinput, int occupancynumber)
+        {
+            string exception = string.Empty;
+            Collection<int> residents = new Collection<int>();
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+
+            SqlDataAdapter l_DA = new SqlDataAdapter();
+            SqlCommand l_Cmd = new SqlCommand(Constants.StoredProcedureName.USP_GET_AVAILABLE_SUITE_BY_HOME_ID, l_Conn);
+            l_Conn.Open();
+            l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            l_Cmd.Parameters.AddWithValue("@homeID", homeId);
+            l_Cmd.Parameters.AddWithValue("@occupancy", occupancynumber);
+            l_Cmd.Parameters.AddWithValue("@moveInDate", dateinput);
+            DataTable residentReceive = new DataTable();
+            l_DA.SelectCommand = l_Cmd;
+            l_DA.Fill(residentReceive);
+            for (int i = 0; i <= residentReceive.Rows.Count - 1; i++)
+            {
+                var cell = residentReceive.Rows[i][0];
+                if (int.TryParse(cell.ToString(), out int n) == true)
+                    residents.Add(int.Parse(cell.ToString()));
+                
+            }
+            return residents;
+            
+        }
+
+
+
+
     }
 
 }

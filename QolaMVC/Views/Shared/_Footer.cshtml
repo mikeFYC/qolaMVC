@@ -105,6 +105,40 @@
 
 
 
+<script>
+    function suitenumber()
+    {
+        var group = $("a[class='nav-link active']")
+        var id = group[0].id;
+        var a = $('#occupancyselectid'+id).val();
+        var b = $('#dateinput'+id).val();
+        $('#available_Suite'+id).children('option:not(:first)').remove();
+        $.get("/Residents/AvailableSuite", { term: b, occu: a},function (data) {
+            for (var i = 0; i < data.length; i++) {
+                $('#available_Suite'+id).append('<option value="' + data[i][0].Value+'">' + data[i][0].Value + '</option>');
+            }
+        });
+    }
+
+    function suitenumber2() {
+        var group = $("a[class='nav-link active']")
+        var id = group[0].id;
+        var a = $('#occupancyselectid' + id).val();
+        var b = $('#dateinput' + id).val();
+        var c = $('#QOLAContent_ddlHome').val();
+        
+        $('#available_Suite2').children('option:not(:first)').remove();
+        $.get("/Residents/Available2", { home_value:c, term: b, occu: a },function (data) {
+            for (var i = 0; i < data.length; i++) {
+                $('#available_Suite2').append('<option value="' + data[i][0].Value + '">' + data[i][0].Value + '</option>');
+            }
+        });
+    }
+
+
+</script>
+
+
 
 
 <script>
