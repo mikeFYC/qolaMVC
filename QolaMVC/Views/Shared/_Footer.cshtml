@@ -48,6 +48,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script src="~/Content/assets/js/html2canvas.js" crossorigin="anonymous"></script>
 <!-- uploding of file -->
+
 <script>
     $('.searchresidents').keyup(function () {
         val = $(this).val();
@@ -69,13 +70,8 @@
         } else {
             $('.searchBox').hide();
         }
-
-
     })
 </script>
-
-
-
 
 <script>
     $('.searchresidents2').keyup(function () {
@@ -102,8 +98,6 @@
 
     })
 </script>
-
-
 
 <script>
     function suitenumber()
@@ -142,8 +136,19 @@
         var b = $('#dateinput' + id).val();
         var c = $('#available_Suite_' + id).val();
         var d = $('#notes_' + id).val();
-        $.post("/Residents/saveButton_ApplicationSuite", { term: b, occu: a, suitid: c, notes: d }, function () {
-            alert("Save successfully");
+        if (a == "" || b == "" || c == "") {
+            alert("Cannot Have Empty Area except notes");
+        }
+        $.post("/Residents/saveButton_ApplicationSuite", { term: b, occu: a, suitid: c, notes: d }, function (data) {
+            if (data == 1) {
+                alert("Update successfully");
+            }
+            else if (data == 3) {
+                alert("Cannot choose date two weeks ago");
+            }
+            else {
+                alert("Update Failed");
+            }
         });
     }
 
@@ -153,8 +158,22 @@
         var a = $('#occupancyselectid' + id).val();
         var b = $('#dateinput' + id).val();
         var c = $('#notes_' + id).val();
-        $.post("/Residents/saveButton_ChangeOccupancy", { transferdate: b, occu: a, notes: c }, function () {
-            alert("Save successfully");
+        if (a == "" || b == "") {
+            alert("Cannot Have Empty Area except notes");
+        }
+        $.post("/Residents/saveButton_ChangeOccupancy", { transferdate: b, occu: a, notes: c }, function (data) {
+            if (data == 1) {
+                alert("Update successfully");
+            }
+            else if (data==2) {
+                alert("Cannot Select Same Occupancy");
+            }
+            else if (data == 3) {
+                alert("Cannot choose date two weeks ago");
+            }
+            else {
+                alert("Update Failed");
+            }
         });
     }
 
@@ -165,8 +184,22 @@
         var b = $('#dateinput' + id).val();
         var c = $('#available_Suite_' + id).val();
         var d = $('#notes_' + id).val();
-        $.post("/Residents/saveButton_InternalTransfer", { transferdate: b, occu: a, suitid: c, notes: d }, function () {
-            alert("Save successfully");
+        if (a == "" || b == "" || c == "") {
+            alert("Cannot Have Empty Area except notes");
+        }
+        $.post("/Residents/saveButton_InternalTransfer", { transferdate: b, occu: a, suitid: c, notes: d }, function (data) {
+            if (data == 1) {
+                alert("Update successfully");
+            }
+            else if (data == 2) {
+                alert("Cannot Select Same Suite Number");
+            }
+            else if (data == 3) {
+                alert("Cannot choose date two weeks ago");
+            }
+            else {
+                alert("Update Failed");
+            }
         });
     }
 
@@ -178,8 +211,22 @@
         var c = $('#available_Suite_' + id).val();
         var d = $('#notes_' + id).val();
         var e = $('#QOLAContent_ddlHome').val();
-        $.post("/Residents/saveButton_TransfertoASCHOME", { transferdate: b, occu: a, suitid: c, notes: d, homeid: e }, function () {
-            alert("Save successfully");
+        if (a == "" || b == "" || c == "" || e=="") {
+            alert("Cannot Have Empty Area except notes");
+        }
+        $.post("/Residents/saveButton_TransfertoASCHOME", { transferdate: b, occu: a, suitid: c, notes: d, homeid: e }, function (data) {
+            if (data == 1) {
+                alert("Update successfully");
+            }
+            else if (data == 2) {
+                alert("Cannot Select Same Home ID");
+            }
+            else if (data == 3) {
+                alert("Cannot choose date two weeks ago");
+            }
+            else {
+                alert("Update Failed");
+            }
         });
     }
 
@@ -189,8 +236,19 @@
         var move_out_reason = group[0].innerHTML;
         var a = $('#dateinput' + id).val();
         var b = $('#notes_' + id).val();
-        $.post("/Residents/saveButton_Normal_Move_Out", { moveout: a, notes: b, reason: move_out_reason}, function () {
-            alert("Save successfully");
+        if (a == "" ) {
+            alert("Date cannot be empty");
+        }
+        $.post("/Residents/saveButton_Normal_Move_Out", { moveout: a, notes: b, reason: move_out_reason}, function (data) {
+            if (data == 1) {
+                alert("Update successfully");
+            }
+            else if (data == 3) {
+                alert("Cannot choose date two weeks ago");
+            }
+            else {
+                alert("Update Failed");
+            }
         });
     }
 
@@ -201,8 +259,19 @@
         var a = $('#dateinput' + id).val();
         var b = $('#notes_' + id).val();
         var c = $('#passawaydate' + id).val();
-        $.post("/Residents/saveButton_Passed_Away", { moveout: a, notes: b, passaway: c ,reason: move_out_reason }, function () {
-            alert("Save successfully");
+        if (a == "" || c == "") {
+            alert("Date cannot be empty");
+        }
+        $.post("/Residents/saveButton_Passed_Away", { moveout: a, notes: b, passaway: c ,reason: move_out_reason }, function (data) {
+            if (data == 1) {
+                alert("Update successfully");
+            }
+            else if (data == 3) {
+                alert("Cannot choose date two weeks ago");
+            }
+            else {
+                alert("Update Failed");
+            }
         });
     }
 
@@ -214,9 +283,19 @@
         var b = $('#ExpectedReturnDate_' + id).val();
         var c = $('#ActualReturnDate_' + id).val();
         var d = $('#notes_' + id).val();
-
-        $.post("/Residents/saveButton_Hospitalization", { leaving: a, ExpectedReturn: b, ActualReturn:c, notes: d, reason: move_out_reason }, function () {
-            alert("Save successfully");
+        if (a == "" || b == "" || c == "") {
+            alert("Date cannot be empty");
+        }
+        $.post("/Residents/saveButton_Hospitalization", { leaving: a, ExpectedReturn: b, ActualReturn:c, notes: d, reason: move_out_reason }, function (data) {
+            if (data == 1) {
+                alert("Update successfully");
+            }
+            else if (data == 3) {
+                alert("Cannot choose date two weeks ago");
+            }
+            else {
+                alert("Update Failed");
+            }
         });
     }
 
@@ -224,7 +303,6 @@
         var inputs = $("input[type=date]").each(function () {
             $(this).val("");
         });
-
         var selects = $("select").each(function () {
             $(this).val("");
         });
@@ -248,16 +326,10 @@
             else {
                 alert("Update Failed");
             }
-            
         });
     }
 
-
-
 </script>
-
-
-
 
 <script>
     $('.print').click(function () {
@@ -320,6 +392,7 @@
 
 
 </script>
+
 <!-- END VENDOR JS -->
 <!-- BEGIN CORE TEMPLATE JS -->
 <script src="~/Content/pages/js/pages.js" type="text/javascript"></script>

@@ -9,7 +9,7 @@ namespace QolaMVC.DAL
 {
     public class update_Suite_Handler_Table
     {
-        public static void ApplicationSuite(int homeid,int redidentid,int suiteid,int occupancy,DateTime movein,string notes,int modify_by,DateTime modify_on)
+        public static int ApplicationSuite(int homeid, int redidentid, int suiteid, int occupancy, DateTime movein, string notes, int modify_by, DateTime modify_on)
         {
             using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
             using (var cmdGARead = new SqlCommand("Suite_Handler_ApplicationSuite", conn)
@@ -26,11 +26,15 @@ namespace QolaMVC.DAL
                 cmdGARead.Parameters.AddWithValue("@notes", notes);
                 cmdGARead.Parameters.AddWithValue("@modify_by", modify_by);
                 cmdGARead.Parameters.AddWithValue("@modify_on", modify_on);
+                cmdGARead.Parameters.Add("@returnint", SqlDbType.VarChar, 30);
+                cmdGARead.Parameters["@returnint"].Direction = ParameterDirection.Output;
                 cmdGARead.ExecuteNonQuery();
+                int retunvalue = int.Parse(cmdGARead.Parameters["@returnint"].Value.ToString());
+                return retunvalue;
             }
         }
 
-        public static void ChangeOccupancy(int homeid, int redidentid, int suiteid, int occupancy, DateTime movein, DateTime moveout, string notes, int modify_by, DateTime modify_on)
+        public static int ChangeOccupancy(int homeid, int redidentid, int suiteid, int occupancy, DateTime movein, DateTime moveout, string notes, int modify_by, DateTime modify_on)
         {
             using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
             using (var cmdGARead = new SqlCommand("Suite_Handler_ChangeOccupancy", conn)
@@ -48,11 +52,15 @@ namespace QolaMVC.DAL
                 cmdGARead.Parameters.AddWithValue("@notes", notes);
                 cmdGARead.Parameters.AddWithValue("@modify_by", modify_by);
                 cmdGARead.Parameters.AddWithValue("@modify_on", modify_on);
+                cmdGARead.Parameters.Add("@returnint", SqlDbType.VarChar, 30);
+                cmdGARead.Parameters["@returnint"].Direction = ParameterDirection.Output;
                 cmdGARead.ExecuteNonQuery();
+                int retunvalue = int.Parse(cmdGARead.Parameters["@returnint"].Value.ToString());
+                return retunvalue;
             }
         }
 
-        public static void InternalTransfer(int homeid, int redidentid, int suiteid, int occupancy, DateTime movein, DateTime moveout, string notes, int modify_by, DateTime modify_on)
+        public static int InternalTransfer(int homeid, int redidentid, int suiteid, int occupancy, DateTime movein, DateTime moveout, string notes, int modify_by, DateTime modify_on)
         {
             using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
             using (var cmdGARead = new SqlCommand("Suite_Handler_InternalTransfer", conn)
@@ -70,11 +78,15 @@ namespace QolaMVC.DAL
                 cmdGARead.Parameters.AddWithValue("@notes", notes);
                 cmdGARead.Parameters.AddWithValue("@modify_by", modify_by);
                 cmdGARead.Parameters.AddWithValue("@modify_on", modify_on);
+                cmdGARead.Parameters.Add("@returnint", SqlDbType.VarChar, 30);
+                cmdGARead.Parameters["@returnint"].Direction = ParameterDirection.Output;
                 cmdGARead.ExecuteNonQuery();
+                int retunvalue = int.Parse(cmdGARead.Parameters["@returnint"].Value.ToString());
+                return retunvalue;
             }
         }
 
-        public static void TransfertoASCHOME(int homeid, int redidentid, int suiteid, int occupancy, DateTime movein, DateTime moveout, string notes, int modify_by, DateTime modify_on)
+        public static int TransfertoASCHOME(int homeid, int redidentid, int suiteid, int occupancy, DateTime movein, DateTime moveout, string notes, int modify_by, DateTime modify_on)
         {
             using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
             using (var cmdGARead = new SqlCommand("Suite_Handler_TransfertoASCHOME", conn)
@@ -92,11 +104,15 @@ namespace QolaMVC.DAL
                 cmdGARead.Parameters.AddWithValue("@notes", notes);
                 cmdGARead.Parameters.AddWithValue("@modify_by", modify_by);
                 cmdGARead.Parameters.AddWithValue("@modify_on", modify_on);
+                cmdGARead.Parameters.Add("@returnint", SqlDbType.VarChar, 30);
+                cmdGARead.Parameters["@returnint"].Direction = ParameterDirection.Output;
                 cmdGARead.ExecuteNonQuery();
+                int retunvalue = int.Parse(cmdGARead.Parameters["@returnint"].Value.ToString());
+                return retunvalue;
             }
         }
 
-        public static void Normal_Move_Out(int homeid, int redidentid, int suiteid, int occupancy, DateTime moveout, string notes, DateTime modify_on, string reason)
+        public static int Normal_Move_Out(int homeid, int redidentid, int suiteid, int occupancy, DateTime moveout, string notes, DateTime modify_on, string reason)
         {
             using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
             using (var cmdGARead = new SqlCommand("Suite_Handler_Normal_Move_Out", conn)
@@ -113,11 +129,15 @@ namespace QolaMVC.DAL
                 cmdGARead.Parameters.AddWithValue("@notes", notes);
                 cmdGARead.Parameters.AddWithValue("@modify_on", modify_on);
                 cmdGARead.Parameters.AddWithValue("@reason", reason);
+                cmdGARead.Parameters.Add("@returnint", SqlDbType.VarChar, 30);
+                cmdGARead.Parameters["@returnint"].Direction = ParameterDirection.Output;
                 cmdGARead.ExecuteNonQuery();
+                int retunvalue = int.Parse(cmdGARead.Parameters["@returnint"].Value.ToString());
+                return retunvalue;
             }
         }
 
-        public static void Passed_away(int homeid, int redidentid, int suiteid, int occupancy, DateTime moveout, string notes, DateTime modify_on, DateTime passedaway, string reason)
+        public static int Passed_away(int homeid, int redidentid, int suiteid, int occupancy, DateTime moveout, string notes, DateTime modify_on, DateTime passedaway, string reason)
         {
             using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
             using (var cmdGARead = new SqlCommand("Suite_Handler_Passed_away", conn)
@@ -135,11 +155,15 @@ namespace QolaMVC.DAL
                 cmdGARead.Parameters.AddWithValue("@modify_on", modify_on);
                 cmdGARead.Parameters.AddWithValue("@pass_away_date", passedaway);
                 cmdGARead.Parameters.AddWithValue("@reason", reason);
+                cmdGARead.Parameters.Add("@returnint", SqlDbType.VarChar, 30);
+                cmdGARead.Parameters["@returnint"].Direction = ParameterDirection.Output;
                 cmdGARead.ExecuteNonQuery();
+                int retunvalue = int.Parse(cmdGARead.Parameters["@returnint"].Value.ToString());
+                return retunvalue;
             }
         }
 
-        public static void Hospitalization(int homeid, int redidentid, int suiteid, int occupancy, DateTime leaving, DateTime ExpectedReturn, DateTime ActualReturn, string notes, DateTime modify_on, string reason)
+        public static int Hospitalization(int homeid, int redidentid, int suiteid, int occupancy, DateTime leaving, DateTime ExpectedReturn, DateTime ActualReturn, string notes, DateTime modify_on, string reason)
         {
             using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
             using (var cmdGARead = new SqlCommand("Suite_Handler_Hospitalization", conn)
@@ -158,13 +182,17 @@ namespace QolaMVC.DAL
                 cmdGARead.Parameters.AddWithValue("@notes", notes);
                 cmdGARead.Parameters.AddWithValue("@modify_on", modify_on);
                 cmdGARead.Parameters.AddWithValue("@reason", reason);
+                cmdGARead.Parameters.Add("@returnint", SqlDbType.VarChar, 30);
+                cmdGARead.Parameters["@returnint"].Direction = ParameterDirection.Output;
                 cmdGARead.ExecuteNonQuery();
+                int retunvalue = int.Parse(cmdGARead.Parameters["@returnint"].Value.ToString());
+                return retunvalue;
             }
         }
 
         public static int undo_function_for_SQL(int redidentid, string reason)
         {
-            
+
             using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
             using (var cmdGARead = new SqlCommand("Suite_Handler_UNDO", conn)
             {
@@ -176,13 +204,22 @@ namespace QolaMVC.DAL
                 cmdGARead.Parameters.AddWithValue("@reason", reason);
                 cmdGARead.Parameters.Add("@returnint", SqlDbType.VarChar, 30);
                 cmdGARead.Parameters["@returnint"].Direction = ParameterDirection.Output;
-                cmdGARead.ExecuteNonQuery(); 
+                cmdGARead.ExecuteNonQuery();
                 int retunvalue = int.Parse(cmdGARead.Parameters["@returnint"].Value.ToString());
                 return retunvalue;
             }
         }
 
-
+        public static Boolean check_date_validation(DateTime term)
+        {
+            DateTime today = DateTime.Now;
+            DateTime twoweeksago = today.AddDays(-14);
+            int result = DateTime.Compare(twoweeksago, term);
+            if (result <= 0)
+                return true;
+            else
+                return false;
+        }
 
 
     }
