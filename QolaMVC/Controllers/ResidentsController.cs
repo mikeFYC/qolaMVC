@@ -66,6 +66,8 @@ namespace QolaMVC.Controllers
             ViewBag.Home = home;
             ViewBag.Resident = resident;
 
+            
+
             ViewBag.ProgressNotes = progressNotes;
             ProgressNotesHelper.RegisterSession(resident);
             return View(resident);
@@ -216,6 +218,19 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             TempData.Keep("Resident");
             update_Suite_Handler_Table.Hospitalization(home.Id, resident.ID, int.Parse(resident.SuiteNo), resident.Occupancy, leaving, ExpectedReturn, ActualReturn, notes, DateTime.Now, reason);
+        }
+
+        [HttpGet]
+        public int undo_function(string reason)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            int returnint=update_Suite_Handler_Table.undo_function_for_SQL(resident.ID, reason);
+            return returnint;
         }
 
 

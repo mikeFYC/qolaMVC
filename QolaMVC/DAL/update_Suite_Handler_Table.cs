@@ -162,6 +162,26 @@ namespace QolaMVC.DAL
             }
         }
 
+        public static int undo_function_for_SQL(int redidentid, string reason)
+        {
+            
+            using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
+            using (var cmdGARead = new SqlCommand("Suite_Handler_UNDO", conn)
+            {
+                CommandType = CommandType.StoredProcedure
+            })
+            {
+                conn.Open();
+                cmdGARead.Parameters.AddWithValue("@redidentid", redidentid);
+                cmdGARead.Parameters.AddWithValue("@reason", reason);
+                cmdGARead.Parameters.Add("@returnint", SqlDbType.VarChar, 30);
+                cmdGARead.Parameters["@returnint"].Direction = ParameterDirection.Output;
+                cmdGARead.ExecuteNonQuery(); 
+                int retunvalue = int.Parse(cmdGARead.Parameters["@returnint"].Value.ToString());
+                return retunvalue;
+            }
+        }
+
 
 
 

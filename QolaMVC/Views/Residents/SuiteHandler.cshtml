@@ -12,16 +12,21 @@
         width: 900px !important;
         max-width: 1000px !important;
     }
+    #EDIT_BUTTON {
+        background-color: #0275d8;
+        color: white;
+        padding: 0.6vw 1vw 0.5vw 1vw;
+        border-radius: 0.3vw;
+    }
 </style>
 <script>
 
-    function Hospitalization_button_click()
-    {
-        if (document.getElementById("Hospitalization").className == "nav-link")
-        {
+
+
+    function Hospitalization_button_click() {
+        if (document.getElementById("Hospitalization").className == "nav-link") {
             var nodes = document.getElementsByClassName("nav-link active");
-            for (var a = nodes.length-1; a >=0;a--)
-            {
+            for (var a = nodes.length - 1; a >= 0; a--) {
                 nodes[a].className = "nav-link";
             }
         }
@@ -56,6 +61,15 @@
     }
 
     function option_button_click(click_id) {
+        var inputs = $("input[type=date]").each(function () {
+            $(this).val("");
+        });
+        var selects = $("select").each(function () {
+            $(this).val("");
+        });
+        var textareas = $("textarea").each(function () {
+            $(this).val("");
+        });
         var nodes = document.getElementsByClassName("nav-link active");
         for (var a = nodes.length - 1; a >= 0; a--) {
             nodes[a].className = "nav-link";
@@ -76,12 +90,20 @@
     }
 
     function Back_in_edit_button_click() {
+        var inputs = $("input[type=date]").each(function () {
+            $(this).val("");
+        });
+        var selects = $("select").each(function () {
+            $(this).val("");
+        });
+        var textareas = $("textarea").each(function () {
+            $(this).val("");
+        });
         if (document.getElementById('editform').style.display == 'block') {
             document.getElementById('editform').style.display = 'none';
             document.getElementById('suitehandlerform').style.display = 'block';
         }
     }
-    
 
 
 
@@ -134,9 +156,15 @@
                                         <h6>@Model.FirstName   @Model.LastName</h6>
                                         <h6>@Model.Gendar</h6>
                                         <h6>@Model.BirthDate.ToShortDateString()</h6>
-                                        <button class="edit_button" onclick="edit_button_click()">
-                                            EDIT
-                                        </button>
+                                        @{
+                                            if (ViewBag.User.ID == 1338)
+                                            {
+                                                <button class="edit_button" id="EDIT_BUTTON" onclick="edit_button_click()">
+                                                    EDIT
+                                                </button>
+                                            }
+                                        }
+
                                     </div>
                                 </div>
                                 <div id="editform" style="display:none">
@@ -164,30 +192,34 @@
                                         </tbody>
                                     </table>
                                     <br />
-                                    <select name="" id="" class="form-control">
-                                        <option value="">--Select--</option>
-                                        <option value="">--Select--</option>
-                                        <option value="">--Select--</option>
-                                        <option value="">--Select--</option>
-                                        <option value="">--Select--</option>
-                                        <option value="">--Select--</option>
-                                        <option value="">--Select--</option>
-                                        <option value="">--Select--</option>
-                                        <option value="">--Select--</option>
-                                        <option value="">--Select--</option>
+                                    <select name="" id="select_option_in_edit_form" class="form-control" style="min-width:40vw">
+                                        <option value="">----- Choose the Last Action you want to undo -----</option>
+                                        <option value="only_delete">Application Suite</option>
+                                        <option value="delete_and_update_move_out">Change Occupancy</option>
+                                        <option value="delete_and_update_move_out">Internal Transfer</option>
+                                        <option value="delete_and_update_move_out">Transfer to ASC HOME</option>
+                                        <option value="update_move_out_and_note">End of Lease</option>
+                                        <option value="update_move_out_and_note">Palliative</option>
+                                        <option value="update_move_out_and_note">LTC</option>
+                                        <option value="update_move_out_and_note">Other Retirement</option>
+                                        <option value="update_move_out_and_note_and_pass_away">Passed Away</option>
+                                        <option value="update_move_out_and_note">Other</option>
+                                        <option value="only_update_note">Hospitalization</option>
                                     </select>
-                                    <button class="BACK_Button_in_Edit" onclick="Back_in_edit_button_click()">
+                                    <br>
+                                    <button class="btn btn-danger" id="BACK_Button_in_Edit" onclick="Back_in_edit_button_click()">
                                         BACK
                                     </button>
-                                    <button class="SAVE_Button_in_Edit" onclick="SAVE_in_edit_button_click()">
-                                        SAVE
+                                    <button class="btn btn-danger" id="SAVE_Button_in_Edit" onclick="UNDO_in_edit_button_click()">
+                                        UNDO
                                     </button>
+                                    <br>
                                 </div>
                                 @*<div class="row">
-                                    <div class="col-md-12">
-                                        <h6 style="color: red">Sample</h6>
-                                    </div>
-                                </div>*@
+                                        <div class="col-md-12">
+                                            <h6 style="color: red">Sample</h6>
+                                        </div>
+                                    </div>*@
                             </div>
 
 
