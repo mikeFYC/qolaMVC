@@ -66,8 +66,6 @@ namespace QolaMVC.Controllers
             ViewBag.Home = home;
             ViewBag.Resident = resident;
 
-            
-
             ViewBag.ProgressNotes = progressNotes;
             ProgressNotesHelper.RegisterSession(resident);
             return View(resident);
@@ -83,25 +81,20 @@ namespace QolaMVC.Controllers
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
-            var resident = (ResidentModel)TempData["Resident"];
-            
+            var resident = (ResidentModel)TempData["Resident"];  
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-
             List<dynamic> l_Json = new List<dynamic>();
             var residents = ResidentsDAL.GetAvailableSuitesNumber(home.Id, term, occu);
-
             foreach (var r in residents)
             {
                 dynamic l_J = new System.Dynamic.ExpandoObject();
                 l_J.number = r.ToString();
-
                 l_Json.Add(l_J);
             }
             return Json(l_Json, JsonRequestBehavior.AllowGet);
         }
-
 
         [HttpGet]
         public ActionResult Available2(int home_value, DateTime term, int occu)
@@ -109,28 +102,23 @@ namespace QolaMVC.Controllers
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
             var resident = (ResidentModel)TempData["Resident"];
-
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-
             List<dynamic> l_Json = new List<dynamic>();
             var residents = ResidentsDAL.GetAvailableSuitesNumber(home_value, term, occu);
-
             foreach (var r in residents)
             {
                 dynamic l_J = new System.Dynamic.ExpandoObject();
                 l_J.number = r.ToString();
-
                 l_Json.Add(l_J);
             }
             return Json(l_Json, JsonRequestBehavior.AllowGet);
         }
 
 
-
         [HttpPost]
-        public int saveButton_ApplicationSuite(DateTime term, int occu, int suitid, string notes)
+        public int saveButton_ApplicationSuite(DateTime term, int occu, string suiteno, string notes)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -144,7 +132,7 @@ namespace QolaMVC.Controllers
             }
             else
             {
-                int returnint = update_Suite_Handler_Table.ApplicationSuite(home.Id, resident.ID, suitid, occu, term, notes, 3, DateTime.Now);
+                int returnint = update_Suite_Handler_Table.ApplicationSuite(user.ID,home.Id, resident.ID, suiteno, occu, term, notes, DateTime.Now);
                 return returnint;
             }
         }
@@ -170,13 +158,13 @@ namespace QolaMVC.Controllers
             {
                 DateTime moveout = transferdate;
                 DateTime movein = transferdate;
-                int returnint = update_Suite_Handler_Table.ChangeOccupancy(home.Id, resident.ID, int.Parse(resident.SuiteNo), occu, movein, moveout, notes, 3, DateTime.Now);
+                int returnint = update_Suite_Handler_Table.ChangeOccupancy(user.ID,home.Id, resident.ID, resident.SuiteNo, occu, movein, moveout, notes, DateTime.Now);
                 return returnint;
             }
         }
 
         [HttpPost]
-        public int saveButton_InternalTransfer(DateTime transferdate, int occu, int suitid, string notes)
+        public int saveButton_InternalTransfer(DateTime transferdate, int occu, string suiteno, string notes)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -184,7 +172,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            if (int.Parse(resident.SuiteNo) == suitid)
+            if (resident.SuiteNo == suiteno)
             {
                 return 2;
             }
@@ -196,13 +184,13 @@ namespace QolaMVC.Controllers
             {
                 DateTime moveout = transferdate;
                 DateTime movein = transferdate.AddDays(1);
-                int returnint = update_Suite_Handler_Table.InternalTransfer(home.Id, resident.ID, suitid, occu, movein, moveout, notes, 3, DateTime.Now);
+                int returnint = update_Suite_Handler_Table.InternalTransfer(user.ID, home.Id, resident.ID, suiteno, occu, movein, moveout, notes, DateTime.Now);
                 return returnint;
             }
         }
 
         [HttpPost]
-        public int saveButton_TransfertoASCHOME(DateTime transferdate, int occu, int suitid, string notes, int homeid)
+        public int saveButton_TransfertoASCHOME(DateTime transferdate, int occu, string suiteno, string notes, int homeid)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -222,7 +210,7 @@ namespace QolaMVC.Controllers
             {
                 DateTime moveout = transferdate;
                 DateTime movein = transferdate.AddDays(1);
-                int returnint = update_Suite_Handler_Table.TransfertoASCHOME(homeid, resident.ID, suitid, occu, movein, moveout, notes, 3, DateTime.Now);
+                int returnint = update_Suite_Handler_Table.TransfertoASCHOME(user.ID,homeid, resident.ID, suiteno, occu, movein, moveout, notes, DateTime.Now);
                 return returnint;
             }
         }
@@ -242,7 +230,7 @@ namespace QolaMVC.Controllers
             }
             else
             {
-                int returnint = update_Suite_Handler_Table.Normal_Move_Out(home.Id, resident.ID, int.Parse(resident.SuiteNo), resident.Occupancy, moveout, notes, DateTime.Now, reason);
+                int returnint = update_Suite_Handler_Table.Normal_Move_Out(user.ID, home.Id, resident.ID, resident.SuiteNo, resident.Occupancy, moveout, notes, DateTime.Now, reason);
                 return returnint;
             }
         }
@@ -262,7 +250,7 @@ namespace QolaMVC.Controllers
             }
             else
             {
-                int returnint = update_Suite_Handler_Table.Passed_away(home.Id, resident.ID, int.Parse(resident.SuiteNo), resident.Occupancy, moveout, notes, DateTime.Now, passaway, reason);
+                int returnint = update_Suite_Handler_Table.Passed_away(user.ID, home.Id, resident.ID, resident.SuiteNo, resident.Occupancy, moveout, notes, DateTime.Now, passaway, reason);
                 return returnint;
             }
         }
@@ -282,7 +270,7 @@ namespace QolaMVC.Controllers
             }
             else
             {
-                int returnint = update_Suite_Handler_Table.Hospitalization(home.Id, resident.ID, int.Parse(resident.SuiteNo), resident.Occupancy, leaving, ExpectedReturn, ActualReturn, notes, DateTime.Now, reason);
+                int returnint = update_Suite_Handler_Table.Hospitalization(user.ID, home.Id, resident.ID, resident.SuiteNo, resident.Occupancy, leaving, ExpectedReturn, ActualReturn, notes, DateTime.Now, reason);
                 return returnint;
             }
         }

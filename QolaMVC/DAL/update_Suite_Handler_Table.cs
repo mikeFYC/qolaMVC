@@ -9,7 +9,7 @@ namespace QolaMVC.DAL
 {
     public class update_Suite_Handler_Table
     {
-        public static int ApplicationSuite(int homeid, int redidentid, int suiteid, int occupancy, DateTime movein, string notes, int modify_by, DateTime modify_on)
+        public static int ApplicationSuite(int userid,int homeid, int redidentid, string suiteno, int occupancy, DateTime movein, string notes, DateTime modify_on)
         {
             using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
             using (var cmdGARead = new SqlCommand("Suite_Handler_ApplicationSuite", conn)
@@ -18,13 +18,13 @@ namespace QolaMVC.DAL
             })
             {
                 conn.Open();
+                cmdGARead.Parameters.AddWithValue("@UserID", userid);
                 cmdGARead.Parameters.AddWithValue("@homeID", homeid);
                 cmdGARead.Parameters.AddWithValue("@redidentid", redidentid);
-                cmdGARead.Parameters.AddWithValue("@suitid", suiteid);
+                cmdGARead.Parameters.AddWithValue("@suiteno", suiteno);
                 cmdGARead.Parameters.AddWithValue("@occupancy", occupancy);
                 cmdGARead.Parameters.AddWithValue("@moveInDate", movein);
                 cmdGARead.Parameters.AddWithValue("@notes", notes);
-                cmdGARead.Parameters.AddWithValue("@modify_by", modify_by);
                 cmdGARead.Parameters.AddWithValue("@modify_on", modify_on);
                 cmdGARead.Parameters.Add("@returnint", SqlDbType.VarChar, 30);
                 cmdGARead.Parameters["@returnint"].Direction = ParameterDirection.Output;
@@ -34,7 +34,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static int ChangeOccupancy(int homeid, int redidentid, int suiteid, int occupancy, DateTime movein, DateTime moveout, string notes, int modify_by, DateTime modify_on)
+        public static int ChangeOccupancy(int userid,int homeid, int redidentid, string suiteno, int occupancy, DateTime movein, DateTime moveout, string notes, DateTime modify_on)
         {
             using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
             using (var cmdGARead = new SqlCommand("Suite_Handler_ChangeOccupancy", conn)
@@ -43,14 +43,14 @@ namespace QolaMVC.DAL
             })
             {
                 conn.Open();
+                cmdGARead.Parameters.AddWithValue("@UserID", userid);
                 cmdGARead.Parameters.AddWithValue("@homeID", homeid);
                 cmdGARead.Parameters.AddWithValue("@redidentid", redidentid);
-                cmdGARead.Parameters.AddWithValue("@suitid", suiteid);
+                cmdGARead.Parameters.AddWithValue("@suiteno", suiteno);
                 cmdGARead.Parameters.AddWithValue("@occupancy", occupancy);
                 cmdGARead.Parameters.AddWithValue("@moveInDate", movein);
                 cmdGARead.Parameters.AddWithValue("@moveoutdate", moveout);
                 cmdGARead.Parameters.AddWithValue("@notes", notes);
-                cmdGARead.Parameters.AddWithValue("@modify_by", modify_by);
                 cmdGARead.Parameters.AddWithValue("@modify_on", modify_on);
                 cmdGARead.Parameters.Add("@returnint", SqlDbType.VarChar, 30);
                 cmdGARead.Parameters["@returnint"].Direction = ParameterDirection.Output;
@@ -60,7 +60,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static int InternalTransfer(int homeid, int redidentid, int suiteid, int occupancy, DateTime movein, DateTime moveout, string notes, int modify_by, DateTime modify_on)
+        public static int InternalTransfer(int userid,int homeid, int redidentid, string suiteno, int occupancy, DateTime movein, DateTime moveout, string notes, DateTime modify_on)
         {
             using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
             using (var cmdGARead = new SqlCommand("Suite_Handler_InternalTransfer", conn)
@@ -69,14 +69,14 @@ namespace QolaMVC.DAL
             })
             {
                 conn.Open();
+                cmdGARead.Parameters.AddWithValue("@UserID", userid);
                 cmdGARead.Parameters.AddWithValue("@homeID", homeid);
                 cmdGARead.Parameters.AddWithValue("@redidentid", redidentid);
-                cmdGARead.Parameters.AddWithValue("@suitid", suiteid);
+                cmdGARead.Parameters.AddWithValue("@suiteno", suiteno);
                 cmdGARead.Parameters.AddWithValue("@occupancy", occupancy);
                 cmdGARead.Parameters.AddWithValue("@moveInDate", movein);
                 cmdGARead.Parameters.AddWithValue("@moveoutdate", moveout);
                 cmdGARead.Parameters.AddWithValue("@notes", notes);
-                cmdGARead.Parameters.AddWithValue("@modify_by", modify_by);
                 cmdGARead.Parameters.AddWithValue("@modify_on", modify_on);
                 cmdGARead.Parameters.Add("@returnint", SqlDbType.VarChar, 30);
                 cmdGARead.Parameters["@returnint"].Direction = ParameterDirection.Output;
@@ -86,7 +86,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static int TransfertoASCHOME(int homeid, int redidentid, int suiteid, int occupancy, DateTime movein, DateTime moveout, string notes, int modify_by, DateTime modify_on)
+        public static int TransfertoASCHOME(int userid,int homeid, int redidentid, string suiteno, int occupancy, DateTime movein, DateTime moveout, string notes, DateTime modify_on)
         {
             using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
             using (var cmdGARead = new SqlCommand("Suite_Handler_TransfertoASCHOME", conn)
@@ -95,14 +95,14 @@ namespace QolaMVC.DAL
             })
             {
                 conn.Open();
+                cmdGARead.Parameters.AddWithValue("@UserID", userid);
                 cmdGARead.Parameters.AddWithValue("@homeID", homeid);
                 cmdGARead.Parameters.AddWithValue("@redidentid", redidentid);
-                cmdGARead.Parameters.AddWithValue("@suitid", suiteid);
+                cmdGARead.Parameters.AddWithValue("@suiteno", suiteno);
                 cmdGARead.Parameters.AddWithValue("@occupancy", occupancy);
                 cmdGARead.Parameters.AddWithValue("@moveInDate", movein);
                 cmdGARead.Parameters.AddWithValue("@moveoutdate", moveout);
                 cmdGARead.Parameters.AddWithValue("@notes", notes);
-                cmdGARead.Parameters.AddWithValue("@modify_by", modify_by);
                 cmdGARead.Parameters.AddWithValue("@modify_on", modify_on);
                 cmdGARead.Parameters.Add("@returnint", SqlDbType.VarChar, 30);
                 cmdGARead.Parameters["@returnint"].Direction = ParameterDirection.Output;
@@ -112,7 +112,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static int Normal_Move_Out(int homeid, int redidentid, int suiteid, int occupancy, DateTime moveout, string notes, DateTime modify_on, string reason)
+        public static int Normal_Move_Out(int userid,int homeid, int redidentid, string suiteno, int occupancy, DateTime moveout, string notes, DateTime modify_on, string reason)
         {
             using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
             using (var cmdGARead = new SqlCommand("Suite_Handler_Normal_Move_Out", conn)
@@ -121,9 +121,10 @@ namespace QolaMVC.DAL
             })
             {
                 conn.Open();
+                cmdGARead.Parameters.AddWithValue("@UserID", userid);
                 cmdGARead.Parameters.AddWithValue("@homeID", homeid);
                 cmdGARead.Parameters.AddWithValue("@redidentid", redidentid);
-                cmdGARead.Parameters.AddWithValue("@suitid", suiteid);
+                cmdGARead.Parameters.AddWithValue("@suiteno", suiteno);
                 cmdGARead.Parameters.AddWithValue("@occupancy", occupancy);
                 cmdGARead.Parameters.AddWithValue("@moveoutdate", moveout);
                 cmdGARead.Parameters.AddWithValue("@notes", notes);
@@ -137,7 +138,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static int Passed_away(int homeid, int redidentid, int suiteid, int occupancy, DateTime moveout, string notes, DateTime modify_on, DateTime passedaway, string reason)
+        public static int Passed_away(int UserID, int homeid, int redidentid, string suiteNo, int occupancy, DateTime moveout, string notes, DateTime modify_on, DateTime passedaway, string reason)
         {
             using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
             using (var cmdGARead = new SqlCommand("Suite_Handler_Passed_away", conn)
@@ -146,9 +147,10 @@ namespace QolaMVC.DAL
             })
             {
                 conn.Open();
+                cmdGARead.Parameters.AddWithValue("@UserID", UserID);
                 cmdGARead.Parameters.AddWithValue("@homeID", homeid);
                 cmdGARead.Parameters.AddWithValue("@redidentid", redidentid);
-                cmdGARead.Parameters.AddWithValue("@suitid", suiteid);
+                cmdGARead.Parameters.AddWithValue("@suiteno", suiteNo);
                 cmdGARead.Parameters.AddWithValue("@occupancy", occupancy);
                 cmdGARead.Parameters.AddWithValue("@moveoutdate", moveout);
                 cmdGARead.Parameters.AddWithValue("@notes", notes);
@@ -163,7 +165,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static int Hospitalization(int homeid, int redidentid, int suiteid, int occupancy, DateTime leaving, DateTime ExpectedReturn, DateTime ActualReturn, string notes, DateTime modify_on, string reason)
+        public static int Hospitalization(int UserID, int homeid, int redidentid, string suiteno, int occupancy, DateTime leaving, DateTime ExpectedReturn, DateTime ActualReturn, string notes, DateTime modify_on, string reason)
         {
             using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
             using (var cmdGARead = new SqlCommand("Suite_Handler_Hospitalization", conn)
@@ -172,9 +174,10 @@ namespace QolaMVC.DAL
             })
             {
                 conn.Open();
+                cmdGARead.Parameters.AddWithValue("@UserID", UserID);
                 cmdGARead.Parameters.AddWithValue("@homeID", homeid);
                 cmdGARead.Parameters.AddWithValue("@redidentid", redidentid);
-                cmdGARead.Parameters.AddWithValue("@suitid", suiteid);
+                cmdGARead.Parameters.AddWithValue("@suiteno", suiteno);
                 cmdGARead.Parameters.AddWithValue("@occupancy", occupancy);
                 cmdGARead.Parameters.AddWithValue("@leaving", leaving);
                 cmdGARead.Parameters.AddWithValue("@expectedreturn", ExpectedReturn);
