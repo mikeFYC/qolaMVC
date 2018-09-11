@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 using System.Web;
 
 namespace QolaMVC.DAL
@@ -224,6 +225,50 @@ namespace QolaMVC.DAL
                 return false;
         }
 
+        public static StringBuilder get_innerHTML(int residentID)
+        {
+            StringBuilder table = new StringBuilder();
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText =   "SELECT H.fd_name,S.fd_suite_no, SH.fd_move_in_date,SH.fd_move_out_date,sh.fd_occupancy, SH.fd_status,SH.fd_notes" +
+                                " FROM tbl_Suite S" +
+                                " INNER JOIN tbl_Suite_Handler SH ON S.fd_id = SH.fd_suite_id" +
+                                " inner join tbl_Home H on H.fd_id = SH.fd_home_id" +
+                                " WHERE SH.fd_resident_id ="+ residentID;
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            table.Append("<table class=\"table table-bordered\" style=\"margin-left:1vw\">");
+            table.Append("<thead class=\"bg-primary\">");
+            table.Append("<tr>");
+            table.Append("<th class=\"text-white text-center\">Home</th>");
+            table.Append("<th class=\"text-white text-center\">Suite No</th>");
+            table.Append("<th class=\"text-white text-center\">Move In Date</th>");
+            table.Append("<th class=\"text-white text-center\">Move Out Date</th>");
+            table.Append("<th class=\"text-white text-center\">Occupancy</th>");
+            table.Append("<th class=\"text-white text-center\">Status</th>");
+            table.Append("<th class=\"text-white text-center\">Notes</th>");
+            table.Append("</tr>");
+            table.Append("</thead>");
+            table.Append("<tbody>");
 
+            if (rd.HasRows)
+                while (rd.Read())
+                {
+                    table.Append("<tr>");
+                    table.Append("<td>" + rd[0] + "</td>");
+                    table.Append("<td>" + rd[1] + "</td>");
+                    table.Append("<td>" + rd[2] + "</td>");
+                    table.Append("<td>" + rd[3] + "</td>");
+                    table.Append("<td>" + rd[4] + "</td>");
+                    table.Append("<td>" + rd[5] + "</td>");
+                    table.Append("<td>" + rd[6] + "</td>");
+                    table.Append("</tr>");
+                }
+            table.Append("</tbody>");
+            table.Append("</table>");
+            return table;
+        }
     }
 }

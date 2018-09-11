@@ -3,8 +3,10 @@ using QolaMVC.Helpers;
 using QolaMVC.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -55,19 +57,17 @@ namespace QolaMVC.Controllers
             var progressNotes = ProgressNotesDAL.GetProgressNotesCollections(resident.ID, DateTime.Now, DateTime.Now, "A");
 
             ViewBag.Message = TempData["Message"];
-
             TempData["Resident"] = resident;
-
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-
             ViewBag.User = user;
             ViewBag.Home = home;
             ViewBag.Resident = resident;
-
             ViewBag.ProgressNotes = progressNotes;
             ProgressNotesHelper.RegisterSession(resident);
+            TempData["Table"] = update_Suite_Handler_Table.get_innerHTML(resident.ID);
+
             return View(resident);
         }
 
