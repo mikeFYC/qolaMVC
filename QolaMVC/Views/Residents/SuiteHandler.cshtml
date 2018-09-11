@@ -173,6 +173,8 @@
                                                 <th class="text-white text-center">Occupancy</th>
                                                 <th class="text-white text-center">Move In Date</th>
                                                 <th class="text-white text-center">Move Out Date</th>
+                                                <th class="text-white text-center">Status</th>
+                                                <th class="text-white text-center">Notes</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -181,8 +183,10 @@
                                                 <td>@Model.ID</td>
                                                 <td>@Model.SuiteNo</td>
                                                 <td>@Model.Occupancy</td>
-                                                <td>@Model.MoveInDate</td>
-                                                <td>@Model.MoveOutDate</td>
+                                                <td>@Model.MoveInDate.ToString("MMMM dd, yyyy")</td>
+                                                <td>@Model.MoveOutDate.ToString("MMMM dd, yyyy")</td>
+                                                <td>@Model.Suite_Handler_Status</td>
+                                                <td>@Model.Suite_Handler_Notes</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -223,7 +227,7 @@
                                     </div>
                                     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                         <li class="nav-item">
-                                            <a class="nav-link active" id="ApplicationSuite" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true" onclick="option_button_click(this.id)">Application Suite</a>
+                                            <a class="nav-link" id="ApplicationSuite" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true" onclick="option_button_click(this.id)">Application Suite</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" id="ChangeOccupancy" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false" onclick="option_button_click(this.id)">Change Occupancy</a>
@@ -270,29 +274,35 @@
 
                                     <div class="tab-content" id="pills-tabContent">
 
-                                        <div class="tab-pane fade show active" id="pills-ApplicationSuite" role="tabpanel" aria-labelledby="pills-home-tab">
-                                            <div class="row">
-                                                <table class="table table-bordered" style="margin-left:1vw">
-                                                    <thead class="bg-primary">
-                                                        <tr>
-                                                            <th class="text-white text-center">Home</th>
-                                                            <th class="text-white text-center">Suite No</th>
-                                                            <th class="text-white text-center">Move In Date</th>
-                                                            <th class="text-white text-center">Move Out Date</th>
-                                                            <th class="text-white text-center">Occupancy</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>@Model.Home.Name</td>
-                                                            <td>@Model.SuiteNo</td>
-                                                            <td>@Model.MoveInDate</td>
-                                                            <td>@Model.MoveOutDate</td>
-                                                            <td>@Model.Occupancy</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                                        <div class="row">
+                                            <table class="table table-bordered" style="margin-left:1vw">
+                                                <thead class="bg-primary">
+                                                    <tr>
+                                                        <th class="text-white text-center">Home</th>
+                                                        <th class="text-white text-center">Suite No</th>
+                                                        <th class="text-white text-center">Move In Date</th>
+                                                        <th class="text-white text-center">Move Out Date</th>
+                                                        <th class="text-white text-center">Occupancy</th>
+                                                        <th class="text-white text-center">Status</th>
+                                                        <th class="text-white text-center">Notes</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>@Model.Home.Name</td>
+                                                        <td>@Model.SuiteNo</td>
+                                                        <td>@Model.MoveInDate.ToString("MMMM dd, yyyy")</td>
+                                                        <td>@Model.MoveOutDate.ToString("MMMM dd, yyyy")</td>
+                                                        <td>@Model.Occupancy</td>
+                                                        <td>@Model.Suite_Handler_Status</td>
+                                                        <td>@Model.Suite_Handler_Notes</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+
+                                        <div class="tab-pane fade" id="pills-ApplicationSuite" role="tabpanel" aria-labelledby="pills-home-tab">
                                             <br>
                                             <br>
                                             <div class="row">
@@ -355,28 +365,6 @@
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="pills-ChangeOccupancy" role="tabpanel" aria-labelledby="pills-profile-tab">
-                                            <div class="row">
-                                                <table class="table table-bordered" style="margin-left:1vw">
-                                                    <thead class="bg-primary">
-                                                        <tr>
-                                                            <th class="text-white text-center">Home</th>
-                                                            <th class="text-white text-center">Suite No</th>
-                                                            <th class="text-white text-center">Move In Date</th>
-                                                            <th class="text-white text-center">Move Out Date</th>
-                                                            <th class="text-white text-center">Occupancy</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>@Model.Home.Name</td>
-                                                            <td>@Model.SuiteNo</td>
-                                                            <td>@Model.MoveInDate</td>
-                                                            <td>@Model.MoveOutDate</td>
-                                                            <td>@Model.Occupancy</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
                                             <br>
                                             <br>
                                             <div class="row">
@@ -432,28 +420,6 @@
 
                                         </div>
                                         <div class="tab-pane fade" id="pills-InternalTransfer" role="tabpanel" aria-labelledby="pills-contact-tab">
-                                            <div class="row">
-                                                <table class="table table-bordered" style="margin-left:1vw">
-                                                    <thead class="bg-primary">
-                                                        <tr>
-                                                            <th class="text-white text-center">Home</th>
-                                                            <th class="text-white text-center">Suite No</th>
-                                                            <th class="text-white text-center">Move In Date</th>
-                                                            <th class="text-white text-center">Move Out Date</th>
-                                                            <th class="text-white text-center">Occupancy</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>@Model.Home.Name</td>
-                                                            <td>@Model.SuiteNo</td>
-                                                            <td>@Model.MoveInDate</td>
-                                                            <td>@Model.MoveOutDate</td>
-                                                            <td>@Model.Occupancy</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
                                             <br>
                                             <br>
                                             <div class="row">
@@ -516,28 +482,6 @@
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="pills-TransfertoASCHOME" role="tabpanel" aria-labelledby="pills-contact-tab">
-                                            <div class="row">
-                                                <table class="table table-bordered" style="margin-left:1vw">
-                                                    <thead class="bg-primary">
-                                                        <tr>
-                                                            <th class="text-white text-center">Home</th>
-                                                            <th class="text-white text-center">Suite No</th>
-                                                            <th class="text-white text-center">Move In Date</th>
-                                                            <th class="text-white text-center">Move Out Date</th>
-                                                            <th class="text-white text-center">Occupancy</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>@Model.Home.Name</td>
-                                                            <td>@Model.SuiteNo</td>
-                                                            <td>@Model.MoveInDate</td>
-                                                            <td>@Model.MoveOutDate</td>
-                                                            <td>@Model.Occupancy</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
                                             <br>
                                             <br>
                                             <div class="row">
@@ -638,28 +582,6 @@
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="pills-EndofLease" role="tabpanel" aria-labelledby="pills-home-tab">
-                                            <div class="row">
-                                                <table class="table table-bordered" style="margin-left:1vw">
-                                                    <thead class="bg-primary">
-                                                        <tr>
-                                                            <th class="text-white text-center">Home</th>
-                                                            <th class="text-white text-center">Suite No</th>
-                                                            <th class="text-white text-center">Move In Date</th>
-                                                            <th class="text-white text-center">Move Out Date</th>
-                                                            <th class="text-white text-center">Occupancy</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>@Model.Home.Name</td>
-                                                            <td>@Model.SuiteNo</td>
-                                                            <td>@Model.MoveInDate</td>
-                                                            <td>@Model.MoveOutDate</td>
-                                                            <td>@Model.Occupancy</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
                                             <br>
                                             <br>
                                             <div class="row">
@@ -699,28 +621,6 @@
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="pills-Palliative" role="tabpanel" aria-labelledby="pills-profile-tab">
-                                            <div class="row">
-                                                <table class="table table-bordered" style="margin-left:1vw">
-                                                    <thead class="bg-primary">
-                                                        <tr>
-                                                            <th class="text-white text-center">Home</th>
-                                                            <th class="text-white text-center">Suite No</th>
-                                                            <th class="text-white text-center">Move In Date</th>
-                                                            <th class="text-white text-center">Move Out Date</th>
-                                                            <th class="text-white text-center">Occupancy</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>@Model.Home.Name</td>
-                                                            <td>@Model.SuiteNo</td>
-                                                            <td>@Model.MoveInDate</td>
-                                                            <td>@Model.MoveOutDate</td>
-                                                            <td>@Model.Occupancy</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
                                             <br>
                                             <br>
                                             <div class="row">
@@ -762,28 +662,6 @@
 
                                         </div>
                                         <div class="tab-pane fade" id="pills-LTC" role="tabpanel" aria-labelledby="pills-contact-tab">
-                                            <div class="row">
-                                                <table class="table table-bordered" style="margin-left:1vw">
-                                                    <thead class="bg-primary">
-                                                        <tr>
-                                                            <th class="text-white text-center">Home</th>
-                                                            <th class="text-white text-center">Suite No</th>
-                                                            <th class="text-white text-center">Move In Date</th>
-                                                            <th class="text-white text-center">Move Out Date</th>
-                                                            <th class="text-white text-center">Occupancy</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>@Model.Home.Name</td>
-                                                            <td>@Model.SuiteNo</td>
-                                                            <td>@Model.MoveInDate</td>
-                                                            <td>@Model.MoveOutDate</td>
-                                                            <td>@Model.Occupancy</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
                                             <br>
                                             <br>
                                             <div class="row">
@@ -823,28 +701,6 @@
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="pills-OtherRetirement" role="tabpanel" aria-labelledby="pills-contact-tab">
-                                            <div class="row">
-                                                <table class="table table-bordered" style="margin-left:1vw">
-                                                    <thead class="bg-primary">
-                                                        <tr>
-                                                            <th class="text-white text-center">Home</th>
-                                                            <th class="text-white text-center">Suite No</th>
-                                                            <th class="text-white text-center">Move In Date</th>
-                                                            <th class="text-white text-center">Move Out Date</th>
-                                                            <th class="text-white text-center">Occupancy</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>@Model.Home.Name</td>
-                                                            <td>@Model.SuiteNo</td>
-                                                            <td>@Model.MoveInDate</td>
-                                                            <td>@Model.MoveOutDate</td>
-                                                            <td>@Model.Occupancy</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
                                             <br>
                                             <br>
                                             <div class="row">
@@ -884,28 +740,6 @@
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="pills-PassedAway" role="tabpanel" aria-labelledby="pills-contact-tab">
-                                            <div class="row">
-                                                <table class="table table-bordered" style="margin-left:1vw">
-                                                    <thead class="bg-primary">
-                                                        <tr>
-                                                            <th class="text-white text-center">Home</th>
-                                                            <th class="text-white text-center">Suite No</th>
-                                                            <th class="text-white text-center">Move In Date</th>
-                                                            <th class="text-white text-center">Move Out Date</th>
-                                                            <th class="text-white text-center">Occupancy</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>@Model.Home.Name</td>
-                                                            <td>@Model.SuiteNo</td>
-                                                            <td>@Model.MoveInDate</td>
-                                                            <td>@Model.MoveOutDate</td>
-                                                            <td>@Model.Occupancy</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
                                             <br>
                                             <br>
                                             <div class="row">
@@ -957,28 +791,6 @@
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="pills-Other" role="tabpanel" aria-labelledby="pills-contact-tab">
-                                            <div class="row">
-                                                <table class="table table-bordered" style="margin-left:1vw">
-                                                    <thead class="bg-primary">
-                                                        <tr>
-                                                            <th class="text-white text-center">Home</th>
-                                                            <th class="text-white text-center">Suite No</th>
-                                                            <th class="text-white text-center">Move In Date</th>
-                                                            <th class="text-white text-center">Move Out Date</th>
-                                                            <th class="text-white text-center">Occupancy</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>@Model.Home.Name</td>
-                                                            <td>@Model.SuiteNo</td>
-                                                            <td>@Model.MoveInDate</td>
-                                                            <td>@Model.MoveOutDate</td>
-                                                            <td>@Model.Occupancy</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
                                             <br>
                                             <br>
                                             <div class="row">
@@ -1018,28 +830,6 @@
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="pills-Hospitalization" role="tabpanel" aria-labelledby="pills-contact-tab">
-                                            <div class="row">
-                                                <table class="table table-bordered" style="margin-left:1vw">
-                                                    <thead class="bg-primary">
-                                                        <tr>
-                                                            <th class="text-white text-center">Home</th>
-                                                            <th class="text-white text-center">Suite No</th>
-                                                            <th class="text-white text-center">Move In Date</th>
-                                                            <th class="text-white text-center">Move Out Date</th>
-                                                            <th class="text-white text-center">Occupancy</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>@Model.Home.Name</td>
-                                                            <td>@Model.SuiteNo</td>
-                                                            <td>@Model.MoveInDate</td>
-                                                            <td>@Model.MoveOutDate</td>
-                                                            <td>@Model.Occupancy</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
                                             <br>
                                             <br>
                                             <div class="row">

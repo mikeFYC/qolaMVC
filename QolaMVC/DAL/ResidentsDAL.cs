@@ -703,6 +703,9 @@ namespace QolaMVC.DAL
                         resident.Wakeup_time = Convert.ToString(residentTypeRow["fd_Wakeup_time"]);
                         resident.Go_to_bed_at = Convert.ToString(residentTypeRow["fd_Go_to_bed_at"]);
                         resident.Favourite_past_time = Convert.ToString(residentTypeRow["fd_Favourite_past_time"]);
+                        resident.Suite_Handler_Notes = Convert.ToString(residentTypeRow["fd_notes"]);
+                        resident.Suite_Handler_Status = Convert.ToString(residentTypeRow["suite_handler_status"]);
+                        
                     }
                 }
                 return resident;

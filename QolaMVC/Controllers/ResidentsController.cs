@@ -282,7 +282,7 @@ namespace QolaMVC.Controllers
             var user = (UserModel)TempData["User"];
             var resident = (ResidentModel)TempData["Resident"];
             TempData.Keep("User");
-            TempData.Keep("Home");
+            TempData.Keep("Home");              
             TempData.Keep("Resident");
             int returnint=update_Suite_Handler_Table.undo_function_for_SQL(resident.ID, reason);
             return returnint;

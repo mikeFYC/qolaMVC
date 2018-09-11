@@ -111,7 +111,7 @@ namespace QolaMVC.DAL
                 return retunvalue;
             }
         }
-
+                            
         public static int Normal_Move_Out(int userid,int homeid, int redidentid, string suiteno, int occupancy, DateTime moveout, string notes, DateTime modify_on, string reason)
         {
             using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
@@ -138,7 +138,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static int Passed_away(int UserID, int homeid, int redidentid, string suiteNo, int occupancy, DateTime moveout, string notes, DateTime modify_on, DateTime passedaway, string reason)
+        public static int Passed_away(int userid, int homeid, int redidentid, string suiteNo, int occupancy, DateTime moveout, string notes, DateTime modify_on, DateTime passedaway, string reason)
         {
             using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
             using (var cmdGARead = new SqlCommand("Suite_Handler_Passed_away", conn)
@@ -147,7 +147,7 @@ namespace QolaMVC.DAL
             })
             {
                 conn.Open();
-                cmdGARead.Parameters.AddWithValue("@UserID", UserID);
+                cmdGARead.Parameters.AddWithValue("@UserID", userid);
                 cmdGARead.Parameters.AddWithValue("@homeID", homeid);
                 cmdGARead.Parameters.AddWithValue("@redidentid", redidentid);
                 cmdGARead.Parameters.AddWithValue("@suiteno", suiteNo);
@@ -165,7 +165,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static int Hospitalization(int UserID, int homeid, int redidentid, string suiteno, int occupancy, DateTime leaving, DateTime ExpectedReturn, DateTime ActualReturn, string notes, DateTime modify_on, string reason)
+        public static int Hospitalization(int userid, int homeid, int redidentid, string suiteno, int occupancy, DateTime leaving, DateTime ExpectedReturn, DateTime ActualReturn, string notes, DateTime modify_on, string reason)
         {
             using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
             using (var cmdGARead = new SqlCommand("Suite_Handler_Hospitalization", conn)
@@ -174,7 +174,7 @@ namespace QolaMVC.DAL
             })
             {
                 conn.Open();
-                cmdGARead.Parameters.AddWithValue("@UserID", UserID);
+                cmdGARead.Parameters.AddWithValue("@UserID", userid);
                 cmdGARead.Parameters.AddWithValue("@homeID", homeid);
                 cmdGARead.Parameters.AddWithValue("@redidentid", redidentid);
                 cmdGARead.Parameters.AddWithValue("@suiteno", suiteno);
