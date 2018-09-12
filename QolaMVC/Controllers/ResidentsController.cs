@@ -138,7 +138,7 @@ namespace QolaMVC.Controllers
         }
 
         [HttpPost]
-        public int saveButton_ChangeOccupancy(DateTime transferdate, int occu, string notes)
+        public int saveButton_ChangeOccupancy(DateTime transferdate, int occu, string notes, string suiteno)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -162,7 +162,7 @@ namespace QolaMVC.Controllers
             {
                 DateTime moveout = transferdate;
                 DateTime movein = transferdate;
-                int returnint = update_Suite_Handler_Table.ChangeOccupancy(user.ID,home.Id, resident.ID, resident.SuiteNo, occu, movein, moveout, notes, DateTime.Now);
+                int returnint = update_Suite_Handler_Table.ChangeOccupancy(user.ID,home.Id, resident.ID, suiteno, occu, movein, moveout, notes, DateTime.Now);
                 return returnint;
             }
         }
@@ -228,7 +228,7 @@ namespace QolaMVC.Controllers
         }
 
         [HttpPost]
-        public int saveButton_Normal_Move_Out(DateTime moveout, string notes, string reason)
+        public int saveButton_Normal_Move_Out(DateTime moveout, string notes, string reason,string suiteno)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -246,13 +246,13 @@ namespace QolaMVC.Controllers
             }
             else
             {
-                int returnint = update_Suite_Handler_Table.Normal_Move_Out(user.ID, home.Id, resident.ID, resident.SuiteNo, resident.Occupancy, moveout, notes, DateTime.Now, reason);
+                int returnint = update_Suite_Handler_Table.Normal_Move_Out(user.ID, home.Id, resident.ID, suiteno, resident.Occupancy, moveout, notes, DateTime.Now, reason);
                 return returnint;
             }
         }
 
         [HttpPost]
-        public int saveButton_Passed_Away(DateTime moveout, string notes, DateTime passaway, string reason)
+        public int saveButton_Passed_Away(DateTime moveout, string notes, DateTime passaway, string reason,string suiteno)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -270,13 +270,13 @@ namespace QolaMVC.Controllers
             }
             else
             {
-                int returnint = update_Suite_Handler_Table.Passed_away(user.ID, home.Id, resident.ID, resident.SuiteNo, resident.Occupancy, moveout, notes, DateTime.Now, passaway, reason);
+                int returnint = update_Suite_Handler_Table.Passed_away(user.ID, home.Id, resident.ID, suiteno, resident.Occupancy, moveout, notes, DateTime.Now, passaway, reason);
                 return returnint;
             }
         }
 
         [HttpPost]
-        public int saveButton_Hospitalization(DateTime leaving, DateTime ExpectedReturn, DateTime ActualReturn, string notes, string reason)
+        public int saveButton_Hospitalization(DateTime leaving, DateTime ExpectedReturn, DateTime ActualReturn, string notes, string reason, string suiteno)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -294,7 +294,7 @@ namespace QolaMVC.Controllers
             }
             else
             {
-                int returnint = update_Suite_Handler_Table.Hospitalization(user.ID, home.Id, resident.ID, resident.SuiteNo, resident.Occupancy, leaving, ExpectedReturn, ActualReturn, notes, DateTime.Now, reason);
+                int returnint = update_Suite_Handler_Table.Hospitalization(user.ID, home.Id, resident.ID, suiteno, resident.Occupancy, leaving, ExpectedReturn, ActualReturn, notes, DateTime.Now, reason);
                 return returnint;
             }
         }

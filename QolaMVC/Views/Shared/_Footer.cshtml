@@ -161,11 +161,15 @@
         var a = $('#occupancyselectid' + id).val();
         var b = $('#dateinput' + id).val();
         var c = $('#notes_' + id).val();
+        var tbodys = document.getElementsByTagName("tbody");
+        var trs = tbodys[0].getElementsByTagName("tr");
+        var tds = trs[trs.length - 1].getElementsByTagName("td");
+        var suitenos = tds[1].innerHTML;
         if (a == "" || b == "") {
             alert("Cannot Have Empty Area except notes");
         }
         else {
-            $.post("/Residents/saveButton_ChangeOccupancy", { transferdate: b, occu: a, notes: c }, function (data) {
+            $.post("/Residents/saveButton_ChangeOccupancy", { transferdate: b, occu: a, notes: c, suiteno: suitenos}, function (data) {
                 if (data == 1) {
                     location.reload();
                     alert("Update successfully");
@@ -257,11 +261,15 @@
         var move_out_reason = group[0].innerHTML;
         var a = $('#dateinput' + id).val();
         var b = $('#notes_' + id).val();
+        var tbodys = document.getElementsByTagName("tbody");
+        var trs = tbodys[0].getElementsByTagName("tr");
+        var tds = trs[trs.length - 1].getElementsByTagName("td");
+        var suitenos = tds[1].innerHTML;
         if (a == "") {
             alert("Date cannot be empty");
         }
         else {
-            $.post("/Residents/saveButton_Normal_Move_Out", { moveout: a, notes: b, reason: move_out_reason }, function (data) {
+            $.post("/Residents/saveButton_Normal_Move_Out", { moveout: a, notes: b, reason: move_out_reason, suiteno: suitenos}, function (data) {
                 if (data == 1) {
                     location.reload();
                     alert("Update successfully");
@@ -286,11 +294,15 @@
         var a = $('#dateinput' + id).val();
         var b = $('#notes_' + id).val();
         var c = $('#passawaydate' + id).val();
+        var tbodys = document.getElementsByTagName("tbody");
+        var trs = tbodys[0].getElementsByTagName("tr");
+        var tds = trs[trs.length - 1].getElementsByTagName("td");
+        var suitenos = tds[1].innerHTML;
         if (a == "" || c == "") {
             alert("Date cannot be empty");
         }
         else {
-            $.post("/Residents/saveButton_Passed_Away", { moveout: a, notes: b, passaway: c, reason: move_out_reason }, function (data) {
+            $.post("/Residents/saveButton_Passed_Away", { moveout: a, notes: b, passaway: c, reason: move_out_reason, suiteno: suitenos }, function (data) {
                 if (data == 1) {
                     location.reload();
                     alert("Update successfully");
@@ -316,11 +328,15 @@
         var b = $('#ExpectedReturnDate_' + id).val();
         var c = $('#ActualReturnDate_' + id).val();
         var d = $('#notes_' + id).val();
+        var tbodys = document.getElementsByTagName("tbody");
+        var trs = tbodys[0].getElementsByTagName("tr");
+        var tds = trs[trs.length - 1].getElementsByTagName("td");
+        var suitenos = tds[1].innerHTML;
         if (a == "" || b == "" || c == "") {
             alert("Date cannot be empty");
         }
         else {
-            $.post("/Residents/saveButton_Hospitalization", { leaving: a, ExpectedReturn: b, ActualReturn: c, notes: d, reason: move_out_reason }, function (data) {
+            $.post("/Residents/saveButton_Hospitalization", { leaving: a, ExpectedReturn: b, ActualReturn: c, notes: d, reason: move_out_reason, suiteno: suitenos }, function (data) {
                 if (data == 1) {
                     location.reload();
                     alert("Update successfully");

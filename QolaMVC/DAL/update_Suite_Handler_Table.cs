@@ -232,7 +232,11 @@ namespace QolaMVC.DAL
             conn.ConnectionString = Constants.ConnectionString.PROD;
             conn.Open();
             SqlCommand cmd = new SqlCommand();
-            cmd.CommandText =   "SELECT H.fd_name,S.fd_suite_no, SH.fd_move_in_date,SH.fd_move_out_date,sh.fd_occupancy, SH.fd_status,SH.fd_notes" +
+            cmd.CommandText =   " SELECT H.fd_name,S.fd_suite_no, SH.fd_move_in_date,SH.fd_move_out_date,CASE SH.fd_occupancy "+
+                                " WHEN 1 THEN 'Single'"+
+                                " WHEN 2 THEN 'Double'"+
+                                " WHEN 3 THEN 'Triple'"+
+                                " END as fd_occupancy, SH.fd_status,SH.fd_notes" +
                                 " FROM tbl_Suite S" +
                                 " INNER JOIN tbl_Suite_Handler SH ON S.fd_id = SH.fd_suite_id" +
                                 " inner join tbl_Home H on H.fd_id = SH.fd_home_id" +
@@ -247,7 +251,6 @@ namespace QolaMVC.DAL
             table.Append("<th class=\"text-white text-center\">Move In Date</th>");
             table.Append("<th class=\"text-white text-center\">Move Out Date</th>");
             table.Append("<th class=\"text-white text-center\">Occupancy</th>");
-            table.Append("<th class=\"text-white text-center\">Status</th>");
             table.Append("<th class=\"text-white text-center\">Notes</th>");
             table.Append("</tr>");
             table.Append("</thead>");
@@ -277,7 +280,6 @@ namespace QolaMVC.DAL
                         table.Append("<td>" + rd[3] + "</td>");
                     }
                     table.Append("<td>" + rd[4] + "</td>");
-                    table.Append("<td>" + rd[5] + "</td>");
                     table.Append("<td>" + rd[6] + "</td>");
                     table.Append("</tr>");
                 }
