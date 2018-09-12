@@ -256,11 +256,26 @@ namespace QolaMVC.DAL
             if (rd.HasRows)
                 while (rd.Read())
                 {
+
                     table.Append("<tr>");
                     table.Append("<td>" + rd[0] + "</td>");
                     table.Append("<td>" + rd[1] + "</td>");
-                    table.Append("<td>" + rd[2] + "</td>");
-                    table.Append("<td>" + rd[3] + "</td>");
+                    if (rd[2] != null && rd[2].ToString() != "")
+                    {
+                        table.Append("<td>" + DateTime.Parse(rd[2].ToString()).ToString("MMMM dd, yyyy") + "</td>");
+                    }
+                    else
+                    {
+                        table.Append("<td>" + rd[2] + "</td>");
+                    }
+                    if (rd[3] != null && rd[3].ToString() != "")
+                    {
+                        table.Append("<td>" + DateTime.Parse(rd[3].ToString()).ToString("MMMM dd, yyyy") + "</td>");
+                    }
+                    else
+                    {
+                        table.Append("<td>" + rd[3] + "</td>");
+                    }
                     table.Append("<td>" + rd[4] + "</td>");
                     table.Append("<td>" + rd[5] + "</td>");
                     table.Append("<td>" + rd[6] + "</td>");

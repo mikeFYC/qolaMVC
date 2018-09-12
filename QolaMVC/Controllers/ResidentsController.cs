@@ -288,7 +288,7 @@ namespace QolaMVC.Controllers
             {
                 return 3;
             }
-            else if (leaving < resident.MoveInDate || ExpectedReturn < leaving || ActualReturn < leaving)
+            else if (leaving < resident.MoveInDate || ExpectedReturn < leaving || ActualReturn < leaving    )
             {
                 return 4;
             }
