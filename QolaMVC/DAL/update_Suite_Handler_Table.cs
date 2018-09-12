@@ -236,7 +236,7 @@ namespace QolaMVC.DAL
                                 " WHEN 1 THEN 'Single'"+
                                 " WHEN 2 THEN 'Double'"+
                                 " WHEN 3 THEN 'Triple'"+
-                                " END as fd_occupancy, SH.fd_status,SH.fd_notes" +
+                                " END as fd_occupancy, SH.fd_status,SH.fd_notes,SH.fd_pass_away_date" +
                                 " FROM tbl_Suite S" +
                                 " INNER JOIN tbl_Suite_Handler SH ON S.fd_id = SH.fd_suite_id" +
                                 " inner join tbl_Home H on H.fd_id = SH.fd_home_id" +
@@ -252,6 +252,7 @@ namespace QolaMVC.DAL
             table.Append("<th class=\"text-white text-center\">Move Out Date</th>");
             table.Append("<th class=\"text-white text-center\">Occupancy</th>");
             table.Append("<th class=\"text-white text-center\">Notes</th>");
+            table.Append("<th class=\"text-white text-center\">Pass Away Date</th>");
             table.Append("</tr>");
             table.Append("</thead>");
             table.Append("<tbody>");
@@ -281,6 +282,7 @@ namespace QolaMVC.DAL
                     }
                     table.Append("<td>" + rd[4] + "</td>");
                     table.Append("<td>" + rd[6] + "</td>");
+                    table.Append("<td>" + rd[7] + "</td>");
                     table.Append("</tr>");
                 }
             table.Append("</tbody>");
