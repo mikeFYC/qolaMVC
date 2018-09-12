@@ -154,6 +154,10 @@ namespace QolaMVC.Controllers
             {
                 return 3;
             }
+            else if(transferdate<resident.MoveInDate)
+            {
+                return 4;
+            }
             else
             {
                 DateTime moveout = transferdate;
@@ -172,13 +176,17 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            if (resident.SuiteNo == suiteno)
+            if (resident.SuiteNo.Contains(suiteno) == true)
             {
                 return 2;
             }
             else if (update_Suite_Handler_Table.check_date_validation(transferdate) == false && user.ID != 1338)
             {
                 return 3;
+            }
+            else if (transferdate < resident.MoveInDate)
+            {
+                return 4;
             }
             else
             {
@@ -198,13 +206,17 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            if (home.Id == homeid)
+            if (resident.Home.Id == homeid)
             {
                 return 2;
             }
             else if (update_Suite_Handler_Table.check_date_validation(transferdate) == false && user.ID != 1338)
             {
                 return 3;
+            }
+            else if (transferdate < resident.MoveInDate)
+            {
+                return 4;
             }
             else
             {
@@ -228,6 +240,10 @@ namespace QolaMVC.Controllers
             {
                 return 3;
             }
+            else if (moveout < resident.MoveInDate)
+            {
+                return 4;
+            }
             else
             {
                 int returnint = update_Suite_Handler_Table.Normal_Move_Out(user.ID, home.Id, resident.ID, resident.SuiteNo, resident.Occupancy, moveout, notes, DateTime.Now, reason);
@@ -248,6 +264,10 @@ namespace QolaMVC.Controllers
             {
                 return 3;
             }
+            else if (moveout < resident.MoveInDate || passaway < resident.MoveInDate)
+            {
+                return 4;
+            }
             else
             {
                 int returnint = update_Suite_Handler_Table.Passed_away(user.ID, home.Id, resident.ID, resident.SuiteNo, resident.Occupancy, moveout, notes, DateTime.Now, passaway, reason);
@@ -267,6 +287,10 @@ namespace QolaMVC.Controllers
             if ((update_Suite_Handler_Table.check_date_validation(leaving) == false || update_Suite_Handler_Table.check_date_validation(ExpectedReturn) == false || update_Suite_Handler_Table.check_date_validation(ActualReturn) == false) && user.ID != 1338)
             {
                 return 3;
+            }
+            else if (leaving < resident.MoveInDate || ExpectedReturn < leaving || ActualReturn < leaving)
+            {
+                return 4;
             }
             else
             {
