@@ -126,7 +126,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            if (update_Suite_Handler_Table.check_date_validation(term) == false && user.ID != 1338)
+            if (update_Suite_Handler_Table.check_date_validation(term) == false && user.ID != 1338 && user.ID!=1346)
             {
                 return 3;
             }
@@ -150,7 +150,7 @@ namespace QolaMVC.Controllers
             {
                 return 2;
             }
-            else if (update_Suite_Handler_Table.check_date_validation(transferdate) == false && user.ID != 1338)
+            else if (update_Suite_Handler_Table.check_date_validation(transferdate) == false && user.ID != 1338 && user.ID != 1346)
             {
                 return 3;
             }
@@ -180,7 +180,7 @@ namespace QolaMVC.Controllers
             {
                 return 2;
             }
-            else if (update_Suite_Handler_Table.check_date_validation(transferdate) == false && user.ID != 1338)
+            else if (update_Suite_Handler_Table.check_date_validation(transferdate) == false && user.ID != 1338 && user.ID != 1346)
             {
                 return 3;
             }
@@ -210,7 +210,7 @@ namespace QolaMVC.Controllers
             {
                 return 2;
             }
-            else if (update_Suite_Handler_Table.check_date_validation(transferdate) == false && user.ID != 1338)
+            else if (update_Suite_Handler_Table.check_date_validation(transferdate) == false && user.ID != 1338 && user.ID != 1346)
             {
                 return 3;
             }
@@ -236,7 +236,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            if (update_Suite_Handler_Table.check_date_validation(moveout) == false && user.ID != 1338)
+            if (update_Suite_Handler_Table.check_date_validation(moveout) == false && user.ID != 1338 && user.ID != 1346)
             {
                 return 3;
             }
@@ -260,7 +260,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            if ((update_Suite_Handler_Table.check_date_validation(moveout) == false || update_Suite_Handler_Table.check_date_validation(passaway) == false) && user.ID != 1338)
+            if ((update_Suite_Handler_Table.check_date_validation(moveout) == false || update_Suite_Handler_Table.check_date_validation(passaway) == false) && user.ID != 1338 && user.ID != 1346)
             {
                 return 3;
             }
@@ -284,7 +284,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            if ((update_Suite_Handler_Table.check_date_validation(leaving) == false || update_Suite_Handler_Table.check_date_validation(ExpectedReturn) == false || update_Suite_Handler_Table.check_date_validation(ActualReturn) == false) && user.ID != 1338)
+            if ((update_Suite_Handler_Table.check_date_validation(leaving) == false || update_Suite_Handler_Table.check_date_validation(ExpectedReturn) == false || update_Suite_Handler_Table.check_date_validation(ActualReturn) == false) && user.ID != 1338 && user.ID != 1346)
             {
                 return 3;
             }
