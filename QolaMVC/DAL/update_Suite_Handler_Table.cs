@@ -256,7 +256,7 @@ namespace QolaMVC.DAL
             table.Append("</tr>");
             table.Append("</thead>");
             table.Append("<tbody>");
-
+             
             if (rd.HasRows)
                 while (rd.Read())
                 {
