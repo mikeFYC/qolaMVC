@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 using System.Web;
 using QolaMVC.Models;
 using static QolaMVC.Constants.EnumerationTypes;
@@ -938,6 +939,80 @@ namespace QolaMVC.DAL
             {
                 l_Conn.Close();
             }
+        }
+
+
+        public static StringBuilder get_listview(int homeid, DateTime todaydate)
+        {
+            StringBuilder table = new StringBuilder();
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText =   " with tab as (" +
+                                " select distinct R.fd_first_name + ' ' + R.fd_last_name as fd_full_name, SH.fd_resident_id,SH.fd_suite_id," +
+                                " SH.fd_home_id from[dbo].[tbl_Suite_Handler] SH left join[dbo].[tbl_Resident] R on R.fd_id=SH.fd_resident_id" +
+                                " where SH.fd_home_id=@homeid and @GETDATE>SH.fd_move_in_date and @GETDATE<isNULL(SH.fd_move_out_date,'2200-09-13')" +
+                                " ) select fd_full_name from tab" ;
+
+            cmd.Parameters.AddWithValue("@GETDATE", todaydate);
+            cmd.Parameters.AddWithValue("@homeid", homeid);
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            table.Append("<table class=\"attend\">");
+            table.Append("<tbody>");
+
+            if (rd.HasRows)
+                while (rd.Read())
+                {
+                    table.Append("<tr>");
+                    table.Append("<td>"+rd[0]+"</td>");
+                    table.Append("<td>");
+                    table.Append("<div class=\"form-check form-check-inline\">");
+                    table.Append("<input class=\"form-check-input\" type=\"radio\" name=\"inlineRadioOptions\" id=\"inlineRadio2\" value=\"option2\">");
+                    table.Append("<label class=\"form-check-label\">T</label>");
+                    table.Append("</div>");
+                    table.Append("</td>");
+                    table.Append("<td>");
+                    table.Append("<div class=\"form-check form-check-inline\">");
+                    table.Append("<input class=\"form-check-input\" type=\"radio\" name=\"inlineRadioOptions\" id=\"inlineRadio2\" value=\"option2\">");
+                    table.Append("<label class=\"form-check-label\">R</label>");
+                    table.Append("</div>");
+                    table.Append("</td>");
+                    table.Append("<td>");
+                    table.Append("<div class=\"form-check form-check-inline\">");
+                    table.Append("<input class=\"form-check-input\" type=\"radio\" name=\"inlineRadioOptions\" id=\"inlineRadio2\" value=\"option2\">");
+                    table.Append("<label class=\"form-check-label\">H</label>");
+                    table.Append("</div>");
+                    table.Append("</td>");
+                    table.Append("<td>");
+                    table.Append("<div class=\"form-check form-check-inline\">");
+                    table.Append("<input class=\"form-check-input\" type=\"radio\" name=\"inlineRadioOptions\" id=\"inlineRadio2\" value=\"option2\">");
+                    table.Append("<label class=\"form-check-label\">W</label>");
+                    table.Append("</div>");
+                    table.Append("</td>");
+                    table.Append("<td>");
+                    table.Append("<div class=\"form-check form-check-inline\">");
+                    table.Append("<input class=\"form-check-input\" type=\"radio\" name=\"inlineRadioOptions\" id=\"inlineRadio2\" value=\"option2\">");
+                    table.Append("<label class=\"form-check-label\">A</label>");
+                    table.Append("</div>");
+                    table.Append("</td>");
+                    table.Append("<td>");
+                    table.Append("<div class=\"form-check form-check-inline\">");
+                    table.Append("<input class=\"form-check-input\" type=\"radio\" name=\"inlineRadioOptions\" id=\"inlineRadio2\" value=\"option2\">");
+                    table.Append("<label class=\"form-check-label\">TC</label>");
+                    table.Append("</div>");
+                    table.Append("</td>");
+                    table.Append("<td>");
+                    table.Append("<div class=\"form-check form-check-inline\">");
+                    table.Append("<i class=\"fa fa-file-text-o\"></i>");
+                    table.Append("</div>");
+                    table.Append("</td>");
+                    table.Append("</tr>");
+                }
+            table.Append("</tbody>");
+            table.Append("</table>");
+            return table;
         }
 
     }

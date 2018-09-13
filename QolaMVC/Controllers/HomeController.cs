@@ -133,6 +133,24 @@ namespace QolaMVC.Controllers
 
         public ActionResult DiningAttendance()
         {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+
+            ViewBag.Message = TempData["Message"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            TempData["LIST_VIEW"] = HomeDAL.get_listview(home.Id,DateTime.Now);
+
+
+
+            DateTime lastSunday = DateTime.Now;
+            while (lastSunday.DayOfWeek != DayOfWeek.Sunday)
+                lastSunday = lastSunday.AddDays(-1);
+            TempData["Sunday"] = lastSunday;
+
             return View();
         }
         #region ajax requests
