@@ -90,6 +90,7 @@ namespace QolaMVC.Controllers
             ProgressNotesHelper.RegisterSession(resident);
             return View(resident);
         }
+
         public ActionResult ManageResidents(int p_HomeId)
         {
             var l_Residents = ResidentsDAL.GetResidentCollections(p_HomeId);
@@ -124,6 +125,7 @@ namespace QolaMVC.Controllers
 
             return RedirectToAction("AddNewResident");
         }
+
         public ActionResult ActivityCalendar()
         {
             List<ActivityEventModel> data = new List<ActivityEventModel> {
