@@ -65,3 +65,20 @@ CREATE TABLE [dbo].[tbl_AB_ActivityAssessment_Store](
 	)
 GO
 
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tbl_AB_ActivityEvents]') AND type in (N'U'))
+DROP TABLE [dbo].[tbl_AB_ActivityEvents]
+GO
+
+CREATE TABLE [dbo].[tbl_AB_ActivityEvents](
+	Id [int] IDENTITY(1,1) NOT NULL,
+	ActivityId int,
+	EventTitle nvarchar(200),
+	StartDate datetime,
+	EndDate datetime,
+	StartTime nvarchar(20),
+	EndTime nvarchar(20),
+	note nvarchar(max),
+	PRIMARY KEY (Id)
+	)
+GO
