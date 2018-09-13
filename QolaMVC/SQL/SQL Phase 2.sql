@@ -451,3 +451,68 @@ BEGIN
 
 END
 GO
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_Fall_RiskAssessment]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_Fall_RiskAssessment]
+GO
+CREATE PROCEDURE [dbo].[spAB_Add_Fall_RiskAssessment]
+@Id int,
+@FallHistory_IsTwoOrMore bit,
+@FallHistory_IsOneOrTwo bit,
+@Neurological_IsCVA bit,
+@Neurological_IsParkinsons bit,
+@Neurological_IsAlzheimers bit,
+@Neurological_IsSeizureDisorder bit,
+@Neurological_IsOther bit,
+@Other_IsDiabetes bit,
+@Other_IsOsteoporosis bit,
+@Other_IsPosturalHypotension bit,
+@Other_IsSyncope bit,
+@Incontinence_IsBowel bit,
+@Incontinence_IsBladder bit,
+@Incontinence_IsTransfer bit,
+@Incontinence_IsUnsteady bit,
+@Medication_IsCardiac bit,
+@Medication_IsDiuretics bit,
+@Medication_IsNarcotics bit,
+@Medication_IsAnalgesics bit,
+@Medication_IsSedatives bit,
+@Medication_IsAntiAnxiety bit,
+@Medication_IsLaxatives bit,
+@MentalStatus_IsConfused bit,
+@MentalStatus_IsResidentNonCompliance bit,
+@Orthopedic_IsRecent bit,
+@Orthopedic_IsCast bit,
+@Orthopedic_IsAmputation bit,
+@Orthopedic_IsSevere bit,
+@Sensory_IsDecreasedVision bit,
+@Sensory_IsDecreasedHearing bit,
+@Sensory_IsAphasia bit,
+@Assistive_IsWheelChair bit,
+@Assistive_IsWalker bit,
+@Assistive_IsCane bit,
+@TotalScore int,
+@RiskLevel nvarchar(10),
+@ResidentId int,
+@DateEntered datetime,
+@EnteredBy int
+AS
+--20180913 chime created
+BEGIN
+	INSERT INTO tbl_AB_FallRiskAssessment (FallHistory_IsTwoOrMore, FallHistory_IsOneOrTwo, Neurological_IsCVA, Neurological_IsParkinsons, Neurological_IsAlzheimers, Neurological_IsSeizureDisorder,
+											Neurological_IsOther, Other_IsDiabetes, Other_IsOsteoporosis, Other_IsPosturalHypotension, Other_IsSyncope, Incontinence_IsBowel, Incontinence_IsBladder,
+											Incontinence_IsTransfer, Incontinence_IsUnsteady, Medication_IsCardiac, Medication_IsDiuretics, Medication_IsNarcotics, Medication_IsAnalgesics, Medication_IsSedatives,
+											Medication_IsAntiAnxiety, Medication_IsLaxatives, MentalStatus_IsConfused, MentalStatus_IsResidentNonCompliance, Orthopedic_IsRecent, Orthopedic_IsCast,
+											Orthopedic_IsAmputation, Orthopedic_IsSevere, Sensory_IsDecreasedVision, Sensory_IsDecreasedHearing, Sensory_IsAphasia, Assistive_IsWheelChair,
+											Assistive_IsWalker, Assistive_IsCane, TotalScore, RiskLevel, ResidentId, DateEntered, EnteredBy)
+	VALUES (@FallHistory_IsTwoOrMore, @FallHistory_IsOneOrTwo, @Neurological_IsCVA, @Neurological_IsParkinsons, @Neurological_IsAlzheimers, @Neurological_IsSeizureDisorder,
+			@Neurological_IsOther, @Other_IsDiabetes, @Other_IsOsteoporosis, @Other_IsPosturalHypotension, @Other_IsSyncope, @Incontinence_IsBowel, @Incontinence_IsBladder,
+			@Incontinence_IsTransfer, @Incontinence_IsUnsteady, @Medication_IsCardiac, @Medication_IsDiuretics, @Medication_IsNarcotics, @Medication_IsAnalgesics, @Medication_IsSedatives,
+			@Medication_IsAntiAnxiety, @Medication_IsLaxatives, @MentalStatus_IsConfused, @MentalStatus_IsResidentNonCompliance, @Orthopedic_IsRecent, @Orthopedic_IsCast,
+			@Orthopedic_IsAmputation, @Orthopedic_IsSevere, @Sensory_IsDecreasedVision, @Sensory_IsDecreasedHearing, @Sensory_IsAphasia, @Assistive_IsWheelChair,
+			@Assistive_IsWalker, @Assistive_IsCane, @TotalScore, @RiskLevel, @ResidentId, @DateEntered, @EnteredBy)
+
+END
+GO

@@ -82,3 +82,54 @@ CREATE TABLE [dbo].[tbl_AB_ActivityEvents](
 	PRIMARY KEY (Id)
 	)
 GO
+
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tbl_AB_FallRiskAssessment]') AND type in (N'U'))
+DROP TABLE [dbo].[tbl_AB_FallRiskAssessment]
+GO
+
+CREATE TABLE [dbo].[tbl_AB_FallRiskAssessment](
+	Id [int] IDENTITY(1,1) NOT NULL,
+	FallHistory_IsTwoOrMore bit,
+	FallHistory_IsOneOrTwo bit,
+	Neurological_IsCVA bit,
+	Neurological_IsParkinsons bit,
+	Neurological_IsAlzheimers bit,
+	Neurological_IsSeizureDisorder bit,
+	Neurological_IsOther bit,
+	Other_IsDiabetes bit,
+	Other_IsOsteoporosis bit,
+	Other_IsPosturalHypotension bit,
+	Other_IsSyncope bit,
+	Incontinence_IsBowel bit,
+	Incontinence_IsBladder bit,
+	Incontinence_IsTransfer bit,
+	Incontinence_IsUnsteady bit,
+	Medication_IsCardiac bit,
+	Medication_IsDiuretics bit,
+	Medication_IsNarcotics bit,
+	Medication_IsAnalgesics bit,
+	Medication_IsSedatives bit,
+	Medication_IsAntiAnxiety bit,
+	Medication_IsLaxatives bit,
+	MentalStatus_IsConfused bit,
+	MentalStatus_IsResidentNonCompliance bit,
+	Orthopedic_IsRecent bit,
+	Orthopedic_IsCast bit,
+	Orthopedic_IsAmputation bit,
+	Orthopedic_IsSevere bit,
+	Sensory_IsDecreasedVision bit,
+	Sensory_IsDecreasedHearing bit,
+	Sensory_IsAphasia bit,
+	Assistive_IsWheelChair bit,
+	Assistive_IsWalker bit,
+	Assistive_IsCane bit,
+	TotalScore int,
+	RiskLevel nvarchar(10),
+	ResidentId int,
+	DateEntered datetime,
+	EnteredBy int,
+	PRIMARY KEY (Id)
+	)
+GO

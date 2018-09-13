@@ -876,5 +876,10 @@ namespace QolaMVC.Controllers
 
             return RedirectToAction("Activity");
         }
+
+        public ActionResult FallRisk()
+        {
+            return View();
+        }
     }
 }
