@@ -406,3 +406,48 @@ BEGIN
 		Id = @CategoryId
 END
 GO
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_Activity_Events]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_Activity_Events]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_Activity_Events]
+AS
+--20180912 chime created
+BEGIN
+	SELECT
+		Id,
+		ActivityId,
+		EventTitle,
+		StartDate,
+		EndDate,
+		StartTime,
+		EndTime,
+		note
+	FROM 
+		tbl_AB_ActivityEvents
+END
+GO
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_Activity_Events]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_Activity_Events]
+GO
+CREATE PROCEDURE [dbo].[spAB_Add_Activity_Events]
+@ActivityId int,
+@EventTitle nvarchar(100),
+@StartDate datetime,
+@EndDate datetime,
+@StartTime nvarchar(20),
+@EndTime nvarchar(20),
+@note nvarchar(max) = ''
+AS
+--20180912 chime created
+BEGIN
+	INSERT INTO tbl_AB_ActivityEvents (ActivityId, EventTitle, StartDate, EndDate, StartTime, EndTime, note)
+	VALUES (@ActivityId, @EventTitle, @StartDate, @EndDate, @StartTime, @EndTime, @note)
+
+END
+GO
