@@ -142,7 +142,11 @@ namespace QolaMVC.Controllers
             TempData.Keep("Resident");
             ViewBag.User = user;
             ViewBag.Home = home;
-            TempData["LIST_VIEW"] = HomeDAL.get_listview(home.Id,DateTime.Now);
+
+            var LIST_VIEW_RESIDENT=HomeDAL.get_list_resident(home.Id, DateTime.Now);
+            TempData["LIST_VIEW_RESIDENT"] = LIST_VIEW_RESIDENT;
+            TempData.Keep("LIST_VIEW_RESIDENT");
+            ViewBag.LIST_VIEW_RESIDENT = LIST_VIEW_RESIDENT;
 
 
 
@@ -151,7 +155,7 @@ namespace QolaMVC.Controllers
                 lastSunday = lastSunday.AddDays(-1);
             TempData["Sunday"] = lastSunday;
 
-            return View();
+            return View(LIST_VIEW_RESIDENT);
         }
         #region ajax requests
         [HttpPost]
@@ -1590,6 +1594,23 @@ namespace QolaMVC.Controllers
             }
 
         }
+
+
+        [HttpPost]
+        public int saveButton_Dining(string arr, int whichmeal)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            //Dining_Attendance_functions.save_Button(home.Id, whichmeal, DateTime.Parse("2018-09-14 00:00:00.000"),arr,user.ID,DateTime.Now);
+
+            return 1;
+            
+        }
+
+
+
     }
 }
 

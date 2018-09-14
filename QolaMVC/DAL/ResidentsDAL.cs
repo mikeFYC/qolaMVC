@@ -705,7 +705,8 @@ namespace QolaMVC.DAL
                         resident.Favourite_past_time = Convert.ToString(residentTypeRow["fd_Favourite_past_time"]);
                         resident.Suite_Handler_Notes = Convert.ToString(residentTypeRow["fd_notes"]);
                         resident.Suite_Handler_Status = Convert.ToString(residentTypeRow["suite_handler_status"]);
-                        
+
+
                     }
                 }
                 return resident;

@@ -1,4 +1,4 @@
-﻿
+﻿@model QolaMVC.Models.Dining_Attendance
 @RenderPage("~/Views/Shared/_Header.cshtml")
 @RenderPage("~/Views/Shared/_SideBar.cshtml")
 
@@ -20,10 +20,10 @@
         border-bottom: 1px solid #000;
     }
 
-    #attendent_form{
-        margin-left:0;
-
+    #attendent_form {
+        margin-left: 0;
     }
+
     #attendent_form_second_layer {
         margin-left: 7.5vw;
         right: auto;
@@ -31,6 +31,7 @@
         padding-bottom: 30px;
         min-width: 85vw;
     }
+
     #attendent_form_third_layer {
         margin-left: 0;
     }
@@ -58,7 +59,72 @@
             document.getElementById("pills-month").className = "tab-pane fade show active";
         }
     }
-   
+    function search_click() {
+        var a = $("div tr td div input");
+        for (var c = 0; c < a.length; c++) {
+            if (a[c].id != "SAVED") {
+                a[c].checked = false;
+            }
+        }
+    }
+    function list_click() {
+        var a = $("div[id=pills-contact1] tr td div input");
+        for (var c = 0; c < a.length; c++) {
+            if (a[c].id != "SAVED") {
+                a[c].checked = false;
+            }
+        }
+    }
+    function floor_click() {
+        var a = $("div[id=pills-profile1] tr td div input");
+        for (var c = 0; c < a.length; c++) {
+            if (a[c].id != "SAVED") {
+                a[c].checked = false;
+            }
+        }
+    }
+    function list_select_all() {
+        var a = $("div[id=pills-profile1] tr td div input");
+        for (var c = 0; c < a.length; c=c+6) {
+            a[c].checked = true;
+        } 
+    }
+    function floor_select_all() {
+        var a = $("div[id=pills-contact1] tr td div input");
+        for (var c = 0; c < a.length; c=c+6) {
+            a[c].checked = true;
+        }
+    }
+    function list_savebutton()
+    {
+        var savestring = "";
+
+        var mealselect = document.getElementById("select_meal_index").className
+        var a = $("div[id=pills-profile1] tr td div input");
+        for (var c = 0; c < a.length; c++) {
+            if (a[c].checked == true) {
+                savestring = savestring + a[c].name + "," + a[c].value + ",";
+
+            }
+        }
+        $.post("/Home/saveButton_Dining", { arr: savestring, whichmeal: mealselect, }, function (data) {
+
+        });
+    }
+
+    function open_form1() {
+        var a = document.getElementById("select_meal_index")
+        a.className="1"
+    }
+    function open_form2() {
+        var a = document.getElementById("select_meal_index")
+        a.className = "2"
+    }
+    function open_form3() {
+        var a = document.getElementById("select_meal_index")
+        a.className = "3"
+    }
+
 
 </script>
 
@@ -101,9 +167,10 @@
                                     <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false" onclick="month_click()">Month</a>
                                 </li>
                             </ul>
-                            <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-content" id="pills-tabContent" >
                                 <div class="tab-pane fade show active" id="pills-day" role="tabpanel" aria-labelledby="pills-home-tab">
 
+                                    <div id="select_meal_index" class=""></div>
 
                                     <table class="table table-bordered">
                                         <thead class="bg-primary">
@@ -131,7 +198,7 @@
                                                 </td>
                                                 <td>
 
-                                                    <a data-toggle="modal" data-target="#attendent_form">
+                                                    <a data-toggle="modal" data-target="#attendent_form" onclick="open_form1()">
                                                         <i class="fa fa-file-text-o"></i>
                                                     </a>
                                                 </td>
@@ -150,7 +217,7 @@
                                                     Lunch
                                                 </td>
                                                 <td>
-                                                    <a data-toggle="modal" data-target="#attendent_form">
+                                                    <a data-toggle="modal" data-target="#attendent_form" onclick="open_form2()">
                                                         <i class="fa fa-file-text-o"></i>
                                                     </a>
 
@@ -171,7 +238,7 @@
                                                 </td>
                                                 <td>
 
-                                                    <a data-toggle="modal" data-target="#attendent_form">
+                                                    <a data-toggle="modal" data-target="#attendent_form" onclick="open_form3()">
                                                         <i class="fa fa-file-text-o"></i>
                                                     </a>
                                                 </td>
@@ -314,7 +381,7 @@
     <!-- END PAGE CONTENT -->
     <!-- New Resident Modal -->
     <div class="modal" id="attendent_form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-xlg" role="document" id="attendent_form_second_layer" >
+        <div class="modal-xlg" role="document" id="attendent_form_second_layer">
             <div class="modal-content" id="attendent_form_third_layer">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Attendance</h5>
@@ -328,13 +395,13 @@
                             <div class="col-md-5">
                                 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home1" role="tab" aria-controls="pills-home" aria-selected="true">Search View</a>
+                                        <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home1" role="tab" aria-controls="pills-home" aria-selected="true" onclick="search_click()">Search View</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile1" role="tab" aria-controls="pills-profile" aria-selected="false">List View</a>
+                                        <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile1" role="tab" aria-controls="pills-profile" aria-selected="false" onclick="list_click()">List View</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact1" role="tab" aria-controls="pills-contact" aria-selected="false">Floor View</a>
+                                        <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact1" role="tab" aria-controls="pills-contact" aria-selected="false" onclick="floor_click()">Floor View</a>
                                     </li>
                                 </ul>
                             </div>
@@ -389,115 +456,127 @@
                                     </div>
                                     <div class="col-md-12 text-center">
                                         <br><br><br><br><br><br>
-                                        <button type="button" class="btn btn-primary" data-dismiss="modal">SAVE</button>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="">SAVE</button>
                                         <button type="button" class="btn btn-secondary">CLEAR</button>
                                     </div>
                                 </div>
 
                             </div>
-                            <div class="tab-pane fade" id="pills-profile1" role="tabpanel" aria-labelledby="pills-profile-tab" >
-                                <div class="row" >
+                            <div class="tab-pane fade" id="pills-profile1" role="tabpanel" aria-labelledby="pills-profile-tab">
+                                <div class="row">
                                     <div class="col-md-12">
-                                        <h6>Resident List   <a href="#">Select All</a></h6>
+                                        <h6>Resident List   <a href="#" onclick="list_select_all()">Select All</a></h6>
                                     </div>
                                     <div class="col-md-6" style="border: 1px solid #000;">
-                                        @(new HtmlString(TempData["LIST_VIEW"].ToString()))
-          @*<table class="attend">
-            <tbody>
-                <tr>
-                    <td>a, a *</td>
-                    <td>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                            <label class="form-check-label">T</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                            <label class="form-check-label">R</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                            <label class="form-check-label">H</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                            <label class="form-check-label">W</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                            <label class="form-check-label">A</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                            <label class="form-check-label">TC</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-check form-check-inline">
-                            <i class="fa fa-file-text-o"></i>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>*@
+                                        <table class="attend">
+                                            <tbody>
+                                                @{
+                                                    for(int i= 0; i<Model.LIST_RESIDENT.Count; i=i+2)
+                                                    {
+                                                        var a = Model.LIST_RESIDENT[i];
+                                                        <tr>
+                                                            <td style="max-width:10vw">@a.FirstName @a.LastName</td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option1">
+                                                                    <label class="form-check-label">T</label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option2">
+                                                                    <label class="form-check-label">R</label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option3">
+                                                                    <label class="form-check-label">H</label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option4">
+                                                                    <label class="form-check-label">W</label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option5">
+                                                                    <label class="form-check-label">A</label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option6">
+                                                                    <label class="form-check-label">TC</label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline">
+                                                                    <i class="fa fa-file-text-o"></i>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
                                     </div>
+
                                     <div class="col-md-6" style="border: 1px solid #000">
                                         <table class="attend">
                                             <tbody>
-                                                <tr>
-                                                    <td>a, a *</td>
-                                                    <td>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                            <label class="form-check-label">T</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                            <label class="form-check-label">R</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                            <label class="form-check-label">H</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                            <label class="form-check-label">W</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                            <label class="form-check-label">A</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                            <label class="form-check-label">TC</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check form-check-inline">
-                                                            <i class="fa fa-file-text-o"></i>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                @for(int i= 1; i<Model.LIST_RESIDENT.Count; i=i+2)
+                                                    {
+                                                        var a = Model.LIST_RESIDENT[i];
+                                                        <tr>
+                                                            <td style="max-width:10vw">@a.FirstName @a.LastName</td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option1">
+                                                                    <label class="form-check-label">T</label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option2">
+                                                                    <label class="form-check-label">R</label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option3">
+                                                                    <label class="form-check-label">H</label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option4">
+                                                                    <label class="form-check-label">W</label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option5">
+                                                                    <label class="form-check-label">A</label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option6">
+                                                                    <label class="form-check-label">TC</label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline">
+                                                                    <i class="fa fa-file-text-o"></i>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+
+                                                    }
                                             </tbody>
                                         </table>
                                     </div>
@@ -505,31 +584,95 @@
 
                                     <div class="col-md-12 text-center">
                                         <br><br><br><br><br><br>
-                                        <button type="button" class="btn btn-primary" data-dismiss="modal">SAVE</button>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="list_savebutton()">SAVE</button>
                                         <button type="button" class="btn btn-secondary">CLEAR</button>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="tab-pane fade" id="pills-contact1" role="tabpanel" aria-labelledby="pills-contact-tab">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <h6>Resident List   <a href="#">Select All</a></h6>
+                                        <h6>Resident List   <a href="#" onclick="floor_select_all()">Select All</a></h6>
                                     </div>
-                                    <div class="col-md-6" style="border: 1px solid #000;min-width:83.5vw">
-                                        <table>
-                                            <tr>
-                                                <th>
-                                                    AAAAAAAAAAAAAAAA
-                                                </th>
-                                            </tr>
-                                        </table>
-                                        </div>
-                                        <div class="col-md-6" style="border: 1px solid #000">
+                                    @{ 
+                                        int floor = 0;
+                                        foreach (var a in Model.LIST_RESIDENT)
+                                        {
+                                            if (a.No_of_floor > floor)
+                                            {
+                                                floor = a.No_of_floor;
+                                            }
+                                        }
 
+                                        for (int b = 1; b <= floor; b++)
+                                        {
+                                            <div class="col-md-6" style="border:1px solid #000;">
+                                                <table class="attend">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th colspan="7" height=50vw>@b st Floor</th>
+                                                        </tr>
+                                                        @foreach (var a in Model.LIST_RESIDENT)
+                                                        {
+                                                            if (a.No_of_floor == b)
+                                                            {
+                                                                <tr>
+                                                                    <td>@a.FirstName @a.LastName</td>
+                                                                    <td>
+                                                                        <div class="form-check form-check-inline">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option1">
+                                                                            <label class="form-check-label">T</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check form-check-inline">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option2">
+                                                                            <label class="form-check-label">R</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check form-check-inline">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option3">
+                                                                            <label class="form-check-label">H</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check form-check-inline">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option4">
+                                                                            <label class="form-check-label">W</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check form-check-inline">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option5">
+                                                                            <label class="form-check-label">A</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check form-check-inline">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option6">
+                                                                            <label class="form-check-label">TC</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check form-check-inline">
+                                                                            <i class="fa fa-file-text-o"></i>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            }
+                                        }
+
+                                        @*<div class="col-md-6" style="border: 1px solid #000">
                                             <table class="attend">
                                                 <tbody>
                                                     <tr>
-
                                                         <td>a, a *</td>
                                                         <td>
                                                             <div class="form-check form-check-inline">
@@ -575,57 +718,8 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                        </div>
-                                        <div class="col-md-6" style="border: 1px solid #000">
-                                            <table class="attend">
-                                                <tbody>
-                                                    <tr>
-                                                        <td>a, a *</td>
-                                                        <td>
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                                <label class="form-check-label">T</label>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                                <label class="form-check-label">R</label>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                                <label class="form-check-label">H</label>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                                <label class="form-check-label">W</label>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                                <label class="form-check-label">A</label>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                                <label class="form-check-label">TC</label>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="form-check form-check-inline">
-                                                                <i class="fa fa-file-text-o"></i>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                        </div>*@
+
                                         <div class="col-md-12 text-center">
                                             <br><br><br><br><br><br>
                                             <button type="button" class="btn btn-primary" data-dismiss="modal">SAVE</button>
@@ -633,18 +727,17 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+
                         </div>
-
-                    </div>
-                    <div class="modal-footer text-center">
+                        <div class="modal-footer text-center">
 
 
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    @RenderPage("~/Views/Shared/_Footer.cshtml")
+        @RenderPage("~/Views/Shared/_Footer.cshtml")
 
- 
