@@ -1634,6 +1634,31 @@ namespace QolaMVC.Controllers
 
         }
 
+        [HttpGet]
+        public StringBuilder View_List(int whichmeal)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            StringBuilder returnstring = Dining_Attendance_functions.getting_LIST(whichmeal, DateTime.Parse("2018-09-14 00:00:00.000"));
+            string[] viewlist = returnstring.ToString().Split(';');
+            for (var c = 0; c < viewlist.Length; c++)
+            {
+                var cplus = c + 1;
+                for (var b = 0; b < viewlist[c].Split(',').Length; b++)
+                {
+                    if (viewlist[c].Split(',')[b] != "")
+                    {
+                        var resident = ResidentsDAL.GetResidentById(int.Parse(viewlist[c].Split(',')[b]));
+                        returnstring.Replace(viewlist[c].Split(',')[b], resident.FirstName + resident.LastName);
+                    }
+                }
+            }
+                    
+            return returnstring;
+
+        }
 
 
     }

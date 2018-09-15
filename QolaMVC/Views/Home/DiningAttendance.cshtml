@@ -116,17 +116,29 @@
     }
 
     function open_form1() {
+        var node_tbody = document.getElementById("show_list")
+        while (node_tbody.hasChildNodes())
+            node_tbody.removeChild(node_tbody.lastChild);
+
         var a = document.getElementById("select_meal_index");
         a.className = "1";
         
         
     }
     function open_form2() {
+        var node_tbody = document.getElementById("show_list")
+        while (node_tbody.hasChildNodes())
+            node_tbody.removeChild(node_tbody.lastChild);
+
         var a = document.getElementById("select_meal_index");
         a.className = "2";
         getdata();
     }
     function open_form3() {
+        var node_tbody = document.getElementById("show_list")
+        while (node_tbody.hasChildNodes())
+            node_tbody.removeChild(node_tbody.lastChild);
+
         var a = document.getElementById("select_meal_index");
         a.className = "3";
     }
@@ -146,6 +158,36 @@
                     }
                 }
             }
+        });
+        $.get("/Home/View_List", { whichmeal: mealselect }, function (data) {
+            var a = String(data).split(";");
+            var view = $("#show_list");
+            for (var c = 0; c < a.length; c++) {
+                var cplus = c + 1;
+                for (var b = 0; b < a[c].split(",").length; b++) {
+                    if (a[c].split(",")[b] != "") {
+                        if (c == 0)
+                            view.append("<tr><td>" + a[c].split(",")[b] + "<\/td><td>Taken<\/td><td><div class=\"form-check form-check-inline\"><i class=\"fa fa-file-text-o\"><\/i><\/div><\/td><\/tr>");
+                        if (c == 1)
+                            view.append("<tr><td>" + a[c].split(",")[b] + "<\/td><td>Refused<\/td><td><div class=\"form-check form-check-inline\"><i class=\"fa fa-file-text-o\"><\/i><\/div><\/td><\/tr>");
+                        if (c == 2)
+                            view.append("<tr><td>" + a[c].split(",")[b] + "<\/td><td>Hospital<\/td><td><div class=\"form-check form-check-inline\"><i class=\"fa fa-file-text-o\"><\/i><\/div><\/td><\/tr>");
+                        if (c == 3)
+                            view.append("<tr><td>" + a[c].split(",")[b] + "<\/td><td>Waiver<\/td><td><div class=\"form-check form-check-inline\"><i class=\"fa fa-file-text-o\"><\/i><\/div><\/td><\/tr>");
+                        if (c == 4)
+                            view.append("<tr><td>" + a[c].split(",")[b] + "<\/td><td>Away<\/td><td><div class=\"form-check form-check-inline\"><i class=\"fa fa-file-text-o\"><\/i><\/div><\/td><\/tr>");
+                        if (c == 5)
+                            view.append("<tr><td>" + a[c].split(",")[b] + "<\/td><td>Tray Complimentary<\/td><td><div class=\"form-check form-check-inline\"><i class=\"fa fa-file-text-o\"><\/i><\/div><\/td><\/tr>");
+
+                    }
+                }
+            }
+
+
+
+
+
+
         });
     }
 
@@ -478,6 +520,29 @@
                                         <br>
                                         <button class="btn btn-lg btn-danger">ADD</button>
                                     </div>
+
+
+
+
+                                    <div class="" style="border:1px solid #000;margin-left:15vw">
+                                        <table class="attend" style="min-width:50vw" >
+                                            <tbody id="show_list">
+                                                <tr>
+                                                    <td width="33%">AAAAAA</td>
+                                                    <td width="33%">TAKEN</td>
+                                                    <td width="33%"> 
+                                                        <div class="form-check form-check-inline">
+                                                            <i class="fa fa-file-text-o"></i>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+
+
                                     <div class="col-md-12 text-center">
                                         <br><br><br><br><br><br>
                                         <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="">SAVE</button>
