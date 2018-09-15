@@ -45,7 +45,6 @@ namespace QolaMVC.Controllers
                 l_J.image = r.ResidentImage;
                 l_Json.Add(l_J);
             }
-
             return Json(l_Json, JsonRequestBehavior.AllowGet);
         }
 

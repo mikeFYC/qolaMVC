@@ -16,6 +16,7 @@ using QolaMVC.Helpers;
 using static QolaMVC.Helpers.ProgressNotesHelper;
 using System.Data;
 using System.Collections;
+using System.Text;
 
 namespace QolaMVC.Controllers
 {
@@ -1603,10 +1604,34 @@ namespace QolaMVC.Controllers
             var user = (UserModel)TempData["User"];
             TempData.Keep("User");
             TempData.Keep("Home");
-            //Dining_Attendance_functions.save_Button(home.Id, whichmeal, DateTime.Parse("2018-09-14 00:00:00.000"),arr,user.ID,DateTime.Now);
+            Dictionary<string, string> Save_summary = new Dictionary<string, string>();
+            string[] Save_sum_array = arr.Substring(0, arr.Length - 1).Split(',');
+            for(int a=0;a< Save_sum_array.Length; a = a + 2)
+            {
+                if (Save_summary.ContainsKey(Save_sum_array[a + 1]) == false)
+                {
+                    Save_summary.Add(Save_sum_array[a + 1], Save_sum_array[a]);
+                }
+                else
+                    Save_summary[Save_sum_array[a + 1]] += ","+Save_sum_array[a];
+            }
+            Dining_Attendance_functions.save_Button(home.Id, whichmeal, DateTime.Parse("2018-09-14 00:00:00.000"), Save_summary, user.ID,DateTime.Now);
 
             return 1;
             
+        }
+
+        [HttpGet]
+        public StringBuilder Getting_Dining(int whichmeal)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+
+            StringBuilder returnstring=Dining_Attendance_functions.getting_LIST(whichmeal, DateTime.Parse("2018-09-14 00:00:00.000"));
+            return returnstring;
+
         }
 
 

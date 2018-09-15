@@ -59,30 +59,30 @@
             document.getElementById("pills-month").className = "tab-pane fade show active";
         }
     }
-    function search_click() {
-        var a = $("div tr td div input");
-        for (var c = 0; c < a.length; c++) {
-            if (a[c].id != "SAVED") {
-                a[c].checked = false;
-            }
-        }
-    }
-    function list_click() {
-        var a = $("div[id=pills-contact1] tr td div input");
-        for (var c = 0; c < a.length; c++) {
-            if (a[c].id != "SAVED") {
-                a[c].checked = false;
-            }
-        }
-    }
-    function floor_click() {
-        var a = $("div[id=pills-profile1] tr td div input");
-        for (var c = 0; c < a.length; c++) {
-            if (a[c].id != "SAVED") {
-                a[c].checked = false;
-            }
-        }
-    }
+    //function search_click() {
+    //    var a = $("div tr td div input");
+    //    for (var c = 0; c < a.length; c++) {
+    //        if (a[c].id != "SAVED") {
+    //            a[c].checked = false;
+    //        }
+    //    }
+    //}
+    //function list_click() {
+    //    var a = $("div[id=pills-contact1] tr td div input");
+    //    for (var c = 0; c < a.length; c++) {
+    //        if (a[c].id != "SAVED") {
+    //            a[c].checked = false;
+    //        }
+    //    }
+    //}
+    //function floor_click() {
+    //    var a = $("div[id=pills-profile1] tr td div input");
+    //    for (var c = 0; c < a.length; c++) {
+    //        if (a[c].id != "SAVED") {
+    //            a[c].checked = false;
+    //        }
+    //    }
+    //}
     function list_select_all() {
         var a = $("div[id=pills-profile1] tr td div input");
         for (var c = 0; c < a.length; c=c+6) {
@@ -98,7 +98,6 @@
     function list_savebutton()
     {
         var savestring = "";
-
         var mealselect = document.getElementById("select_meal_index").className
         var a = $("div[id=pills-profile1] tr td div input");
         for (var c = 0; c < a.length; c++) {
@@ -108,21 +107,46 @@
             }
         }
         $.post("/Home/saveButton_Dining", { arr: savestring, whichmeal: mealselect, }, function (data) {
+            if (data == 1)
+                alert("Saved Successfully");
+            else
+                alert("Saved failed");
 
         });
     }
 
     function open_form1() {
-        var a = document.getElementById("select_meal_index")
-        a.className="1"
+        var a = document.getElementById("select_meal_index");
+        a.className = "1";
+        
+        
     }
     function open_form2() {
-        var a = document.getElementById("select_meal_index")
-        a.className = "2"
+        var a = document.getElementById("select_meal_index");
+        a.className = "2";
+        getdata();
     }
     function open_form3() {
-        var a = document.getElementById("select_meal_index")
-        a.className = "3"
+        var a = document.getElementById("select_meal_index");
+        a.className = "3";
+    }
+
+    function getdata() {
+        var mealselect = document.getElementById("select_meal_index").className;
+        $.get("/Home/Getting_Dining", { whichmeal: mealselect }, function (data) {
+            var a = String(data).split(";");
+            for (var c = 0; c < a.length; c++) {
+                var cplus = c + 1;
+                for (var b = 0; b < a[c].split(",").length; b++) {
+                    if (a[c].split(",")[b] != "") {
+                        var d = $("input[name=" + a[c].split(",")[b] + "][value=option" +cplus+"]");
+                        d[0].checked = true;
+                        var e = $("input[name=\"" + a[c].split(",")[b] + "+\"][value=option" + cplus + "]");
+                        e[0].checked = true;
+                    }
+                }
+            }
+        });
     }
 
 
@@ -621,37 +645,37 @@
                                                                     <td>@a.FirstName @a.LastName</td>
                                                                     <td>
                                                                         <div class="form-check form-check-inline">
-                                                                            <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option1">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option1">
                                                                             <label class="form-check-label">T</label>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="form-check form-check-inline">
-                                                                            <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option2">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option2">
                                                                             <label class="form-check-label">R</label>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="form-check form-check-inline">
-                                                                            <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option3">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option3">
                                                                             <label class="form-check-label">H</label>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="form-check form-check-inline">
-                                                                            <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option4">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option4">
                                                                             <label class="form-check-label">W</label>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="form-check form-check-inline">
-                                                                            <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option5">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option5">
                                                                             <label class="form-check-label">A</label>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="form-check form-check-inline">
-                                                                            <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option6">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option6">
                                                                             <label class="form-check-label">TC</label>
                                                                         </div>
                                                                     </td>

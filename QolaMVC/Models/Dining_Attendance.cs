@@ -8,5 +8,6 @@ namespace QolaMVC.Models
     public class Dining_Attendance
     {
         public List<ResidentModel> LIST_RESIDENT;
+        
     }
 }
