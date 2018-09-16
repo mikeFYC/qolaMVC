@@ -71,9 +71,7 @@
             $('.searchBox').hide();
         }
     })
-</script>
 
-<script>
     $('.searchresidents2').keyup(function () {
         val = $(this).val();
         if (val.length > 1) {
@@ -94,9 +92,61 @@
         } else {
             $('.searchBox').hide();
         }
-
-
     })
+
+    //$('#searchresidents3').keyup(function () {
+    //    val = $(this).val();
+    //    if (val.length > 1) {
+    //        $('.searchboxresult2').empty();
+    //        $.get("/Residents/Search/", { term: val }, function (data) {
+    //            console.log(data);
+    //            for (var i = 0; i < data.length; i++) {
+    //                $('.searchboxresult2').append('<a onclick="document.getElementById(\'searchresidents3\').value=\'' + data[i][0].Value + '\'" class=\'list-group-item list-group-item-action\' id=\'' + data[i][4].Value+'\'">' +
+    //                    '<img src="/Content/assets/' + data[i][5].Value + '" class="searchimg">' +
+    //                    '<p class="ml-3">' + data[i][0].Value + '<br></p>' +
+    //                    '</a>');
+    //            }
+    //            if (data.length == 0) {
+    //                $('.searchboxresult2').append('No resident found with the specified name/room number');
+    //            }
+    //        });
+    //        $('.searchBox').show();
+    //    } else {
+    //        $('.searchBox').hide();
+    //    }
+    //})
+
+    $('#searchresidents3').keyup(function () {
+        val = $(this).val();
+        if (val.length > 1) {
+            $('.searchboxresult2').empty();
+            $.get("/Residents/Search/", { term: val }, function (data) {
+                console.log(data);
+                for (var i = 0; i < data.length; i++) {
+                    $('.searchboxresult2').append('<a onclick="click_searchresidents3(\'' + data[i][0].Value + '\',\'' + data[i][4].Value +'\')" class=\'list-group-item list-group-item-action\' id=\'' + data[i][4].Value + '\'">' +
+                        '<img src="/Content/assets/' + data[i][5].Value + '" class="searchimg">' +
+                        '<p class="ml-3">' + data[i][0].Value + '<br></p>' +
+                        '</a>');
+                }
+                if (data.length == 0) {
+                    $('.searchboxresult2').append('No resident found with the specified name/room number');
+                }
+            });
+            $('.searchBox').show();
+        } else {
+            $('.searchBox').hide();
+        }
+    })
+
+    function click_searchresidents3(aa,bb) {
+        document.getElementById("searchresidents3").value = aa;
+        document.getElementById("searchresidents3").name = bb;
+        $('#searchBoxfor3').hide();
+    }
+    function change_searchresidents3() {
+        document.getElementById("searchresidents3").name = "";
+    }
+
 </script>
 
 <script>

@@ -182,13 +182,22 @@
                     }
                 }
             }
-
-
-
-
-
-
         });
+    }
+
+    function previousday() {
+        var monthNames = [
+            "January", "February", "March",
+            "April", "May", "June", "July",
+            "August", "September", "October",
+            "November", "December"
+        ];
+
+
+        var a = document.getElementById("lblCalendarMsg").innerHTML;
+        var b = new Date(a);
+        b.setDate(b.getDate() - 1);
+        document.getElementById("lblCalendarMsg").innerHTML = monthNames[b.getMonth()] + " " + b.getDate() + ", " + b.getFullYear();
     }
 
 
@@ -232,6 +241,11 @@
                                 <li class="nav-item">
                                     <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false" onclick="month_click()">Month</a>
                                 </li>
+
+                                <li class="Prevbtn" style="margin-left:5vw;"><a href="#" onclick="previousday()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
+                                <li class="clear_bg"><label id="lblCalendarMsg" style="font-weight:bolder;font-size:1vw;margin-top:0.7vw">@DateTime.Now.ToString("MMMM dd, yyyy")</label></li>
+                                <li class="Nextbtn"><a href="#"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
+
                             </ul>
                             <div class="tab-content" id="pills-tabContent" >
                                 <div class="tab-pane fade show active" id="pills-day" role="tabpanel" aria-labelledby="pills-home-tab">
@@ -485,17 +499,23 @@
                                 <div class="row">
                                     <div class="col-md-3">
                                         <div class="form-group row">
-                                            <label class="col-md-12 col-form-label">Date:</label>
-                                            <div class="col-md-12">
-                                                <input type="text" class="form-control" id="staticEmail">
+                                            <label class="col-md-12 col-form-label" style="margin-left:10vw">Resident Name / Suite # :</label>
+                                            <div class="col-md-12" style="margin-left:10vw">
+                                                <input type="text" class="form-control" id="searchresidents3" onchange="change_searchresidents3()">
                                             </div>
                                         </div>
+
+                                        <div class="searchBox p-1" id="searchBoxfor3" style="margin-left:10vw">
+                                            <div class="list-group searchboxresult2">
+                                            </div>
+                                        </div>
+
                                     </div>
                                     <div class="col-md-7">
                                         <div class="form-group">
                                             <br><br>
                                             <div class="row">
-                                                <div class="col-md-12 pads">
+                                                <div class="col-md-12 pads" style="margin-left:10vw">
                                                     <div class="form-check form-check-inline movesp">
                                                         <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
                                                         <label class="form-check-label">Taken</label>
@@ -525,12 +545,12 @@
 
 
                                     <div class="" style="border:1px solid #000;margin-left:15vw">
-                                        <table class="attend" style="min-width:50vw" >
+                                        <table class="attend" style="min-width:50vw">
                                             <tbody id="show_list">
                                                 <tr>
                                                     <td width="33%">AAAAAA</td>
                                                     <td width="33%">TAKEN</td>
-                                                    <td width="33%"> 
+                                                    <td width="33%">
                                                         <div class="form-check form-check-inline">
                                                             <i class="fa fa-file-text-o"></i>
                                                         </div>
@@ -609,7 +629,7 @@
                                                         </tr>
 
                                                     }
-                                                }
+                                }
                                             </tbody>
                                         </table>
                                     </div>
@@ -684,18 +704,18 @@
                                     <div class="col-md-12">
                                         <h6>Resident List   <a href="#" onclick="floor_select_all()">Select All</a></h6>
                                     </div>
-                                    @{ 
-                                        int floor = 0;
-                                        foreach (var a in Model.LIST_RESIDENT)
+                                    @{
+                                    int floor = 0;
+                                    foreach (var a in Model.LIST_RESIDENT)
+                                    {
+                                        if (a.No_of_floor > floor)
                                         {
-                                            if (a.No_of_floor > floor)
-                                            {
-                                                floor = a.No_of_floor;
-                                            }
+                                            floor = a.No_of_floor;
                                         }
+                                    }
 
-                                        for (int b = 1; b <= floor; b++)
-                                        {
+                                    for (int b = 1; b <= floor; b++)
+                                    {
                                             <div class="col-md-6" style="border:1px solid #000;">
                                                 <table class="attend">
                                                     <tbody>
@@ -703,9 +723,9 @@
                                                             <th colspan="7" height=50vw>@b st Floor</th>
                                                         </tr>
                                                         @foreach (var a in Model.LIST_RESIDENT)
-                                                        {
-                                                            if (a.No_of_floor == b)
-                                                            {
+                                {
+                                    if (a.No_of_floor == b)
+                                    {
                                                                 <tr>
                                                                     <td>@a.FirstName @a.LastName</td>
                                                                     <td>
