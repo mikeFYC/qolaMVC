@@ -1147,5 +1147,27 @@ namespace QolaMVC.DAL
                 }
             return LIST_VIEW;
         }
+
+        public static string[] get_gender_info(int homeid, DateTime todaydate)
+        {
+            using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
+            using (var cmdGARead = new SqlCommand("Get_Gender_Information", conn)
+            {
+                CommandType = CommandType.StoredProcedure
+            })
+            {
+                conn.Open();
+                cmdGARead.Parameters.AddWithValue("@homeID", homeid);
+                cmdGARead.Parameters.AddWithValue("@changingdate", todaydate);
+                cmdGARead.Parameters.Add("@returnstring", SqlDbType.VarChar, 100000);
+                cmdGARead.Parameters["@returnstring"].Direction = ParameterDirection.Output;
+                cmdGARead.ExecuteNonQuery();
+                string retunvalue = cmdGARead.Parameters["@returnstring"].Value.ToString();
+                string[] returnstring = retunvalue.Split(',');
+
+
+                return returnstring;
+            }
+        }
     }
 }

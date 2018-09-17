@@ -144,24 +144,39 @@ namespace QolaMVC.Controllers
             ViewBag.User = user;
             ViewBag.Home = home;
             Dining_Attendance LIST_VIEW_RESIDENT = new Dining_Attendance();
+
             if (datesel == "" || datesel == null)
             {
                 TempData["datechoose"] = DateTime.Now.ToString("MMMM dd, yyyy");
                 LIST_VIEW_RESIDENT = HomeDAL.get_list_resident(home.Id, DateTime.Today);
+                string[] genderinfo = HomeDAL.get_gender_info(home.Id, DateTime.Today);
+                TempData["Brekfast_F_No"] = genderinfo[0];
+                TempData["Brekfast_M_No"] = genderinfo[1];
+                TempData["Lunch_F_No"] = genderinfo[2];
+                TempData["Lunch_M_No"] = genderinfo[3];
+                TempData["Dinner_F_No"] = genderinfo[4];
+                TempData["Dinner_M_No"] = genderinfo[5];
             }
             else
             {
                 TempData["datechoose"] = datesel;
-                LIST_VIEW_RESIDENT = HomeDAL.get_list_resident(home.Id, DateTime.Parse("September 10, 2014"));
+                LIST_VIEW_RESIDENT = HomeDAL.get_list_resident(home.Id, DateTime.Parse(datesel));
+                string[] genderinfo = HomeDAL.get_gender_info(home.Id, DateTime.Parse(datesel));
+                TempData["Brekfast_F_No"] = genderinfo[0];
+                TempData["Brekfast_M_No"] = genderinfo[1];
+                TempData["Lunch_F_No"] = genderinfo[2];
+                TempData["Lunch_M_No"] = genderinfo[3];
+                TempData["Dinner_F_No"] = genderinfo[4];
+                TempData["Dinner_M_No"] = genderinfo[5];
             }
             TempData["LIST_VIEW_RESIDENT"] = LIST_VIEW_RESIDENT;
             TempData.Keep("LIST_VIEW_RESIDENT");
             ViewBag.LIST_VIEW_RESIDENT = LIST_VIEW_RESIDENT;
-
             DateTime lastSunday = DateTime.Now;
             while (lastSunday.DayOfWeek != DayOfWeek.Sunday)
                 lastSunday = lastSunday.AddDays(-1);
             TempData["Sunday"] = lastSunday;
+
             return View(LIST_VIEW_RESIDENT);
         }
 
