@@ -58,7 +58,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static StringBuilder getting_LIST( int whichmeal, DateTime change_date)
+        public static StringBuilder getting_LIST( int whichmeal, DateTime change_date, int homeid)
         {
             //Dictionary<string, string> dic = new Dictionary<string, string>();
             StringBuilder stringlist = new StringBuilder();
@@ -66,9 +66,10 @@ namespace QolaMVC.DAL
             conn.ConnectionString = Constants.ConnectionString.PROD;
             conn.Open();
             SqlCommand cmd = new SqlCommand();
-            cmd.CommandText = " SELECT * from [dbo].[tbl_AB_Dine_Attendance] where fd_dine_time_id=@mealindex and fd_date=@datechanging";
+            cmd.CommandText = " SELECT * from [dbo].[tbl_AB_Dine_Attendance] where fd_dine_time_id=@mealindex and fd_date=@datechanging and fd_home_id=@homeid";
             cmd.Parameters.AddWithValue("@mealindex", whichmeal);
             cmd.Parameters.AddWithValue("@datechanging", change_date);
+            cmd.Parameters.AddWithValue("@homeid", homeid);
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
             if (rd.HasRows)

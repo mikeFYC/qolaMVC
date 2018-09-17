@@ -132,7 +132,7 @@ namespace QolaMVC.Controllers
             return View();
         }
 
-        public ActionResult DiningAttendance()
+        public ActionResult DiningAttendance(string datesel)
         {
             var user = (UserModel)TempData["User"];
             var home = (HomeModel)TempData["Home"];
@@ -143,21 +143,29 @@ namespace QolaMVC.Controllers
             TempData.Keep("Resident");
             ViewBag.User = user;
             ViewBag.Home = home;
-
-            var LIST_VIEW_RESIDENT=HomeDAL.get_list_resident(home.Id, DateTime.Now);
+            Dining_Attendance LIST_VIEW_RESIDENT = new Dining_Attendance();
+            if (datesel == "" || datesel == null)
+            {
+                TempData["datechoose"] = DateTime.Now.ToString("MMMM dd, yyyy");
+                LIST_VIEW_RESIDENT = HomeDAL.get_list_resident(home.Id, DateTime.Today);
+            }
+            else
+            {
+                TempData["datechoose"] = datesel;
+                LIST_VIEW_RESIDENT = HomeDAL.get_list_resident(home.Id, DateTime.Parse("September 10, 2014"));
+            }
             TempData["LIST_VIEW_RESIDENT"] = LIST_VIEW_RESIDENT;
             TempData.Keep("LIST_VIEW_RESIDENT");
             ViewBag.LIST_VIEW_RESIDENT = LIST_VIEW_RESIDENT;
-
-
 
             DateTime lastSunday = DateTime.Now;
             while (lastSunday.DayOfWeek != DayOfWeek.Sunday)
                 lastSunday = lastSunday.AddDays(-1);
             TempData["Sunday"] = lastSunday;
-
             return View(LIST_VIEW_RESIDENT);
         }
+
+
         #region ajax requests
         [HttpPost]
         public JsonResult getEvents(FormCollection form)
@@ -1598,7 +1606,7 @@ namespace QolaMVC.Controllers
 
 
         [HttpPost]
-        public int saveButton_Dining(string arr, int whichmeal)
+        public int saveButton_Dining(string arr, int whichmeal, string datesel)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -1615,33 +1623,33 @@ namespace QolaMVC.Controllers
                 else
                     Save_summary[Save_sum_array[a + 1]] += ","+Save_sum_array[a];
             }
-            Dining_Attendance_functions.save_Button(home.Id, whichmeal, DateTime.Parse("2018-09-14 00:00:00.000"), Save_summary, user.ID,DateTime.Now);
+            Dining_Attendance_functions.save_Button(home.Id, whichmeal, DateTime.Parse(datesel), Save_summary, user.ID,DateTime.Now);
 
             return 1;
             
         }
 
         [HttpGet]
-        public StringBuilder Getting_Dining(int whichmeal)
+        public StringBuilder Getting_Dining(int whichmeal, string datesel)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
             TempData.Keep("User");
             TempData.Keep("Home");
 
-            StringBuilder returnstring=Dining_Attendance_functions.getting_LIST(whichmeal, DateTime.Parse("2018-09-14 00:00:00.000"));
+            StringBuilder returnstring=Dining_Attendance_functions.getting_LIST(whichmeal, DateTime.Parse(datesel),home.Id);
             return returnstring;
 
         }
 
         [HttpGet]
-        public StringBuilder View_List(int whichmeal)
+        public StringBuilder View_List(int whichmeal, string datesel)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
             TempData.Keep("User");
             TempData.Keep("Home");
-            StringBuilder returnstring = Dining_Attendance_functions.getting_LIST(whichmeal, DateTime.Parse("2018-09-14 00:00:00.000"));
+            StringBuilder returnstring = Dining_Attendance_functions.getting_LIST(whichmeal, DateTime.Parse(datesel),home.Id);
             string[] viewlist = returnstring.ToString().Split(';');
             for (var c = 0; c < viewlist.Length; c++)
             {

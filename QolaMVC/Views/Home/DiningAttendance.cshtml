@@ -97,21 +97,44 @@
     }
     function list_savebutton()
     {
+
         var savestring = "";
-        var mealselect = document.getElementById("select_meal_index").className
+        var mealselect = document.getElementById("select_meal_index").className;
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+
         var a = $("div[id=pills-profile1] tr td div input");
         for (var c = 0; c < a.length; c++) {
             if (a[c].checked == true) {
                 savestring = savestring + a[c].name + "," + a[c].value + ",";
-
             }
         }
-        $.post("/Home/saveButton_Dining", { arr: savestring, whichmeal: mealselect, }, function (data) {
+        $.post("/Home/saveButton_Dining", { arr: savestring, whichmeal: mealselect, datesel: dateselect}, function (data) {
             if (data == 1)
                 alert("Saved Successfully");
             else
                 alert("Saved failed");
+        });
+    }
+    function floor_savebutton() {
+        var savestring = "";
+        var mealselect = document.getElementById("select_meal_index").className;
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
 
+        var a = $("div[id=pills-contact1] tr td div input");
+        for (var c = 0; c < a.length; c++) {
+            if (a[c].checked == true) {
+                var g = String(a[c].name);
+                var nameg = g.substring(0, g.length - 1);
+                savestring = savestring + nameg + "," + a[c].value + ",";
+                
+
+            }
+        }
+        $.post("/Home/saveButton_Dining", { arr: savestring, whichmeal: mealselect, datesel: dateselect }, function (data) {
+            if (data == 1)
+                alert("Saved Successfully");
+            else
+                alert("Saved failed");
         });
     }
 
@@ -119,9 +142,15 @@
         var node_tbody = document.getElementById("show_list")
         while (node_tbody.hasChildNodes())
             node_tbody.removeChild(node_tbody.lastChild);
-
+        var aa = $("div tr td div input");
+        for (var cc = 0; cc < aa.length; cc++) {
+            if (aa[cc].checked == true) {
+                aa[cc].checked = false;
+            }
+        }
         var a = document.getElementById("select_meal_index");
         a.className = "1";
+        getdata();
         
         
     }
@@ -129,7 +158,12 @@
         var node_tbody = document.getElementById("show_list")
         while (node_tbody.hasChildNodes())
             node_tbody.removeChild(node_tbody.lastChild);
-
+        var aa = $("div tr td div input");
+        for (var cc = 0; cc < aa.length; cc++) {
+            if (aa[cc].checked == true) {
+                aa[cc].checked = false;
+            }
+        }
         var a = document.getElementById("select_meal_index");
         a.className = "2";
         getdata();
@@ -138,14 +172,21 @@
         var node_tbody = document.getElementById("show_list")
         while (node_tbody.hasChildNodes())
             node_tbody.removeChild(node_tbody.lastChild);
-
+        var aa = $("div tr td div input");
+        for (var cc = 0; cc < aa.length; cc++) {
+            if (aa[cc].checked == true) {
+                aa[cc].checked = false;
+            }
+        }
         var a = document.getElementById("select_meal_index");
         a.className = "3";
+        getdata();
     }
 
     function getdata() {
         var mealselect = document.getElementById("select_meal_index").className;
-        $.get("/Home/Getting_Dining", { whichmeal: mealselect }, function (data) {
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+        $.get("/Home/Getting_Dining", { whichmeal: mealselect, datesel: dateselect }, function (data) {
             var a = String(data).split(";");
             for (var c = 0; c < a.length; c++) {
                 var cplus = c + 1;
@@ -159,7 +200,7 @@
                 }
             }
         });
-        $.get("/Home/View_List", { whichmeal: mealselect }, function (data) {
+        $.get("/Home/View_List", { whichmeal: mealselect, datesel: dateselect }, function (data) {
             var a = String(data).split(";");
             var view = $("#show_list");
             for (var c = 0; c < a.length; c++) {
@@ -192,12 +233,42 @@
             "August", "September", "October",
             "November", "December"
         ];
-
-
         var a = document.getElementById("lblCalendarMsg").innerHTML;
         var b = new Date(a);
         b.setDate(b.getDate() - 1);
         document.getElementById("lblCalendarMsg").innerHTML = monthNames[b.getMonth()] + " " + b.getDate() + ", " + b.getFullYear();
+
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+        if (window.location.href.toString().includes("datesel")) {
+            var indexequal = window.location.href.toString().indexOf("=");
+            var newstring = window.location.href.toString().substring(0, indexequal+1);
+            window.location.href = newstring + dateselect;
+        }
+        else
+            window.location.href = window.location.href + "?datesel=" + dateselect;
+
+    }
+
+    function nextday() {
+        var monthNames = [
+            "January", "February", "March",
+            "April", "May", "June", "July",
+            "August", "September", "October",
+            "November", "December"
+        ];
+        var a = document.getElementById("lblCalendarMsg").innerHTML;
+        var b = new Date(a);
+        b.setDate(b.getDate() + 1);
+        document.getElementById("lblCalendarMsg").innerHTML = monthNames[b.getMonth()] + " " + b.getDate() + ", " + b.getFullYear();
+
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+        if (window.location.href.toString().includes("datesel")) {
+            var indexequal = window.location.href.toString().indexOf("=");
+            var newstring = window.location.href.toString().substring(0, indexequal + 1);
+            window.location.href = newstring + dateselect;
+        }
+        else
+            window.location.href = window.location.href + "?datesel=" + dateselect;
     }
 
 
@@ -243,8 +314,8 @@
                                 </li>
 
                                 <li class="Prevbtn" style="margin-left:5vw;"><a href="#" onclick="previousday()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
-                                <li class="clear_bg"><label id="lblCalendarMsg" style="font-weight:bolder;font-size:1vw;margin-top:0.7vw">@DateTime.Now.ToString("MMMM dd, yyyy")</label></li>
-                                <li class="Nextbtn"><a href="#"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
+                                <li class="clear_bg"><label id="lblCalendarMsg" style="font-weight:bolder;font-size:1vw;margin-top:0.7vw">@TempData["datechoose"].ToString()</label></li>
+                                <li class="Nextbtn"><a href="#" onclick="nextday()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
 
                             </ul>
                             <div class="tab-content" id="pills-tabContent" >
@@ -831,7 +902,7 @@
 
                                         <div class="col-md-12 text-center">
                                             <br><br><br><br><br><br>
-                                            <button type="button" class="btn btn-primary" data-dismiss="modal">SAVE</button>
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="floor_savebutton()">SAVE</button>
                                             <button type="button" class="btn btn-secondary">CLEAR</button>
                                         </div>
                                     </div>
