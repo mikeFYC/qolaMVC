@@ -1658,7 +1658,7 @@ namespace QolaMVC.Controllers
         }
 
         [HttpGet]
-        public StringBuilder View_List(int whichmeal, string datesel)
+        public ActionResult View_List(int whichmeal, string datesel)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -1666,6 +1666,9 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             StringBuilder returnstring = Dining_Attendance_functions.getting_LIST(whichmeal, DateTime.Parse(datesel),home.Id);
             string[] viewlist = returnstring.ToString().Split(';');
+
+            List<dynamic> l_Json = new List<dynamic>();
+
             for (var c = 0; c < viewlist.Length; c++)
             {
                 var cplus = c + 1;
@@ -1673,13 +1676,34 @@ namespace QolaMVC.Controllers
                 {
                     if (viewlist[c].Split(',')[b] != "")
                     {
+                        dynamic l_J = new System.Dynamic.ExpandoObject();
                         var resident = ResidentsDAL.GetResidentById(int.Parse(viewlist[c].Split(',')[b]));
-                        returnstring.Replace(viewlist[c].Split(',')[b], resident.FirstName + resident.LastName);
+
+                        l_J.Name = resident.FirstName + resident.LastName;
+                        l_J.residentid = viewlist[c].Split(',')[b];
+                        l_J.gender = resident.Gendar;
+                        if (c == 0)
+                            l_J.action = "Taken";
+                        else if (c == 1)
+                            l_J.action = "Refused";
+                        else if (c == 2)
+                            l_J.action = "Hospital";
+                        else if (c == 3)
+                            l_J.action = "Waiver";
+                        else if (c == 4)
+                            l_J.action = "Away";
+                        else if (c == 5)
+                            l_J.action = "Tray Complimentary";
+
+                        l_Json.Add(l_J);
+
+                        //returnstring.Replace(viewlist[c].Split(',')[b], resident.FirstName + resident.LastName);
                     }
                 }
             }
-                    
-            return returnstring;
+
+            //return returnstring;
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
 
         }
 
