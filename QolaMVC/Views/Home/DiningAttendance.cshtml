@@ -240,9 +240,13 @@
         }  
     }
 
-    function View_List_save() {
+    //function deleteSelectedRows(this) {
 
-    }
+    //}
+
+    //function View_List_save() {
+
+    //}
 
     function previousday() {
         var monthNames = [
@@ -656,6 +660,12 @@
                                     <div class="col-md-12">
                                         <h6>Resident List   <a href="#" onclick="list_select_all()">Select All</a></h6>
                                     </div>
+                                    <div class="col-md-12 text-center">
+                                        <br>
+                                        <button type="button" class="btn btn-primary" style="margin-bottom:1vw" data-dismiss="modal" onclick="list_savebutton()">SAVE</button>
+                                        <button type="button" class="btn btn-secondary" style="margin-bottom:1vw">CLEAR</button>
+                                    </div>
+                                    <br>
                                     <div class="col-md-6" style="border: 1px solid #000;">
                                         <table class="attend">
                                             <tbody>
@@ -784,18 +794,23 @@
                                     <div class="col-md-12">
                                         <h6>Resident List   <a href="#" onclick="floor_select_all()">Select All</a></h6>
                                     </div>
+                                    <div class="col-md-12 text-center">
+                                        <br>
+                                        <button type="button" class="btn btn-primary" style="margin-bottom:1vw" data-dismiss="modal" onclick="floor_savebutton()">SAVE</button>
+                                        <button type="button" class="btn btn-secondary" style="margin-bottom:1vw">CLEAR</button>
+                                    </div>
                                     @{
-                                    int floor = 0;
-                                    foreach (var a in Model.LIST_RESIDENT)
-                                    {
-                                        if (a.No_of_floor > floor)
+                                        int floor = 0;
+                                        foreach (var a in Model.LIST_RESIDENT)
                                         {
-                                            floor = a.No_of_floor;
+                                            if (a.No_of_floor > floor)
+                                            {
+                                                floor = a.No_of_floor;
+                                            }
                                         }
-                                    }
 
-                                    for (int b = 1; b <= floor; b++)
-                                    {
+                                        for (int b = 1; b <= floor; b++)
+                                        {
                                             <div class="col-md-6" style="border:1px solid #000;">
                                                 <table class="attend">
                                                     <tbody>
@@ -803,9 +818,9 @@
                                                             <th colspan="7" height=50vw>@b st Floor</th>
                                                         </tr>
                                                         @foreach (var a in Model.LIST_RESIDENT)
-                                {
-                                    if (a.No_of_floor == b)
-                                    {
+                                                        {
+                                                            if (a.No_of_floor == b)
+                                                            {
                                                                 <tr>
                                                                     <td>@a.FirstName @a.LastName</td>
                                                                     <td>
@@ -855,16 +870,16 @@
                                                     </tbody>
                                                 </table>
                                             </div>
-                                            }
                                         }
+                                    }
 
 
-                                        <div class="col-md-12 text-center">
-                                            <br><br><br><br><br><br>
-                                            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="floor_savebutton()">SAVE</button>
-                                            <button type="button" class="btn btn-secondary">CLEAR</button>
-                                        </div>
+                                    <div class="col-md-12 text-center">
+                                        <br><br><br><br><br><br>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="floor_savebutton()">SAVE</button>
+                                        <button type="button" class="btn btn-secondary">CLEAR</button>
                                     </div>
+                                </div>
                                 </div>
                             </div>
 

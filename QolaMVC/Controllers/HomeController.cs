@@ -1623,24 +1623,29 @@ namespace QolaMVC.Controllers
         [HttpPost]
         public int saveButton_Dining(string arr, int whichmeal, string datesel)
         {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            Dictionary<string, string> Save_summary = new Dictionary<string, string>();
-            string[] Save_sum_array = arr.Substring(0, arr.Length - 1).Split(',');
-            for(int a=0;a< Save_sum_array.Length; a = a + 2)
+            if (arr.Length != 0)
             {
-                if (Save_summary.ContainsKey(Save_sum_array[a + 1]) == false)
+                var home = (HomeModel)TempData["Home"];
+                var user = (UserModel)TempData["User"];
+                TempData.Keep("User");
+                TempData.Keep("Home");
+                Dictionary<string, string> Save_summary = new Dictionary<string, string>();
+                string[] Save_sum_array = arr.Substring(0, arr.Length - 1).Split(',');
+                for (int a = 0; a < Save_sum_array.Length; a = a + 2)
                 {
-                    Save_summary.Add(Save_sum_array[a + 1], Save_sum_array[a]);
+                    if (Save_summary.ContainsKey(Save_sum_array[a + 1]) == false)
+                    {
+                        Save_summary.Add(Save_sum_array[a + 1], Save_sum_array[a]);
+                    }
+                    else
+                        Save_summary[Save_sum_array[a + 1]] += "," + Save_sum_array[a];
                 }
-                else
-                    Save_summary[Save_sum_array[a + 1]] += ","+Save_sum_array[a];
-            }
-            Dining_Attendance_functions.save_Button(home.Id, whichmeal, DateTime.Parse(datesel), Save_summary, user.ID,DateTime.Now);
+                Dining_Attendance_functions.save_Button(home.Id, whichmeal, DateTime.Parse(datesel), Save_summary, user.ID, DateTime.Now);
 
-            return 1;
+                return 1;
+            }
+            else
+                return 0;
             
         }
 
