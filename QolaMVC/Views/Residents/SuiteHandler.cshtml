@@ -21,13 +21,33 @@
 </style>
 <script>
 
-    function Hospitalization_button_click() {
-        if (document.getElementById("Hospitalization").className == "nav-link") {
-            var nodes = document.getElementsByClassName("nav-link active");
-            for (var a = nodes.length - 1; a >= 0; a--) {
-                nodes[a].className = "nav-link";
-            }
+    function option_button_click_hos(click_id) {
+
+        var inputs = $("input[type=date]").each(function () {
+            $(this).val("");
+        });
+        var selects = $("select").each(function () {
+            $(this).val("");
+        });
+        var textareas = $("textarea").each(function () {
+            $(this).val("");
+        });
+        var nodes = document.getElementsByClassName("nav-link active");
+        for (var a = nodes.length - 1; a >= 0; a--) {
+            nodes[a].className = "nav-link";
         }
+        var nodes2 = document.getElementsByClassName("tab-pane fade show active");
+        for (var a = nodes2.length - 1; a >= 0; a--) {
+            nodes2[a].className = "tab-pane fade";
+        }
+        document.getElementById("pills-" + click_id).className = "tab-pane fade show active";
+
+        $.get("/Residents/get_Leaving_date", {}, function (data) {
+            if (data != "") {
+                var a = $('#leavingDate_Hospitalization');
+                a[0].value = data;
+            }
+        });
     }
 
     function moveoutbuttonclick() {
@@ -239,7 +259,7 @@
 
                                     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                         <li class="nav-item">
-                                            <a class="nav-link" id="Hospitalization" data-toggle="pill" href="#pills-home2" role="tab" aria-controls="pills-home" aria-selected="true" onclick="option_button_click(this.id)">Hospitalization</a>
+                                            <a class="nav-link" id="Hospitalization" data-toggle="pill" href="#pills-home2" role="tab" aria-controls="pills-home" aria-selected="true" onclick="option_button_click_hos(this.id)">Hospitalization</a>
                                         </li>
                                     </ul>
 

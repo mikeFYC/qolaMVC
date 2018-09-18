@@ -166,7 +166,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static int Hospitalization(int userid, int homeid, int redidentid, string suiteno, int occupancy, DateTime leaving, DateTime ExpectedReturn, DateTime ActualReturn, string notes, DateTime modify_on, string reason)
+        public static int Hospitalization(int userid, int homeid, int redidentid, string suiteno, int occupancy, string leaving, string ExpectedReturn, string ActualReturn, string notes, DateTime modify_on, string reason)
         {
             using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
             using (var cmdGARead = new SqlCommand("Suite_Handler_Hospitalization", conn)
@@ -286,6 +286,27 @@ namespace QolaMVC.DAL
             table.Append("</tbody>");
             table.Append("</table>");
             return table;
+        }
+
+        public static string get_Leaving_date(int residentID)
+        {
+            string retu="";
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = "select top(1)[fd_hospital_leaving] from [tbl_Suite_Handler] where [fd_hospital]='Y' and fd_resident_id="+ residentID + " order by fd_modified_on DESC";
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            if (rd.HasRows)
+                while (rd.Read())
+                {
+                    if (rd[0] == null || rd[0].ToString() == "")
+                        retu = "";
+                    else
+                        retu = rd[0].ToString();
+                }
+            return retu;
         }
     }
 }

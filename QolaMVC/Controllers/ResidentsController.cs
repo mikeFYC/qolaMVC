@@ -275,7 +275,7 @@ namespace QolaMVC.Controllers
         }
 
         [HttpPost]
-        public int saveButton_Hospitalization(DateTime leaving, DateTime ExpectedReturn, DateTime ActualReturn, string notes, string reason, string suiteno)
+        public int saveButton_Hospitalization(string leaving, string ExpectedReturn, string ActualReturn, string notes, string reason, string suiteno)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -283,11 +283,14 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            if ((update_Suite_Handler_Table.check_date_validation(leaving) == false || update_Suite_Handler_Table.check_date_validation(ExpectedReturn) == false || update_Suite_Handler_Table.check_date_validation(ActualReturn) == false) && user.ID != 1338 && user.ID != 1346)
+             
+            
+            if ((update_Suite_Handler_Table.check_date_validation(DateTime.Parse(leaving)) == false) && user.ID != 1338 && user.ID != 1346)
             {
                 return 3;
             }
-            else if (leaving < resident.MoveInDate || ExpectedReturn < leaving || ActualReturn < leaving    )
+            
+            else if (DateTime.Parse(leaving) < resident.MoveInDate)
             {
                 return 4;
             }
@@ -309,6 +312,19 @@ namespace QolaMVC.Controllers
             TempData.Keep("Resident");
             int returnint=update_Suite_Handler_Table.undo_function_for_SQL(resident.ID, reason);
             return returnint;
+        }
+
+        [HttpGet]
+        public string get_Leaving_date()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            string returnleaving = update_Suite_Handler_Table.get_Leaving_date(resident.ID);
+            return returnleaving;
         }
 
 

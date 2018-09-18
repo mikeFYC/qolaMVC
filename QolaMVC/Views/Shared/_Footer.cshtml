@@ -384,16 +384,16 @@
         var group = $("a[class='nav-link active']")
         var id = group[0].id;
         var move_out_reason = group[0].innerHTML;
-        var a = $('#leavingDate_' + id).val();
-        var b = $('#ExpectedReturnDate_' + id).val();
-        var c = $('#ActualReturnDate_' + id).val();
+        var a = $('#leavingDate_' + id).val().toString();
+        var b = $('#ExpectedReturnDate_' + id).val().toString();
+        var c = $('#ActualReturnDate_' + id).val().toString();
         var d = $('#notes_' + id).val();
         var tbodys = document.getElementsByTagName("tbody");
         var trs = tbodys[0].getElementsByTagName("tr");
         var tds = trs[trs.length - 1].getElementsByTagName("td");
         var suitenos = tds[1].innerHTML;
-        if (a == "" || b == "" || c == "") {
-            alert("Date cannot be empty");
+        if (a == "") {
+            alert("Leaving Date cannot be empty");
         }
         else {
             $.post("/Residents/saveButton_Hospitalization", { leaving: a, ExpectedReturn: b, ActualReturn: c, notes: d, reason: move_out_reason, suiteno: suitenos }, function (data) {
