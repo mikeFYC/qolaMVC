@@ -1414,5 +1414,222 @@ namespace QolaMVC.DAL
             return l_Assessments;
         }
 
+        public static Collection<FallRiskAssessmentModel> GetFallRiskAssessment(int p_ResidentId)
+        {
+            string exception = string.Empty;
+
+            Collection<FallRiskAssessmentModel> l_Assessments = new Collection<FallRiskAssessmentModel>();
+            FallRiskAssessmentModel l_Assessment;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_Fall_RiskAssessment", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@ResidentId", p_ResidentId);
+                DataSet AssesmentsReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(AssesmentsReceive);
+                if (AssesmentsReceive.Tables[0].Rows.Count > 0)
+                {
+                    for (int index = 0; index <= AssesmentsReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_Assessment = new FallRiskAssessmentModel();
+                        l_Assessment.Id = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["Id"]);
+                        l_Assessment.ResidentId = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_Assessment.FallHistory_IsTwoOrMore = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["FallHistory_IsTwoOrMore"]);
+                        l_Assessment.FallHistory_IsOneOrTwo = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["FallHistory_IsOneOrTwo"]);
+                        l_Assessment.Neurological_IsCVA = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Neurological_IsCVA"]);
+                        l_Assessment.Neurological_IsParkinsons = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Neurological_IsParkinsons"]);
+                        l_Assessment.Neurological_IsAlzheimers = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Neurological_IsAlzheimers"]);
+                        l_Assessment.Neurological_IsSeizureDisorder = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Neurological_IsSeizureDisorder"]);
+                        l_Assessment.Neurological_IsOther = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Neurological_IsOther"]);
+                        l_Assessment.Other_IsDiabetes = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Other_IsDiabetes"]);
+                        l_Assessment.Other_IsOsteoporosis = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Other_IsOsteoporosis"]);
+                        l_Assessment.Other_IsPosturalHypotension = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Other_IsPosturalHypotension"]);
+                        l_Assessment.Other_IsSyncope = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Other_IsSyncope"]);
+                        l_Assessment.Incontinence_IsBowel = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Incontinence_IsBowel"]);
+                        l_Assessment.Incontinence_IsBladder = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Incontinence_IsBladder"]);
+                        l_Assessment.Incontinence_IsTransfer = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Incontinence_IsTransfer"]);
+                        l_Assessment.Incontinence_IsUnsteady = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Incontinence_IsUnsteady"]);
+                        l_Assessment.Medication_IsCardiac = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Medication_IsCardiac"]);
+                        l_Assessment.Medication_IsDiuretics = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Medication_IsDiuretics"]);
+                        l_Assessment.Medication_IsNarcotics = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Medication_IsNarcotics"]);
+                        l_Assessment.Medication_IsAnalgesics = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Medication_IsAnalgesics"]);
+                        l_Assessment.Medication_IsSedatives = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Medication_IsSedatives"]);
+                        l_Assessment.Medication_IsAntiAnxiety = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Medication_IsAntiAnxiety"]);
+                        l_Assessment.Medication_IsLaxatives = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Medication_IsLaxatives"]);
+                        l_Assessment.MentalStatus_IsConfused = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["MentalStatus_IsConfused"]);
+                        l_Assessment.MentalStatus_IsResidentNonCompliance = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["MentalStatus_IsResidentNonCompliance"]);
+                        l_Assessment.Orthopedic_IsRecent = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Orthopedic_IsRecent"]);
+                        l_Assessment.Orthopedic_IsCast = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Orthopedic_IsCast"]);
+                        l_Assessment.Orthopedic_IsAmputation = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Orthopedic_IsAmputation"]);
+                        l_Assessment.Orthopedic_IsSevere = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Orthopedic_IsSevere"]);
+                        l_Assessment.Sensory_IsDecreasedVision = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Sensory_IsDecreasedVision"]);
+                        l_Assessment.Sensory_IsDecreasedHearing = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Sensory_IsDecreasedHearing"]);
+                        l_Assessment.Sensory_IsAphasia = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Sensory_IsAphasia"]);
+                        l_Assessment.Assistive_IsWheelChair = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Assistive_IsWheelChair"]);
+                        l_Assessment.Assistive_IsWalker = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Assistive_IsWalker"]);
+                        l_Assessment.Assistive_IsCane = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Assistive_IsCane"]);
+
+                        l_Assessment.TotalScore = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["TotalScore"]);
+                        l_Assessment.RiskLevel = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["RiskLevel"]);
+                        l_Assessment.ResidentId = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_Assessment.DateEntered = Convert.ToDateTime(AssesmentsReceive.Tables[0].Rows[index]["DateEntered"]);
+                        l_Assessment.EnteredBy = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["EnteredBy"]);
+                        l_Assessments.Add(l_Assessment);
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                exception = "GetFallRiskAssessment |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            return l_Assessments;
+        }
+
+        public static void AddFallRiskAssessment(FallRiskAssessmentModel p_Model)
+        {
+            string exception = string.Empty;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Add_Fall_RiskAssessment", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@ResidentId", p_Model.ResidentId);
+                l_Cmd.Parameters.AddWithValue("@FallHistory_IsTwoOrMore", p_Model.FallHistory_IsTwoOrMore);
+//                @ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ bit,
+//@ int,
+//@ nvarchar(10),
+//@ int,
+//@ datetime,
+//@ int
+                l_Cmd.Parameters.AddWithValue("@FallHistory_IsOneOrTwo", p_Model.FallHistory_IsOneOrTwo);
+                l_Cmd.Parameters.AddWithValue("@Neurological_IsCVA", p_Model.Neurological_IsCVA);
+                l_Cmd.Parameters.AddWithValue("@Neurological_IsParkinsons", p_Model.Neurological_IsParkinsons);
+                l_Cmd.Parameters.AddWithValue("@Neurological_IsAlzheimers", p_Model.Neurological_IsAlzheimers);
+                l_Cmd.Parameters.AddWithValue("@Neurological_IsSeizureDisorder", p_Model.Neurological_IsSeizureDisorder);
+                l_Cmd.Parameters.AddWithValue("@Neurological_IsOther", p_Model.Neurological_IsOther);
+                l_Cmd.Parameters.AddWithValue("@Other_IsDiabetes", p_Model.Other_IsDiabetes);
+                l_Cmd.Parameters.AddWithValue("@Other_IsOsteoporosis", p_Model.Other_IsOsteoporosis);
+                l_Cmd.Parameters.AddWithValue("@Other_IsPosturalHypotension", p_Model.Other_IsPosturalHypotension);
+                l_Cmd.Parameters.AddWithValue("@Other_IsSyncope", p_Model.Other_IsSyncope);
+                l_Cmd.Parameters.AddWithValue("@Incontinence_IsBowel", p_Model.Incontinence_IsBowel);
+                l_Cmd.Parameters.AddWithValue("@Incontinence_IsBladder", p_Model.Incontinence_IsBladder);
+                l_Cmd.Parameters.AddWithValue("@Incontinence_IsTransfer", p_Model.Incontinence_IsTransfer);
+                l_Cmd.Parameters.AddWithValue("@Incontinence_IsUnsteady", p_Model.Incontinence_IsUnsteady);
+                l_Cmd.Parameters.AddWithValue("@Medication_IsCardiac", p_Model.Medication_IsCardiac);
+                l_Cmd.Parameters.AddWithValue("@Medication_IsDiuretics", p_Model.Medication_IsDiuretics);
+                l_Cmd.Parameters.AddWithValue("@Medication_IsNarcotics", p_Model.Medication_IsNarcotics);
+                l_Cmd.Parameters.AddWithValue("@Medication_IsAnalgesics", p_Model.Medication_IsAnalgesics);
+                l_Cmd.Parameters.AddWithValue("@Medication_IsSedatives", p_Model.Medication_IsSedatives);
+                l_Cmd.Parameters.AddWithValue("@Medication_IsAntiAnxiety", p_Model.Medication_IsAntiAnxiety);
+                l_Cmd.Parameters.AddWithValue("@Medication_IsLaxatives", p_Model.Medication_IsLaxatives);
+                l_Cmd.Parameters.AddWithValue("@MentalStatus_IsConfused", p_Model.MentalStatus_IsConfused);
+                l_Cmd.Parameters.AddWithValue("@MentalStatus_IsResidentNonCompliance", p_Model.MentalStatus_IsResidentNonCompliance);
+                l_Cmd.Parameters.AddWithValue("@Orthopedic_IsRecent", p_Model.Orthopedic_IsRecent);
+                l_Cmd.Parameters.AddWithValue("@Orthopedic_IsCast", p_Model.Orthopedic_IsCast);
+                l_Cmd.Parameters.AddWithValue("@Orthopedic_IsAmputation", p_Model.Orthopedic_IsAmputation);
+                l_Cmd.Parameters.AddWithValue("@Orthopedic_IsSevere", p_Model.Orthopedic_IsSevere);
+                l_Cmd.Parameters.AddWithValue("@Sensory_IsDecreasedVision", p_Model.Sensory_IsDecreasedVision);
+                l_Cmd.Parameters.AddWithValue("@Sensory_IsDecreasedHearing", p_Model.Sensory_IsDecreasedHearing);
+                l_Cmd.Parameters.AddWithValue("@Sensory_IsAphasia", p_Model.Sensory_IsAphasia);
+
+                l_Cmd.Parameters.AddWithValue("@Assistive_IsWheelChair", p_Model.Assistive_IsWheelChair);
+                l_Cmd.Parameters.AddWithValue("@Assistive_IsWalker", p_Model.Assistive_IsWalker);
+                l_Cmd.Parameters.AddWithValue("@Assistive_IsCane", p_Model.Assistive_IsCane);
+
+                l_Cmd.Parameters.AddWithValue("@TotalScore", p_Model.TotalScore);
+                l_Cmd.Parameters.AddWithValue("@RiskLevel", p_Model.RiskLevel);
+                l_Cmd.Parameters.AddWithValue("@ResidentId", p_Model.ResidentId);
+                l_Cmd.Parameters.AddWithValue("@DateEntered", p_Model.DateEntered);
+                l_Cmd.Parameters.AddWithValue("@EnteredBy", p_Model.EnteredBy);
+
+
+                DataSet dataReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(dataReceive);
+                int l_IncidentId = 0;
+                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
+                {
+                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_IncidentId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
+                    }
+
+                    if (p_Model.SectionG != null)
+                    {
+                        foreach (var sectionG in p_Model.SectionG)
+                        {
+                            SqlCommand l_Cmd_SectionG = new SqlCommand("spAB_Add_UnusualIncident_SectionG", l_Conn);
+                            // l_Conn.Open();
+                            l_Cmd_SectionG.CommandType = System.Data.CommandType.StoredProcedure;
+                            l_Cmd_SectionG.Parameters.AddWithValue("@Residentid", p_Model.Resident.ID);
+                            l_Cmd_SectionG.Parameters.AddWithValue("@IncidentId", l_IncidentId);
+                            l_Cmd_SectionG.Parameters.AddWithValue("@Notify", sectionG.Notify);
+                            l_Cmd_SectionG.Parameters.AddWithValue("@Name", sectionG.Name);
+                            l_Cmd_SectionG.Parameters.AddWithValue("@Date", sectionG.Date);
+                            l_Cmd_SectionG.Parameters.AddWithValue("@ByWhom", sectionG.ByWhom);
+                            l_Cmd_SectionG.Parameters.AddWithValue("@Via", sectionG.Via);
+                            l_Cmd_SectionG.Parameters.AddWithValue("@Enteredby", p_Model.EnteredBy.ID);
+                            l_Cmd_SectionG.ExecuteNonQuery();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                exception = "AddUnusualIncident |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
     }
 }

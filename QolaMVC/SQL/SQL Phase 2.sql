@@ -516,3 +516,61 @@ BEGIN
 
 END
 GO
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_Fall_RiskAssessment]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_Fall_RiskAssessment]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_Fall_RiskAssessment]
+@ResidentId int
+AS
+--20180917 chime created
+BEGIN
+	SELECT
+		Id,
+		FallHistory_IsTwoOrMore, 
+		FallHistory_IsOneOrTwo, 
+		Neurological_IsCVA, 
+		Neurological_IsParkinsons, 
+		Neurological_IsAlzheimers, 
+		Neurological_IsSeizureDisorder,
+		Neurological_IsOther, 
+		Other_IsDiabetes, 
+		Other_IsOsteoporosis, 
+		Other_IsPosturalHypotension, 
+		Other_IsSyncope, 
+		Incontinence_IsBowel, 
+		Incontinence_IsBladder,
+		Incontinence_IsTransfer, 
+		Incontinence_IsUnsteady, 
+		Medication_IsCardiac, 
+		Medication_IsDiuretics, 
+		Medication_IsNarcotics, 
+		Medication_IsAnalgesics, 
+		Medication_IsSedatives,
+		Medication_IsAntiAnxiety, 
+		Medication_IsLaxatives, 
+		MentalStatus_IsConfused, 
+		MentalStatus_IsResidentNonCompliance, 
+		Orthopedic_IsRecent, 
+		Orthopedic_IsCast,
+		Orthopedic_IsAmputation, 
+		Orthopedic_IsSevere, 
+		Sensory_IsDecreasedVision, 
+		Sensory_IsDecreasedHearing, 
+		Sensory_IsAphasia, 
+		Assistive_IsWheelChair,
+		Assistive_IsWalker, 
+		Assistive_IsCane, 
+		TotalScore, 
+		RiskLevel, 
+		ResidentId, 
+		DateEntered, 
+		EnteredBy
+	FROM 
+		tbl_AB_FallRiskAssessment
+	WHERE
+		ResidentId = @ResidentId
+END
+GO
