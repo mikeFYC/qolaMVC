@@ -94,6 +94,24 @@ namespace QolaMVC.DAL
             return stringlist;
         }
 
+        public static List<int> disable_hospital_list(DateTime dateselect)
+        {
+            List<int> retu = new List<int>();
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = " select distinct [fd_resident_id] from [tbl_Suite_Handler] where [fd_hospital_leaving]<'"+ dateselect.ToString("yyyy-MM-dd") +
+                              "' and isNULL([fd_hospital_return],'2200-09-01')>'" + dateselect.ToString("yyyy-MM-dd")+"'";
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            if (rd.HasRows)
+                while (rd.Read())
+                {
+                    retu.Add(int.Parse(rd[0].ToString()));
+                }
+            return retu;
+        }
 
     }
 }

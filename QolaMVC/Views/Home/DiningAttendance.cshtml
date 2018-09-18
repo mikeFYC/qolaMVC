@@ -59,30 +59,7 @@
             document.getElementById("pills-month").className = "tab-pane fade show active";
         }
     }
-    //function search_click() {
-    //    var a = $("div tr td div input");
-    //    for (var c = 0; c < a.length; c++) {
-    //        if (a[c].id != "SAVED") {
-    //            a[c].checked = false;
-    //        }
-    //    }
-    //}
-    //function list_click() {
-    //    var a = $("div[id=pills-contact1] tr td div input");
-    //    for (var c = 0; c < a.length; c++) {
-    //        if (a[c].id != "SAVED") {
-    //            a[c].checked = false;
-    //        }
-    //    }
-    //}
-    //function floor_click() {
-    //    var a = $("div[id=pills-profile1] tr td div input");
-    //    for (var c = 0; c < a.length; c++) {
-    //        if (a[c].id != "SAVED") {
-    //            a[c].checked = false;
-    //        }
-    //    }
-    //}
+
     function list_select_all() {
         var a = $("div[id=pills-profile1] tr td div input");
         for (var c = 0; c < a.length; c=c+6) {
@@ -104,13 +81,15 @@
 
         var a = $("div[id=pills-profile1] tr td div input");
         for (var c = 0; c < a.length; c++) {
-            if (a[c].checked == true) {
+            if (a[c].checked == true && a[c].value!='option3') {
                 savestring = savestring + a[c].name + "," + a[c].value + ",";
             }
         }
         $.post("/Home/saveButton_Dining", { arr: savestring, whichmeal: mealselect, datesel: dateselect}, function (data) {
-            if (data == 1)
+            if (data == 1) {
                 alert("Saved Successfully");
+                window.location.reload();
+            }
             else
                 alert("Saved failed");
         });
@@ -122,17 +101,17 @@
 
         var a = $("div[id=pills-contact1] tr td div input");
         for (var c = 0; c < a.length; c++) {
-            if (a[c].checked == true) {
+            if (a[c].checked == true && a[c].value != 'option3') {
                 var g = String(a[c].name);
                 var nameg = g.substring(0, g.length - 1);
                 savestring = savestring + nameg + "," + a[c].value + ",";
-                
-
             }
         }
         $.post("/Home/saveButton_Dining", { arr: savestring, whichmeal: mealselect, datesel: dateselect }, function (data) {
-            if (data == 1)
+            if (data == 1) {
                 alert("Saved Successfully");
+                window.location.reload();
+            }
             else
                 alert("Saved failed");
         });
@@ -151,7 +130,7 @@
         var a = document.getElementById("select_meal_index");
         a.className = "1";
         getdata();
-        
+
         
     }
     function open_form2() {
@@ -203,8 +182,21 @@
         $.get("/Home/View_List", { whichmeal: mealselect, datesel: dateselect }, function (data) {
             var view = $("#show_list");
             for (var i = 0; i < data.length; i++) {
-                view.append("<tr name='" + data[i][1].Value + "'><td>" + data[i][0].Value + "<\/td><td>" + data[i][3].Value + "<\/td><td><div class=\"form-check form-check-inline\"><i class=\"fa fa-file-text-o\"><\/i><\/div><\/td>"+
-                    "<td><input id=\"1\" type=\"image\" style=\"width:1.5vw;height:1.5vw\" onclick=\"deleteSelectedRows(this)\" src=\"\/Content\/pages\/img\/X.jpg\" class=\"clsButtonRemove\" style=\"float:right;\"><\/td><\/tr>");
+                view.append("<tr name='" + data[i][1].Value + "'><td>" + data[i][0].Value + "<\/td><td>" + data[i][3].Value + "<\/td><td><div class=\"form-check form-check-inline\"><input type=\"image\" style=\"width:1.7vw;height:1.7vw\" src=\"\/Content\/pages\/img\/icoedit.png\" onclick=\"progressnote()\"><\/div><\/td>"+
+                    "<td><input id=\"1\" type=\"image\"  onclick=\"SomeDeleteRowFunction(this)\" style=\"width:1.5vw;height:1.5vw\" src=\"\/Content\/pages\/img\/X.jpg\" class=\"clsButtonRemove\" style=\"float:right;\"><\/td><\/tr>");
+            }
+            
+        });
+
+
+
+        $.get("/Home/disable_hospital", { datesel: dateselect }, function (data) {
+            for (var len = 0; len < data.toString().split(',').length; len++) {
+                if (data.toString().split(',')[len] != '') {
+                    var a = $('input[type="radio"][name="' + data.toString().split(',')[len] + '"]')
+                    a[2].checked = true;
+                    a.attr('disabled', true);
+                }
             }
         });
     }
@@ -233,20 +225,37 @@
                 }
             }
             view.append("<tr name='" + residentid + "'><td>" + name + "<\/td><td>" + text +
-                "<\/td><td><div class=\"form-check form-check-inline\"><i class=\"fa fa-file-text-o\">" +
-                "<\/i><\/div><\/td><td><input id=\"1\" type=\"image\" style=\"width:1.5vw;height:1.5vw\" " +
-                "onclick=\"deleteSelectedRows(this)\" src=\"\/Content\/pages\/img\/X.jpg\" class=\"clsButtonRemove\" style=\"float:right;\">" +
+                "<\/td><td><div class=\"form-check form-check-inline\"><input type=\"image\" style=\"width:1.7vw;height:1.7vw\" src=\"\/Content\/pages\/img\/icoedit.png\" onclick=\"progressnote()\">" +
+                "<\/div><\/td><td><input id=\"1\" type=\"image\" style=\"width:1.5vw;height:1.5vw\" " +
+                "onclick=\"SomeDeleteRowFunction(this)\" src=\"\/Content\/pages\/img\/X.jpg\" class=\"clsButtonRemove\" style=\"float:right;\">" +
                 "<\/td><\/tr>");
         }  
     }
 
-    //function deleteSelectedRows(this) {
+    function SomeDeleteRowFunction(o) {
+        var p = o.parentNode.parentNode;
+        p.parentNode.removeChild(p);
+    }
 
-    //}
+    function View_List_save() {
+        var savestring = "";
+        var mealselect = document.getElementById("select_meal_index").className;
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+        var tr_list = $('div table[class="attend"] tbody[id="show_list"] tr');
+        for (var index = 0; index < tr_list.length; index++) {
+            var td_list = tr_list[index].childNodes
+            savestring = savestring + tr_list[index].getAttribute('name') + "," + td_list[1].innerHTML + ",";
+        }
+        $.post("/Home/saveButton_Dining", { arr: savestring, whichmeal: mealselect, datesel: dateselect }, function (data) {
+            if (data == 1) {
+                alert("Saved Successfully");
+                window.location.reload();
+            }
+            else
+                alert("Saved failed");
+        });
 
-    //function View_List_save() {
-
-    //}
+    }
 
     function previousday() {
         var monthNames = [
@@ -340,7 +349,7 @@
                                 <li class="Nextbtn"><a href="#" onclick="nextday()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
 
                             </ul>
-                            <div class="tab-content" id="pills-tabContent" >
+                            <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade show active" id="pills-day" role="tabpanel" aria-labelledby="pills-home-tab">
 
                                     <div id="select_meal_index" class=""></div>
@@ -592,8 +601,8 @@
                                 <div class="row">
                                     <div class="col-md-3">
                                         <div class="form-group row">
-                                            <label class="col-md-12 col-form-label" style="margin-left:10vw">Resident Name / Suite # :</label>
-                                            <div class="col-md-12" style="margin-left:10vw">
+                                            <label class="col-md-12 col-form-label" style="margin-left:7vw">Resident Name / Suite # :</label>
+                                            <div class="col-md-12" style="margin-left:7vw">
                                                 <input type="text" class="form-control" id="searchresidents3" onchange="change_searchresidents3()">
                                             </div>
                                         </div>
@@ -608,7 +617,7 @@
                                         <div class="form-group">
                                             <br><br>
                                             <div class="row">
-                                                <div class="col-md-12 pads" style="margin-left:10vw">
+                                                <div class="col-md-12 pads" style="margin-left:7vw">
                                                     <div class="form-check form-check-inline movesp">
                                                         <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
                                                         <label class="form-check-label" name="viewlistchoose">Taken</label>
@@ -620,6 +629,10 @@
                                                     <div class="form-check form-check-inline movesp">
                                                         <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
                                                         <label class="form-check-label" name="viewlistchoose">Waiver</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline movesp">
+                                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                        <label class="form-check-label" name="viewlistchoose">Away</label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
                                                         <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
@@ -640,9 +653,11 @@
                                     <div class="" style="border:1px solid #000;margin-left:15vw">
                                         <table class="attend" style="min-width:50vw">
                                             <tbody id="show_list">
+                                                
                                             </tbody>
                                         </table>
                                     </div>
+
 
 
 
@@ -673,7 +688,7 @@
                                                     for (int i = 0; i < Model.LIST_RESIDENT.Count; i = i + 2)
                                                     {
                                                         var a = Model.LIST_RESIDENT[i];
-                                                        <tr>
+                                                        <tr name=@a.ID>
                                                             <td style="max-width:10vw">@a.FirstName @a.LastName</td>
                                                             <td>
                                                                 <div class="form-check form-check-inline">
@@ -713,7 +728,7 @@
                                                             </td>
                                                             <td>
                                                                 <div class="form-check form-check-inline">
-                                                                    <i class="fa fa-file-text-o"></i>
+                                                                    <input type="image" style="width:1.7vw;height:1.7vw" src="/Content/pages/img/icoedit.png" onclick="progressnote()">
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -730,7 +745,7 @@
                                                 @for (int i = 1; i < Model.LIST_RESIDENT.Count; i = i + 2)
                                                 {
                                                     var a = Model.LIST_RESIDENT[i];
-                                                    <tr>
+                                                    <tr name=@a.ID>
                                                         <td style="max-width:10vw">@a.FirstName @a.LastName</td>
                                                         <td>
                                                             <div class="form-check form-check-inline">
@@ -770,7 +785,7 @@
                                                         </td>
                                                         <td>
                                                             <div class="form-check form-check-inline">
-                                                                <i class="fa fa-file-text-o"></i>
+                                                                <input type="image" style="width:1.7vw;height:1.7vw" src="/Content/pages/img/icoedit.png" onclick="progressnote()">
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -821,7 +836,7 @@
                                                         {
                                                             if (a.No_of_floor == b)
                                                             {
-                                                                <tr>
+                                                                <tr name=@a.ID>
                                                                     <td>@a.FirstName @a.LastName</td>
                                                                     <td>
                                                                         <div class="form-check form-check-inline">
@@ -861,7 +876,7 @@
                                                                     </td>
                                                                     <td>
                                                                         <div class="form-check form-check-inline">
-                                                                            <i class="fa fa-file-text-o"></i>
+                                                                            <input type="image" style="width:1.7vw;height:1.7vw" src="/Content/pages/img/icoedit.png" onclick="progressnote()">
                                                                         </div>
                                                                     </td>
                                                                 </tr>
@@ -880,18 +895,21 @@
                                         <button type="button" class="btn btn-secondary">CLEAR</button>
                                     </div>
                                 </div>
-                                </div>
                             </div>
-
                         </div>
-                        <div class="modal-footer text-center">
+
+                    </div>
+                    <div class="modal-footer text-center">
 
 
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        @RenderPage("~/Views/Shared/_Footer.cshtml")
+    @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+
+
 

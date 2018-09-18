@@ -1625,6 +1625,7 @@ namespace QolaMVC.Controllers
         {
             if (arr.Length != 0)
             {
+                arr = arr.Replace("Taken", "option1").Replace("Refused", "option2").Replace("Hospital", "option3").Replace("Waiver", "option4").Replace("Away", "option5").Replace("Tray Complimentary", "option6");
                 var home = (HomeModel)TempData["Home"];
                 var user = (UserModel)TempData["User"];
                 TempData.Keep("User");
@@ -1684,7 +1685,7 @@ namespace QolaMVC.Controllers
                         dynamic l_J = new System.Dynamic.ExpandoObject();
                         var resident = ResidentsDAL.GetResidentById(int.Parse(viewlist[c].Split(',')[b]));
 
-                        l_J.Name = resident.FirstName + resident.LastName;
+                        l_J.Name = resident.FirstName + " " + resident.LastName;
                         l_J.residentid = viewlist[c].Split(',')[b];
                         l_J.gender = resident.Gendar;
                         if (c == 0)
@@ -1712,7 +1713,19 @@ namespace QolaMVC.Controllers
 
         }
 
-
+        [HttpGet]
+        public string disable_hospital(DateTime datesel)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            List<int> returnleaving = Dining_Attendance_functions.disable_hospital_list(datesel);
+            string returnstring= string.Join(",", returnleaving.ToArray());
+            return returnstring;
+        }
     }
 }
 
