@@ -235,7 +235,7 @@
             var view = $("#show_list");
             for (var i = 0; i < data.length; i++) {
                 view.append("<tr name='" + data[i][1].Value + "'><td>" + data[i][0].Value + "<\/td><td>" + data[i][3].Value + "<\/td><td><div class=\"form-check form-check-inline\"><input type=\"image\" style=\"width:1.7vw;height:1.7vw\" src=\"\/Content\/pages\/img\/icoedit.png\" onclick=\"progressnote(this)\"><\/div><\/td>" +
-                    "<td><input id=\"1\" type=\"image\"  onclick=\"SomeDeleteRowFunction(this)\" style=\"width:1.5vw;height:1.5vw\" src=\"\/Content\/pages\/img\/X.jpg\" class=\"clsButtonRemove\" style=\"float:right;\"><\/td><\/tr>");
+                    "<td><div><input id=\"1\" type=\"image\"  onclick=\"SomeDeleteRowFunction(this)\" style=\"width:1.5vw;height:1.5vw\" src=\"\/Content\/pages\/img\/X.jpg\" class=\"clsButtonRemove\" style=\"float:right;\"><\/div><\/td><\/tr>");
             }
 
         });
@@ -248,6 +248,9 @@
                     var a = $('input[type="radio"][name="' + data.toString().split(',')[len] + '"]')
                     a[2].checked = true;
                     a.attr('disabled', true);
+                    var b = $('input[type="radio"][name="' + data.toString().split(',')[len] + '+"]')
+                    b[2].checked = true;
+                    b.attr('disabled', true);
                 }
             }
         });
@@ -256,6 +259,10 @@
     function View_List_add() {
         var a = $('#searchresidents3');
         var residentid = a[0].name;
+        if (residentid == "" || residentid == undefined) {
+            alert("No Resident was Choosen");
+            return;
+        }
         var namesub = $('input[name=' + residentid + ']')
         var name = namesub[1].parentNode.parentNode.previousElementSibling.innerHTML;
         var selector = $('input[name="inlineRadioOptions"]')
@@ -266,23 +273,38 @@
         }
         if (text == undefined) {
             alert("No Option was Choosen");
+            return;
         }
-        else {
-            var view = $("#show_list");
-            var viewtr = $("#show_list tr");
-            for (var viewindex = 0; viewindex < viewtr.length; viewindex++) {
-                if (residentid == viewtr[viewindex].getAttribute('name')) {
-                    alert("Resident already exist in the List");
-                    return;
-                }
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+        $.get("/Home/disable_hospital", { datesel: dateselect }, function (data) {
+            if (data.toString().includes(residentid)) {
+                alert("Resident in the Hospital");
             }
-            view.append("<tr name='" + residentid + "'><td>" + name + "<\/td><td>" + text +
-                "<\/td><td><div class=\"form-check form-check-inline\"><input type=\"image\" style=\"width:1.7vw;height:1.7vw\" src=\"\/Content\/pages\/img\/icoedit.png\" onclick=\"progressnote(this)\">" +
-                "<\/div><\/td><td><div><input id=\"1\" type=\"image\" style=\"width:1.5vw;height:1.5vw\" " +
-                "onclick=\"SomeDeleteRowFunction(this)\" src=\"\/Content\/pages\/img\/X.jpg\" class=\"clsButtonRemove\" style=\"float:right;\"><\/div>" +
-                "<\/td><\/tr>");
-        }
+            else {
+                var view = $("#show_list");
+                var viewtr = $("#show_list tr");
+                for (var viewindex = 0; viewindex < viewtr.length; viewindex++) {
+                    if (residentid == viewtr[viewindex].getAttribute('name')) {
+                        residentid = '-9';
+                    }
+                }
+                if (residentid == '-9') {
+                    alert("Resident already exist in the List");
+                }
+                else {
+                    view.append("<tr name='" + residentid + "'><td>" + name + "<\/td><td>" + text +
+                        "<\/td><td><div class=\"form-check form-check-inline\"><input type=\"image\" style=\"width:1.7vw;height:1.7vw\" src=\"\/Content\/pages\/img\/icoedit.png\" onclick=\"progressnote(this)\">" +
+                        "<\/div><\/td><td><div><input id=\"1\" type=\"image\" style=\"width:1.5vw;height:1.5vw\" " +
+                        "onclick=\"SomeDeleteRowFunction(this)\" src=\"\/Content\/pages\/img\/X.jpg\" class=\"clsButtonRemove\" style=\"float:right;\"><\/div>" +
+                        "<\/td><\/tr>");
+                }
+
+            }
+        });
+
+
     }
+    
     function View_List_clear() {
         var node_tbody = document.getElementById("show_list")
         while (node_tbody.hasChildNodes())
@@ -290,7 +312,7 @@
     }
 
     function SomeDeleteRowFunction(o) {
-        var p = o.parentNode.parentNode;
+        var p = o.parentNode.parentNode.parentNode;
         p.parentNode.removeChild(p);
     }
 
