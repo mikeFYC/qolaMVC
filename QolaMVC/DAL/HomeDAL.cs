@@ -1121,31 +1121,65 @@ namespace QolaMVC.DAL
             return table;
         }
 
-        public static Dining_Attendance get_list_resident(int homeid, DateTime todaydate)
+        public static Dining_Attendance_simple get_list_resident(int homeid, DateTime todaydate)
         {
-            Dining_Attendance LIST_VIEW = new Dining_Attendance();
-            LIST_VIEW.LIST_RESIDENT = new List<ResidentModel>();
+            //Dining_Attendance LIST_VIEW = new Dining_Attendance();
+            //LIST_VIEW.LIST_RESIDENT = new List<ResidentModel>();
+            //using (SqlConnection conn = new SqlConnection(Constants.ConnectionString.PROD))
+            //{
+            //    //SqlConnection conn = new SqlConnection(Constants.ConnectionString.PROD);
+            //    //conn.ConnectionString = Constants.ConnectionString.PROD;
+            //    conn.Open();
+            //    SqlCommand cmd = new SqlCommand();
+            //    cmd.CommandText = " select distinct fd_resident_id, fd_floor from[dbo].[tbl_Suite_Handler] SH" +
+            //                        " join[dbo].[tbl_Suite] S on S.fd_id=SH.fd_suite_id" +
+            //                        " where SH.fd_home_id = @homeid and @GETDATE> fd_move_in_date and @GETDATE< isNULL(fd_move_out_date, '2200-09-13')";
+            //    cmd.Parameters.AddWithValue("@GETDATE", todaydate);
+            //    cmd.Parameters.AddWithValue("@homeid", homeid);
+            //    cmd.Connection = conn;
+            //    SqlDataReader rd = cmd.ExecuteReader();
+            //    if (rd.HasRows)
+            //        while (rd.Read())
+            //        {
+            //            var resident = ResidentsDAL.GetResidentById(int.Parse(rd[0].ToString()));
+            //            resident.No_of_floor = int.Parse(rd[1].ToString());
+            //            LIST_VIEW.LIST_RESIDENT.Add(resident);
+            //        }
+            //}
+            //return LIST_VIEW;
 
-            SqlConnection conn = new SqlConnection();
-            conn.ConnectionString = Constants.ConnectionString.PROD;
-            conn.Open();
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandText =   " select distinct fd_resident_id, fd_floor from[dbo].[tbl_Suite_Handler] SH" +
-                                " join[dbo].[tbl_Suite] S on S.fd_id=SH.fd_suite_id" +
-                                " where SH.fd_home_id = @homeid and @GETDATE> fd_move_in_date and @GETDATE< isNULL(fd_move_out_date, '2200-09-13')";
 
-            cmd.Parameters.AddWithValue("@GETDATE", todaydate);
-            cmd.Parameters.AddWithValue("@homeid", homeid);
-            cmd.Connection = conn;
-            SqlDataReader rd = cmd.ExecuteReader();
-            if (rd.HasRows)
-                while (rd.Read())
-                {
-                    var resident = ResidentsDAL.GetResidentById(int.Parse(rd[0].ToString()));
-                    resident.No_of_floor = int.Parse(rd[1].ToString());
-                    LIST_VIEW.LIST_RESIDENT.Add(resident);
-                }
+            Dining_Attendance_simple LIST_VIEW = new Dining_Attendance_simple();
+            LIST_VIEW.LIST_RESIDENT = new List<ResidentModelsimple>();
+
+            using (SqlConnection conn = new SqlConnection(Constants.ConnectionString.PROD))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText =   " select distinct SH.fd_resident_id, S.fd_floor, R.fd_first_name,R.fd_last_name from[dbo].[tbl_Suite_Handler] SH" +
+                                    " join[dbo].[tbl_Suite] S on S.fd_id=SH.fd_suite_id" +
+                                    " join[tbl_Resident] R on SH.fd_resident_id=R.fd_id" +
+                                    " where SH.fd_home_id = @homeid and @GETDATE> SH.fd_move_in_date and @GETDATE< isNULL(SH.fd_move_out_date, '2200-09-13')";
+                cmd.Parameters.AddWithValue("@GETDATE", todaydate);
+                cmd.Parameters.AddWithValue("@homeid", homeid);
+                cmd.Connection = conn;
+                SqlDataReader rd = cmd.ExecuteReader();
+                if (rd.HasRows)
+                    while (rd.Read())
+                    {
+                        ResidentModelsimple sample = new ResidentModelsimple();
+                        sample.ID = int.Parse(rd[0].ToString());
+                        sample.No_of_floor = int.Parse(rd[1].ToString());
+                        sample.FirstName = rd[2].ToString();
+                        sample.LastName = rd[3].ToString(); ;
+                        LIST_VIEW.LIST_RESIDENT.Add(sample);
+
+                    }
+            }
             return LIST_VIEW;
+
+
+
         }
 
         public static string[] get_gender_info(int homeid, DateTime todaydate)
@@ -1164,7 +1198,7 @@ namespace QolaMVC.DAL
                 cmdGARead.ExecuteNonQuery();
                 string retunvalue = cmdGARead.Parameters["@returnstring"].Value.ToString();
                 string[] returnstring = retunvalue.Split(',');
-
+                conn.Close();
 
                 return returnstring;
             }

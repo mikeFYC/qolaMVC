@@ -1,4 +1,4 @@
-﻿@model QolaMVC.Models.Dining_Attendance
+﻿@model QolaMVC.Models.Dining_Attendance_simple
 @RenderPage("~/Views/Shared/_Header.cshtml")
 @RenderPage("~/Views/Shared/_SideBar.cshtml")
 
@@ -37,43 +37,82 @@
     }
 </style>
 
+<style>
+    #contactForm {
+        display: none;
+        border: 6px solid salmon;
+        padding: 2em;
+        width: 400px;
+        text-align: center;
+        background: #fff;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        -webkit-transform: translate(-50%,-50%)
+    }
+
+    .formBtn,.formtext {
+        margin: .8em auto;
+        font-family: inherit;
+        text-transform: inherit;
+        font-size: inherit;
+        display: block;
+        padding: .4em;
+    }
+
+    .formtext {
+        resize: none;
+    }
+
+    .formBtn {
+        display: inline-block;
+        background: teal;
+        color: #fff;
+        font-weight: 100;
+        font-size: 1.2em;
+        border: none;
+        width:70px;
+
+    }
+</style>
+
 <script>
-    function day_click() {
-        if (document.getElementById("pills-day").className != "tab-pane fade show active") {
-            document.getElementById("pills-day").className = "tab-pane fade show active";
-            document.getElementById("pills-week").className = "tab-pane fade";
-            document.getElementById("pills-month").className = "tab-pane fade";
-        }
-    }
-    function week_click() {
-        if (document.getElementById("pills-week").className != "tab-pane fade show active") {
-            document.getElementById("pills-day").className = "tab-pane fade";
-            document.getElementById("pills-week").className = "tab-pane fade show active";
-            document.getElementById("pills-month").className = "tab-pane fade";
-        }
-    }
-    function month_click() {
-        if (document.getElementById("pills-month").className != "tab-pane fade show active") {
-            document.getElementById("pills-day").className = "tab-pane fade";
-            document.getElementById("pills-week").className = "tab-pane fade";
-            document.getElementById("pills-month").className = "tab-pane fade show active";
-        }
-    }
+    //function day_click() {
+    //    if (document.getElementById("pills-day").className != "tab-pane fade show active") {
+    //        document.getElementById("pills-day").className = "tab-pane fade show active";
+    //        document.getElementById("pills-week").className = "tab-pane fade";
+    //        document.getElementById("pills-month").className = "tab-pane fade";
+    //    }
+    //}
+    //function week_click() {
+    //    if (document.getElementById("pills-week").className != "tab-pane fade show active") {
+    //        document.getElementById("pills-day").className = "tab-pane fade";
+    //        document.getElementById("pills-week").className = "tab-pane fade show active";
+    //        document.getElementById("pills-month").className = "tab-pane fade";
+    //    }
+    //}
+    //function month_click() {
+    //    if (document.getElementById("pills-month").className != "tab-pane fade show active") {
+    //        document.getElementById("pills-day").className = "tab-pane fade";
+    //        document.getElementById("pills-week").className = "tab-pane fade";
+    //        document.getElementById("pills-month").className = "tab-pane fade show active";
+    //    }
+    //}
 
     function list_select_all() {
         var a = $("div[id=pills-profile1] tr td div input");
-        for (var c = 0; c < a.length; c=c+6) {
-            a[c].checked = true;
-        } 
-    }
-    function floor_select_all() {
-        var a = $("div[id=pills-contact1] tr td div input");
-        for (var c = 0; c < a.length; c=c+6) {
+        for (var c = 0; c < a.length; c = c + 7) {
             a[c].checked = true;
         }
     }
-    function list_savebutton()
-    {
+    function floor_select_all() {
+        var a = $("div[id=pills-contact1] tr td div input");
+        for (var c = 0; c < a.length; c = c + 7) {
+            a[c].checked = true;
+        }
+    }
+    function list_savebutton() {
 
         var savestring = "";
         var mealselect = document.getElementById("select_meal_index").className;
@@ -81,11 +120,11 @@
 
         var a = $("div[id=pills-profile1] tr td div input");
         for (var c = 0; c < a.length; c++) {
-            if (a[c].checked == true && a[c].value!='option3') {
+            if (a[c].checked == true && a[c].value != 'option3') {
                 savestring = savestring + a[c].name + "," + a[c].value + ",";
             }
         }
-        $.post("/Home/saveButton_Dining", { arr: savestring, whichmeal: mealselect, datesel: dateselect}, function (data) {
+        $.post("/Home/saveButton_Dining", { arr: savestring, whichmeal: mealselect, datesel: dateselect }, function (data) {
             if (data == 1) {
                 alert("Saved Successfully");
                 window.location.reload();
@@ -116,6 +155,19 @@
                 alert("Saved failed");
         });
     }
+    function floor_clearbutton() {
+        var a = $("div[id=pills-contact1] tr td div input");
+        for (var c = 0; c < a.length; c++) {
+            a[c].checked = false;
+        }
+    }
+    function list_clearbutton() {
+        var a = $("div[id=pills-profile1] tr td div input");
+        for (var c = 0; c < a.length; c++) {
+            a[c].checked = false;
+        }
+    }
+
 
     function open_form1() {
         var node_tbody = document.getElementById("show_list")
@@ -131,7 +183,7 @@
         a.className = "1";
         getdata();
 
-        
+
     }
     function open_form2() {
         var node_tbody = document.getElementById("show_list")
@@ -171,7 +223,7 @@
                 var cplus = c + 1;
                 for (var b = 0; b < a[c].split(",").length; b++) {
                     if (a[c].split(",")[b] != "") {
-                        var d = $("input[name=" + a[c].split(",")[b] + "][value=option" +cplus+"]");
+                        var d = $("input[name=" + a[c].split(",")[b] + "][value=option" + cplus + "]");
                         d[0].checked = true;
                         var e = $("input[name=\"" + a[c].split(",")[b] + "+\"][value=option" + cplus + "]");
                         e[0].checked = true;
@@ -182,10 +234,10 @@
         $.get("/Home/View_List", { whichmeal: mealselect, datesel: dateselect }, function (data) {
             var view = $("#show_list");
             for (var i = 0; i < data.length; i++) {
-                view.append("<tr name='" + data[i][1].Value + "'><td>" + data[i][0].Value + "<\/td><td>" + data[i][3].Value + "<\/td><td><div class=\"form-check form-check-inline\"><input type=\"image\" style=\"width:1.7vw;height:1.7vw\" src=\"\/Content\/pages\/img\/icoedit.png\" onclick=\"progressnote()\"><\/div><\/td>"+
+                view.append("<tr name='" + data[i][1].Value + "'><td>" + data[i][0].Value + "<\/td><td>" + data[i][3].Value + "<\/td><td><div class=\"form-check form-check-inline\"><input type=\"image\" style=\"width:1.7vw;height:1.7vw\" src=\"\/Content\/pages\/img\/icoedit.png\" onclick=\"progressnote(this)\"><\/div><\/td>" +
                     "<td><input id=\"1\" type=\"image\"  onclick=\"SomeDeleteRowFunction(this)\" style=\"width:1.5vw;height:1.5vw\" src=\"\/Content\/pages\/img\/X.jpg\" class=\"clsButtonRemove\" style=\"float:right;\"><\/td><\/tr>");
             }
-            
+
         });
 
 
@@ -203,7 +255,7 @@
 
     function View_List_add() {
         var a = $('#searchresidents3');
-        var residentid = a[0].name; 
+        var residentid = a[0].name;
         var namesub = $('input[name=' + residentid + ']')
         var name = namesub[1].parentNode.parentNode.previousElementSibling.innerHTML;
         var selector = $('input[name="inlineRadioOptions"]')
@@ -225,11 +277,16 @@
                 }
             }
             view.append("<tr name='" + residentid + "'><td>" + name + "<\/td><td>" + text +
-                "<\/td><td><div class=\"form-check form-check-inline\"><input type=\"image\" style=\"width:1.7vw;height:1.7vw\" src=\"\/Content\/pages\/img\/icoedit.png\" onclick=\"progressnote()\">" +
-                "<\/div><\/td><td><input id=\"1\" type=\"image\" style=\"width:1.5vw;height:1.5vw\" " +
-                "onclick=\"SomeDeleteRowFunction(this)\" src=\"\/Content\/pages\/img\/X.jpg\" class=\"clsButtonRemove\" style=\"float:right;\">" +
+                "<\/td><td><div class=\"form-check form-check-inline\"><input type=\"image\" style=\"width:1.7vw;height:1.7vw\" src=\"\/Content\/pages\/img\/icoedit.png\" onclick=\"progressnote(this)\">" +
+                "<\/div><\/td><td><div><input id=\"1\" type=\"image\" style=\"width:1.5vw;height:1.5vw\" " +
+                "onclick=\"SomeDeleteRowFunction(this)\" src=\"\/Content\/pages\/img\/X.jpg\" class=\"clsButtonRemove\" style=\"float:right;\"><\/div>" +
                 "<\/td><\/tr>");
-        }  
+        }
+    }
+    function View_List_clear() {
+        var node_tbody = document.getElementById("show_list")
+        while (node_tbody.hasChildNodes())
+            node_tbody.removeChild(node_tbody.lastChild);
     }
 
     function SomeDeleteRowFunction(o) {
@@ -272,7 +329,7 @@
         var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
         if (window.location.href.toString().includes("datesel")) {
             var indexequal = window.location.href.toString().indexOf("=");
-            var newstring = window.location.href.toString().substring(0, indexequal+1);
+            var newstring = window.location.href.toString().substring(0, indexequal + 1);
             window.location.href = newstring + dateselect;
         }
         else
@@ -302,6 +359,34 @@
             window.location.href = window.location.href + "?datesel=" + dateselect;
     }
 
+    function progressnote(o) {
+        var id = o.parentNode.parentNode.parentNode.getAttribute("name");
+        document.getElementById('contactForm').style.display = "block";
+        document.getElementById('contactForm').setAttribute('uid', id);
+    }
+
+    function progressnoteadd(o) {
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+        var id = o.parentNode.parentNode.getAttribute("uid");
+        var idint = parseInt(id);
+        var textnote = document.getElementById("formtextarea").value;
+        $.get("/Home/click_progress_note", { residentid: idint, datesel: dateselect,note: textnote }, function (data) {
+            if (data == 1)
+                alert("Saved Successfully");
+            else
+                alert("Saved Failed");
+        });
+        document.getElementById('formtextarea').value = '';
+        document.getElementById('contactForm').style.display = "none";
+    }
+
+    function note_close_click() {
+        document.getElementById('formtextarea').value = '';
+        document.getElementById('contactForm').style.display = 'none';
+    }
+
+
+
 
 </script>
 
@@ -309,6 +394,9 @@
 <div class="page-container">
 
     @RenderPage("~/Views/Shared/_NavBar.cshtml")
+
+
+
 
     <!-- START PAGE CONTENT WRAPPER -->
     <div class="page-content-wrapper">
@@ -337,12 +425,12 @@
                                 <li class="nav-item">
                                     <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true" onclick="day_click()">Day</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false" onclick="week_click()">Week</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false" onclick="month_click()">Month</a>
-                                </li>
+                                @*<li class="nav-item">
+                                        <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false" onclick="week_click()">Week</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false" onclick="month_click()">Month</a>
+                                    </li>*@
 
                                 <li class="Prevbtn" style="margin-left:5vw;"><a href="#" onclick="previousday()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
                                 <li class="clear_bg"><label id="lblCalendarMsg" style="font-weight:bolder;font-size:1vw;margin-top:0.7vw">@TempData["datechoose"].ToString()</label></li>
@@ -385,10 +473,12 @@
                                                     </a>
                                                 </td>
                                                 <td>
-                                                    @TempData["Brekfast_M_No"].ToString()
+                                                    @(((string[])TempData["number_attendance_array"])[1])
+
+
                                                 </td>
                                                 <td>
-                                                    @TempData["Brekfast_F_No"].ToString()
+                                                    @(((string[])TempData["number_attendance_array"])[0])
                                                 </td>
                                             </tr>
                                             <tr>
@@ -405,10 +495,10 @@
 
                                                 </td>
                                                 <td>
-                                                    @TempData["Lunch_M_No"].ToString()
+                                                    @(((string[])TempData["number_attendance_array"])[3])
                                                 </td>
                                                 <td>
-                                                    @TempData["Lunch_F_No"].ToString()
+                                                    @(((string[])TempData["number_attendance_array"])[2])
                                                 </td>
                                             </tr>
                                             <tr>
@@ -425,10 +515,10 @@
                                                     </a>
                                                 </td>
                                                 <td>
-                                                    @TempData["Dinner_M_No"].ToString()
+                                                    @(((string[])TempData["number_attendance_array"])[5])
                                                 </td>
                                                 <td>
-                                                    @TempData["Dinner_F_No"].ToString()
+                                                    @(((string[])TempData["number_attendance_array"])[4])
                                                 </td>
                                             </tr>
 
@@ -438,114 +528,115 @@
                                     </table>
 
                                 </div>
-                                <div class="tab-pane fade" id="pills-week" role="tabpanel" aria-labelledby="pills-profile-tab">
+                                @*<div class="tab-pane fade" id="pills-week" role="tabpanel" aria-labelledby="pills-profile-tab">
 
-                                    <table class="table table-bordered">
-                                        <thead class="bg-primary">
-                                            <tr>
-                                                <th class="text-white text-center">
-                                                    Sunday <br>
-                                                    @DateTime.Parse(TempData["Sunday"].ToString()).ToString("MM/dd/yyyy")
-                                                </th>
-                                                <th class="text-white text-center">
-                                                    Monday <br>
-                                                    @DateTime.Parse(TempData["Sunday"].ToString()).AddDays(1).ToString("MM/dd/yyyy")
-                                                </th>
-                                                <th class="text-white text-center">
-                                                    Tuesday <br>
-                                                    @DateTime.Parse(TempData["Sunday"].ToString()).AddDays(2).ToString("MM/dd/yyyy")
-                                                </th>
-                                                <th class="text-white text-center">
-                                                    Wednesday <br>
-                                                    @DateTime.Parse(TempData["Sunday"].ToString()).AddDays(3).ToString("MM/dd/yyyy")
-                                                </th>
-                                                <th class="text-white text-center">
-                                                    Thursday <br>
-                                                    @DateTime.Parse(TempData["Sunday"].ToString()).AddDays(4).ToString("MM/dd/yyyy")
-                                                </th>
-                                                <th class="text-white text-center">
-                                                    Friday <br>
-                                                    @DateTime.Parse(TempData["Sunday"].ToString()).AddDays(5).ToString("MM/dd/yyyy")
-                                                </th>
-                                                <th class="text-white text-center">
-                                                    Satursday <br>
-                                                    @DateTime.Parse(TempData["Sunday"].ToString()).AddDays(6).ToString("MM/dd/yyyy")
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    Breakfast
-                                                </td>
-                                                <td>Breakfast</td>
-                                                <td>Breakfast</td>
-                                                <td>Breakfast</td>
-                                                <td>Breakfast</td>
-                                                <td>Breakfast</td>
-                                                <td>Breakfast</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    Lunch
-                                                </td>
-                                                <td>Lunch</td>
-                                                <td>Lunch</td>
-                                                <td>Lunch</td>
-                                                <td>Lunch</td>
-                                                <td>Lunch</td>
-                                                <td>Lunch</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    Dinner
-                                                </td>
-                                                <td>Dinner</td>
-                                                <td>Dinner</td>
-                                                <td>Dinner</td>
-                                                <td>Dinner</td>
-                                                <td>Dinner</td>
-                                                <td>Dinner</td>
-                                            </tr>
+                                        <table class="table table-bordered">
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">
+                                                        Sunday <br>
+                                                        @DateTime.Parse(TempData["Sunday"].ToString()).ToString("MM/dd/yyyy")
+                                                    </th>
+                                                    <th class="text-white text-center">
+                                                        Monday <br>
+                                                        @DateTime.Parse(TempData["Sunday"].ToString()).AddDays(1).ToString("MM/dd/yyyy")
+                                                    </th>
+                                                    <th class="text-white text-center">
+                                                        Tuesday <br>
+                                                        @DateTime.Parse(TempData["Sunday"].ToString()).AddDays(2).ToString("MM/dd/yyyy")
+                                                    </th>
+                                                    <th class="text-white text-center">
+                                                        Wednesday <br>
+                                                        @DateTime.Parse(TempData["Sunday"].ToString()).AddDays(3).ToString("MM/dd/yyyy")
+                                                    </th>
+                                                    <th class="text-white text-center">
+                                                        Thursday <br>
+                                                        @DateTime.Parse(TempData["Sunday"].ToString()).AddDays(4).ToString("MM/dd/yyyy")
+                                                    </th>
+                                                    <th class="text-white text-center">
+                                                        Friday <br>
+                                                        @DateTime.Parse(TempData["Sunday"].ToString()).AddDays(5).ToString("MM/dd/yyyy")
+                                                    </th>
+                                                    <th class="text-white text-center">
+                                                        Satursday <br>
+                                                        @DateTime.Parse(TempData["Sunday"].ToString()).AddDays(6).ToString("MM/dd/yyyy")
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        Breakfast
+                                                    </td>
+                                                    <td>Breakfast</td>
+                                                    <td>Breakfast</td>
+                                                    <td>Breakfast</td>
+                                                    <td>Breakfast</td>
+                                                    <td>Breakfast</td>
+                                                    <td>Breakfast</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        Lunch
+                                                    </td>
+                                                    <td>Lunch</td>
+                                                    <td>Lunch</td>
+                                                    <td>Lunch</td>
+                                                    <td>Lunch</td>
+                                                    <td>Lunch</td>
+                                                    <td>Lunch</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        Dinner
+                                                    </td>
+                                                    <td>Dinner</td>
+                                                    <td>Dinner</td>
+                                                    <td>Dinner</td>
+                                                    <td>Dinner</td>
+                                                    <td>Dinner</td>
+                                                    <td>Dinner</td>
+                                                </tr>
 
 
 
-                                        </tbody>
-                                    </table>
+                                            </tbody>
+                                        </table>
 
-                                </div>
-                                <div class="tab-pane fade" id="pills-month" role="tabpanel" aria-labelledby="pills-contact-tab">
-                                    <table class="table table-bordered">
-                                        <thead class="bg-primary">
-                                            <tr>
-                                                <th class="text-white text-center">
-                                                    Sunday
-                                                </th>
-                                                <th class="text-white text-center">
-                                                    Monday
-                                                </th>
-                                                <th class="text-white text-center">
-                                                    Tuesday
-                                                </th>
-                                                <th class="text-white text-center">
-                                                    Wednesday
-                                                </th>
-                                                <th class="text-white text-center">
-                                                    Thursday
-                                                </th>
-                                                <th class="text-white text-center">
-                                                    Friday
-                                                </th>
-                                                <th class="text-white text-center">
-                                                    Friday
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr></tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="pills-month" role="tabpanel" aria-labelledby="pills-contact-tab">
+                                        <table class="table table-bordered">
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">
+                                                        Sunday
+                                                    </th>
+                                                    <th class="text-white text-center">
+                                                        Monday
+                                                    </th>
+                                                    <th class="text-white text-center">
+                                                        Tuesday
+                                                    </th>
+                                                    <th class="text-white text-center">
+                                                        Wednesday
+                                                    </th>
+                                                    <th class="text-white text-center">
+                                                        Thursday
+                                                    </th>
+                                                    <th class="text-white text-center">
+                                                        Friday
+                                                    </th>
+                                                    <th class="text-white text-center">
+                                                        Friday
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>*@
+
                             </div>
                         </div>
                     </div>
@@ -563,6 +654,21 @@
     <!-- END PAGE CONTENT -->
     <!-- New Resident Modal -->
     <div class="modal" id="attendent_form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+        <div id="contactForm" class="modal" style="display:none">
+
+            <h3>Add Progress Notes</h3>
+            <br>
+            <form action="#">
+                <textarea class="formtext" id="formtextarea" placeholder="Comment" style="height:170px;width:300px"></textarea>
+                <input class="formBtn" type="button" value="Submit" onclick="progressnoteadd(this)"/>
+                <input class="formBtn" type="button" value="Reset" onclick="document.getElementById('formtextarea').value=''"/>
+                <input class="formBtn" type="button" value="Close" onclick="note_close_click()"/>
+            </form>
+        </div>
+
+
+
         <div class="modal-xlg" role="document" id="attendent_form_second_layer">
             <div class="modal-content" id="attendent_form_third_layer">
                 <div class="modal-header">
@@ -594,6 +700,11 @@
 
                             </div>
                         </div>
+
+
+
+
+
 
                         <div class="tab-content" id="pills-tabContent">
                             <div class="tab-pane fade show active" id="pills-home1" role="tabpanel" aria-labelledby="pills-home-tab">
@@ -652,9 +763,7 @@
 
                                     <div class="" style="border:1px solid #000;margin-left:15vw">
                                         <table class="attend" style="min-width:50vw">
-                                            <tbody id="show_list">
-                                                
-                                            </tbody>
+                                            <tbody id="show_list"></tbody>
                                         </table>
                                     </div>
 
@@ -665,7 +774,7 @@
                                     <div class="col-md-12 text-center">
                                         <br><br><br><br><br><br>
                                         <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="View_List_save()">SAVE</button>
-                                        <button type="button" class="btn btn-secondary">CLEAR</button>
+                                        <button type="button" class="btn btn-secondary" onclick="View_List_clear()">CLEAR</button>
                                     </div>
                                 </div>
 
@@ -678,7 +787,7 @@
                                     <div class="col-md-12 text-center">
                                         <br>
                                         <button type="button" class="btn btn-primary" style="margin-bottom:1vw" data-dismiss="modal" onclick="list_savebutton()">SAVE</button>
-                                        <button type="button" class="btn btn-secondary" style="margin-bottom:1vw">CLEAR</button>
+                                        <button type="button" class="btn btn-secondary" style="margin-bottom:1vw" onclick="list_clearbutton()">CLEAR</button>
                                     </div>
                                     <br>
                                     <div class="col-md-6" style="border: 1px solid #000;">
@@ -728,7 +837,7 @@
                                                             </td>
                                                             <td>
                                                                 <div class="form-check form-check-inline">
-                                                                    <input type="image" style="width:1.7vw;height:1.7vw" src="/Content/pages/img/icoedit.png" onclick="progressnote()">
+                                                                    <input type="image" style="width:1.7vw;height:1.7vw" src="/Content/pages/img/icoedit.png" onclick="progressnote(this)">
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -785,7 +894,7 @@
                                                         </td>
                                                         <td>
                                                             <div class="form-check form-check-inline">
-                                                                <input type="image" style="width:1.7vw;height:1.7vw" src="/Content/pages/img/icoedit.png" onclick="progressnote()">
+                                                                <input type="image" style="width:1.7vw;height:1.7vw" src="/Content/pages/img/icoedit.png" onclick="progressnote(this)">
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -799,11 +908,10 @@
                                     <div class="col-md-12 text-center">
                                         <br><br><br><br><br><br>
                                         <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="list_savebutton()">SAVE</button>
-                                        <button type="button" class="btn btn-secondary">CLEAR</button>
+                                        <button type="button" class="btn btn-secondary" onclick="list_clearbutton()">CLEAR</button>
                                     </div>
                                 </div>
                             </div>
-
                             <div class="tab-pane fade" id="pills-contact1" role="tabpanel" aria-labelledby="pills-contact-tab">
                                 <div class="row">
                                     <div class="col-md-12">
@@ -812,8 +920,9 @@
                                     <div class="col-md-12 text-center">
                                         <br>
                                         <button type="button" class="btn btn-primary" style="margin-bottom:1vw" data-dismiss="modal" onclick="floor_savebutton()">SAVE</button>
-                                        <button type="button" class="btn btn-secondary" style="margin-bottom:1vw">CLEAR</button>
+                                        <button type="button" class="btn btn-secondary" style="margin-bottom:1vw" onclick="floor_clearbutton()">CLEAR</button>
                                     </div>
+
                                     @{
                                         int floor = 0;
                                         foreach (var a in Model.LIST_RESIDENT)
@@ -832,6 +941,7 @@
                                                         <tr>
                                                             <th colspan="7" height=50vw>@b st Floor</th>
                                                         </tr>
+
                                                         @foreach (var a in Model.LIST_RESIDENT)
                                                         {
                                                             if (a.No_of_floor == b)
@@ -876,7 +986,7 @@
                                                                     </td>
                                                                     <td>
                                                                         <div class="form-check form-check-inline">
-                                                                            <input type="image" style="width:1.7vw;height:1.7vw" src="/Content/pages/img/icoedit.png" onclick="progressnote()">
+                                                                            <input type="image" style="width:1.7vw;height:1.7vw" src="/Content/pages/img/icoedit.png" onclick="progressnote(this)">
                                                                         </div>
                                                                     </td>
                                                                 </tr>
@@ -892,7 +1002,7 @@
                                     <div class="col-md-12 text-center">
                                         <br><br><br><br><br><br>
                                         <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="floor_savebutton()">SAVE</button>
-                                        <button type="button" class="btn btn-secondary">CLEAR</button>
+                                        <button type="button" class="btn btn-secondary" onclick="floor_clearbutton()">CLEAR</button>
                                     </div>
                                 </div>
                             </div>

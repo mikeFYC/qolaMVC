@@ -143,39 +143,29 @@ namespace QolaMVC.Controllers
             TempData.Keep("Resident");
             ViewBag.User = user;
             ViewBag.Home = home;
-            Dining_Attendance LIST_VIEW_RESIDENT = new Dining_Attendance();
+            Dining_Attendance_simple LIST_VIEW_RESIDENT = new Dining_Attendance_simple();
 
             if (datesel == "" || datesel == null)
             {
                 TempData["datechoose"] = DateTime.Now.ToString("MMMM dd, yyyy");
                 LIST_VIEW_RESIDENT = HomeDAL.get_list_resident(home.Id, DateTime.Today);
                 string[] genderinfo = HomeDAL.get_gender_info(home.Id, DateTime.Today);
-                TempData["Brekfast_F_No"] = genderinfo[0];
-                TempData["Brekfast_M_No"] = genderinfo[1];
-                TempData["Lunch_F_No"] = genderinfo[2];
-                TempData["Lunch_M_No"] = genderinfo[3];
-                TempData["Dinner_F_No"] = genderinfo[4];
-                TempData["Dinner_M_No"] = genderinfo[5];
+                TempData["number_attendance_array"] = genderinfo;
             }
             else
             {
                 TempData["datechoose"] = datesel;
                 LIST_VIEW_RESIDENT = HomeDAL.get_list_resident(home.Id, DateTime.Parse(datesel));
                 string[] genderinfo = HomeDAL.get_gender_info(home.Id, DateTime.Parse(datesel));
-                TempData["Brekfast_F_No"] = genderinfo[0];
-                TempData["Brekfast_M_No"] = genderinfo[1];
-                TempData["Lunch_F_No"] = genderinfo[2];
-                TempData["Lunch_M_No"] = genderinfo[3];
-                TempData["Dinner_F_No"] = genderinfo[4];
-                TempData["Dinner_M_No"] = genderinfo[5];
+                TempData["number_attendance_array"] = genderinfo;
             }
             TempData["LIST_VIEW_RESIDENT"] = LIST_VIEW_RESIDENT;
             TempData.Keep("LIST_VIEW_RESIDENT");
             ViewBag.LIST_VIEW_RESIDENT = LIST_VIEW_RESIDENT;
-            DateTime lastSunday = DateTime.Now;
-            while (lastSunday.DayOfWeek != DayOfWeek.Sunday)
-                lastSunday = lastSunday.AddDays(-1);
-            TempData["Sunday"] = lastSunday;
+            //DateTime lastSunday = DateTime.Now;
+            //while (lastSunday.DayOfWeek != DayOfWeek.Sunday)
+            //    lastSunday = lastSunday.AddDays(-1);
+            //TempData["Sunday"] = lastSunday;
 
             return View(LIST_VIEW_RESIDENT);
         }
@@ -1623,16 +1613,18 @@ namespace QolaMVC.Controllers
         [HttpPost]
         public int saveButton_Dining(string arr, int whichmeal, string datesel)
         {
+
+            arr = arr.Replace("Taken", "option1").Replace("Refused", "option2").Replace("Hospital", "option3").Replace("Waiver", "option4").Replace("Away", "option5").Replace("Tray Complimentary", "option6");
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<string> Save_sum_array = new List<string>();
+            Dictionary<string, string> Save_summary = new Dictionary<string, string>();
             if (arr.Length != 0)
             {
-                arr = arr.Replace("Taken", "option1").Replace("Refused", "option2").Replace("Hospital", "option3").Replace("Waiver", "option4").Replace("Away", "option5").Replace("Tray Complimentary", "option6");
-                var home = (HomeModel)TempData["Home"];
-                var user = (UserModel)TempData["User"];
-                TempData.Keep("User");
-                TempData.Keep("Home");
-                Dictionary<string, string> Save_summary = new Dictionary<string, string>();
-                string[] Save_sum_array = arr.Substring(0, arr.Length - 1).Split(',');
-                for (int a = 0; a < Save_sum_array.Length; a = a + 2)
+                Save_sum_array = arr.Substring(0, arr.Length - 1).Split(',').ToList();
+                for (int a = 0; a < Save_sum_array.Count(); a = a + 2)
                 {
                     if (Save_summary.ContainsKey(Save_sum_array[a + 1]) == false)
                     {
@@ -1641,12 +1633,12 @@ namespace QolaMVC.Controllers
                     else
                         Save_summary[Save_sum_array[a + 1]] += "," + Save_sum_array[a];
                 }
-                Dining_Attendance_functions.save_Button(home.Id, whichmeal, DateTime.Parse(datesel), Save_summary, user.ID, DateTime.Now);
+            }
+            Dining_Attendance_functions.save_Button(home.Id, whichmeal, DateTime.Parse(datesel), Save_summary, user.ID, DateTime.Now);
 
                 return 1;
-            }
-            else
-                return 0;
+            
+
             
         }
 
@@ -1725,6 +1717,20 @@ namespace QolaMVC.Controllers
             List<int> returnleaving = Dining_Attendance_functions.disable_hospital_list(datesel);
             string returnstring= string.Join(",", returnleaving.ToArray());
             return returnstring;
+        }
+
+        [HttpGet]
+        public int click_progress_note(int residentid, string datesel, string note)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            int returnint = Dining_Attendance_functions.add_progress_note(residentid,datesel,note,user.ID,DateTime.Now);
+
+            return returnint;
         }
     }
 }

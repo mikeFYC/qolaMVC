@@ -31,30 +31,36 @@ namespace QolaMVC.DAL
                 option5 = arr["option5"];
             if (arr.ContainsKey("option6"))
                 option6 = arr["option6"];
-
-            using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
-            using (var cmdGARead = new SqlCommand("Dining_Attendance_Saving", conn)
+            try
             {
-                CommandType = CommandType.StoredProcedure
-            })
+                using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
+                using (var cmdGARead = new SqlCommand("Dining_Attendance_Saving", conn)
+                {
+                    CommandType = CommandType.StoredProcedure
+                })
+                {
+                    conn.Open();
+                    cmdGARead.Parameters.AddWithValue("@homeID", homeid);
+                    cmdGARead.Parameters.AddWithValue("@mealindex", whichmeal);
+                    cmdGARead.Parameters.AddWithValue("@changingdate", change_date);
+                    cmdGARead.Parameters.AddWithValue("@resident_T", option1);
+                    cmdGARead.Parameters.AddWithValue("@resident_R", option2);
+                    cmdGARead.Parameters.AddWithValue("@resident_H", option3);
+                    cmdGARead.Parameters.AddWithValue("@resident_W", option4);
+                    cmdGARead.Parameters.AddWithValue("@resident_A", option5);
+                    cmdGARead.Parameters.AddWithValue("@resident_TC", option6);
+                    cmdGARead.Parameters.AddWithValue("@UserID", userid);
+                    cmdGARead.Parameters.AddWithValue("@modify_on", modifydate);
+                    cmdGARead.Parameters.Add("@returnint", SqlDbType.VarChar, 30);
+                    cmdGARead.Parameters["@returnint"].Direction = ParameterDirection.Output;
+                    cmdGARead.ExecuteNonQuery();
+                    int retunvalue = int.Parse(cmdGARead.Parameters["@returnint"].Value.ToString());
+                    return retunvalue;
+                }
+            }
+            catch(Exception ee)
             {
-                conn.Open();
-                cmdGARead.Parameters.AddWithValue("@homeID", homeid);
-                cmdGARead.Parameters.AddWithValue("@mealindex", whichmeal);
-                cmdGARead.Parameters.AddWithValue("@changingdate", change_date);
-                cmdGARead.Parameters.AddWithValue("@resident_T", option1);
-                cmdGARead.Parameters.AddWithValue("@resident_R", option2);
-                cmdGARead.Parameters.AddWithValue("@resident_H", option3);
-                cmdGARead.Parameters.AddWithValue("@resident_W", option4);
-                cmdGARead.Parameters.AddWithValue("@resident_A", option5);
-                cmdGARead.Parameters.AddWithValue("@resident_TC", option6);
-                cmdGARead.Parameters.AddWithValue("@UserID", userid);
-                cmdGARead.Parameters.AddWithValue("@modify_on", modifydate);
-                cmdGARead.Parameters.Add("@returnint", SqlDbType.VarChar, 30);
-                cmdGARead.Parameters["@returnint"].Direction = ParameterDirection.Output;
-                cmdGARead.ExecuteNonQuery();
-                int retunvalue = int.Parse(cmdGARead.Parameters["@returnint"].Value.ToString());
-                return retunvalue;
+                return 0;
             }
         }
 
@@ -111,6 +117,37 @@ namespace QolaMVC.DAL
                     retu.Add(int.Parse(rd[0].ToString()));
                 }
             return retu;
+        }
+
+        public static int add_progress_note(int residentid, string dateselect, string note, int userid, DateTime modified_time)
+        {
+            try
+            {
+                SqlConnection conn = new SqlConnection();
+                conn.ConnectionString = Constants.ConnectionString.PROD;
+                conn.Open();
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText =
+                        " insert into [dbo].[tbl_AB_Progress_Notes]" +
+                        " ([ResidentId],[dtmDate],[Title],[Note],[Status],[ModifiedBy],[ModifiedOn],[Category])" +
+                        " values" +
+                        " (@residentid, @date, 'Dining Attendance', @note, 'A', @userid, @modifieddate, 3)";
+                cmd.Parameters.AddWithValue("@residentid", residentid);
+                cmd.Parameters.AddWithValue("@date", DateTime.Parse(dateselect).ToString("yyyy-MM-dd"));
+                cmd.Parameters.AddWithValue("@note", note);
+                cmd.Parameters.AddWithValue("@userid", userid);
+                cmd.Parameters.AddWithValue("@modifieddate", modified_time);
+                cmd.Connection = conn;
+                SqlDataReader rd = cmd.ExecuteReader();
+                conn.Close();
+                return 1;
+            }
+            catch(Exception eee)
+            {
+                return 0;
+            }
+
+            
         }
 
     }
