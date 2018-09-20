@@ -132,43 +132,7 @@ namespace QolaMVC.Controllers
             return View();
         }
 
-        public ActionResult DiningAttendance(string datesel)
-        {
-            var user = (UserModel)TempData["User"];
-            var home = (HomeModel)TempData["Home"];
 
-            ViewBag.Message = TempData["Message"];
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
-            ViewBag.User = user;
-            ViewBag.Home = home;
-            Dining_Attendance_simple LIST_VIEW_RESIDENT = new Dining_Attendance_simple();
-
-            if (datesel == "" || datesel == null)
-            {
-                TempData["datechoose"] = DateTime.Now.ToString("MMMM dd, yyyy");
-                LIST_VIEW_RESIDENT = HomeDAL.get_list_resident(home.Id, DateTime.Today);
-                string[] genderinfo = HomeDAL.get_gender_info(home.Id, DateTime.Today);
-                TempData["number_attendance_array"] = genderinfo;
-            }
-            else
-            {
-                TempData["datechoose"] = datesel;
-                LIST_VIEW_RESIDENT = HomeDAL.get_list_resident(home.Id, DateTime.Parse(datesel));
-                string[] genderinfo = HomeDAL.get_gender_info(home.Id, DateTime.Parse(datesel));
-                TempData["number_attendance_array"] = genderinfo;
-            }
-            TempData["LIST_VIEW_RESIDENT"] = LIST_VIEW_RESIDENT;
-            TempData.Keep("LIST_VIEW_RESIDENT");
-            ViewBag.LIST_VIEW_RESIDENT = LIST_VIEW_RESIDENT;
-            //DateTime lastSunday = DateTime.Now;
-            //while (lastSunday.DayOfWeek != DayOfWeek.Sunday)
-            //    lastSunday = lastSunday.AddDays(-1);
-            //TempData["Sunday"] = lastSunday;
-
-            return View(LIST_VIEW_RESIDENT);
-        }
 
 
         #region ajax requests
@@ -1610,6 +1574,47 @@ namespace QolaMVC.Controllers
         }
 
 
+
+        #region Dining Attendance
+
+        public ActionResult DiningAttendance(string datesel)
+        {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+
+            ViewBag.Message = TempData["Message"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            Dining_Attendance_simple LIST_VIEW_RESIDENT = new Dining_Attendance_simple();
+
+            if (datesel == "" || datesel == null)
+            {
+                TempData["datechoose"] = DateTime.Now.ToString("MMMM dd, yyyy");
+                LIST_VIEW_RESIDENT = HomeDAL.get_list_resident(home.Id, DateTime.Today);
+                string[] genderinfo = HomeDAL.get_gender_info(home.Id, DateTime.Today);
+                TempData["number_attendance_array"] = genderinfo;
+            }
+            else
+            {
+                TempData["datechoose"] = datesel;
+                LIST_VIEW_RESIDENT = HomeDAL.get_list_resident(home.Id, DateTime.Parse(datesel));
+                string[] genderinfo = HomeDAL.get_gender_info(home.Id, DateTime.Parse(datesel));
+                TempData["number_attendance_array"] = genderinfo;
+            }
+            TempData["LIST_VIEW_RESIDENT"] = LIST_VIEW_RESIDENT;
+            TempData.Keep("LIST_VIEW_RESIDENT");
+            ViewBag.LIST_VIEW_RESIDENT = LIST_VIEW_RESIDENT;
+            //DateTime lastSunday = DateTime.Now;
+            //while (lastSunday.DayOfWeek != DayOfWeek.Sunday)
+            //    lastSunday = lastSunday.AddDays(-1);
+            //TempData["Sunday"] = lastSunday;
+
+            return View(LIST_VIEW_RESIDENT);
+        }
+
         [HttpPost]
         public int saveButton_Dining(string arr, int whichmeal, string datesel)
         {
@@ -1732,6 +1737,8 @@ namespace QolaMVC.Controllers
 
             return returnint;
         }
+
+        #endregion
     }
 }
 

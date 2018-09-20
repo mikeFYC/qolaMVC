@@ -48,6 +48,16 @@ namespace QolaMVC.Controllers
             return Json(l_Json, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult SearchResident()
+        {
+            return View();
+        }
+
+
+
+
+        #region Suite Handler
+
         public ActionResult SuiteHandler(int p_ResidentId)
         {
             var user = (UserModel)TempData["User"];
@@ -68,11 +78,6 @@ namespace QolaMVC.Controllers
             TempData["Table"] = update_Suite_Handler_Table.get_innerHTML(resident.ID);
 
             return View(resident);
-        }
-
-        public ActionResult SearchResident()
-        {
-            return View();
         }
 
         [HttpGet]
@@ -114,7 +119,6 @@ namespace QolaMVC.Controllers
             }
             return Json(l_Json, JsonRequestBehavior.AllowGet);
         }
-
 
         [HttpPost]
         public int saveButton_ApplicationSuite(DateTime term, int occu, string suiteno, string notes)
@@ -327,7 +331,7 @@ namespace QolaMVC.Controllers
             return returnleaving;
         }
 
-
+        #endregion
 
 
 
