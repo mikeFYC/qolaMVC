@@ -1,4 +1,6 @@
-﻿@RenderPage("~/Views/Shared/_Header.cshtml")
+﻿@model QolaMVC.Models.FallRiskAssessmentModel
+
+@RenderPage("~/Views/Shared/_Header.cshtml")
 @RenderPage("~/Views/Shared/_SideBar.cshtml")
 
 <style>
@@ -49,465 +51,519 @@
                                 <label class="form-check-label" for="inlineRadio2">No Risk</label>
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-4">
                             <div class="row">
-                                <div class="col-md-6">
-                                    <table class="table table-bordered">
-                                        <thead class="bg-primary">
-                                            <tr>
-                                                <th class="text-white text-center">Fall History</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            2 or more in past month = 2pts
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            1 to 2 in past month = 1pt
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="col-md-6">
-                                    <table class="table table-bordered">
-                                        <thead class="bg-primary">
-                                            <tr>
-                                                <th class="text-white text-center">Mental Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Confused / Dementia = 2pts
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Resident non-compliance = 2pts
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
 
-                                <div class="col-md-6">
-                                    <table class="table table-bordered">
-                                        <thead class="bg-primary">
-                                            <tr>
-                                                <th class="text-white text-center">Neurological/Neuromuscular Disease</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            CVA = 1pt
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Parkinson's = 1pt
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Alzheimer's = 1pt
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Seizure Disorder = 1pt
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Other(e.g. MS,ALS,PSP) = 1pt
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                <div class="col-md-12 text-right">
+                                    <div class="row">
+                                        <form action="~/Assessments/FallRisk" method="post">
+                                            <div class="col-md-6 text-right">
+                                                <p class="text-right">Assessment History:</p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <select name="AssessmentDate" id="" onchange="this.form.submit()">
+                                                    @if (ViewBag.AssessmentDates != null)
+                                                    {
+                                                        <option value="new">New</option>
+                                                        foreach (var l_Date in (List<DateTime>)ViewBag.AssessmentDates)
+                                                        {
 
-                                <div class="col-md-6">
-                                    <table class="table table-bordered">
-                                        <thead class="bg-primary">
-                                            <tr>
-                                                <th class="text-white text-center">Orthopedic Disease/Concerns</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Recent Fracture(within past year) = 1pt
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Cast/Splint/Slings = 1pt
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Amputation/Prosthesis = 1pt
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Severe Arthritis = 1pt
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                                            if (Model.DateEntered == l_Date)
+                                                            {
+                                                                <option value="@l_Date" selected>@l_Date</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@l_Date">@l_Date</option>
+                                                            }
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </form>
+                                    </div>
 
-                                <div class="col-md-6">
-                                    <table class="table table-bordered">
-                                        <thead class="bg-primary">
-                                            <tr>
-                                                <th class="text-white text-center">Other Disease Processes</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Diabetes = 1pt
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Osteoporosis = 1pt
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Postural Hypotension = 1pt
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Syncope/Dizziness = 1pt
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
                                 </div>
-
-                                <div class="col-md-6">
-                                    <table class="table table-bordered">
-                                        <thead class="bg-primary">
-                                            <tr>
-                                                <th class="text-white text-center">Sensory Deficits</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Decreased Vision = 1pt
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Decreased Hearing = 1pt
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Aphasia = 1pt
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <table class="table table-bordered">
-                                        <thead class="bg-primary">
-                                            <tr>
-                                                <th class="text-white text-center">Incontinence</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Bowel = 2pts
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Bladder = 2pts
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Transfer difficulties = 1pt
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Unsteady gait = 1pt
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <table class="table table-bordered">
-                                        <thead class="bg-primary">
-                                            <tr>
-                                                <th class="text-white text-center">Assistive Devices - use of</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Wheelchair = 1pt
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Walker = 1pt
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Cane = 1pt
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <table class="table table-bordered">
-                                        <thead class="bg-primary">
-                                            <tr>
-                                                <th class="text-white text-center">Medications</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Cardiac = 1pt
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Diuretics = 1pt
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Narcotics = 1pt
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Analgesics = 1pt
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Anti-psychotics / Sedatives = 1pt
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Anti-Anxiety / Anti-depressants = 1pt
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check pads">
-                                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
-                                                            Laxatives = 1pt
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <div class="col-md-12 text-center">
-                                    <br><br>
-                                    <button class="btn btn-danger">BACK</button>
-                                    <button class="btn btn-danger">SAVE</button>
-                                    <button class="btn btn-danger">CLEAR</button>
-                                    <button class="btn btn-danger">PRINT PDF</button>
-                                </div>
-
                             </div>
                         </div>
+                        <div class="col-md-4">
+                            <div class="row">
+
+                                <div class="col-md-12 text-right">
+                                    <div class="row">
+                                        <h2 class="TotalScore">0</h2><br />
+                                        <br />
+                                        <br />
+                                        <h4 class="RiskLevel">Low Risk</h4>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <form action="~/Assessments/AddFallRiskAssessment" method="post">
+                            @Html.HiddenFor(m => m.TotalScore, new { Id = "fallRiskTotalScore" })
+                            @Html.HiddenFor(m => m.RiskLevel, new { Id = "fallRiskLevel" })
+                            
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <table class="table table-bordered">
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">Fall History</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.FallHistory_IsTwoOrMore, new { @class = "form-check-input fallRisk", data_val = "2" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                2 or more in past month = 2pts
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.FallHistory_IsOneOrTwo, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                1 to 2 in past month = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <table class="table table-bordered">
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">Mental Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.MentalStatus_IsConfused, new { @class = "form-check-input fallRisk", data_val = "2" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Confused / Dementia = 2pts
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.MentalStatus_IsResidentNonCompliance, new { @class = "form-check-input fallRisk", data_val = "2" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Resident non-compliance = 2pts
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <table class="table table-bordered">
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">Neurological/Neuromuscular Disease</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Neurological_IsCVA, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                CVA = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Neurological_IsParkinsons, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Parkinson's = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Neurological_IsAlzheimers, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Alzheimer's = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Neurological_IsSeizureDisorder, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Seizure Disorder = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Neurological_IsOther, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Other(e.g. MS,ALS,PSP) = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <table class="table table-bordered">
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">Orthopedic Disease/Concerns</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Orthopedic_IsRecent, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Recent Fracture(within past year) = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Orthopedic_IsCast, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Cast/Splint/Slings = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Orthopedic_IsAmputation, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Amputation/Prosthesis = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Orthopedic_IsSevere, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Severe Arthritis = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <table class="table table-bordered">
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">Other Disease Processes</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Other_IsDiabetes, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Diabetes = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Other_IsOsteoporosis, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Osteoporosis = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Other_IsPosturalHypotension, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Postural Hypotension = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Other_IsSyncope, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Syncope/Dizziness = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <table class="table table-bordered">
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">Sensory Deficits</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Sensory_IsDecreasedVision, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Decreased Vision = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Sensory_IsDecreasedHearing, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Decreased Hearing = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Sensory_IsAphasia, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Aphasia = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <table class="table table-bordered">
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">Incontinence</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Incontinence_IsBowel, new { @class = "form-check-input fallRisk", data_val = "2" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Bowel = 2pts
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Incontinence_IsBladder, new { @class = "form-check-input fallRisk", data_val = "2" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Bladder = 2pts
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Incontinence_IsTransfer, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Transfer difficulties = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Incontinence_IsUnsteady, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Unsteady gait = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <table class="table table-bordered">
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">Assistive Devices - use of</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Assistive_IsWheelChair, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Wheelchair = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Assistive_IsWalker, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Walker = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Assistive_IsCane, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Cane = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <table class="table table-bordered">
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">Medications</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Medication_IsCardiac, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Cardiac = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Medication_IsDiuretics, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Diuretics = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Medication_IsNarcotics, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Narcotics = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Medication_IsAnalgesics, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Analgesics = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Medication_IsSedatives, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Anti-psychotics / Sedatives = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Medication_IsAntiAnxiety, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Anti-Anxiety / Anti-depressants = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Medication_IsLaxatives, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Laxatives = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="col-md-12 text-center">
+                                        <br><br>
+                                        <a href="#" class="btn btn-danger">BACK</a>
+                                        <input type="submit" class="btn btn-danger" value="SAVE" />
+                                        <input type="reset" class="btn btn-danger" value="CLEAR" />
+                                        <button class="btn btn-danger">PRINT PDF</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -519,3 +575,55 @@
     </div>
     <!-- END PAGE CONTENT -->
     @RenderPage("~/Views/Shared/_Footer.cshtml")
+    <script>
+        var total = 0;
+        var RiskValue = '';
+
+        /* look for all checkboes that have a class 'fallRisk' attached to it and check if it was checked */
+        $(".fallRisk:checked").each(function () {
+            total += parseInt($(this).attr('data-val'));
+        });
+
+        //Score of 0 - 5 pts = Low risk 6 - 9 pts = Medium risk >= 10 pts = High risk.
+        if (total > 0 && total <= 5) {
+            RiskValue = "Low Risk";
+        }
+        if (total >= 6 && total <= 9) {
+            RiskValue = "Medium Risk";
+        }
+        if (total >= 10) {
+            RiskValue = "High Risk";
+        }
+
+        $(".TotalScore").text(total);
+        $(".RiskLevel").text(RiskValue);
+
+        $("#fallRiskTotalScore").val(total);
+        $("#fallRiskLevel").val(RiskValue);
+
+        $(".fallRisk").click(function () {
+            total = 0;
+           /* look for all checkboes that have a class 'fallRisk' attached to it and check if it was checked */
+            $(".fallRisk:checked").each(function () {
+                total += parseInt($(this).attr('data-val'));
+            });
+            $(".TotalScore").text(total);
+            //Score of 0 - 5 pts = Low risk 6 - 9 pts = Medium risk >= 10 pts = High risk.
+            if (total > 0 && total <= 5)
+            {
+                RiskValue = "Low Risk";
+            }
+            if (total >= 6 && total <= 9)
+            {
+                RiskValue = "Medium Risk";
+            }
+            if (total >= 10)
+            {
+                RiskValue = "High Risk";
+            }
+            $(".RiskLevel").text(RiskValue);
+
+        });
+
+       
+    </script>

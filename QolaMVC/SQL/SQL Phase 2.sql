@@ -458,7 +458,6 @@ IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_
 DROP PROCEDURE [dbo].[spAB_Add_Fall_RiskAssessment]
 GO
 CREATE PROCEDURE [dbo].[spAB_Add_Fall_RiskAssessment]
-@Id int,
 @FallHistory_IsTwoOrMore bit,
 @FallHistory_IsOneOrTwo bit,
 @Neurological_IsCVA bit,
@@ -494,7 +493,7 @@ CREATE PROCEDURE [dbo].[spAB_Add_Fall_RiskAssessment]
 @Assistive_IsWalker bit,
 @Assistive_IsCane bit,
 @TotalScore int,
-@RiskLevel nvarchar(10),
+@RiskLevel nvarchar(10) = '',
 @ResidentId int,
 @DateEntered datetime,
 @EnteredBy int

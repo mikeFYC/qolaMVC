@@ -879,7 +879,104 @@ namespace QolaMVC.Controllers
 
         public ActionResult FallRisk()
         {
-            return View();
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            var l_FallRisk = AssessmentDAL.GetFallRiskAssessment(resident.ID);
+
+            if (l_FallRisk.Count == 0)
+            {
+                l_FallRisk = new Collection<FallRiskAssessmentModel>();
+                l_FallRisk.Add(new FallRiskAssessmentModel());
+            }
+
+            List<DateTime> l_AssessmentDates = new List<DateTime>();
+
+            foreach (var l_A in l_FallRisk)
+            {
+                l_AssessmentDates.Add(l_A.DateEntered);
+            }
+
+            ViewBag.AssessmentDates = l_AssessmentDates;
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            return View(l_FallRisk.LastOrDefault());
+        }
+
+        [HttpPost]
+        public ActionResult FallRisk(FormCollection p_Form)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            var l_FallRisk = AssessmentDAL.GetFallRiskAssessment(resident.ID);
+
+            if (l_FallRisk.Count == 0)
+            {
+                l_FallRisk = new Collection<FallRiskAssessmentModel>();
+                l_FallRisk.Add(new FallRiskAssessmentModel());
+            }
+
+            List<DateTime> l_AssessmentDates = new List<DateTime>();
+
+            foreach (var l_A in l_FallRisk)
+            {
+                l_AssessmentDates.Add(l_A.DateEntered);
+            }
+
+            ViewBag.AssessmentDates = l_AssessmentDates;
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            DateTime l_Date = DateTime.Now;
+            FallRiskAssessmentModel model = new FallRiskAssessmentModel();
+
+            if (Request.Form["AssessmentDate"] != "new")
+            {
+                l_Date = Convert.ToDateTime(Request.Form["AssessmentDate"]);
+                model = l_FallRisk.FirstOrDefault(m2 => m2.DateEntered.Date == l_Date.Date && m2.DateEntered.Hour == l_Date.Hour && m2.DateEntered.Minute == l_Date.Minute);
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult AddFallRiskAssessment(FallRiskAssessmentModel p_Model)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            p_Model.EnteredBy = user.ID;
+            p_Model.ResidentId = resident.ID;
+            p_Model.DateEntered = DateTime.Now;
+
+            AssessmentDAL.AddFallRiskAssessment(p_Model);
+            return RedirectToAction("FallRisk");
         }
     }
 }

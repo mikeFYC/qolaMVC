@@ -1505,46 +1505,7 @@ namespace QolaMVC.DAL
                 SqlCommand l_Cmd = new SqlCommand("spAB_Add_Fall_RiskAssessment", l_Conn);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                l_Cmd.Parameters.AddWithValue("@ResidentId", p_Model.ResidentId);
                 l_Cmd.Parameters.AddWithValue("@FallHistory_IsTwoOrMore", p_Model.FallHistory_IsTwoOrMore);
-//                @ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ bit,
-//@ int,
-//@ nvarchar(10),
-//@ int,
-//@ datetime,
-//@ int
                 l_Cmd.Parameters.AddWithValue("@FallHistory_IsOneOrTwo", p_Model.FallHistory_IsOneOrTwo);
                 l_Cmd.Parameters.AddWithValue("@Neurological_IsCVA", p_Model.Neurological_IsCVA);
                 l_Cmd.Parameters.AddWithValue("@Neurological_IsParkinsons", p_Model.Neurological_IsParkinsons);
@@ -1585,43 +1546,12 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@ResidentId", p_Model.ResidentId);
                 l_Cmd.Parameters.AddWithValue("@DateEntered", p_Model.DateEntered);
                 l_Cmd.Parameters.AddWithValue("@EnteredBy", p_Model.EnteredBy);
+                l_Cmd.ExecuteNonQuery();
 
-
-                DataSet dataReceive = new DataSet();
-
-                l_DA.SelectCommand = l_Cmd;
-                l_DA.Fill(dataReceive);
-                int l_IncidentId = 0;
-                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
-                {
-                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
-                    {
-                        l_IncidentId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
-                    }
-
-                    if (p_Model.SectionG != null)
-                    {
-                        foreach (var sectionG in p_Model.SectionG)
-                        {
-                            SqlCommand l_Cmd_SectionG = new SqlCommand("spAB_Add_UnusualIncident_SectionG", l_Conn);
-                            // l_Conn.Open();
-                            l_Cmd_SectionG.CommandType = System.Data.CommandType.StoredProcedure;
-                            l_Cmd_SectionG.Parameters.AddWithValue("@Residentid", p_Model.Resident.ID);
-                            l_Cmd_SectionG.Parameters.AddWithValue("@IncidentId", l_IncidentId);
-                            l_Cmd_SectionG.Parameters.AddWithValue("@Notify", sectionG.Notify);
-                            l_Cmd_SectionG.Parameters.AddWithValue("@Name", sectionG.Name);
-                            l_Cmd_SectionG.Parameters.AddWithValue("@Date", sectionG.Date);
-                            l_Cmd_SectionG.Parameters.AddWithValue("@ByWhom", sectionG.ByWhom);
-                            l_Cmd_SectionG.Parameters.AddWithValue("@Via", sectionG.Via);
-                            l_Cmd_SectionG.Parameters.AddWithValue("@Enteredby", p_Model.EnteredBy.ID);
-                            l_Cmd_SectionG.ExecuteNonQuery();
-                        }
-                    }
-                }
             }
             catch (Exception ex)
             {
-                exception = "AddUnusualIncident |" + ex.ToString();
+                exception = "AddFallRiskAssessment |" + ex.ToString();
                 //Log.Write(exception);
                 throw;
             }
