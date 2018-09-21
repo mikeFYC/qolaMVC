@@ -57,6 +57,7 @@ namespace QolaMVC.Controllers
             }
         }
 
+        [HttpGet]
         public ActionResult Menu(int p_HomeId)
         {
             var user = (UserModel)TempData["User"];
@@ -1618,19 +1619,30 @@ namespace QolaMVC.Controllers
         [HttpPost]
         public int saveButton_Dining(string arr, int whichmeal, string datesel)
         {
-
-            arr = arr.Replace("Taken", "option1").Replace("Refused", "option2").Replace("Hospital", "option3").Replace("Waiver", "option4").Replace("Away", "option5").Replace("Tray Complimentary", "option6");
+            string meal="";
+            if (whichmeal == 1)
+                meal = "Breakfast";
+            else if (whichmeal == 2)
+                meal = "Lunch";
+            else if (whichmeal == 3)
+                meal = "Dinner";
+            string arr_2 = arr.Replace("Taken", "option1").Replace("Refused", "option2").Replace("Hospital", "option3").Replace("Waiver", "option4").Replace("Away", "option5").Replace("Tray Complimentary", "option6");
+            arr = arr.Replace("option1", "Taken").Replace("option2", "Refused").Replace("option3", "Hospital").Replace("option4", "Waiver").Replace("option5", "Away").Replace("option6", "Tray Complimentary");
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
             TempData.Keep("User");
             TempData.Keep("Home");
             List<string> Save_sum_array = new List<string>();
+            List<string> Save_sum_array_original = new List<string>();
             Dictionary<string, string> Save_summary = new Dictionary<string, string>();
-            if (arr.Length != 0)
+            if (arr_2.Length != 0)
             {
-                Save_sum_array = arr.Substring(0, arr.Length - 1).Split(',').ToList();
+                Save_sum_array = arr_2.Substring(0, arr_2.Length - 1).Split(',').ToList();
+                Save_sum_array_original = arr.Substring(0, arr.Length - 1).Split(',').ToList();
                 for (int a = 0; a < Save_sum_array.Count(); a = a + 2)
                 {
+                    Dining_Attendance_functions.add_progress_note(int.Parse(Save_sum_array_original[a]), DateTime.Now, "Resident "+ Save_sum_array_original[a+1]+" "+meal, user.ID, DateTime.Now);
+
                     if (Save_summary.ContainsKey(Save_sum_array[a + 1]) == false)
                     {
                         Save_summary.Add(Save_sum_array[a + 1], Save_sum_array[a]);
@@ -1642,9 +1654,6 @@ namespace QolaMVC.Controllers
             Dining_Attendance_functions.save_Button(home.Id, whichmeal, DateTime.Parse(datesel), Save_summary, user.ID, DateTime.Now);
 
                 return 1;
-            
-
-            
         }
 
         [HttpGet]
@@ -1733,10 +1742,41 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            int returnint = Dining_Attendance_functions.add_progress_note(residentid,datesel,note,user.ID,DateTime.Now);
+            int returnint = Dining_Attendance_functions.add_progress_note(residentid,DateTime.Now, note,user.ID,DateTime.Now);
 
             return returnint;
         }
+
+        #endregion
+
+
+
+        #region To Do List
+
+        [HttpGet]
+        public ActionResult HO_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_hospital_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult DU_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_DU_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+
+
 
         #endregion
     }

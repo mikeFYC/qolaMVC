@@ -119,7 +119,7 @@ namespace QolaMVC.DAL
             return retu;
         }
 
-        public static int add_progress_note(int residentid, string dateselect, string note, int userid, DateTime modified_time)
+        public static int add_progress_note(int residentid, DateTime dateselect, string note, int userid, DateTime modified_time)
         {
             try
             {
@@ -128,12 +128,12 @@ namespace QolaMVC.DAL
                 conn.Open();
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandText =
-                        " insert into [dbo].[tbl_AB_Progress_Notes]" +
-                        " ([ResidentId],[dtmDate],[Title],[Note],[Status],[ModifiedBy],[ModifiedOn],[Category])" +
+                        " insert into [dbo].[tbl_Progress_Notes]" +
+                        " (fd_resident_id,fd_date,fd_title,fd_note,fd_status,fd_modified_by,fd_modified_on,fd_category)" +
                         " values" +
                         " (@residentid, @date, 'Dining Attendance', @note, 'A', @userid, @modifieddate, 3)";
                 cmd.Parameters.AddWithValue("@residentid", residentid);
-                cmd.Parameters.AddWithValue("@date", DateTime.Parse(dateselect).ToString("yyyy-MM-dd"));
+                cmd.Parameters.AddWithValue("@date", dateselect);
                 cmd.Parameters.AddWithValue("@note", note);
                 cmd.Parameters.AddWithValue("@userid", userid);
                 cmd.Parameters.AddWithValue("@modifieddate", modified_time);

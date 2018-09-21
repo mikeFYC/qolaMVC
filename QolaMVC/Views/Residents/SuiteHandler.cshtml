@@ -912,6 +912,17 @@
         @RenderPage("~/Views/Shared/_Footer.cshtml")
 
 
-
+        <script>
+            if (@TempData["hospital"] = "YES") {
+                $.get("/Residents/get_Leaving_date", {}, function (data) {
+                    if (data != "") {
+                        var a = $('#leavingDate_Hospitalization');
+                        a[0].value = data;
+                    }
+                });
+                document.getElementById("Hospitalization").className = "nav-link active";
+                document.getElementById("pills-Hospitalization").className = "tab-pane fade show active";
+            }
+        </script>
 
 

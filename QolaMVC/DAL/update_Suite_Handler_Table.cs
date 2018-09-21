@@ -306,6 +306,7 @@ namespace QolaMVC.DAL
                     else
                         retu = rd[0].ToString();
                 }
+            conn.Close();
             return retu;
         }
     }

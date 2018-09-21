@@ -77,8 +77,35 @@ namespace QolaMVC.Controllers
             ProgressNotesHelper.RegisterSession(resident);
             TempData["Table"] = update_Suite_Handler_Table.get_innerHTML(resident.ID);
 
+            TempData["hospital"] = "NO";
+
             return View(resident);
         }
+
+        public ActionResult SuiteHandler2(int p_ResidentId)
+        {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            var resident = ResidentsDAL.GetResidentById(p_ResidentId);
+            var progressNotes = ProgressNotesDAL.GetProgressNotesCollections(resident.ID, DateTime.Now, DateTime.Now, "A");
+
+            ViewBag.Message = TempData["Message"];
+            TempData["Resident"] = resident;
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            ViewBag.Resident = resident;
+            ViewBag.ProgressNotes = progressNotes;
+            ProgressNotesHelper.RegisterSession(resident);
+            TempData["Table"] = update_Suite_Handler_Table.get_innerHTML(resident.ID);
+
+            TempData["hospital"] = "YES";
+
+            return View("SuiteHandler", resident);
+        }
+
 
         [HttpGet]
         public ActionResult AvailableSuite(DateTime term,int occu)

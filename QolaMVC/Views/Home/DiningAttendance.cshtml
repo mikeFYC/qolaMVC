@@ -297,12 +297,24 @@
                         "<\/div><\/td><td><div><input id=\"1\" type=\"image\" style=\"width:1.5vw;height:1.5vw\" " +
                         "onclick=\"SomeDeleteRowFunction(this)\" src=\"\/Content\/pages\/img\/X.jpg\" class=\"clsButtonRemove\" style=\"float:right;\"><\/div>" +
                         "<\/td><\/tr>");
+                    var box = $('#searchresidents3');
+                    box[0].value = "";
+                    var choice = $('input[name="inlineRadioOptions"]');
+                    for (var ind = 0; ind < choice.length; ind++) {
+                        choice[ind].checked = false;
+                    }
                 }
-
             }
         });
+    }
 
-
+    function x_close() {
+        var box = $('#searchresidents3');
+        box[0].value = "";
+        var choice = $('input[name="inlineRadioOptions"]');
+        for (var ind = 0; ind < choice.length; ind++) {
+            choice[ind].checked = false;
+        }
     }
     
     function View_List_clear() {
@@ -407,7 +419,41 @@
         document.getElementById('contactForm').style.display = 'none';
     }
 
+    function Print_list() {
+        var mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
+        mywindow.document.write('<html><head><title>' + document.title + '</title>');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write('<h1>' + document.title + '</h1>');
+        mywindow.document.write(document.getElementById("pills-profile1").innerHTML);
+        mywindow.document.write('</body></html>');
+
+        mywindow.document.close(); // necessary for IE >= 10
+        mywindow.focus(); // necessary for IE >= 10*/
+
+        mywindow.print();
+        mywindow.close();
+
+        return true;
+    }
+
+    function Print_floor() {
+        var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+        mywindow.document.write('<html><head><title>' + document.title + '</title>');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write('<h1>' + document.title + '</h1>');
+        mywindow.document.write(document.getElementById("pills-contact1").innerHTML);
+        mywindow.document.write('</body></html>');
+
+        mywindow.document.close(); // necessary for IE >= 10
+        mywindow.focus(); // necessary for IE >= 10*/
+
+        mywindow.print();
+        mywindow.close();
+
+        return true;
+    }
 
 
 </script>
@@ -683,9 +729,9 @@
             <br>
             <form action="#">
                 <textarea class="formtext" id="formtextarea" placeholder="Comment" style="height:170px;width:300px"></textarea>
-                <input class="formBtn" type="button" value="Submit" onclick="progressnoteadd(this)"/>
-                <input class="formBtn" type="button" value="Reset" onclick="document.getElementById('formtextarea').value=''"/>
-                <input class="formBtn" type="button" value="Close" onclick="note_close_click()"/>
+                <input class="formBtn" type="button" value="Submit" onclick="progressnoteadd(this)" />
+                <input class="formBtn" type="button" value="Reset" onclick="document.getElementById('formtextarea').value=''" />
+                <input class="formBtn" type="button" value="Close" onclick="note_close_click()" />
             </form>
         </div>
 
@@ -695,7 +741,7 @@
             <div class="modal-content" id="attendent_form_third_layer">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Attendance</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="x_close()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -810,6 +856,7 @@
                                         <br>
                                         <button type="button" class="btn btn-primary" style="margin-bottom:1vw" data-dismiss="modal" onclick="list_savebutton()">SAVE</button>
                                         <button type="button" class="btn btn-secondary" style="margin-bottom:1vw" onclick="list_clearbutton()">CLEAR</button>
+                                        <button type="button" class="btn btn-primary" id="PrintID1" style="margin-bottom:1vw;float:right" onclick="Print_list()">Print</button>
                                     </div>
                                     <br>
                                     <div class="col-md-6" style="border: 1px solid #000;">
@@ -943,6 +990,7 @@
                                         <br>
                                         <button type="button" class="btn btn-primary" style="margin-bottom:1vw" data-dismiss="modal" onclick="floor_savebutton()">SAVE</button>
                                         <button type="button" class="btn btn-secondary" style="margin-bottom:1vw" onclick="floor_clearbutton()">CLEAR</button>
+                                        <button type="button" class="btn btn-primary" id="PrintID2" style="margin-bottom:1vw;float:right" onclick="Print_floor()">Print</button>
                                     </div>
 
                                     @{
@@ -972,37 +1020,37 @@
                                                                     <td>@a.FirstName @a.LastName</td>
                                                                     <td>
                                                                         <div class="form-check form-check-inline">
-                                                                            <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option1">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID + id="inlineRadio2" value="option1">
                                                                             <label class="form-check-label">T</label>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="form-check form-check-inline">
-                                                                            <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option2">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID + id="inlineRadio2" value="option2">
                                                                             <label class="form-check-label">R</label>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="form-check form-check-inline">
-                                                                            <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option3">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID + id="inlineRadio2" value="option3">
                                                                             <label class="form-check-label">H</label>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="form-check form-check-inline">
-                                                                            <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option4">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID + id="inlineRadio2" value="option4">
                                                                             <label class="form-check-label">W</label>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="form-check form-check-inline">
-                                                                            <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option5">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID + id="inlineRadio2" value="option5">
                                                                             <label class="form-check-label">A</label>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="form-check form-check-inline">
-                                                                            <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option6">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID + id="inlineRadio2" value="option6">
                                                                             <label class="form-check-label">TC</label>
                                                                         </div>
                                                                     </td>
@@ -1041,7 +1089,5 @@
     </div>
 
     @RenderPage("~/Views/Shared/_Footer.cshtml")
-
-
 
 
