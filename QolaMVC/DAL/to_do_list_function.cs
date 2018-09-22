@@ -86,5 +86,129 @@ namespace QolaMVC.DAL
             return l_Json;
         }
 
+        public static List<dynamic> get_IAA_list(int homeid)
+        {
+            List<dynamic> l_Json = new List<dynamic>();
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText =   " select ROW_NUMBER() over(order by SSH.fd_move_in_date) as number, SSH.fd_resident_id," +
+                                " SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date" +
+                                " from tbl_Resident R" +
+                                " join" +
+                                " (select SH.fd_home_id, SH.fd_resident_id, SH.fd_occupancy, SH.fd_move_in_date, SH.fd_move_out_date, " +
+                                " SH.fd_status, SH.fd_notes, SH.fd_modified_by, SH.fd_modified_on, SH.fd_pass_away_date, SH.fd_hospital," +
+                                " SH.fd_hospital_leaving, SH.fd_hospital_return, SH.fd_hospital_expected_return, S.fd_suite_no, S.fd_no_of_rooms, S.fd_floor" +
+                                " from tbl_Suite_Handler SH" +
+                                " join tbl_Suite S on S.fd_id = SH.fd_suite_id" +
+                                " ) " +
+                                " as SSH" +
+                                " on R.fd_id = SSH.fd_resident_id"+
+                                " where SSH.fd_home_id =" + homeid +
+                                " and GETDATE() > SSH.fd_move_in_date" +
+                                " and GETDATE() < isNULL(SSH.fd_move_out_date, '2200-09-01')" +
+                                " and SSH.fd_resident_id not in (select distinct fd_resident_id from[dbo].[tbl_AB_Activity_Assessment])";
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            if (rd.HasRows)
+                while (rd.Read())
+                {
+                    dynamic l_J = new System.Dynamic.ExpandoObject();
+                    l_J.number = rd[0];
+                    l_J.resident_id = rd[1];
+                    l_J.suite_no = rd[2];
+                    l_J.first_name = rd[3];
+                    l_J.last_name = rd[4];
+                    l_J.move_in_date =DateTime.Parse(rd[5].ToString()).ToString("yyyy-MM-dd");
+                    l_Json.Add(l_J);
+                }
+            conn.Close();
+            return l_Json;
+        }
+
+        public static List<dynamic> get_IDA_list(int homeid)
+        {
+            List<dynamic> l_Json = new List<dynamic>();
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = " select ROW_NUMBER() over(order by SSH.fd_move_in_date) as number, SSH.fd_resident_id," +
+                                " SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date" +
+                                " from tbl_Resident R" +
+                                " join" +
+                                " (select SH.fd_home_id, SH.fd_resident_id, SH.fd_occupancy, SH.fd_move_in_date, SH.fd_move_out_date, " +
+                                " SH.fd_status, SH.fd_notes, SH.fd_modified_by, SH.fd_modified_on, SH.fd_pass_away_date, SH.fd_hospital," +
+                                " SH.fd_hospital_leaving, SH.fd_hospital_return, SH.fd_hospital_expected_return, S.fd_suite_no, S.fd_no_of_rooms, S.fd_floor" +
+                                " from tbl_Suite_Handler SH" +
+                                " join tbl_Suite S on S.fd_id = SH.fd_suite_id" +
+                                " ) " +
+                                " as SSH" +
+                                " on R.fd_id = SSH.fd_resident_id" +
+                                " where SSH.fd_home_id =" + homeid +
+                                " and GETDATE() > SSH.fd_move_in_date" +
+                                " and GETDATE() < isNULL(SSH.fd_move_out_date, '2200-09-01')" +
+                                " and SSH.fd_resident_id not in (select distinct fd_resident_id from[dbo].[tbl_AB_Dietary_Assessment])";
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            if (rd.HasRows)
+                while (rd.Read())
+                {
+                    dynamic l_J = new System.Dynamic.ExpandoObject();
+                    l_J.number = rd[0];
+                    l_J.resident_id = rd[1];
+                    l_J.suite_no = rd[2];
+                    l_J.first_name = rd[3];
+                    l_J.last_name = rd[4];
+                    l_J.move_in_date = DateTime.Parse(rd[5].ToString()).ToString("yyyy-MM-dd");
+                    l_Json.Add(l_J);
+                }
+            conn.Close();
+            return l_Json;
+        }
+
+        public static List<dynamic> get_IFRA_list(int homeid)
+        {
+            List<dynamic> l_Json = new List<dynamic>();
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = " select ROW_NUMBER() over(order by SSH.fd_move_in_date) as number, SSH.fd_resident_id," +
+                                " SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date" +
+                                " from tbl_Resident R" +
+                                " join" +
+                                " (select SH.fd_home_id, SH.fd_resident_id, SH.fd_occupancy, SH.fd_move_in_date, SH.fd_move_out_date, " +
+                                " SH.fd_status, SH.fd_notes, SH.fd_modified_by, SH.fd_modified_on, SH.fd_pass_away_date, SH.fd_hospital," +
+                                " SH.fd_hospital_leaving, SH.fd_hospital_return, SH.fd_hospital_expected_return, S.fd_suite_no, S.fd_no_of_rooms, S.fd_floor" +
+                                " from tbl_Suite_Handler SH" +
+                                " join tbl_Suite S on S.fd_id = SH.fd_suite_id" +
+                                " ) " +
+                                " as SSH" +
+                                " on R.fd_id = SSH.fd_resident_id" +
+                                " where SSH.fd_home_id =" + homeid +
+                                " and GETDATE() > SSH.fd_move_in_date" +
+                                " and GETDATE() < isNULL(SSH.fd_move_out_date, '2200-09-01')" +
+                                " and SSH.fd_resident_id not in (select distinct fd_resident_id from[dbo].[tbl_AB_Fall_Risk_Assessment])";
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            if (rd.HasRows)
+                while (rd.Read())
+                {
+                    dynamic l_J = new System.Dynamic.ExpandoObject();
+                    l_J.number = rd[0];
+                    l_J.resident_id = rd[1];
+                    l_J.suite_no = rd[2];
+                    l_J.first_name = rd[3];
+                    l_J.last_name = rd[4];
+                    l_J.move_in_date = DateTime.Parse(rd[5].ToString()).ToString("yyyy-MM-dd");
+                    l_Json.Add(l_J);
+                }
+            conn.Close();
+            return l_Json;
+        }
+
+
     }
 }
