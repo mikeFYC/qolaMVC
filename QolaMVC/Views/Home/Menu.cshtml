@@ -196,8 +196,8 @@
 
 
                         @*@{
-        if (@ViewBag.User.UserType == 1)
-        {*@
+                        if (@ViewBag.User.UserType == 1)
+                        {*@
 
                         <div class="AlertBox" style="display:inline-block;margin-top:6vw;width:100%">
                             <div class="ShowAlert" show='N' id="dvShowAlert"><button type="button" class="btn btn-primary">To Do List</button></div>
@@ -216,7 +216,15 @@
                                             </ul>
                                         </div>
                                     </li>
-                                    <li class="list-group-item" id="PN"><a class="one" href="#" onclick="nextlayer(this)"><span class="badge">0</span>&nbsp;Progress Notes</a><div><ul id="PN_ul"><li type="Progress Notes"><a href="#" data-toggle="modal" data-target="#Progress_Note" style="color:white" onclick="PN_click(this)"><span class="badge">0</span> Progress Notes</a></li><li type="Acknowledge Notes" id="RAA"><span class="badge">0</span> Acknowledge Notes</li></ul></div></li>
+                                    <li class="list-group-item" id="PN">
+                                        <a class="one" href="#" onclick="nextlayer(this)"><span class="badge">0</span>&nbsp;Progress Notes</a>
+                                        <div>
+                                            <ul id="PN_ul">
+                                                <li type="Progress Notes"><a href="#" data-toggle="modal" data-target="#Progress_Note" style="color:white" onclick="PN_click(this)"><span class="badge">0</span> Progress Notes</a></li>
+                                                <li type="Acknowledge Notes" id="RAA"><a href="#" data-toggle="modal" data-target="#Acknowledge_Notes" style="color:white" onclick="AN_click(this)"><span class="badge">0</span> Acknowledge Notes</a></li>
+                                            </ul>
+                                        </div>
+                                    </li>
                                     <li class="list-group-item" id="RA"><a class="one" href="#" onclick="nextlayer(this)"><span class="badge">0</span>&nbsp;Reassessments</a><div><ul id="RA_ul"><li type="Acticity Assessment" id="RAA"><span class="badge">0</span> Acticity Assessment</li><li type="Dietary Assessment" id="RDA"><span class="badge">0</span> Dietary Assessment</li><li type="Fall Risk Assessment" id="RFRA"><span class="badge">0</span> Fall Risk Assessment</li><li type="Resident Care Assessment" id="RRCA"><span class="badge">0</span> Resident Care Assessment</li></ul></div></li>
                                     <li class="list-group-item" id="RI"><a class="one" href="#" onclick="nextlayer(this)"><span class="badge">0</span>&nbsp;Resident Incidents</a><div><ul id="RI_ul"><li type="Resident Fall"><span class="badge">0</span> Resident Fall</li></ul></div></li>
                                     <li class="list-group-item" id="RB"><a class="one" href="#" onclick="nextlayer(this)"><span class="badge">0</span>&nbsp;Residents Birthday</a><div><ul id="RB_ul"><li type="Birthday"><span class="badge">0</span> Birthday</li></ul></div></li>
@@ -230,7 +238,7 @@
 
 
                         @*}
-        }*@
+                        }*@
 
                         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#Dietary_Update">Open Modal</button>
 
@@ -374,7 +382,49 @@
                             </div>
                         </div>
 
+                        <div class="modal fade" id="Acknowledge_Notes" role="dialog" style="right:0">
+                            <div class="modal-dialog" style="left:0;right:0;">
 
+                                <!-- Modal content-->
+                                <div class="modal-content" style="width:65vw;right:50%;">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Acknowledge Note</h4>
+                                        <br>
+                                    </div>
+                                    <div class="modal-body">
+                                        <table class="miketable table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>S.No</th>
+                                                    <th>Suite No</th>
+                                                    <th>Name</th>
+                                                    <th>Move In Date</th>
+                                                    <th>Progress Note Date</th>
+                                                    <th style="width:11vw">Progress Note Tile</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="contactForm" class="modal" role="dialog" style="display:none">
+
+                            <h3>Add Progress Notes</h3>
+                            <br>
+                            <form action="#">
+                                <textarea class="formtext" id="formtextarea" placeholder="Comment" style="height:170px;width:300px"></textarea>
+                                <input class="formBtn" type="button" value="Write a New Progress Note" />
+                                <input class="formBtn" type="button" value="OK" />
+                            </form>
+                        </div>
 
 
 
@@ -383,27 +433,27 @@
 
 
                         @*  <div style="height: 55px;"></div>
-                        <div class="full-height">
-                            <h2 class="px-3">To Do List</h2>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-action pointer" data-toggle="modal" data-target="#todoModal">
-                Dietary Updates
-                <span class="badge badge-primary badge-pill pull-right">14</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-action pointer" data-toggle="modal" data-target="#todoModal">
-                Hospitalization
-                <span class="badge badge-primary badge-pill pull-right">3</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-action pointer" data-toggle="modal" data-target="#todoModal">
-                Initial Assessment
-                <span class="badge badge-primary badge-pill pull-right">68</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-action pointer" data-toggle="modal" data-target="#todoModal">
-                Progress Notes
-                <span class="badge badge-primary badge-pill pull-right">30</span>
-            </li>
-        </ul>
-                    </div>*@
+                                        <div class="full-height">
+                                            <h2 class="px-3">To Do List</h2>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-action pointer" data-toggle="modal" data-target="#todoModal">
+                                Dietary Updates
+                                <span class="badge badge-primary badge-pill pull-right">14</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-action pointer" data-toggle="modal" data-target="#todoModal">
+                                Hospitalization
+                                <span class="badge badge-primary badge-pill pull-right">3</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-action pointer" data-toggle="modal" data-target="#todoModal">
+                                Initial Assessment
+                                <span class="badge badge-primary badge-pill pull-right">68</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-action pointer" data-toggle="modal" data-target="#todoModal">
+                                Progress Notes
+                                <span class="badge badge-primary badge-pill pull-right">30</span>
+                            </li>
+                        </ul>
+                                    </div>*@
 
 
                     </div>
@@ -502,9 +552,9 @@
                             "<td>" + data[i][4].Value + " " + data[i][5].Value + " <\/td>" +
                             "<td>" + data[i][6].Value + " <\/td>" +
                             "<td>" +
-                                "<button type=\"button\" class=\"btn btn-primary\">View<\/button>"+
-                            "</td>" +
-                            "<\/tr>" );
+                            "<button type=\"button\" class=\"btn btn-primary\">View<\/button>" +
+                            "<\/td>" +
+                            "<\/tr>");
                     }
                 });
             }
@@ -521,11 +571,11 @@
                             "<tr onclick=\"window.location.href='\/Residents\/SuiteHandler2\/?p_ResidentId=" + data[i][1].Value + "'\" name='" + data[i][1].Value + "'>" +
                             "<td>" + data[i][0].Value + " <\/td>" +
                             "<td>" + data[i][2].Value + " <\/td>" +
-                            "<td>" + data[i][3].Value + " " +data[i][4].Value + " <\/td>" +
+                            "<td>" + data[i][3].Value + " " + data[i][4].Value + " <\/td>" +
                             "<td>" + data[i][5].Value + " <\/td>" +
                             "<td>" + data[i][6].Value + " <\/td>" +
                             "<td>" + data[i][7].Value + " <\/td>" +
-                            "<\/tr>" );
+                            "<\/tr>");
                     }
                 });
             }
@@ -542,7 +592,7 @@
                     var view = $('div[id="Initial_Assessment"] div div div[class="modal-body"] table tbody');
                     for (var i = 0; i < data.length; i++) {
                         view.append(
-                            "<tr name='" + data[i][1].Value+"'>" +
+                            "<tr name='" + data[i][1].Value + "'>" +
                             "<td>" + data[i][0].Value + " <\/td>" +
                             "<td>" + data[i][2].Value + " <\/td>" +
                             "<td>" + data[i][3].Value + " " + data[i][4].Value + " <\/td>" +
@@ -623,43 +673,150 @@
                 });
             }
 
+            function AN_click(ee) {
+
+                var node_tbody = $('div[id="Acknowledge_Notes"] div div div[class="modal-body"] table tbody');
+                while (node_tbody[0].hasChildNodes())
+                    node_tbody[0].removeChild(node_tbody[0].lastChild);
+                $.get("/Home/AN_CLICK", {}, function (data) {
+                    var view = $('div[id="Acknowledge_Notes"] div div div[class="modal-body"] table tbody');
+                    for (var i = 0; i < data.length; i++) {
+                        view.append(
+                            "<tr name='" + data[i][2].Value + "' PNid='" + data[i][1].Value + "'>" +
+                            "<td>" + data[i][0].Value + " <\/td>" +
+                            "<td>" + data[i][3].Value + " <\/td>" +
+                            "<td>" + data[i][4].Value + " " + data[i][5].Value + " <\/td>" +
+                            "<td>" + data[i][6].Value + " <\/td>" +
+                            "<td>" + data[i][7].Value + "<\/td>" +
+                            "<td>" + data[i][8].Value + "<\/td>" +
+                            "<td>" +
+                            "<button type=\"button\" class=\"btn btn-primary\" onclick=\"AN_view_click(this)\">View<\/button>" +
+                            "<\/td>" +
+                            "<\/tr>");
+                    }
+                });
+            }
+
+            function AN_view_click(ee) {
+                //$('#contactForm').modal({ backdrop: 'static', keyboard: false });
+                document.getElementById("contactForm").style.display = "block";
+                var a = $('#Acknowledge_Notes');
+                    a[0].click(false);
+            }
 
 
-            
 
         </script>
 
         <style>
-            div[class="float_box"] ul[class="list-group"] li:hover {background-color: grey;}
-
-            div[id="Resident_Away"] div div div[class="modal-body"] table tbody tr{cursor:pointer;}
-            div[id="Resident_Away"] div div div[class="modal-body"] table tbody tr:hover {background-color:grey;}
-            div[id="Dietary_Update"] div div div[class="modal-body"] table tbody tr {cursor:pointer;}
-            div[id="Dietary_Update"] div div div[class="modal-body"] table tbody tr:hover {background-color:grey;}
-            div[id="Initial_Assessment"] div div div[class="modal-body"] table tbody tr { cursor: pointer; }
-            div[id="Initial_Assessment"] div div div[class="modal-body"] table tbody tr:hover { background-color: grey; }
-            div[id="Progress_Note"] div div div[class="modal-body"] table tbody tr { cursor: pointer; }
-            div[id="Progress_Note"] div div div[class="modal-body"] table tbody tr:hover { background-color: grey; }
-
-            div div div div[class="modal-body"]{
-                overflow:auto;
-                overflow-x:hidden;
-                max-height:30vw;
-            }
-            .miketable{
-                width:100%;
-                color:black;
-            }
-            .miketable thead th {
-                padding: 1vw;
-            }
-            .miketable tbody tr{
-                height:3vw;
-            }
-            .miketable tbody tr td {
-                padding:1vw;
+            div[class="float_box"] ul[class="list-group"] li:hover {
+                background-color: grey;
             }
 
+            div[id="Resident_Away"] div div div[class="modal-body"] table tbody tr {
+                cursor: pointer;
+            }
+
+                div[id="Resident_Away"] div div div[class="modal-body"] table tbody tr:hover {
+                    background-color: grey;
+                }
+
+            div[id="Dietary_Update"] div div div[class="modal-body"] table tbody tr {
+                cursor: pointer;
+            }
+
+                div[id="Dietary_Update"] div div div[class="modal-body"] table tbody tr:hover {
+                    background-color: grey;
+                }
+
+            div[id="Initial_Assessment"] div div div[class="modal-body"] table tbody tr {
+                cursor: pointer;
+            }
+
+                div[id="Initial_Assessment"] div div div[class="modal-body"] table tbody tr:hover {
+                    background-color: grey;
+                }
+
+            div[id="Progress_Note"] div div div[class="modal-body"] table tbody tr {
+                cursor: pointer;
+            }
+
+                div[id="Progress_Note"] div div div[class="modal-body"] table tbody tr:hover {
+                    background-color: grey;
+                }
+
+            div[id="Acknowledge_Notes"] div div div[class="modal-body"] table tbody tr {
+                cursor: pointer;
+            }
+
+                div[id="Acknowledge_Notes"] div div div[class="modal-body"] table tbody tr:hover {
+                    background-color: grey;
+                }
+
+
+
+
+            div div div div[class="modal-body"] {
+                overflow: auto;
+                overflow-x: hidden;
+                max-height: 30vw;
+            }
+
+            .miketable {
+                width: 100%;
+                color: black;
+            }
+
+                .miketable thead th {
+                    padding: 1vw;
+                }
+
+                .miketable tbody tr {
+                    height: 3vw;
+                }
+
+                    .miketable tbody tr td {
+                        padding: 1vw;
+                    }
+        </style>
+
+        <style>
+            #contactForm {
+                display: none;
+                border: 6px solid salmon;
+                padding: 2em;
+                width: 400px;
+                text-align: center;
+                background: #fff;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+                -webkit-transform: translate(-50%,-50%)
+            }
+
+            .formBtn, .formtext {
+                margin: .8em auto;
+                font-family: inherit;
+                text-transform: inherit;
+                font-size: inherit;
+                display: block;
+                padding: .4em;
+            }
+
+            .formtext {
+                resize: none;
+            }
+
+            .formBtn {
+                display: inline-block;
+                background: teal;
+                color: #fff;
+                font-weight: 100;
+                font-size: 1.2em;
+                border: none;
+                width: 70px;
+            }
         </style>
 
         <script>

@@ -90,6 +90,8 @@ namespace QolaMVC.Controllers
 
             ViewBag.ProgressNotes = progressNotes;
             ProgressNotesHelper.RegisterSession(resident);
+
+            
             return View(resident);
         }
 
@@ -1816,6 +1818,17 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             List<dynamic> l_Json = to_do_list_function.get_PN_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult AN_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_AN_list(home.Id,user.ID);
             return Json(l_Json, JsonRequestBehavior.AllowGet);
         }
 

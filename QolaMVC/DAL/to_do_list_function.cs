@@ -269,6 +269,53 @@ namespace QolaMVC.DAL
             return l_Json;
         }
 
+        public static List<dynamic> get_AN_list(int homeid, int userid)
+        {
+            List<dynamic> l_Json = new List<dynamic>();
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = " select ROW_NUMBER()over(order by PN.fd_date) as number,PN.fd_id,PN.fd_resident_id,QQ.fd_suite_no,R.fd_first_name,R.fd_last_name,SH.fd_move_in_date,PN.fd_date,PN.fd_title" +
+                                " from tbl_Progress_Notes PN" +
+                                " left join tbl_Suite_Handler SH on PN.fd_resident_id = SH.fd_resident_id" +
+                                " left join tbl_Resident R on PN.fd_resident_id = R.fd_id and SH.fd_resident_id = R.fd_id" +
+                                " left join" +
+                                " (" +
+                                " select SSH.fd_resident_id, S.fd_suite_no from tbl_Suite_Handler SSH join tbl_Suite S on SSH.fd_suite_id= S.fd_id" +
+                                " and GETDATE()> SSH.fd_move_in_date" +
+                                " and GETDATE()< isNULL(SSH.fd_move_out_date, '2200-09-01')" +
+                                " ) " +
+                                " as QQ on PN.fd_resident_id = QQ.fd_resident_id" +
+                                " where" +
+                                " (PN.mike_acknowledge not like('%,"+ userid + ",%')" +
+                                " or PN.mike_acknowledge is null)" +
+                                " and fd_date> DATEADD(DD, -40, GETDATE())" +
+                                " and GETDATE()> SH.fd_move_in_date" +
+                                " and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')" +
+                                " and SH.fd_home_id ="+ homeid;
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            if (rd.HasRows)
+                while (rd.Read())
+                {
+                    dynamic l_J = new System.Dynamic.ExpandoObject();
+                    l_J.number = rd[0];
+                    l_J.PN_number = rd[1];
+                    l_J.resident_id = rd[2];
+                    l_J.suite_no = rd[3];
+                    l_J.first_name = rd[4];
+                    l_J.last_name = rd[5];
+                    l_J.move_in_date = DateTime.Parse(rd[6].ToString()).ToString("yyyy-MM-dd");
+                    l_J.PN_date = rd[7].ToString();
+                    l_J.PN_title = rd[8];
+
+                    l_Json.Add(l_J);
+                }
+            conn.Close();
+            return l_Json;
+        }
+
 
     }
 }
