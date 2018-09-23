@@ -480,19 +480,37 @@ namespace QolaMVC.Controllers
             return residentdata;
         }
 
-        public ActionResult ProgressNotes()
+        public ActionResult ProgressNotes(string p_ResidentId)
         {
+            if (p_ResidentId != null)
+            {
+                var resident = ResidentsDAL.GetResidentById(int.Parse(p_ResidentId));
+                var progressNotes = ProgressNotesDAL.GetProgressNotesCollections(resident.ID, DateTime.Now, DateTime.Now, "A");
+                ViewBag.Message = TempData["Message"];
+                TempData["Resident"] = resident;
+                TempData.Keep("Resident");
+                ViewBag.Resident = resident;
+                ViewBag.ProgressNotes = progressNotes;
+                ProgressNotesHelper.RegisterSession(resident);
+            }
+            else
+            {
+                var resident = (ResidentModel)TempData["Resident"];
+                ViewBag.Resident = resident;
+                TempData.Keep("Resident");
+            }
+
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
-            var resident = (ResidentModel)TempData["Resident"];
+            //var resident = (ResidentModel)TempData["Resident"];
 
             ViewBag.User = user;
             ViewBag.Home = home;
-            ViewBag.Resident = resident;
+            //ViewBag.Resident = resident;
 
             TempData.Keep("User");
             TempData.Keep("Home");
-            TempData.Keep("Resident");
+            //TempData.Keep("Resident");
 
             return View();
         }
