@@ -1843,6 +1843,40 @@ namespace QolaMVC.Controllers
             return Json(l_Json, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        public ActionResult RAA_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_RAA_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult RDA_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_RDA_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult RFRA_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_RFRA_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+
 
         #endregion
     }
