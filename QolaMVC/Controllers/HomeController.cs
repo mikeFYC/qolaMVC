@@ -1832,7 +1832,16 @@ namespace QolaMVC.Controllers
             return Json(l_Json, JsonRequestBehavior.AllowGet);
         }
 
-
+        [HttpGet]
+        public ActionResult AN_VIEW_CLICK(int PNid, int residentid)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.AN_VIEW(PNid, residentid, user.ID);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
 
 
         #endregion

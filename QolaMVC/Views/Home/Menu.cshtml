@@ -417,12 +417,39 @@
 
                         <div id="contactForm" class="modal" role="dialog" style="display:none">
 
-                            <h3>Add Progress Notes</h3>
+                            <h3>View Progress Notes</h3>
+                            <br>
+                            <table id="view_table" name="" style="margin-left:3vw;">
+                                <tr>
+                                    <th>Name</th>
+                                    <td>
+                                        <input class="formBtn2" id="view_name" type="text" value="Name" disabled />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Date</th>
+                                    <td>
+                                        <input class="formBtn2" id="view_date" type="text" value="Date" disabled />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Category</th>
+                                    <td>
+                                        <input class="formBtn2" id="view_category" type="text" value="Category" disabled />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>User</th>
+                                    <td>
+                                        <input class="formBtn2" id="view_user" type="text" value="User" disabled />
+                                    </td>
+                                </tr>
+                            </table>
                             <br>
                             <form action="#">
                                 <textarea class="formtext" id="formtextarea" placeholder="Comment" style="height:170px;width:300px"></textarea>
-                                <input class="formBtn" type="button" value="Write a New Progress Note" />
-                                <input class="formBtn" type="button" value="OK" />
+                                <input class="formBtn" type="button" value="New Progress Note" onclick="ADD_PN_click()"/>
+                                <input class="formBtn" type="button" value="OK" onclick="PN_OK()" />
                             </form>
                         </div>
 
@@ -512,15 +539,6 @@
         @RenderPage("~/Views/Shared/_Footer.cshtml")
 
         <script>
-            //$("#to_do_list_1").on("click", "a.one", function (event) {
-
-            //    if (this.nextSibling.style.display == "block") {
-            //        this.nextSibling.style.display = "none";
-            //    }
-            //    else if (this.nextSibling.style.display == "none" || this.nextSibling.style.display == "") {
-            //        this.nextSibling.style.display = "block";
-            //    }
-            //});
 
             function nextlayer(ee) {
                 var li_list = ee.parentElement.parentElement.children;
@@ -698,10 +716,36 @@
             }
 
             function AN_view_click(ee) {
-                //$('#contactForm').modal({ backdrop: 'static', keyboard: false });
+
                 document.getElementById("contactForm").style.display = "block";
-                var a = $('#Acknowledge_Notes');
-                    a[0].click(false);
+                var trnode = ee.parentElement.parentElement;
+                var PN = trnode.getAttribute('PNid');
+                var resident = trnode.getAttribute('name');
+                var tdnode = $('tr[pnid="' + PN + '"] td');
+                var name_node = tdnode[2].innerHTML;
+
+                $.get("/Home/AN_VIEW_CLICK", { PNid: PN, residentid: resident }, function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        document.getElementById("view_date").value = data[i][0].Value;
+                        document.getElementById("view_category").value = data[i][1].Value;
+                        document.getElementById("view_user").value = data[i][2].Value + " " + data[i][3].Value;
+                        document.getElementById("formtextarea").innerHTML = data[i][4].Value;
+                    }
+                    document.getElementById("view_name").value = name_node;
+                    document.getElementById("view_table").setAttribute('name', resident)
+                });
+
+
+            }
+
+            function PN_OK() {
+                document.getElementById("contactForm").style.display = "none";
+                AN_click();
+            }
+
+            function ADD_PN_click() {
+                var resident = document.getElementById("view_table").getAttribute("name");
+                window.location.href = '\/Assessments\/ProgressNotes\/?p_ResidentId=' + resident;
             }
 
 
@@ -785,7 +829,8 @@
                 display: none;
                 border: 6px solid salmon;
                 padding: 2em;
-                width: 400px;
+                width: 30vw;
+                height:40vw;
                 text-align: center;
                 background: #fff;
                 position: fixed;
@@ -809,14 +854,17 @@
             }
 
             .formBtn {
-                display: inline-block;
+                display:block;
                 background: teal;
                 color: #fff;
                 font-weight: 100;
                 font-size: 1.2em;
                 border: none;
-                width: 70px;
+                width:15vw
+                
             }
+
+
         </style>
 
         <script>

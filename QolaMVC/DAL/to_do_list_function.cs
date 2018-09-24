@@ -276,7 +276,7 @@ namespace QolaMVC.DAL
             conn.ConnectionString = Constants.ConnectionString.PROD;
             conn.Open();
             SqlCommand cmd = new SqlCommand();
-            cmd.CommandText = " select ROW_NUMBER()over(order by PN.fd_date) as number,PN.fd_id,PN.fd_resident_id,QQ.fd_suite_no,R.fd_first_name,R.fd_last_name,SH.fd_move_in_date,PN.fd_date,PN.fd_title" +
+            cmd.CommandText =   " select ROW_NUMBER()over(order by PN.fd_date) as number,PN.fd_id,PN.fd_resident_id,QQ.fd_suite_no,R.fd_first_name,R.fd_last_name,SH.fd_move_in_date,PN.fd_date,PN.fd_title" +
                                 " from tbl_Progress_Notes PN" +
                                 " left join tbl_Suite_Handler SH on PN.fd_resident_id = SH.fd_resident_id" +
                                 " left join tbl_Resident R on PN.fd_resident_id = R.fd_id and SH.fd_resident_id = R.fd_id" +
@@ -293,6 +293,7 @@ namespace QolaMVC.DAL
                                 " and fd_date> DATEADD(DD, -40, GETDATE())" +
                                 " and GETDATE()> SH.fd_move_in_date" +
                                 " and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')" +
+                                " and PN.fd_modified_by!="+ userid +
                                 " and SH.fd_home_id ="+ homeid;
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
@@ -309,6 +310,45 @@ namespace QolaMVC.DAL
                     l_J.move_in_date = DateTime.Parse(rd[6].ToString()).ToString("yyyy-MM-dd");
                     l_J.PN_date = rd[7].ToString();
                     l_J.PN_title = rd[8];
+
+                    l_Json.Add(l_J);
+                }
+            conn.Close();
+            return l_Json;
+        }
+
+        public static List<dynamic> AN_VIEW(int PNid, int residentid, int useid)
+        {
+            List<dynamic> l_Json = new List<dynamic>();
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText =   " declare @mike nvarchar(max)" +
+                                " select @mike = mike_acknowledge from tbl_Progress_Notes where fd_id = @PN and fd_resident_id = @resident" +
+                                " if (@mike is null)" +
+                                " update tbl_Progress_Notes set mike_acknowledge = ','+@userid+','" +
+                                " where fd_id = @PN and fd_resident_id = @resident" +
+                                " else" +
+                                " update tbl_Progress_Notes set mike_acknowledge = mike_acknowledge + @userid+','" +
+                                " where fd_id = @PN and fd_resident_id = @resident" +
+                                " select fd_date, fd_category, U.fd_first_name,U.fd_last_name,PN.fd_note from tbl_Progress_Notes PN" +
+                                " left join tbl_User U on PN.fd_modified_by = U.fd_id" +
+                                " where PN.fd_id = @PN and PN.fd_resident_id = @resident";
+            cmd.Parameters.AddWithValue("@userid", useid.ToString());
+            cmd.Parameters.AddWithValue("@resident", residentid);
+            cmd.Parameters.AddWithValue("@PN", PNid);
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            if (rd.HasRows)
+                while (rd.Read())
+                {
+                    dynamic l_J = new System.Dynamic.ExpandoObject();
+                    l_J.date = rd[0].ToString();
+                    l_J.category = rd[1];
+                    l_J.first_name = rd[2];
+                    l_J.last_name = rd[3];
+                    l_J.note = rd[4];
 
                     l_Json.Add(l_J);
                 }
