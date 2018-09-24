@@ -1898,6 +1898,16 @@ namespace QolaMVC.Controllers
             return Json(l_Json, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        public ActionResult RI_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_RI_list(home.Id, user.ID);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
 
         [HttpGet]
         public ActionResult RB_CLICK()
@@ -1920,6 +1930,7 @@ namespace QolaMVC.Controllers
             List<dynamic> l_Json = to_do_list_function.get_RP_list(home.Id);
             return Json(l_Json, JsonRequestBehavior.AllowGet);
         }
+
 
 
         [HttpGet]

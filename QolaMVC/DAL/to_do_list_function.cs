@@ -619,6 +619,49 @@ namespace QolaMVC.DAL
             return l_Json;
         }
 
+        public static List<dynamic> get_RI_list(int homeid, int userid)
+        {
+            List<dynamic> l_Json = new List<dynamic>();
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = " declare @mike datetime" +
+                                " select @mike = fd_created_on from tbl_User where fd_id =" + userid +
+                                " select ROW_NUMBER()over(order by PN.fd_fall_date) as number,PN.fd_id,PN.fd_resident_id,SSH.fd_suite_no,R.fd_first_name,R.fd_last_name,PN.fd_fall_date,PN.fd_location,PN.fd_note,PN.fd_action_note" +
+                                " from tbl_Progress_Notes PN" +
+                                " left join tbl_Resident R on PN.fd_resident_id = R.fd_id" +
+                                " left join(select SH.fd_home_id, SH.fd_resident_id, SH.fd_occupancy, SH.fd_move_in_date, SH.fd_move_out_date, SH.fd_status, SH.fd_notes, SH.fd_modified_by, SH.fd_modified_on, SH.fd_pass_away_date, SH.fd_hospital, SH.fd_hospital_leaving, SH.fd_hospital_return, SH.fd_hospital_expected_return, S.fd_suite_no, S.fd_no_of_rooms, S.fd_floor from tbl_Suite_Handler SH join tbl_Suite S on SH.fd_suite_id= S.fd_id where GETDATE()> SH.fd_move_in_date and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')) as SSH on SSH.fd_resident_id = PN.fd_resident_id" +
+                                " where GETDATE()> SSH.fd_move_in_date" +
+                                " and GETDATE()< isNULL(SSH.fd_move_out_date, '2200-09-01')" +
+                                " and fd_category = 6" +
+                                " and PN.fd_modified_by !=" + userid +
+                                " and isNULL(PN.mike_acknowledge,'') not like('%," + userid.ToString() + ",%')" +
+                                " and SSH.fd_home_id =" + homeid +
+                                " and SSH.fd_hospital != 'Y'" +
+                                " and PN.fd_date > @mike";
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            if (rd.HasRows)
+                while (rd.Read())
+                {
+                    dynamic l_J = new System.Dynamic.ExpandoObject();
+                    l_J.number = rd[0];
+                    l_J.PNid = rd[1];
+                    l_J.resident_id = rd[2];
+                    l_J.suite_no = rd[3];
+                    l_J.first_name = rd[4];
+                    l_J.last_name = rd[5];
+                    l_J.fall_date =DateTime.Parse(rd[6].ToString()).Date.ToString("yyyy-MM-dd");
+                    l_J.fall_time = DateTime.Parse(rd[6].ToString()).TimeOfDay.ToString();
+                    l_J.fall_location = rd[7];
+                    l_J.note = rd[8];
+                    l_J.action_note = rd[9];
+                    l_Json.Add(l_J);
+                }
+            conn.Close();
+            return l_Json;
+        }
 
         public static List<dynamic> get_RB_list(int homeid)
         {
@@ -687,6 +730,7 @@ namespace QolaMVC.DAL
             return l_Json;
         }
 
+        
 
         public static List<dynamic> get_SA_list(int homeid)
         {
