@@ -1811,6 +1811,17 @@ namespace QolaMVC.Controllers
         }
 
         [HttpGet]
+        public ActionResult IRCA_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_IRCA_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
         public ActionResult PN_CLICK()
         {
             var home = (HomeModel)TempData["Home"];
@@ -1873,6 +1884,52 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             List<dynamic> l_Json = to_do_list_function.get_RFRA_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult RRCA_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_RRCA_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+
+        [HttpGet]
+        public ActionResult RB_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_RB_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult RP_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_RP_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+
+        [HttpGet]
+        public ActionResult SA_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_SA_list(home.Id);
             return Json(l_Json, JsonRequestBehavior.AllowGet);
         }
 
