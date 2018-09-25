@@ -663,6 +663,29 @@ namespace QolaMVC.DAL
             return l_Json;
         }
 
+        public static void get_RI_Acknowledge(int userid, int PNid, int residentid, string action)
+        {
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText =   " declare @mike nvarchar(max)" +
+                                " select @mike = mike_acknowledge from tbl_Progress_Notes where fd_id = @pnid and fd_resident_id = @residentid" +
+                                " if (@mike is null)" +
+                                    " update tbl_Progress_Notes set mike_acknowledge = ','+@userid+',',fd_action_note=@actionnote" +
+                                    " where fd_id = @pnid and fd_resident_id = @residentid" +
+                                " else" +
+                                    " update tbl_Progress_Notes set mike_acknowledge = mike_acknowledge + @userid +',',fd_action_note=@actionnote" +
+                                    " where fd_id = @pnid and fd_resident_id = @residentid";
+            cmd.Parameters.AddWithValue("@pnid", PNid);
+            cmd.Parameters.AddWithValue("@residentid", residentid);
+            cmd.Parameters.AddWithValue("@actionnote", action);
+            cmd.Parameters.AddWithValue("@userid", userid.ToString());
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            conn.Close();
+        }
+
         public static List<dynamic> get_RB_list(int homeid)
         {
             List<dynamic> l_Json = new List<dynamic>();
@@ -730,7 +753,38 @@ namespace QolaMVC.DAL
             return l_Json;
         }
 
-        
+        public static List<dynamic> get_NR_list(int homeid)
+        {
+            List<dynamic> l_Json = new List<dynamic>();
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText =   " select ROW_NUMBER()over(order by R.fd_first_name) as number,R.fd_id,SSH.fd_suite_no,R.fd_first_name,R.fd_last_name,R.fd_gender,R.fd_birth_date" +
+                                " from tbl_Resident R" +
+                                " left join (select SH.fd_home_id,SH.fd_resident_id,SH.fd_occupancy,SH.fd_move_in_date,SH.fd_move_out_date,SH.fd_status,SH.fd_notes,SH.fd_modified_by,SH.fd_modified_on,SH.fd_pass_away_date,SH.fd_hospital,SH.fd_hospital_leaving,SH.fd_hospital_return,SH.fd_hospital_expected_return,S.fd_suite_no,S.fd_no_of_rooms,S.fd_floor from tbl_Suite_Handler SH join tbl_Suite S on SH.fd_suite_id = S.fd_id where GETDATE()> SH.fd_move_in_date and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')) as SSH on SSH.fd_resident_id = R.fd_id" +
+                                " where GETDATE()> SSH.fd_move_in_date" +
+                                " and GETDATE()< isNULL(SSH.fd_move_out_date, '2200-09-01')" +
+                                " and cast(R.fd_move_in_date as date)= CAST(GETDATE() AS date)" +
+                                " and SSH.fd_home_id ="+ homeid;
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            if (rd.HasRows)
+                while (rd.Read())
+                {
+                    dynamic l_J = new System.Dynamic.ExpandoObject();
+                    l_J.number = rd[0];
+                    l_J.resident_id = rd[1];
+                    l_J.suite_no = rd[2];
+                    l_J.first_name = rd[3];
+                    l_J.last_name = rd[4];
+                    l_J.gender = rd[5];
+                    l_J.birth_date = DateTime.Parse(rd[6].ToString()).ToString("yyyy-MM-dd");
+                    l_Json.Add(l_J);
+                }
+            conn.Close();
+            return l_Json;
+        }
 
         public static List<dynamic> get_SA_list(int homeid)
         {

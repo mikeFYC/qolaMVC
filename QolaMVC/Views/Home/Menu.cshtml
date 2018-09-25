@@ -239,7 +239,7 @@
                                     <li class="list-group-item" id="RI"><a class="one" href="#" onclick="nextlayer(this)"><span class="badge">0</span>&nbsp;Resident Incidents</a><div><ul id="RI_ul"><li type="Resident Fall"><a href="#" data-toggle="modal" data-target="#Resident_Incident" style="color:white" onclick="RI_click(this)"><span class="badge">0</span> Resident Fall</a></li></ul></div></li>
                                     <li class="list-group-item" id="RB"><a class="one" href="#" onclick="nextlayer(this)"><span class="badge">0</span>&nbsp;Residents Birthday</a><div><ul id="RB_ul"><li type="Birthday"><a href="#" data-toggle="modal" data-target="#Resident_Birthday" style="color:white" onclick="RB_click(this)"><span class="badge">0</span> Birthday</a></li></ul></div></li>
                                     <li class="list-group-item" id="RP"><a class="one" href="#" onclick="nextlayer(this)"><span class="badge">0</span>&nbsp;Residents Profile</a><div><ul id="RP_ul"><li type="Profile Image"><a href="#" data-toggle="modal" data-target="#Resident_Profile" style="color:white" onclick="RP_click(this)"><span class="badge">0</span> Profile Image</a></li></ul></div></li>
-                                    <li class="list-group-item" id="NR"><a class="one" href="#" onclick="nextlayer(this)"><span class="badge">0</span>&nbsp;New Resident</a><div><ul id="NR_ul"><li type="New Resident"><span class="badge">0</span> New Resident</li></ul></div></li>
+                                    <li class="list-group-item" id="NR"><a class="one" href="#" onclick="nextlayer(this)"><span class="badge">0</span>&nbsp;New Resident</a><div><ul id="NR_ul"><li type="New Resident"><a href="#" data-toggle="modal" data-target="#New_Resident" style="color:white" onclick="NR_click(this)"><span class="badge">0</span> New Resident</a></li></ul></div></li>
                                     <li class="list-group-item" id="SA"><a class="one" href="#" onclick="nextlayer(this)"><span class="badge">0</span>&nbsp;Suggested Activity Event</a><div><ul id="SA_ul"><li type="Suggested Activity Event"><a href="#" data-toggle="modal" data-target="#Suggested_Activity_Event" style="color:white" onclick="SA_click(this)"><span class="badge">0</span> Suggested Activity Event</a></li></ul></div></li>
                                 </ul>
                             </div>
@@ -591,6 +591,36 @@
                             </div>
                         </div>
 
+                        <div class="modal fade" id="New_Resident" role="dialog" style="right:0">
+                            <div class="modal-dialog" style="left:0;right:0;">
+
+                                <!-- Modal content-->
+                                <div class="modal-content" style="width:60vw;right:45%;">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">New Resident</h4>
+                                        <br>
+                                    </div>
+                                    <div class="modal-body">
+                                        <table class="miketable table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>S.No</th>
+                                                    <th>Suite No</th>
+                                                    <th>Name</th>
+                                                    <th>Gender</th>
+                                                    <th>Birthday Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="modal fade" id="Suggested_Activity_Event" role="dialog" style="right:0">
                             <div class="modal-dialog" style="left:0;right:0;">
@@ -1055,10 +1085,20 @@
                             "<td>" + data[i][9].Value + "<\/td>" +
                             "<td><textarea class=\"formtext2\">" + data[i][10].Value + "<\/textarea><\/td>" +
                             "<td>" +
-                            "<button type=\"button\" class=\"btn btn-primary\" style=\"font-size:0.7vw;\">Acknowledge<\/button>" +
+                            "<button type=\"button\" class=\"btn btn-primary\" style=\"font-size:0.7vw;\" onclick=\"RI_Acknowledge_click(this)\">Acknowledge<\/button>" +
                             "<\/td>" +
                             "<\/tr>");
                     }
+                });
+            }
+
+            function RI_Acknowledge_click(ee) {
+                var re_id = ee.parentElement.parentElement.getAttribute("name");
+                var PN_id = ee.parentElement.parentElement.getAttribute("pnid");
+                var act_note = ee.parentElement.previousSibling.firstElementChild.value;
+                $.post("/Home/RI_Acknowledge_CLICK", { pnid: PN_id, residentid: re_id, action: act_note}, function () {
+                    var p = ee.parentNode.parentNode;
+                    p.parentNode.removeChild(p);
                 });
             }
 
@@ -1101,7 +1141,24 @@
                 });
             }
 
-
+            function NR_click() {
+                var node_tbody = $('div[id="New_Resident"] div div div[class="modal-body"] table tbody');
+                while (node_tbody[0].hasChildNodes())
+                    node_tbody[0].removeChild(node_tbody[0].lastChild);
+                $.get("/Home/NR_CLICK", {}, function (data) {
+                    var view = $('div[id="New_Resident"] div div div[class="modal-body"] table tbody');
+                    for (var i = 0; i < data.length; i++) {
+                        view.append(
+                            "<tr onclick=\"window.location.href='/Home/ResidentMenu/?p_ResidentId=" + data[i][1].Value + "'\" name='" + data[i][1].Value + "'>" +
+                            "<td>" + data[i][0].Value + " <\/td>" +
+                            "<td>" + data[i][2].Value + " <\/td>" +
+                            "<td>" + data[i][3].Value + " " + data[i][4].Value + " <\/td>" +
+                            "<td>" + data[i][5].Value + " <\/td>" +
+                            "<td>" + data[i][6].Value + "<\/td>" +
+                            "<\/tr>");
+                    }
+                });
+            }
 
             function SA_click() {
                 var node_tbody = $('div[id="Suggested_Activity_Event"] div div div[class="modal-body"] table tbody');
@@ -1145,6 +1202,8 @@
         div[id="Resident_Profile"] div div div[class="modal-body"] table tbody tr:hover { background-color: grey; }
         div[id="Suggested_Activity_Event"] div div div[class="modal-body"] table tbody tr { cursor: pointer; }
         div[id="Suggested_Activity_Event"] div div div[class="modal-body"] table tbody tr:hover { background-color: grey; }
+        div[id="New_Resident"] div div div[class="modal-body"] table tbody tr { cursor: pointer; }
+        div[id="New_Resident"] div div div[class="modal-body"] table tbody tr:hover { background-color: grey; }
 
 
             div div div div[class="modal-body"] {

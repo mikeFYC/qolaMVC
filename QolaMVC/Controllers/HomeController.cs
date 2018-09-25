@@ -1909,6 +1909,16 @@ namespace QolaMVC.Controllers
             return Json(l_Json, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public void RI_Acknowledge_CLICK(int pnid,int residentid,string action)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            to_do_list_function.get_RI_Acknowledge(user.ID,pnid,residentid,action);
+        }
+
         [HttpGet]
         public ActionResult RB_CLICK()
         {
@@ -1931,7 +1941,16 @@ namespace QolaMVC.Controllers
             return Json(l_Json, JsonRequestBehavior.AllowGet);
         }
 
-
+        [HttpGet]
+        public ActionResult NR_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_NR_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
 
         [HttpGet]
         public ActionResult SA_CLICK()
