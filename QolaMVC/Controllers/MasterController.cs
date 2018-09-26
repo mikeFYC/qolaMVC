@@ -2,6 +2,7 @@
 using QolaMVC.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -159,6 +160,27 @@ namespace QolaMVC.Controllers
         {
             ViewBag.Categories = MasterDAL.GetAllActivityCategory();
             return View();
+        }
+
+        public ActionResult Users()
+        {
+            Collection<UserModel> l_Users = UserDAL.ge();
+            ViewBag.Homes = l_Homes;
+            return View();
+        }
+
+        public ActionResult AddUser()
+        {
+            Collection<HomeModel> l_Homes = HomeDAL.GetHomeCollections();
+            ViewBag.Homes = l_Homes;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddUser(UserModel p_Model)
+        {
+            UserDAL.AddNewUsers(p_Model);
+            return RedirectToAction("Users");
         }
     }
 }
