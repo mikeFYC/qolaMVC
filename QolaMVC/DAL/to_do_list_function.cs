@@ -60,12 +60,12 @@ namespace QolaMVC.DAL
                                 " SH.fd_resident_id,DA.fd_id as DA_id,S.fd_suite_no,R.fd_first_name,R.fd_last_name,DA.fd_modified_on" +
                                 " from tbl_Resident R" +
                                 " join tbl_Suite_Handler SH on R.fd_id = SH.fd_resident_id" +
-                                " join[tbl_AB_Dietary_Assessment] DA on R.fd_id = DA.fd_resident_id" +
+                                " join [tbl_Dietary_Assessment] DA on R.fd_id = DA.fd_resident_id" +
                                 " join tbl_Suite S on S.fd_id = SH.fd_suite_id" +
                                 " where SH.fd_home_id ="+ homeid +
                                 " and GETDATE()> SH.fd_move_in_date" +
                                 " and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')" +
-                                " and isNULL(DA.view_index,'')!= 'Y'";
+                                " and isNULL(DA.fd_view,'')!= 'V'";
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
             if (rd.HasRows)
@@ -827,6 +827,64 @@ namespace QolaMVC.DAL
             conn.Close();
             return l_Json;
         }
+
+        public static dynamic get_to_do_list_number(int userid, int homeid)
+        {
+            dynamic l_J = new System.Dynamic.ExpandoObject();
+            using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
+            using (var cmdGARead = new SqlCommand("to_do_list_number_by_mike", conn)
+            {
+                CommandType = CommandType.StoredProcedure
+            })
+            {
+                conn.Open();
+                cmdGARead.Parameters.AddWithValue("@UserID", userid);
+                cmdGARead.Parameters.AddWithValue("@homeID", homeid);
+                cmdGARead.ExecuteNonQuery();
+
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = "SELECT * FROM [dbo].[mike_to_do_list_number]";
+                cmd.Connection = conn;
+                SqlDataReader rd = cmd.ExecuteReader();
+                if (rd.HasRows)
+                    while (rd.Read())
+                    {
+                        l_J.DU_outer = rd[0];
+                        l_J.DU_inner = rd[0];
+                        l_J.HO_outer = rd[1];
+                        l_J.HO_inner = rd[1];
+
+                        l_J.IA =int.Parse(rd[2].ToString())+ int.Parse(rd[3].ToString())+ int.Parse(rd[4].ToString())+ int.Parse(rd[5].ToString());
+                        l_J.IAA = rd[2];
+                        l_J.IDA = rd[3];
+                        l_J.IFRA = rd[4];
+                        l_J.IRCA = rd[5];
+
+                        l_J.PN_outer = rd[10];
+                        l_J.PN = rd[10];
+
+
+                        l_J.RA = int.Parse(rd[6].ToString()) + int.Parse(rd[7].ToString()) + int.Parse(rd[8].ToString()) + int.Parse(rd[9].ToString());
+                        l_J.RDA = rd[6];
+                        l_J.RAA = rd[7];
+                        l_J.RFRA = rd[8];
+                        l_J.RRCA = rd[9];
+
+                        l_J.RI_outer = rd[12];
+                        l_J.RI_inner = rd[12];
+                        l_J.RB_outer = rd[13];
+                        l_J.RB_inner = rd[13];
+                        l_J.RP_outer = rd[14];
+                        l_J.RP_inner = rd[14];
+                        l_J.NR_outer = rd[15];
+                        l_J.NR_inner = rd[15];
+                        l_J.SAE_outer = rd[16];
+                        l_J.SAE_inner = rd[16];
+                    }
+            }
+            return l_J;
+        }
+
 
 
     }

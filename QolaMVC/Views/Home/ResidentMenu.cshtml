@@ -72,7 +72,7 @@
                                 <div class="Row" style="padding: 5px;">
                                     <button style="padding: 5px;" class="btn btn-primary">Print QOLAFIED Assessment</button>
                                     @*<a href="/Reports/" style="padding: 5px;" class="btn btn-primary">Assessment Forms (Left here for demo only)</a>*@
-                                   
+
                                 </div>
                                 <div class="Row" style="padding: 5px;">
                                     <a href="/Assessments/" style="padding: 5px;" class="btn btn-primary">Forms</a>
@@ -83,13 +83,13 @@
                         </div>
                         <br>
                         @{
-                        if (ViewBag.Message != null && ViewBag.Message != string.Empty)
-                        {
-                            <div class="alert alert-success" role="alert">
-                                <button class="close" data-dismiss="alert"></button>
-                                <strong>Success: </strong> @ViewBag.Message
-                            </div>
-                    }
+                            if (ViewBag.Message != null && ViewBag.Message != string.Empty)
+                            {
+                                <div class="alert alert-success" role="alert">
+                                    <button class="close" data-dismiss="alert"></button>
+                                    <strong>Success: </strong> @ViewBag.Message
+                                </div>
+                            }
                         }
 
                         <div class="row">
@@ -591,7 +591,7 @@
                                                                             <input id="aPrint" type="submit" value="Print" class="btn btn-block btn-primary">
                                                                         </div>
                                                                     </div>
-                                                                    
+
                                                                 </div>
                                                             </div>
                                                         </form>
@@ -616,23 +616,23 @@
                                                         @*<td class="text-center"><b>Signature</b></td>*@
                                                     </tr>
                                                     @{
-                                                    int i = 1;
-                                                    var progressNotes = (IEnumerable<QolaMVC.Models.ProgressNotesModel>)ViewBag.ProgressNotes;
-                                                    foreach (var p in progressNotes)
-                                                    {
-                                                        <tr>
-                                                            <td>@i</td>
-                                                            <td>@p.Date.ToShortDateString() </td>
-                                                            <td>@p.Date.ToShortTimeString()</td>
-                                                            <td>@p.Category</td>
-                                                            <td>
-                                                                @p.Note
-                                                            </td>
-                                                            <td>@p.ModifiedBy.FirstName @p.ModifiedBy.LastName</td>
+                                                        int i = 1;
+                                                        var progressNotes = (IEnumerable<QolaMVC.Models.ProgressNotesModel>)ViewBag.ProgressNotes;
+                                                        foreach (var p in progressNotes)
+                                                        {
+                                                            <tr>
+                                                                <td>@i</td>
+                                                                <td>@p.Date.ToShortDateString() </td>
+                                                                <td>@p.Date.ToShortTimeString()</td>
+                                                                <td>@p.Category</td>
+                                                                <td>
+                                                                    @p.Note
+                                                                </td>
+                                                                <td>@p.ModifiedBy.FirstName @p.ModifiedBy.LastName</td>
 
-                                                        </tr>
-                                                    i = i + 1;
-                                                }
+                                                            </tr>
+                                                            i = i + 1;
+                                                        }
                                                     }
                                                 </tbody>
                                             </table>
@@ -828,6 +828,8 @@
         </div>
         <!-- END PAGE CONTENT -->
         <!-- START PAGE CONTENT WRAPPER -->
+        <input type="hidden" id="jsNote" value="@TempData["NOTE"]" />
+
         @RenderPage("~/Views/Shared/_Footer.cshtml")
         <script type="text/javascript" src="http://cdn.sobekrepository.org/includes/jquery-rotate/2.2/jquery-rotate.min.js"></script>
         <script type="text/javascript">
@@ -842,41 +844,41 @@
             });
         </script>
         <script>
-            $("#btnReport").on('click', function() {
-        var from = stringToDate($("#searchFrom").val());
-        var to = stringToDate($("#searchTo").val());
-                
-        $(".fbody tr").each(function() {
-        var row = $(this);
-        var date = stringToDate2(row.find("td").eq(1).text());
-           
-        //show all rows by default
-        var show = true;
+            $("#btnReport").on('click', function () {
+                var from = stringToDate($("#searchFrom").val());
+                var to = stringToDate($("#searchTo").val());
 
-        //if from date is valid and row date is less than from date, hide the row
-        if (from && date < from)
-        show = false;
+                $(".fbody tr").each(function () {
+                    var row = $(this);
+                    var date = stringToDate2(row.find("td").eq(1).text());
 
-        //if to date is valid and row date is greater than to date, hide the row
-        if (to && date > to)
-        show = false;
+                    //show all rows by default
+                    var show = true;
 
-        if (show)
-        row.show();
-        else
-        row.hide();
-        });
-        });
+                    //if from date is valid and row date is less than from date, hide the row
+                    if (from && date < from)
+                        show = false;
 
-        //parse entered date. return NaN if invalid
-        function stringToDate(s) {
-        var ret = NaN;
-        var parts = s.split("/");
-        date = new Date(parts[0], parts[1], parts[2]);
-        if (!isNaN(date.getTime())) {
-        ret = date;
-        }
-        return ret;
+                    //if to date is valid and row date is greater than to date, hide the row
+                    if (to && date > to)
+                        show = false;
+
+                    if (show)
+                        row.show();
+                    else
+                        row.hide();
+                });
+            });
+
+            //parse entered date. return NaN if invalid
+            function stringToDate(s) {
+                var ret = NaN;
+                var parts = s.split("/");
+                date = new Date(parts[0], parts[1], parts[2]);
+                if (!isNaN(date.getTime())) {
+                    ret = date;
+                }
+                return ret;
             }
 
             function stringToDate2(s) {
@@ -888,4 +890,14 @@
                 }
                 return ret;
             }
-</script>
+        </script>
+
+        <script>
+            var a = $("#jsNote").val();
+            if (a == "YES") {
+                document.getElementById("pills-home-tab").className = "nav-link";
+                document.getElementById("pills-home").className = "tab-pane fade";
+                document.getElementById("pills-notes-tab").className = "nav-link active";
+                document.getElementById("pills-notes").className = "tab-pane fade show active";
+            }
+        </script>

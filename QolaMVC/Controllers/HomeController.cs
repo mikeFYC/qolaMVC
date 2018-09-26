@@ -66,7 +66,40 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             ViewBag.User = user;
             HomeModel l_Home = HomeDAL.GetHomeById(p_HomeId);
+            //dynamic l_Json=to_do_list_function.get_to_do_list_number( user.ID, l_Home.Id);
+            //TempData["DU"] = l_Json.DU;
+            //TempData["HO"] = l_Json.HO;
+            //TempData["IDA"] = l_Json.IDA;
+            //TempData["IAA"] = l_Json.IAA;
+            //TempData["IFRA"] = l_Json.IFRA;
+            //TempData["IRCA"] = l_Json.IRCA;
+            //TempData["RDA"] = l_Json.RDA;
+            //TempData["RAA"] = l_Json.RAA;
+            //TempData["RFRA"] = l_Json.RFRA;
+            //TempData["RRCA"] = l_Json.RRCA;
+            //TempData["PN"] = l_Json.PN;
+            //TempData["AN"] = l_Json.AN;
+            //TempData["RB"] = l_Json.RB;
+            //TempData["RI"] = l_Json.RI;
+            //TempData["RP"] = l_Json.RP;
+            //TempData["NR"] = l_Json.NR;
+            //TempData["SAE"] = l_Json.SAE;
+
             return View(l_Home);
+        }
+
+        [HttpGet]
+        public ActionResult Number()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            
+            dynamic l_Json = to_do_list_function.get_to_do_list_number(user.ID, home.Id);
+
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+
         }
 
         public ActionResult ResidentMenu(int p_ResidentId)
@@ -90,10 +123,39 @@ namespace QolaMVC.Controllers
 
             ViewBag.ProgressNotes = progressNotes;
             ProgressNotesHelper.RegisterSession(resident);
+            TempData["NOTE"] = "NO";
 
-            
             return View(resident);
         }
+
+        public ActionResult ResidentMenu2(int p_ResidentId)
+        {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            var resident = ResidentsDAL.GetResidentById(p_ResidentId);
+            var progressNotes = ProgressNotesDAL.GetProgressNotesCollections(resident.ID, DateTime.Now, DateTime.Now, "A");
+
+            ViewBag.Message = TempData["Message"];
+
+            TempData["Resident"] = resident;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            ViewBag.Resident = resident;
+
+            ViewBag.ProgressNotes = progressNotes;
+            ProgressNotesHelper.RegisterSession(resident);
+            TempData["NOTE"] = "YES";
+
+            return View("ResidentMenu", resident);
+
+        }
+
+
 
         public ActionResult ManageResidents(int p_HomeId)
         {
