@@ -982,6 +982,26 @@ namespace QolaMVC.Controllers
             return View(l_FallRisk.LastOrDefault());
         }
 
+        public ActionResult FallRisk2(int p_ResidentId)
+        {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            var resident = ResidentsDAL.GetResidentById(p_ResidentId);
+            var progressNotes = ProgressNotesDAL.GetProgressNotesCollections(resident.ID, DateTime.Now, DateTime.Now, "A");
+            ViewBag.Message = TempData["Message"];
+            TempData["Resident"] = resident;
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            ViewBag.Resident = resident;
+            ViewBag.ProgressNotes = progressNotes;
+            ProgressNotesHelper.RegisterSession(resident);
+            return RedirectToAction("FallRisk");
+        }
+
+
         [HttpPost]
         public ActionResult FallRisk(FormCollection p_Form)
         {
@@ -1051,6 +1071,9 @@ namespace QolaMVC.Controllers
         }
 
 
+
+        #region Check List
+
         [HttpPost]
         public void saveButton(int tb_number)
         {
@@ -1088,7 +1111,7 @@ namespace QolaMVC.Controllers
             return str;
         }
 
-
+        #endregion
 
 
     }
