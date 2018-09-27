@@ -110,6 +110,23 @@ namespace QolaMVC.DAL
             }
         }
 
+        public static void update_checklist(int userid,int residentid)
+        {
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = "insert into [tbl_AB_Admission_checklist] values(@resident,1,@user,@date)";
+            cmd.Parameters.AddWithValue("@resident", residentid);
+            cmd.Parameters.AddWithValue("@user",userid);
+            cmd.Parameters.AddWithValue("@date",DateTime.Now);
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            conn.Close();
+
+        }
+
+
         public static bool UpdateResidentGeneralInfo(ResidentModel updateResidentGeneralInfo)
         {
             string exception = string.Empty;

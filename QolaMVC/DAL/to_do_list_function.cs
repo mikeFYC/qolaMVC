@@ -49,23 +49,25 @@ namespace QolaMVC.DAL
             return l_Json;
         }
 
-        public static List<dynamic> get_DU_list(int homeid)
+        public static List<dynamic> get_DU_list(int homeid, int userid)
         {
             List<dynamic> l_Json = new List<dynamic>();
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Constants.ConnectionString.PROD;
             conn.Open();
             SqlCommand cmd = new SqlCommand();
-            cmd.CommandText =   " select distinct ROW_NUMBER() over(order by DA.fd_modified_on) as row_number, " +
-                                " SH.fd_resident_id,DA.fd_id as DA_id,S.fd_suite_no,R.fd_first_name,R.fd_last_name,DA.fd_modified_on" +
-                                " from tbl_Resident R" +
-                                " join tbl_Suite_Handler SH on R.fd_id = SH.fd_resident_id" +
-                                " join [tbl_Dietary_Assessment] DA on R.fd_id = DA.fd_resident_id" +
+            cmd.CommandText =   " declare @create datetime" +
+                                " select @create = fd_created_on from tbl_User where fd_id =" + userid +
+                                " select distinct ROW_NUMBER() over(order by DA.fd_modified_on) as row_number,  SH.fd_resident_id,DA.fd_id as DA_id,S.fd_suite_no,R.fd_first_name,R.fd_last_name,DA.fd_modified_on" +
+                                " from[tbl_Dietary_Assessment] DA" +
+                                " join tbl_Suite_Handler SH on DA.fd_resident_id = SH.fd_resident_id" +
+                                " join tbl_Resident R on R.fd_id = DA.fd_resident_id" +
                                 " join tbl_Suite S on S.fd_id = SH.fd_suite_id" +
-                                " where SH.fd_home_id ="+ homeid +
+                                " where SH.fd_home_id =" + homeid +
                                 " and GETDATE()> SH.fd_move_in_date" +
                                 " and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')" +
-                                " and isNULL(DA.fd_view,'')!= 'V'";
+                                " and DA.fd_modified_on > @create" +
+                                " and DA.fd_id not in (select distinct fd_DA_id from[tbl_Dietary_Assessment_Acknowledge] where fd_user_id ="+ userid + ")";
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
             if (rd.HasRows)

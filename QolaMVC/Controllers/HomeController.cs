@@ -186,9 +186,9 @@ namespace QolaMVC.Controllers
             p_Model.ModifiedBy = user;
             p_Model.ModifiedOn = DateTime.Now;
             p_Model.Home = home;
-
-            ResidentsDAL.AddNewResidentGeneralInfo(p_Model);
-
+            int[] RR = new int[2];
+            RR=ResidentsDAL.AddNewResidentGeneralInfo(p_Model);
+            ResidentsDAL.update_checklist(user.ID,RR[0]);
             return RedirectToAction("AddNewResident");
         }
 
@@ -1835,7 +1835,7 @@ namespace QolaMVC.Controllers
             var user = (UserModel)TempData["User"];
             TempData.Keep("User");
             TempData.Keep("Home");
-            List<dynamic> l_Json = to_do_list_function.get_DU_list(home.Id);
+            List<dynamic> l_Json = to_do_list_function.get_DU_list(home.Id, user.ID);
             return Json(l_Json, JsonRequestBehavior.AllowGet);
         }
 
@@ -2028,6 +2028,11 @@ namespace QolaMVC.Controllers
 
 
         #endregion
+
+
+
+
+
     }
 }
 
