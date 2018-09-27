@@ -26,6 +26,7 @@ namespace QolaMVC.DAL
             try
             {
                 SqlCommand l_Cmd = new SqlCommand(Constants.StoredProcedureName.USP_ADD_USER, l_Conn);
+                l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 l_Cmd.Parameters.AddWithValue("@id", addUsers.ID);
                 l_Cmd.Parameters.AddWithValue("@homeId", addUsers.Home);
@@ -43,7 +44,7 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@ext", addUsers.Ext);
                 l_Cmd.Parameters.AddWithValue("@homePhone", addUsers.HomePhone);
                 l_Cmd.Parameters.AddWithValue("@mobile", addUsers.Mobile);
-                //l_Cmd.Parameters.AddWithValue("@status", addUsers.Status);
+                l_Cmd.Parameters.AddWithValue("@status", Convert.ToString(addUsers.Status));
                 l_Cmd.Parameters.AddWithValue("@createdby", addUsers.ModifiedBy);
                 l_Cmd.Parameters.AddWithValue("@country", addUsers.Country);
                 homeId = l_Cmd.ExecuteNonQuery();
@@ -58,6 +59,10 @@ namespace QolaMVC.DAL
                 exception = "Users AddNewUsers |" + ex.ToString();
                 //Log.Write(exception);
                 throw;
+            }
+            finally
+            {
+                l_Conn.Close();
             }
             return result;
         }
