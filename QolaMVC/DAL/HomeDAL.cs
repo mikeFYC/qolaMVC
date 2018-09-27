@@ -412,7 +412,6 @@ namespace QolaMVC.DAL
                         }
                         home.DineTimeIds = Convert.ToString(homeTypeRow["fd_dine_time_ids"]);
                         home.PassTimeIds = Convert.ToString(homeTypeRow["fd_pass_time_Ids"] != DBNull.Value ? homeTypeRow["fd_pass_time_Ids"] : string.Empty);
-                        home.OccupiedSuites = Convert.ToInt32(homeTypeRow["fd_id"]);
                     }
                 }
                 return home;
