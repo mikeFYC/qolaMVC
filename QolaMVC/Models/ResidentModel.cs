@@ -172,6 +172,9 @@ namespace QolaMVC.Models
         private string _wakeup_time;
         private string _go_to_bed_at;
         private string _favourite_past_time;
+        private string _suite_handler_notes;
+        private string _suite_handler_status;
+        private int _no_of_floor;
 
 
 
@@ -1057,6 +1060,20 @@ namespace QolaMVC.Models
             get { return _favourite_past_time; }
             set { _favourite_past_time = value; }
         }
+        public string Suite_Handler_Notes
+        {
+            get { return _suite_handler_notes; }
+            set { _suite_handler_notes = value; }
+        }
+        public string Suite_Handler_Status
+        {
+            get { return _suite_handler_status; }
+            set { _suite_handler_status = value; }
+
+        }
+
+        public int No_of_floor { get; set; }
+
         #endregion
         #endregion
 
@@ -1069,5 +1086,7 @@ namespace QolaMVC.Models
             public string sStausValue { get; set; }
         }
         #endregion
+
+
     }
 }

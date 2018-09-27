@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 using System.Web;
 using QolaMVC.Models;
 using static QolaMVC.Constants.EnumerationTypes;
@@ -940,5 +941,267 @@ namespace QolaMVC.DAL
             }
         }
 
+
+        public static StringBuilder get_listview(int homeid, DateTime todaydate)
+        {
+            StringBuilder table = new StringBuilder();
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText =   " with tab as (" +
+                                " select distinct R.fd_first_name + ' ' + R.fd_last_name as fd_full_name, SH.fd_resident_id,SH.fd_suite_id," +
+                                " SH.fd_home_id from[dbo].[tbl_Suite_Handler] SH left join[dbo].[tbl_Resident] R on R.fd_id=SH.fd_resident_id" +
+                                " where SH.fd_home_id=@homeid and @GETDATE>SH.fd_move_in_date and @GETDATE<isNULL(SH.fd_move_out_date,'2200-09-13')" +
+                                " ) select fd_full_name from tab" ;
+
+            cmd.Parameters.AddWithValue("@GETDATE", todaydate);
+            cmd.Parameters.AddWithValue("@homeid", homeid);
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            table.Append("<table class=\"attend\">");
+            table.Append("<tbody>");
+
+            if (rd.HasRows)
+                while (rd.Read())
+                {
+                    table.Append("<tr>");
+                    table.Append("<td>"+rd[0]+"</td>");
+                    table.Append("<td>");
+                    table.Append("<div class=\"form-check form-check-inline\">");
+                    table.Append("<input class=\"form-check-input\" type=\"radio\" name=\"inlineRadioOptions\" id=\"inlineRadio2\" value=\"option2\">");
+                    table.Append("<label class=\"form-check-label\">T</label>");
+                    table.Append("</div>");
+                    table.Append("</td>");
+                    table.Append("<td>");
+                    table.Append("<div class=\"form-check form-check-inline\">");
+                    table.Append("<input class=\"form-check-input\" type=\"radio\" name=\"inlineRadioOptions\" id=\"inlineRadio2\" value=\"option2\">");
+                    table.Append("<label class=\"form-check-label\">R</label>");
+                    table.Append("</div>");
+                    table.Append("</td>");
+                    table.Append("<td>");
+                    table.Append("<div class=\"form-check form-check-inline\">");
+                    table.Append("<input class=\"form-check-input\" type=\"radio\" name=\"inlineRadioOptions\" id=\"inlineRadio2\" value=\"option2\">");
+                    table.Append("<label class=\"form-check-label\">H</label>");
+                    table.Append("</div>");
+                    table.Append("</td>");
+                    table.Append("<td>");
+                    table.Append("<div class=\"form-check form-check-inline\">");
+                    table.Append("<input class=\"form-check-input\" type=\"radio\" name=\"inlineRadioOptions\" id=\"inlineRadio2\" value=\"option2\">");
+                    table.Append("<label class=\"form-check-label\">W</label>");
+                    table.Append("</div>");
+                    table.Append("</td>");
+                    table.Append("<td>");
+                    table.Append("<div class=\"form-check form-check-inline\">");
+                    table.Append("<input class=\"form-check-input\" type=\"radio\" name=\"inlineRadioOptions\" id=\"inlineRadio2\" value=\"option2\">");
+                    table.Append("<label class=\"form-check-label\">A</label>");
+                    table.Append("</div>");
+                    table.Append("</td>");
+                    table.Append("<td>");
+                    table.Append("<div class=\"form-check form-check-inline\">");
+                    table.Append("<input class=\"form-check-input\" type=\"radio\" name=\"inlineRadioOptions\" id=\"inlineRadio2\" value=\"option2\">");
+                    table.Append("<label class=\"form-check-label\">TC</label>");
+                    table.Append("</div>");
+                    table.Append("</td>");
+                    table.Append("<td>");
+                    table.Append("<div class=\"form-check form-check-inline\">");
+                    table.Append("<i class=\"fa fa-file-text-o\"></i>");
+                    table.Append("</div>");
+                    table.Append("</td>");
+                    table.Append("</tr>");
+                }
+            table.Append("</tbody>");
+            table.Append("</table>");
+            return table;
+        }
+
+        public static StringBuilder get_floorview(int homeid, DateTime todaydate)
+        {
+            int floor_number=0;
+            StringBuilder table = new StringBuilder();
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText =   " with tab as (" +
+                                " select distinct R.fd_first_name+' '+R.fd_last_name as fd_full_name,R.fd_gender, SH.fd_resident_id,SH.fd_suite_id,SH.fd_home_id," +
+                                " S.fd_suite_no,S.fd_floor from[dbo].[tbl_Suite_Handler] SH join[dbo].[tbl_Resident] R on R.fd_id=SH.fd_resident_id join [dbo].[tbl_Suite] S on S.fd_id=SH.fd_suite_id" +
+                                " where SH.fd_home_id=@homeid and @GETDATE>SH.fd_move_in_date and @GETDATE<isNULL(SH.fd_move_out_date,'2200-09-13')" +
+                                " ) select max(fd_floor) from tab";
+
+            cmd.Parameters.AddWithValue("@GETDATE", todaydate);
+            cmd.Parameters.AddWithValue("@homeid", homeid);
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            if (rd.HasRows)
+                while (rd.Read())
+                {
+                    floor_number = int.Parse(rd[0].ToString());
+                }
+            rd.Close();
+            for (int a = 1; a <= floor_number; a++)
+            {
+                SqlCommand cmd2 = new SqlCommand();
+                cmd2.CommandText =   " with tab as (" +
+                                    " select distinct R.fd_first_name+' '+R.fd_last_name as fd_full_name,R.fd_gender, SH.fd_resident_id,SH.fd_suite_id,SH.fd_home_id," +
+                                    " S.fd_suite_no,S.fd_floor from[dbo].[tbl_Suite_Handler] SH join[dbo].[tbl_Resident] R on R.fd_id=SH.fd_resident_id join [dbo].[tbl_Suite] S on S.fd_id=SH.fd_suite_id" +
+                                    " where SH.fd_home_id=@homeid and @GETDATE>SH.fd_move_in_date and @GETDATE<isNULL(SH.fd_move_out_date,'2200-09-13')" +
+                                    " )  select fd_full_name from tab where fd_floor=" + a;
+
+                cmd2.Parameters.AddWithValue("@GETDATE", todaydate);
+                cmd2.Parameters.AddWithValue("@homeid", homeid);
+                cmd2.Connection = conn;
+                SqlDataReader rd2 = cmd2.ExecuteReader();
+                table.Append("<div class=\"col-md-6\" style=\"border:1px solid #000;min-width:83.5vw\">");
+                table.Append("<table class=\"attend\">");
+                table.Append("<tbody>");
+                table.Append("<tr>");
+                table.Append("<th colspan = \"7\" height=30vw> " + a + "st Floor</th >");
+                table.Append("</tr>");
+                if (rd2.HasRows)
+                    while (rd2.Read())
+                    {
+
+
+                        table.Append("<tr>");
+                        table.Append("<td>" + rd2[0] + "</td>");
+                        table.Append("<td>");
+                        table.Append("<div class=\"form-check form-check-inline\">");
+                        table.Append("<input class=\"form-check-input\" type=\"radio\" name=\"inlineRadioOptions\" id=\"inlineRadio2\" value=\"option2\">");
+                        table.Append("<label class=\"form-check-label\">T</label>");
+                        table.Append("</div>");
+                        table.Append("</td>");
+                        table.Append("<td>");
+                        table.Append("<div class=\"form-check form-check-inline\">");
+                        table.Append("<input class=\"form-check-input\" type=\"radio\" name=\"inlineRadioOptions\" id=\"inlineRadio2\" value=\"option2\">");
+                        table.Append("<label class=\"form-check-label\">R</label>");
+                        table.Append("</div>");
+                        table.Append("</td>");
+                        table.Append("<td>");
+                        table.Append("<div class=\"form-check form-check-inline\">");
+                        table.Append("<input class=\"form-check-input\" type=\"radio\" name=\"inlineRadioOptions\" id=\"inlineRadio2\" value=\"option2\">");
+                        table.Append("<label class=\"form-check-label\">H</label>");
+                        table.Append("</div>");
+                        table.Append("</td>");
+                        table.Append("<td>");
+                        table.Append("<div class=\"form-check form-check-inline\">");
+                        table.Append("<input class=\"form-check-input\" type=\"radio\" name=\"inlineRadioOptions\" id=\"inlineRadio2\" value=\"option2\">");
+                        table.Append("<label class=\"form-check-label\">W</label>");
+                        table.Append("</div>");
+                        table.Append("</td>");
+                        table.Append("<td>");
+                        table.Append("<div class=\"form-check form-check-inline\">");
+                        table.Append("<input class=\"form-check-input\" type=\"radio\" name=\"inlineRadioOptions\" id=\"inlineRadio2\" value=\"option2\">");
+                        table.Append("<label class=\"form-check-label\">A</label>");
+                        table.Append("</div>");
+                        table.Append("</td>");
+                        table.Append("<td>");
+                        table.Append("<div class=\"form-check form-check-inline\">");
+                        table.Append("<input class=\"form-check-input\" type=\"radio\" name=\"inlineRadioOptions\" id=\"inlineRadio2\" value=\"option2\">");
+                        table.Append("<label class=\"form-check-label\">TC</label>");
+                        table.Append("</div>");
+                        table.Append("</td>");
+                        table.Append("<td>");
+                        table.Append("<div class=\"form-check form-check-inline\">");
+                        table.Append("<i class=\"fa fa-file-text-o\"></i>");
+                        table.Append("</div>");
+                        table.Append("</td>");
+                        table.Append("</tr>");
+
+
+                    }
+
+                rd2.Close();
+                table.Append("</tbody>");
+                table.Append("</table>");
+                table.Append("</div>");
+                table.Append("<br/>");
+            }
+            conn.Close();
+            return table;
+        }
+
+        public static Dining_Attendance_simple get_list_resident(int homeid, DateTime todaydate)
+        {
+            //Dining_Attendance LIST_VIEW = new Dining_Attendance();
+            //LIST_VIEW.LIST_RESIDENT = new List<ResidentModel>();
+            //using (SqlConnection conn = new SqlConnection(Constants.ConnectionString.PROD))
+            //{
+            //    //SqlConnection conn = new SqlConnection(Constants.ConnectionString.PROD);
+            //    //conn.ConnectionString = Constants.ConnectionString.PROD;
+            //    conn.Open();
+            //    SqlCommand cmd = new SqlCommand();
+            //    cmd.CommandText = " select distinct fd_resident_id, fd_floor from[dbo].[tbl_Suite_Handler] SH" +
+            //                        " join[dbo].[tbl_Suite] S on S.fd_id=SH.fd_suite_id" +
+            //                        " where SH.fd_home_id = @homeid and @GETDATE> fd_move_in_date and @GETDATE< isNULL(fd_move_out_date, '2200-09-13')";
+            //    cmd.Parameters.AddWithValue("@GETDATE", todaydate);
+            //    cmd.Parameters.AddWithValue("@homeid", homeid);
+            //    cmd.Connection = conn;
+            //    SqlDataReader rd = cmd.ExecuteReader();
+            //    if (rd.HasRows)
+            //        while (rd.Read())
+            //        {
+            //            var resident = ResidentsDAL.GetResidentById(int.Parse(rd[0].ToString()));
+            //            resident.No_of_floor = int.Parse(rd[1].ToString());
+            //            LIST_VIEW.LIST_RESIDENT.Add(resident);
+            //        }
+            //}
+            //return LIST_VIEW;
+
+
+            Dining_Attendance_simple LIST_VIEW = new Dining_Attendance_simple();
+            LIST_VIEW.LIST_RESIDENT = new List<ResidentModelsimple>();
+
+            using (SqlConnection conn = new SqlConnection(Constants.ConnectionString.PROD))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText =   " select distinct SH.fd_resident_id, S.fd_floor, R.fd_first_name,R.fd_last_name from[dbo].[tbl_Suite_Handler] SH" +
+                                    " join[dbo].[tbl_Suite] S on S.fd_id=SH.fd_suite_id" +
+                                    " join[tbl_Resident] R on SH.fd_resident_id=R.fd_id" +
+                                    " where SH.fd_home_id = @homeid and @GETDATE> SH.fd_move_in_date and @GETDATE< isNULL(SH.fd_move_out_date, '2200-09-13') order by R.fd_first_name";
+                cmd.Parameters.AddWithValue("@GETDATE", todaydate);
+                cmd.Parameters.AddWithValue("@homeid", homeid);
+                cmd.Connection = conn;
+                SqlDataReader rd = cmd.ExecuteReader();
+                if (rd.HasRows)
+                    while (rd.Read())
+                    {
+                        ResidentModelsimple sample = new ResidentModelsimple();
+                        sample.ID = int.Parse(rd[0].ToString());
+                        sample.No_of_floor = int.Parse(rd[1].ToString());
+                        sample.FirstName = rd[2].ToString();
+                        sample.LastName = rd[3].ToString(); ;
+                        LIST_VIEW.LIST_RESIDENT.Add(sample);
+
+                    }
+            }
+            return LIST_VIEW;
+
+
+
+        }
+
+        public static string[] get_gender_info(int homeid, DateTime todaydate)
+        {
+            using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
+            using (var cmdGARead = new SqlCommand("Get_Taken_Refused_Information", conn)
+            {
+                CommandType = CommandType.StoredProcedure
+            })
+            {
+                conn.Open();
+                cmdGARead.Parameters.AddWithValue("@homeID", homeid);
+                cmdGARead.Parameters.AddWithValue("@changingdate", todaydate);
+                cmdGARead.Parameters.Add("@returnstring", SqlDbType.VarChar, 100000);
+                cmdGARead.Parameters["@returnstring"].Direction = ParameterDirection.Output;
+                cmdGARead.ExecuteNonQuery();
+                string retunvalue = cmdGARead.Parameters["@returnstring"].Value.ToString();
+                string[] returnstring = retunvalue.Split(',');
+                conn.Close();
+
+                return returnstring;
+            }
+        }
     }
 }

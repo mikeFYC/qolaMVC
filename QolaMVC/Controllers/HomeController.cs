@@ -16,6 +16,7 @@ using QolaMVC.Helpers;
 using static QolaMVC.Helpers.ProgressNotesHelper;
 using System.Data;
 using System.Collections;
+using System.Text;
 
 namespace QolaMVC.Controllers
 {
@@ -56,6 +57,7 @@ namespace QolaMVC.Controllers
             }
         }
 
+        [HttpGet]
         public ActionResult Menu(int p_HomeId)
         {
             var user = (UserModel)TempData["User"];
@@ -64,7 +66,40 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             ViewBag.User = user;
             HomeModel l_Home = HomeDAL.GetHomeById(p_HomeId);
+            //dynamic l_Json=to_do_list_function.get_to_do_list_number( user.ID, l_Home.Id);
+            //TempData["DU"] = l_Json.DU;
+            //TempData["HO"] = l_Json.HO;
+            //TempData["IDA"] = l_Json.IDA;
+            //TempData["IAA"] = l_Json.IAA;
+            //TempData["IFRA"] = l_Json.IFRA;
+            //TempData["IRCA"] = l_Json.IRCA;
+            //TempData["RDA"] = l_Json.RDA;
+            //TempData["RAA"] = l_Json.RAA;
+            //TempData["RFRA"] = l_Json.RFRA;
+            //TempData["RRCA"] = l_Json.RRCA;
+            //TempData["PN"] = l_Json.PN;
+            //TempData["AN"] = l_Json.AN;
+            //TempData["RB"] = l_Json.RB;
+            //TempData["RI"] = l_Json.RI;
+            //TempData["RP"] = l_Json.RP;
+            //TempData["NR"] = l_Json.NR;
+            //TempData["SAE"] = l_Json.SAE;
+
             return View(l_Home);
+        }
+
+        [HttpGet]
+        public ActionResult Number()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            
+            dynamic l_Json = to_do_list_function.get_to_do_list_number(user.ID, home.Id);
+
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+
         }
 
         public ActionResult ResidentMenu(int p_ResidentId)
@@ -88,8 +123,40 @@ namespace QolaMVC.Controllers
 
             ViewBag.ProgressNotes = progressNotes;
             ProgressNotesHelper.RegisterSession(resident);
+            TempData["NOTE"] = "NO";
+
             return View(resident);
         }
+
+        public ActionResult ResidentMenu2(int p_ResidentId)
+        {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            var resident = ResidentsDAL.GetResidentById(p_ResidentId);
+            var progressNotes = ProgressNotesDAL.GetProgressNotesCollections(resident.ID, DateTime.Now, DateTime.Now, "A");
+
+            ViewBag.Message = TempData["Message"];
+
+            TempData["Resident"] = resident;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            ViewBag.Resident = resident;
+
+            ViewBag.ProgressNotes = progressNotes;
+            ProgressNotesHelper.RegisterSession(resident);
+            TempData["NOTE"] = "YES";
+
+            return View("ResidentMenu", resident);
+
+        }
+
+
+
         public ActionResult ManageResidents(int p_HomeId)
         {
             var l_Residents = ResidentsDAL.GetResidentCollections(p_HomeId);
@@ -119,20 +186,20 @@ namespace QolaMVC.Controllers
             p_Model.ModifiedBy = user;
             p_Model.ModifiedOn = DateTime.Now;
             p_Model.Home = home;
-
-            ResidentsDAL.AddNewResidentGeneralInfo(p_Model);
-
+            int[] RR = new int[2];
+            RR=ResidentsDAL.AddNewResidentGeneralInfo(p_Model);
+            ResidentsDAL.update_checklist(user.ID,RR[0]);
             return RedirectToAction("AddNewResident");
         }
+
         public ActionResult ActivityCalendar()
         {
             return View();
         }
 
-        public ActionResult DiningAttendance()
-        {
-            return View();
-        }
+
+
+
         #region ajax requests
         [HttpPost]
         public JsonResult getEvents(FormCollection form)
@@ -1570,6 +1637,402 @@ namespace QolaMVC.Controllers
             }
 
         }
+
+
+
+        #region Dining Attendance
+
+        public ActionResult DiningAttendance(string datesel)
+        {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+
+            ViewBag.Message = TempData["Message"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            Dining_Attendance_simple LIST_VIEW_RESIDENT = new Dining_Attendance_simple();
+
+            if (datesel == "" || datesel == null)
+            {
+                TempData["datechoose"] = DateTime.Now.ToString("MMMM dd, yyyy");
+                LIST_VIEW_RESIDENT = HomeDAL.get_list_resident(home.Id, DateTime.Today);
+                string[] genderinfo = HomeDAL.get_gender_info(home.Id, DateTime.Today);
+                TempData["number_attendance_array"] = genderinfo;
+            }
+            else
+            {
+                TempData["datechoose"] = datesel;
+                LIST_VIEW_RESIDENT = HomeDAL.get_list_resident(home.Id, DateTime.Parse(datesel));
+                string[] genderinfo = HomeDAL.get_gender_info(home.Id, DateTime.Parse(datesel));
+                TempData["number_attendance_array"] = genderinfo;
+            }
+            TempData["LIST_VIEW_RESIDENT"] = LIST_VIEW_RESIDENT;
+            TempData.Keep("LIST_VIEW_RESIDENT");
+            ViewBag.LIST_VIEW_RESIDENT = LIST_VIEW_RESIDENT;
+            //DateTime lastSunday = DateTime.Now;
+            //while (lastSunday.DayOfWeek != DayOfWeek.Sunday)
+            //    lastSunday = lastSunday.AddDays(-1);
+            //TempData["Sunday"] = lastSunday;
+
+            return View(LIST_VIEW_RESIDENT);
+        }
+
+        [HttpPost]
+        public int saveButton_Dining(string arr, int whichmeal, string datesel)
+        {
+            string meal="";
+            if (whichmeal == 1)
+                meal = "Breakfast";
+            else if (whichmeal == 2)
+                meal = "Lunch";
+            else if (whichmeal == 3)
+                meal = "Dinner";
+            string arr_2 = arr.Replace("Taken", "option1").Replace("Refused", "option2").Replace("Hospital", "option3").Replace("Waiver", "option4").Replace("Away", "option5").Replace("Tray Complimentary", "option6");
+            arr = arr.Replace("option1", "Taken").Replace("option2", "Refused").Replace("option3", "Hospital").Replace("option4", "Waiver").Replace("option5", "Away").Replace("option6", "Tray Complimentary");
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<string> Save_sum_array = new List<string>();
+            List<string> Save_sum_array_original = new List<string>();
+            Dictionary<string, string> Save_summary = new Dictionary<string, string>();
+            if (arr_2.Length != 0)
+            {
+                Save_sum_array = arr_2.Substring(0, arr_2.Length - 1).Split(',').ToList();
+                Save_sum_array_original = arr.Substring(0, arr.Length - 1).Split(',').ToList();
+                for (int a = 0; a < Save_sum_array.Count(); a = a + 2)
+                {
+                    Dining_Attendance_functions.add_progress_note(int.Parse(Save_sum_array_original[a]), DateTime.Now, "Resident "+ Save_sum_array_original[a+1]+" "+meal, user.ID, DateTime.Now);
+
+                    if (Save_summary.ContainsKey(Save_sum_array[a + 1]) == false)
+                    {
+                        Save_summary.Add(Save_sum_array[a + 1], Save_sum_array[a]);
+                    }
+                    else
+                        Save_summary[Save_sum_array[a + 1]] += "," + Save_sum_array[a];
+                }
+            }
+            Dining_Attendance_functions.save_Button(home.Id, whichmeal, DateTime.Parse(datesel), Save_summary, user.ID, DateTime.Now);
+
+                return 1;
+        }
+
+        [HttpGet]
+        public StringBuilder Getting_Dining(int whichmeal, string datesel)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+
+            StringBuilder returnstring=Dining_Attendance_functions.getting_LIST(whichmeal, DateTime.Parse(datesel),home.Id);
+            return returnstring;
+
+        }
+
+        [HttpGet]
+        public ActionResult View_List(int whichmeal, string datesel)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            StringBuilder returnstring = Dining_Attendance_functions.getting_LIST(whichmeal, DateTime.Parse(datesel),home.Id);
+            string[] viewlist = returnstring.ToString().Split(';');
+
+            List<dynamic> l_Json = new List<dynamic>();
+
+            for (var c = 0; c < viewlist.Length; c++)
+            {
+                var cplus = c + 1;
+                for (var b = 0; b < viewlist[c].Split(',').Length; b++)
+                {
+                    if (viewlist[c].Split(',')[b] != "")
+                    {
+                        dynamic l_J = new System.Dynamic.ExpandoObject();
+                        var resident = ResidentsDAL.GetResidentById(int.Parse(viewlist[c].Split(',')[b]));
+
+                        l_J.Name = resident.FirstName + " " + resident.LastName;
+                        l_J.residentid = viewlist[c].Split(',')[b];
+                        l_J.gender = resident.Gendar;
+                        if (c == 0)
+                            l_J.action = "Taken";
+                        else if (c == 1)
+                            l_J.action = "Refused";
+                        else if (c == 2)
+                            l_J.action = "Hospital";
+                        else if (c == 3)
+                            l_J.action = "Waiver";
+                        else if (c == 4)
+                            l_J.action = "Away";
+                        else if (c == 5)
+                            l_J.action = "Tray Complimentary";
+
+                        l_Json.Add(l_J);
+
+                        //returnstring.Replace(viewlist[c].Split(',')[b], resident.FirstName + resident.LastName);
+                    }
+                }
+            }
+
+            //return returnstring;
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+
+        }
+
+        [HttpGet]
+        public string disable_hospital(DateTime datesel)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            List<int> returnleaving = Dining_Attendance_functions.disable_hospital_list(datesel);
+            string returnstring= string.Join(",", returnleaving.ToArray());
+            return returnstring;
+        }
+
+        [HttpGet]
+        public int click_progress_note(int residentid, string datesel, string note)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            int returnint = Dining_Attendance_functions.add_progress_note(residentid,DateTime.Now, note,user.ID,DateTime.Now);
+
+            return returnint;
+        }
+
+        #endregion
+
+
+
+        #region To Do List
+
+        [HttpGet]
+        public ActionResult HO_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_hospital_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult DU_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_DU_list(home.Id, user.ID);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult IAA_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_IAA_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult IDA_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_IDA_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult IFRA_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_IFRA_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult IRCA_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_IRCA_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult PN_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_PN_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult AN_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_AN_list(home.Id,user.ID);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult AN_VIEW_CLICK(int PNid, int residentid)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.AN_VIEW(PNid, residentid, user.ID);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult RAA_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_RAA_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult RDA_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_RDA_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult RFRA_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_RFRA_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult RRCA_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_RRCA_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult RI_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_RI_list(home.Id, user.ID);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public void RI_Acknowledge_CLICK(int pnid,int residentid,string action)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            to_do_list_function.get_RI_Acknowledge(user.ID,pnid,residentid,action);
+        }
+
+        [HttpGet]
+        public ActionResult RB_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_RB_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult RP_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_RP_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult NR_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_NR_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult SA_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_SA_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        #endregion
+
+
+
+
+
     }
 }
 

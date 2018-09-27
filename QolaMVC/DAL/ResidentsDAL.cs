@@ -110,6 +110,23 @@ namespace QolaMVC.DAL
             }
         }
 
+        public static void update_checklist(int userid,int residentid)
+        {
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = "insert into [tbl_AB_Admission_checklist] values(@resident,1,@user,@date)";
+            cmd.Parameters.AddWithValue("@resident", residentid);
+            cmd.Parameters.AddWithValue("@user",userid);
+            cmd.Parameters.AddWithValue("@date",DateTime.Now);
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            conn.Close();
+
+        }
+
+
         public static bool UpdateResidentGeneralInfo(ResidentModel updateResidentGeneralInfo)
         {
             string exception = string.Empty;
@@ -703,6 +720,10 @@ namespace QolaMVC.DAL
                         resident.Wakeup_time = Convert.ToString(residentTypeRow["fd_Wakeup_time"]);
                         resident.Go_to_bed_at = Convert.ToString(residentTypeRow["fd_Go_to_bed_at"]);
                         resident.Favourite_past_time = Convert.ToString(residentTypeRow["fd_Favourite_past_time"]);
+                        resident.Suite_Handler_Notes = Convert.ToString(residentTypeRow["fd_notes"]);
+                        resident.Suite_Handler_Status = Convert.ToString(residentTypeRow["suite_handler_status"]);
+
+
                     }
                 }
                 return resident;
@@ -2531,6 +2552,37 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
+
+        public static Collection<int> GetAvailableSuitesNumber(int homeId, DateTime dateinput, int occupancynumber)
+        {
+            string exception = string.Empty;
+            Collection<int> residents = new Collection<int>();
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+
+            SqlDataAdapter l_DA = new SqlDataAdapter();
+            SqlCommand l_Cmd = new SqlCommand(Constants.StoredProcedureName.USP_GET_AVAILABLE_SUITE_BY_HOME_ID, l_Conn);
+            l_Conn.Open();
+            l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            l_Cmd.Parameters.AddWithValue("@homeID", homeId);
+            l_Cmd.Parameters.AddWithValue("@occupancy", occupancynumber);
+            l_Cmd.Parameters.AddWithValue("@moveInDate", dateinput);
+            DataTable residentReceive = new DataTable();
+            l_DA.SelectCommand = l_Cmd;
+            l_DA.Fill(residentReceive);
+            for (int i = 0; i <= residentReceive.Rows.Count - 1; i++)
+            {
+                var cell = residentReceive.Rows[i][0];
+                if (int.TryParse(cell.ToString(), out int n) == true)
+                    residents.Add(int.Parse(cell.ToString()));
+                
+            }
+            return residents;
+            
+        }
+
+
+
+
     }
 
 }

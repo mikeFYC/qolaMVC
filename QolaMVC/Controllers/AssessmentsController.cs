@@ -87,6 +87,25 @@ namespace QolaMVC.Controllers
             return View();
         }
 
+        public ActionResult DietaryHistory2(int p_ResidentId)
+        {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            var resident = ResidentsDAL.GetResidentById(p_ResidentId);
+            var progressNotes = ProgressNotesDAL.GetProgressNotesCollections(resident.ID, DateTime.Now, DateTime.Now, "A");
+            ViewBag.Message = TempData["Message"];
+            TempData["Resident"] = resident;
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            ViewBag.Resident = resident;
+            ViewBag.ProgressNotes = progressNotes;
+            ProgressNotesHelper.RegisterSession(resident);
+            return RedirectToAction("DietaryHistory");
+        }
+
         public ActionResult ExerciseActivity()
         {
             var home = (HomeModel)TempData["Home"];
@@ -480,19 +499,37 @@ namespace QolaMVC.Controllers
             return residentdata;
         }
 
-        public ActionResult ProgressNotes()
+        public ActionResult ProgressNotes(string p_ResidentId)
         {
+            if (p_ResidentId != null)
+            {
+                var resident = ResidentsDAL.GetResidentById(int.Parse(p_ResidentId));
+                var progressNotes = ProgressNotesDAL.GetProgressNotesCollections(resident.ID, DateTime.Now, DateTime.Now, "A");
+                ViewBag.Message = TempData["Message"];
+                TempData["Resident"] = resident;
+                TempData.Keep("Resident");
+                ViewBag.Resident = resident;
+                ViewBag.ProgressNotes = progressNotes;
+                ProgressNotesHelper.RegisterSession(resident);
+            }
+            else
+            {
+                var resident = (ResidentModel)TempData["Resident"];
+                ViewBag.Resident = resident;
+                TempData.Keep("Resident");
+            }
+
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
-            var resident = (ResidentModel)TempData["Resident"];
+            //var resident = (ResidentModel)TempData["Resident"];
 
             ViewBag.User = user;
             ViewBag.Home = home;
-            ViewBag.Resident = resident;
+            //ViewBag.Resident = resident;
 
             TempData.Keep("User");
             TempData.Keep("Home");
-            TempData.Keep("Resident");
+            //TempData.Keep("Resident");
 
             return View();
         }
@@ -739,6 +776,26 @@ namespace QolaMVC.Controllers
             return View(l_Model);
         }
 
+        public ActionResult CarePlan2(int p_ResidentId)
+        {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            var resident = ResidentsDAL.GetResidentById(p_ResidentId);
+            var progressNotes = ProgressNotesDAL.GetProgressNotesCollections(resident.ID, DateTime.Now, DateTime.Now, "A");
+            ViewBag.Message = TempData["Message"];
+            TempData["Resident"] = resident;
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            ViewBag.Resident = resident;
+            ViewBag.ProgressNotes = progressNotes;
+            ProgressNotesHelper.RegisterSession(resident);
+            return RedirectToAction("CarePlan");
+        }
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CarePlan(PlanOfCareModel p_Model)
@@ -786,21 +843,16 @@ namespace QolaMVC.Controllers
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
             var resident = (ResidentModel)TempData["Resident"];
-
             var l_Activity = MasterDAL.GetActivityAssessments(resident.ID);
-
             if(l_Activity.Count == 0)
             {
                 l_Activity = MasterDAL.InitActivityAssessments();
             }
-
             List<DateTime> l_AssessmentDates = new List<DateTime>();
-
             foreach(var l_A in l_Activity)
             {
                 l_AssessmentDates.Add(l_A.DateEntered);
             }
-
             ViewBag.AssessmentDates = l_AssessmentDates;
             ViewBag.User = user;
             ViewBag.Resident = resident;
@@ -811,6 +863,25 @@ namespace QolaMVC.Controllers
             TempData.Keep("Resident");
             
             return View(l_Activity.LastOrDefault());
+        }
+
+        public ActionResult Activity2(int p_ResidentId)
+        {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            var resident = ResidentsDAL.GetResidentById(p_ResidentId);
+            var progressNotes = ProgressNotesDAL.GetProgressNotesCollections(resident.ID, DateTime.Now, DateTime.Now, "A");
+            ViewBag.Message = TempData["Message"];
+            TempData["Resident"] = resident;
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            ViewBag.Resident = resident;
+            ViewBag.ProgressNotes = progressNotes;
+            ProgressNotesHelper.RegisterSession(resident);
+            return RedirectToAction("Activity");
         }
 
         [HttpPost]
@@ -978,5 +1049,47 @@ namespace QolaMVC.Controllers
             AssessmentDAL.AddFallRiskAssessment(p_Model);
             return RedirectToAction("FallRisk");
         }
+
+
+        [HttpPost]
+        public void saveButton(int tb_number)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            MasterDAL.save_button(tb_number, user.ID, resident.ID);
+        }
+
+        [HttpPost]
+        public void saveButton2(int tb_number)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            MasterDAL.save_button(tb_number, resident.ID);
+        }
+
+        [HttpGet]
+        public string get_checklist_data()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            string str = MasterDAL.get_checklist(resident.ID);
+            return str;
+        }
+
+
+
+
     }
 }

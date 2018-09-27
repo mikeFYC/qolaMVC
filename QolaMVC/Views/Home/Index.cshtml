@@ -139,7 +139,18 @@
         border-left-width: 24px: right:-10px;
         border-bottom-width: 21px;
     }
+
+    .occupy_percentage {
+        font-weight: bolder;
+        font-size: 1.2vw;
+    }
+
+    .badge.badge-danger.fs-10.px-3 {
+        
+    }
 </style>
+
+
 <!-- START PAGE-CONTAINER -->
 <div class="page-container">
 
@@ -159,7 +170,7 @@
                         <div class="col-md-2 text-right">
                             <h4 class="text-danger bold pr-3">
                                 @*4318
-                                <small>Residents</small>*@
+                                    <small>Residents</small>*@
                             </h4>
                         </div>
                     </div>
@@ -221,12 +232,18 @@
                                         </div>
                                         <div class="padding-15">
                                             <div class="list-inline pull-left no-margin">
-                                              
+
                                             </div>
-                                            <div class="list-inline pull-right no-margin">
-                                                <div class="badge badge-danger fs-10 px-3">@home.OccupiedSuites/@home.TotalSuites</div>
+                                            <div class="list-inline pull-right no-margin" style="position:relative;width:4vw;height:4vw;">
+                                                <div class="badge badge-danger fs-10" style="position:absolute;top:0.3vw;left:1.7vw;opacity:0.8;">@home.OccupiedSuites/@home.TotalSuites</div>
                                                 @*<div class="label label-default label-arrow label-arrow-left banner-right">left arrow</div>
-                                                <div class="label label-danger label-arrow label-arrow-left">left arrow</div>*@
+                                                    <div class="label label-danger label-arrow label-arrow-left">left arrow</div>*@
+                                                <div class="before">
+                                                    <img class="colour_arrow_class" style="width:100%;height:100%;" />
+                                                    <div style="position:absolute;top:1.2vw;left:1.2vw;">
+                                                        <p class="occupy_percentage">@(home.OccupiedSuites * 100 / home.TotalSuites)%</p>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="clearfix"></div>
                                         </div>
@@ -244,3 +261,25 @@
         </div>
         <!-- END PAGE CONTENT -->
         @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+
+<script>
+
+    $().ready(function () {
+        var nodes = document.getElementsByClassName("before");
+        //var nodes = document.getElementsByClassName("colour_arrow_class");
+        for (var a = nodes.length - 1; a >= 0; a--) {
+            var nodesimg = nodes[a].getElementsByTagName("img");
+            var nodes2 = nodes[a].getElementsByTagName("div");
+            var nodes3 = nodes2[0].getElementsByTagName("p");
+            var nodes4 = nodes3[0].innerHTML;
+            if (parseFloat(nodes4) <= 20)
+                nodesimg[0].src = "/Content/pages/img/arrow_red2.png";
+            else if(parseFloat(nodes4) < 80 && parseFloat(nodes4)>20)
+                nodesimg[0].src = "/Content/pages/img/arrow_yellow2.png";
+            else
+                nodesimg[0].src = "/Content/pages/img/arrow_green2.png";
+        }
+    });
+
+</script>

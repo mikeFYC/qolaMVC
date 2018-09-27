@@ -1,6 +1,8 @@
-﻿@model List<QolaMVC.Models.NEW_AllergyModel>
+﻿
+@model QolaMVC.Models.ResidentModel
 @RenderPage("~/Views/Shared/_Header.cshtml")
 @RenderPage("~/Views/Shared/_SideBar.cshtml")
+
 <style>
     .form-tabs .nav-link {
         font-size: 1rem;
@@ -10,7 +12,121 @@
         width: 900px !important;
         max-width: 1000px !important;
     }
+    #EDIT_BUTTON {
+        background-color: #0275d8;
+        color: white;
+        padding: 0.6vw 1vw 0.5vw 1vw;
+        border-radius: 0.3vw;
+    }
 </style>
+<script>
+
+    function option_button_click_hos(click_id) {
+
+        var inputs = $("input[type=date]").each(function () {
+            $(this).val("");
+        });
+        var selects = $("select").each(function () {
+            $(this).val("");
+        });
+        var textareas = $("textarea").each(function () {
+            $(this).val("");
+        });
+        var nodes = document.getElementsByClassName("nav-link active");
+        for (var a = nodes.length - 1; a >= 0; a--) {
+            nodes[a].className = "nav-link";
+        }
+        var nodes2 = document.getElementsByClassName("tab-pane fade show active");
+        for (var a = nodes2.length - 1; a >= 0; a--) {
+            nodes2[a].className = "tab-pane fade";
+        }
+        document.getElementById("pills-" + click_id).className = "tab-pane fade show active";
+
+        $.get("/Residents/get_Leaving_date", {}, function (data) {
+            if (data != "") {
+                var a = $('#leavingDate_Hospitalization');
+                a[0].value = data;
+            }
+        });
+    }
+
+    function moveoutbuttonclick() {
+        if (document.getElementById("Hospitalization").className == "nav-link active") {
+            document.getElementById("Hospitalization").className = "nav-link";
+        }
+        if (document.getElementById("Hospitalization").className == "nav-link") {
+            document.getElementById("ApplicationSuite").className = "nav-link";
+            document.getElementById("ChangeOccupancy").className = "nav-link";
+            document.getElementById("InternalTransfer").className = "nav-link";
+            document.getElementById("TransfertoASCHOME").className = "nav-link";
+        }
+    }
+
+    function ModificationsorTransferbuttonfunction() {
+
+        if (document.getElementById("Hospitalization").className == "nav-link active") {
+            document.getElementById("Hospitalization").className = "nav-link";
+        }
+        if (document.getElementById("Hospitalization").className == "nav-link") {
+            document.getElementById("EndofLease").className = "nav-link";
+            document.getElementById("Palliative").className = "nav-link";
+            document.getElementById("LTC").className = "nav-link";
+            document.getElementById("OtherRetirement").className = "nav-link";
+            document.getElementById("PassedAway").className = "nav-link";
+            document.getElementById("Other").className = "nav-link";
+        }
+    }
+
+    function option_button_click(click_id) {
+        var inputs = $("input[type=date]").each(function () {
+            $(this).val("");
+        });
+        var selects = $("select").each(function () {
+            $(this).val("");
+        });
+        var textareas = $("textarea").each(function () {
+            $(this).val("");
+        });
+        var nodes = document.getElementsByClassName("nav-link active");
+        for (var a = nodes.length - 1; a >= 0; a--) {
+            nodes[a].className = "nav-link";
+        }
+        var nodes2 = document.getElementsByClassName("tab-pane fade show active");
+        for (var a = nodes2.length - 1; a >= 0; a--) {
+            nodes2[a].className = "tab-pane fade";
+        }
+        document.getElementById("pills-" + click_id).className = "tab-pane fade show active";
+    }
+
+    function edit_button_click() {
+        if (document.getElementById('editform').style.display == 'none') {
+            document.getElementById('editform').style.display = 'block';
+            document.getElementById('suitehandlerform').style.display = 'none';
+        }
+    }
+
+    function Back_in_edit_button_click() {
+        var inputs = $("input[type=date]").each(function () {
+            $(this).val("");
+        });
+        var selects = $("select").each(function () {
+            $(this).val("");
+        });
+        var textareas = $("textarea").each(function () {
+            $(this).val("");
+        });
+        if (document.getElementById('editform').style.display == 'block') {
+            document.getElementById('editform').style.display = 'none';
+            document.getElementById('suitehandlerform').style.display = 'block';
+        }
+    }
+
+
+</script>
+
+
+
+
 <!-- START PAGE-CONTAINER -->
 <div class="page-container">
 
@@ -47,97 +163,142 @@
                             <div class="col-md-3">
                                 <div class="row">
                                     <div class="col-md-7">
-                                        <img src="<?php echo url('assets/img/photo_dummysize.png') ?>"
+                                        <img src="~/Content/assets/@Model.ResidentImage"
                                              style="width: 120px"
                                              alt="">
                                     </div>
                                     <div class="col-md-5">
-                                        <h6>SAMPLE</h6>
-                                        <h6>JOHN</h6>
-                                        <h6 style="color: red">1</h6>
-                                        <h6>Male</h6>
-                                        <h6>05-05-2494</h6>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h6 style="color: red">Sample</h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-9">
-                                <div class="form-tabs mt-4">
+                                        <h6>@Model.FirstName   @Model.LastName</h6>
+                                        <h6>@Model.Gendar</h6>
+                                        <h6>@Model.BirthDate.ToShortDateString()</h6>
+                                        @{
+                                            if (ViewBag.User.ID == 1338 || ViewBag.User.ID == 1346)
+                                            {
+                                                <button class="edit_button" id="EDIT_BUTTON" onclick="edit_button_click()">
+                                                    EDIT
+                                                </button>
+                                            }
+                                        }
 
+                                    </div>
+                                </div>
+                                <div id="editform" style="display:none">
+                                    <br />
+                                    <div class="row" style="min-width:70vw">
+                                        @(new HtmlString(TempData["table"].ToString()))
+                                    </div>
+                                    <br />
+                                    <select name="" id="select_option_in_edit_form" class="form-control" style="min-width:40vw">
+                                        <option value="">----- Choose the Last Action you want to undo -----</option>
+                                        <option value="only_delete">Application Suite</option>
+                                        <option value="delete_and_update_move_out">Change Occupancy/Internal Transfer/Transfer to ASC HOME</option>
+                                        <option value="update_move_out_and_note_and_pass_away">Passed Away</option>
+                                        <option value="only_update_note">Hospitalization</option>
+                                        <option value="update_move_out_and_note">ALL Other Move Out</option>
+                                    </select>
+                                    <br>
+                                    <button class="btn btn-danger" id="BACK_Button_in_Edit" onclick="Back_in_edit_button_click()">
+                                        BACK
+                                    </button>
+                                    <button class="btn btn-danger" id="SAVE_Button_in_Edit" onclick="UNDO_in_edit_button_click()">
+                                        UNDO
+                                    </button>
+                                    <br>
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-md-9_changebymike" id="suitehandlerform">
+                                <div class="form-tabs mt-4">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <h6><b>Modifications</b> </h6>
-                                        </div>
-                                        <div class="col-md-6 text-left">
-                                            <h6><b>Transfer</b> </h6>
+                                            <h6><b>Modifications or Transfer</b> </h6>
                                         </div>
                                     </div>
                                     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                         <li class="nav-item">
-                                            <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Application Suite</a>
+                                            <a class="nav-link" id="ApplicationSuite" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true" onclick="option_button_click(this.id)">Application Suite</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Change Occupancy</a>
+                                            <a class="nav-link" id="ChangeOccupancy" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false" onclick="option_button_click(this.id)">Change Occupancy</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Internal Transfer</a>
+                                            <a class="nav-link" id="InternalTransfer" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false" onclick="option_button_click(this.id)">Internal Transfer</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-other" role="tab" aria-controls="pills-contact" aria-selected="false">Transfer to ASC HOME</a>
+                                            <a class="nav-link" id="TransfertoASCHOME" data-toggle="pill" href="#pills-other" role="tab" aria-controls="pills-contact" aria-selected="false" onclick="option_button_click(this.id)">Transfer to ASC HOME</a>
                                         </li>
                                     </ul>
                                     <h6><b>Move Out</b> </h6>
 
                                     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                         <li class="nav-item">
-                                            <a class="nav-link" id="pills-home-tab2" data-toggle="pill" href="#pills-home2" role="tab" aria-controls="pills-home" aria-selected="true">End of Lease</a>
+                                            <a class="nav-link" id="EndofLease" data-toggle="pill" href="#pills-home2" role="tab" aria-controls="pills-home" aria-selected="true" onclick="option_button_click(this.id)">End of Lease</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="pills-profile-tab2" data-toggle="pill" href="#pills-profile2" role="tab" aria-controls="pills-profile" aria-selected="false">Palliative</a>
+                                            <a class="nav-link" id="Palliative" data-toggle="pill" href="#pills-profile2" role="tab" aria-controls="pills-profile" aria-selected="false" onclick="option_button_click(this.id)">Palliative</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="pills-contact-tab2" data-toggle="pill" href="#pills-contact2" role="tab" aria-controls="pills-contact" aria-selected="false">LTC</a>
+                                            <a class="nav-link" id="LTC" data-toggle="pill" href="#pills-contact2" role="tab" aria-controls="pills-contact" aria-selected="false" onclick="option_button_click(this.id)">LTC</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="pills-contact-tab2" data-toggle="pill" href="#pills-other2" role="tab" aria-controls="pills-contact" aria-selected="false">Other Retirement</a>
+                                            <a class="nav-link" id="OtherRetirement" data-toggle="pill" href="#pills-other2" role="tab" aria-controls="pills-contact" aria-selected="false" onclick="option_button_click(this.id)">Other Retirement</a>
                                         </li>
-                                        </li>
+
                                         <li class="nav-item">
-                                            <a class="nav-link" id="pills-contact-tab2" data-toggle="pill" href="#pills-passed" role="tab" aria-controls="pills1" aria-selected="false">Passed Away</a>
+                                            <a class="nav-link" id="PassedAway" data-toggle="pill" href="#pills-passed" role="tab" aria-controls="pills1" aria-selected="false" onclick="option_button_click(this.id)">Passed Away</a>
                                         </li>
-                                        </li>
+
                                         <li class="nav-item">
-                                            <a class="nav-link" id="pill2" data-toggle="pill" href="#pills-other3" role="tab" aria-controls="pills2" aria-selected="false">Other</a>
+                                            <a class="nav-link" id="Other" data-toggle="pill" href="#pills-other3" role="tab" aria-controls="pills2" aria-selected="false" onclick="option_button_click(this.id)">Other</a>
                                         </li>
                                     </ul>
+
+                                    <h6><b>Hospital</b> </h6>
+
+                                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="Hospitalization" data-toggle="pill" href="#pills-home2" role="tab" aria-controls="pills-home" aria-selected="true" onclick="option_button_click_hos(this.id)">Hospitalization</a>
+                                        </li>
+                                    </ul>
+
+
                                     <div class="tab-content" id="pills-tabContent">
-                                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                                            <div class="row">
-                                                <table class="table table-bordered">
-                                                    <thead class="bg-primary">
-                                                        <tr>
-                                                            <th class="text-white text-center">Home</th>
-                                                            <th class="text-white text-center">Suite No</th>
-                                                            <th class="text-white text-center">Move In Date</th>
-                                                            <th class="text-white text-center">Move Out Date</th>
-                                                            <th class="text-white text-center">Occupancy</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>Sample</td>
-                                                            <td>1</td>
-                                                            <td>O5/03/2005</td>
-                                                            <td></td>
-                                                            <td>Single</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
+
+                                        <div class="row" style="min-width:70vw">
+                                            @(new HtmlString(TempData["table"].ToString()))
+                                        </div>
+
+                                        @*<div class="row">
+                                            <table class="table table-bordered" style="margin-left:1vw">
+                                                <thead class="bg-primary">
+                                                    <tr>
+                                                        <th class="text-white text-center">Home</th>
+                                                        <th class="text-white text-center">Suite No</th>
+                                                        <th class="text-white text-center">Move In Date</th>
+                                                        <th class="text-white text-center">Move Out Date</th>
+                                                        <th class="text-white text-center">Occupancy</th>
+                                                        <th class="text-white text-center">Status</th>
+                                                        <th class="text-white text-center">Notes</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>@Model.Home.Name</td>
+                                                        <td>@Model.SuiteNo</td>
+                                                        <td>@Model.MoveInDate.ToString("MMMM dd, yyyy")</td>
+                                                        <td>@Model.MoveOutDate.ToString("MMMM dd, yyyy")</td>
+                                                        <td>@Model.Occupancy</td>
+                                                        <td>@Model.Suite_Handler_Status</td>
+                                                        <td>@Model.Suite_Handler_Notes</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>*@
+
+
+                                        <div class="tab-pane fade" id="pills-ApplicationSuite" role="tabpanel" aria-labelledby="pills-home-tab">
                                             <br>
                                             <br>
                                             <div class="row">
@@ -145,7 +306,7 @@
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-md-4 col-form-label">Move In Date</label>
                                                         <div class="col-md-5">
-                                                            <input type="text" class="form-control" id="staticEmail">
+                                                            <input type="date" class="form-control" id="dateinputApplicationSuite" onchange="selection_onchange_empty_suite()">
                                                         </div>
                                                         <div class="col-md-2">
                                                             <p style="font-size: 9px; float: left">(MM/DD/YYYY)</p>
@@ -154,7 +315,7 @@
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-md-4 col-form-label">Suite #</label>
                                                         <div class="col-md-7">
-                                                            <select name="" id="" class="form-control">
+                                                            <select name="" id="available_Suite_ApplicationSuite" class="form-control" onfocus="suitenumber()">
                                                                 <option value="">--Suite--</option>
                                                             </select>
                                                         </div>
@@ -166,8 +327,11 @@
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-md-4 text-right col-form-label">Occupancy</label>
                                                         <div class="col-md-7">
-                                                            <select name="" id="" class="form-control">
-                                                                <option value="">--Suite--</option>
+                                                            <select name="occupancyselectname" id="occupancyselectidApplicationSuite" class="form-control" onchange="selection_onchange_empty_suite()">
+                                                                <option value="">--Select--</option>
+                                                                <option value="1">Single</option>
+                                                                <option value="2">Double</option>
+                                                                <option value="3">Triple</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -176,7 +340,7 @@
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-md-1 col-form-label">Notes</label>
                                                         <div class="col-md-11">
-                                                            <textarea class="textarea" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
+                                                            <textarea class="textarea" id="notes_ApplicationSuite" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -184,49 +348,82 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
-                                                    <button class="btn btn-danger">
+                                                    <button class="btn btn-danger" onclick="window.history.back()">
                                                         BACK
                                                     </button>
-                                                    <button class="btn btn-danger">
+                                                    <button class="btn btn-danger" onclick="saveButton_ApplicationSuite()">
                                                         SAVE
                                                     </button>
-                                                    <button class="btn btn-danger">
+                                                    <button class="btn btn-danger" onclick="clearButton()">
                                                         CLEAR
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                                            <div class="row">
-                                                <table class="table table-bordered">
-                                                    <thead class="bg-primary">
-                                                        <tr>
-                                                            <th class="text-white text-center">Home</th>
-                                                            <th class="text-white text-center">Suite No</th>
-                                                            <th class="text-white text-center">Move In Date</th>
-                                                            <th class="text-white text-center">Move Out Date</th>
-                                                            <th class="text-white text-center">Occupancy</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>Sample</td>
-                                                            <td>1</td>
-                                                            <td>O5/03/2005</td>
-                                                            <td></td>
-                                                            <td>Single</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                                        <div class="tab-pane fade" id="pills-ChangeOccupancy" role="tabpanel" aria-labelledby="pills-profile-tab">
                                             <br>
                                             <br>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Move In Date</label>
+                                                        <label for="staticEmail" class="col-md-4 col-form-label">Transfer Date</label>
                                                         <div class="col-md-5">
-                                                            <input type="text" class="form-control" id="staticEmail">
+                                                            <input type="date" class="form-control" id="dateinputChangeOccupancy">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <p style="font-size: 9px; float: left">(MM/DD/YYYY)</p>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group row">
+                                                        <label for="staticEmail" class="col-md-4 text-right col-form-label">Occupancy</label>
+                                                        <div class="col-md-7">
+                                                            <select name="occupancyselectname" id="occupancyselectidChangeOccupancy" class="form-control">
+                                                                <option value="">--Select--</option>
+                                                                <option value="1">Single</option>
+                                                                <option value="2">Double</option>
+                                                                <option value="3">Triple</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label for="staticEmail" class="col-md-1 col-form-label">Notes</label>
+                                                        <div class="col-md-11">
+                                                            <textarea class="textarea" id="notes_ChangeOccupancy" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 text-center">
+                                                    <button class="btn btn-danger" onclick="window.history.back()">
+                                                        BACK
+                                                    </button>
+                                                    <button class="btn btn-danger" onclick="saveButton_ChangeOccupancy()">
+                                                        SAVE
+                                                    </button>
+                                                    <button class="btn btn-danger" onclick="clearButton()">
+                                                        CLEAR
+                                                    </button>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                        <div class="tab-pane fade" id="pills-InternalTransfer" role="tabpanel" aria-labelledby="pills-contact-tab">
+                                            <br>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group row">
+                                                        <label for="staticEmail" class="col-md-4 col-form-label">Transfer Date</label>
+                                                        <div class="col-md-5">
+                                                            <input type="date" class="form-control" id="dateinputInternalTransfer" onchange="selection_onchange_empty_suite()">
                                                         </div>
                                                         <div class="col-md-2">
                                                             <p style="font-size: 9px; float: left">(MM/DD/YYYY)</p>
@@ -235,7 +432,7 @@
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-md-4 col-form-label">Suite #</label>
                                                         <div class="col-md-7">
-                                                            <select name="" id="" class="form-control">
+                                                            <select name="" id="available_Suite_InternalTransfer" class="form-control" onfocus="suitenumber()">
                                                                 <option value="">--Suite--</option>
                                                             </select>
                                                         </div>
@@ -247,8 +444,11 @@
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-md-4 text-right col-form-label">Occupancy</label>
                                                         <div class="col-md-7">
-                                                            <select name="" id="" class="form-control">
-                                                                <option value="">--Suite--</option>
+                                                            <select name="occupancyselectname" id="occupancyselectidInternalTransfer" class="form-control" onchange="selection_onchange_empty_suite()">
+                                                                <option value="">--Select--</option>
+                                                                <option value="1">Single</option>
+                                                                <option value="2">Double</option>
+                                                                <option value="3">Triple</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -257,7 +457,7 @@
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-md-1 col-form-label">Notes</label>
                                                         <div class="col-md-11">
-                                                            <textarea class="textarea" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
+                                                            <textarea class="textarea" id="notes_InternalTransfer" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -265,51 +465,65 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
-                                                    <button class="btn btn-danger">
+                                                    <button class="btn btn-danger" onclick="window.history.back()">
                                                         BACK
                                                     </button>
-                                                    <button class="btn btn-danger">
+                                                    <button class="btn btn-danger" onclick="saveButton_InternalTransfer()">
                                                         SAVE
                                                     </button>
-                                                    <button class="btn btn-danger">
+                                                    <button class="btn btn-danger" onclick="clearButton()">
                                                         CLEAR
                                                     </button>
                                                 </div>
                                             </div>
-
-
                                         </div>
-                                        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
-                                            <div class="row">
-                                                <table class="table table-bordered">
-                                                    <thead class="bg-primary">
-                                                        <tr>
-                                                            <th class="text-white text-center">Home</th>
-                                                            <th class="text-white text-center">Suite No</th>
-                                                            <th class="text-white text-center">Move In Date</th>
-                                                            <th class="text-white text-center">Move Out Date</th>
-                                                            <th class="text-white text-center">Occupancy</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>Sample</td>
-                                                            <td>1</td>
-                                                            <td>O5/03/2005</td>
-                                                            <td></td>
-                                                            <td>Single</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                                        <div class="tab-pane fade" id="pills-TransfertoASCHOME" role="tabpanel" aria-labelledby="pills-contact-tab">
                                             <br>
                                             <br>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Move In Date</label>
+
+                                                        <label for="staticEmail" class="col-md-4 col-form-label">Home</label>
+                                                        <select name="ctl00$QOLAContent$ddlHome" id="QOLAContent_ddlHome" class="combo_clr" style="height:27px;" onchange="selection_onchange_empty_suite()">
+                                                            <option value="">--Home--</option>
+                                                            <option value="15">Auburn Heights Retirement Residence</option>
+                                                            <option value="5">Laurel Heights Retirement Residence</option>
+                                                            <option value="26">Lewis Estates</option>
+                                                            <option value="35">Mactaggart Place Retirement Residence</option>
+                                                            <option value="1">Rutherford Heights Retirement Residence</option>
+                                                            <option value="33">Sage Hill Retirement Residence</option>
+                                                            <option value="31">St. Albert Retirement Residence</option>
+                                                            <option value="3">Summerwood Village Retirement Residence</option>
+                                                            <option value="30">River Ridge 2 Retirement Residence</option>
+                                                            <option value="4">River Ridge Retirement Residence</option>
+                                                            <option value="17">Seine River Retirement Residence</option>
+                                                            <option value="6">Shaftesbury Park Retirement Residence</option>
+                                                            <option value="18">Sturgeon Creek I Retirement Residence</option>
+                                                            <option value="13">Sturgeon Creek II Retirement Residence</option>
+                                                            <option value="12">Victoria Landing Retirement Residence</option>
+                                                            <option value="2">Beacon Heights Retirement Residence</option>
+                                                            <option value="7">Cedarcroft Place Retirement Residence</option>
+                                                            <option value="27">Chapel Hill Retirement Residence</option>
+                                                            <option value="32">Cit&#233; Parkway Retirement Residence</option>
+                                                            <option value="34">Eagleson Retirement Residence</option>
+                                                            <option value="28">Mccarthy Place</option>
+                                                            <option value="29">Sample</option>
+                                                            <option value="16">College Park II Retirement Residence</option>
+                                                            <option value="8">College Park Retirement Residence</option>
+                                                            <option value="14">Preston Park II Retirement Residence</option>
+                                                            <option value="11">Preston Park Retirement Residence</option>
+                                                            <option value="20">465, Boulevard De La Gappe</option>
+                                                            <option value="21">475 Boulevard De La Gappe</option>
+                                                            <option value="22">485 Boulevard De La Gappe</option>
+                                                            <option value="23">495 Boulevard De La Gappe</option>
+                                                            <option value="19">Chateau Symmes Retirement Residence</option>
+
+                                                        </select>
+
+                                                        <label for="staticEmail" class="col-md-4 col-form-label">Transfer Date</label>
                                                         <div class="col-md-5">
-                                                            <input type="text" class="form-control" id="staticEmail">
+                                                            <input type="date" class="form-control" id="dateinputTransfertoASCHOME" onchange="selection_onchange_empty_suite()">
                                                         </div>
                                                         <div class="col-md-2">
                                                             <p style="font-size: 9px; float: left">(MM/DD/YYYY)</p>
@@ -318,7 +532,7 @@
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-md-4 col-form-label">Suite #</label>
                                                         <div class="col-md-7">
-                                                            <select name="" id="" class="form-control">
+                                                            <select name="" id="available_Suite_TransfertoASCHOME" class="form-control" onfocus="suitenumber2()">
                                                                 <option value="">--Suite--</option>
                                                             </select>
                                                         </div>
@@ -330,8 +544,11 @@
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-md-4 text-right col-form-label">Occupancy</label>
                                                         <div class="col-md-7">
-                                                            <select name="" id="" class="form-control">
-                                                                <option value="">--Suite--</option>
+                                                            <select name="occupancyselectname" id="occupancyselectidTransfertoASCHOME" class="form-control" onchange="selection_onchange_empty_suite()">
+                                                                <option value="">--Select--</option>
+                                                                <option value="1">Single</option>
+                                                                <option value="2">Double</option>
+                                                                <option value="3">Triple</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -340,7 +557,7 @@
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-md-1 col-form-label">Notes</label>
                                                         <div class="col-md-11">
-                                                            <textarea class="textarea" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
+                                                            <textarea class="textarea" id="notes_TransfertoASCHOME" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -348,80 +565,38 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
-                                                    <button class="btn btn-danger">
+                                                    <button class="btn btn-danger" onclick="window.history.back()">
                                                         BACK
                                                     </button>
-                                                    <button class="btn btn-danger">
+                                                    <button class="btn btn-danger" onclick="saveButton_TransfertoASCHOME()">
                                                         SAVE
                                                     </button>
-                                                    <button class="btn btn-danger">
+                                                    <button class="btn btn-danger" onclick="clearButton()">
                                                         CLEAR
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="tab-pane fade" id="pills-other" role="tabpanel" aria-labelledby="pills-contact-tab">
-                                            <div class="row">
-                                                <table class="table table-bordered">
-                                                    <thead class="bg-primary">
-                                                        <tr>
-                                                            <th class="text-white text-center">Home</th>
-                                                            <th class="text-white text-center">Suite No</th>
-                                                            <th class="text-white text-center">Move In Date</th>
-                                                            <th class="text-white text-center">Move Out Date</th>
-                                                            <th class="text-white text-center">Occupancy</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>Sample</td>
-                                                            <td>1</td>
-                                                            <td>O5/03/2005</td>
-                                                            <td></td>
-                                                            <td>Single</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                                        <div class="tab-pane fade" id="pills-EndofLease" role="tabpanel" aria-labelledby="pills-home-tab">
                                             <br>
                                             <br>
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-6" style="min-width:50vw">
                                                     <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Move In Date</label>
+                                                        <label for="staticEmail" class="col-md-4 col-form-label">Move out Date</label>
                                                         <div class="col-md-5">
-                                                            <input type="text" class="form-control" id="staticEmail">
+                                                            <input type="date" class="form-control" id="dateinputEndofLease">
                                                         </div>
                                                         <div class="col-md-2">
                                                             <p style="font-size: 9px; float: left">(MM/DD/YYYY)</p>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Suite #</label>
-                                                        <div class="col-md-7">
-                                                            <select name="" id="" class="form-control">
-                                                                <option value="">--Suite--</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 text-right col-form-label">Occupancy</label>
-                                                        <div class="col-md-7">
-                                                            <select name="" id="" class="form-control">
-                                                                <option value="">--Suite--</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-md-1 col-form-label">Notes</label>
                                                         <div class="col-md-11">
-                                                            <textarea class="textarea" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
+                                                            <textarea class="textarea" id="notes_EndofLease" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -429,80 +604,38 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
-                                                    <button class="btn btn-danger">
+                                                    <button class="btn btn-danger" onclick="window.history.back()">
                                                         BACK
                                                     </button>
-                                                    <button class="btn btn-danger">
+                                                    <button class="btn btn-danger" onclick="saveButton_Normal_Move_Out()">
                                                         SAVE
                                                     </button>
-                                                    <button class="btn btn-danger">
+                                                    <button class="btn btn-danger" onclick="clearButton()">
                                                         CLEAR
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="tab-pane fade show" id="pills-home2" role="tabpanel" aria-labelledby="pills-home-tab">
-                                            <div class="row">
-                                                <table class="table table-bordered">
-                                                    <thead class="bg-primary">
-                                                        <tr>
-                                                            <th class="text-white text-center">Home</th>
-                                                            <th class="text-white text-center">Suite No</th>
-                                                            <th class="text-white text-center">Move In Date</th>
-                                                            <th class="text-white text-center">Move Out Date</th>
-                                                            <th class="text-white text-center">Occupancy</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>Sample</td>
-                                                            <td>1</td>
-                                                            <td>O5/03/2005</td>
-                                                            <td></td>
-                                                            <td>Single</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                                        <div class="tab-pane fade" id="pills-Palliative" role="tabpanel" aria-labelledby="pills-profile-tab">
                                             <br>
                                             <br>
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-6" style="min-width:50vw">
                                                     <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Move In Date</label>
+                                                        <label for="staticEmail" class="col-md-4 col-form-label">Move out Date</label>
                                                         <div class="col-md-5">
-                                                            <input type="text" class="form-control" id="staticEmail">
+                                                            <input type="date" class="form-control" id="dateinputPalliative">
                                                         </div>
                                                         <div class="col-md-2">
                                                             <p style="font-size: 9px; float: left">(MM/DD/YYYY)</p>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Suite #</label>
-                                                        <div class="col-md-7">
-                                                            <select name="" id="" class="form-control">
-                                                                <option value="">--Suite--</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 text-right col-form-label">Occupancy</label>
-                                                        <div class="col-md-7">
-                                                            <select name="" id="" class="form-control">
-                                                                <option value="">--Suite--</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-md-1 col-form-label">Notes</label>
                                                         <div class="col-md-11">
-                                                            <textarea class="textarea" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
+                                                            <textarea class="textarea" id="notes_Palliative" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -510,80 +643,40 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
-                                                    <button class="btn btn-danger">
+                                                    <button class="btn btn-danger" onclick="window.history.back()">
                                                         BACK
                                                     </button>
-                                                    <button class="btn btn-danger">
+                                                    <button class="btn btn-danger" onclick="saveButton_Normal_Move_Out()">
                                                         SAVE
                                                     </button>
-                                                    <button class="btn btn-danger">
+                                                    <button class="btn btn-danger" onclick="clearButton()">
                                                         CLEAR
                                                     </button>
                                                 </div>
                                             </div>
+
+
                                         </div>
-                                        <div class="tab-pane fade" id="pills-profile2" role="tabpanel" aria-labelledby="pills-profile-tab">
-                                            <div class="row">
-                                                <table class="table table-bordered">
-                                                    <thead class="bg-primary">
-                                                        <tr>
-                                                            <th class="text-white text-center">Home</th>
-                                                            <th class="text-white text-center">Suite No</th>
-                                                            <th class="text-white text-center">Move In Date</th>
-                                                            <th class="text-white text-center">Move Out Date</th>
-                                                            <th class="text-white text-center">Occupancy</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>Sample</td>
-                                                            <td>1</td>
-                                                            <td>O5/03/2005</td>
-                                                            <td></td>
-                                                            <td>Single</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                                        <div class="tab-pane fade" id="pills-LTC" role="tabpanel" aria-labelledby="pills-contact-tab">
                                             <br>
                                             <br>
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-6" style="min-width:50vw">
                                                     <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Move In Date</label>
+                                                        <label for="staticEmail" class="col-md-4 col-form-label">Move Out Date</label>
                                                         <div class="col-md-5">
-                                                            <input type="text" class="form-control" id="staticEmail">
+                                                            <input type="date" class="form-control" id="dateinputLTC">
                                                         </div>
                                                         <div class="col-md-2">
                                                             <p style="font-size: 9px; float: left">(MM/DD/YYYY)</p>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Suite #</label>
-                                                        <div class="col-md-7">
-                                                            <select name="" id="" class="form-control">
-                                                                <option value="">--Suite--</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 text-right col-form-label">Occupancy</label>
-                                                        <div class="col-md-7">
-                                                            <select name="" id="" class="form-control">
-                                                                <option value="">--Suite--</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-md-1 col-form-label">Notes</label>
                                                         <div class="col-md-11">
-                                                            <textarea class="textarea" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
+                                                            <textarea class="textarea" id="notes_LTC" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -591,82 +684,38 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
-                                                    <button class="btn btn-danger">
+                                                    <button class="btn btn-danger" onclick="window.history.back()">
                                                         BACK
                                                     </button>
-                                                    <button class="btn btn-danger">
+                                                    <button class="btn btn-danger" onclick="saveButton_Normal_Move_Out()">
                                                         SAVE
                                                     </button>
-                                                    <button class="btn btn-danger">
+                                                    <button class="btn btn-danger" onclick="clearButton()">
                                                         CLEAR
                                                     </button>
                                                 </div>
                                             </div>
-
-
                                         </div>
-                                        <div class="tab-pane fade" id="pills-contact2" role="tabpanel" aria-labelledby="pills-contact-tab">
-                                            <div class="row">
-                                                <table class="table table-bordered">
-                                                    <thead class="bg-primary">
-                                                        <tr>
-                                                            <th class="text-white text-center">Home</th>
-                                                            <th class="text-white text-center">Suite No</th>
-                                                            <th class="text-white text-center">Move In Date</th>
-                                                            <th class="text-white text-center">Move Out Date</th>
-                                                            <th class="text-white text-center">Occupancy</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>Sample</td>
-                                                            <td>1</td>
-                                                            <td>O5/03/2005</td>
-                                                            <td></td>
-                                                            <td>Single</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                                        <div class="tab-pane fade" id="pills-OtherRetirement" role="tabpanel" aria-labelledby="pills-contact-tab">
                                             <br>
                                             <br>
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-6" style="min-width:50vw">
                                                     <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Move In Date</label>
+                                                        <label for="staticEmail" class="col-md-4 col-form-label">Move Out Date</label>
                                                         <div class="col-md-5">
-                                                            <input type="text" class="form-control" id="staticEmail">
+                                                            <input type="date" class="form-control" id="dateinputOtherRetirement">
                                                         </div>
                                                         <div class="col-md-2">
                                                             <p style="font-size: 9px; float: left">(MM/DD/YYYY)</p>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Suite #</label>
-                                                        <div class="col-md-7">
-                                                            <select name="" id="" class="form-control">
-                                                                <option value="">--Suite--</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 text-right col-form-label">Occupancy</label>
-                                                        <div class="col-md-7">
-                                                            <select name="" id="" class="form-control">
-                                                                <option value="">--Suite--</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-md-1 col-form-label">Notes</label>
                                                         <div class="col-md-11">
-                                                            <textarea class="textarea" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
+                                                            <textarea class="textarea" id="notes_OtherRetirement" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -674,161 +723,50 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
-                                                    <button class="btn btn-danger">
+                                                    <button class="btn btn-danger" onclick="window.history.back()">
                                                         BACK
                                                     </button>
-                                                    <button class="btn btn-danger">
+                                                    <button class="btn btn-danger" onclick="saveButton_Normal_Move_Out()">
                                                         SAVE
                                                     </button>
-                                                    <button class="btn btn-danger">
+                                                    <button class="btn btn-danger" onclick="clearButton()">
                                                         CLEAR
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="tab-pane fade" id="pills-other2" role="tabpanel" aria-labelledby="pills-contact-tab">
-                                            <div class="row">
-                                                <table class="table table-bordered">
-                                                    <thead class="bg-primary">
-                                                        <tr>
-                                                            <th class="text-white text-center">Home</th>
-                                                            <th class="text-white text-center">Suite No</th>
-                                                            <th class="text-white text-center">Move In Date</th>
-                                                            <th class="text-white text-center">Move Out Date</th>
-                                                            <th class="text-white text-center">Occupancy</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>Sample</td>
-                                                            <td>1</td>
-                                                            <td>O5/03/2005</td>
-                                                            <td></td>
-                                                            <td>Single</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                                        <div class="tab-pane fade" id="pills-PassedAway" role="tabpanel" aria-labelledby="pills-contact-tab">
                                             <br>
                                             <br>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Move In Date</label>
+                                                        <label for="staticEmail" class="col-md-4 col-form-label">Pass Away Date</label>
                                                         <div class="col-md-5">
-                                                            <input type="text" class="form-control" id="staticEmail">
+                                                            <input type="date" class="form-control" id="passawaydatePassedAway">
                                                         </div>
                                                         <div class="col-md-2">
                                                             <p style="font-size: 9px; float: left">(MM/DD/YYYY)</p>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Suite #</label>
-                                                        <div class="col-md-7">
-                                                            <select name="" id="" class="form-control">
-                                                                <option value="">--Suite--</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 text-right col-form-label">Occupancy</label>
-                                                        <div class="col-md-7">
-                                                            <select name="" id="" class="form-control">
-                                                                <option value="">--Suite--</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-1 col-form-label">Notes</label>
-                                                        <div class="col-md-11">
-                                                            <textarea class="textarea" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12 text-center">
-                                                    <button class="btn btn-danger">
-                                                        BACK
-                                                    </button>
-                                                    <button class="btn btn-danger">
-                                                        SAVE
-                                                    </button>
-                                                    <button class="btn btn-danger">
-                                                        CLEAR
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="pills-passed" role="tabpanel" aria-labelledby="pills-contact-tab">
-                                            <div class="row">
-                                                <table class="table table-bordered">
-                                                    <thead class="bg-primary">
-                                                        <tr>
-                                                            <th class="text-white text-center">Home</th>
-                                                            <th class="text-white text-center">Suite No</th>
-                                                            <th class="text-white text-center">Move In Date</th>
-                                                            <th class="text-white text-center">Move Out Date</th>
-                                                            <th class="text-white text-center">Occupancy</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>Sample</td>
-                                                            <td>1</td>
-                                                            <td>O5/03/2005</td>
-                                                            <td></td>
-                                                            <td>Single</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <br>
-                                            <br>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Move In Date</label>
+                                                        <label for="staticEmail" class="col-md-4 col-form-label">Move Out Date</label>
                                                         <div class="col-md-5">
-                                                            <input type="text" class="form-control" id="staticEmail">
+                                                            <input type="date" class="form-control" id="dateinputPassedAway">
                                                         </div>
                                                         <div class="col-md-2">
                                                             <p style="font-size: 9px; float: left">(MM/DD/YYYY)</p>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Suite #</label>
-                                                        <div class="col-md-7">
-                                                            <select name="" id="" class="form-control">
-                                                                <option value="">--Suite--</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 text-right col-form-label">Occupancy</label>
-                                                        <div class="col-md-7">
-                                                            <select name="" id="" class="form-control">
-                                                                <option value="">--Suite--</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
+
                                                 <div class="col-md-12">
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-md-1 col-form-label">Notes</label>
                                                         <div class="col-md-11">
-                                                            <textarea class="textarea" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
+                                                            <textarea class="textarea" id="notes_PassedAway" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -836,80 +774,38 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
-                                                    <button class="btn btn-danger">
+                                                    <button class="btn btn-danger" onclick="window.history.back()">
                                                         BACK
                                                     </button>
-                                                    <button class="btn btn-danger">
+                                                    <button class="btn btn-danger" onclick="saveButton_Passed_Away()">
                                                         SAVE
                                                     </button>
-                                                    <button class="btn btn-danger">
+                                                    <button class="btn btn-danger" onclick="clearButton()">
                                                         CLEAR
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="tab-pane fade" id="pills-other3" role="tabpanel" aria-labelledby="pills-contact-tab">
-                                            <div class="row">
-                                                <table class="table table-bordered">
-                                                    <thead class="bg-primary">
-                                                        <tr>
-                                                            <th class="text-white text-center">Home</th>
-                                                            <th class="text-white text-center">Suite No</th>
-                                                            <th class="text-white text-center">Move In Date</th>
-                                                            <th class="text-white text-center">Move Out Date</th>
-                                                            <th class="text-white text-center">Occupancy</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>Sample</td>
-                                                            <td>1</td>
-                                                            <td>O5/03/2005</td>
-                                                            <td></td>
-                                                            <td>Single</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                                        <div class="tab-pane fade" id="pills-Other" role="tabpanel" aria-labelledby="pills-contact-tab">
                                             <br>
                                             <br>
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-6" style="min-width:50vw">
                                                     <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Move In Date</label>
+                                                        <label for="staticEmail" class="col-md-4 col-form-label">Move Out Date</label>
                                                         <div class="col-md-5">
-                                                            <input type="text" class="form-control" id="staticEmail">
+                                                            <input type="date" class="form-control" id="dateinputOther">
                                                         </div>
                                                         <div class="col-md-2">
                                                             <p style="font-size: 9px; float: left">(MM/DD/YYYY)</p>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Suite #</label>
-                                                        <div class="col-md-7">
-                                                            <select name="" id="" class="form-control">
-                                                                <option value="">--Suite--</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 text-right col-form-label">Occupancy</label>
-                                                        <div class="col-md-7">
-                                                            <select name="" id="" class="form-control">
-                                                                <option value="">--Suite--</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-md-1 col-form-label">Notes</label>
                                                         <div class="col-md-11">
-                                                            <textarea class="textarea" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
+                                                            <textarea class="textarea" id="notes_Other" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -917,21 +813,83 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
-                                                    <button class="btn btn-danger">
+                                                    <button class="btn btn-danger" onclick="window.history.back()">
                                                         BACK
                                                     </button>
-                                                    <button class="btn btn-danger">
+                                                    <button class="btn btn-danger" onclick="saveButton_Normal_Move_Out()">
                                                         SAVE
                                                     </button>
-                                                    <button class="btn btn-danger">
+                                                    <button class="btn btn-danger" onclick="clearButton()">
                                                         CLEAR
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="tab-pane fade" id="pills-Hospitalization" role="tabpanel" aria-labelledby="pills-contact-tab">
+                                            <br>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group row">
+                                                        <label for="staticEmail" class="col-md-4 col-form-label">Leaving Date</label>
+                                                        <div class="col-md-5">
+                                                            <input type="date" class="form-control" id="leavingDate_Hospitalization">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <p style="font-size: 9px; float: left">(MM/DD/YYYY)</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group row">
+                                                        <label for="staticEmail" class="col-md-4 col-form-label">Expected Return Date</label>
+                                                        <div class="col-md-5">
+                                                            <input type="date" class="form-control" id="ExpectedReturnDate_Hospitalization">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <p style="font-size: 9px; float: left">(MM/DD/YYYY)</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group row">
+                                                        <label for="staticEmail" class="col-md-4 col-form-label">Actual Return Date</label>
+                                                        <div class="col-md-5">
+                                                            <input type="date" class="form-control" id="ActualReturnDate_Hospitalization">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <p style="font-size: 9px; float: left">(MM/DD/YYYY)</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label for="staticEmail" class="col-md-1 col-form-label">Notes</label>
+                                                        <div class="col-md-11">
+                                                            <textarea class="textarea" id="notes_Hospitalization" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 text-center">
+                                                    <button class="btn btn-danger" onclick="window.history.back()">
+                                                        BACK
+                                                    </button>
+                                                    <button class="btn btn-danger" onclick="saveButton_Hospitalization()">
+                                                        SAVE
+                                                    </button>
+                                                    <button class="btn btn-danger" onclick="clearButton()">
+                                                        CLEAR
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                     <div class="tab-content" id="pills-tabContent">
-
                                     </div>
                                 </div>
                             </div>
@@ -945,7 +903,27 @@
             <!-- END CONTAINER FLUID -->
         </div>
         <!-- END PAGE CONTENT -->
+        <input type="hidden" id="jsNote" value="@TempData["hospital"]" />
+
+
 
 
 
         @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+
+        <script>
+            var a = $("#jsNote").val();
+            if (a == "YES") {
+                $.get("/Residents/get_Leaving_date", {}, function (data) {
+                    if (data != "") {
+                        var a = $('#leavingDate_Hospitalization');
+                        a[0].value = data;
+                    }
+                });
+                document.getElementById("Hospitalization").className = "nav-link active";
+                document.getElementById("pills-Hospitalization").className = "tab-pane fade show active";
+            }
+        </script>
+
+

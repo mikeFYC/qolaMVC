@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 using System.Web;
 using QolaMVC.Models;
 using static QolaMVC.Constants.EnumerationTypes;
@@ -508,6 +509,71 @@ namespace QolaMVC.DAL
             {
                 throw new Exception(".AddActivityAssessments\n" + ex.Message);
             }
+        }
+
+
+
+        public static void save_button(int tb_number, int userid, int residentid)
+        {
+
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = " delete from [tbl_AB_Admission_checklist] where fd_resident_id=@resident and fd_tb_num=@tbnum" +
+                              " insert into [tbl_AB_Admission_checklist] values(@resident,@tbnum,@user,@date)";
+            cmd.Parameters.AddWithValue("@resident", residentid);
+            cmd.Parameters.AddWithValue("@tbnum", tb_number);
+            cmd.Parameters.AddWithValue("@date", DateTime.Now);
+            cmd.Parameters.AddWithValue("@user", userid);
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            conn.Close();
+        }
+
+        public static void save_button(int tb_number, int residentid)
+        {
+
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = " delete from [tbl_AB_Admission_checklist] where fd_resident_id=@resident and fd_tb_num=@tbnum" +
+                              " insert into [tbl_AB_Admission_checklist] values(@resident,@tbnum,null,null)";
+            cmd.Parameters.AddWithValue("@resident", residentid);
+            cmd.Parameters.AddWithValue("@tbnum", tb_number);
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            conn.Close();
+        }
+
+
+        public static string get_checklist(int residentid)
+        {
+            string a = "";
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText =   " select U.fd_first_name+' '+U.fd_last_name as u_name, " +
+                                " AC.fd_modified_on from [tbl_AB_Admission_checklist] AC" +
+                                " left join tbl_User U on AC.fd_modified_by = U.fd_id" +
+                                " where AC.fd_resident_id ="+ residentid+ "order by fd_tb_num";
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            if (rd.HasRows)
+                while (rd.Read())
+                {
+                    if(rd[1]==null)
+                    {
+                        a = a + ","  + ",";
+                    }
+                    else
+                        a = a + rd[1] + "," + rd[0] + ",";
+                }
+            a = a.Substring(0, a.Length-1);
+            conn.Close();
+            return a;
         }
 
     }

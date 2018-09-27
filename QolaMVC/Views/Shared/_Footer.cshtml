@@ -48,6 +48,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script src="~/Content/assets/js/html2canvas.js" crossorigin="anonymous"></script>
 <!-- uploding of file -->
+
 <script>
     $('.searchresidents').keyup(function () {
         val = $(this).val();
@@ -69,10 +70,392 @@
         } else {
             $('.searchBox').hide();
         }
-
-
     })
+
+    $('.searchresidents2').keyup(function () {
+        val = $(this).val();
+        if (val.length > 1) {
+            $('.searchboxresult').empty();
+            $.get("/Residents/Search/", { term: val }, function (data) {
+                console.log(data);
+                for (var i = 0; i < data.length; i++) {
+                    $('.searchboxresult').append('<a href="/Residents/SuiteHandler/?p_ResidentId=' + data[i][4].Value + '" class="list-group-item list-group-item-action">' +
+                        '<img src="/Content/assets/' + data[i][5].Value + '" class="searchimg">' +
+                        '<p class="ml-3">' + data[i][0].Value + '<br></p>' +
+                        '</a>');
+                }
+                if (data.length == 0) {
+                    $('.searchboxresult').append('No resident found with the specified name/room number');
+                }
+            });
+            $('.searchBox').show();
+        } else {
+            $('.searchBox').hide();
+        }
+    })
+
+    $('#searchresidents3').keyup(function () {
+        val = $(this).val();
+        if (val.length > 1) {
+            $('.searchboxresult2').empty();
+            $.get("/Residents/Search/", { term: val }, function (data) {
+                console.log(data);
+                for (var i = 0; i < data.length; i++) {
+                    $('.searchboxresult2').append('<a onclick="click_searchresidents3(\'' + data[i][0].Value + '\',\'' + data[i][4].Value + '\')" class=\'list-group-item list-group-item-action\' id=\'' + data[i][4].Value + '\'">' +
+                        '<img src="/Content/assets/' + data[i][5].Value + '" class="searchimg">' +
+                        '<p class="ml-3">' + data[i][0].Value + '<br></p>' +
+                        '</a>');
+                }
+                if (data.length == 0) {
+                    $('.searchboxresult2').append('No resident found with the specified name/room number');
+                }
+            });
+            $('.searchBox').show();
+        } else {
+            $('.searchBox').hide();
+        }
+    })
+
+
+    function click_searchresidents3(aa,bb) {
+        document.getElementById("searchresidents3").value = aa;
+        document.getElementById("searchresidents3").name = bb;
+        $('#searchBoxfor3').hide();
+    }
+
+    function change_searchresidents3() {
+        document.getElementById("searchresidents3").name = "";
+    }
+
 </script>
+
+<script>
+    function suitenumber()
+    {
+        var group = $("a[class='nav-link active']")
+        var id = group[0].id;
+        var a = $('#occupancyselectid'+id).val();
+        var b = $('#dateinput'+id).val();
+        $('#available_Suite_'+id).children('option:not(:first)').remove();
+        $.get("/Residents/AvailableSuite", { term: b, occu: a},function (data) {
+            for (var i = 0; i < data.length; i++) {
+                $('#available_Suite_'+id).append('<option value="' + data[i][0].Value+'">' + data[i][0].Value + '</option>');
+            }
+        });
+    }
+
+    function suitenumber2() {
+        var group = $("a[class='nav-link active']")
+        var id = group[0].id;
+        var a = $('#occupancyselectid' + id).val();
+        var b = $('#dateinput' + id).val();
+        var c = $('#QOLAContent_ddlHome').val();
+        
+        $('#available_Suite_'+id).children('option:not(:first)').remove();
+        $.get("/Residents/Available2", { home_value:c, term: b, occu: a },function (data) {
+            for (var i = 0; i < data.length; i++) {
+                $('#available_Suite_'+id).append('<option value="' + data[i][0].Value + '">' + data[i][0].Value + '</option>');
+            }
+        });
+    }
+
+    function saveButton_ApplicationSuite() {
+        var group = $("a[class='nav-link active']")
+        var id = group[0].id;
+        var a = $('#occupancyselectid' + id).val();
+        var b = $('#dateinput' + id).val();
+        var c = $('#available_Suite_' + id).val();
+        var d = $('#notes_' + id).val();
+        if (a == "" || b == "" || c == "") {
+            alert("Cannot Have Empty Area except notes");
+        }
+        else {
+            $.post("/Residents/saveButton_ApplicationSuite", { term: b, occu: a, suiteno: c, notes: d }, function (data) {
+                if (data == 1) {
+                    location.reload();
+                    alert("Update successfully");
+                }
+                else if (data == 3) {
+                    alert("Cannot choose date two weeks ago");
+                }
+
+                else if (data == 5) {
+                    alert("Resident was already passed away");
+                }
+                else {
+                    alert("Update Failed");
+                }
+            });
+        }
+    }
+
+    function saveButton_ChangeOccupancy() {
+        var group = $("a[class='nav-link active']")
+        var id = group[0].id;
+        var a = $('#occupancyselectid' + id).val();
+        var b = $('#dateinput' + id).val();
+        var c = $('#notes_' + id).val();
+        var tbodys = document.getElementsByTagName("tbody");
+        var trs = tbodys[0].getElementsByTagName("tr");
+        var tds = trs[trs.length - 1].getElementsByTagName("td");
+        var suitenos = tds[1].innerHTML;
+        if (a == "" || b == "") {
+            alert("Cannot Have Empty Area except notes");
+        }
+        else {
+            $.post("/Residents/saveButton_ChangeOccupancy", { transferdate: b, occu: a, notes: c, suiteno: suitenos}, function (data) {
+                if (data == 1) {
+                    location.reload();
+                    alert("Update successfully");
+                }
+                else if (data == 2) {
+                    alert("Cannot Select Same Occupancy");
+                }
+                else if (data == 3) {
+                    alert("Cannot choose date two weeks ago");
+                }
+                else if (data == 4) {
+                    alert("Invalid Date Input");
+                }
+                else if (data == 5) {
+                    alert("Resident was already passed away");
+                }
+                else if (data == 6) {
+                    alert("Resident was already moved out");
+                }
+                else {
+                    alert("Update Failed");
+                }
+            });
+        }
+    }
+
+    function saveButton_InternalTransfer() {
+        var group = $("a[class='nav-link active']")
+        var id = group[0].id;
+        var a = $('#occupancyselectid' + id).val();
+        var b = $('#dateinput' + id).val();
+        var c = $('#available_Suite_' + id).val();
+        var d = $('#notes_' + id).val();
+        if (a == "" || b == "" || c == "") {
+            alert("Cannot Have Empty Area except notes");
+        }
+        else {
+            $.post("/Residents/saveButton_InternalTransfer", { transferdate: b, occu: a, suiteno: c, notes: d }, function (data) {
+                if (data == 1) {
+                    location.reload();
+                    alert("Update successfully");
+                }
+                else if (data == 2) {
+                    alert("Cannot Select Same Suite Number");
+                }
+                else if (data == 3) {
+                    alert("Cannot choose date two weeks ago");
+                }
+                else if (data == 4) {
+                    alert("Invalid Date Input");
+                }
+                else if (data == 5) {
+                    alert("Resident was already passed away");
+                }
+                else if (data == 6) {
+                    alert("Resident was already moved out");
+                }
+                else {
+                    alert("Update Failed");
+                }
+            });
+        }
+    }
+
+    function saveButton_TransfertoASCHOME() {
+        var group = $("a[class='nav-link active']")
+        var id = group[0].id;
+        var a = $('#occupancyselectid' + id).val();
+        var b = $('#dateinput' + id).val();
+        var c = $('#available_Suite_' + id).val();
+        var d = $('#notes_' + id).val();
+        var e = $('#QOLAContent_ddlHome').val();
+        if (a == "" || b == "" || c == "" || e == "") {
+            alert("Cannot Have Empty Area except notes");
+        }
+        else {
+            $.post("/Residents/saveButton_TransfertoASCHOME", { transferdate: b, occu: a, suiteno: c, notes: d, homeid: e }, function (data) {
+                if (data == 1) {
+                    location.reload();
+                    alert("Update successfully");
+                }
+                else if (data == 2) {
+                    alert("Cannot Select Same Home ID");
+                }
+                else if (data == 3) {
+                    alert("Cannot choose date two weeks ago");
+                }
+                else if (data == 4) {
+                    alert("Invalid Date Input");
+                }
+                else if (data == 5) {
+                    alert("Resident was already passed away");
+                }
+                else if (data == 6) {
+                    alert("Resident was already moved out");
+                }
+                else {
+                    alert("Update Failed");
+                }
+            });
+        }
+    }
+
+    function saveButton_Normal_Move_Out() {
+        var group = $("a[class='nav-link active']")
+        var id = group[0].id;
+        var move_out_reason = group[0].innerHTML;
+        var a = $('#dateinput' + id).val();
+        var b = $('#notes_' + id).val();
+        var tbodys = document.getElementsByTagName("tbody");
+        var trs = tbodys[0].getElementsByTagName("tr");
+        var tds = trs[trs.length - 1].getElementsByTagName("td");
+        var suitenos = tds[1].innerHTML;
+        if (a == "") {
+            alert("Date cannot be empty");
+        }
+        else {
+            $.post("/Residents/saveButton_Normal_Move_Out", { moveout: a, notes: b, reason: move_out_reason, suiteno: suitenos}, function (data) {
+                if (data == 1) {
+                    location.reload();
+                    alert("Update successfully");
+                }
+                else if (data == 3) {
+                    alert("Cannot choose date two weeks ago");
+                }
+                else if (data == 4) {
+                    alert("Invalid Date Input");
+                }
+                else if (data == 5) {
+                    alert("Resident was already passed away");
+                }
+                else if (data == 6) {
+                    alert("Resident was already moved out");
+                }
+                else {
+                    alert("Update Failed");
+                }
+            });
+        }
+    }
+
+    function saveButton_Passed_Away() {
+        var group = $("a[class='nav-link active']")
+        var id = group[0].id;
+        var move_out_reason = group[0].innerHTML;
+        var a = $('#dateinput' + id).val();
+        var b = $('#notes_' + id).val();
+        var c = $('#passawaydate' + id).val();
+        var tbodys = document.getElementsByTagName("tbody");
+        var trs = tbodys[0].getElementsByTagName("tr");
+        var tds = trs[trs.length - 1].getElementsByTagName("td");
+        var suitenos = tds[1].innerHTML;
+        if (a == "" || c == "") {
+            alert("Date cannot be empty");
+        }
+        else {
+            $.post("/Residents/saveButton_Passed_Away", { moveout: a, notes: b, passaway: c, reason: move_out_reason, suiteno: suitenos }, function (data) {
+                if (data == 1) {
+                    location.reload();
+                    alert("Update successfully");
+                }
+                else if (data == 3) {
+                    alert("Cannot choose date two weeks ago");
+                }
+                else if (data == 4) {
+                    alert("Invalid Date Input");
+                }
+                else if (data == 5) {
+                    alert("Resident was already passed away");
+                }
+                else {
+                    alert("Update Failed");
+                }
+            });
+        }
+    }
+
+    function saveButton_Hospitalization() {
+        var group = $("a[class='nav-link active']")
+        var id = group[0].id;
+        var move_out_reason = group[0].innerHTML;
+        var a = $('#leavingDate_' + id).val().toString();
+        var b = $('#ExpectedReturnDate_' + id).val().toString();
+        var c = $('#ActualReturnDate_' + id).val().toString();
+        var d = $('#notes_' + id).val();
+        var tbodys = document.getElementsByTagName("tbody");
+        var trs = tbodys[0].getElementsByTagName("tr");
+        var tds = trs[trs.length - 1].getElementsByTagName("td");
+        var suitenos = tds[1].innerHTML;
+        if (a == "") {
+            alert("Leaving Date cannot be empty");
+        }
+        else {
+            $.post("/Residents/saveButton_Hospitalization", { leaving: a, ExpectedReturn: b, ActualReturn: c, notes: d, reason: move_out_reason, suiteno: suitenos }, function (data) {
+                if (data == 1) {
+                    location.reload();
+                    alert("Update successfully");
+                }
+                else if (data == 3) {   
+                    alert("Cannot choose date two weeks ago");
+                }
+                else if (data == 4) {
+                    alert("Invalid Date Input");
+                }
+                else if (data == 5) {
+                    alert("Resident was already passed away");
+                }
+                else if (data == 6) {
+                    alert("Resident was already moved out");
+                }
+                else {
+                    alert("Update Failed");
+                }
+            });
+        }
+    }
+
+    function clearButton() {
+        var inputs = $("input[type=date]").each(function () {
+            $(this).val("");
+        });
+        var selects = $("select").each(function () {
+            $(this).val("");
+        });
+        var textareas = $("textarea").each(function () {
+            $(this).val("");
+        });
+    }
+
+    function selection_onchange_empty_suite(){
+        var group = $("a[class='nav-link active']")
+        var id = group[0].id;
+        $('#available_Suite_' + id).val("");
+    }
+
+    function UNDO_in_edit_button_click() {
+        var reason_for_undo = $("#select_option_in_edit_form").val();
+        $.get("/Residents/undo_function", { reason: reason_for_undo }, function (data) {
+            if (data == 1) {
+                location.reload();
+                alert("Update successfully");
+            }
+            else {
+                alert("Update Failed");
+            }
+        });
+    }
+
+
+
+</script>
+
 <script>
     $('.print').click(function () {
 
@@ -134,6 +517,7 @@
 
 
 </script>
+
 <!-- END VENDOR JS -->
 <!-- BEGIN CORE TEMPLATE JS -->
 <script src="~/Content/pages/js/pages.js" type="text/javascript"></script>

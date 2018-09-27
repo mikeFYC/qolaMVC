@@ -8,10 +8,154 @@
     }
 
     .modal-xlg {
-        width: 900px !important;                
+        width: 900px !important;
         max-width: 1000px !important;
     }
+
+    #checklist_button {
+        font-size: 1.3vw;
+        font-weight: bolder;
+        margin: -0.5vw 0 -0.5vw 50vw;
+        height: 3vw;
+        width: 15vw;
+        font-family: "Segoe UI", Arial, sans-serif;
+        border-radius: 1vw;
+        background-color: white;
+    }
 </style>
+
+<style>
+    div div div div[class="modal-body"] {
+        overflow: auto;
+        overflow-x: hidden;
+        max-height: 36vw;
+    }
+
+    .miketable {
+        width: 100%;
+        color: black;
+    }
+
+        .miketable thead th {
+            padding: 1vw;
+        }
+
+        .miketable tbody tr {
+            height: 3vw;
+        }
+
+            .miketable tbody tr td {
+                padding: 1vw;
+            }
+
+    input[type=checkbox] {
+        /* Double-sized Checkboxes */
+        -ms-transform: scale(2); /* IE */
+        -moz-transform: scale(2); /* FF */
+        -webkit-transform: scale(2); /* Safari and Chrome */
+        -o-transform: scale(2); /* Opera */
+        padding: 10px;
+    }
+
+    /* Might want to wrap a span around your checkbox text */
+    .checkboxtext {
+        /* Checkbox text */
+        font-size: 110%;
+        display: inline;
+    }
+</style>
+
+<script>
+    function print_click() {
+        var pages = ["", "", "", "", ""];
+        pages[0] = ("/Content/PDF/14_Pharmacy.pdf");
+        pages[1] = ("/Content/PDF/16_Alberta DNR_Goals of Care.pdf");
+        pages[2] = ("/Content/PDF/18_19_Sara Pendant & Wander Guard.pdf");
+        pages[3] = ("/Content/PDF/20_HCA Task Sheet.pdf");
+        pages[4] = ("/Content/PDF/20_LPN Task Sheet.pdf");
+        var a = $('input[class="printchoose"]');
+        if (a[0].checked == true) {
+            var oWindow = window.open(pages[0], '_blank', 'fullscreen=yes');
+            oWindow.print();
+        }
+        if (a[1].checked == true) {
+            var oWindow = window.open(pages[1], '_blank', 'fullscreen=yes');
+            oWindow.print();
+        }
+        if (a[2].checked == true || a[3].checked == true) {
+            var oWindow = window.open(pages[2], '_blank', 'fullscreen=yes');
+            oWindow.print();
+        }
+        if (a[4].checked == true) {
+            var oWindow = window.open(pages[3], '_blank', 'fullscreen=yes');
+            oWindow.print();
+        }
+        if (a[5].checked == true) {
+            var oWindow = window.open(pages[4], '_blank', 'fullscreen=yes');
+            oWindow.print();
+        }
+        for (var b = 0; b < a.length; b++) {
+            a[b].checked = false;
+        }
+
+    }
+
+    function print_all_click() {
+        var oWindow = window.open('/Content/PDF/All-merged.pdf', '_blank', 'fullscreen=yes');
+        oWindow.print();
+        var a = $('input[class="printchoose"]');
+        for (var b = 0; b < a.length; b++) {
+            a[b].checked = false;
+        }
+    }
+
+    function save_button() {
+        var a = $('input[class="comTask"]');
+
+        for (var b = 0; b < a.length; b++) {
+            var tb_num = a[b].getAttribute("value");
+            if (a[b].checked == true && a[b].disabled==false) {
+                $.post("/Assessments/saveButton", { tb_number: tb_num }, function () {
+                });
+            }
+            else if (a[b].checked == false && a[b].disabled == false){
+                $.post("/Assessments/saveButton2", { tb_number: tb_num }, function () {
+                });
+            }
+        }
+        view_data()
+        //document.getElementById("checklist").className ="modal fade show"
+    }
+
+    function view_data() {
+        $.get("/Assessments/get_checklist_data", {}, function (data) {
+            var a = data.split(",");
+            var row = $('input[class="comTask"]');
+            for (var b = 0; b < row.length; b++) {
+                var last = row[b].parentElement.parentElement.lastElementChild
+                var previous = last.previousElementSibling;
+                last.innerHTML = a[b * 2 + 1];
+                previous.innerHTML = a[b * 2];
+                //last.append(a[b * 2 + 1]);
+                //previous.append(a[b * 2]);
+                if (a[b * 2] != "") {
+                    row[b].checked = true;
+                    row[b].disabled = true;
+                }
+            }
+
+        });
+    }
+
+</script>
+
+<style>
+    p.active {
+        background-color: #015093 !important;
+        border-color: #015093 !important;
+    }
+</style>
+
 <!-- START PAGE-CONTAINER -->
 <div class="page-container">
 
@@ -21,6 +165,69 @@
     <div class="page-content-wrapper">
         <!-- START PAGE CONTENT -->
         <div class="content">
+
+            <div class="modal fade" id="checklist" role="dialog" style="right:0;margin-top:-3vw;">
+                <div class="modal-dialog" style="left:0;right:0;">
+
+                    <!-- Modal content-->
+                    <div class="modal-content" style="width:80vw;right:70%;">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Admission Checklist</h4>
+                            <br>
+                            <div style="display:inline-block;">
+                                <button type="button" class="btn btn-primary" onclick="print_click()">Print Selected</button>
+                                <button type="button" class="btn btn-primary" onclick="print_all_click()">Print All</button>
+                                <button type="button" class="btn btn-primary" onclick="save_button()" style="margin-left:55vw;">Save</button>
+                            </div>
+                            <br>
+                        </div>
+                        <div class="modal-body">
+                            <table class="miketable table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th style="width:4vw;">Completed Task</th>
+                                        <th style="width:4vw;">Print Options</th>
+                                        <th style="width:3vw;"></th>
+                                        <th>Table</th>
+                                        <th style="width:12vw;">Date</th>
+                                        <th style="width:12vw;">Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td><input type="checkbox" class="comTask" value="1"></td><td></td><td>1</td><td>Resident File/Chart</td><td></td><td></td></tr>
+                                    <tr><td><input type="checkbox" class="comTask" value="2"></td><td></td><td>2</td><td><a href="~/Assessments/HeadToToeAssessment">Pre-admission physical received / SL4/SL4D Care Plan received</a></td><td></td><td></td></tr>
+                                    <tr><td><input type="checkbox" class="comTask" value="3"></td><td></td><td>3</td><td>Admission information sheet reviewed</td><td></td><td></td></tr>
+                                    <tr><td><input type="checkbox" class="comTask" value="4"></td><td></td><td>4</td><td>Doctor coverage checked</td><td></td><td></td></tr>
+                                    <tr><td><input type="checkbox" class="comTask" value="5"></td><td></td><td>5</td><td>Emergency call bells shown and explained</td><td></td><td></td></tr>
+                                    <tr><td><input type="checkbox" class="comTask" value="6"></td><td></td><td>6</td><td>Added to bath (discussed preference) and laundry list (if applicable)</td><td></td><td></td></tr>
+                                    <tr><td><input type="checkbox" class="comTask" value="7"></td><td></td><td>7</td><td>Meal sitting and meal times reviewed</td><td></td><td></td></tr>
+                                    <tr><td><input type="checkbox" class="comTask" value="8"></td><td></td><td>8</td><td>Ensure they know reception telephone number</td><td></td><td></td></tr>
+                                    <tr><td><input type="checkbox" class="comTask" value="9"></td><td></td><td>9</td><td>explain visitors signing in and out at reception when visiting</td><td></td><td></td></tr>
+                                    <tr><td><input type="checkbox" class="comTask" value="10"></td><td></td><td>10</td><td>Medications</td><td></td><td></td></tr>
+                                    <tr><td><input type="checkbox" class="comTask" value="11"></td><td></td><td>11</td><td>Photographs available</td><td></td><td></td></tr>
+                                    <tr><td><input type="checkbox" class="comTask" value="12"></td><td></td><td>12</td><td>Progress notes following visitation</td><td></td><td></td></tr>
+                                    <tr><td><input type="checkbox" class="comTask" value="13"></td><td></td><td>13</td><td><a href="~/Assessments/HeadToToeAssessment">Vitals signs and weight taken and recored</a></td><td></td><td></td></tr>
+                                    <tr><td><input type="checkbox" class="comTask" value="14"></td><td><input class="printchoose" type="checkbox" value="14"></td><td>14</td><td>Admission form to pharmacy</td><td></td><td></td></tr>
+                                    <tr><td><input type="checkbox" class="comTask" value="15"></td><td></td><td>15</td><td><a href="~/Assessments/CarePlan">Plan of care initiated</a></td><td></td><td></td></tr>
+                                    <tr><td><input type="checkbox" class="comTask" value="16"></td><td><input class="printchoose" type="checkbox" value="16"></td><td>16</td><td>Goals of Care discussed and package given</td><td></td><td></td></tr>
+                                    <tr><td><input type="checkbox" class="comTask" value="17"></td><td></td><td>17</td><td>Inform all departments of New Admission</td><td></td><td></td></tr>
+                                    <tr><td><input type="checkbox" class="comTask" value="18"></td><td><input class="printchoose" type="checkbox" value="18"></td><td>18</td><td>Sara Pendent</td><td></td><td></td></tr>
+                                    <tr><td><input type="checkbox" class="comTask" value="19"></td><td><input class="printchoose" type="checkbox" value="19"></td><td>19</td><td>Wander Guard</td><td></td><td></td></tr>
+                                    <tr><td><input type="checkbox" class="comTask" value="20"></td><td><input class="printchoose" type="checkbox" value="20_1"></td><td>20</td><td>HCA task sheet or LPN task Sheet<input type="checkbox" class="printchoose" value="20_2" style="margin-left:2vw;"></td><td></td><td></td></tr>
+                                    <tr><td><input type="checkbox" class="comTask" value="21"></td><td></td><td>21</td><td><a href="~/Assessments/DietaryHistory">Modified Diet</a></td><td></td><td></td></tr>
+                                    <tr><td><input type="checkbox" class="comTask" value="22"></td><td></td><td>22</td><td>QOLA-Quality of Life Assessment</td><td></td><td></td></tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
             <!-- START JUMBOTRON -->
             <div class="jumbotron w-100" style="position: fixed; z-index: 400">
                 <div class="container-fluid container-fixed-lg">
@@ -42,9 +249,10 @@
                     <div class="card-block">
 
                         <div class="list-group">
-                            <a href="#" class="list-group-item list-group-item-action active">
+                            <p href="#" class="list-group-item list-group-item-action active">
                                 List of Forms
-                            </a>
+                                <button id="checklist_button" data-toggle="modal" data-target="#checklist" onclick="view_data()">Admission Checklist</button>
+                            </p>
                             <a href="~/Assessments/HeadToToeAssessment" class="list-group-item list-group-item-action">Admission Head to Toe Assessment</a>
                             <a href="~/Assessments/CarePlan" class="list-group-item list-group-item-action ">Resident Care Assessment</a>
                             <a href="~/Assessments/FallRisk" class="list-group-item list-group-item-action ">Fall Risk Assessment</a>
@@ -69,3 +277,4 @@
         <!-- END PAGE CONTENT -->
 
         @RenderPage("~/Views/Shared/_Footer.cshtml")
+
