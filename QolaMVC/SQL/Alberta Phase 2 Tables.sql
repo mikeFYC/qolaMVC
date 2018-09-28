@@ -44,6 +44,7 @@ CREATE TABLE [dbo].[tbl_AB_ActivityAssessment](
 	AssessmentId int,
 	ActivityId int,
 	ActivityCategoryId int,
+	SuggestedActivity nvarchar(max),
 	CheckedValue nvarchar(3),
 	ResidentId int,
 	DateEntered datetime,

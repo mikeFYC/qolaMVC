@@ -1317,7 +1317,8 @@ namespace QolaMVC.DAL
                         l_Assessment.ResidentId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
                         l_Assessment.CarePlanId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["CarePlanId"]);
                         l_Assessment.SpecialEquipment = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["SpecialEquipment"]));
-                        l_Assessment.Details = Convert.ToString(dataReceive.Tables[0].Rows[index]["Oxygen_Supplier"]);
+                        //adjuct by mike change Oxygen_Supplier to Details l_Assessment.Details = Convert.ToString(dataReceive.Tables[0].Rows[index]["Oxygen_Supplier"]);
+                        l_Assessment.Details = Convert.ToString(dataReceive.Tables[0].Rows[index]["Details"]); 
                     }
                 }
                 return l_Assessment;
