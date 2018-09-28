@@ -428,6 +428,33 @@ namespace QolaMVC.DAL
             }
         }
 
+        public static string GetOccupybyID(int homeId)
+        {
+            string occu = "";
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText =   " select count(*) from tbl_Suite_Handler " +
+                                " where GETDATE()> fd_move_in_date" +
+                                " and GETDATE()< isNULL(fd_move_out_date, '2200-09-01')" +
+                                " and fd_home_id ="+ homeId;
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            if (rd.HasRows)
+                while (rd.Read())
+                {
+                    occu = rd[0].ToString();
+
+
+                }
+            conn.Close();
+
+            return occu;
+        }
+
+
+
         public static Collection<HomeModel> GetUsersHomeActive()
         {
             string exception = string.Empty;

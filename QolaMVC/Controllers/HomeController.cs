@@ -66,6 +66,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             ViewBag.User = user;
             HomeModel l_Home = HomeDAL.GetHomeById(p_HomeId);
+            TempData["occupy"] = HomeDAL.GetOccupybyID(p_HomeId);
             //dynamic l_Json=to_do_list_function.get_to_do_list_number( user.ID, l_Home.Id);
             //TempData["DU"] = l_Json.DU;
             //TempData["HO"] = l_Json.HO;
