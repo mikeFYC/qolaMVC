@@ -147,7 +147,7 @@ namespace QolaMVC.DAL
                                 " as SSH" +
                                 " on R.fd_id = SSH.fd_resident_id"+
                                 " where SSH.fd_home_id =" + homeid +
-                                " and GETDATE() > SSH.fd_move_in_date" +
+                                " and SSH.fd_move_in_date is not null" +
                                 " and GETDATE() < isNULL(SSH.fd_move_out_date, '2200-09-01')" +
                                 " and isNULL(SSH.fd_hospital,'')!='Y'" +
                                 " and SSH.fd_resident_id not in (select distinct ResidentId from [dbo].[tbl_AB_ActivityAssessment])";
@@ -229,7 +229,7 @@ namespace QolaMVC.DAL
                                 " as SSH" +
                                 " on R.fd_id = SSH.fd_resident_id" +
                                 " where SSH.fd_home_id =" + homeid +
-                                " and GETDATE() > SSH.fd_move_in_date" +
+                                " and SSH.fd_move_in_date is not null" +
                                 " and GETDATE() < isNULL(SSH.fd_move_out_date, '2200-09-01')" +
                                 " and isNULL(SSH.fd_hospital,'')!='Y'" +
                                 " and SSH.fd_resident_id not in (select distinct ResidentId from [dbo].[tbl_AB_DietaryAssessment])";
@@ -311,7 +311,7 @@ namespace QolaMVC.DAL
                                 " as SSH" +
                                 " on R.fd_id = SSH.fd_resident_id" +
                                 " where SSH.fd_home_id =" + homeid +
-                                " and GETDATE() > SSH.fd_move_in_date" +
+                                " and SSH.fd_move_in_date is not null" +
                                 " and GETDATE() < isNULL(SSH.fd_move_out_date, '2200-09-01')" +
                                 " and isNULL(SSH.fd_hospital,'')!='Y'" +
                                 " and SSH.fd_resident_id not in (select distinct ResidentId from [dbo].[tbl_AB_FallRiskAssessment])";
@@ -390,7 +390,7 @@ namespace QolaMVC.DAL
                                 " as SSH" +
                                 " on R.fd_id = SSH.fd_resident_id" +
                                 " where SSH.fd_home_id =" + homeid +
-                                " and GETDATE()> SSH.fd_move_in_date" +
+                                " and SSH.fd_move_in_date is not null" +
                                 " and GETDATE()< isNULL(SSH.fd_move_out_date, '2200-09-01')" +
                                 " and isNULL(SSH.fd_hospital,'')!= 'Y'" +
                                 " and SSH.fd_resident_id not in (select distinct ResidentId from[dbo].[tbl_AB_CarePlan])";
