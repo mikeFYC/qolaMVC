@@ -109,44 +109,67 @@
         }
     }
 
-    function save_button() {
-        var a = $('input[class="comTask"]');
-
-        for (var b = 0; b < a.length; b++) {
-            var tb_num = a[b].getAttribute("value");
-            if (a[b].checked == true && a[b].disabled==false) {
-                $.post("/Assessments/saveButton", { tb_number: tb_num }, function () {
-                });
-            }
-            else if (a[b].checked == false && a[b].disabled == false){
-                $.post("/Assessments/saveButton2", { tb_number: tb_num }, function () {
-                });
-            }
-        }
-        view_data()
-        //document.getElementById("checklist").className ="modal fade show"
-    }
 
     function view_data() {
         $.get("/Assessments/get_checklist_data", {}, function (data) {
             if (data != "") {
-                var a = data.split(",");
+                var c = data.split(",");
                 var row = $('input[class="comTask"]');
-                for (var b = 0; b < row.length; b++) {
-                    var last = row[b].parentElement.parentElement.lastElementChild
+                for (var e = 0; e < row.length; e++) {
+                    var last = row[e].parentElement.parentElement.lastElementChild
                     var previous = last.previousElementSibling;
-                    last.innerHTML = a[b * 2 + 1];
-                    previous.innerHTML = a[b * 2];
+                    last.innerHTML = c[e * 2 + 1];
+                    previous.innerHTML = c[e * 2];
                     //last.append(a[b * 2 + 1]);
                     //previous.append(a[b * 2]);
-                    if (a[b * 2] != "") {
-                        row[b].checked = true;
-                        row[b].disabled = true;
+                    if (c[e * 2] != "") {
+                        row[e].checked = true;
+                        row[e].disabled = true;
                     }
                 }
             }
         });
     }
+
+    function save_button() {
+        var a = $('input[class="comTask"]');
+
+        for (var b = 0; b < a.length; b = b + 1) {
+            var tb_num = a[b].getAttribute("value");
+            if (a[b].checked == true && a[b].disabled == false) {
+                $.post("/Assessments/saveButton", { tb_number: tb_num }, function () {
+                });
+            }
+            else if (a[b].checked == false && a[b].disabled == false) {
+                $.post("/Assessments/saveButton2", { tb_number: tb_num }, function () {
+                });
+            }
+        }
+
+
+        $.get("/Assessments/get_checklist_data", {}, function (data) {
+            if (data != "") {
+                var c = data.split(",");
+                var row = $('input[class="comTask"]');
+                for (var e = 0; e < row.length; e++) {
+                    var last = row[e].parentElement.parentElement.lastElementChild
+                    var previous = last.previousElementSibling;
+                    last.innerHTML = c[e * 2 + 1];
+                    previous.innerHTML = c[e * 2];
+                    //last.append(a[b * 2 + 1]);
+                    //previous.append(a[b * 2]);
+                    if (c[e * 2] != "") {
+                        row[e].checked = true;
+                        row[e].disabled = true;
+                    }
+                }
+            }
+        });
+        //view_data();
+        //location.reload();
+        //document.getElementById("checklist").className ="modal fade show"
+    }
+
 
 </script>
 
