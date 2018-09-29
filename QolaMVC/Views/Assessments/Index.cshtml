@@ -129,21 +129,22 @@
 
     function view_data() {
         $.get("/Assessments/get_checklist_data", {}, function (data) {
-            var a = data.split(",");
-            var row = $('input[class="comTask"]');
-            for (var b = 0; b < row.length; b++) {
-                var last = row[b].parentElement.parentElement.lastElementChild
-                var previous = last.previousElementSibling;
-                last.innerHTML = a[b * 2 + 1];
-                previous.innerHTML = a[b * 2];
-                //last.append(a[b * 2 + 1]);
-                //previous.append(a[b * 2]);
-                if (a[b * 2] != "") {
-                    row[b].checked = true;
-                    row[b].disabled = true;
+            if (data != "") {
+                var a = data.split(",");
+                var row = $('input[class="comTask"]');
+                for (var b = 0; b < row.length; b++) {
+                    var last = row[b].parentElement.parentElement.lastElementChild
+                    var previous = last.previousElementSibling;
+                    last.innerHTML = a[b * 2 + 1];
+                    previous.innerHTML = a[b * 2];
+                    //last.append(a[b * 2 + 1]);
+                    //previous.append(a[b * 2]);
+                    if (a[b * 2] != "") {
+                        row[b].checked = true;
+                        row[b].disabled = true;
+                    }
                 }
             }
-
         });
     }
 
