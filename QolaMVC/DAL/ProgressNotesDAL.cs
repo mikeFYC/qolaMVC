@@ -148,7 +148,8 @@ namespace QolaMVC.DAL
             {
                 l_Conn.Open();
                 SqlDataAdapter l_DA = new SqlDataAdapter();
-                SqlCommand l_Cmd = new SqlCommand(Constants.StoredProcedureName.USP_GET_PROGRESS_NOTES, l_Conn);
+                //SqlCommand l_Cmd = new SqlCommand(Constants.StoredProcedureName.USP_GET_PROGRESS_NOTES, l_Conn);
+                SqlCommand l_Cmd = new SqlCommand("Get_Progress_Notes_by_mike", l_Conn);
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 l_Cmd.Parameters.AddWithValue("@residentId", residentId);
                 l_Cmd.Parameters.AddWithValue("@fromDate", fromDate);
@@ -200,6 +201,49 @@ namespace QolaMVC.DAL
                         l_ProgressNote.AcknowledgeNote = Convert.ToString(progressNotesReceive.Tables[0].Rows[index]["fd_action_note"]);
                         l_ProgressNote.ACkFlag = Convert.ToChar(progressNotesReceive.Tables[0].Rows[index]["As_flag"]);
                         l_ProgressNote.AcknowledgedBy = l_AckUser;
+
+                        //////////change by mike
+                        l_ProgressNote.usertype_int = Convert.ToInt16(progressNotesReceive.Tables[0].Rows[index]["fd_user_type"]);
+                        switch (l_ProgressNote.usertype_int)
+                        {
+                            case 1: l_ProgressNote.usertype_full = "Head Office"; break;
+                            case 2: l_ProgressNote.usertype_full = "Regional Manager"; break;
+                            case 3: l_ProgressNote.usertype_full = "Executive Director"; break;
+                            case 4: l_ProgressNote.usertype_full = "RN"; break;
+                            case 5: l_ProgressNote.usertype_full = "Doctor"; break;
+                            case 6: l_ProgressNote.usertype_full = "Activity Director"; break;
+                            case 7: l_ProgressNote.usertype_full = "Chef"; break;
+                            case 8: l_ProgressNote.usertype_full = "Pharmacy"; break;
+                            case 9: l_ProgressNote.usertype_full = "Director of Care"; break;
+                            case 10: l_ProgressNote.usertype_full = "Study"; break;
+                            case 11: l_ProgressNote.usertype_full = "UCP"; break;
+                            case 12: l_ProgressNote.usertype_full = "HCA"; break;
+                            case 13: l_ProgressNote.usertype_full = "Marketing Director"; break;
+                            case 14: l_ProgressNote.usertype_full = "Activity Aide"; break;
+                            case 15: l_ProgressNote.usertype_full = "LPN"; break;
+                            case 16: l_ProgressNote.usertype_full = "IAA"; break;
+                            case 17: l_ProgressNote.usertype_full = "IA"; break;
+                            case 18: l_ProgressNote.usertype_full = "RPN"; break;
+                            case 19: l_ProgressNote.usertype_full = "Service"; break;
+                            case 20: l_ProgressNote.usertype_full = "PSW"; break;
+                            case 21: l_ProgressNote.usertype_full = "Regional Director of H&W"; break;
+                            case 22: l_ProgressNote.usertype_full = "Reception"; break;
+                            default: l_ProgressNote.usertype_full = ""; break;
+                        }
+                        switch (l_ProgressNote.Category)
+                        {
+                            case 1: l_ProgressNote.category_full = "1"; break;
+                            case 2: l_ProgressNote.category_full = "Medical Update"; break;
+                            case 3: l_ProgressNote.category_full = "Social Update"; break;
+                            case 4: l_ProgressNote.category_full = "Dietary Update"; break;
+                            case 5: l_ProgressNote.category_full = "General Update"; break;
+                            case 6: l_ProgressNote.category_full = "Resident Fall"; break;
+                            case 7: l_ProgressNote.category_full = "Resident Bruised"; break;
+                            default: l_ProgressNote.category_full = ""; break;
+                        }
+                        //////////end
+
+
                         p_ProgressNotes.Add(l_ProgressNote);
                     }
                 }
