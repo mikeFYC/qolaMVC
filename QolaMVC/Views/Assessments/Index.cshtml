@@ -131,23 +131,25 @@
         });
     }
 
+
+
+
     function save_button() {
         var a = $('input[class="comTask"]');
-
+        var arraymike = [];
         for (var b = 0; b < a.length; b = b + 1) {
-            var tb_num = a[b].getAttribute("value");
             if (a[b].checked == true && a[b].disabled == false) {
-                $.post("/Assessments/saveButton", { tb_number: tb_num }, function () {
-                });
+                arraymike.push("checked");
             }
             else if (a[b].checked == false && a[b].disabled == false) {
-                $.post("/Assessments/saveButton2", { tb_number: tb_num }, function () {
-                });
+                arraymike.push("unchecked");
+            }
+            else {
+                arraymike.push("disabled");
             }
         }
-
-
-        $.get("/Assessments/get_checklist_data", {}, function (data) {
+        jQuery.ajaxSettings.traditional = true;
+        $.get("/Assessments/saveButtonMain", { arrayMain: arraymike }, function (data) {
             if (data != "") {
                 var c = data.split(",");
                 var row = $('input[class="comTask"]');
@@ -165,11 +167,10 @@
                 }
             }
         });
-        //view_data();
-        //location.reload();
-        //document.getElementById("checklist").className ="modal fade show"
-    }
 
+
+
+    }
 
 </script>
 

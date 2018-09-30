@@ -1074,8 +1074,8 @@ namespace QolaMVC.Controllers
 
         #region Check List
 
-        [HttpPost]
-        public void saveButton(int tb_number)
+        [HttpGet]
+        public string saveButtonMain(string [] arrayMain)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -1083,20 +1083,21 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            MasterDAL.save_button(tb_number, user.ID, resident.ID);
+            for(int a = 0; a < arrayMain.Length; a++)
+            {
+                if (arrayMain[a]== "checked")
+                {
+                    MasterDAL.save_button(a+1, user.ID, resident.ID);
+                }
+                else if (arrayMain[a] == "unchecked")
+                {
+                    MasterDAL.save_button(a+1, resident.ID);
+                }
+            }
+            string str = MasterDAL.get_checklist(resident.ID);
+            return str;
         }
 
-        [HttpPost]
-        public void saveButton2(int tb_number)
-        {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
-            var resident = (ResidentModel)TempData["Resident"];
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
-            MasterDAL.save_button(tb_number, resident.ID);
-        }
 
         [HttpGet]
         public string get_checklist_data()
