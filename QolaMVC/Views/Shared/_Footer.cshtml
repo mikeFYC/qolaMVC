@@ -50,6 +50,20 @@
 <!-- uploding of file -->
 
 <script>
+    function tempAlert(msg, duration) {
+        var el = document.createElement("div");
+        el.setAttribute("style", "position:fixed;top:2%;left:28%;width:45vw;text-align: center;background-color:lightgrey;z-index:9999;color:black;padding:3vw 4vw 3vw 4vw;border-radius:1vw;font-size:2vw;font-weight:bold;border:black solid;");
+        el.innerHTML = msg;
+        setTimeout(function () {
+            el.parentNode.removeChild(el);
+        }, duration);
+        document.body.appendChild(el);
+    }
+
+</script>
+
+
+<script>
     $('.searchresidents').keyup(function () {
         val = $(this).val();
         if (val.length > 1) {
@@ -167,23 +181,29 @@
         var c = $('#available_Suite_' + id).val();
         var d = $('#notes_' + id).val();
         if (a == "" || b == "" || c == "") {
-            alert("Cannot Have Empty Area except notes");
+            //alert("Cannot Have Empty Area except notes");
+            tempAlert("Cannot Have Empty Area except notes", 2000);
         }
         else {
             $.post("/Residents/saveButton_ApplicationSuite", { term: b, occu: a, suiteno: c, notes: d }, function (data) {
                 if (data == 1) {
-                    location.reload();
-                    alert("Update successfully");
+                    //location.reload();
+                    //alert("Update successfully");
+                    tempAlert("Update successfully", 2000);
+                    setTimeout(function () { window.location.reload(); }, 2000);
                 }
                 else if (data == 3) {
-                    alert("Cannot choose date two weeks ago");
+                    //alert("Cannot choose date two weeks ago");
+                    tempAlert("Cannot choose date two weeks ago", 2000);
                 }
 
                 else if (data == 5) {
-                    alert("Resident was already passed away");
+                    //alert("Resident was already passed away");
+                    tempAlert("Resident was already passed away", 2000);
                 }
                 else {
-                    alert("Update Failed");
+                    //alert("Update Failed");
+                    tempAlert("Update Failed", 2000);
                 }
             });
         }
@@ -200,31 +220,40 @@
         var tds = trs[trs.length - 1].getElementsByTagName("td");
         var suitenos = tds[1].innerHTML;
         if (a == "" || b == "") {
-            alert("Cannot Have Empty Area except notes");
+            //alert("Cannot Have Empty Area except notes");
+            tempAlert("Cannot Have Empty Area except notes", 2000);
         }
         else {
             $.post("/Residents/saveButton_ChangeOccupancy", { transferdate: b, occu: a, notes: c, suiteno: suitenos}, function (data) {
                 if (data == 1) {
-                    location.reload();
-                    alert("Update successfully");
+                    //location.reload();
+                    //alert("Update successfully");
+                    tempAlert("Update successfully", 2000);
+                    setTimeout(function () { window.location.reload(); }, 2000);
                 }
                 else if (data == 2) {
-                    alert("Cannot Select Same Occupancy");
+                    //alert("Cannot Select Same Occupancy");
+                    tempAlert("Cannot Select Same Occupancy", 2000);
                 }
                 else if (data == 3) {
-                    alert("Cannot choose date two weeks ago");
+                    //alert("Cannot choose date two weeks ago");
+                    tempAlert("Cannot choose date two weeks ago", 2000);
                 }
                 else if (data == 4) {
-                    alert("Invalid Date Input");
+                    //alert("Invalid Date Input");
+                    tempAlert("Invalid Date Input", 2000);
                 }
                 else if (data == 5) {
-                    alert("Resident was already passed away");
+                    //alert("Resident was already passed away");
+                    tempAlert("Resident was already passed away", 2000);
                 }
                 else if (data == 6) {
-                    alert("Resident was already moved out");
+                    //alert("Resident was already moved out");
+                    tempAlert("Resident was already moved out", 2000);
                 }
                 else {
-                    alert("Update Failed");
+                    //alert("Update Failed");
+                    tempAlert("Update Failed", 2000);
                 }
             });
         }
@@ -238,31 +267,40 @@
         var c = $('#available_Suite_' + id).val();
         var d = $('#notes_' + id).val();
         if (a == "" || b == "" || c == "") {
-            alert("Cannot Have Empty Area except notes");
+            //alert("Cannot Have Empty Area except notes");
+            tempAlert("Cannot Have Empty Area except notes", 2000);
         }
         else {
             $.post("/Residents/saveButton_InternalTransfer", { transferdate: b, occu: a, suiteno: c, notes: d }, function (data) {
                 if (data == 1) {
-                    location.reload();
-                    alert("Update successfully");
+                    //location.reload();
+                    //alert("Update successfully");
+                    tempAlert("Update successfully", 2000);
+                    setTimeout(function () { window.location.reload(); }, 2000);
                 }
                 else if (data == 2) {
-                    alert("Cannot Select Same Suite Number");
+                    //alert("Cannot Select Same Suite Number");
+                    tempAlert("Cannot Select Same Suite Number", 2000);
                 }
                 else if (data == 3) {
-                    alert("Cannot choose date two weeks ago");
+                    //alert("Cannot choose date two weeks ago");
+                    tempAlert("Cannot choose date two weeks ago", 2000);
                 }
                 else if (data == 4) {
-                    alert("Invalid Date Input");
+                    //alert("Invalid Date Input");
+                    tempAlert("Invalid Date Input", 2000);
                 }
                 else if (data == 5) {
-                    alert("Resident was already passed away");
+                    //alert("Resident was already passed away");
+                    tempAlert("Resident was already passed away", 2000);
                 }
                 else if (data == 6) {
-                    alert("Resident was already moved out");
+                    //alert("Resident was already moved out");
+                    tempAlert("Resident was already moved out", 2000);
                 }
                 else {
-                    alert("Update Failed");
+                    //alert("Update Failed");
+                    tempAlert("Update Failed", 2000);
                 }
             });
         }
@@ -277,31 +315,40 @@
         var d = $('#notes_' + id).val();
         var e = $('#QOLAContent_ddlHome').val();
         if (a == "" || b == "" || c == "" || e == "") {
-            alert("Cannot Have Empty Area except notes");
+            //alert("Cannot Have Empty Area except notes");
+            tempAlert("Cannot Have Empty Area except notes", 2000);
         }
         else {
             $.post("/Residents/saveButton_TransfertoASCHOME", { transferdate: b, occu: a, suiteno: c, notes: d, homeid: e }, function (data) {
                 if (data == 1) {
-                    location.reload();
-                    alert("Update successfully");
+                    //location.reload();
+                    //alert("Update successfully");
+                    tempAlert("Update successfully", 2000);
+                    setTimeout(function () { window.location.reload(); }, 2000);
                 }
                 else if (data == 2) {
-                    alert("Cannot Select Same Home ID");
+                    //alert("Cannot Select Same Home ID");
+                    tempAlert("Cannot Select Same Home ID", 2000);
                 }
                 else if (data == 3) {
-                    alert("Cannot choose date two weeks ago");
+                    //alert("Cannot choose date two weeks ago");
+                    tempAlert("Cannot choose date two weeks ago", 2000);
                 }
                 else if (data == 4) {
-                    alert("Invalid Date Input");
+                    //alert("Invalid Date Input");
+                    tempAlert("Invalid Date Input", 2000);
                 }
                 else if (data == 5) {
-                    alert("Resident was already passed away");
+                    //alert("Resident was already passed away");
+                    tempAlert("Resident was already passed away", 2000);
                 }
                 else if (data == 6) {
-                    alert("Resident was already moved out");
+                    //alert("Resident was already moved out");
+                    tempAlert("Resident was already moved out", 2000);
                 }
                 else {
-                    alert("Update Failed");
+                    //alert("Update Failed");
+                    tempAlert("Update Failed", 2000);
                 }
             });
         }
@@ -318,28 +365,36 @@
         var tds = trs[trs.length - 1].getElementsByTagName("td");
         var suitenos = tds[1].innerHTML;
         if (a == "") {
-            alert("Date cannot be empty");
+            //alert("Date cannot be empty");
+            tempAlert("Date cannot be empty", 2000);
         }
         else {
             $.post("/Residents/saveButton_Normal_Move_Out", { moveout: a, notes: b, reason: move_out_reason, suiteno: suitenos}, function (data) {
                 if (data == 1) {
-                    location.reload();
-                    alert("Update successfully");
+                    //location.reload();
+                    //alert("Update successfully");
+                    tempAlert("Update successfully", 2000);
+                    setTimeout(function () { window.location.reload(); }, 2000);
                 }
                 else if (data == 3) {
-                    alert("Cannot choose date two weeks ago");
+                    //alert("Cannot choose date two weeks ago");
+                    tempAlert("Cannot choose date two weeks ago", 2000);
                 }
                 else if (data == 4) {
-                    alert("Invalid Date Input");
+                    //alert("Invalid Date Input");
+                    tempAlert("Invalid Date Input", 2000);
                 }
                 else if (data == 5) {
-                    alert("Resident was already passed away");
+                    //alert("Resident was already passed away");
+                    tempAlert("Resident was already passed away", 2000);
                 }
                 else if (data == 6) {
-                    alert("Resident was already moved out");
+                    //alert("Resident was already moved out");
+                    tempAlert("Resident was already moved out", 2000);
                 }
                 else {
-                    alert("Update Failed");
+                    //alert("Update Failed");
+                    tempAlert("Update Failed", 2000);
                 }
             });
         }
@@ -357,25 +412,32 @@
         var tds = trs[trs.length - 1].getElementsByTagName("td");
         var suitenos = tds[1].innerHTML;
         if (a == "" || c == "") {
-            alert("Date cannot be empty");
+            //alert("Date cannot be empty");
+            tempAlert("Date cannot be empty", 2000);
         }
         else {
             $.post("/Residents/saveButton_Passed_Away", { moveout: a, notes: b, passaway: c, reason: move_out_reason, suiteno: suitenos }, function (data) {
                 if (data == 1) {
-                    location.reload();
-                    alert("Update successfully");
+                    //location.reload();
+                    //alert("Update successfully");
+                    tempAlert("Update successfully", 2000);
+                    setTimeout(function () { window.location.reload(); }, 2000);
                 }
                 else if (data == 3) {
-                    alert("Cannot choose date two weeks ago");
+                    //alert("Cannot choose date two weeks ago");
+                    tempAlert("Cannot choose date two weeks ago", 2000);
                 }
                 else if (data == 4) {
-                    alert("Invalid Date Input");
+                    //alert("Invalid Date Input");
+                    tempAlert("Invalid Date Input", 2000);
                 }
                 else if (data == 5) {
-                    alert("Resident was already passed away");
+                    //alert("Resident was already passed away");
+                    tempAlert("Resident was already passed away", 2000);
                 }
                 else {
-                    alert("Update Failed");
+                    //alert("Update Failed");
+                    tempAlert("Update Failed", 2000);
                 }
             });
         }
@@ -394,28 +456,36 @@
         var tds = trs[trs.length - 1].getElementsByTagName("td");
         var suitenos = tds[1].innerHTML;
         if (a == "") {
-            alert("Leaving Date cannot be empty");
+            //alert("Leaving Date cannot be empty");
+            tempAlert("Leaving Date cannot be empty", 2000);
         }
         else {
             $.post("/Residents/saveButton_Hospitalization", { leaving: a, ExpectedReturn: b, ActualReturn: c, notes: d, reason: move_out_reason, suiteno: suitenos }, function (data) {
                 if (data == 1) {
-                    location.reload();
-                    alert("Update successfully");
+                    //location.reload();
+                    //alert("Update successfully"); 
+                    tempAlert("Update successfully", 2000);
+                    setTimeout(function () { window.location.reload(); }, 2000);
                 }
                 else if (data == 3) {   
-                    alert("Cannot choose date two weeks ago");
+                    //alert("Cannot choose date two weeks ago"); 
+                    tempAlert("Cannot choose date two weeks ago", 2000);
                 }
                 else if (data == 4) {
-                    alert("Invalid Date Input");
+                    //alert("Invalid Date Input"); 
+                    tempAlert("Invalid Date Input", 2000);
                 }
                 else if (data == 5) {
-                    alert("Resident was already passed away");
+                    //alert("Resident was already passed away"); 
+                    tempAlert("Resident was already passed away", 2000);
                 }
                 else if (data == 6) {
-                    alert("Resident was already moved out");
+                    //alert("Resident was already moved out"); 
+                    tempAlert("Resident was already moved out", 2000);
                 }
                 else {
-                    alert("Update Failed");
+                    //alert("Update Failed"); 
+                    tempAlert("Update Failed", 2000);
                 }
             });
         }
@@ -443,15 +513,17 @@
         var reason_for_undo = $("#select_option_in_edit_form").val();
         $.get("/Residents/undo_function", { reason: reason_for_undo }, function (data) {
             if (data == 1) {
-                location.reload();
-                alert("Update successfully");
+                //location.reload();
+                //alert("Update successfully");
+                tempAlert("Update successfully", 2000);
+                setTimeout(function () { window.location.reload(); }, 2000);
             }
             else {
-                alert("Update Failed");
+                //alert("Update Failed");
+                tempAlert("Update Failed", 2000);
             }
         });
     }
-
 
 
 </script>
