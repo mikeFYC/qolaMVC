@@ -175,7 +175,6 @@ namespace QolaMVC.Models
         }
 
         //change by mike
-        public int usertype_int{get;set;}
         public string category_full{get;set;}
         //end
 
