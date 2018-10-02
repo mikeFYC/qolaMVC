@@ -78,30 +78,37 @@
     .fa-file-text-o {
         font-size: 20px;
         color: #015093;
-        
-        
     }
 
 
     a.active {
         background-color: #015093 !important;
-        
     }
 
 </style>
-@*<script>
-    function tempAlert(msg, duration) {
-        var el = document.createElement("div");
-        el.setAttribute("style", "position:absolute;top:2%;left:35%;background-color:lightgrey;z-index:9999;color:black;padding:3vw 5vw 3vw 5vw;border-radius:1vw;font-size:2vw;font-weight:bold;border:black solid;");
-        el.innerHTML = msg;
-        setTimeout(function () {
-            el.parentNode.removeChild(el);
-        }, duration);
-        document.body.appendChild(el);
-    }
 
-</script>*@
 <script>
+    //function day_click() {
+    //    if (document.getElementById("pills-day").className != "tab-pane fade show active") {
+    //        document.getElementById("pills-day").className = "tab-pane fade show active";
+    //        document.getElementById("pills-week").className = "tab-pane fade";
+    //        document.getElementById("pills-month").className = "tab-pane fade";
+    //    }
+    //}
+    //function week_click() {
+    //    if (document.getElementById("pills-week").className != "tab-pane fade show active") {
+    //        document.getElementById("pills-day").className = "tab-pane fade";
+    //        document.getElementById("pills-week").className = "tab-pane fade show active";
+    //        document.getElementById("pills-month").className = "tab-pane fade";
+    //    }
+    //}
+    //function month_click() {
+    //    if (document.getElementById("pills-month").className != "tab-pane fade show active") {
+    //        document.getElementById("pills-day").className = "tab-pane fade";
+    //        document.getElementById("pills-week").className = "tab-pane fade";
+    //        document.getElementById("pills-month").className = "tab-pane fade show active";
+    //    }
+    //}
 
     function list_select_all() {
         var a = $("div[id=pills-profile1] tr td div input");
@@ -129,14 +136,11 @@
         }
         $.post("/Home/saveButton_Dining", { arr: savestring, whichmeal: mealselect, datesel: dateselect }, function (data) {
             if (data == 1) {
-                //alert("Saved Successfully");
-                //window.location.reload();
-                tempAlert("Saved Successfully", 2000);
-                setTimeout(function () { window.location.reload(); }, 2000);
+                alert("Saved Successfully");
+                window.location.reload();
             }
             else
-                //alert("Saved failed");
-                tempAlert("Saved failed", 2000);
+                alert("Saved failed");
         });
     }
     function floor_savebutton() {
@@ -154,14 +158,11 @@
         }
         $.post("/Home/saveButton_Dining", { arr: savestring, whichmeal: mealselect, datesel: dateselect }, function (data) {
             if (data == 1) {
-                //alert("Saved Successfully");
-                //window.location.reload();
-                tempAlert("Saved Successfully", 2000);
-                setTimeout(function () { window.location.reload(); }, 2000);
+                alert("Saved Successfully");
+                window.location.reload();
             }
             else
-                //alert("Saved failed");
-                tempAlert("Saved failed", 2000);
+                alert("Saved failed");
         });
     }
     function floor_clearbutton() {
@@ -176,6 +177,7 @@
             a[c].checked = false;
         }
     }
+
 
     function open_form1() {
         var node_tbody = document.getElementById("show_list")
@@ -268,10 +270,7 @@
         var a = $('#searchresidents3');
         var residentid = a[0].name;
         if (residentid == "" || residentid == undefined) {
-            //alert("No Resident was Choosen");
-            tempAlert("No Resident was Choosen", 2000);
-            
-
+            alert("No Resident was Choosen");
             return;
         }
         var namesub = $('input[name=' + residentid + ']')
@@ -283,16 +282,13 @@
             }
         }
         if (text == undefined) {
-            //alert("No Option was Choosen");
-            tempAlert("No Option was Choosen", 2000);
-
+            alert("No Option was Choosen");
             return;
         }
         var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
         $.get("/Home/disable_hospital", { datesel: dateselect }, function (data) {
             if (data.toString().includes(residentid)) {
-                //alert("Resident in the Hospital");
-                tempAlert("Resident in the Hospital", 2000);
+                alert("Resident in the Hospital");
             }
             else {
                 var view = $("#show_list");
@@ -303,8 +299,7 @@
                     }
                 }
                 if (residentid == '-9') {
-                    //alert("Resident already exist in the List");
-                    tempAlert("Resident already exist in the List", 2000);
+                    alert("Resident already exist in the List");
                 }
                 else {
                     view.append("<tr name='" + residentid + "'><td>" + name + "<\/td><td>" + text +
@@ -354,16 +349,11 @@
         }
         $.post("/Home/saveButton_Dining", { arr: savestring, whichmeal: mealselect, datesel: dateselect }, function (data) {
             if (data == 1) {
-                //alert("Saved Successfully");
-                //window.location.reload();
-                tempAlert("Saved Successfully", 2000);
-                setTimeout(function () {window.location.reload();}, 2000);
-                
+                alert("Saved Successfully");
+                window.location.reload();
             }
             else
-                //alert("Saved failed");
-                tempAlert("Saved failed", 2000);
-            
+                alert("Saved failed");
         });
 
     }
@@ -425,15 +415,10 @@
         var idint = parseInt(id);
         var textnote = document.getElementById("formtextarea").value;
         $.get("/Home/click_progress_note", { residentid: idint, datesel: dateselect,note: textnote }, function (data) {
-            if (data == 1) {
-                //alert("Saved Successfully");
-                tempAlert("Saved Successfully", 2000);
-            }
+            if (data == 1)
+                alert("Saved Successfully");
             else
-            {
-                //alert("Saved Failed");
-                tempAlert("Saved failed", 2000);
-            }
+                alert("Saved Failed");
         });
         document.getElementById('formtextarea').value = '';
         document.getElementById('contactForm').style.display = "none";
