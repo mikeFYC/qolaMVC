@@ -185,7 +185,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             ViewBag.User = user;
-
+            ViewBag.Home = home;
 
             return View();
         }
@@ -210,6 +210,12 @@ namespace QolaMVC.Controllers
 
         public ActionResult ActivityCalendar()
         {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            ViewBag.User = user;
+            ViewBag.Home = home;
             return View();
         }
 

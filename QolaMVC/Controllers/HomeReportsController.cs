@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QolaMVC.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,6 +12,12 @@ namespace QolaMVC.Controllers
         // GET: HomeReports
         public ActionResult Index()
         {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            ViewBag.User = user;
+            ViewBag.Home = home;
             return View();
         }
 
