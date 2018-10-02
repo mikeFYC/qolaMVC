@@ -106,7 +106,7 @@ namespace QolaMVC.DAL
                                 " and GETDATE()> SH.fd_move_in_date" +
                                 " and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')" +
                                 " and DA.DateEntered > @create" +
-                                " and DA.Id not in (select distinct fd_DA_id from [tbl_AB_ActivityAssessment_Acknowledge] where fd_user_id =" + userid + ")";
+                                " and DA.Id not in (select distinct fd_DA_id from [tbl_AB_DietaryAssessment_Acknowledge] where fd_user_id =" + userid + ")";
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
             if (rd.HasRows)
