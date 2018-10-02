@@ -186,6 +186,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             ViewBag.User = user;
 
+
             return View();
         }
 
