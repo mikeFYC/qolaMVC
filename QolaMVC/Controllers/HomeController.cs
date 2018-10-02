@@ -2029,7 +2029,12 @@ namespace QolaMVC.Controllers
 
         #endregion
 
-
+        #region resident calendars
+        public ActionResult SuggestedActivityCalendar()
+        {
+            return View();
+        }
+        #endregion
 
 
 

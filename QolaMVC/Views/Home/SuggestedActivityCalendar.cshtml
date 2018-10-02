@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='utf-8' />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Calendar Plugin</title>
+
+    <link rel="stylesheet" href="/Content/calendar/css/calendar-plugin.min.css" media="all" />
+</head>
+
+<body>
+    <!-- START PAGE-CONTAINER -->
+    <div class="page-container">
+
+        @*@RenderPage("~/Views/Shared/_NavBar.cshtml")*@
+        <!-- START PAGE CONTENT WRAPPER -->
+        <div class="page-content-wrapper">
+            <!-- START PAGE CONTENT -->
+            <div class="content">
+                <!-- START JUMBOTRON -->
+                <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                    <div class="container-fluid container-fixed-lg">
+                        <!-- <div class="inner"> -->
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h3>Suggested Activity Calendar</h3>
+                            </div>
+                        </div>
+                        <!-- </div> -->
+                    </div>
+                </div>
+                <!-- END JUMBOTRON -->
+                <div style="height: 60px;"></div>
+                <!-- START CONTAINER FLUID -->
+                <div class="container-fluid container-fixed-lg">
+                    <div style='position: relative; float: left; width: 100%;'>
+                        <section id='calendar'></section>
+                    </div>
+
+                    <script src="~/Content/calendar/plugins/jquery/jquery.min.js"></script>
+                    <!-- <script src="plugins/jquery-ui/jquery-ui.min.js"></script> -->
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
+                    <script src="~/Content/calendar/js/calendar-plugin.js"></script>
+                    <script type='text/javascript'>
+                        var l_Categories = {};
+
+                        $.ajax({
+                            type: 'get',
+                            url: '@Url.Action("getCategoriesForCalendar")',
+                            dataType: 'json',
+                            success: function (data) {
+                                //l_Categories = data;
+                              //console.log(data);
+
+                                for (var i = 0; i < data.length; i++ ) {
+                                    l_Categories[data[i].Id] = data[i].Name;
+                                }
+                                console.log(l_Categories);
+                                initCalendar();
+                            },
+                            error: function (ex) {
+                                var r = jQuery.parseJSON(response.responseText);
+                                alert("Message: " + r.Message);
+                                alert("StackTrace: " + r.StackTrace);
+                                alert("ExceptionType: " + r.ExceptionType);
+                            }
+                        });
+
+
+
+                        function initCalendar() {
+                             $('#calendar').CalendarPlugin({
+                            url: '/api/ActivityCalendar'
+                        });
+                        }
+                    </script>
+                </div>
+                <!-- END CONTAINER FLUID -->
+            </div>
+            <!-- END PAGE CONTENT -->
+</body>
+
+</html>
