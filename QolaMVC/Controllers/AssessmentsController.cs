@@ -84,6 +84,15 @@ namespace QolaMVC.Controllers
 
         public ActionResult DietaryHistory()
         {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            var resident = (ResidentModel)TempData["Resident"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            ViewBag.Resident = resident;
             return View();
         }
 
