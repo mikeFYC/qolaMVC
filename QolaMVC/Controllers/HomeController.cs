@@ -66,6 +66,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             ViewBag.User = user;
             HomeModel l_Home = HomeDAL.GetHomeById(p_HomeId);
+            TempData["occupy"] = HomeDAL.GetOccupybyID(p_HomeId);
             //dynamic l_Json=to_do_list_function.get_to_do_list_number( user.ID, l_Home.Id);
             //TempData["DU"] = l_Json.DU;
             //TempData["HO"] = l_Json.HO;
@@ -97,6 +98,20 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             
             dynamic l_Json = to_do_list_function.get_to_do_list_number(user.ID, home.Id);
+
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+
+        }
+
+        [HttpGet]
+        public ActionResult Number_nextmonth()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+
+            dynamic l_Json = to_do_list_function.get_to_do_list_number_nextmonth(user.ID, home.Id);
 
             return Json(l_Json, JsonRequestBehavior.AllowGet);
 
@@ -170,6 +185,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             ViewBag.User = user;
+            ViewBag.Home = home;
 
             return View();
         }
@@ -194,6 +210,12 @@ namespace QolaMVC.Controllers
 
         public ActionResult ActivityCalendar()
         {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            ViewBag.User = user;
+            ViewBag.Home = home;
             return View();
         }
 
@@ -1863,6 +1885,17 @@ namespace QolaMVC.Controllers
         }
 
         [HttpGet]
+        public ActionResult HO_nextmonth_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_nextmonth_hospital_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
         public ActionResult DU_CLICK()
         {
             var home = (HomeModel)TempData["Home"];
@@ -1885,6 +1918,18 @@ namespace QolaMVC.Controllers
         }
 
         [HttpGet]
+        public ActionResult IAA_nextmonth_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_nextmonth_IAA_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+
+        [HttpGet]
         public ActionResult IDA_CLICK()
         {
             var home = (HomeModel)TempData["Home"];
@@ -1892,6 +1937,17 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             List<dynamic> l_Json = to_do_list_function.get_IDA_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult IDA_nextmonth_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_nextmonth_IDA_list(home.Id);
             return Json(l_Json, JsonRequestBehavior.AllowGet);
         }
 
@@ -1907,6 +1963,17 @@ namespace QolaMVC.Controllers
         }
 
         [HttpGet]
+        public ActionResult IFRA_nextmonth_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_nextmonth_IFRA_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
         public ActionResult IRCA_CLICK()
         {
             var home = (HomeModel)TempData["Home"];
@@ -1914,6 +1981,17 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             List<dynamic> l_Json = to_do_list_function.get_IRCA_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult IRCA_nextmonth_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_nextmonth_IRCA_list(home.Id);
             return Json(l_Json, JsonRequestBehavior.AllowGet);
         }
 
@@ -1962,6 +2040,17 @@ namespace QolaMVC.Controllers
         }
 
         [HttpGet]
+        public ActionResult RAA_nextmonth_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_nextmonth_RAA_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
         public ActionResult RDA_CLICK()
         {
             var home = (HomeModel)TempData["Home"];
@@ -1969,6 +2058,17 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             List<dynamic> l_Json = to_do_list_function.get_RDA_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult RDA_nextmonth_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_nextmonth_RDA_list(home.Id);
             return Json(l_Json, JsonRequestBehavior.AllowGet);
         }
 
@@ -1984,6 +2084,17 @@ namespace QolaMVC.Controllers
         }
 
         [HttpGet]
+        public ActionResult RFRA_nextmonth_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_nextmonth_RFRA_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
         public ActionResult RRCA_CLICK()
         {
             var home = (HomeModel)TempData["Home"];
@@ -1991,6 +2102,17 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             List<dynamic> l_Json = to_do_list_function.get_RRCA_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult RRCA_nextmonth_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_nextmonth_RRCA_list(home.Id);
             return Json(l_Json, JsonRequestBehavior.AllowGet);
         }
 
@@ -2056,6 +2178,17 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             List<dynamic> l_Json = to_do_list_function.get_SA_list(home.Id);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult SA_nextmonth_CLICK()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_SA_nextmonth_list(home.Id);
             return Json(l_Json, JsonRequestBehavior.AllowGet);
         }
 

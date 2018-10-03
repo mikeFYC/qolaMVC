@@ -168,6 +168,19 @@ namespace QolaMVC.Models
             set { _isAckFlag = value; }
         }
 
+        public string usertype_full
+        {
+            get;
+            set;
+        }
+
+        //change by mike
+        public string category_full{get;set;}
+        //end
+
+
+
+
         #endregion
         #endregion
     }

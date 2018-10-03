@@ -84,6 +84,15 @@ namespace QolaMVC.Controllers
 
         public ActionResult DietaryHistory()
         {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            var resident = (ResidentModel)TempData["Resident"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            ViewBag.Resident = resident;
             return View();
         }
 
@@ -982,6 +991,26 @@ namespace QolaMVC.Controllers
             return View(l_FallRisk.LastOrDefault());
         }
 
+        public ActionResult FallRisk2(int p_ResidentId)
+        {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            var resident = ResidentsDAL.GetResidentById(p_ResidentId);
+            var progressNotes = ProgressNotesDAL.GetProgressNotesCollections(resident.ID, DateTime.Now, DateTime.Now, "A");
+            ViewBag.Message = TempData["Message"];
+            TempData["Resident"] = resident;
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            ViewBag.Resident = resident;
+            ViewBag.ProgressNotes = progressNotes;
+            ProgressNotesHelper.RegisterSession(resident);
+            return RedirectToAction("FallRisk");
+        }
+
+
         [HttpPost]
         public ActionResult FallRisk(FormCollection p_Form)
         {
@@ -1051,8 +1080,11 @@ namespace QolaMVC.Controllers
         }
 
 
-        [HttpPost]
-        public void saveButton(int tb_number)
+
+        #region Check List
+
+        [HttpGet]
+        public string saveButtonMain(string [] arrayMain)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -1060,20 +1092,21 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            MasterDAL.save_button(tb_number, user.ID, resident.ID);
+            for(int a = 0; a < arrayMain.Length; a++)
+            {
+                if (arrayMain[a]== "checked")
+                {
+                    MasterDAL.save_button(a+1, user.ID, resident.ID);
+                }
+                else if (arrayMain[a] == "unchecked")
+                {
+                    MasterDAL.save_button(a+1, resident.ID);
+                }
+            }
+            string str = MasterDAL.get_checklist(resident.ID);
+            return str;
         }
 
-        [HttpPost]
-        public void saveButton2(int tb_number)
-        {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
-            var resident = (ResidentModel)TempData["Resident"];
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
-            MasterDAL.save_button(tb_number, resident.ID);
-        }
 
         [HttpGet]
         public string get_checklist_data()
@@ -1088,7 +1121,7 @@ namespace QolaMVC.Controllers
             return str;
         }
 
-
+        #endregion
 
 
     }

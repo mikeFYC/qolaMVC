@@ -148,7 +148,8 @@ namespace QolaMVC.DAL
             {
                 l_Conn.Open();
                 SqlDataAdapter l_DA = new SqlDataAdapter();
-                SqlCommand l_Cmd = new SqlCommand(Constants.StoredProcedureName.USP_GET_PROGRESS_NOTES, l_Conn);
+                //SqlCommand l_Cmd = new SqlCommand(Constants.StoredProcedureName.USP_GET_PROGRESS_NOTES, l_Conn);
+                SqlCommand l_Cmd = new SqlCommand("Get_Progress_Notes_by_mike", l_Conn);
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 l_Cmd.Parameters.AddWithValue("@residentId", residentId);
                 l_Cmd.Parameters.AddWithValue("@fromDate", fromDate);
@@ -200,6 +201,22 @@ namespace QolaMVC.DAL
                         l_ProgressNote.AcknowledgeNote = Convert.ToString(progressNotesReceive.Tables[0].Rows[index]["fd_action_note"]);
                         l_ProgressNote.ACkFlag = Convert.ToChar(progressNotesReceive.Tables[0].Rows[index]["As_flag"]);
                         l_ProgressNote.AcknowledgedBy = l_AckUser;
+
+                        //////////change by mike
+                        switch (l_ProgressNote.Category)
+                        {
+                            case 1: l_ProgressNote.category_full = "1"; break;
+                            case 2: l_ProgressNote.category_full = "Medical Update"; break;
+                            case 3: l_ProgressNote.category_full = "Social Update"; break;
+                            case 4: l_ProgressNote.category_full = "Dietary Update"; break;
+                            case 5: l_ProgressNote.category_full = "General Update"; break;
+                            case 6: l_ProgressNote.category_full = "Resident Fall"; break;
+                            case 7: l_ProgressNote.category_full = "Resident Bruised"; break;
+                            default: l_ProgressNote.category_full = ""; break;
+                        }
+                        //////////end
+
+
                         p_ProgressNotes.Add(l_ProgressNote);
                     }
                 }

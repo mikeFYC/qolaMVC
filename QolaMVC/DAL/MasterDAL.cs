@@ -562,16 +562,18 @@ namespace QolaMVC.DAL
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
             if (rd.HasRows)
+            {
                 while (rd.Read())
                 {
-                    if(rd[1]==null)
+                    if (rd[1] == null)
                     {
-                        a = a + ","  + ",";
+                        a = a + "," + ",";
                     }
                     else
                         a = a + rd[1] + "," + rd[0] + ",";
                 }
-            a = a.Substring(0, a.Length-1);
+                a = a.Substring(0, a.Length - 1);
+            }
             conn.Close();
             return a;
         }

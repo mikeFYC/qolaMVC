@@ -12,11 +12,17 @@
     .pointer {
         cursor: pointer;
     }
+    .nav-link.active {
+        background-color: #015093 !important;
+    }
 </style>
 <!-- START PAGE-CONTAINER -->
 <div class="page-container">
 
-    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+   @RenderPage("~/Views/Shared/_NavBar.cshtml")
+
+
+
     <!-- START PAGE CONTENT WRAPPER -->
     <div class="page-content-wrapper">
         <!-- START PAGE CONTENT -->
@@ -107,8 +113,8 @@
                                             <a class="nav-link" id="pills-care-tab" data-toggle="pill" href="#pills-care" role="tab" aria-controls="pills-care" aria-selected="false"><b>Plan of Care</b></a>
                                         </li>
                                         @*<li class="nav-item">
-                                            <a class="nav-link" id="pills-goals-tab" data-toggle="pill" href="#pills-goals" role="tab" aria-controls="pills-goals" aria-selected="false"><b>Resident Specific Goals</b></a>
-                                        </li>*@
+                                                <a class="nav-link" id="pills-goals-tab" data-toggle="pill" href="#pills-goals" role="tab" aria-controls="pills-goals" aria-selected="false"><b>Resident Specific Goals</b></a>
+                                            </li>*@
                                         <li class="nav-item">
                                             <a class="nav-link" id="pills-notes-tab" data-toggle="pill" href="#pills-notes" role="tab" aria-controls="pills-notes" aria-selected="false"><b>Progress Notes</b></a>
                                         </li>
@@ -560,7 +566,7 @@
                                         <div class="tab-pane fade" id="pills-notes" role="tabpanel" aria-labelledby="pills-notes-tab">
                                             <div class="row">
                                                 <div class="col-md-12 mb-2">
-                                                    <a href="/Assessments/ProgressNotes/" style="padding: 5px;" class="btn btn-primary ml-3">New Progress Note</a>
+                                                    <a href="/Assessments/ProgressNotes/" style="padding: 8px;font-size:1vw;" class="btn btn-primary ml-3">New Progress Note</a>
                                                 </div>
                                             </div>
                                             <div class="col-lg-12">
@@ -611,8 +617,9 @@
                                                         <td class="text-center"><b>Date</b></td>
                                                         <td class="text-center"><b>Time</b></td>
                                                         <td class="text-center"><b>Category</b></td>
+                                                        <td class="text-center"><b>Title</b></td>
                                                         <td class="text-center"><b>Progress Notes</b></td>
-                                                        <td class="text-center"><b>User</b></td>
+                                                        <td class="text-center" style="width:12vw;"><b>User</b></td>
                                                         @*<td class="text-center"><b>Signature</b></td>*@
                                                     </tr>
                                                     @{
@@ -620,17 +627,18 @@
                                                         var progressNotes = (IEnumerable<QolaMVC.Models.ProgressNotesModel>)ViewBag.ProgressNotes;
                                                         foreach (var p in progressNotes)
                                                         {
-                                                            <tr>
-                                                                <td>@i</td>
-                                                                <td>@p.Date.ToShortDateString() </td>
-                                                                <td>@p.Date.ToShortTimeString()</td>
-                                                                <td>@p.Category</td>
-                                                                <td>
-                                                                    @p.Note
-                                                                </td>
-                                                                <td>@p.ModifiedBy.FirstName @p.ModifiedBy.LastName</td>
+                                                    <tr>
+                                                        <td>@i</td>
+                                                        <td>@p.Date.ToShortDateString() </td>
+                                                        <td>@p.Date.ToShortTimeString()</td>
+                                                        <td>@p.category_full</td>
+                                                        <td>@p.Title</td>
+                                                        <td>
+                                                            @p.Note
+                                                        </td>
+                                                        <td>@p.ModifiedBy.FirstName @p.ModifiedBy.LastName<br>(@p.ModifiedBy.UserTypeName)</td>
 
-                                                            </tr>
+                                                    </tr>
                                                             i = i + 1;
                                                         }
                                                     }

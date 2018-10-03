@@ -428,6 +428,33 @@ namespace QolaMVC.DAL
             }
         }
 
+        public static string GetOccupybyID(int homeId)
+        {
+            string occu = "";
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText =   " select count(*) from tbl_Suite_Handler " +
+                                " where GETDATE()> fd_move_in_date" +
+                                " and GETDATE()< isNULL(fd_move_out_date, '2200-09-01')" +
+                                " and fd_home_id ="+ homeId;
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            if (rd.HasRows)
+                while (rd.Read())
+                {
+                    occu = rd[0].ToString();
+
+
+                }
+            conn.Close();
+
+            return occu;
+        }
+
+
+
         public static Collection<HomeModel> GetUsersHomeActive()
         {
             string exception = string.Empty;
@@ -1159,7 +1186,7 @@ namespace QolaMVC.DAL
                 cmd.CommandText =   " select distinct SH.fd_resident_id, S.fd_floor, R.fd_first_name,R.fd_last_name from[dbo].[tbl_Suite_Handler] SH" +
                                     " join[dbo].[tbl_Suite] S on S.fd_id=SH.fd_suite_id" +
                                     " join[tbl_Resident] R on SH.fd_resident_id=R.fd_id" +
-                                    " where SH.fd_home_id = @homeid and @GETDATE> SH.fd_move_in_date and @GETDATE< isNULL(SH.fd_move_out_date, '2200-09-13') order by R.fd_first_name";
+                                    " where SH.fd_home_id = @homeid and @GETDATE> SH.fd_move_in_date and @GETDATE< isNULL(SH.fd_move_out_date, '2200-09-13') order by R.fd_last_name";
                 cmd.Parameters.AddWithValue("@GETDATE", todaydate);
                 cmd.Parameters.AddWithValue("@homeid", homeid);
                 cmd.Connection = conn;

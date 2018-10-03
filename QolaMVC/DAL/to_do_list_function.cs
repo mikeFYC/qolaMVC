@@ -49,6 +49,45 @@ namespace QolaMVC.DAL
             return l_Json;
         }
 
+        public static List<dynamic> get_nextmonth_hospital_list(int homeid)
+        {
+            List<dynamic> l_Json = new List<dynamic>();
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = " select ROW_NUMBER() over(order by SH.fd_hospital_leaving) as number, " +
+                                " SH.fd_resident_id, S.fd_suite_no, R.fd_first_name, R.fd_last_name, " +
+                                " R.fd_gender, SH.fd_hospital_leaving, fd_hospital_expected_return" +
+                                " from[dbo].[tbl_Suite_Handler] SH" +
+                                " join tbl_Resident R on SH.fd_resident_id=R.fd_id" +
+                                " join tbl_Suite S on S.fd_id= SH.fd_suite_id" +
+                                " where SH.fd_home_id=" + homeid +
+                                " and SH.fd_pass_away_date is null " +
+                                " and SH.fd_move_out_date is null  " +
+                                " and SH.[fd_hospital_leaving] is not null" +
+                                " and DATEADD(d, 1, EOMONTH(current_timestamp))<isNULL(SH.[fd_hospital_return],'2200-09-01')";
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            if (rd.HasRows)
+                while (rd.Read())
+                {
+                    dynamic l_J = new System.Dynamic.ExpandoObject();
+                    l_J.number = rd[0];
+                    l_J.resident_id = rd[1];
+                    l_J.suite_no = rd[2];
+                    l_J.first_name = rd[3];
+                    l_J.last_name = rd[4];
+                    l_J.gender = rd[5];
+                    l_J.hospital_leaving = rd[6];
+                    l_J.hospital_expected_return = rd[7];
+
+                    l_Json.Add(l_J);
+                }
+            conn.Close();
+            return l_Json;
+        }
+
         public static List<dynamic> get_DU_list(int homeid, int userid)
         {
             List<dynamic> l_Json = new List<dynamic>();
@@ -58,16 +97,16 @@ namespace QolaMVC.DAL
             SqlCommand cmd = new SqlCommand();
             cmd.CommandText =   " declare @create datetime" +
                                 " select @create = fd_created_on from tbl_User where fd_id =" + userid +
-                                " select distinct ROW_NUMBER() over(order by DA.fd_modified_on) as row_number,  SH.fd_resident_id,DA.fd_id as DA_id,S.fd_suite_no,R.fd_first_name,R.fd_last_name,DA.fd_modified_on" +
-                                " from[tbl_Dietary_Assessment] DA" +
-                                " join tbl_Suite_Handler SH on DA.fd_resident_id = SH.fd_resident_id" +
-                                " join tbl_Resident R on R.fd_id = DA.fd_resident_id" +
+                                " select distinct ROW_NUMBER() over(order by DA.DateEntered) as row_number,  SH.fd_resident_id,DA.Id as DA_id,S.fd_suite_no,R.fd_first_name,R.fd_last_name,DA.DateEntered" +
+                                " from [tbl_AB_DietaryAssessment] DA" +
+                                " join tbl_Suite_Handler SH on DA.ResidentId = SH.fd_resident_id" +
+                                " join tbl_Resident R on R.fd_id = DA.ResidentId" +
                                 " join tbl_Suite S on S.fd_id = SH.fd_suite_id" +
                                 " where SH.fd_home_id =" + homeid +
                                 " and GETDATE()> SH.fd_move_in_date" +
                                 " and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')" +
-                                " and DA.fd_modified_on > @create" +
-                                " and DA.fd_id not in (select distinct fd_DA_id from[tbl_Dietary_Assessment_Acknowledge] where fd_user_id ="+ userid + ")";
+                                " and DA.DateEntered > @create" +
+                                " and DA.Id not in (select distinct fd_DA_id from [tbl_AB_DietaryAssessment_Acknowledge] where fd_user_id =" + userid + ")";
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
             if (rd.HasRows)
@@ -108,10 +147,10 @@ namespace QolaMVC.DAL
                                 " as SSH" +
                                 " on R.fd_id = SSH.fd_resident_id"+
                                 " where SSH.fd_home_id =" + homeid +
-                                " and GETDATE() > SSH.fd_move_in_date" +
+                                " and SSH.fd_move_in_date is not null" +
                                 " and GETDATE() < isNULL(SSH.fd_move_out_date, '2200-09-01')" +
                                 " and isNULL(SSH.fd_hospital,'')!='Y'" +
-                                " and SSH.fd_resident_id not in (select distinct fd_resident_id from[dbo].[tbl_Initial_Activity_Assessment])";
+                                " and SSH.fd_resident_id not in (select distinct ResidentId from [dbo].[tbl_AB_ActivityAssessment])";
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
             if (rd.HasRows)
@@ -124,6 +163,46 @@ namespace QolaMVC.DAL
                     l_J.first_name = rd[3];
                     l_J.last_name = rd[4];
                     l_J.move_in_date =DateTime.Parse(rd[5].ToString()).ToString("yyyy-MM-dd");
+                    l_Json.Add(l_J);
+                }
+            conn.Close();
+            return l_Json;
+        }
+
+        public static List<dynamic> get_nextmonth_IAA_list(int homeid)
+        {
+            List<dynamic> l_Json = new List<dynamic>();
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText =   " select ROW_NUMBER() over(order by SSH.fd_move_in_date) as number, SSH.fd_resident_id," +
+                                " SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date" +
+                                " from tbl_Resident R" +
+                                " join" +
+                                " (select SH.fd_home_id, SH.fd_resident_id, SH.fd_occupancy, SH.fd_move_in_date, SH.fd_move_out_date, " +
+                                " SH.fd_status, SH.fd_notes, SH.fd_modified_by, SH.fd_modified_on, SH.fd_pass_away_date, SH.fd_hospital," +
+                                " SH.fd_hospital_leaving, SH.fd_hospital_return, SH.fd_hospital_expected_return, S.fd_suite_no, S.fd_no_of_rooms, S.fd_floor" +
+                                " from tbl_Suite_Handler SH" +
+                                " join tbl_Suite S on S.fd_id = SH.fd_suite_id" +
+                                " ) " +
+                                " as SSH" +
+                                " on R.fd_id = SSH.fd_resident_id" +
+                                " where SSH.fd_home_id =" + homeid +
+                                " and DATEADD(d, 1, EOMONTH(current_timestamp))<SSH.fd_move_in_date" +
+                                " and SSH.fd_resident_id not in (select distinct ResidentId from [dbo].[tbl_AB_ActivityAssessment])";
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            if (rd.HasRows)
+                while (rd.Read())
+                {
+                    dynamic l_J = new System.Dynamic.ExpandoObject();
+                    l_J.number = rd[0];
+                    l_J.resident_id = rd[1];
+                    l_J.suite_no = rd[2];
+                    l_J.first_name = rd[3];
+                    l_J.last_name = rd[4];
+                    l_J.move_in_date = DateTime.Parse(rd[5].ToString()).ToString("yyyy-MM-dd");
                     l_Json.Add(l_J);
                 }
             conn.Close();
@@ -150,10 +229,50 @@ namespace QolaMVC.DAL
                                 " as SSH" +
                                 " on R.fd_id = SSH.fd_resident_id" +
                                 " where SSH.fd_home_id =" + homeid +
-                                " and GETDATE() > SSH.fd_move_in_date" +
+                                " and SSH.fd_move_in_date is not null" +
                                 " and GETDATE() < isNULL(SSH.fd_move_out_date, '2200-09-01')" +
                                 " and isNULL(SSH.fd_hospital,'')!='Y'" +
-                                " and SSH.fd_resident_id not in (select distinct fd_resident_id from[dbo].[tbl_Dietary_Assessment])";
+                                " and SSH.fd_resident_id not in (select distinct ResidentId from [dbo].[tbl_AB_DietaryAssessment])";
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            if (rd.HasRows)
+                while (rd.Read())
+                {
+                    dynamic l_J = new System.Dynamic.ExpandoObject();
+                    l_J.number = rd[0];
+                    l_J.resident_id = rd[1];
+                    l_J.suite_no = rd[2];
+                    l_J.first_name = rd[3];
+                    l_J.last_name = rd[4];
+                    l_J.move_in_date = DateTime.Parse(rd[5].ToString()).ToString("yyyy-MM-dd");
+                    l_Json.Add(l_J);
+                }
+            conn.Close();
+            return l_Json;
+        }
+
+        public static List<dynamic> get_nextmonth_IDA_list(int homeid)
+        {
+            List<dynamic> l_Json = new List<dynamic>();
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = " select ROW_NUMBER() over(order by SSH.fd_move_in_date) as number, SSH.fd_resident_id," +
+                                " SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date" +
+                                " from tbl_Resident R" +
+                                " join" +
+                                " (select SH.fd_home_id, SH.fd_resident_id, SH.fd_occupancy, SH.fd_move_in_date, SH.fd_move_out_date, " +
+                                " SH.fd_status, SH.fd_notes, SH.fd_modified_by, SH.fd_modified_on, SH.fd_pass_away_date, SH.fd_hospital," +
+                                " SH.fd_hospital_leaving, SH.fd_hospital_return, SH.fd_hospital_expected_return, S.fd_suite_no, S.fd_no_of_rooms, S.fd_floor" +
+                                " from tbl_Suite_Handler SH" +
+                                " join tbl_Suite S on S.fd_id = SH.fd_suite_id" +
+                                " ) " +
+                                " as SSH" +
+                                " on R.fd_id = SSH.fd_resident_id" +
+                                " where SSH.fd_home_id =" + homeid +
+                                " and DATEADD(d, 1, EOMONTH(current_timestamp))<SSH.fd_move_in_date" +
+                                " and SSH.fd_resident_id not in (select distinct ResidentId from [dbo].[tbl_AB_DietaryAssessment])";
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
             if (rd.HasRows)
@@ -192,10 +311,50 @@ namespace QolaMVC.DAL
                                 " as SSH" +
                                 " on R.fd_id = SSH.fd_resident_id" +
                                 " where SSH.fd_home_id =" + homeid +
-                                " and GETDATE() > SSH.fd_move_in_date" +
+                                " and SSH.fd_move_in_date is not null" +
                                 " and GETDATE() < isNULL(SSH.fd_move_out_date, '2200-09-01')" +
                                 " and isNULL(SSH.fd_hospital,'')!='Y'" +
-                                " and SSH.fd_resident_id not in (select distinct fd_resident_id from[dbo].[tbl_Fall_Risk_Assessment])";
+                                " and SSH.fd_resident_id not in (select distinct ResidentId from [dbo].[tbl_AB_FallRiskAssessment])";
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            if (rd.HasRows)
+                while (rd.Read())
+                {
+                    dynamic l_J = new System.Dynamic.ExpandoObject();
+                    l_J.number = rd[0];
+                    l_J.resident_id = rd[1];
+                    l_J.suite_no = rd[2];
+                    l_J.first_name = rd[3];
+                    l_J.last_name = rd[4];
+                    l_J.move_in_date = DateTime.Parse(rd[5].ToString()).ToString("yyyy-MM-dd");
+                    l_Json.Add(l_J);
+                }
+            conn.Close();
+            return l_Json;
+        }
+
+        public static List<dynamic> get_nextmonth_IFRA_list(int homeid)
+        {
+            List<dynamic> l_Json = new List<dynamic>();
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = " select ROW_NUMBER() over(order by SSH.fd_move_in_date) as number, SSH.fd_resident_id," +
+                                " SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date" +
+                                " from tbl_Resident R" +
+                                " join" +
+                                " (select SH.fd_home_id, SH.fd_resident_id, SH.fd_occupancy, SH.fd_move_in_date, SH.fd_move_out_date, " +
+                                " SH.fd_status, SH.fd_notes, SH.fd_modified_by, SH.fd_modified_on, SH.fd_pass_away_date, SH.fd_hospital," +
+                                " SH.fd_hospital_leaving, SH.fd_hospital_return, SH.fd_hospital_expected_return, S.fd_suite_no, S.fd_no_of_rooms, S.fd_floor" +
+                                " from tbl_Suite_Handler SH" +
+                                " join tbl_Suite S on S.fd_id = SH.fd_suite_id" +
+                                " ) " +
+                                " as SSH" +
+                                " on R.fd_id = SSH.fd_resident_id" +
+                                " where SSH.fd_home_id =" + homeid +
+                                " and DATEADD(d, 1, EOMONTH(current_timestamp))<SSH.fd_move_in_date" +
+                                " and SSH.fd_resident_id not in (select distinct ResidentId from [dbo].[tbl_AB_FallRiskAssessment])";
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
             if (rd.HasRows)
@@ -221,23 +380,57 @@ namespace QolaMVC.DAL
             conn.ConnectionString = Constants.ConnectionString.PROD;
             conn.Open();
             SqlCommand cmd = new SqlCommand();
-            cmd.CommandText = " select ROW_NUMBER() over(order by SSH.fd_move_in_date) as number, SSH.fd_resident_id," +
-                                " SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date" +
+            cmd.CommandText =   " select ROW_NUMBER() over(order by SSH.fd_move_in_date) as number, SSH.fd_resident_id,SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date" +
                                 " from tbl_Resident R" +
                                 " join" +
-                                " (select SH.fd_home_id, SH.fd_resident_id, SH.fd_occupancy, SH.fd_move_in_date, SH.fd_move_out_date, " +
-                                " SH.fd_status, SH.fd_notes, SH.fd_modified_by, SH.fd_modified_on, SH.fd_pass_away_date, SH.fd_hospital," +
-                                " SH.fd_hospital_leaving, SH.fd_hospital_return, SH.fd_hospital_expected_return, S.fd_suite_no, S.fd_no_of_rooms, S.fd_floor" +
+                                " (select SH.fd_home_id, SH.fd_resident_id, SH.fd_occupancy, SH.fd_move_in_date, SH.fd_move_out_date, SH.fd_status, SH.fd_notes, SH.fd_modified_by, SH.fd_modified_on, SH.fd_pass_away_date, SH.fd_hospital, SH.fd_hospital_leaving, SH.fd_hospital_return, SH.fd_hospital_expected_return, S.fd_suite_no, S.fd_no_of_rooms, S.fd_floor" +
                                 " from tbl_Suite_Handler SH" +
                                 " join tbl_Suite S on S.fd_id = SH.fd_suite_id" +
-                                " ) " +
+                                " )" +
                                 " as SSH" +
                                 " on R.fd_id = SSH.fd_resident_id" +
                                 " where SSH.fd_home_id =" + homeid +
-                                " and GETDATE() > SSH.fd_move_in_date" +
-                                " and GETDATE() < isNULL(SSH.fd_move_out_date, '2200-09-01')" +
-                                " and isNULL(SSH.fd_hospital,'')!='Y'" +
-                                " and SSH.fd_resident_id not in (select distinct fd_resident_id from[dbo].[tbl_Plan_Of_Care])";
+                                " and SSH.fd_move_in_date is not null" +
+                                " and GETDATE()< isNULL(SSH.fd_move_out_date, '2200-09-01')" +
+                                " and isNULL(SSH.fd_hospital,'')!= 'Y'" +
+                                " and SSH.fd_resident_id not in (select distinct ResidentId from[dbo].[tbl_AB_CarePlan])";
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            if (rd.HasRows)
+                while (rd.Read())
+                {
+                    dynamic l_J = new System.Dynamic.ExpandoObject();
+                    l_J.number = rd[0];
+                    l_J.resident_id = rd[1];
+                    l_J.suite_no = rd[2];
+                    l_J.first_name = rd[3];
+                    l_J.last_name = rd[4];
+                    l_J.move_in_date = DateTime.Parse(rd[5].ToString()).ToString("yyyy-MM-dd");
+                    l_Json.Add(l_J);
+                }
+            conn.Close();
+            return l_Json;
+        }
+
+        public static List<dynamic> get_nextmonth_IRCA_list(int homeid)
+        {
+            List<dynamic> l_Json = new List<dynamic>();
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText =   " select ROW_NUMBER() over(order by SSH.fd_move_in_date) as number, SSH.fd_resident_id,SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date" +
+                                " from tbl_Resident R" +
+                                " join" +
+                                " (select SH.fd_home_id, SH.fd_resident_id, SH.fd_occupancy, SH.fd_move_in_date, SH.fd_move_out_date, SH.fd_status, SH.fd_notes, SH.fd_modified_by, SH.fd_modified_on, SH.fd_pass_away_date, SH.fd_hospital, SH.fd_hospital_leaving, SH.fd_hospital_return, SH.fd_hospital_expected_return, S.fd_suite_no, S.fd_no_of_rooms, S.fd_floor" +
+                                " from tbl_Suite_Handler SH" +
+                                " join tbl_Suite S on S.fd_id = SH.fd_suite_id" +
+                                " )" +
+                                " as SSH" +
+                                " on R.fd_id = SSH.fd_resident_id" +
+                                " where SSH.fd_home_id =" + homeid +
+                                " and DATEADD(d, 1, EOMONTH(current_timestamp))< SSH.fd_move_in_date" +
+                                " and SSH.fd_resident_id not in (select distinct ResidentId from[dbo].[tbl_AB_CarePlan])";
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
             if (rd.HasRows)
@@ -408,9 +601,9 @@ namespace QolaMVC.DAL
             conn.ConnectionString = Constants.ConnectionString.PROD;
             conn.Open();
             SqlCommand cmd = new SqlCommand();
-            cmd.CommandText =   " select ROW_NUMBER()over(order by max(AAA.fd_modified_on)) as number, SSH.fd_resident_id,SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date,max(AAA.fd_modified_on) as assessed_date" +
+            cmd.CommandText = " select ROW_NUMBER()over(order by max(AAA.DateEntered)) as number, SSH.fd_resident_id,SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date,max(AAA.DateEntered) as assessed_date" +
                                 " from tbl_Resident R" +
-                                " left join [tbl_Initial_Activity_Assessment] AAA on AAA.fd_resident_id = R.fd_id" +
+                                " left join [tbl_AB_ActivityAssessment] AAA on AAA.ResidentId = R.fd_id" +
                                 " left join (select SH.fd_home_id,SH.fd_resident_id,SH.fd_occupancy,SH.fd_move_in_date,SH.fd_move_out_date,SH.fd_status,SH.fd_notes,SH.fd_modified_by,SH.fd_modified_on,SH.fd_pass_away_date,SH.fd_hospital,SH.fd_hospital_leaving,SH.fd_hospital_return,SH.fd_hospital_expected_return,S.fd_suite_no,S.fd_no_of_rooms,S.fd_floor from tbl_Suite_Handler SH join tbl_Suite S on SH.fd_suite_id = S.fd_id where GETDATE()> SH.fd_move_in_date and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')) as SSH" +
                                 " on R.fd_id = SSH.fd_resident_id" +
                                 " where SSH.fd_home_id =" + homeid +
@@ -419,14 +612,73 @@ namespace QolaMVC.DAL
                                 " and isNULL(SSH.fd_hospital,'')!='Y'" +
                                 " and R.fd_id not in" +
                                 " (" +
-                                " select distinct AA.fd_resident_id" +
-                                " from[tbl_Initial_Activity_Assessment] AA" +
-                                " join tbl_Suite_Handler SH on AA.fd_resident_id = SH.fd_resident_id" +
+                                " select distinct AA.ResidentId" +
+                                " from [tbl_AB_ActivityAssessment] AA" +
+                                " join tbl_Suite_Handler SH on AA.ResidentId = SH.fd_resident_id" +
                                 " where SH.fd_home_id =" + homeid +
                                 " and GETDATE()> SH.fd_move_in_date" +
                                 " and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')" +
-                                " and AA.fd_modified_on > DATEADD(MM, -3, GETDATE())" +
-                                " )" + 
+                                " and AA.DateEntered > DATEADD(MM, -3, GETDATE())" +
+                                " )" +
+                                " and R.fd_id in (select distinct ResidentId from [tbl_AB_ActivityAssessment])" +
+                                " group by SSH.fd_resident_id,SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date";
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            if (rd.HasRows)
+                while (rd.Read())
+                {
+                    dynamic l_J = new System.Dynamic.ExpandoObject();
+                    l_J.number = rd[0];
+                    l_J.resident_id = rd[1];
+                    l_J.suite_no = rd[2];
+                    l_J.first_name = rd[3];
+                    l_J.last_name = rd[4];
+                    l_J.move_in_date = DateTime.Parse(rd[5].ToString()).ToString("yyyy-MM-dd");
+                    if (rd[6] == null || rd[6].ToString() == "")
+                    {
+                        l_J.access_date = "";
+                        l_J.due_date = l_J.move_in_date;
+                        l_J.due_days = Math.Floor((DateTime.Now - DateTime.Parse(rd[5].ToString())).TotalDays);
+                    }
+                    else
+                    {
+                        l_J.access_date = DateTime.Parse(rd[6].ToString()).ToString("yyyy-MM-dd");
+                        l_J.due_date = DateTime.Parse(rd[6].ToString()).AddMonths(3).ToString("yyyy-MM-dd");
+                        l_J.due_days = Math.Floor((DateTime.Now - DateTime.Parse(rd[6].ToString()).AddMonths(3)).TotalDays);
+                    }
+                    l_Json.Add(l_J);
+                }
+            conn.Close();
+            return l_Json;
+        }
+
+        public static List<dynamic> get_nextmonth_RAA_list(int homeid)
+        {
+            List<dynamic> l_Json = new List<dynamic>();
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = " select ROW_NUMBER()over(order by max(AAA.DateEntered)) as number, SSH.fd_resident_id,SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date,max(AAA.DateEntered) as assessed_date" +
+                                " from tbl_Resident R" +
+                                " left join [tbl_AB_ActivityAssessment] AAA on AAA.ResidentId = R.fd_id" +
+                                " left join (select SH.fd_home_id,SH.fd_resident_id,SH.fd_occupancy,SH.fd_move_in_date,SH.fd_move_out_date,SH.fd_status,SH.fd_notes,SH.fd_modified_by,SH.fd_modified_on,SH.fd_pass_away_date,SH.fd_hospital,SH.fd_hospital_leaving,SH.fd_hospital_return,SH.fd_hospital_expected_return,S.fd_suite_no,S.fd_no_of_rooms,S.fd_floor from tbl_Suite_Handler SH join tbl_Suite S on SH.fd_suite_id = S.fd_id where GETDATE()> SH.fd_move_in_date and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')) as SSH" +
+                                " on R.fd_id = SSH.fd_resident_id" +
+                                " where SSH.fd_home_id =" + homeid +
+                                " and GETDATE()> SSH.fd_move_in_date" +
+                                " and GETDATE()< isNULL(SSH.fd_move_out_date, '2200-09-01')" +
+                                " and isNULL(SSH.fd_hospital,'')!='Y'" +
+                                " and R.fd_id not in" +
+                                " (" +
+                                " select distinct AA.ResidentId" +
+                                " from [tbl_AB_ActivityAssessment] AA" +
+                                " join tbl_Suite_Handler SH on AA.ResidentId = SH.fd_resident_id" +
+                                " where SH.fd_home_id =" + homeid +
+                                " and GETDATE()> SH.fd_move_in_date" +
+                                " and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')" +
+                                " and AA.DateEntered > DATEADD(MM,-3,DATEADD(d, 1, EOMONTH(current_timestamp)))" +
+                                " )" +
+                                " and R.fd_id in (select distinct ResidentId from [tbl_AB_ActivityAssessment])" +
                                 " group by SSH.fd_resident_id,SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date";
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
@@ -465,9 +717,9 @@ namespace QolaMVC.DAL
             conn.ConnectionString = Constants.ConnectionString.PROD;
             conn.Open();
             SqlCommand cmd = new SqlCommand();
-            cmd.CommandText = " select ROW_NUMBER()over(order by max(AAA.fd_modified_on)) as number, SSH.fd_resident_id,SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date,max(AAA.fd_modified_on) as assessed_date" +
+            cmd.CommandText = " select ROW_NUMBER()over(order by max(AAA.DateEntered)) as number, SSH.fd_resident_id,SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date,max(AAA.DateEntered) as assessed_date" +
                                 " from tbl_Resident R" +
-                                " left join [tbl_Dietary_Assessment] AAA on AAA.fd_resident_id = R.fd_id" +
+                                " left join [tbl_AB_DietaryAssessment] AAA on AAA.ResidentId = R.fd_id" +
                                 " left join (select SH.fd_home_id,SH.fd_resident_id,SH.fd_occupancy,SH.fd_move_in_date,SH.fd_move_out_date,SH.fd_status,SH.fd_notes,SH.fd_modified_by,SH.fd_modified_on,SH.fd_pass_away_date,SH.fd_hospital,SH.fd_hospital_leaving,SH.fd_hospital_return,SH.fd_hospital_expected_return,S.fd_suite_no,S.fd_no_of_rooms,S.fd_floor from tbl_Suite_Handler SH join tbl_Suite S on SH.fd_suite_id = S.fd_id where GETDATE()> SH.fd_move_in_date and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')) as SSH" +
                                 " on R.fd_id = SSH.fd_resident_id" +
                                 " where SSH.fd_home_id =" + homeid +
@@ -476,14 +728,73 @@ namespace QolaMVC.DAL
                                 " and isNULL(SSH.fd_hospital,'')!='Y'" +
                                 " and R.fd_id not in" +
                                 " (" +
-                                " select distinct AA.fd_resident_id" +
-                                " from[tbl_Dietary_Assessment] AA" +
-                                " join tbl_Suite_Handler SH on AA.fd_resident_id = SH.fd_resident_id" +
+                                " select distinct AA.ResidentId" +
+                                " from [tbl_AB_DietaryAssessment] AA" +
+                                " join tbl_Suite_Handler SH on AA.ResidentId = SH.fd_resident_id" +
                                 " where SH.fd_home_id =" + homeid +
                                 " and GETDATE()> SH.fd_move_in_date" +
                                 " and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')" +
-                                " and AA.fd_modified_on > DATEADD(MM, -3, GETDATE())" +
+                                " and AA.DateEntered > DATEADD(MM, -3, GETDATE())" +
                                 " )" +
+                                " and R.fd_id in (select distinct ResidentId from [tbl_AB_DietaryAssessment])" +
+                                " group by SSH.fd_resident_id,SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date";
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            if (rd.HasRows)
+                while (rd.Read())
+                {
+                    dynamic l_J = new System.Dynamic.ExpandoObject();
+                    l_J.number = rd[0];
+                    l_J.resident_id = rd[1];
+                    l_J.suite_no = rd[2];
+                    l_J.first_name = rd[3];
+                    l_J.last_name = rd[4];
+                    l_J.move_in_date = DateTime.Parse(rd[5].ToString()).ToString("yyyy-MM-dd");
+                    if (rd[6] == null || rd[6].ToString() == "")
+                    {
+                        l_J.access_date = "";
+                        l_J.due_date = l_J.move_in_date;
+                        l_J.due_days = Math.Floor((DateTime.Now - DateTime.Parse(rd[5].ToString())).TotalDays);
+                    }
+                    else
+                    {
+                        l_J.access_date = DateTime.Parse(rd[6].ToString()).ToString("yyyy-MM-dd");
+                        l_J.due_date = DateTime.Parse(rd[6].ToString()).AddMonths(3).ToString("yyyy-MM-dd");
+                        l_J.due_days = Math.Floor((DateTime.Now - DateTime.Parse(rd[6].ToString()).AddMonths(3)).TotalDays);
+                    }
+                    l_Json.Add(l_J);
+                }
+            conn.Close();
+            return l_Json;
+        }
+
+        public static List<dynamic> get_nextmonth_RDA_list(int homeid)
+        {
+            List<dynamic> l_Json = new List<dynamic>();
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = " select ROW_NUMBER()over(order by max(AAA.DateEntered)) as number, SSH.fd_resident_id,SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date,max(AAA.DateEntered) as assessed_date" +
+                                " from tbl_Resident R" +
+                                " left join [tbl_AB_DietaryAssessment] AAA on AAA.ResidentId = R.fd_id" +
+                                " left join (select SH.fd_home_id,SH.fd_resident_id,SH.fd_occupancy,SH.fd_move_in_date,SH.fd_move_out_date,SH.fd_status,SH.fd_notes,SH.fd_modified_by,SH.fd_modified_on,SH.fd_pass_away_date,SH.fd_hospital,SH.fd_hospital_leaving,SH.fd_hospital_return,SH.fd_hospital_expected_return,S.fd_suite_no,S.fd_no_of_rooms,S.fd_floor from tbl_Suite_Handler SH join tbl_Suite S on SH.fd_suite_id = S.fd_id where GETDATE()> SH.fd_move_in_date and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')) as SSH" +
+                                " on R.fd_id = SSH.fd_resident_id" +
+                                " where SSH.fd_home_id =" + homeid +
+                                " and GETDATE()> SSH.fd_move_in_date" +
+                                " and GETDATE()< isNULL(SSH.fd_move_out_date, '2200-09-01')" +
+                                " and isNULL(SSH.fd_hospital,'')!='Y'" +
+                                " and R.fd_id not in" +
+                                " (" +
+                                " select distinct AA.ResidentId" +
+                                " from [tbl_AB_DietaryAssessment] AA" +
+                                " join tbl_Suite_Handler SH on AA.ResidentId = SH.fd_resident_id" +
+                                " where SH.fd_home_id =" + homeid +
+                                " and GETDATE()> SH.fd_move_in_date" +
+                                " and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')" +
+                                " and AA.DateEntered > DATEADD(MM,-3,DATEADD(d, 1, EOMONTH(current_timestamp)))" +
+                                " )" +
+                                " and R.fd_id in (select distinct ResidentId from [tbl_AB_DietaryAssessment])" +
                                 " group by SSH.fd_resident_id,SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date";
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
@@ -522,9 +833,9 @@ namespace QolaMVC.DAL
             conn.ConnectionString = Constants.ConnectionString.PROD;
             conn.Open();
             SqlCommand cmd = new SqlCommand();
-            cmd.CommandText = " select ROW_NUMBER()over(order by max(AAA.fd_modified_on)) as number, SSH.fd_resident_id,SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date,max(AAA.fd_modified_on) as assessed_date" +
+            cmd.CommandText = " select ROW_NUMBER()over(order by max(AAA.DateEntered)) as number, SSH.fd_resident_id,SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date,max(AAA.DateEntered) as assessed_date" +
                                 " from tbl_Resident R" +
-                                " left join [tbl_Fall_Risk_Assessment] AAA on AAA.fd_resident_id = R.fd_id" +
+                                " left join [tbl_AB_FallRiskAssessment] AAA on AAA.ResidentId = R.fd_id" +
                                 " left join (select SH.fd_home_id,SH.fd_resident_id,SH.fd_occupancy,SH.fd_move_in_date,SH.fd_move_out_date,SH.fd_status,SH.fd_notes,SH.fd_modified_by,SH.fd_modified_on,SH.fd_pass_away_date,SH.fd_hospital,SH.fd_hospital_leaving,SH.fd_hospital_return,SH.fd_hospital_expected_return,S.fd_suite_no,S.fd_no_of_rooms,S.fd_floor from tbl_Suite_Handler SH join tbl_Suite S on SH.fd_suite_id = S.fd_id where GETDATE()> SH.fd_move_in_date and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')) as SSH" +
                                 " on R.fd_id = SSH.fd_resident_id" +
                                 " where SSH.fd_home_id =" + homeid +
@@ -533,14 +844,73 @@ namespace QolaMVC.DAL
                                 " and isNULL(SSH.fd_hospital,'')!='Y'" +
                                 " and R.fd_id not in" +
                                 " (" +
-                                " select distinct AA.fd_resident_id" +
-                                " from [tbl_Fall_Risk_Assessment] AA" +
-                                " join tbl_Suite_Handler SH on AA.fd_resident_id = SH.fd_resident_id" +
+                                " select distinct AA.ResidentId" +
+                                " from [tbl_AB_FallRiskAssessment] AA" +
+                                " join tbl_Suite_Handler SH on AA.ResidentId = SH.fd_resident_id" +
                                 " where SH.fd_home_id =" + homeid +
                                 " and GETDATE()> SH.fd_move_in_date" +
                                 " and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')" +
-                                " and AA.fd_modified_on > DATEADD(MM, -5, GETDATE())" +
+                                " and AA.DateEntered > DATEADD(MM, -5, GETDATE())" +
                                 " )" +
+                                " and R.fd_id in (select distinct ResidentId from [tbl_AB_FallRiskAssessment])" +
+                                " group by SSH.fd_resident_id,SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date";
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            if (rd.HasRows)
+                while (rd.Read())
+                {
+                    dynamic l_J = new System.Dynamic.ExpandoObject();
+                    l_J.number = rd[0];
+                    l_J.resident_id = rd[1];
+                    l_J.suite_no = rd[2];
+                    l_J.first_name = rd[3];
+                    l_J.last_name = rd[4];
+                    l_J.move_in_date = DateTime.Parse(rd[5].ToString()).ToString("yyyy-MM-dd");
+                    if (rd[6] == null || rd[6].ToString() == "")
+                    {
+                        l_J.access_date = "";
+                        l_J.due_date = l_J.move_in_date;
+                        l_J.due_days = Math.Floor((DateTime.Now - DateTime.Parse(rd[5].ToString())).TotalDays);
+                    }
+                    else
+                    {
+                        l_J.access_date = DateTime.Parse(rd[6].ToString()).ToString("yyyy-MM-dd");
+                        l_J.due_date = DateTime.Parse(rd[6].ToString()).AddMonths(5).ToString("yyyy-MM-dd");
+                        l_J.due_days = Math.Floor((DateTime.Now - DateTime.Parse(rd[6].ToString()).AddMonths(5)).TotalDays);
+                    }
+                    l_Json.Add(l_J);
+                }
+            conn.Close();
+            return l_Json;
+        }
+
+        public static List<dynamic> get_nextmonth_RFRA_list(int homeid)
+        {
+            List<dynamic> l_Json = new List<dynamic>();
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = " select ROW_NUMBER()over(order by max(AAA.DateEntered)) as number, SSH.fd_resident_id,SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date,max(AAA.DateEntered) as assessed_date" +
+                                " from tbl_Resident R" +
+                                " left join [tbl_AB_FallRiskAssessment] AAA on AAA.ResidentId = R.fd_id" +
+                                " left join (select SH.fd_home_id,SH.fd_resident_id,SH.fd_occupancy,SH.fd_move_in_date,SH.fd_move_out_date,SH.fd_status,SH.fd_notes,SH.fd_modified_by,SH.fd_modified_on,SH.fd_pass_away_date,SH.fd_hospital,SH.fd_hospital_leaving,SH.fd_hospital_return,SH.fd_hospital_expected_return,S.fd_suite_no,S.fd_no_of_rooms,S.fd_floor from tbl_Suite_Handler SH join tbl_Suite S on SH.fd_suite_id = S.fd_id where GETDATE()> SH.fd_move_in_date and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')) as SSH" +
+                                " on R.fd_id = SSH.fd_resident_id" +
+                                " where SSH.fd_home_id =" + homeid +
+                                " and GETDATE()> SSH.fd_move_in_date" +
+                                " and GETDATE()< isNULL(SSH.fd_move_out_date, '2200-09-01')" +
+                                " and isNULL(SSH.fd_hospital,'')!='Y'" +
+                                " and R.fd_id not in" +
+                                " (" +
+                                " select distinct AA.ResidentId" +
+                                " from [tbl_AB_FallRiskAssessment] AA" +
+                                " join tbl_Suite_Handler SH on AA.ResidentId = SH.fd_resident_id" +
+                                " where SH.fd_home_id =" + homeid +
+                                " and GETDATE()> SH.fd_move_in_date" +
+                                " and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')" +
+                                " and AA.DateEntered > DATEADD(MM,-5,DATEADD(d, 1, EOMONTH(current_timestamp)))" +
+                                " )" +
+                                " and R.fd_id in (select distinct ResidentId from [tbl_AB_FallRiskAssessment])" +
                                 " group by SSH.fd_resident_id,SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date";
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
@@ -579,26 +949,87 @@ namespace QolaMVC.DAL
             conn.ConnectionString = Constants.ConnectionString.PROD;
             conn.Open();
             SqlCommand cmd = new SqlCommand();
-            cmd.CommandText = " select ROW_NUMBER()over(order by max(AAA.fd_modified_on)) as number, SSH.fd_resident_id,SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date,max(AAA.fd_modified_on) as assessed_date" +
+            cmd.CommandText =   " select ROW_NUMBER()over(order by max(AAA.DateEntered)) as number, SSH.fd_resident_id,SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date,max(AAA.DateEntered) as assessed_date" +
                                 " from tbl_Resident R" +
-                                " left join [tbl_Plan_Of_Care] AAA on AAA.fd_resident_id = R.fd_id" +
-                                " left join (select SH.fd_home_id,SH.fd_resident_id,SH.fd_occupancy,SH.fd_move_in_date,SH.fd_move_out_date,SH.fd_status,SH.fd_notes,SH.fd_modified_by,SH.fd_modified_on,SH.fd_pass_away_date,SH.fd_hospital,SH.fd_hospital_leaving,SH.fd_hospital_return,SH.fd_hospital_expected_return,S.fd_suite_no,S.fd_no_of_rooms,S.fd_floor from tbl_Suite_Handler SH join tbl_Suite S on SH.fd_suite_id = S.fd_id where GETDATE()> SH.fd_move_in_date and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')) as SSH" +
+                                " left join [tbl_AB_CarePlan] AAA on AAA.ResidentId = R.fd_id" +
+                                " left join" +
+                                " (select SH.fd_home_id,SH.fd_resident_id,SH.fd_occupancy,SH.fd_move_in_date,SH.fd_move_out_date,SH.fd_status,SH.fd_notes,SH.fd_modified_by,SH.fd_modified_on,SH.fd_pass_away_date,SH.fd_hospital,SH.fd_hospital_leaving,SH.fd_hospital_return,SH.fd_hospital_expected_return,S.fd_suite_no,S.fd_no_of_rooms,S.fd_floor from tbl_Suite_Handler SH join tbl_Suite S on SH.fd_suite_id = S.fd_id where GETDATE()> SH.fd_move_in_date and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')) as SSH" +
                                 " on R.fd_id = SSH.fd_resident_id" +
                                 " where SSH.fd_home_id =" + homeid +
                                 " and GETDATE()> SSH.fd_move_in_date" +
                                 " and GETDATE()< isNULL(SSH.fd_move_out_date, '2200-09-01')" +
-                                " and isNULL(SSH.fd_hospital,'')!='Y'" +
+                                " and isNULL(SSH.fd_hospital,'')!= 'Y'" +
                                 " and R.fd_id not in" +
                                 " (" +
-                                " select distinct AA.fd_resident_id" +
-                                " from [tbl_Plan_Of_Care] AA" +
-                                " join tbl_Suite_Handler SH on AA.fd_resident_id = SH.fd_resident_id" +
+                                " select distinct AA.ResidentId" +
+                                " from[tbl_AB_CarePlan] AA" +
+                                " join tbl_Suite_Handler SH on AA.ResidentId = SH.fd_resident_id" +
                                 " where SH.fd_home_id =" + homeid +
                                 " and GETDATE()> SH.fd_move_in_date" +
                                 " and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')" +
-                                " and AA.fd_modified_on > DATEADD(MM, -5, GETDATE())" +
-                                " )" +
-                                " group by SSH.fd_resident_id,SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date";
+                                " and AA.DateEntered > DATEADD(MM, -5, GETDATE())" +
+                                " ) " +
+                                " and R.fd_id in (select distinct ResidentId from[tbl_AB_CarePlan])" +
+                                " group by SSH.fd_resident_id,SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date; ";
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            if (rd.HasRows)
+                while (rd.Read())
+                {
+                    dynamic l_J = new System.Dynamic.ExpandoObject();
+                    l_J.number = rd[0];
+                    l_J.resident_id = rd[1];
+                    l_J.suite_no = rd[2];
+                    l_J.first_name = rd[3];
+                    l_J.last_name = rd[4];
+                    l_J.move_in_date = DateTime.Parse(rd[5].ToString()).ToString("yyyy-MM-dd");
+                    if (rd[6] == null || rd[6].ToString() == "")
+                    {
+                        l_J.access_date = "";
+                        l_J.due_date = l_J.move_in_date;
+                        l_J.due_days = Math.Floor((DateTime.Now - DateTime.Parse(rd[5].ToString())).TotalDays);
+                    }
+                    else
+                    {
+                        l_J.access_date = DateTime.Parse(rd[6].ToString()).ToString("yyyy-MM-dd");
+                        l_J.due_date = DateTime.Parse(rd[6].ToString()).AddMonths(5).ToString("yyyy-MM-dd");
+                        l_J.due_days = Math.Floor((DateTime.Now - DateTime.Parse(rd[6].ToString()).AddMonths(5)).TotalDays);
+                    }
+                    l_Json.Add(l_J);
+                }
+            conn.Close();
+            return l_Json;
+        }
+
+        public static List<dynamic> get_nextmonth_RRCA_list(int homeid)
+        {
+            List<dynamic> l_Json = new List<dynamic>();
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText =   " select ROW_NUMBER()over(order by max(AAA.DateEntered)) as number, SSH.fd_resident_id,SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date,max(AAA.DateEntered) as assessed_date" +
+                                " from tbl_Resident R" +
+                                " left join [tbl_AB_CarePlan] AAA on AAA.ResidentId = R.fd_id" +
+                                " left join" +
+                                " (select SH.fd_home_id,SH.fd_resident_id,SH.fd_occupancy,SH.fd_move_in_date,SH.fd_move_out_date,SH.fd_status,SH.fd_notes,SH.fd_modified_by,SH.fd_modified_on,SH.fd_pass_away_date,SH.fd_hospital,SH.fd_hospital_leaving,SH.fd_hospital_return,SH.fd_hospital_expected_return,S.fd_suite_no,S.fd_no_of_rooms,S.fd_floor from tbl_Suite_Handler SH join tbl_Suite S on SH.fd_suite_id = S.fd_id where GETDATE()> SH.fd_move_in_date and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')) as SSH" +
+                                " on R.fd_id = SSH.fd_resident_id" +
+                                " where SSH.fd_home_id =" + homeid +
+                                " and GETDATE()> SSH.fd_move_in_date" +
+                                " and GETDATE()< isNULL(SSH.fd_move_out_date, '2200-09-01')" +
+                                " and isNULL(SSH.fd_hospital,'')!= 'Y'" +
+                                " and R.fd_id not in" +
+                                " (" +
+                                " select distinct AA.ResidentId" +
+                                " from[tbl_AB_CarePlan] AA" +
+                                " join tbl_Suite_Handler SH on AA.ResidentId = SH.fd_resident_id" +
+                                " where SH.fd_home_id =" + homeid +
+                                " and GETDATE()> SH.fd_move_in_date" +
+                                " and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')" +
+                                " and AA.DateEntered > DATEADD(MM,-5,DATEADD(d, 1, EOMONTH(current_timestamp)))" +
+                                " ) " +
+                                " and R.fd_id in (select distinct ResidentId from[tbl_AB_CarePlan])" +
+                                " group by SSH.fd_resident_id,SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date; ";
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
             if (rd.HasRows)
@@ -802,15 +1233,16 @@ namespace QolaMVC.DAL
             conn.ConnectionString = Constants.ConnectionString.PROD;
             conn.Open();
             SqlCommand cmd = new SqlCommand();
-            cmd.CommandText =   " select ROW_NUMBER()over(order by AA.fd_modified_on) as number,SSH.fd_resident_id,SSH.fd_suite_no,R.fd_first_name,R.fd_last_name, AA.fd_suggest_event,AA.fd_modified_on" +
-                                " from tbl_Initial_Activity_Assessment AA" +
-                                " left join tbl_Resident R on AA.fd_resident_id = R.fd_id" +
-                                " left join(select SH.fd_home_id, SH.fd_resident_id, SH.fd_occupancy, SH.fd_move_in_date, SH.fd_move_out_date, SH.fd_status, SH.fd_notes, SH.fd_modified_by, SH.fd_modified_on, SH.fd_pass_away_date, SH.fd_hospital, SH.fd_hospital_leaving, SH.fd_hospital_return, SH.fd_hospital_expected_return, S.fd_suite_no, S.fd_no_of_rooms, S.fd_floor from tbl_Suite_Handler SH join tbl_Suite S on SH.fd_suite_id= S.fd_id where GETDATE()> SH.fd_move_in_date and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')) as SSH on SSH.fd_resident_id = AA.fd_resident_id" +
+            cmd.CommandText =   " select ROW_NUMBER()over(order by AA.DateEntered) as number,SSH.fd_resident_id,SSH.fd_suite_no,R.fd_first_name,R.fd_last_name, AA.SuggestedActivity,AA.DateEntered" +
+                                " from[tbl_AB_ActivityAssessment] AA" +
+                                " left join tbl_Resident R on AA.ResidentId = R.fd_id" +
+                                " left join(select SH.fd_home_id, SH.fd_resident_id, SH.fd_occupancy, SH.fd_move_in_date, SH.fd_move_out_date, SH.fd_status, SH.fd_notes, SH.fd_modified_by, SH.fd_modified_on, SH.fd_pass_away_date, SH.fd_hospital, SH.fd_hospital_leaving, SH.fd_hospital_return, SH.fd_hospital_expected_return, S.fd_suite_no, S.fd_no_of_rooms, S.fd_floor from tbl_Suite_Handler SH join tbl_Suite S on SH.fd_suite_id= S.fd_id where GETDATE()> SH.fd_move_in_date and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')) as SSH" +
+                                " on SSH.fd_resident_id = AA.ResidentId" +
                                 " where GETDATE()> SSH.fd_move_in_date" +
                                 " and GETDATE()< isNULL(SSH.fd_move_out_date, '2200-09-01')" +
-                                " and AA.fd_modified_on > DATEADD(DD, -30, GETDATE())" +
-                                " and(AA.fd_suggest_event != '' or AA.fd_suggest_event != NULL)" +
-                                " and SSH.fd_home_id ="+ homeid;
+                                " and AA.DateEntered > DATEADD(DD, -30, GETDATE())" +
+                                " and(AA.SuggestedActivity != '' or AA.SuggestedActivity != NULL)" +
+                                " and SSH.fd_home_id = " + homeid;
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
             if (rd.HasRows)
@@ -829,6 +1261,44 @@ namespace QolaMVC.DAL
             conn.Close();
             return l_Json;
         }
+
+        public static List<dynamic> get_SA_nextmonth_list(int homeid)
+        {
+            List<dynamic> l_Json = new List<dynamic>();
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText =   " select ROW_NUMBER()over(order by AA.DateEntered) as number,SSH.fd_resident_id,SSH.fd_suite_no,R.fd_first_name,R.fd_last_name, AA.SuggestedActivity,AA.DateEntered" +
+                                " from[tbl_AB_ActivityAssessment] AA" +
+                                " left join tbl_Resident R on AA.ResidentId = R.fd_id" +
+                                " left join(select SH.fd_home_id, SH.fd_resident_id, SH.fd_occupancy, SH.fd_move_in_date, SH.fd_move_out_date, SH.fd_status, SH.fd_notes, SH.fd_modified_by, SH.fd_modified_on, SH.fd_pass_away_date, SH.fd_hospital, SH.fd_hospital_leaving, SH.fd_hospital_return, SH.fd_hospital_expected_return, S.fd_suite_no, S.fd_no_of_rooms, S.fd_floor from tbl_Suite_Handler SH join tbl_Suite S on SH.fd_suite_id= S.fd_id where GETDATE()> SH.fd_move_in_date and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')) as SSH" +
+                                " on SSH.fd_resident_id = AA.ResidentId" +
+                                " where GETDATE()> SSH.fd_move_in_date" +
+                                " and GETDATE()< isNULL(SSH.fd_move_out_date, '2200-09-01')" +
+                                " and AA.DateEntered > CAST(DATEADD(DAY,-DAY(GETDATE())+1, CAST(GETDATE() AS DATE)) AS datetime)" +
+                                " and(AA.SuggestedActivity != '' or AA.SuggestedActivity != NULL)" +
+                                " and SSH.fd_home_id = "+ homeid;
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            if (rd.HasRows)
+                while (rd.Read())
+                {
+                    dynamic l_J = new System.Dynamic.ExpandoObject();
+                    l_J.number = rd[0];
+                    l_J.resident_id = rd[1];
+                    l_J.suite_no = rd[2];
+                    l_J.first_name = rd[3];
+                    l_J.last_name = rd[4];
+                    l_J.suggested_event = rd[5];
+                    l_J.modified_date = DateTime.Parse(rd[6].ToString()).ToString("yyyy-MM-dd");
+                    l_Json.Add(l_J);
+                }
+            conn.Close();
+            return l_Json;
+        }
+
+
 
         public static dynamic get_to_do_list_number(int userid, int homeid)
         {
@@ -867,8 +1337,8 @@ namespace QolaMVC.DAL
 
 
                         l_J.RA = int.Parse(rd[6].ToString()) + int.Parse(rd[7].ToString()) + int.Parse(rd[8].ToString()) + int.Parse(rd[9].ToString());
-                        l_J.RDA = rd[6];
-                        l_J.RAA = rd[7];
+                        l_J.RAA = rd[6];
+                        l_J.RDA = rd[7];
                         l_J.RFRA = rd[8];
                         l_J.RRCA = rd[9];
 
@@ -882,6 +1352,50 @@ namespace QolaMVC.DAL
                         l_J.NR_inner = rd[15];
                         l_J.SAE_outer = rd[16];
                         l_J.SAE_inner = rd[16];
+                    }
+            }
+            return l_J;
+        }
+
+        public static dynamic get_to_do_list_number_nextmonth(int userid, int homeid)
+        {
+            dynamic l_J = new System.Dynamic.ExpandoObject();
+            using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
+            using (var cmdGARead = new SqlCommand("to_do_list_number_nextmonth_by_mike", conn)
+            {
+                CommandType = CommandType.StoredProcedure
+            })
+            {
+                conn.Open();
+                cmdGARead.Parameters.AddWithValue("@UserID", userid);
+                cmdGARead.Parameters.AddWithValue("@homeID", homeid);
+                cmdGARead.ExecuteNonQuery();
+
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = "SELECT * FROM [dbo].[mike_to_do_list_number_nextmonth]";
+                cmd.Connection = conn;
+                SqlDataReader rd = cmd.ExecuteReader();
+                if (rd.HasRows)
+                    while (rd.Read())
+                    {
+                        l_J.HO_2_outer = rd[0];
+                        l_J.HO_2_inner = rd[0];
+
+                        l_J.IA_2 = int.Parse(rd[1].ToString()) + int.Parse(rd[2].ToString()) + int.Parse(rd[3].ToString()) + int.Parse(rd[4].ToString());
+                        l_J.IAA_2 = rd[1];
+                        l_J.IDA_2 = rd[2];
+                        l_J.IFRA_2 = rd[3];
+                        l_J.IRCA_2 = rd[4];
+
+
+                        l_J.RA = int.Parse(rd[5].ToString()) + int.Parse(rd[6].ToString()) + int.Parse(rd[7].ToString()) + int.Parse(rd[8].ToString());
+                        l_J.RAA = rd[5];
+                        l_J.RDA = rd[6];
+                        l_J.RFRA = rd[7];
+                        l_J.RRCA = rd[8];
+
+                        l_J.SAE_2_outer = rd[9];
+                        l_J.SAE_2_inner = rd[9];
                     }
             }
             return l_J;

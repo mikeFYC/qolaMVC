@@ -2,8 +2,8 @@
 @model QolaMVC.Models.ResidentModel
 @RenderPage("~/Views/Shared/_Header.cshtml")
 @RenderPage("~/Views/Shared/_SideBar.cshtml")
-
 <style>
+
     .form-tabs .nav-link {
         font-size: 1rem;
     }
@@ -12,11 +12,16 @@
         width: 900px !important;
         max-width: 1000px !important;
     }
+
     #EDIT_BUTTON {
-        background-color: #0275d8;
+        background-color: #015093;
         color: white;
         padding: 0.6vw 1vw 0.5vw 1vw;
         border-radius: 0.3vw;
+    }
+
+    .nav-link.active {
+        background-color: #015093 !important;
     }
 </style>
 <script>
@@ -125,13 +130,9 @@
 </script>
 
 
-
-
 <!-- START PAGE-CONTAINER -->
 <div class="page-container">
-
     @RenderPage("~/Views/Shared/_NavBar.cshtml")
-
     <!-- START PAGE CONTENT WRAPPER -->
     <div class="page-content-wrapper">
         <!-- START PAGE CONTENT -->
@@ -149,13 +150,10 @@
                 </div>
             </div>
             <!-- END JUMBOTRON -->
-
             <div style="height: 60px;"></div>
-
             <!-- START CONTAINER FLUID -->
             <div class="container-fluid container-fixed-lg">
                 <!-- BEGIN PlACE PAGE CONTENT HERE -->
-
 
                 <div class="card">
                     <div class="card-block">
@@ -179,12 +177,11 @@
                                                 </button>
                                             }
                                         }
-
                                     </div>
                                 </div>
                                 <div id="editform" style="display:none">
                                     <br />
-                                    <div class="row" style="min-width:70vw">
+                                    <div class="row" style="min-width:75vw">
                                         @(new HtmlString(TempData["table"].ToString()))
                                     </div>
                                     <br />
@@ -205,20 +202,18 @@
                                     </button>
                                     <br>
                                 </div>
-
                             </div>
-
 
                             <div class="col-md-9_changebymike" id="suitehandlerform">
                                 <div class="form-tabs mt-4">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <h6><b>Modifications or Transfer</b> </h6>
+                                            <h4 style="font-weight:bolder;">Modifications or Transfer</h4>
                                         </div>
                                     </div>
                                     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                         <li class="nav-item">
-                                            <a class="nav-link" id="ApplicationSuite" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true" onclick="option_button_click(this.id)">Application Suite</a>
+                                            <a class="nav-link" id="ApplicationSuite" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true" onclick="option_button_click(this.id)">Additional Suite</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" id="ChangeOccupancy" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false" onclick="option_button_click(this.id)">Change Occupancy</a>
@@ -230,8 +225,7 @@
                                             <a class="nav-link" id="TransfertoASCHOME" data-toggle="pill" href="#pills-other" role="tab" aria-controls="pills-contact" aria-selected="false" onclick="option_button_click(this.id)">Transfer to ASC HOME</a>
                                         </li>
                                     </ul>
-                                    <h6><b>Move Out</b> </h6>
-
+                                    <h4 style="font-weight:bolder;">Move Out</h4>
                                     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                         <li class="nav-item">
                                             <a class="nav-link" id="EndofLease" data-toggle="pill" href="#pills-home2" role="tab" aria-controls="pills-home" aria-selected="true" onclick="option_button_click(this.id)">End of Lease</a>
@@ -245,58 +239,50 @@
                                         <li class="nav-item">
                                             <a class="nav-link" id="OtherRetirement" data-toggle="pill" href="#pills-other2" role="tab" aria-controls="pills-contact" aria-selected="false" onclick="option_button_click(this.id)">Other Retirement</a>
                                         </li>
-
                                         <li class="nav-item">
                                             <a class="nav-link" id="PassedAway" data-toggle="pill" href="#pills-passed" role="tab" aria-controls="pills1" aria-selected="false" onclick="option_button_click(this.id)">Passed Away</a>
                                         </li>
-
                                         <li class="nav-item">
                                             <a class="nav-link" id="Other" data-toggle="pill" href="#pills-other3" role="tab" aria-controls="pills2" aria-selected="false" onclick="option_button_click(this.id)">Other</a>
                                         </li>
                                     </ul>
-
-                                    <h6><b>Hospital</b> </h6>
-
+                                    <h4 style="font-weight:bolder;">Hospital</h4>
                                     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                         <li class="nav-item">
                                             <a class="nav-link" id="Hospitalization" data-toggle="pill" href="#pills-home2" role="tab" aria-controls="pills-home" aria-selected="true" onclick="option_button_click_hos(this.id)">Hospitalization</a>
                                         </li>
                                     </ul>
 
-
                                     <div class="tab-content" id="pills-tabContent">
-
-                                        <div class="row" style="min-width:70vw">
+                                        <div class="row" style="min-width:75vw">
                                             @(new HtmlString(TempData["table"].ToString()))
                                         </div>
-
                                         @*<div class="row">
-                                            <table class="table table-bordered" style="margin-left:1vw">
-                                                <thead class="bg-primary">
-                                                    <tr>
-                                                        <th class="text-white text-center">Home</th>
-                                                        <th class="text-white text-center">Suite No</th>
-                                                        <th class="text-white text-center">Move In Date</th>
-                                                        <th class="text-white text-center">Move Out Date</th>
-                                                        <th class="text-white text-center">Occupancy</th>
-                                                        <th class="text-white text-center">Status</th>
-                                                        <th class="text-white text-center">Notes</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>@Model.Home.Name</td>
-                                                        <td>@Model.SuiteNo</td>
-                                                        <td>@Model.MoveInDate.ToString("MMMM dd, yyyy")</td>
-                                                        <td>@Model.MoveOutDate.ToString("MMMM dd, yyyy")</td>
-                                                        <td>@Model.Occupancy</td>
-                                                        <td>@Model.Suite_Handler_Status</td>
-                                                        <td>@Model.Suite_Handler_Notes</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>*@
-
+                                                <table class="table table-bordered" style="margin-left:1vw">
+                                                    <thead class="bg-primary">
+                                                        <tr>
+                                                            <th class="text-white text-center">Home</th>
+                                                            <th class="text-white text-center">Suite No</th>
+                                                            <th class="text-white text-center">Move In Date</th>
+                                                            <th class="text-white text-center">Move Out Date</th>
+                                                            <th class="text-white text-center">Occupancy</th>
+                                                            <th class="text-white text-center">Status</th>
+                                                            <th class="text-white text-center">Notes</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>@Model.Home.Name</td>
+                                                            <td>@Model.SuiteNo</td>
+                                                            <td>@Model.MoveInDate.ToString("MMMM dd, yyyy")</td>
+                                                            <td>@Model.MoveOutDate.ToString("MMMM dd, yyyy")</td>
+                                                            <td>@Model.Occupancy</td>
+                                                            <td>@Model.Suite_Handler_Status</td>
+                                                            <td>@Model.Suite_Handler_Notes</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>*@
 
                                         <div class="tab-pane fade" id="pills-ApplicationSuite" role="tabpanel" aria-labelledby="pills-home-tab">
                                             <br>
@@ -321,7 +307,6 @@
                                                         </div>
                                                     </div>
 
-
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group row">
@@ -344,7 +329,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
@@ -374,7 +358,6 @@
                                                             <p style="font-size: 9px; float: left">(MM/DD/YYYY)</p>
                                                         </div>
                                                     </div>
-
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group row">
@@ -397,7 +380,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
@@ -412,7 +394,6 @@
                                                     </button>
                                                 </div>
                                             </div>
-
 
                                         </div>
                                         <div class="tab-pane fade" id="pills-InternalTransfer" role="tabpanel" aria-labelledby="pills-contact-tab">
@@ -438,7 +419,6 @@
                                                         </div>
                                                     </div>
 
-
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group row">
@@ -461,7 +441,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
@@ -483,7 +462,6 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group row">
-
                                                         <label for="staticEmail" class="col-md-4 col-form-label">Home</label>
                                                         <select name="ctl00$QOLAContent$ddlHome" id="QOLAContent_ddlHome" class="combo_clr" style="height:27px;" onchange="selection_onchange_empty_suite()">
                                                             <option value="">--Home--</option>
@@ -518,9 +496,7 @@
                                                             <option value="22">485 Boulevard De La Gappe</option>
                                                             <option value="23">495 Boulevard De La Gappe</option>
                                                             <option value="19">Chateau Symmes Retirement Residence</option>
-
                                                         </select>
-
                                                         <label for="staticEmail" class="col-md-4 col-form-label">Transfer Date</label>
                                                         <div class="col-md-5">
                                                             <input type="date" class="form-control" id="dateinputTransfertoASCHOME" onchange="selection_onchange_empty_suite()">
@@ -537,7 +513,6 @@
                                                             </select>
                                                         </div>
                                                     </div>
-
 
                                                 </div>
                                                 <div class="col-md-6">
@@ -561,7 +536,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
@@ -600,7 +574,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
@@ -639,7 +612,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
@@ -654,7 +626,6 @@
                                                     </button>
                                                 </div>
                                             </div>
-
 
                                         </div>
                                         <div class="tab-pane fade" id="pills-LTC" role="tabpanel" aria-labelledby="pills-contact-tab">
@@ -680,7 +651,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
@@ -719,7 +689,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
@@ -761,7 +730,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                                 <div class="col-md-12">
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-md-1 col-form-label">Notes</label>
@@ -770,7 +738,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
@@ -809,7 +776,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
@@ -862,7 +828,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                                 <div class="col-md-12">
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-md-1 col-form-label">Notes</label>
@@ -871,7 +836,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
@@ -887,7 +851,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                     <div class="tab-content" id="pills-tabContent">
                                     </div>
@@ -897,7 +860,6 @@
                     </div>
                 </div>
 
-
                 <!-- END PLACE PAGE CONTENT HERE -->
             </div>
             <!-- END CONTAINER FLUID -->
@@ -906,11 +868,7 @@
         <input type="hidden" id="jsNote" value="@TempData["hospital"]" />
 
 
-
-
-
         @RenderPage("~/Views/Shared/_Footer.cshtml")
-
 
         <script>
             var a = $("#jsNote").val();
@@ -925,5 +883,4 @@
                 document.getElementById("pills-Hospitalization").className = "tab-pane fade show active";
             }
         </script>
-
 

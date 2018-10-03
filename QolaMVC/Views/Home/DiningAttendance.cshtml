@@ -1,8 +1,8 @@
 ﻿@model QolaMVC.Models.Dining_Attendance_simple
 @RenderPage("~/Views/Shared/_Header.cshtml")
 @RenderPage("~/Views/Shared/_SideBar.cshtml")
-
 <style>
+
     .form-tabs .nav-link {
         font-size: 1rem;
     }
@@ -36,8 +36,8 @@
         margin-left: 0;
     }
 </style>
-
 <style>
+
     #contactForm {
         display: none;
         border: 6px solid salmon;
@@ -84,31 +84,20 @@
     a.active {
         background-color: #015093 !important;
     }
-
 </style>
+@*<script>
+        function tempAlert(msg, duration) {
+            var el = document.createElement("div");
+            el.setAttribute("style", "position:absolute;top:2%;left:35%;background-color:lightgrey;z-index:9999;color:black;padding:3vw 5vw 3vw 5vw;border-radius:1vw;font-size:2vw;font-weight:bold;border:black solid;");
+            el.innerHTML = msg;
+            setTimeout(function () {
+                el.parentNode.removeChild(el);
+            }, duration);
+            document.body.appendChild(el);
+        }
 
+    </script>*@
 <script>
-    //function day_click() {
-    //    if (document.getElementById("pills-day").className != "tab-pane fade show active") {
-    //        document.getElementById("pills-day").className = "tab-pane fade show active";
-    //        document.getElementById("pills-week").className = "tab-pane fade";
-    //        document.getElementById("pills-month").className = "tab-pane fade";
-    //    }
-    //}
-    //function week_click() {
-    //    if (document.getElementById("pills-week").className != "tab-pane fade show active") {
-    //        document.getElementById("pills-day").className = "tab-pane fade";
-    //        document.getElementById("pills-week").className = "tab-pane fade show active";
-    //        document.getElementById("pills-month").className = "tab-pane fade";
-    //    }
-    //}
-    //function month_click() {
-    //    if (document.getElementById("pills-month").className != "tab-pane fade show active") {
-    //        document.getElementById("pills-day").className = "tab-pane fade";
-    //        document.getElementById("pills-week").className = "tab-pane fade";
-    //        document.getElementById("pills-month").className = "tab-pane fade show active";
-    //    }
-    //}
 
     function list_select_all() {
         var a = $("div[id=pills-profile1] tr td div input");
@@ -136,11 +125,14 @@
         }
         $.post("/Home/saveButton_Dining", { arr: savestring, whichmeal: mealselect, datesel: dateselect }, function (data) {
             if (data == 1) {
-                alert("Saved Successfully");
-                window.location.reload();
+                //alert("Saved Successfully");
+                //window.location.reload();
+                tempAlert("Saved Successfully", 2000);
+                setTimeout(function () { window.location.reload(); }, 2000);
             }
             else
-                alert("Saved failed");
+                //alert("Saved failed");
+                tempAlert("Saved failed", 2000);
         });
     }
     function floor_savebutton() {
@@ -158,11 +150,14 @@
         }
         $.post("/Home/saveButton_Dining", { arr: savestring, whichmeal: mealselect, datesel: dateselect }, function (data) {
             if (data == 1) {
-                alert("Saved Successfully");
-                window.location.reload();
+                //alert("Saved Successfully");
+                //window.location.reload();
+                tempAlert("Saved Successfully", 2000);
+                setTimeout(function () { window.location.reload(); }, 2000);
             }
             else
-                alert("Saved failed");
+                //alert("Saved failed");
+                tempAlert("Saved failed", 2000);
         });
     }
     function floor_clearbutton() {
@@ -177,7 +172,6 @@
             a[c].checked = false;
         }
     }
-
 
     function open_form1() {
         var node_tbody = document.getElementById("show_list")
@@ -270,7 +264,10 @@
         var a = $('#searchresidents3');
         var residentid = a[0].name;
         if (residentid == "" || residentid == undefined) {
-            alert("No Resident was Choosen");
+            //alert("No Resident was Choosen");
+            tempAlert("No Resident was Choosen", 2000);
+
+
             return;
         }
         var namesub = $('input[name=' + residentid + ']')
@@ -282,13 +279,16 @@
             }
         }
         if (text == undefined) {
-            alert("No Option was Choosen");
+            //alert("No Option was Choosen");
+            tempAlert("No Option was Choosen", 2000);
+
             return;
         }
         var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
         $.get("/Home/disable_hospital", { datesel: dateselect }, function (data) {
             if (data.toString().includes(residentid)) {
-                alert("Resident in the Hospital");
+                //alert("Resident in the Hospital");
+                tempAlert("Resident in the Hospital", 2000);
             }
             else {
                 var view = $("#show_list");
@@ -299,7 +299,8 @@
                     }
                 }
                 if (residentid == '-9') {
-                    alert("Resident already exist in the List");
+                    //alert("Resident already exist in the List");
+                    tempAlert("Resident already exist in the List", 2000);
                 }
                 else {
                     view.append("<tr name='" + residentid + "'><td>" + name + "<\/td><td>" + text +
@@ -326,7 +327,7 @@
             choice[ind].checked = false;
         }
     }
-    
+
     //function View_List_clear() {
     //    var node_tbody = document.getElementById("show_list")
     //    while (node_tbody.hasChildNodes())
@@ -349,11 +350,16 @@
         }
         $.post("/Home/saveButton_Dining", { arr: savestring, whichmeal: mealselect, datesel: dateselect }, function (data) {
             if (data == 1) {
-                alert("Saved Successfully");
-                window.location.reload();
+                //alert("Saved Successfully");
+                //window.location.reload();
+                tempAlert("Saved Successfully", 2000);
+                setTimeout(function () { window.location.reload(); }, 2000);
+
             }
             else
-                alert("Saved failed");
+                //alert("Saved failed");
+                tempAlert("Saved failed", 2000);
+
         });
 
     }
@@ -414,11 +420,15 @@
         var id = o.parentNode.parentNode.getAttribute("uid");
         var idint = parseInt(id);
         var textnote = document.getElementById("formtextarea").value;
-        $.get("/Home/click_progress_note", { residentid: idint, datesel: dateselect,note: textnote }, function (data) {
-            if (data == 1)
-                alert("Saved Successfully");
-            else
-                alert("Saved Failed");
+        $.get("/Home/click_progress_note", { residentid: idint, datesel: dateselect, note: textnote }, function (data) {
+            if (data == 1) {
+                //alert("Saved Successfully");
+                tempAlert("Saved Successfully", 2000);
+            }
+            else {
+                //alert("Saved Failed");
+                tempAlert("Saved failed", 2000);
+            }
         });
         document.getElementById('formtextarea').value = '';
         document.getElementById('contactForm').style.display = "none";
@@ -467,13 +477,9 @@
 
 
 </script>
-
 <!-- START PAGE-CONTAINER -->
 <div class="page-container">
-
     @RenderPage("~/Views/Shared/_NavBar.cshtml")
-
-
 
 
     <!-- START PAGE CONTENT WRAPPER -->
@@ -493,7 +499,6 @@
                 </div>
             </div>
             <div style="height: 60px;"></div>
-
             <div class="container-fluid container-fixed-lg" id="main_page">
                 <!-- <div class="inner"> -->
                 <div class="card">
@@ -509,17 +514,13 @@
                                     <li class="nav-item">
                                         <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false" onclick="month_click()">Month</a>
                                     </li>*@
-
                                 <li class="Prevbtn" style="margin-left:20vw;"><a href="#" onclick="previousday()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
                                 <li class="clear_bg"><label id="lblCalendarMsg" style="font-weight:bolder;font-size:1.5vw;margin-top:0.7vw">@TempData["datechoose"].ToString()</label></li>
                                 <li class="Nextbtn"><a href="#" onclick="nextday()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
-
                             </ul>
                             <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade show active" id="pills-day" role="tabpanel" aria-labelledby="pills-home-tab">
-
                                     <div id="select_meal_index" class=""></div>
-
                                     <table class="table table-bordered">
                                         <thead class="bg-primary">
                                             <tr>
@@ -545,18 +546,16 @@
                                                     Breakfast
                                                 </td>
                                                 <td>
-
                                                     <a data-toggle="modal" data-target="#attendent_form" onclick="open_form1()">
                                                         <i class="fa fa-file-text-o"></i>
                                                     </a>
                                                 </td>
                                                 <td>
-                                                    @(((string[])TempData["number_attendance_array"])[1])
-
+                                                    @(((string[])TempData["number_attendance_array"])[0])
 
                                                 </td>
                                                 <td>
-                                                    @(((string[])TempData["number_attendance_array"])[0])
+                                                    @(((string[])TempData["number_attendance_array"])[1])
                                                 </td>
                                             </tr>
                                             <tr>
@@ -570,13 +569,12 @@
                                                     <a data-toggle="modal" data-target="#attendent_form" onclick="open_form2()">
                                                         <i class="fa fa-file-text-o"></i>
                                                     </a>
-
-                                                </td>
-                                                <td>
-                                                    @(((string[])TempData["number_attendance_array"])[3])
                                                 </td>
                                                 <td>
                                                     @(((string[])TempData["number_attendance_array"])[2])
+                                                </td>
+                                                <td>
+                                                    @(((string[])TempData["number_attendance_array"])[3])
                                                 </td>
                                             </tr>
                                             <tr>
@@ -587,24 +585,20 @@
                                                     Dinner
                                                 </td>
                                                 <td>
-
                                                     <a data-toggle="modal" data-target="#attendent_form" onclick="open_form3()">
                                                         <i class="fa fa-file-text-o"></i>
                                                     </a>
                                                 </td>
                                                 <td>
-                                                    @(((string[])TempData["number_attendance_array"])[5])
+                                                    @(((string[])TempData["number_attendance_array"])[4])
                                                 </td>
                                                 <td>
-                                                    @(((string[])TempData["number_attendance_array"])[4])
+                                                    @(((string[])TempData["number_attendance_array"])[5])
                                                 </td>
                                             </tr>
 
-
-
                                         </tbody>
                                     </table>
-
                                 </div>
                                 @*<div class="tab-pane fade" id="pills-week" role="tabpanel" aria-labelledby="pills-profile-tab">
 
@@ -714,7 +708,6 @@
                                             </tbody>
                                         </table>
                                     </div>*@
-
                             </div>
                         </div>
                     </div>
@@ -723,18 +716,14 @@
             </div>
         </div>
         <!-- END JUMBOTRON -->
-
         <div style="height: 60px;"></div>
-
         <!-- START CONTAINER FLUID -->
         <!-- END CONTAINER FLUID -->
     </div>
     <!-- END PAGE CONTENT -->
     <!-- New Resident Modal -->
     <div class="modal" id="attendent_form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-
         <div id="contactForm" class="modal" style="display:none">
-
             <h3>Add Progress Notes</h3>
             <br>
             <form action="#">
@@ -744,8 +733,6 @@
                 <input class="formBtn" type="button" value="Close" onclick="note_close_click()" />
             </form>
         </div>
-
-
 
         <div class="modal-xlg" role="document" id="attendent_form_second_layer">
             <div class="modal-content" id="attendent_form_third_layer">
@@ -775,41 +762,32 @@
                                 <a href="" style="font-size: 14px">
                                     <b>Legend</b>: &nbsp;&nbsp;<b>T</b>-Taken &nbsp;&nbsp;<b>R</b>-Refused &nbsp;&nbsp;<b>H</b>-Hospital &nbsp;&nbsp;<b>W</b>-Waiver &nbsp;&nbsp;<b>A</b>-Away &nbsp;&nbsp;<b>TC</b>-Tray Complimentary
                                 </a>
-
                             </div>
                         </div>
 
 
 
-
-
-
                         <div class="tab-content" id="pills-tabContent">
                             <div class="tab-pane fade show active" id="pills-home1" role="tabpanel" aria-labelledby="pills-home-tab">
-
                                 <div class="row">
                                     <div class="col-md-3">
                                         <div class="form-group row">
-                                            <label class="col-md-12 col-form-label" style="margin-left:7vw">Resident Name / Suite # :</label>
-                                            <div class="col-md-12" style="margin-left:7vw">
+                                            <label class="col-md-12 col-form-label" style="margin-left:5vw">Resident Name / Suite # :</label>
+                                            <div class="col-md-12" style="margin-left:5vw">
                                                 <input type="text" class="form-control" id="searchresidents3" onchange="change_searchresidents3()">
                                             </div>
                                         </div>
-
-                                        <div class="searchBox p-1" id="searchBoxfor3" style="margin-left:10vw">
+                                        <div class="searchBox p-1" id="searchBoxfor3" style="margin-left:5.5vw">
                                             <div class="list-group searchboxresult2">
                                             </div>
                                         </div>
-
                                     </div>
                                     <div class="col-md-7">
 
-
                                         <div class="form-group">
-
                                             <br><br>
                                             <div class="row">
-                                                <div class="col-md-12 pads" style="margin-left:7vw">
+                                                <div class="col-md-12 pads" style="margin-left:4vw">
                                                     <div class="form-check form-check-inline movesp">
                                                         <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
                                                         <label class="form-check-label" name="viewlistchoose">Taken</label>
@@ -834,40 +812,36 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-2" style="display:inline-block;">
                                         <br>
-                                        <button class="btn btn-lg btn-danger" onclick="View_List_add()">ADD</button>
-                                    </div>
-                                    <div class="col-md-12 text-center">
-                                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="View_List_save()" style="margin-bottom:1vw;margin-left:-2vw;">SAVE</button>
-                                        <br>
+                                        <button class="btn btn-lg btn-danger" onclick="View_List_add()" style="margin-left:-2vw;">ADD</button>
+                                        <button type="button" class="btn btn-lg btn-primary" data-dismiss="modal" onclick="View_List_save()">SAVE</button>
                                     </div>
 
-                                    
+                                    @*<div class="col-md-12 text-center">
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="View_List_save()" style="margin-bottom:1vw;margin-left:-2vw;">SAVE</button>
+                                            <br>
+                                        </div>*@
+
                                     <div class="" style="border:1px solid #000;margin-left:15vw">
-
                                         <table class="attend" style="min-width:50vw">
                                             <tbody id="show_list"></tbody>
                                         </table>
                                     </div>
 
 
-
-
-
                                     <div class="col-md-12 text-center">
                                         <br><br><br><br><br><br>
-                                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="View_List_save()">SAVE</button>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="View_List_save()" style="margin-left:-2vw;">SAVE</button>
                                         @*<button type="button" class="btn btn-secondary" onclick="View_List_clear()">CLEAR</button>*@
                                     </div>
                                 </div>
-
                             </div>
                             <div class="tab-pane fade" id="pills-profile1" role="tabpanel" aria-labelledby="pills-profile-tab">
                                 <div class="row">
                                     @*<div class="col-md-12">
-                                        <h6>Resident List   <a href="#" onclick="list_select_all()">Select All</a></h6>
-                                    </div>*@
+                                            <h6>Resident List   <a href="#" onclick="list_select_all()">Select All</a></h6>
+                                        </div>*@
                                     <div class="col-md-12 text-center">
                                         <br>
                                         <button type="button" class="btn btn-primary" style="margin-bottom:1vw;margin-left:3vw;" data-dismiss="modal" onclick="list_savebutton()">SAVE</button>
@@ -932,7 +906,6 @@
                                             </tbody>
                                         </table>
                                     </div>
-
                                     <div class="col-md-6" style="border: 1px solid #000">
                                         <table class="attend">
                                             <tbody>
@@ -989,7 +962,6 @@
                                         </table>
                                     </div>
 
-
                                     <div class="col-md-12 text-center">
                                         <br><br><br><br><br><br>
                                         <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="list_savebutton()">SAVE</button>
@@ -1000,15 +972,14 @@
                             <div class="tab-pane fade" id="pills-contact1" role="tabpanel" aria-labelledby="pills-contact-tab">
                                 <div class="row">
                                     @*<div class="col-md-12">
-                                        <h6>Resident List   <a href="#" onclick="floor_select_all()">Select All</a></h6>
-                                    </div>*@
+                                            <h6>Resident List   <a href="#" onclick="floor_select_all()">Select All</a></h6>
+                                        </div>*@
                                     <div class="col-md-12 text-center">
                                         <br>
                                         <button type="button" class="btn btn-primary" style="margin-bottom:1vw;margin-left:3vw;" data-dismiss="modal" onclick="floor_savebutton()">SAVE</button>
                                         @*<button type="button" class="btn btn-secondary" style="margin-bottom:1vw" onclick="floor_clearbutton()">CLEAR</button>*@
                                         <button type="button" class="btn btn-primary" id="PrintID2" style="margin-bottom:1vw;float:right" onclick="Print_floor()">Print</button>
                                     </div>
-
                                     @{
                                         int floor = 0;
                                         foreach (var a in Model.LIST_RESIDENT)
@@ -1027,7 +998,6 @@
                                                         <tr>
                                                             <th colspan="7" height=50vw>@b st Floor</th>
                                                         </tr>
-
                                                         @foreach (var a in Model.LIST_RESIDENT)
                                                         {
                                                             if (a.No_of_floor == b)
@@ -1084,7 +1054,6 @@
                                         }
                                     }
 
-
                                     <div class="col-md-12 text-center">
                                         <br><br><br><br><br><br>
                                         <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="floor_savebutton()">SAVE</button>
@@ -1093,18 +1062,13 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                     <div class="modal-footer text-center">
-
 
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     @RenderPage("~/Views/Shared/_Footer.cshtml")
-
-
 

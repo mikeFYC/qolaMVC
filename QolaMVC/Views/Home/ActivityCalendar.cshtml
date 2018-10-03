@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@*@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")*@
+<!DOCTYPE html>
 <html lang='en'>
 
 <head>
@@ -14,6 +16,7 @@
     <div class="page-container">
 
         @*@RenderPage("~/Views/Shared/_NavBar.cshtml")*@
+
         <!-- START PAGE CONTENT WRAPPER -->
         <div class="page-content-wrapper">
             <!-- START PAGE CONTENT -->
@@ -45,29 +48,29 @@
                     <script type='text/javascript'>
                         var l_Categories = {};
 
-                        $.ajax({  
-                            type: 'get',  
-                            url: '@Url.Action("getCategoriesForCalendar")',  
-                            dataType: 'json',  
+                        $.ajax({
+                            type: 'get',
+                            url: '@Url.Action("getCategoriesForCalendar")',
+                            dataType: 'json',
                             success: function (data) {
                                 //l_Categories = data;
                               //console.log(data);
-                                
+
                                 for (var i = 0; i < data.length; i++ ) {
                                     l_Categories[data[i].Id] = data[i].Name;
                                 }
                                 console.log(l_Categories);
                                 initCalendar();
-                            },  
-                            error: function (ex) {  
-                                var r = jQuery.parseJSON(response.responseText);  
-                                alert("Message: " + r.Message);  
-                                alert("StackTrace: " + r.StackTrace);  
-                                alert("ExceptionType: " + r.ExceptionType);  
-                            }  
-                        });  
+                            },
+                            error: function (ex) {
+                                var r = jQuery.parseJSON(response.responseText);
+                                alert("Message: " + r.Message);
+                                alert("StackTrace: " + r.StackTrace);
+                                alert("ExceptionType: " + r.ExceptionType);
+                            }
+                        });
 
-                      
+
 
                         function initCalendar() {
                              $('#calendar').CalendarPlugin({
@@ -80,7 +83,7 @@
                                         label: 'Activity Display Title',
                                         placeholder: 'E.g. Marathon'
                                     }
-                                    
+
                                 ],
                                 [
                                     {
@@ -88,7 +91,7 @@
                                         name: 'activity',
                                         label: 'Activity *',
                                         placeholder: 'Select',
-                                        options: l_Categories 
+                                        options: l_Categories
                                     }
                                 ],
                                 [
