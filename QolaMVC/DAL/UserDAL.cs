@@ -211,8 +211,8 @@ namespace QolaMVC.DAL
                         user.UserType = Convert.ToInt32(homesReceive.Tables[0].Rows[index]["fd_user_type"]);
                         user.UserName = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_user_name"]);
                         user.Password = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_user_name"]);
-                        user.Address = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_address"]);
-                        user.City = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_city"]);
+                        user.Address = Convert.IsDBNull(homesReceive.Tables[0].Rows[index]["fd_address"]) ? "" : Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_address"]);
+                        user.City = Convert.IsDBNull(homesReceive.Tables[0].Rows[index]["fd_city"]) ? "" : Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_city"]);
                         user.PostalCode = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_postal_code"]);
                         user.Province = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_province"]);
                         user.Email = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_email"]);
@@ -230,7 +230,7 @@ namespace QolaMVC.DAL
                         }
                         user.UserTypeName = Convert.ToString(homesReceive.Tables[0].Rows[index]["UserTypeName"]);
                         user.HomeName = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_home_name"]);
-                        user.Country = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_country"]);
+                        user.Country = Convert.IsDBNull(homesReceive.Tables[0].Rows[index]["fd_country"]) ? "" : Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_country"]);
                         users.Add(user);
                     }
                 }

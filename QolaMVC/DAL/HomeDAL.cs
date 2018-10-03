@@ -1203,5 +1203,64 @@ namespace QolaMVC.DAL
                 return returnstring;
             }
         }
+
+        public static Collection<ActivityEventModel> GetBirthdayCalendar(int p_HomeId)
+        {
+            string exception = string.Empty;
+            Collection<ActivityEventModel> l_Events = new Collection<ActivityEventModel>();
+            ActivityEventModel l_Event;
+            //UserModel l_User;
+            //ResidentModel l_Resident;
+            //SuiteModel l_Suite;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_Birthday_Calendar", l_Conn);
+                l_Cmd.Parameters.AddWithValue("@HomeId", p_HomeId);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                DataSet homeReceive = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(homeReceive);
+
+                if ((homeReceive != null) && (homeReceive.Tables.Count > 0) && (homeReceive.Tables[0].Rows.Count > 0))
+                {
+                    foreach (DataRow homeTypeRow in homeReceive.Tables[0].Rows)
+                    {
+                        l_Event = new ActivityEventModel();
+
+                        try
+                        {
+                            l_Event.ProgramId = Convert.ToInt32(homeTypeRow["Id"]);
+                            l_Event.ActivityId = Convert.ToInt32(homeTypeRow["ActivityId"]);
+                            l_Event.ProgramName = Convert.ToString(homeTypeRow["EventTitle"]);
+                            l_Event.ProgramStartDate = Convert.ToDateTime(homeTypeRow["StartDate"]);
+                            l_Event.ProgramEndDate = Convert.ToDateTime(homeTypeRow["EndDate"]);
+                            l_Event.ProgramStartTime = Convert.ToString(homeTypeRow["StartTime"]);
+                            l_Event.ProgramEndTime = Convert.ToString(homeTypeRow["EndTime"]);
+                            l_Events.Add(l_Event);
+
+                        }
+                        catch (Exception)
+                        {
+
+                        }
+                    }
+                }
+                return l_Events;
+            }
+            catch (Exception ex)
+            {
+                exception = "GetBirthdayCalendar |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
     }
 }

@@ -19,12 +19,38 @@ namespace QolaMVC.Controllers
 
         public ActionResult ActivityCategory()
         {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
             List<ActivityCategoryModel> l_Model = MasterDAL.GetAllActivityCategory();
             return View(l_Model);
         }
 
         public ActionResult EditActivityCategory(int CategoryId)
         {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
             try
             {
                 var l_Activity = MasterDAL.GetActivityCategoryById(CategoryId);
@@ -39,6 +65,19 @@ namespace QolaMVC.Controllers
         [HttpPost]
         public ActionResult EditActivityCategory(ActivityCategoryModel p_Model)
         {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
             try
             {
                 MasterDAL.UpdateActivityCategory(p_Model);
@@ -52,6 +91,19 @@ namespace QolaMVC.Controllers
 
         public ActionResult DeleteActivityCategory(int CategoryId)
         {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
             try
             {
                 MasterDAL.DeleteActivityCategory(CategoryId);
@@ -68,17 +120,56 @@ namespace QolaMVC.Controllers
         [HttpPost]
         public ActionResult AddActivityCategory(ActivityCategoryModel p_Model)
         {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
             MasterDAL.AddActivityCategory(p_Model);
             return RedirectToAction("ActivityCategory");
         }
 
         public ActionResult AddActivityCategory()
         {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
             return View();
         }
 
         public ActionResult Activity()
         {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
             ViewBag.Message = TempData["Message"];
             List<ActivityModel> l_Model = MasterDAL.GetAllActivity();
             return View(l_Model);
@@ -87,6 +178,19 @@ namespace QolaMVC.Controllers
         [HttpPost]
         public ActionResult AddActivity(ActivityModel p_Model)
         {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
             try
             {
                 var l_Category = new ActivityCategoryModel();
@@ -104,6 +208,19 @@ namespace QolaMVC.Controllers
 
         public ActionResult EditActivity(int ActivityId)
         {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
             try
             {
                 ViewBag.Categories = MasterDAL.GetAllActivityCategory();
@@ -119,6 +236,19 @@ namespace QolaMVC.Controllers
         [HttpPost]
         public ActionResult EditActivity(ActivityModel p_Model)
         {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
             try
             {
                 int l_CategoryId = Convert.ToInt32(Request.Form["Category"]);
@@ -141,6 +271,19 @@ namespace QolaMVC.Controllers
 
         public ActionResult DeleteActivity(int ActivityId)
         {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
             try
             {
 
@@ -158,6 +301,19 @@ namespace QolaMVC.Controllers
 
         public ActionResult AddActivity()
         {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
             ViewBag.Categories = MasterDAL.GetAllActivityCategory();
             return View();
         }
@@ -185,6 +341,19 @@ namespace QolaMVC.Controllers
 
         public ActionResult AddUser()
         {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
             Collection<HomeModel> l_Homes = HomeDAL.GetHomeCollections();
             ViewBag.Homes = l_Homes;
             return View();
@@ -193,6 +362,19 @@ namespace QolaMVC.Controllers
         [HttpPost]
         public ActionResult AddUser(UserModel p_Model)
         {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
             var l_Status = Convert.ToBoolean(Request.Form["Status"]);
             p_Model.Status = l_Status ? Constants.EnumerationTypes.AvailabilityStatus.A : Constants.EnumerationTypes.AvailabilityStatus.I;
             p_Model.Password = Helpers.QolaCulture.Sha1Hash(p_Model.Password);

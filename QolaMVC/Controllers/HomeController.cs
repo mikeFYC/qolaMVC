@@ -305,6 +305,40 @@ namespace QolaMVC.Controllers
 
             return Json(l_ActivityCategories, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult GetBirthdayCalendar()
+        {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            
+            ViewBag.Message = TempData["Message"];
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            var l_ActivityEvents = new QolaMVC.WebAPI.BirthdayCalendarController().Get(home.Id);//HomeDAL.GetActivityEvents();
+
+            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
+
+            foreach (var l_Data in l_ActivityEvents)
+            {
+                var columns = new Dictionary<string, string>
+                {
+                    { "id", l_Data.ProgramId.ToString()},
+                    { "title", l_Data.ProgramName},
+                    { "startDate", l_Data.ProgramStartDate.ToShortDateString()},
+                    { "endDate", l_Data.ProgramEndDate.ToShortDateString()},
+                    { "startTime", l_Data.ProgramStartTime},
+                    { "endTime", l_Data.ProgramEndTime}
+                };
+
+                l_Events.Add(columns);
+            }
+
+            return Json(l_Events, JsonRequestBehavior.AllowGet);
+        }
+
         #endregion
 
         [HttpPost]
@@ -2031,6 +2065,11 @@ namespace QolaMVC.Controllers
 
         #region resident calendars
         public ActionResult SuggestedActivityCalendar()
+        {
+            return View();
+        }
+
+        public ActionResult BirthdayCalendar()
         {
             return View();
         }
