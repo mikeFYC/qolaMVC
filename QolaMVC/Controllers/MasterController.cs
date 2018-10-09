@@ -370,7 +370,6 @@ namespace QolaMVC.Controllers
             ViewBag.Resident = resident;
             ViewBag.Home = home;
 
-
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");

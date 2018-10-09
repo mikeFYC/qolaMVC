@@ -13,6 +13,18 @@ namespace QolaMVC.Controllers
         // GET: Suite
         public ActionResult List(string column = "*", string value = "0")
         {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            
             // List<NEW_DineTimeModel> l_Model = DineTimeDAL.GetAllDineTime();
             List<NEW_DineTimeModel> l_Model = DineTimeDAL.GetDineTime_By_Column(column, value);
             return View(l_Model);
@@ -22,12 +34,36 @@ namespace QolaMVC.Controllers
         // GET: Suite/Details/5
         public ActionResult Details(int id)
         {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
             return View();
         }
 
         // GET: Suite/Create
         public ActionResult AddDineTime()
         {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
             return View();
         }
 
@@ -36,6 +72,18 @@ namespace QolaMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddDineTime(NEW_DineTimeModel data)
         {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
             if (ModelState.IsValid)
             {
                 DineTimeDAL.AddDineTime(data);
@@ -49,6 +97,18 @@ namespace QolaMVC.Controllers
         // GET: Suite/Edit/5
         public ActionResult EditDineTime(int id)
         {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
             return View(DineTimeDAL.GetDineTime_By_Id(id));
         }
 
@@ -57,6 +117,18 @@ namespace QolaMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditDineTime(int id, NEW_DineTimeModel data)
         {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
             if (ModelState.IsValid)
             {
                 DineTimeDAL.EditDineTime(data, id);
@@ -69,6 +141,18 @@ namespace QolaMVC.Controllers
         // GET: Suite/Delete/5
         public ActionResult DeleteDineTime(int id)
         {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
             return View(DineTimeDAL.GetDineTime_By_Id(id));
         }
 
@@ -76,6 +160,18 @@ namespace QolaMVC.Controllers
         [HttpPost]
         public ActionResult DeleteDineTime(int id, FormCollection collection)
         {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
             try
             {
                 // TODO: Add delete logic here

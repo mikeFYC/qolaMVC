@@ -319,7 +319,17 @@ namespace QolaMVC.Controllers
 
         public ActionResult PostFallClinicalMonitoring_A(int? Id)
         {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
             var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
 
             if (TempData["clinicaldetails"] != null)
             {
@@ -355,7 +365,17 @@ namespace QolaMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult PostFallClinicalMonitoring_A(VitalSignsModel vitalSigns, PostFallClinicalMonitoringModel monitoringDetails, int? Id)
         {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
             var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
 
             //using (var dbContext = new test_qolaEntities())
             //{
@@ -396,7 +416,17 @@ namespace QolaMVC.Controllers
 
         public ActionResult PostFallClinicalMonitoring_B(int? Id)
         {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
             var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
 
             if (TempData["clinicaldetailsb"] != null)
             {
