@@ -11,7 +11,6 @@ namespace QolaMVC.Controllers
 {
     public class SuiteController : Controller
     {
-        private QOLAProductionFinalsEntities db = new QOLAProductionFinalsEntities();
         // GET: Suite
         public ActionResult List(string column="*", string value="0")
         {

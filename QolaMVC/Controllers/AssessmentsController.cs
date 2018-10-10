@@ -9,6 +9,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services;
+using System.Data;
+using System.Data.SqlClient;
+using System.Web.Script;
+using System.Web.Script.Serialization;
 
 namespace QolaMVC.Controllers
 {
@@ -1111,8 +1116,7 @@ namespace QolaMVC.Controllers
 
 
 
-        #region Check List
-
+       
         [HttpGet]
         public string saveButtonMain(string [] arrayMain)
         {
@@ -1151,7 +1155,175 @@ namespace QolaMVC.Controllers
             return str;
         }
 
-        #endregion
+        public ActionResult PostfallClinicalMonitoringA(int linkid=0)
+        {
+            Postfall_Clinial_Monitoring_PartDAL objDet = new Postfall_Clinial_Monitoring_PartDAL();  
+             MasterDetails CustData = new MasterDetails(); 
+List<MasterDetails> MasterData = objDet.GetPostfall_clinial_monitoring_details_a1_by_id(linkid,"A").ToList();  
+            CustData.A1Model = MasterData[0].A1Model;  
+            CustData.SplitMonitoring = MasterData[0].SplitMonitoring; 
+                return View(CustData); 
+            //return View();
+
+        }
+
+   [HttpPost]
+          public string PostfallClinicalMonitoringA(MasterDetails data,string c_c,string edema_hands1,string edema_feet1,int linkid)
+        {
+               
+                 Postfall_Clinial_Monitoring_PartDAL.AddPartAPage2(data,c_c, edema_hands1, edema_feet1, linkid);
+                //return RedirectToAction("/");
+         
+            return "true"; 
+  
+        }
+          
+         public JsonResult GetPostfallPage2PartB (int linkid)
+        {
+             MasterDetails l_model=Postfall_Clinial_Monitoring_PartDAL.GetPartAPage2(linkid);
+             
+             return Json(l_model, JsonRequestBehavior.AllowGet);
+
+        }
+        public ActionResult PostfallClinicalMonitoringB(int linkid=0)
+        {
+            Postfall_Clinial_Monitoring_PartDAL objDet = new Postfall_Clinial_Monitoring_PartDAL();  
+             MasterDetails CustData = new MasterDetails(); 
+List<MasterDetails> MasterData = objDet.GetPostfall_clinial_monitoring_details_a1_by_id(linkid,"B").ToList();  
+            CustData.A1Model = MasterData[0].A1Model;  
+            CustData.SplitMonitoring = MasterData[0].SplitMonitoring; 
+return View(CustData); 
+        }
+
+   [HttpPost]
+   [WebMethod]
+   public string PostfallClinicalMonitoringA1(string[][] list1,string[][] list2,string[][] list3)
+   {
+     string result = string.Empty;
+       try
+       {
+           Random rnd=new Random();
+           int linkid=(int)rnd.Next(9999);
+           DataTable dt1=dataTable1(list1, linkid, 1);
+           DataTable dt2=dataTable1(list2, linkid, 2);
+           DataTable dt3=dataTable1(list3, linkid, 3);
+            
+             result=Postfall_Clinial_Monitoring_PartDAL.AddNewPostfall_clinial_monitoring_partA1("sp_add_new_tbl_postfall_clinial_monitoring_details_a1", "A", linkid, dt1, dt2, dt3);
+             //return RedirectToAction("List");
+             return result;
+//return Convert.ToString(list2);
+}
+       catch (Exception ex)
+       {
+           result = ex.Message;
+            return "d  dsrd "+result;
+       }
+   }
+   [HttpPost]
+   [WebMethod]
+   public string EditPostfallClinicalMonitoringA(string[][] list1,string[][] list2,string[][] list3,string[] tempid)
+   {
+     string result = string.Empty;
+       try
+       {
+           DataTable dt1=dataTable1(list1, Int32.Parse(tempid[0]), 1);
+           DataTable dt2=dataTable1(list2, Int32.Parse(tempid[0]), 2);
+           DataTable dt3=dataTable1(list3, Int32.Parse(tempid[0]), 3);
+            
+             result=Postfall_Clinial_Monitoring_PartDAL.EditNewPostfall_clinial_monitoring_partA1("sp_update_new_tbl_postfall_clinial_monitoring_details_a1", tempid[0], dt1, dt2, dt3);
+             //return RedirectToAction("List");
+             return result;
+//return Convert.ToString(list2);
+}
+       catch (Exception ex)
+       {
+           result = ex.Message;
+            return "d  dsrd "+result;
+       }
+   }
+   [HttpPost]
+   [WebMethod]
+   public string PostfallClinicalMonitoringB(string[][] list1)
+   {
+     string result = string.Empty;
+       try
+       {
+           Random rnd=new Random();
+           int linkid=(int)rnd.Next(9999);
+           DataTable dt1=dataTable1(list1, linkid, 1);
+            
+             result=Postfall_Clinial_Monitoring_PartDAL.AddNewPostfall_clinial_monitoring_partB1("sp_add_new_tbl_postfall_clinial_monitoring_details_b1", "B", linkid, dt1);
+             //return RedirectToAction("List");
+             return result;
+}
+       catch (Exception ex)
+       {
+           result = ex.Message;
+            return "d  dsrd "+result;
+       }
+   }
+   [HttpPost]
+   [WebMethod]
+   public string EditPostfallClinicalMonitoringB(string[][] list1,string[] tempid)
+   {
+     string result = string.Empty;
+       try
+       {
+           DataTable dt1=dataTable1(list1, Int32.Parse(tempid[0]), 1);
+            
+             result=Postfall_Clinial_Monitoring_PartDAL.EditNewPostfall_clinial_monitoring_partB1("sp_update_new_tbl_postfall_clinial_monitoring_details_b1", tempid[0], dt1);
+             //return RedirectToAction("List");
+             return result;
+//return Convert.ToString(list2);
+}
+       catch (Exception ex)
+       {
+           result = ex.Message;
+            return "d  dsrd "+result;
+       }
+   }
+private DataTable dataTable1(string[][] array, int linkid, int tableid){
+           Random rnd=new Random();
+
+           DataTable dt=new DataTable();
+           dt.Columns.Add("linkid");
+           dt.Columns.Add("tableid");
+           dt.Columns.Add("guid");
+           dt.Columns.Add("category");
+           dt.Columns.Add("firstcheck");
+           dt.Columns.Add("onehourfirstcheck");
+           dt.Columns.Add("onehoursecondcheck");
+           dt.Columns.Add("threehoursfirstcheck");
+           dt.Columns.Add("threehourssecondcheck");
+           dt.Columns.Add("threehoursthirdcheck");
+           dt.Columns.Add("fourtyeighthoursfirstcheck");
+           dt.Columns.Add("fourtyeighthourssecondcheck");
+           dt.Columns.Add("fourtyeighthoursthirdcheck");
+           dt.Columns.Add("fourtyeighthoursfourthcheck");
+           dt.Columns.Add("fourtyeighthoursfifthcheck");
+               foreach (var arr in array)
+           {
+               DataRow dr = dt.NewRow();
+               //dr["id"] = 1;
+               dr["tableid"] = tableid;
+               dr["linkid"] = linkid;
+               dr["guid"] = (int)rnd.Next(999999);
+               dr["category"] = arr[0];
+               dr["firstcheck"] = arr[1];
+               dr["onehourfirstcheck"] = arr[2];
+               dr["onehoursecondcheck"] = arr[3];
+               dr["threehoursfirstcheck"] = arr[4];
+               dr["threehourssecondcheck"] = arr[5];
+               dr["threehoursthirdcheck"] = arr[6];
+               dr["fourtyeighthoursfirstcheck"] = arr[7];
+               dr["fourtyeighthourssecondcheck"] = arr[8];
+               dr["fourtyeighthoursthirdcheck"] = arr[9];
+               dr["fourtyeighthoursfourthcheck"] = arr[10];
+               dr["fourtyeighthoursfifthcheck"] = arr[11];
+               dt.Rows.Add(dr);
+}
+return dt;
+}
 
 
     }

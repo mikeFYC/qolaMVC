@@ -1,0 +1,2989 @@
+﻿@model QolaMVC.Models.PlanOfCareModel
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+<style>
+
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+
+    .label {
+        padding-left: 20px;
+        margin-bottom: 0;
+        font-weight: normal;
+        cursor: pointer;
+    }
+
+</style>
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+
+    <!-- START PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <form action="~/Assessments/CarePlan" method="Post">
+                 @Html.AntiForgeryToken()
+                <!-- START JUMBOTRON -->
+                <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                    <div class="container-fluid container-fixed-lg">
+                        <!-- <div class="inner"> -->
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h3>Resident Care Assessment</h3>
+                            </div>
+                        </div>
+                        <!-- </div> -->
+                    </div>
+                </div>
+                <!-- END JUMBOTRON -->
+
+                <div style="height: 60px;"></div>
+
+                <div class="container">
+                    <div class="col-lg-12">
+                        <button class="btn btn-default print">GENERATE PDF</button>
+                    </div>
+                </div>
+
+                <input type="hidden" value="familyconferencereport" name="" class="filename">
+                <!-- START CONTAINER FLUID -->
+                <div class="container-fluid container-fixed-lg" id="fromHTMLtestdiv">
+                    <!-- BEGIN PlACE PAGE CONTENT HERE -->
+
+                    <div class="card">
+                        <div class="card-block">
+                            <div class="row">
+                                <div class="col-md-12 bg text-center">
+                                    <h4>Assessed</h4>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="staticEmail" class="col-form-label">Assessed</label>
+                                        <select name="Assessed" class="form-control">
+                                            @{
+                                                if (Model.Assessed != null && Model.Assessed != string.Empty)
+                                                {
+                                                    <option selected="selected" value=@Model.Assessed>@Model.Assessed</option>
+                                                }
+                                            }
+                                            <option value="0">Select</option>
+                                            <option value="7PA">Pre-Admin</option>
+                                            <option value="6AN">5 Month Assessment</option>
+                                            <option value="2AU">Update</option>
+                                            <option value="8AA">Admission</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-block">
+                            <div class="row">
+                                <div class="col-md-12 bg text-center">
+                                    <h4>Level Of Care</h4>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="staticEmail" class="col-form-label">Level Of Care</label>
+                                        <select name="LevelOfCare" class="form-control">
+                                            @{
+                                                if (Model.LevelOfCare != null && Model.LevelOfCare != string.Empty)
+                                                {
+                                                    <option selected="selected" value=@Model.LevelOfCare>@Model.LevelOfCare</option>
+                                                }
+                                            }
+                                            <option value="0">Select</option>
+                                            <option value="3LI">Independent</option>
+                                            <option value="2LP">Partial Assist</option>
+                                            <option value="4LD">Dependent</option>
+                                            <option value="5LPT">Palliative</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-block">
+                            <br><br>
+                            <div class="row">
+                                <div class="col-md-12 bg text-center">
+                                    <h4>Vital Signs</h4>
+                                </div>
+                                <div class="col-md-3">
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h6>BP</h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group form-group-default">
+                                                <label>Systolic</label>
+                                                @Html.TextBoxFor(m => m.VitalSigns.BPSystolic, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group form-group-default">
+                                                <label>Diastolic</label>
+                                                @Html.TextBoxFor(m => m.VitalSigns.BPDiastolic, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group form-group-default">
+                                                <label>Date Completed</label>
+                                                @Html.TextBoxFor(m => m.VitalSigns.BPDateCompleted, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-3">
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group form-group-default">
+                                                <label>Temperature (Celsius)</label>
+                                                @Html.TextBoxFor(m => m.VitalSigns.Temperature, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group form-group-default">
+                                                <label>Date Completed</label>
+                                                @Html.TextBoxFor(m => m.VitalSigns.TempDateCompleted, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-3">
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group form-group-default">
+                                                <label>Weight (lbs)</label>
+                                                @Html.TextBoxFor(m => m.VitalSigns.Weight, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group form-group-default">
+                                                <label>Date Completed</label>
+                                                @Html.TextBoxFor(m => m.VitalSigns.WeightDateCompleted, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-3">
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h6>Height</h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group form-group-default">
+                                                <label>Centimeters</label>
+                                                @Html.TextBoxFor(m => m.VitalSigns.HeightFeet, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group form-group-default">
+                                                <label>Inches</label>
+                                                @Html.TextBoxFor(m => m.VitalSigns.HeightInches, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group form-group-default">
+                                                <label>Date Completed</label>
+                                                @Html.TextBoxFor(m => m.VitalSigns.HeightDateCompleted, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group form-group-default">
+                                        <label>Pulse</label>
+                                        @Html.TextBoxFor(m => m.VitalSigns.Pulse, new { @class = "form-control" })
+                                    </div>
+                                    <div class="form-group form-group-default">
+                                        <label>Date Completed</label>
+                                        @Html.TextBoxFor(m => m.VitalSigns.PulseDateCompleted, new { @class = "form-control" })
+                                    </div>
+                                    <div class="form-check margin">
+                                        @Html.RadioButtonFor(m => m.VitalSigns.PulseRegular, "Regular", new { @class = "form-check-input" })
+                                        <label class="label" for="">Regular</label>
+                                    </div>
+                                    <div class="form-check margin">
+                                        @Html.RadioButtonFor(m => m.VitalSigns.PulseRegular, "Irregular", new { @class = "form-check-input" })
+                                        <label class="label" for="">Irregular</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group form-group-default">
+                                        <label>O2-Oxygen</label>
+                                        <select name="SpecialNeeds.Oxygen" class="form-control">
+                                            @{
+                                                if (Model.SpecialNeeds != null && Model.SpecialNeeds.Oxygen != null && Model.SpecialNeeds.Oxygen != string.Empty)
+                                                {
+                                                    <option selected="selected" value=@Model.SpecialNeeds.Oxygen>@Model.SpecialNeeds.Oxygen</option>
+                                                }
+                                            }
+                                            <option>Independent</option>
+                                            <option>Partial Assist</option>
+                                            <option>Dependent</option>
+                                            <option>Palliative</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group form-group-default">
+                                        <label>Rate (L/min)</label>
+                                        @Html.TextBoxFor(m => m.SpecialNeeds.OxygenRate, new { @class = "form-control" })
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <br><br>
+                    <div class="card">
+                        <div class="card-block">
+                            <div class="row">
+                                <div class="col-md-12 bg text-center">
+                                    <h4>Personal Hygiene</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-md-2">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-12 col-form-label">AM Care</label>
+                                        <div class="col-md-12">
+                                            <select name="PersonalHygiene.AMCare" class="form-control">
+
+                                                @{
+                                                    if (Model.PersonalHygiene != null  && Model.PersonalHygiene.AMCare != null && Model.PersonalHygiene.AMCare != string.Empty)
+                                                    {
+                                                        <option selected="selected" value="@Model.PersonalHygiene.AMCare">@Model.PersonalHygiene.AMCare</option>
+                                                    }
+                                                }
+                                                <option value="0">Select</option>
+                                                <option value="1AI">Independent</option>
+                                                <option value="2AS">Supervised</option>
+                                                <option value="3AA">Assisted</option>
+                                                <option value="7AD">Dependent</option>
+                                                <option value="69AS4">SL4</option>
+                                                <option value="70ASD4">SL4D</option>
+                                                <option value="71AP">Private (Supportive)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-12 col-form-label">Assisted by</label>
+                                        <div class="col-md-12">
+                                            <select name="PersonalHygiene.AMAssistedBy" class="form-control">
+                                                @{
+                                                    if (Model.PersonalHygiene != null && Model.PersonalHygiene.AMAssistedBy != null && Model.PersonalHygiene.AMAssistedBy != string.Empty)
+                                                    {
+                                                        <option selected="selected" value="@Model.PersonalHygiene.AMAssistedBy">@Model.PersonalHygiene.AMAssistedBy</option>
+                                                    }
+                                                }
+                                                <option value="0">Select</option>
+                                                <option value="1AH">Home</option>
+                                                <option value="2AA">Agency</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-12 col-form-label">Agency name</label>
+                                        <div class="col-md-12">
+                                            @Html.TextBoxFor(m => m.PersonalHygiene.AMAgencyName, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-12 col-form-label">Preferred Time</label>
+                                        <div class="col-md-12">
+                                            @Html.TextBoxFor(m => m.PersonalHygiene.AMPreferredTime, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-12 col-form-label">Preferred Type</label>
+                                        <div class="col-md-12">
+                                            <select name="PersonalHygiene.AMPreferredType" class="form-control">
+
+                                                @{
+                                                    if (Model.PersonalHygiene != null && Model.PersonalHygiene.AMPreferredType != null && Model.PersonalHygiene.AMPreferredType != string.Empty)
+                                                    {
+                                                        <option selected="selected" value="@Model.PersonalHygiene.AMPreferredType">@Model.PersonalHygiene.AMPreferredType</option>
+                                                    }
+                                                }
+                                                <option value="0">Select</option>
+                                                <option value="87APB">Bath</option>
+                                                <option value="88AS">Shower</option>
+                                                <option value="89APS">Sponge</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+
+                                <div class="col-md-2">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-12 col-form-label">PM Care</label>
+                                        <div class="col-md-12">
+                                            <select name="PersonalHygiene.PMCare" class="form-control">
+
+                                                @{
+                                                    if (Model.PersonalHygiene != null && Model.PersonalHygiene.PMCare != null && Model.PersonalHygiene.PMCare != string.Empty)
+                                                    {
+                                                        <option selected="selected" value="@Model.PersonalHygiene.PMCare" >@Model.PersonalHygiene.PMCare</option>
+                                                    }
+                                                }
+                                                <option value="0">Select</option>
+                                                <option value="8PI">Independent</option>
+                                                <option value="9PS">Supervised</option>
+                                                <option value="10PA">Assisted</option>
+                                                <option value="11PD">Dependent</option>
+                                                <option value="72PS4">SL4</option>
+                                                <option value="73PSD4">SL4D</option>
+                                                <option value="74PP">Private (Supportive)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-12 col-form-label">Assisted by</label>
+                                        <div class="col-md-12">
+                                            <select name="PersonalHygiene.PMAssistedBy" class="form-control">
+                                                @{
+                                                    if (Model.PersonalHygiene != null && Model.PersonalHygiene.PMAssistedBy != null && Model.PersonalHygiene.PMAssistedBy != string.Empty)
+                                                    {
+                                                        <option selected="selected" value="@Model.PersonalHygiene.PMAssistedBy">@Model.PersonalHygiene.PMAssistedBy</option>
+                                                    }
+                                                }
+                                                <option value="0">Select</option>
+                                                <option value="28PH">Home</option>
+                                                <option value="29PA">Agency</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-12 col-form-label">Agency name</label>
+                                        <div class="col-md-12">
+                                            @Html.TextBoxFor(m => m.PersonalHygiene.PMAgencyName, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-12 col-form-label">Preferred Time</label>
+                                        <div class="col-md-12">
+                                            @Html.TextBoxFor(m => m.PersonalHygiene.PMPreferredTime, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-12 col-form-label">Preferred Type</label>
+                                        <div class="col-md-12">
+                                            <select name="PersonalHygiene.PMPreferredType" class="form-control">
+                                                @{
+                                                    if (Model.PersonalHygiene != null && Model.PersonalHygiene.PMPreferredType != null && Model.PersonalHygiene.PMPreferredType != string.Empty)
+                                                    {
+                                                        <option selected="selected" value="@Model.PersonalHygiene.PMPreferredType">@Model.PersonalHygiene.PMPreferredType</option>
+                                                    }
+                                                }
+                                                <option value="0">Select</option>
+                                                <option value="90PB">Bath</option>
+                                                <option value="91PS">Shower</option>
+                                                <option value="92PSP">Sponge</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-md-2">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-12 col-form-label">Bathing</label>
+                                        <div class="col-md-12">
+                                            <select name="PersonalHygiene.Bathing" class="form-control">
+                                                @{
+                                                    if (Model.PersonalHygiene != null && Model.PersonalHygiene.Bathing != null && Model.PersonalHygiene.Bathing != string.Empty)
+                                                    {
+                                                        <option selected="selected" value="@Model.PersonalHygiene.Bathing">@Model.PersonalHygiene.Bathing</option>
+                                                    }
+                                                }
+                                                <option value="0">Select</option>
+                                                <option value="30BN">N/A</option>
+                                                <option value="4BI">Independent</option>
+                                                <option value="5BS">Supervised</option>
+                                                <option value="6BA">Assisted</option>
+                                                <option value="31BD">Dependent</option>
+                                                <option value="75BS4">SL4</option>
+                                                <option value="76BSD4">SL4D</option>
+                                                <option value="77BP">Private (Supportive)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-12 col-form-label">Assisted by</label>
+                                        <div class="col-md-12">
+                                            <select name="PersonalHygiene.BathingAssistedBy" class="form-control">
+                                                @{
+                                                    if (Model.PersonalHygiene != null && Model.PersonalHygiene.BathingAssistedBy != null && Model.PersonalHygiene.BathingAssistedBy != string.Empty)
+                                                    {
+                                                        <option selected="selected" value="@Model.PersonalHygiene.BathingAssistedBy">@Model.PersonalHygiene.BathingAssistedBy</option>
+                                                    }
+                                                }
+                                                <option value="0">Select</option>
+                                                <option value="55BH">Home</option>
+                                                <option value="56BA">Agency</option>
+                                                <option value="55BH56BA">Both</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-12 col-form-label">Agency name</label>
+                                        <div class="col-md-12">
+                                            @Html.TextBoxFor(m => m.PersonalHygiene.BathingAgencyName, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-12 col-form-label">Preferred Time</label>
+                                        <div class="col-md-12">
+                                            @Html.TextBoxFor(m => m.PersonalHygiene.BathingPreferredTime, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Preferred Type</label>
+                                    <div class="col-md-12">
+                                        <select name="PersonalHygiene.BathingPreferredType" class="form-control">
+                                            @{
+                                                if (Model.PersonalHygiene != null && Model.PersonalHygiene.BathingPreferredType != null && Model.PersonalHygiene.BathingPreferredType != string.Empty)
+                                                {
+                                                    <option selected="selected" value="@Model.PersonalHygiene.BathingPreferredType">@Model.PersonalHygiene.BathingPreferredType</option>
+                                                }
+                                            }
+                                            <option value="0">Select</option>
+                                            <option value="12PB">Bath</option>
+                                            <option value="24PS">Shower</option>
+                                            <option value="35PP">Sponge</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <br><br>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="col-md-12 text-center">
+                                    <b>Location:</b>
+                                </div>
+                                @{
+                                    for(int i=0; i<Model.PersonalHygiene.PreferredDaysCollection.Count; i++)
+                                    {
+                                        <div class="form-check margin">
+                                            @Html.CheckBoxFor(m => m.PersonalHygiene.PreferredDaysCollection[i].IsSelected, new { @class = "form-check-input" })
+                                            <label class="label" for="">@Model.PersonalHygiene.PreferredDaysCollection[i].Name</label>
+                                            @Html.HiddenFor(m => m.PersonalHygiene.PreferredDaysCollection[i].Name, new { @class = "label", value = Model.PersonalHygiene.PreferredDaysCollection[i].Name })
+                                            @Html.HiddenFor(m => m.PersonalHygiene.PreferredDaysCollection[i].Notes, new { @class = "label", value = Model.PersonalHygiene.PreferredDaysCollection[i].Notes })
+                                        </div>  
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-md-12 bg text-center">
+                                <h4>Assistance with</h4>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Dressing</label>
+                                            <div class="col-md-12">
+                                                <select name="AssistanceWith.Dressing" class="form-control">
+                                                     @{
+                                                        if (Model.AssistanceWith != null && Model.AssistanceWith.Dressing != null && Model.AssistanceWith.Dressing != string.Empty)
+                                                        {
+                                                            <option selected="selected" value="@Model.AssistanceWith.Dressing">@Model.AssistanceWith.Dressing</option>
+                                                        }
+                                                    }
+                                                    <option>Select</option>
+                                                    <option value="N/A">N/A</option>
+                                                    <option value="Independent">Independent</option>
+                                                    <option value="Supervised">Supervised</option>
+                                                    <option value="Assisted">Assisted</option>
+                                                    <option value="Dependent">Dependent</option>
+                                                    <option value="SL4">SL4</option>
+                                                    <option value="SL4D">SL4D</option>
+                                                    <option value="Private (Supportive)">Private (Supportive)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Preferred Time</label>
+                                            <div class="col-md-12">
+                                                <select name="AssistanceWith.DressingPreferredTime" class="form-control">
+                                                    @{
+                                                        if (Model.AssistanceWith != null && Model.AssistanceWith.DressingPreferredTime != null && Model.AssistanceWith.DressingPreferredTime != string.Empty)
+                                                        {
+                                                            <option selected="selected" value="@Model.AssistanceWith.DressingPreferredTime">@Model.AssistanceWith.DressingPreferredTime</option>
+                                                        }
+                                                    }
+                                                    <option>Select</option>
+                                                    <option value="AM">AM</option>
+                                                    <option value="PM">PM</option>
+                                                    <option value="Both AM/PM">Both AM/PM</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Nail Care</label>
+                                            <div class="col-md-12">
+                                                <select name="AssistanceWith.NailCare" class="form-control">
+                                                    @{
+                                                        if (Model.AssistanceWith != null && Model.AssistanceWith.NailCare != null && Model.AssistanceWith.NailCare != string.Empty)
+                                                        {
+                                                            <option selected="selected" value="@Model.AssistanceWith.NailCare">@Model.AssistanceWith.NailCare</option>
+                                                        }
+                                                    }
+                                                    <option>Select</option>
+                                                    <option value="Independent">Independent</option>
+                                                    <option value="Supervised">Supervised</option>
+                                                    <option value="Assisted">Assisted</option>
+                                                    <option value="SL4">SL4</option>
+                                                    <option value="SL4D">SL4D</option>
+                                                    <option value="Private (Supportive)">Private (Supportive)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Preferred Time</label>
+                                            <div class="col-md-12">
+                                                <select name="AssistanceWith.NailCarePreferredTime" class="form-control">
+                                                    @{
+                                                        if (Model.AssistanceWith != null && Model.AssistanceWith.NailCarePreferredTime != null && Model.AssistanceWith.NailCarePreferredTime != string.Empty)
+                                                        {
+                                                            <option selected="selected" value="@Model.AssistanceWith.NailCarePreferredTime">@Model.AssistanceWith.NailCarePreferredTime</option>
+                                                        }
+                                                    }
+                                                    <option>Independent</option>
+                                                    <option>Partial Assist</option>
+                                                    <option>Dependent</option>
+                                                    <option>Palliative</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Shaving</label>
+                                            <div class="col-md-12">
+                                                <select name="AssistanceWith.Shaving" class="form-control">
+                                                    @{
+                                                        if (Model.AssistanceWith != null && Model.AssistanceWith.Shaving != null && Model.AssistanceWith.Shaving != string.Empty)
+                                                        {
+                                                            <option selected="selected" value="@Model.AssistanceWith.Shaving">@Model.AssistanceWith.Shaving</option>
+                                                        }
+                                                    }
+                                                    <option>Select</option>
+                                                    <option value="N/A">N/A</option>
+                                                    <option value="Independent">Independent</option>
+                                                    <option value="Supervised">Supervised</option>
+                                                    <option value="Assisted">Assisted</option>
+                                                    <option value="Dependent">Dependent</option>
+                                                    <option value="SL4">SL4</option>
+                                                    <option value="SL4D">SL4D</option>
+                                                    <option value="Private (Supportive)">Private (Supportive)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Preferred Time</label>
+                                            <div class="col-md-12">
+                                                <select name="AssistanceWith.ShavingPreferredTime" class="form-control">
+                                                    @{
+                                                        if (Model.AssistanceWith != null && Model.AssistanceWith.ShavingPreferredTime != null && Model.AssistanceWith.ShavingPreferredTime != string.Empty)
+                                                        {
+                                                            <option selected="selected" value="@Model.AssistanceWith.ShavingPreferredTime">@Model.AssistanceWith.ShavingPreferredTime</option>
+                                                        }
+                                                    }
+                                                    <option>Select</option>
+                                                    <option value="AM">AM</option>
+                                                    <option value="PM">PM</option>
+                                                    <option value="Both AM/PM">Both AM/PM</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Foot Care</label>
+                                            <div class="col-md-12">
+                                                <select name="AssistanceWith.FootCare" class="form-control" required>
+                                                    @{
+                                                        if (Model.AssistanceWith != null && Model.AssistanceWith.FootCare != null && Model.AssistanceWith.FootCare != string.Empty)
+                                                        {
+                                                            <option selected="selected" value="@Model.AssistanceWith.FootCare">@Model.AssistanceWith.FootCare</option>
+                                                        }
+                                                    }
+                                                    <option>Select</option>
+                                                    <option value="Independent">Independent</option>
+                                                    <option value="Supervised">Supervised</option>
+                                                    <option value="Assisted">Assisted</option>
+                                                    <option value="SL4">SL4</option>
+                                                    <option value="SL4D">SL4D</option>
+                                                    <option value="Private (Supportive)">Private (Supportive)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Preferred Time</label>
+                                            <div class="col-md-12">
+                                                <select name="AssistanceWith.FootCarePreferredTime" class="form-control">
+                                                    @{
+                                                        if (Model.AssistanceWith != null && Model.AssistanceWith.FootCarePreferredTime != null && Model.AssistanceWith.FootCarePreferredTime != string.Empty)
+                                                        {
+                                                            <option selected="selected" value="@Model.AssistanceWith.FootCarePreferredTime">@Model.AssistanceWith.FootCare</option>
+                                                        }
+                                                    }
+                                                    <option>Select</option>
+                                                    <option value="AM">AM</option>
+                                                    <option value="PM">PM</option>
+                                                    <option value="Both AM/PM">Both AM/PM</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Oral Hygiene</label>
+                                            <div class="col-md-12">
+                                                <select name="AssistanceWith.OralHygiene" class="form-control">
+                                                    @{
+                                                        if (Model.AssistanceWith != null && Model.AssistanceWith.OralHygiene != null && Model.AssistanceWith.OralHygiene != string.Empty)
+                                                        {
+                                                            <option selected="selected" value="@Model.AssistanceWith.OralHygiene">@Model.AssistanceWith.OralHygiene</option>
+                                                        }
+                                                    }
+                                                    <option>Select</option>
+                                                    <option value="N/A">N/A</option>
+                                                    <option value="Independent">Independent</option>
+                                                    <option value="Supervised">Supervised</option>
+                                                    <option value="Assisted">Assisted</option>
+                                                    <option value="Dependent">Dependent</option>
+                                                    <option value="SL4">SL4</option>
+                                                    <option value="SL4D">SL4D</option>
+                                                    <option value="Private (Supportive)">Private (Supportive)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Preferred Time</label>
+                                            <div class="col-md-12">
+                                                <select name="AssistanceWith.OralHygienePreferredTime" class="form-control">
+                                                    @{
+                                                        if (Model.AssistanceWith != null && Model.AssistanceWith.OralHygienePreferredTime != null && Model.AssistanceWith.OralHygienePreferredTime != string.Empty)
+                                                        {
+                                                            <option selected="selected" value="@Model.AssistanceWith.OralHygienePreferredTime">@Model.AssistanceWith.OralHygienePreferredTime</option>
+                                                        }
+                                                    }
+                                                    <option selected="selected" value="0">Select</option>
+                                                    <option value="AM">AM</option>
+                                                    <option value="PM">PM</option>
+                                                    <option value="Both AM/PM">Both AM/PM</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="col-md-12 text-center">
+                                    <b>Teeth:</b>
+                                </div>
+                                @{
+                                    for (int i = 0; i < Model.AssistanceWith.TeethCollection.Count; i++)
+                                    {
+                                        <div class="form-check margin">
+                                            @Html.CheckBoxFor(m => m.AssistanceWith.TeethCollection[i].IsSelected, new { @class = "form-check-input" })
+                                            <label class="label" for="">@Model.AssistanceWith.TeethCollection[i].Name</label>
+                                            @Html.HiddenFor(m => m.AssistanceWith.TeethCollection[i].Name, new { @class = "label", value = Model.AssistanceWith.TeethCollection[i].Name })
+                                            @Html.HiddenFor(m => m.AssistanceWith.TeethCollection[i].Notes, new { @class = "label", value = Model.AssistanceWith.TeethCollection[i].Notes })
+                                        </div>
+                                    }
+                                }
+                             
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-md-12 bg text-center">
+                                <h4>Mobility</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-3">
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Mobility</label>
+                                    <div class="col-md-12">
+                                        <select name="Mobility.Mobility" class="form-control">
+                                            @{
+                                                if (Model.Mobility != null && Model.Mobility.Mobility != null && Model.Mobility.Mobility != string.Empty)
+                                                {
+                                                    <option selected="selected" value="@Model.Mobility.Mobility">@Model.Mobility.Mobility</option>
+                                                }
+                                            }
+                                            <option>Select</option>
+                                            <option value="Independent">Independent</option>
+                                            <option value="Supervised">Supervised</option>
+                                            <option value="Assisted">Assisted</option>
+                                            <option value="Dependent">Dependent</option>
+                                            <option value="SL4">SL4</option>
+                                            <option value="SL4D">SL4D</option>
+                                            <option value="Private (Supportive)">Private (Supportive)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Transfers</label>
+                                    <div class="col-md-12">
+                                        <select name="Mobility.Transfers" class="form-control">
+                                            @{
+                                                if (Model.Mobility != null && Model.Mobility.Transfers != null && Model.Mobility.Transfers != string.Empty)
+                                                {
+                                                    <option selected="selected" value="@Model.Mobility.Transfers">@Model.Mobility.Transfers</option>
+                                                }
+                                            }
+                                            <option>Select</option>
+                                            <option value="Independent">Independent</option>
+                                            <option value="Supervised">Supervised</option>
+                                            <option value="Assisted">Assisted</option>
+                                            <option value="Dependent">Dependent</option>
+                                            <option value="1 Person">1 Person</option>
+                                            <option value="2 Person">2 Person</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <br>
+                        <div class="row">
+
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-12">
+
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Mechanical Lift</label>
+                                            <div class="col-md-12">
+                                                <select name="Mobility.Lift" class="form-control">
+                                                        @{
+                                                            if (Model.Mobility != null && Model.Mobility.Lift != null && Model.Mobility.Lift != string.Empty)
+                                                            {
+                                                                <option selected="selected" value="@Model.Mobility.Lift">@Model.Mobility.Lift</option>
+                                                            }
+                                                        }
+                                                        <option>Select</option>
+                                                        <option value="N/A">N/A</option>
+                                                        <option value="Sit to Stand">Sit to Stand</option>
+                                                        <option value="Full Mechanical">Full Mechanical</option>
+                                                        <option value="Other">Other</option>
+                                                    </select>
+</div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-12">
+
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Lift</label>
+                                            <div class="col-md-12">
+                                                <input type="text" class="form-control" id="staticEmail">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-12">
+
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Walker</label>
+                                            <div class="col-md-12">
+                                                <select name="Mobility.Walker" class="form-control">
+                                                      @{
+                                                            if (Model.Mobility != null && Model.Mobility.Walker != null && Model.Mobility.Walker != string.Empty)
+                                                            {
+                                                                <option selected="selected" value="@Model.Mobility.Walker">@Model.Mobility.Walker</option>
+                                                            }
+                                                        }
+                                                    <option>Select</option>
+                                                    <option value="31WN">N/A</option>
+                                                    <option value="Independent">Independent</option>
+                                                    <option value="Supervised">Supervised</option>
+                                                    <option value="Assisted">Assisted</option>
+                                                    <option value="SL4">SL4</option>
+                                                    <option value="SL4D">SL4D</option>
+                                                    <option value="Private (Supportive)">Private (Supportive)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-12">
+
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Type</label>
+                                            <div class="col-md-12">
+                                                <select name="Mobility.WalkerType" class="form-control">
+                                                        @{
+                                                            if (Model.Mobility != null && Model.Mobility.WalkerType != null && Model.Mobility.WalkerType != string.Empty)
+                                                            {
+                                                                <option selected="selected" value="@Model.Mobility.WalkerType">@Model.Mobility.WalkerType</option>
+                                                            }
+                                                        }
+                                                        <option>Independent</option>
+                                                        <option>Partial Assist</option>
+                                                        <option>Dependent</option>
+                                                        <option>Palliative</option>
+                                                    </select>
+</div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-12">
+
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Wheelchair</label>
+                                            <div class="col-md-12">
+                                                <select name="Mobility.WheelChair" class="form-control">
+                                                    @{
+                                                        if (Model.Mobility != null && Model.Mobility.WheelChair != null && Model.Mobility.WheelChair != string.Empty)
+                                                        {
+                                                            <option selected="selected" value="@Model.Mobility.WheelChair">@Model.Mobility.WheelChair</option>
+                                                        }
+                                                    }
+                                                    <option>Select</option>
+                                                    <option value="N/A">N/A</option>
+                                                    <option value="Independent">Independent</option>
+                                                    <option value="Supervised">Supervised</option>
+                                                    <option value="Assisted">Assisted</option>
+                                                    <option value="SL4">SL4</option>
+                                                    <option value="SL4D">SL4D</option>
+                                                    <option value="Private (Supportive)">Private (Supportive)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-12">
+
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Type</label>
+                                            <div class="col-md-12">
+                                                <select name="Mobility.WheelChairType" class="form-control">
+                                                    @{
+                                                        if (Model.Mobility != null && Model.Mobility.WheelChairType != null && Model.Mobility.WheelChairType != string.Empty)
+                                                        {
+                                                            <option selected="selected" value="@Model.Mobility.WheelChairType">@Model.Mobility.WheelChairType</option>
+                                                        }
+                                                    }
+                                                    <option>Select</option>
+                                                    <option value="Manual">Manual</option>
+                                                    <option value="Transport">Transport</option>
+                                                    <option value="Electric">Electric</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-12">
+
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Cane</label>
+                                            <div class="col-md-12">
+                                                <select name="Mobility.Cane" class="form-control">
+                                                    @{
+                                                        if (Model.Mobility != null && Model.Mobility.Cane != null && Model.Mobility.Cane != string.Empty)
+                                                        {
+                                                            <option selected="selected" value="@Model.Mobility.Cane">@Model.Mobility.Cane</option>
+                                                        }
+                                                    }
+                                                    <option>Select</option>
+                                                    <option value="N/A">N/A</option>
+                                                    <option value="Independent">Independent</option>
+                                                    <option value="Supervised">Supervised</option>
+                                                    <option value="Assisted">Assisted</option>
+                                                    <option value="SL4">SL4</option>
+                                                    <option value="SL4D">SL4D</option>
+                                                    <option value="Private (Supportive)">Private (Supportive)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-12">
+
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Type</label>
+                                            <div class="col-md-12">
+                                               @Html.TextBoxFor( m => m.Mobility.caneType, new {  @class = "form-control"} )
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-12">
+
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Scooter</label>
+                                            <div class="col-md-12">
+                                                <select name="Mobility.Scooter" class="form-control">
+                                                    @{
+                                                        if (Model.Mobility != null && Model.Mobility.Scooter != null && Model.Mobility.Scooter != string.Empty)
+                                                        {
+                                                            <option selected="selected" value="@Model.Mobility.Scooter">@Model.Mobility.Scooter</option>
+                                                        }
+                                                    }
+                                                    <option>Select</option>
+                                                    <option value="N/A">N/A</option>
+                                                    <option value="Independent">Independent</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-12">
+
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Type</label>
+                                            <div class="col-md-12">
+                                                 @Html.TextBoxFor( m => m.Mobility.ScooterType, new {  @class = "form-control"} )
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">PT</label>
+                                    <div class="col-md-12">
+                                        <select name="Mobility.PT" class="form-control">
+                                            @{
+                                                if (Model.Mobility != null && Model.Mobility.PT != null && Model.Mobility.PT != string.Empty)
+                                                {
+                                                    <option selected="selected" value="@Model.Mobility.PT">@Model.Mobility.PT</option>
+                                                }
+                                            }
+                                            <option>Select</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3">
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Frequency</label>
+                                    <div class="col-md-12">
+                                         @Html.TextBoxFor( m => m.Mobility.PTFrequency, new {  @class = "form-control"} )
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3">
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Provider</label>
+                                    <div class="col-md-12">
+                                        @Html.TextBoxFor(m => m.Mobility.PTProvider, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">OT</label>
+                                    <div class="col-md-12">
+                                        <select name="Mobility.OT" class="form-control">
+                                            @{
+                                                if (Model.Mobility != null && Model.Mobility.OT != null && Model.Mobility.OT != string.Empty)
+                                                {
+                                                    <option selected="selected" value="@Model.Mobility.OT">@Model.Mobility.OT</option>
+                                                }
+                                            }
+                                            <option>Select</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3">
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Frequency</label>
+                                    <div class="col-md-12">
+                                         @Html.TextBoxFor( m => m.Mobility.OTFrequency, new {  @class = "form-control"} )
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3">
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Provider</label>
+                                    <div class="col-md-12">
+                                        @Html.TextBoxFor(m => m.Mobility.OTProvider, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-md-12 bg text-center">
+                                <h4>Safety/ PASD's</h4>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="col-md-12">
+
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-12 col-form-label">Safety/ PASD's</label>
+                                        <div class="col-md-12">
+                                            <select name="Safety.Safety" class="form-control">
+                                            @{
+                                                if (Model.Safety != null && Model.Safety.Safety != null && Model.Safety.Safety != string.Empty)
+                                                {
+                                                    <option selected="selected" value="@Model.Safety.Safety">@Model.Safety.Safety</option>
+                                                }
+                                            }
+                                                <option>Select</option>
+                                                <option value="N/A">N/A</option>
+                                                <option value="Seat / Lap belt">Seat / Lap belt</option>
+                                                <option value="Mattress on floor">Mattress on floor</option>
+                                                <option value="Transfer Pole">Transfer Pole</option>
+                                                <option value="Table / Tray">Table / Tray</option>
+                                                <option value="Recliner">Recliner</option>
+                                                <option value="Tilt wc">Tilt wc</option>
+                                                <option value="Other">Other</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-12 col-form-label">Other</label>
+                                        <div class="col-md-12">
+                                            @Html.TextBoxFor( m => m.Safety.Other, new {  @class = "form-control" } )
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="col-md-12">
+
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-12 col-form-label">Rails</label>
+                                        <div class="col-md-12">
+                                            <select name="Safety.Rails" class="form-control">
+                                                @{
+                                                    if (Model.Safety != null && Model.Safety.Rails != null && Model.Safety.Rails != string.Empty)
+                                                    {
+                                                        <option selected="selected" value="@Model.Safety.Rails">@Model.Safety.Rails</option>
+                                                    }
+                                                }
+                                                <option>Select</option>
+                                                <option value="N/A">N/A</option>
+                                                <option value="Half Rails (Right)">Half Rails (Right)</option>
+                                                <option value="Half Rails (Left)">Half Rails (Left)</option>
+                                                <option value="Left and Right Half Rails">Left and Right Half Rails</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-check margin">
+                                        @Html.CheckBoxFor(m => m.Safety.NightOnly, new { @class = "form-check-input" })
+                                        <label class="label" for="">Night Only</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-md-12 bg text-center">
+                                <h4>Escorting To And From Meals</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Breakfast</label>
+                                    <div class="col-md-12">
+                                         <select name="MealEscort.BreakFast" class="form-control">
+                                                @{
+                                                    if (Model.MealEscort != null && Model.MealEscort.BreakFast != null && Model.MealEscort.BreakFast != string.Empty)
+                                                    {
+                                                        <option selected="selected" value="@Model.MealEscort.BreakFast">@Model.MealEscort.BreakFast</option>
+                                                    }
+                                                }
+                                            <option>Select</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3">
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Lunch</label>
+                                    <div class="col-md-12">
+                                        <select name="MealEscort.Lunch" class="form-control">
+                                                @{
+                                                    if (Model.MealEscort != null && Model.MealEscort.Lunch != null && Model.MealEscort.Lunch != string.Empty)
+                                                    {
+                                                        <option selected="selected" value="@Model.MealEscort.Lunch">@Model.MealEscort.Lunch</option>
+                                                    }
+                                                }
+                                            <option>Select</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3">
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Dinner</label>
+                                    <div class="col-md-12">
+                                        <select name="MealEscort.Dinner" class="form-control">
+                                                @{
+                                                    if (Model.MealEscort != null && Model.MealEscort.Dinner != null && Model.MealEscort.Dinner != string.Empty)
+                                                    {
+                                                        <option selected="selected" value="@Model.MealEscort.Dinner">@Model.MealEscort.Lunch</option>
+                                                    }
+                                                }
+                                            <option>Select</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <br><br>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-md-12 bg text-center">
+                                <h4>Behaviour</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            @{
+                                for (int i = 0; i < Model.Behaviour.BehaviourCollection.Count; i++)
+                                {
+                                    if (i < 7)
+                                    {
+                                        <div class="col-md-4">
+                                            <div class="form-check margin">
+                                                @Html.CheckBoxFor(m => m.Behaviour.BehaviourCollection[i].IsSelected, new { @class = "form-check-input" })
+                                                <label class="label" for="">@Model.Behaviour.BehaviourCollection[i].Name</label>
+                                                @Html.HiddenFor(m => m.Behaviour.BehaviourCollection[i].Name, new { @class = "label", value = Model.Behaviour.BehaviourCollection[i].Name })
+                                                @Html.HiddenFor(m => m.Behaviour.BehaviourCollection[i].Notes, new { @class = "label", value = Model.Behaviour.BehaviourCollection[i].Notes })
+                                            </div>
+                                        </div>
+                                    }
+                                    if (i >= 7 && i < 15)
+                                    {
+                                        <div class="col-md-4">
+                                            <div class="form-check margin">
+                                                @Html.CheckBoxFor(m => m.Behaviour.BehaviourCollection[i].IsSelected, new { @class = "form-check-input" })
+                                                <label class="label" for="">@Model.Behaviour.BehaviourCollection[i].Name</label>
+                                                @Html.HiddenFor(m => m.Behaviour.BehaviourCollection[i].Name, new { @class = "label", value = Model.Behaviour.BehaviourCollection[i].Name })
+                                                @Html.HiddenFor(m => m.Behaviour.BehaviourCollection[i].Notes, new { @class = "label", value = Model.Behaviour.BehaviourCollection[i].Notes })
+                                            </div>
+                                        </div>
+                                    }
+                                    if (i >= 15)
+                                    {
+                                        <div class="col-md-4">
+                                            <div class="form-check margin">
+                                                @Html.CheckBoxFor(m => m.Behaviour.BehaviourCollection[i].IsSelected, new { @class = "form-check-input" })
+                                                <label class="label" for="">@Model.Behaviour.BehaviourCollection[i].Name</label>
+                                                @Html.HiddenFor(m => m.Behaviour.BehaviourCollection[i].Name, new { @class = "label", value = Model.Behaviour.BehaviourCollection[i].Name })
+                                                @Html.HiddenFor(m => m.Behaviour.BehaviourCollection[i].Notes, new { @class = "label", value = Model.Behaviour.BehaviourCollection[i].Notes })
+                                            </div>
+                                        </div>
+                                    }
+
+
+                                }
+                            }
+
+                            <div class="col-md-12">
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="col-md-12 text-center">
+                                            <h6>Risk of Harm to Self (or Others)</h6>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-check margin">
+                                                @Html.RadioButtonFor(m => m.Behaviour.HarmToSelf, "Yes", new {  @class="form-check-input"})
+                                                <label class="label" for="">Yes</label>
+                                            </div>
+                                            <div class="form-check margin">
+                                                @Html.RadioButtonFor(m => m.Behaviour.HarmToSelf, "No", new { @class = "form-check-input" })
+                                                <label class="label" for="">No</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+
+                                        <div class="col-md-12 text-center">
+                                            <h6>Smoker</h6>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-check margin">
+                                                @Html.RadioButtonFor(m => m.Behaviour.Smoker, "Yes", new {  @class="form-check-input"})
+                                                <label class="label" for="">Yes</label>
+                                            </div>
+                                            <div class="form-check margin">
+                                                @Html.RadioButtonFor(m => m.Behaviour.Smoker, "No", new {  @class="form-check-input"})
+                                                <label class="label" for="">No</label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-3">
+
+                                        <div class="col-md-12 text-center">
+                                            <h6>Cognitive Status</h6>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-check margin">
+                                                @Html.RadioButtonFor(m => m.Behaviour.CognitiveStatus, "Yes", new {  @class="form-check-input"})
+                                                <label class="label" for="">Yes</label>
+                                            </div>
+                                            <div class="form-check margin">
+                                                @Html.RadioButtonFor(m => m.Behaviour.CognitiveStatus, "No", new { @class = "form-check-input" })
+                                                <label class="label" for="">No</label>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="col-md-3">
+
+                                        <div class="col-md-12 text-center">
+                                            <h6>Risk of Wandering</h6>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-check margin">
+                                                @Html.RadioButtonFor(m => m.Behaviour.RiskOfWandering, "Yes", new { @class = "form-check-input" })
+                                                <label class="label" for="">Yes</label>
+                                            </div>
+                                            <div class="form-check margin">
+                                                @Html.RadioButtonFor(m => m.Behaviour.RiskOfWandering, "No", new { @class = "form-check-input" })
+                                                <label class="label" for="">No</label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="staticEmail" class="col-form-label">Other Mental/Physical Health Info</label><br>
+                                    @Html.TextAreaFor(m => m.Behaviour.OtherInfo, new { @class = "textarea", rows = "5", style = "width: 100% !important;" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-md-12 bg text-center">
+                                <h4>Cognitive function</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="col-md-12 text-center">
+                                    <h6>Cognitive function</h6>
+                                </div>
+                                <div class="col-md-12">
+                                    @{
+                                        for (int i = 0; i < Model.CognitiveFunction.CognitiveFunction.Count; i++)
+                                        {
+                                            <div class="form-check margin">
+                                                @Html.CheckBoxFor(m => m.CognitiveFunction.CognitiveFunction[i].IsSelected, new { @class = "form-check-input" })
+                                                <label class="label" for="">@Model.CognitiveFunction.CognitiveFunction[i].Name</label>
+                                                @Html.HiddenFor(m => m.CognitiveFunction.CognitiveFunction[i].Name, new { @class = "label", value = Model.CognitiveFunction.CognitiveFunction[i].Name })
+                                                @Html.HiddenFor(m => m.CognitiveFunction.CognitiveFunction[i].Notes, new { @class = "label", value = Model.CognitiveFunction.CognitiveFunction[i].Notes })
+                                            </div>
+                                        }
+                                    }
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-md-12 bg text-center">
+                                <h4>Orientation</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="col-md-12 text-center">
+                                    <h6>Orientation</h6>
+                                </div>
+                                <div class="col-md-12">
+
+                                    <div class="form-check margin">
+                                        @Html.CheckBoxFor( m => m.Orientation.IsPerson, new {  @class="form-check-input"} )
+                                        <label class="label" for="">Person</label>
+                                    </div>
+                                    <div class="form-check margin">
+                                         @Html.CheckBoxFor( m => m.Orientation.IsPlace, new {  @class= "form-check-input" } )
+                                        <label class="label" for="">Place</label>
+                                    </div>
+                                    <div class="form-check margin">
+                                         @Html.CheckBoxFor( m => m.Orientation.IsTime, new {  @class= "form-check-input" } )
+                                        <label class="label" for="">Time</label>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-check margin">
+                                    @Html.CheckBoxFor(m => m.Orientation.IsDementiaCare, new { @class = "form-check-input" })
+                                    <label class="label" for="">Dementia Care</label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-md-12 bg text-center">
+                                <h4>Nutrition</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Status</label>
+                                    <div class="col-md-12">
+                                        <select name="Nutrition.NutritionStatus" class="form-control" required>
+                                            @{
+                                                if (Model.Nutrition != null && Model.Nutrition.NutritionStatus != null && Model.Nutrition.NutritionStatus != string.Empty)
+                                                {
+                                                    <option selected="selected" value="@Model.Nutrition.NutritionStatus">@Model.Nutrition.NutritionStatus</option>
+                                                }
+                                            }
+                                            <option selected="selected">Select</option>
+                                            <option value="Independent">Independent</option>
+                                            <option value="Supervised">Supervised</option>
+                                            <option value="Assisted">Assisted</option>
+                                            <option value="Dependant">Dependant</option>
+                                            <option value="SL4">SL4</option>
+                                            <option value="SL4D">SL4D</option>
+                                            <option value="Private (Supportive)">Private (Supportive)</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-3">
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Risk</label>
+                                    <div class="col-md-12">
+                                        <select name="Nutrition.Risk" class="form-control" required>
+                                            @{
+                                                if (Model.Nutrition != null && Model.Nutrition.Risk != null && Model.Nutrition.Risk != string.Empty)
+                                                {
+                                                    <option selected="selected" value="@Model.Nutrition.Risk">@Model.Nutrition.Risk</option>
+                                                }
+                                            }
+                                            <option selected="selected">Select</option>
+                                            <option value="N/A">N/A</option>
+                                            <option value="Swallowing">Swallowing</option>
+                                            <option value="Choking risk">Choking risk</option>
+                                            <option value="Difficulty in Chewing">Difficulty in Chewing</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-3">
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Assistive Devices</label>
+                                    <div class="col-md-12">
+                                        @Html.TextBoxFor( m => m.Nutrition.AssistiveDevices, new {  @class="form-control"})
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-3">
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Texture</label>
+                                    <div class="col-md-12">
+                                        <select name="Nutrition.Texture" class="form-control" required>
+                                            @{
+                                                if (Model.Nutrition != null && Model.Nutrition.Texture != null && Model.Nutrition.Texture != string.Empty)
+                                                {
+                                                    <option selected="selected" value="@Model.Nutrition.Texture">@Model.Nutrition.Texture</option>
+                                                }
+                                            }
+                                            <option>Independent</option>
+                                            <option>Partial Assist</option>
+                                            <option>Dependent</option>
+                                            <option>Palliative</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-3">
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Other</label>
+                                    <div class="col-md-12">
+                                         @Html.TextBoxFor( m => m.Nutrition.Other, new {  @class="form-control"})
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="col-md-12 text-center">
+                                    <h6>Diet</h6>
+                                </div>
+                                <div class="col-md-12">
+                                    @{
+                                        for (int i = 0; i < Model.Nutrition.Diet.Count; i++)
+                                        {
+                                            <div class="form-check margin">
+                                                @Html.CheckBoxFor(m => m.Nutrition.Diet[i].IsSelected, new { @class = "form-check-input" })
+                                                <label class="label" for="">@Model.Nutrition.Diet[i].Name</label>
+                                                @Html.HiddenFor(m => m.Nutrition.Diet[i].Name, new { @class = "label", value = Model.Nutrition.Diet[i].Name })
+                                                @Html.HiddenFor(m => m.Nutrition.Diet[i].Notes, new { @class = "label", value = Model.Nutrition.Diet[i].Notes })
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Other Diet</label>
+                                    <div class="col-md-12">
+                                         @Html.TextBoxFor( m => m.Nutrition.OtherDiet, new {  @class="form-control"})
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="staticEmail" class="col-form-label">Notes</label><br>
+                                        <textarea class="textarea" rows="5" style="width: 100% !important;"></textarea>
+                                        @Html.TextAreaFor(m => m.Nutrition.Notes, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b>Allergies/Sensitivities</b>
+                                    </div>
+                                    <br>
+                                    <div class="col-md-3">
+                                        Allergies/Sensitivities
+                                    </div>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control" id="staticEmail">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <a href="#" class="btn btn-danger">Add</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-md-12 bg text-center">
+                                <h4>Appetite</h4>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="staticEmail" class="col-form-label">Appetite</label>
+                                    <select name="Meals.Appetite" class="form-control" required>
+                                        @{
+                                            if (Model.Meals != null && Model.Meals.Appetite != null && Model.Meals.Appetite != string.Empty)
+                                            {
+                                                <option selected="selected" value="@Model.Meals.Appetite">@Model.Meals.Appetite</option>
+                                            }
+                                        }
+                                        <option>Select</option>
+                                        <option value="Good">Good</option>
+                                        <option value="Fair">Fair</option>
+                                        <option value="Poor">Poor</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-md-12 bg text-center">
+                                <h4>Meals</h4>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="staticEmail" class="col-form-label">Breakfast</label>
+                                    <select name="Meals.BreakFast" class="form-control" required>
+                                        @{
+                                            if (Model.Meals != null && Model.Meals.BreakFast != null && Model.Meals.BreakFast != string.Empty)
+                                            {
+                                                <option selected="selected" value="@Model.Meals.BreakFast">@Model.Meals.BreakFast</option>
+                                            }
+                                        }
+                                        <option>Select</option>
+                                        <option value="N/A">N/A</option>
+                                        <option value="Main Dining Room">Main Dining Room</option>
+                                        <option value="On unit">On unit</option>
+                                        <option value="Tray Service">Tray Service</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="staticEmail" class="col-form-label">Lunch</label>
+                                    <select name="Meals.Lunch" class="form-control" required>
+                                        @{
+                                            if (Model.Meals != null && Model.Meals.Lunch != null && Model.Meals.Lunch != string.Empty)
+                                            {
+                                                <option selected="selected" value="@Model.Meals.Lunch">@Model.Meals.Lunch</option>
+                                            }
+                                        }
+                                    <option>Select</option>
+                                    <option value="N/A">N/A</option>
+                                    <option value="Main Dining Room">Main Dining Room</option>
+                                    <option value="On unit">On unit</option>
+                                    <option value="20LT">Tray Service</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="staticEmail" class="col-form-label">Dinner</label>
+                                    <select name="Meals.Dinner" class="form-control" required>
+                                        @{
+                                            if (Model.Meals != null && Model.Meals.Dinner != null && Model.Meals.Dinner != string.Empty)
+                                            {
+                                                <option selected="selected" value="@Model.Meals.Dinner">@Model.Meals.Dinner</option>
+                                            }
+                                        }
+                                        <option>Select</option>
+                                        <option value="N/A">N/A</option>
+                                        <option value="Main Dining Room">Main Dining Room</option>
+                                        <option value="On unit">On unit</option>
+                                        <option value="Tray Service">Tray Service</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <h4>Elimination</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="col-md-12 text-center">
+                                    <h6>Bladder</h6>
+                                </div>
+                                <div class="col-md-12">
+                                    @{
+                                        for (int i = 0; i < Model.Elimination.Bladder.Count; i++)
+                                        {
+                                            <div class="form-check margin">
+                                                @Html.CheckBoxFor(m => m.Elimination.Bladder[i].IsSelected, new { @class = "form-check-input" })
+                                                <label class="label" for="">@Model.Elimination.Bladder[i].Name</label>
+                                                @Html.HiddenFor(m => m.Elimination.Bladder[i].Name, new { @class = "label", value = Model.Elimination.Bladder[i].Name })
+                                                @Html.HiddenFor(m => m.Elimination.Bladder[i].Notes, new { @class = "label", value = Model.Elimination.Bladder[i].Notes })
+                                            </div>
+                                        }
+                                    }
+                                   
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="col-md-12 text-center">
+                                    <h6>Bowel</h6>
+                                </div>
+                                <div class="col-md-12">
+                                    @{
+                                        for (int i = 0; i < Model.Elimination.Bowel.Count; i++)
+                                        {
+                                            <div class="form-check margin">
+                                                @Html.CheckBoxFor(m => m.Elimination.Bowel[i].IsSelected, new { @class = "form-check-input" })
+                                                <label class="label" for="">@Model.Elimination.Bowel[i].Name</label>
+                                                @Html.HiddenFor(m => m.Elimination.Bowel[i].Name, new { @class = "label", value = Model.Elimination.Bowel[i].Name })
+                                                @Html.HiddenFor(m => m.Elimination.Bowel[i].Notes, new { @class = "label", value = Model.Elimination.Bowel[i].Notes })
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <b>Continence Products</b>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Name/Code</label>
+                                    <div class="col-md-12">
+                                        @Html.TextBoxFor(m => m.Elimination.NameCode, new { @class="form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="staticEmail" class="col-form-label">Continence Products</label>
+                                    <select name="Meals.BreakFast" class="form-control" required>
+                                        @{
+                                            if (Model.Elimination != null && Model.Elimination.Products != null && Model.Elimination.Products != string.Empty)
+                                            {
+                                                <option selected="selected" value="@Model.Elimination.Products">@Model.Elimination.Products</option>
+                                            }
+                                        }
+                                        <option>Select</option>
+                                        <option value="S ( Small )">S ( Small )</option>
+                                        <option value="M (Medium)">M (Medium)</option>
+                                        <option value="L (Large)">L (Large)</option>
+                                        <option value="XL (Extra Large)">XL (Extra Large)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Assistive Devices</label>
+                                    <div class="col-md-12">
+                                        @Html.TextBoxFor(m => m.Elimination.AssistiveDevices, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Supplier</label>
+                                    <div class="col-md-12">
+                                         @Html.TextBoxFor(m => m.Elimination.Supplier, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Assessment Completed by</label>
+                                    <div class="col-md-12">
+                                        <input type="text" class="form-control" id="staticEmail">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Date</label>
+                                    <div class="col-md-12">
+                                        @Html.TextBoxFor(m => m.Elimination.AssessmentDate, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-md-12 bg text-center">
+                                <h4>Toileting</h4>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="staticEmail" class="col-form-label">Toileting</label>
+                                    <select name="Toileting.Toileting" class="form-control" required>
+                                        @{
+                                            if (Model.Toileting != null && Model.Toileting.Toileting != null && Model.Toileting.Toileting != string.Empty)
+                                            {
+                                                <option selected="selected" value="@Model.Toileting.Toileting">@Model.Toileting.Toileting</option>
+                                            }
+                                        }
+                                        <option>Select</option>
+                                        <option value="Independent">Independent</option>
+                                        <option value="Supervised">Supervised</option>
+                                        <option value="Assisted">Assisted</option>
+                                        <option value="1 Person">1 Person</option>
+                                        <option value="2 Person">2 Person</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="col-md-12 text-center">
+                                    <h6>Bathroom</h6>
+                                </div>
+                                <div class="col-md-12">
+                                     @{
+                                        for (int i = 0; i < Model.Toileting.Bathroom.Count; i++)
+                                        {
+                                            <div class="form-check margin">
+                                                @Html.CheckBoxFor(m => m.Toileting.Bathroom[i].IsSelected, new { @class = "form-check-input" })
+                                                <label class="label" for="">@Model.Toileting.Bathroom[i].Name</label>
+                                                @Html.HiddenFor(m => m.Toileting.Bathroom[i].Name, new { @class = "label", value = Model.Toileting.Bathroom[i].Name })
+                                                @Html.HiddenFor(m => m.Toileting.Bathroom[i].Notes, new { @class = "label", value = Model.Toileting.Bathroom[i].Notes })
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="col-md-12 text-center">
+                                    <h6>Commode</h6>
+                                </div>
+                                <div class="col-md-12">
+                                     @{
+                                         for (int i = 0; i < Model.Toileting.Commode.Count; i++)
+                                         {
+                                            <div class="form-check margin">
+                                                @Html.CheckBoxFor(m => m.Toileting.Commode[i].IsSelected, new { @class = "form-check-input" })
+                                                <label class="label" for="">@Model.Toileting.Commode[i].Name</label>
+                                                @Html.HiddenFor(m => m.Toileting.Commode[i].Name, new { @class = "label", value = Model.Toileting.Commode[i].Name })
+                                                @Html.HiddenFor(m => m.Toileting.Commode[i].Notes, new { @class = "label", value = Model.Toileting.Commode[i].Notes })
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="col-md-12 text-center">
+                                    <h6>Bedpan/Urinal</h6>
+                                </div>
+                                <div class="col-md-12">
+                                     @{
+                                         for (int i = 0; i < Model.Toileting.Bedpan.Count; i++)
+                                         {
+                                            <div class="form-check margin">
+                                                @Html.CheckBoxFor(m => m.Toileting.Bedpan[i].IsSelected, new { @class = "form-check-input" })
+                                                <label class="label" for="">@Model.Toileting.Bedpan[i].Name</label>
+                                                @Html.HiddenFor(m => m.Toileting.Bedpan[i].Name, new { @class = "label", value = Model.Toileting.Bedpan[i].Name })
+                                                @Html.HiddenFor(m => m.Toileting.Bedpan[i].Notes, new { @class = "label", value = Model.Toileting.Bedpan[i].Notes })
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-md-12 bg text-center">
+                                <h4>Medication</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="staticEmail" class="col-form-label">Assistance</label>
+                                    <select name="Medication.Assistance" class="form-control" required>
+                                        @{
+                                            if (Model.Medication != null && Model.Medication.Assistance != null && Model.Medication.Assistance != string.Empty)
+                                            {
+                                                <option selected="selected" value="@Model.Medication.Assistance">@Model.Medication.Assistance</option>
+                                            }
+                                        }
+                                        <option>Select</option>
+                                        <option value="AB">AB</option>
+                                        <option value="SK">SK</option>
+                                        <option value="MB">MB</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="staticEmail" class="col-form-label">Administration</label>
+                                    <select name="Medication.Administration" class="form-control" required>
+                                        @{
+                                            if (Model.Medication != null && Model.Medication.Administration != null && Model.Medication.Administration != string.Empty)
+                                            {
+                                                <option selected="selected" value="@Model.Medication.Administration">@Model.Medication.Administration</option>
+                                            }
+                                        }
+                                        <option>Select</option>
+                                        <option value="ON">ON</option>
+                                        <option value="QC">QC</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="staticEmail" class="col-form-label">Completed By</label>
+                                    <select name="Medication.Administration" class="form-control" required>
+                                        @{
+                                            if (Model.Medication != null && Model.Medication.CompletedBy != null && Model.Medication.CompletedBy != string.Empty)
+                                            {
+                                                <option selected="selected" value="@Model.Medication.CompletedBy">@Model.Medication.CompletedBy</option>
+                                            }
+                                        }
+                                        <option>Select</option>
+                                        <option value="Self">Self</option>
+                                        <option value="Home">Home</option>
+                                        <option value="Agency">Agency</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Agency</label>
+                                    <div class="col-md-12">
+                                        @Html.TextBoxFor(m => m.Medication.Agency, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="staticEmail" class="col-form-label">Pharmacy</label>
+                                    <select name="Medication.Pharmacy" class="form-control" required>
+                                        @{
+                                            if (Model.Medication != null && Model.Medication.Pharmacy != null && Model.Medication.Pharmacy != string.Empty)
+                                            {
+                                                <option selected="selected" value="@Model.Medication.Pharmacy">@Model.Medication.Pharmacy</option>
+                                            }
+                                        }
+                                        <option>Select</option>
+                                        <option value="Pre-Admin">Pre-Admin</option>
+                                        <option value="5 Month Assessment">5 Month Assessment</option>
+                                        <option value="Update">Update</option>
+                                        <option value="Admission">Admission</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b>Medication Allergies</b>
+                                        <br>
+                                    </div>
+                                    <br>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                Medication Allergies
+                                            </div>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control" id="staticEmail">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button class="btn btn-danger">Add</button>
+                                            </div>
+                                        </div>
+                                        <br>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                Other Allergies
+                                            </div>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control" id="staticEmail">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button class="btn btn-danger">Add</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">
+                                tape
+                            </div>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control" id="staticEmail">
+                            </div>
+                            <div class="col-md-2">
+                                <img src="~/Content/assets/img/user_logout.png" class="img-responsive">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3">
+                                Hydantoins
+                            </div>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control" id="staticEmail">
+                            </div>
+                            <div class="col-md-2">
+                                <img src="~/Content/assets/img/user_logout.png" class="img-responsive">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-md-12 bg text-center">
+                                <h4>Sensory Abilities</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="col-md-12 text-center">
+                                    <h6>Vision</h6>
+                                </div>
+                                <div class="col-md-12">
+                                    @{
+                                        for (int i = 0; i < Model.SensoryAbilities.Vision.Count; i++)
+                                        {
+                                            <div class="form-check margin">
+                                                @Html.CheckBoxFor(m => m.SensoryAbilities.Vision[i].IsSelected, new { @class = "form-check-input" })
+                                                <label class="label" for="">@Model.SensoryAbilities.Vision[i].Name</label>
+                                                @Html.HiddenFor(m => m.SensoryAbilities.Vision[i].Name, new { @class = "label", value = Model.SensoryAbilities.Vision[i].Name })
+                                                @Html.HiddenFor(m => m.SensoryAbilities.Vision[i].Notes, new { @class = "label", value = Model.SensoryAbilities.Vision[i].Notes })
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="col-md-12 text-center">
+                                    <h6>Hearing</h6>
+                                </div>
+                                <div class="col-md-12">
+                                    @{
+                                        for (int i = 0; i < Model.SensoryAbilities.Hearing.Count; i++)
+                                        {
+                                            <div class="form-check margin">
+                                                @Html.CheckBoxFor(m => m.SensoryAbilities.Hearing[i].IsSelected, new { @class = "form-check-input" })
+                                                <label class="label" for="">@Model.SensoryAbilities.Hearing[i].Name</label>
+                                                @Html.HiddenFor(m => m.SensoryAbilities.Hearing[i].Name, new { @class = "label", value = Model.SensoryAbilities.Hearing[i].Name })
+                                                @Html.HiddenFor(m => m.SensoryAbilities.Hearing[i].Notes, new { @class = "label", value = Model.SensoryAbilities.Hearing[i].Notes })
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="col-md-12 text-center">
+                                    <h6>Communication/Speech</h6>
+                                </div>
+                                <div class="col-md-12">
+                                    @{
+                                        for (int i = 0; i < Model.SensoryAbilities.Communication.Count; i++)
+                                        {
+                                            <div class="form-check margin">
+                                                @Html.CheckBoxFor(m => m.SensoryAbilities.Communication[i].IsSelected, new { @class = "form-check-input" })
+                                                <label class="label" for="">@Model.SensoryAbilities.Communication[i].Name</label>
+                                                @Html.HiddenFor(m => m.SensoryAbilities.Communication[i].Name, new { @class = "label", value = Model.SensoryAbilities.Communication[i].Name })
+                                                @Html.HiddenFor(m => m.SensoryAbilities.Communication[i].Notes, new { @class = "label", value = Model.SensoryAbilities.Communication[i].Notes })
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="staticEmail" class="col-form-label">Notes</label><br>
+                                    @Html.TextAreaFor(m => m.SensoryAbilities.Notes, new { @class="textarea", rows = "5", style = "width: 100% !important;" })
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-md-12 bg text-center">
+                                <h4>Wound care</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Wound care</label>
+                                    <div class="col-md-12">
+                                       <select name="WoundCare.WoundCare" class="form-control" required>
+                                        @{
+                                            if (Model.WoundCare != null && Model.WoundCare.WoundCare != null && Model.WoundCare.WoundCare != string.Empty)
+                                            {
+                                                <option selected="selected" value="@Model.WoundCare.WoundCare">@Model.WoundCare.WoundCare</option>
+                                            }
+                                        }
+                                            <option>Select</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Assisted by</label>
+                                    <div class="col-md-12">
+                                         <select name="WoundCare.AssistedBy" class="form-control" required>
+                                        @{
+                                            if (Model.WoundCare != null && Model.WoundCare.AssistedBy != null && Model.WoundCare.AssistedBy != string.Empty)
+                                            {
+                                                <option selected="selected" value="@Model.WoundCare.AssistedBy">@Model.WoundCare.AssistedBy</option>
+                                            }
+                                        }
+                                            <option>Select</option>
+                                            <option value="Home">Home</option>
+                                            <option value="Agency">Agency</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Agency name</label>
+                                    <div class="col-md-12">
+                                        @Html.TextBoxFor(m => m.WoundCare.Agency, new { @class="form-control"})
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-md-12 bg text-center">
+                                <h4>Skin Care</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Skin Care</label>
+                                    <div class="col-md-12">
+                                        <select name="SkinCare.SkinCare" class="form-control" required>
+                                            @{
+                                                if (Model.SkinCare != null && Model.SkinCare.SkinCare != null && Model.SkinCare.SkinCare != string.Empty)
+                                                {
+                                                    <option selected="selected" value="@Model.SkinCare.SkinCare">@Model.SkinCare.SkinCare</option>
+                                                }
+                                            }
+                                            <option>Select</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Special Treatements</label>
+                                    <div class="col-md-12">
+                                        @Html.TextBoxFor(m => m.SkinCare.SpecialTreatments, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-md-12 bg text-center">
+                                <h4>Special Needs</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">O2-Oxygen</label>
+                                    <div class="col-md-12">
+                                        <select name="SpecialNeeds.Oxygen" class="form-control" required>
+                                            @{
+                                                if (Model.SpecialNeeds != null && Model.SpecialNeeds.Oxygen != null && Model.SpecialNeeds.Oxygen != string.Empty)
+                                                {
+                                                    <option selected="selected" value="@Model.SpecialNeeds.Oxygen">@Model.SpecialNeeds.Oxygen</option>
+                                                }
+                                            }
+                                            <option>Select</option>
+                                            <option value="N/A">N/A</option>
+                                            <option value="Independent">Independent</option>
+                                            <option value="Supervised">Supervised</option>
+                                            <option value="Assisted">Assisted</option>
+                                            <option value="Dependant">Dependant</option>
+                                            <option value="SL4">SL4</option>
+                                            <option value="SL4D">SL4D</option>
+                                            <option value="Private (Supportive)">Private (Supportive)</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3">
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Supplier</label>
+                                    <div class="col-md-12">
+                                       @Html.TextBoxFor(m => m.SpecialNeeds.OxygenSupplier, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3">
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Rate (L/min)</label>
+                                    <div class="col-md-12">
+                                         @Html.TextBoxFor(m => m.SpecialNeeds.OxygenRate, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3">
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Notes</label>
+                                    <div class="col-md-12">
+                                         @Html.TextBoxFor(m => m.SpecialNeeds.OxygenNotes, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3">
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">CPAP</label>
+                                    <div class="col-md-12">
+                                        <select name="SpecialNeeds.CPAP" class="form-control" required>
+                                            @{
+                                                if (Model.SpecialNeeds != null && Model.SpecialNeeds.CPAP != null && Model.SpecialNeeds.CPAP != string.Empty)
+                                                {
+                                                    <option selected="selected" value="@Model.SpecialNeeds.CPAP">@Model.SpecialNeeds.CPAP</option>
+                                                }
+                                            }
+                                            <option>Select</option>
+                                            <option value="N/A">N/A</option>
+                                            <option value="Independent">Independent</option>
+                                            <option value="Supervised">Supervised</option>
+                                            <option value="Assisted">Assisted</option>
+                                            <option value="Dependant">Dependant</option>
+                                            <option value="SL4">SL4</option>
+                                            <option value="SL4D">SL4D</option>
+                                            <option value="Private (Supportive)">Private (Supportive)</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3">
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Supplier</label>
+                                    <div class="col-md-12">
+                                         @Html.TextBoxFor(m => m.SpecialNeeds.CPAPSupplier, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3">
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Notes</label>
+                                    <div class="col-md-12">
+                                         @Html.TextBoxFor(m => m.SpecialNeeds.CPAPNotes, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-md-12 bg text-center">
+                                <h4>Special Equipment</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="col-md-12 bg text-center">
+                                    <h6>Special Equipment</h6>
+                                </div>
+                                <div class="col-md-12">
+                                    @{
+                                        for (int i = 0; i < Model.SpecialEquipment.SpecialEquipment.Count; i++)
+                                        {
+                                            <div class="form-check margin">
+                                                @Html.CheckBoxFor(m => m.SpecialEquipment.SpecialEquipment[i].IsSelected, new { @class = "form-check-input" })
+                                                <label class="label" for="">@Model.SpecialEquipment.SpecialEquipment[i].Name</label>
+                                                @Html.HiddenFor(m => m.SpecialEquipment.SpecialEquipment[i].Name, new { @class = "label", value = Model.SpecialEquipment.SpecialEquipment[i].Name })
+                                                @Html.HiddenFor(m => m.SpecialEquipment.SpecialEquipment[i].Notes, new { @class = "label", value = Model.SpecialEquipment.SpecialEquipment[i].Notes })
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="staticEmail" class="col-form-label">Details</label><br>
+                                    @Html.TextAreaFor(m => m.SpecialEquipment.Details, new { @class = "form-control" })
+                                    <textarea class="textarea" rows="5" style="width: 100% !important;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-md-12 bg text-center">
+                                <h4>Family/Support</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Resident Family meeting to be arranged</label>
+                                    <div class="col-md-12">
+                                         <select name="FamilySupportModel.FamilyMeeting" class="form-control" required>
+                                        @{
+                                            if (Model.FamilySupportModel != null && Model.FamilySupportModel.FamilyMeeting != null && Model.FamilySupportModel.FamilyMeeting != string.Empty)
+                                            {
+                                                <option selected="selected" value="@Model.FamilySupportModel.FamilyMeeting">@Model.FamilySupportModel.FamilyMeeting</option>
+                                            }
+                                        }
+                                            <option>Select</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-12 col-form-label">Family Involvement</label>
+                                    <div class="col-md-12">
+                                         <select name="FamilySupportModel.FamilyInvolvement" class="form-control" required>
+                                        @{
+                                            if (Model.FamilySupportModel != null && Model.FamilySupportModel.FamilyInvolvement != null && Model.FamilySupportModel.FamilyInvolvement != string.Empty)
+                                            {
+                                                <option selected="selected" value="@Model.FamilySupportModel.FamilyInvolvement">@Model.FamilySupportModel.FamilyInvolvement</option>
+                                            }
+                                        }
+                                            <option>Select</option>
+                                            <option value="Never">Never</option>
+                                            <option value="Daily">Daily</option>
+                                            <option value="Weekly">Weekly</option>
+                                            <option value="Monthly">Monthly</option>
+                                            <option value="Annually">Annually</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-md-12 bg text-center">
+                                <h4>Immunization</h4>
+                            </div>
+                            <div class="col-md-3">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Mantoux / TB</label>
+                                            <div class="col-md-12">
+                                                <select name="Immunization.TB" class="form-control" required>
+                                                @{
+                                                    if (Model.Immunization != null && Model.Immunization.TB != null && Model.Immunization.TB != string.Empty)
+                                                    {
+                                                        <option selected="selected" value="@Model.Immunization.TB">@Model.Immunization.TB</option>
+                                                    }
+                                                }
+                                                    <option>Select</option>
+                                                    <option value="Unknown">Unknown</option>
+                                                    <option value="Yes">Yes</option>
+                                                    <option value="No">No</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group form-group-default">
+                                            <label>Date</label>
+                                           @Html.TextBoxFor(m => m.Immunization.TBDate, new { @class="Form-control"})
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Chest X-Ray</label>
+                                            <div class="col-md-12">
+                                               <select name="Immunization.ChestXRay" class="form-control" required>
+                                                @{
+                                                    if (Model.Immunization != null && Model.Immunization.ChestXRay != null && Model.Immunization.ChestXRay != string.Empty)
+                                                    {
+                                                        <option selected="selected" value="@Model.Immunization.ChestXRay">@Model.Immunization.ChestXRay</option>
+                                                    }
+                                                }
+                                                    <option>Select</option>
+                                                    <option value="Unknown">Unknown</option>
+                                                    <option value="Yes">Yes</option>
+                                                    <option value="No">No</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group form-group-default">
+                                            <label>Date</label>
+                                            @Html.TextBoxFor(m => m.Immunization.ChestXRayDate, new { @class="Form-control"})
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Pneumonia</label>
+                                            <div class="col-md-12">
+                                                <select name="Immunization.Pneumonia" class="form-control" required>
+                                                    @{
+                                                        if (Model.Immunization != null && Model.Immunization.Pneumonia != null && Model.Immunization.Pneumonia != string.Empty)
+                                                        {
+                                                            <option selected="selected" value="@Model.Immunization.Pneumonia">@Model.Immunization.Pneumonia</option>
+                                                        }
+                                                    }
+                                                    <option>Select</option>
+                                                    <option value="Unknown">Unknown</option>
+                                                    <option value="Yes">Yes</option>
+                                                    <option value="No">No</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group form-group-default">
+                                            <label>Date</label>
+                                             @Html.TextBoxFor(m => m.Immunization.PneumoniaDate, new { @class="Form-control"})
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Flu Vaccine</label>
+                                            <div class="col-md-12">
+                                                <select name="Immunization.FluVaccine" class="form-control" required>
+                                                    @{
+                                                        if (Model.Immunization != null && Model.Immunization.FluVaccine != null && Model.Immunization.FluVaccine != string.Empty)
+                                                        {
+                                                            <option selected="selected" value="@Model.Immunization.FluVaccine">@Model.Immunization.FluVaccine</option>
+                                                        }
+                                                    }
+                                                    <option>Select</option>
+                                                    <option value="Unknown">Unknown</option>
+                                                    <option value="Yes">Yes</option>
+                                                    <option value="No">No</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group form-group-default">
+                                            <label>Date</label>
+                                            @Html.TextBoxFor(m => m.Immunization.FluVaccineDate, new { @class = "Form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Tetanus</label>
+                                            <div class="col-md-12">
+                                                <select name="Immunization.Tetanus" class="form-control" required>
+                                                    @{
+                                                        if (Model.Immunization != null && Model.Immunization.Tetanus != null && Model.Immunization.Tetanus != string.Empty)
+                                                        {
+                                                            <option selected="selected" value="@Model.Immunization.Tetanus">@Model.Immunization.Tetanus</option>
+                                                        }
+                                                    }
+                                                    <option>Select</option>
+                                                    <option value="Unknown">Unknown</option>
+                                                    <option value="Yes">Yes</option>
+                                                    <option value="No">No</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group form-group-default">
+                                            <label>Date Completed</label>
+                                            @Html.TextBoxFor(m => m.Immunization.TetanusDate, new { @class = "Form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-md-12 bg text-center">
+                                <h4>Infectious Diseases</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-12 col-form-label">M.R.S.A</label>
+                                        <div class="col-md-12">
+                                            <select name="InfectiousDiseases.MRSA" class="form-control" required>
+                                                @{
+                                                    if (Model.InfectiousDiseases != null && Model.InfectiousDiseases.MRSA != null && Model.InfectiousDiseases.MRSA != string.Empty)
+                                                    {
+                                                        <option selected="selected" value="@Model.InfectiousDiseases.MRSA">@Model.InfectiousDiseases.MRSA</option>
+                                                    }
+                                                }
+                                                <option>Select</option>
+                                                <option value="Unknown">Unknown</option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group form-group-default">
+                                            <label>Diagnosed Date</label>
+                                             @Html.TextBoxFor(m => m.InfectiousDiseases.MRSADiagnosedDate, new { @class = "Form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group form-group-default">
+                                            <input type="checkbox" class="form-control" value="Unknown">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group form-group-default">
+                                            <label>Resolved Date</label>
+                                            @Html.TextBoxFor(m => m.InfectiousDiseases.MRSAResolvedDate, new { @class = "Form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group form-group-default">
+                                            <input type="checkbox" class="form-control" value="Unknown">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-4">
+
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-12 col-form-label">V.R.E</label>
+                                        <div class="col-md-12">
+                                            <select name="InfectiousDiseases.VRE" class="form-control" required>
+                                                @{
+                                                    if (Model.InfectiousDiseases != null && Model.InfectiousDiseases.VRE != null && Model.InfectiousDiseases.VRE != string.Empty)
+                                                    {
+                                                        <option selected="selected" value="@Model.InfectiousDiseases.VRE">@Model.InfectiousDiseases.VRE</option>
+                                                    }
+                                                }
+                                                <option>Select</option>
+                                                <option value="Unknown">Unknown</option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group form-group-default">
+                                            <label>Diagnosed Date</label>
+                                             @Html.TextBoxFor(m => m.InfectiousDiseases.VREDiagnosedDate, new { @class = "Form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group form-group-default">
+                                            <input type="checkbox" class="form-control" value="Unknown">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group form-group-default">
+                                            <label>Resolved Date</label>
+                                             @Html.TextBoxFor(m => m.InfectiousDiseases.VREResolvedDate, new { @class = "Form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group form-group-default">
+                                            <input type="checkbox" class="form-control" value="Unknown">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-4">
+
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-12 col-form-label">C-Diff</label>
+                                        <div class="col-md-12">
+                                           <select name="InfectiousDiseases.CDiff" class="form-control" required>
+                                                @{
+                                                    if (Model.InfectiousDiseases != null && Model.InfectiousDiseases.CDiff != null && Model.InfectiousDiseases.CDiff != string.Empty)
+                                                    {
+                                                        <option selected="selected" value="@Model.InfectiousDiseases.CDiff">@Model.InfectiousDiseases.CDiff</option>
+                                                    }
+                                                }
+                                                <option>Select</option>
+                                                <option value="Unknown">Unknown</option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group form-group-default">
+                                            <label>Diagnosed Date</label>
+                                            @Html.TextBoxFor(m => m.InfectiousDiseases.CDiffDiagnosedDate, new { @class = "Form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group form-group-default">
+                                            <input type="checkbox" class="form-control" value="Unknown">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group form-group-default">
+                                            <label>Resolved Date</label>
+                                            @Html.TextBoxFor(m => m.InfectiousDiseases.CDiffResolvedDate, new { @class = "Form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group form-group-default">
+                                            <input type="checkbox" class="form-control" value="Unknown">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-4">
+
+                                <div class="col-md-12">
+                                    <div class="form-group form-group-default">
+                                        <label>Other</label>
+                                        @Html.TextBoxFor(m => m.InfectiousDiseases.Other, new { @class = "Form-control" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group form-group-default">
+                                            <label>Diagnosed Date</label>
+                                            @Html.TextBoxFor(m => m.InfectiousDiseases.OtherDiagnosedDate, new { @class = "Form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-check margin">
+                                            <input class="form-check-input" type="checkbox" value="" id="">
+                                            <label class="label" for="">
+                                                Unknown
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group form-group-default">
+                                            <label>Resolved Date</label>
+                                            @Html.TextBoxFor(m => m.InfectiousDiseases.OtherResolvedDate, new { @class = "Form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-check margin">
+                                            <input class="form-check-input" type="checkbox" value="" id="">
+                                            <label class="label" for="">
+                                                Unknown
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3 offset-md-9">
+                                <div class="form-check form-check-inline" style="margin-right: 20px">
+                                    @Html.RadioButtonFor(m => m.CompleteStatus, "InComplete", new { @class = "form-check-input" })
+                                    <label class="label" for="inlineCheckbox1">InComplete</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    @Html.RadioButtonFor(m => m.CompleteStatus, "Complete", new { @class = "form-check-input" })
+                                    <label class="label" for="inlineCheckbox2">Complete</label>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="row">
+                            <div class="col-md-12 text-right">
+                                <br>
+                                <button class="btn btn-danger btn-lg">SAVE</button>
+                            </div>
+                        </div>
+
+
+
+
+
+                    </div>
+                </div>
+
+
+                <!-- END PLACE PAGE CONTENT HERE -->
+            </form>
+            </div>
+            <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+        <!-- New Resident Modal -->
+        <div class="modal fade" id="newResidentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xlg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">New Resident Form</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-tabs mt-4">
+                            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">General Info</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Emergency Contact</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Medical Info</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-other" role="tab" aria-controls="pills-contact" aria-selected="false">Other</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">First</div>
+                                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">Second</div>
+                                <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">Third</div>
+                                <div class="tab-pane fade" id="pills-other" role="tabpanel" aria-labelledby="pills-contact-tab">Fourth</div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Add Resident</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @RenderPage("~/Views/Shared/_Footer.cshtml")
