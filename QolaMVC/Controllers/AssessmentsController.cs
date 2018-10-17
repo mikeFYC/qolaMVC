@@ -194,6 +194,14 @@ namespace QolaMVC.Controllers
                 vm.mike = new Collection<ExcerciseActivityDetailModel_mike>();
                 vm.mike.Add(new ExcerciseActivityDetailModel_mike());
             }
+
+            vm.HSEPDetail_mike = AssessmentDAL.GetHSEPDetail_mike(resident.ID);
+            if (vm.HSEPDetail_mike.Count == 0)
+            {
+                vm.HSEPDetail_mike = new Collection<HSEPDetailModel_mike>();
+                vm.HSEPDetail_mike.Add(new HSEPDetailModel_mike());
+            }
+
             List<DateTime> l_AssessmentDates = new List<DateTime>();
             foreach (var l_A in vm.mike)
             {
@@ -206,11 +214,13 @@ namespace QolaMVC.Controllers
             {
                 TempData["index"] = "0";
                 vm.mike_single = vm.mike[0];
+                vm.HSEPDetail_mike_single = vm.HSEPDetail_mike[0];
             }
             else
             {
                 TempData["index"] = index;
                 vm.mike_single = vm.mike[int.Parse(index)];
+                vm.HSEPDetail_mike_single = vm.HSEPDetail_mike[int.Parse(index)];
             }
 
             TempData.Keep("index");

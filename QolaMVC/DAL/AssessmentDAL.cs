@@ -2468,5 +2468,68 @@ namespace QolaMVC.DAL
             }
         }
 
+
+        public static Collection<HSEPDetailModel_mike> GetHSEPDetail_mike(int p_ResidentId)
+        {
+            string exception = string.Empty;
+
+            Collection<HSEPDetailModel_mike> l_Assessments = new Collection<HSEPDetailModel_mike>();
+            HSEPDetailModel_mike l_Assessment;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("select * from [tbl_AB_HSEP_Detail_mike] where ResidentId=@ResidentId order by start_time DESC", l_Conn);
+                l_Conn.Open();
+                l_Cmd.Parameters.AddWithValue("@ResidentId", p_ResidentId);
+                DataSet AssesmentsReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(AssesmentsReceive);
+                if (AssesmentsReceive.Tables[0].Rows.Count > 0)
+                {
+                    for (int index = 0; index <= AssesmentsReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_Assessment = new HSEPDetailModel_mike();
+                        l_Assessment.Id = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["Id"]);
+                        l_Assessment.Residentid = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_Assessment.StartTime = Convert.ToDateTime(AssesmentsReceive.Tables[0].Rows[index]["start_time"]);
+                        l_Assessment.EndTime = Convert.ToDateTime(AssesmentsReceive.Tables[0].Rows[index]["end_time"]);
+                        l_Assessment.EnteredBy = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["EnteredBy"]);
+                        l_Assessment.EnterDate = Convert.ToDateTime(AssesmentsReceive.Tables[0].Rows[index]["DateEntered"]);
+                        l_Assessment.DateOfTeaching_1 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["DateOfTeaching_1"]);
+                        l_Assessment.SignName_1 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["SignName_1"]);
+                        l_Assessment.DateOfTeaching_2 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["DateOfTeaching_2"]);
+                        l_Assessment.SignName_2 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["SignName_2"]);
+                        l_Assessment.DateOfTeaching_3 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["DateOfTeaching_3"]);
+                        l_Assessment.SignName_3 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["SignName_3"]);
+                        l_Assessment.DateOfTeaching_4 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["DateOfTeaching_4"]);
+                        l_Assessment.SignName_4 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["SignName_4"]);
+                        l_Assessment.DateOfTeaching_5 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["DateOfTeaching_5"]);
+                        l_Assessment.SignName_5 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["SignName_5"]);
+                        l_Assessment.DateOfTeaching_6 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["DateOfTeaching_6"]);
+                        l_Assessment.SignName_6 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["SignName_6"]);
+                        l_Assessment.DateOfTeaching_7 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["DateOfTeaching_7"]);
+                        l_Assessment.SignName_7 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["SignName_7"]);
+                        l_Assessment.DateOfTeaching_8 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["DateOfTeaching_8"]);
+                        l_Assessment.SignName_8 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["SignName_8"]);
+                        l_Assessment.DateOfTeaching_9 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["DateOfTeaching_9"]);
+                        l_Assessment.SignName_9 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["SignName_9"]);
+                        l_Assessment.DateOfTeaching_10 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["DateOfTeaching_10"]);
+                        l_Assessment.SignName_10 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["SignName_10"]);
+
+                        l_Assessments.Add(l_Assessment);
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                exception = "GetHSEPDetail_mike |" + ex.ToString();
+                throw;
+            }
+            return l_Assessments;
+        }
     }
 }

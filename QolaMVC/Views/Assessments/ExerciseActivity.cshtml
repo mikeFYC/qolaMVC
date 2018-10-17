@@ -42,6 +42,13 @@
     #assessment_table thead tr th {
         font-size: 1vw;
     }
+
+    #HSEP_table tbody tr td input{
+        padding:2px !important;
+    }
+    #HSEP_table tbody tr td{
+        padding: 5px !important;
+    }
 </style>
 
 <script>
@@ -145,53 +152,77 @@
                                 </div>
                             </div>
                             <br><br>
-                            <div class="row">
-                                <table class="table table-bordered">
-                                    <thead class="bg-primary">
-                                        <tr>
-                                            <td></td>
-                                            @if (Model != null && Model.HSEPDetail != null)
+                                <div class="row">
+                                    <div style="max-width:50%;">
+                                        <label style="font-size:1.5vw;display:inline-block;">Assessment History:</label>
+                                        <select name="AssessmentDate" id="selectdate" onchange="formsubmit(this)" style="width:12vw;height:2.5vw;font-size:1.5vw;display:inline-block;">
+                                            @if (ViewBag.AssessmentDates != null)
                                             {
-                                                for (int i = 0; i < Model.HSEPDetail.Count; i++)
-                                                {
-                                                    @Html.HiddenFor(m => Model.HSEPDetail[i].ActivityName)
-                                                    <th class="text-white text-center">@Model.HSEPDetail[i].ActivityName</th>
-                                                    @*<th class="text-white text-center">Wall Push-ups</td>
-                                        <th class="text-white text-center">Rise Up on toes</th>
-                                        <th class="text-white text-center">Toe Taps</td>
-                                        <th class="text-white text-center">Seat Walk</th>
-                                        <th class="text-white text-center">Get up from chair</td>
-                                        <th class="text-white text-center">Leg Lift</th>
-                                        <th class="text-white text-center">Reaching</th>
-                                        <th class="text-white text-center">Standing Stretch</th>
-                                        <th class="text-white text-center">Seated Stretch</th>*@
-                                                }
-                                            }
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>DATE OF INITIAL TEACHING</td>
-                                            @if (Model != null && Model.HSEPDetail != null)
-                                            {
-                                                for (int i = 0; i < Model.HSEPDetail.Count; i++)
-                                                {
-                                                    <td>
-                                                        @Html.TextBoxFor(modelItem => Model.HSEPDetail[i].DateOfTeaching, new { @class = "form-control" })
-                                                    </td>
-                                                }
-                                            }
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
 
-                            <div class="row">
+                                                for (var ind = 0; ind < ((List<DateTime>)ViewBag.AssessmentDates).Count(); ind++)
+                                                {
+                                                    <option value=@ind>@(((List<DateTime>)ViewBag.AssessmentDates)[ind].ToShortDateString())</option>
+                                                }
+                                            }
+                                        </select>
+                                        <button class="btn btn-primary" type="button" style="display:inline-block;" onclick="location.href='@Url.Action("Add_ExcerciseActivity_mike", "Assessments")'">New</button>
+                                    </div>
+                                    <br><br><br>
+                                    <table class="table table-bordered" id="HSEP_table">
+                                        <thead class="bg-primary">
+                                            <tr>
+                                                <td></td>
+                                                @Html.HiddenFor(m => Model.HSEPDetail_mike_single.Id)
+                                                @*<th class="text-white text-center">@Model.HSEPDetail[0].ActivityName</th>*@
+                                                <th class="text-white text-center">Walking</th>    
+                                                <th class="text-white text-center">Wall Push-ups</th>
+                                                <th class="text-white text-center">Rise Up on toes</th>
+                                                <th class="text-white text-center">Toe Taps</th>
+                                                <th class="text-white text-center">Seat Walk</th>
+                                                <th class="text-white text-center">Get up from chair</th>
+                                                <th class="text-white text-center">Leg Lift</th>
+                                                <th class="text-white text-center">Reaching</th>
+                                                <th class="text-white text-center">Standing Stretch</th>
+                                                <th class="text-white text-center">Seated Stretch</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>DATE OF INITIAL TEACHING</td>
+                                                <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.DateOfTeaching_1, new { @class = "form-control" })</td>
+                                                <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.DateOfTeaching_2, new { @class = "form-control" })</td>
+                                                <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.DateOfTeaching_3, new { @class = "form-control" })</td>
+                                                <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.DateOfTeaching_4, new { @class = "form-control" })</td>
+                                                <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.DateOfTeaching_5, new { @class = "form-control" })</td>
+                                                <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.DateOfTeaching_6, new { @class = "form-control" })</td>
+                                                <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.DateOfTeaching_7, new { @class = "form-control" })</td>
+                                                <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.DateOfTeaching_8, new { @class = "form-control" })</td>
+                                                <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.DateOfTeaching_9, new { @class = "form-control" })</td>
+                                                <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.DateOfTeaching_10, new { @class = "form-control" })</td>
+                                            </tr>
+                                            <tr id="Sigiture">
+                                                <td>TRAINER SIGNITURE</td>
+                                                <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.SignName_1, new { @class = "form-control" })</td>
+                                                <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.SignName_2, new { @class = "form-control" })</td>
+                                                <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.SignName_3, new { @class = "form-control" })</td>
+                                                <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.SignName_4, new { @class = "form-control" })</td>
+                                                <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.SignName_5, new { @class = "form-control" })</td>
+                                                <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.SignName_6, new { @class = "form-control" })</td>
+                                                <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.SignName_7, new { @class = "form-control" })</td>
+                                                <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.SignName_8, new { @class = "form-control" })</td>
+                                                <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.SignName_9, new { @class = "form-control" })</td>
+                                                <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.SignName_10, new { @class = "form-control" })</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            @*<div class="row">
                                 <div class="col-md-12 text-right">
                                     <br>
                                     <a href="#" id="btnSave" class="btn btn-danger btn-lg">SAVE</a>
                                 </div>
-                            </div>
+                            </div>*@
                         </div>
 
                         @*<div class="card-block" id="assessment" style="display:none;">
@@ -484,20 +515,7 @@
                         <div class="card-block" id="assessment">
                             <div class="row">
                                 <div class="row">
-                                    <div style="max-width:50%;">
-                                            <label style="font-size:1.5vw;display:inline-block;">Assessment History:</label>
-                                            <select name="AssessmentDate" id="selectdate" onchange="formsubmit(this)" style="width:12vw;height:2.5vw;font-size:1.5vw;display:inline-block;">
-                                                @if (ViewBag.AssessmentDates != null)
-                                                {
 
-                                                    for (var ind = 0; ind < ((List<DateTime>)ViewBag.AssessmentDates).Count(); ind++)
-                                                    {
-                                                        <option value=@ind>@(((List<DateTime>)ViewBag.AssessmentDates)[ind].ToShortDateString())</option>
-                                                    }
-                                                }
-                                            </select>
-                                            <button class="btn btn-primary" type="button" style="display:inline-block;" onclick="location.href='@Url.Action("Add_ExcerciseActivity_mike", "Assessments")'">New</button>
-                                    </div>
 
                                     <div class="col-md-12 text-center">
                                         <h5>Using a check mark, indicate which exercises client completes for each day</h5>
@@ -1677,12 +1695,20 @@
 
             var a = $('#hiddeninput1').val();
             $('#selectdate').val(a);
-            var inputs = $('input[type=checkbox]');
-            for (var b = 0; b < inputs.length; b++) {
-                if (inputs[b].checked == true) {
-                    inputs[b].disabled = true
+            var inputs_check = $('input[type=checkbox]');
+            for (var b = 0; b < inputs_check.length; b++) {
+                if (inputs_check[b].checked == true) {
+                    inputs_check[b].disabled = true;
                 }
             }
+            var inputs_text = $('input[type=text]');
+            for (var b = 0; b < inputs_text.length; b++) {
+                if (inputs_text[b].value != "" || inputs_text[b].parentElement.parentElement.id=="Sigiture") {
+                    inputs_text[b].disabled = true;
+                    inputs_text[b].style.color = "black";
+                }
+            }
+
 
 
         </script>
