@@ -200,14 +200,20 @@ namespace QolaMVC.Controllers
                 l_AssessmentDates.Add(l_A.start_time);
             }
             ViewBag.AssessmentDates = l_AssessmentDates;
+
+
             if (index == null || index == "")
             {
                 TempData["index"] = "0";
+                vm.mike_single = vm.mike[0];
             }
             else
+            {
                 TempData["index"] = index;
+                vm.mike_single = vm.mike[int.Parse(index)];
+            }
 
-
+            TempData.Keep("index");
             return View(vm);
         }
 
@@ -244,7 +250,7 @@ namespace QolaMVC.Controllers
             return RedirectToAction("ExerciseActivity");
         }
 
-        public ActionResult AddExcerciseActivity_mike(ExcerciseActivityViewModel vm)
+        public ActionResult UpdateExcerciseActivity_mike(ExcerciseActivityViewModel vm)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -254,16 +260,15 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
-            foreach (var d in vm.mike)
-            {
-                d.DateEntered = DateTime.Now;
-                d.EnteredBy = user.ID;
-                d.EnteredByName = user.Name;
-                d.Residentid = resident.ID;
-                d.ResidentName = resident.FirstName + " " + resident.LastName;
-                d.SuiteNumber = resident.SuiteNo;
-                AssessmentDAL.AddExcerciseActivity_mike(d);
-            }
+
+            vm.mike_single.DateEntered = DateTime.Now;
+            vm.mike_single.EnteredBy = user.ID;
+            vm.mike_single.EnteredByName = user.Name;
+            vm.mike_single.Residentid = resident.ID;
+            vm.mike_single.ResidentName = resident.FirstName + " " + resident.LastName;
+            vm.mike_single.SuiteNumber = resident.SuiteNo;
+            AssessmentDAL.updateExcerciseActivity_mike(vm.mike_single);
+            
 
             foreach (var hs in vm.HSEPDetail)
             {
@@ -277,6 +282,21 @@ namespace QolaMVC.Controllers
             vm.ExcerciseSummary.EnteredBy = user;
             AssessmentDAL.AddExcerciseActivitySummary(vm.ExcerciseSummary);
 
+            var ind = TempData["index"];
+
+            return RedirectToAction("ExerciseActivity", new { index = ind });
+        }
+
+        public ActionResult Add_ExcerciseActivity_mike()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            AssessmentDAL.ADDExcerciseActivity_mike(resident.ID,user.ID);
             return RedirectToAction("ExerciseActivity");
         }
 

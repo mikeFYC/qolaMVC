@@ -16,6 +16,8 @@ namespace QolaMVC.ViewModels
 
         public Collection<ExcerciseActivityDetailModel_mike> mike { get; set; }
 
+        public ExcerciseActivityDetailModel_mike mike_single { get; set; }
+
         public ExcerciseActivitySummaryModel ExcerciseSummary { get; set; }
         public Collection<HSEPDetailModel> HSEPDetail { get; set; }
         public Collection<ExcerciseActivityDetailModel> Detail { get; set; }
