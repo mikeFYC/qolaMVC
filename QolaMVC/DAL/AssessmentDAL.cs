@@ -2441,7 +2441,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static void ADDExcerciseActivity_mike(int residentid, int userid)
+        public static void ADDExcerciseActivity_mike(int residentid, int userid, DateTime sameTime)
         {
             string exception = string.Empty;
 
@@ -2454,6 +2454,8 @@ namespace QolaMVC.DAL
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 l_Cmd.Parameters.AddWithValue("@ResidentId", residentid);
                 l_Cmd.Parameters.AddWithValue("@modified_by", userid);
+                l_Cmd.Parameters.AddWithValue("@start_time", sameTime);
+                l_Cmd.Parameters.AddWithValue("@end_time", sameTime);
                 l_Cmd.ExecuteNonQuery();
             }
             catch (Exception ex)
@@ -2467,7 +2469,6 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-
 
         public static Collection<HSEPDetailModel_mike> GetHSEPDetail_mike(int p_ResidentId)
         {
@@ -2530,6 +2531,224 @@ namespace QolaMVC.DAL
                 throw;
             }
             return l_Assessments;
+        }
+
+        public static void UpdateHSEPDetail_mike(HSEPDetailModel_mike p_Model,string userName)
+        {
+            string exception = string.Empty;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Update_HSEP_Detail_mike", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@Id", p_Model.Id);
+                l_Cmd.Parameters.AddWithValue("@ResidentId", p_Model.Residentid);
+                l_Cmd.Parameters.AddWithValue("@EnteredBy", p_Model.EnteredBy);
+                l_Cmd.Parameters.AddWithValue("@DateEntered", DateTime.Now);
+                if (p_Model.DateOfTeaching_1 != "" && p_Model.DateOfTeaching_1 != null && p_Model.SignName_1 == null)
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_1", p_Model.DateOfTeaching_1);
+                    l_Cmd.Parameters.AddWithValue("@SignName_1", userName);
+                }
+                else if (p_Model.DateOfTeaching_1 != null && p_Model.SignName_1 != null)
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_1", p_Model.DateOfTeaching_1);
+                    l_Cmd.Parameters.AddWithValue("@SignName_1", p_Model.SignName_1);
+                }
+                else
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_1", "");
+                    l_Cmd.Parameters.AddWithValue("@SignName_1", "");
+                }
+
+                if (p_Model.DateOfTeaching_2 != "" && p_Model.DateOfTeaching_2 != null && p_Model.SignName_2 == null)
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_2", p_Model.DateOfTeaching_2);
+                    l_Cmd.Parameters.AddWithValue("@SignName_2", userName);
+                }
+                else if (p_Model.DateOfTeaching_2 != null && p_Model.SignName_2 != null)
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_2", p_Model.DateOfTeaching_2);
+                    l_Cmd.Parameters.AddWithValue("@SignName_2", p_Model.SignName_2);
+                }
+                else
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_2", "");
+                    l_Cmd.Parameters.AddWithValue("@SignName_2", "");
+                }
+
+                if (p_Model.DateOfTeaching_3 != "" && p_Model.DateOfTeaching_3 != null && p_Model.SignName_3 == null)
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_3", p_Model.DateOfTeaching_3);
+                    l_Cmd.Parameters.AddWithValue("@SignName_3", userName);
+                }
+                else if (p_Model.DateOfTeaching_3 != null && p_Model.SignName_3 != null)
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_3", p_Model.DateOfTeaching_3);
+                    l_Cmd.Parameters.AddWithValue("@SignName_3", p_Model.SignName_3);
+                }
+                else
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_3", "");
+                    l_Cmd.Parameters.AddWithValue("@SignName_3", "");
+                }
+
+                if (p_Model.DateOfTeaching_4 != "" && p_Model.DateOfTeaching_4 != null && p_Model.SignName_4 == null)
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_4", p_Model.DateOfTeaching_4);
+                    l_Cmd.Parameters.AddWithValue("@SignName_4", userName);
+                }
+                else if (p_Model.DateOfTeaching_4 != null && p_Model.SignName_4 != null)
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_4", p_Model.DateOfTeaching_4);
+                    l_Cmd.Parameters.AddWithValue("@SignName_4", p_Model.SignName_4);
+                }
+                else
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_4", "");
+                    l_Cmd.Parameters.AddWithValue("@SignName_4", "");
+                }
+
+                if (p_Model.DateOfTeaching_5 != "" && p_Model.DateOfTeaching_5 != null && p_Model.SignName_5 == null)
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_5", p_Model.DateOfTeaching_5);
+                    l_Cmd.Parameters.AddWithValue("@SignName_5", userName);
+                }
+                else if (p_Model.DateOfTeaching_5 != null && p_Model.SignName_5 != null)
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_5", p_Model.DateOfTeaching_5);
+                    l_Cmd.Parameters.AddWithValue("@SignName_5", p_Model.SignName_5);
+                }
+                else
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_5", "");
+                    l_Cmd.Parameters.AddWithValue("@SignName_5", "");
+                }
+
+                if (p_Model.DateOfTeaching_6 != "" && p_Model.DateOfTeaching_6 != null && p_Model.SignName_6 == null)
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_6", p_Model.DateOfTeaching_6);
+                    l_Cmd.Parameters.AddWithValue("@SignName_6", userName);
+                }
+                else if (p_Model.DateOfTeaching_6 != null && p_Model.SignName_6 != null)
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_6", p_Model.DateOfTeaching_6);
+                    l_Cmd.Parameters.AddWithValue("@SignName_6", p_Model.SignName_6);
+                }
+                else
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_6", "");
+                    l_Cmd.Parameters.AddWithValue("@SignName_6", "");
+                }
+
+                if (p_Model.DateOfTeaching_7 != "" && p_Model.DateOfTeaching_7 != null && p_Model.SignName_7 == null)
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_7", p_Model.DateOfTeaching_7);
+                    l_Cmd.Parameters.AddWithValue("@SignName_7", userName);
+                }
+                else if (p_Model.DateOfTeaching_7 != null && p_Model.SignName_7 != null)
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_7", p_Model.DateOfTeaching_7);
+                    l_Cmd.Parameters.AddWithValue("@SignName_7", p_Model.SignName_7);
+                }
+                else
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_7", "");
+                    l_Cmd.Parameters.AddWithValue("@SignName_7", "");
+                }
+
+                if (p_Model.DateOfTeaching_8 != "" && p_Model.DateOfTeaching_8 != null && p_Model.SignName_8 == null)
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_8", p_Model.DateOfTeaching_8);
+                    l_Cmd.Parameters.AddWithValue("@SignName_8", userName);
+                }
+                else if (p_Model.DateOfTeaching_8 != null && p_Model.SignName_8 != null)
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_8", p_Model.DateOfTeaching_8);
+                    l_Cmd.Parameters.AddWithValue("@SignName_8", p_Model.SignName_8);
+                }
+                else
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_8", "");
+                    l_Cmd.Parameters.AddWithValue("@SignName_8", "");
+                }
+
+                if (p_Model.DateOfTeaching_9 != "" && p_Model.DateOfTeaching_9 != null && p_Model.SignName_9 == null)
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_9", p_Model.DateOfTeaching_9);
+                    l_Cmd.Parameters.AddWithValue("@SignName_9", userName);
+                }
+                else if (p_Model.DateOfTeaching_9 != null && p_Model.SignName_9 != null)
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_9", p_Model.DateOfTeaching_9);
+                    l_Cmd.Parameters.AddWithValue("@SignName_9", p_Model.SignName_9);
+                }
+                else
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_9", "");
+                    l_Cmd.Parameters.AddWithValue("@SignName_9", "");
+                }
+
+                if (p_Model.DateOfTeaching_10 != "" && p_Model.DateOfTeaching_10 != null && p_Model.SignName_10 == null)
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_10", p_Model.DateOfTeaching_10);
+                    l_Cmd.Parameters.AddWithValue("@SignName_10", userName);
+                }
+                else if (p_Model.DateOfTeaching_10 != null && p_Model.SignName_10 != null)
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_10", p_Model.DateOfTeaching_10);
+                    l_Cmd.Parameters.AddWithValue("@SignName_10", p_Model.SignName_10);
+                }
+                else
+                {
+                    l_Cmd.Parameters.AddWithValue("@DateOfTeaching_10", "");
+                    l_Cmd.Parameters.AddWithValue("@SignName_10", "");
+                }
+
+                l_Cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                exception = "UpdateHSEPDetail_mike |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+        public static void ADDHSEPDetail_mike(int residentid, int userid, DateTime sameTime)
+        {
+            string exception = string.Empty;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Add_HSEP_Detail_mike", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@ResidentId", residentid);
+                l_Cmd.Parameters.AddWithValue("@start_time", sameTime);
+                l_Cmd.Parameters.AddWithValue("@end_time", sameTime);
+                l_Cmd.Parameters.AddWithValue("@EnteredBy", userid);
+                l_Cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                exception = "ADDHSEPDetail_mike |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
         }
     }
 }
