@@ -1,0 +1,911 @@
+﻿@model  QolaMVC.Models.ResidentModel
+
+@RenderPage("~/Views/Shared/_Header.cshtml")
+
+
+<style>
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+</style>
+
+<div class="page-content-wrapper">
+    <!-- START PAGE CONTENT -->
+    <div class="content">
+        <!-- START JUMBOTRON -->
+        <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+            <div class="container-fluid container-fixed-lg">
+                <!-- <div class="inner"> -->
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h3></h3>
+                    </div>
+                    <div class="col-md-2 text-right">
+                        <h4 class="text-danger bold pr-3">
+                            
+                        </h4>
+                    </div>
+                </div>
+                <!-- </div> -->
+            </div>
+        </div>
+        <!-- END JUMBOTRON -->
+
+        <div style="height: 60px;"></div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    @*<button class="btn btn-default print">GENERATE PDF</button>*@
+                </div>
+            </div>
+        </div>
+        <br>
+        <input type="hidden" value="careplan" name="" class="filename">
+
+        <!-- START CONTAINER FLUID -->
+        <div class="container-fluid container-fixed-lg" id="fromHTMLtestdiv">
+            <!-- BEGIN PlACE PAGE CONTENT HERE -->
+
+
+            <div class="card">
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <h2>Resident Profile and Assessment / Plan of Care</h2>
+                        </div>
+                    </div>
+                    <br><br>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <table class="table table-bordered">
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center">Personal Details</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Admission Date: @Model.AdmittedFrom</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Date Of Birth: @Model.BirthDate</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>Gender: @{
+                                                if (Model.Gendar == 'M') {
+                                                    <b>Male</b>
+                                                }
+                                                else
+                                                {
+                                                    <b>Female</b>
+                                                }
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Marital Status: @Model.MaritalStatus</td>
+                                    </tr>
+                                    <tr>
+                                        <td>HC #: @Model.MBhealthNumber</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br>
+                            <table class="table table-bordered">
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center">Medical History</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>@Model.HealthHistory</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            <br>
+                            <table class="table table-bordered">
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center">Current Diagnoses</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>@Model.CurrentDiagnoses</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            <br>
+                            <table class="table table-bordered">
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center" colspan="2">Allergies</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>@Model.Alergies</td>
+                                        <td>Hydantoins:</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            <br>
+                            <table class="table table-bordered">
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center" colspan="3">Allergies</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Family Physician: @Model.Physician</td>
+                                        <td>Tel #: @Model.PhysicianPhone</td>
+                                        <td>Fax #: @Model.PhysicianFaxNo</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            <br>
+                            <table class="table table-bordered">
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center" colspan="3">Pharmacy</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Name: @Model.PharmacyName</td>
+                                        <td>Fax #: @Model.PharmaceFaxNumber</td>
+                                        <td>Tel #: @Model.PharmacePhoneNo</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-4">
+                            <table class="table table-bordered">
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center" colspan="3">Emergency Contacts</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="3">#1 Name: @Model.Contract1</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">Relationship: @Model.Relationship1</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>POA Care:</td>
+                                        @*<td>
+                                            <div class="form-check form-check-inline movesp margin2">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                <label class="form-check-label checkspace" for="">Yes</label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                <label class="form-check-label checkspace" for="">No</label>
+                                            </div>
+                                        </td>*@
+                                    </tr>
+                                    <tr>
+                                        <td>POA Finance: </td>
+                                        @*<td>
+                                            <div class="form-check form-check-inline movesp margin2">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                <label class="form-check-label checkspace" for="">Yes</label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                <label class="form-check-label checkspace" for="">No</label>
+                                            </div>
+                                        </td>*@
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br>
+                            <table class="table table-bordered">
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center">Telephone Number</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1°#: @Model.Phone (Home)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2°#: (Others)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3°#: (Others)</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            <br>
+                            <table class="table table-bordered">
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center" colspan="3">Address</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="3">@Model.Address1</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            Email: @Model.Email1
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">#2 Name: @Model.Contract2</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">Relationship: @Model.Relationship2</td>
+                                    </tr>
+                                    <tr>
+                                        <td>POA Care: </td>
+                                        @*<td>
+                                            <div class="form-check form-check-inline movesp margin2">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                <label class="form-check-label checkspace" for="">Yes</label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                <label class="form-check-label checkspace" for="">No</label>
+                                            </div>
+                                        </td>*@
+                                    </tr>
+                                    <tr>
+                                        <td>POA Finance: </td>
+                                        @*<td>
+                                            <div class="form-check form-check-inline movesp margin2">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                <label class="form-check-label checkspace" for="">Yes</label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                <label class="form-check-label checkspace" for="">No</label>
+                                            </div>
+                                        </td>*@
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+                            <br>
+                            <table class="table table-bordered">
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center">Telephone Number:</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1°#: (Others): @Model.HomePhoneType1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2°#: (Others) @Model.HomePhoneType2</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3°#: (Others) @Model.HomePhoneType3</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            <br>
+                            <table class="table table-bordered">
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center" colspan="3">Allergies</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Family Physician: Dr. Smith</td>
+                                        <td>Tel #: (416) 444-4444</td>
+                                        <td>Fax #</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            <br><br><br><br><br><br><br><br><br>
+                            <table class="table table-bordered">
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center" colspan="3">Address</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="3"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">Email:</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">#2 Name:</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">Relationship:</td>
+                                    </tr>
+                                    <tr>
+                                        <td>POA Care: </td>
+                                        <td>
+                                            <div class="form-check form-check-inline movesp margin2">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                <label class="form-check-label checkspace" for="">Yes</label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                <label class="form-check-label checkspace" for="">No</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>POA Finance: </td>
+                                        <td>
+                                            <div class="form-check form-check-inline movesp margin2">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                <label class="form-check-label checkspace" for="">Yes</label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                <label class="form-check-label checkspace" for="">No</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+                            <br>
+                            <table class="table table-bordered">
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center">Telephone Number:</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1°#: (Others):</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2°#: (Others)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3°#: (Others)</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            <br>
+                            <table class="table table-bordered">
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center">Address</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email:</td>
+                                    </tr>
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-4">
+                            <br>
+                            <table class="table table-bordered">
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center">Level Of Care</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            <br>
+                            <table class="table table-bordered">
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center">Religion</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>@Model.ReligionType</td>
+                                    </tr>
+
+                                </tbody>
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center">Code Status</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <br>
+                            <table class="table table-bordered">
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center">
+                                            Cultural Preferences / Customary Routines /
+                                            Traditions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>@Model.CulturalPreferences</td>
+                                    </tr>
+
+                                </tbody>
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center">Transfers</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Assisted</td>
+                                    </tr>
+
+                                </tbody>
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center">Mechanical Lift</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Sit to Stand</td>
+                                    </tr>
+
+                                </tbody>
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center">Other</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                    </tr>
+
+                                </tbody>
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center">Infection Diseases</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>M.R.S.A: No</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Diagnosed: N/A</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Resolved: N/A</td>
+                                    </tr>
+                                    <tr>
+                                        <td>V.R.E: No</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Diagnosed: N/A</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Resolved: N/A</td>
+                                    </tr>
+                                    <tr>
+                                        <td>C-Diff: Unknown</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Diagnosed</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Resolved</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Other</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Diagnosed: Unknown</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Resolved: Unknown</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <table class="table table-bordered">
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center">Assessment Type</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Update</td>
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+                        </div>
+                        <div class="col-md-4">
+                            <table class="table table-bordered">
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center">Vital Signs</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>BP: 77/77</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pulse: 77</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Weight (lbs): 77</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Height: 7'1"</td>
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+                        </div>
+                        <div class="col-md-4">
+                            <table class="table table-bordered">
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center">Allergies</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>tape</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Hydantoins</td>
+                                    </tr>
+
+
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <h2>Personal Hygiene</h2>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <table class="table table-bordered">
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center">AM Care</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>AM Care: Supervised</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Assisted by: Home</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Agency name:</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Preferred Time: 11:00 AM</td>
+                                    </tr>
+
+
+                                </tbody>
+
+                            </table>
+                        </div>
+                        <div class="col-md-4">
+                            <table class="table table-bordered">
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center">PM Care</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>PM Care:</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Assisted by:</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Agency name:</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Preferred Time: 01:00 PM</td>
+                                    </tr>
+
+
+                                </tbody>
+
+                            </table>
+                        </div>
+                        <div class="col-md-4">
+                            <table class="table table-bordered">
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center">Bathing</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Bathing: Independent</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Assisted by:</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Agency name:</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Preferred Time: 01:00 PM</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Preferred Day(s): Sunday, Tuesday, Wednesday, Saturday</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Preferred Type: Shower</td>
+                                    </tr>
+
+
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                    </div>
+                    <br><br><br><br><br><br><br><br>
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <table class="table table-bordered">
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center">Assistance with</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Dressing: Both AM/PM</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Supervised</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Assisted</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Shaving: AM</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dependent</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Foot Care:</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nail Care:</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                    </tr>
+
+
+                                </tbody>
+
+                            </table>
+                            <table class="table table-bordered">
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center" colspan="4">Mobility</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="4">Independent</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">Transfers</td>
+                                        <td>Mechanical Lift</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">Assisted</td>
+                                        <td>Sit to Stand</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">Walker</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">Independent</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">Type: 4 wheel</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">Wheelchair</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">Assisted</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">Cane</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">Type: Wooden</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">Scooter</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">N/A</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">Type</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">PT: No</td>
+                                        <td>Frequency/Agency:</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">OT: Yes </td>
+                                        <td>Frequency/Agency: Weekly - Thurs</td>
+                                    </tr>
+
+
+                                </tbody>
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center" colspan="4">Safety/ PASD's</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Seat / Lap belt </td>
+                                        <td>Others</td>
+                                        <td colspan="2">Rails: Half Rails (Right) - Night Only</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Escorting To And From Meals </td>
+                                        <td>Breakfast: No</td>
+                                        <td>Lunch: Yes</td>
+                                        <td>Dinner: Yes</td>
+                                    </tr>
+                                </tbody>
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center" colspan="2">Behaviour</td>
+                                        <th class="colorBlack text-center" colspan="2">Cognitive function</td>
+
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Agitated </td>
+                                        <td>Resists / refuses care and/or treatments</td>
+                                        <td colspan="2">Cognitive function</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Depressed </td>
+                                        <td>Substance Abuse</td>
+                                        <td colspan="2">Forgetful</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Anxious Behaviour </td>
+                                        <td>Alcohol Abuse</td>
+                                        <td colspan="2">Short term loss </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Disruptive </td>
+                                        <td> </td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                                <thead class="">
+                                    <tr>
+                                        <th class="colorBlack text-center">Risk of Harm to Self (or Others)</td>
+                                        <th class="colorBlack text-center">Smoker</td>
+                                        <th class="colorBlack text-center" colspan="2">Orientation</td>
+
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>No </td>
+                                        <td>Intact</td>
+                                        <td colspan="2">Place</td>
+                                    </tr>
+                                    <tr>
+                                        <td> </td>
+                                        <td></td>
+                                        <td colspan="2">Time</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!-- END PLACE PAGE CONTENT HERE -->
+        </div>
+        <!-- END CONTAINER FLUID -->
+    </div>
+    <!-- END PAGE CONTENT -->
+    <!-- New Resident Modal -->
+
+
+    @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+    <script>
+        $(function () {
+            $('.nav a.link1').click(function () {
+                $('.nav a.link1').removeClass('active');
+                $($(this).attr('href')).addClass('active');
+            });
+        });
+    </script>

@@ -1,0 +1,1387 @@
+@model IEnumerable<QolaMVC.ViewModels.PostFallClinicalMonitoringViewModel>
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+
+<style>
+
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+</style>
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+
+    <!-- START PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3>Post-Fall Clinical Monitoring A</h3>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+            <div style="height: 60px;"></div>
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+                <div class="card p-3">
+                    <div class="card-block">
+
+                        <div class="tab-content" id="pills-tabContent">
+
+                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <h5><b>Part A</b></h5>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <p>Complete for any client that experiences a fall. Abnormal findings must be documented in narrative charting. Refer to Blood Glucose monitoring if client is diabetic.</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 offset-md-4">
+                                        @{
+                                            if (Model != null)
+                                            {
+                                                using (Html.BeginForm("FindAssessment", "Assessments", FormMethod.Post))
+                                                {
+                                                    <input type="hidden" name="category" value="a" />
+
+                                                    <div class="form-group">
+                                                        <label>Select date</label>
+                                                        <select name="date_created" class="form-control">
+                                                            @foreach (var item in Model.GroupBy(m => m.date_created))
+                                                            {
+
+                                                                <option value="@item.Key">@item.Key</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary col-md-4">Submit</button>
+                                                }
+                                            }
+                                            else
+                                            {
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <form action="/Assessments/PostFallClinicalMonitoring_A" method="post">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="category" value="a" />
+
+                                        <table class="table table-bordered">
+
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">Vital Signs</th>
+                                                    <th class="text-white text-center">1st Check</th>
+                                                    <th class="text-white text-center" colspan="2">Q 30 mins * 1 hour</th>
+                                                    <th class="text-white text-center" colspan="3">Q 30 hours * 3 hours</th>
+                                                    <th class="text-white text-center" colspan="5">Q 8 hours * 48 hours</th>
+                                                    @*<th class="text-white text-center">Action</th>*@
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Date</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="date1" />
+                                                        }
+
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "date1")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="date1" />
+                                                                    break;
+                                                                }
+
+                                                            }
+
+                                                        }
+                                                    }
+
+                                                </tr>
+                                                <tr>
+                                                    <td>Time</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="time1" />
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "time1")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="time1" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
+
+                                                    }
+                                                </tr>
+                                                <tr>
+                                                    <td>BP</td>
+                                                    @{ if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="bp" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "bp")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="bp" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
+                                                    }
+                                                </tr>
+                                                <tr>
+                                                    <td>Pulse</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="pulse" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "pulse")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="pulse" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
+                                                    }
+                                                </tr>
+                                                <tr>
+                                                    <td>RESP. rate</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="resprate" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "resprate")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="resprate" />
+                                                                    break;
+                                                                }
+
+                                                            }
+
+                                                        }
+                                                    }
+
+                                                </tr>
+                                                <tr>
+                                                    <td>TEMP</td>
+                                                    @{
+
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="temp" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "temp")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="temp" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
+
+                                                    }
+                                                </tr>
+                                                <tr>
+                                                    <td>02 SAT</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="02sat" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "02sat")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="02sat" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
+
+                                                    }
+
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <br><br>
+                                        <table class="table table-bordered">
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">Vital Signs</th>
+                                                    <th class="text-white text-center">1st Check</td>
+                                                    <th class="text-white text-center" colspan="4">Q 1 hour * 4 hours</th>
+                                                    <th class="text-white text-center" colspan="6">Q 30 hours * 3 hours</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Date</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="date2" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "date2")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="date2" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
+                                                    }
+                                                </tr>
+                                                <tr>
+                                                    <td>Time</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="time2" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "time2")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="time2" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
+                                                    }
+                                                </tr>
+                                                <tr>
+                                                    <td>PAIN (Y/N)</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="pain" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "pain")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="pain" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
+                                                    }
+                                                </tr>
+                                                <tr>
+                                                    <td>PAIN SCALE(0-10)</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="painscale" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "painscale")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="painscale" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
+                                                    }
+                                                </tr>
+                                                <tr>
+                                                    <td>LOCATION</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="location" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "location")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="location" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
+                                                    }
+
+                                                </tr>
+                                                <tr>
+                                                    <td>STAFF INITAILS</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="staffinitials" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "staffinitials")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="staffinitials" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
+
+                                                    }
+
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <br><br>
+                                        <table class="table table-bordered">
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">Vital Signs</th>
+                                                    <th class="text-white text-center">1st Check</td>
+                                                    <th class="text-white text-center" colspan="4">Q 1 hour * 4 hours</th>
+                                                    <th class="text-white text-center" colspan="6">Q 30 hours * 3 hours</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Date</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="date3" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "date3")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="date3" />
+
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
+                                                    }
+                                                </tr>
+                                                <tr>
+                                                    <td>Time</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="time3" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "time3")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="time3" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
+                                                    }
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="12">ORIENTED TO:</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>PERSON</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="person" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "person")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="person" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
+
+                                                    }
+
+                                                </tr>
+                                                <tr>
+                                                    <td>PLACE</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="place" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "place")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="place" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
+
+                                                    }
+                                                </tr>
+                                                <tr>
+                                                    <td>TIME</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="time4" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "time4")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="time4" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
+                                                    }
+                                                </tr>
+                                                <tr>
+                                                    <td>BEHAVIOUR CHANGE</td>
+
+                                                    @{
+
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="bvchange" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "bvchange")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="bvchange" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
+
+                                                    }
+                                                </tr>
+                                                <tr>
+                                                    <td>CONFUSED</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="confused" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "confused")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="confused" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
+
+                                                    }
+
+
+                                                </tr>
+                                                <tr>
+                                                    <td>DROWSY</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="drowsy" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "drowsy")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="drowsy" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
+                                                    }
+                                                </tr>
+                                                <tr>
+                                                    <td>RESTLESS / AGITATED</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="restless" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "restless")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="restless" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
+                                                    }
+                                                </tr>
+                                                <tr>
+                                                    <td>OTHER BEHAVIOUR</td>
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="otherbv" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "otherbv")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="otherbv" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
+                                                    }
+
+                                                </tr>
+                                                <tr>
+                                                    <td>STAFF INITIALS</td>
+
+
+                                                    @{
+                                                        if (Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartial.cshtml");
+                                                            <input type="hidden" name="vitalsign" value="staffinitials2" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model)
+                                                            {
+                                                                if (item.vitalsign.ToLower() == "staffinitials2")
+                                                                {
+
+                                                                    @Html.Partial("~/Views/Shared/_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    <input type="hidden" name="vitalsign" value="staffinitials2" />
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                        }
+                                                    }
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+
+                                        <div class="row">
+                                            <div class="col-md-6 text-right">
+                                                <br />
+                                                <button type="submit" class="btn btn-primary">Save</button>
+                                            </div>
+                                            <div class="col-md-6 text-right">
+                                                <br>
+                                                <a class="btn btn-danger" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Next</a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+
+                            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+
+                                <div class="row">
+                                    <form action="/Assessments/PostFallClinicalMonitoring_BPage2" method="post">
+                                        @Html.AntiForgeryToken()
+                                        <div class="row">
+                                            <div class="col-md-12">
+
+                                                <div class="row">
+                                                    <div class="col-md-12 text-center">
+                                                        <br><br>
+                                                        <h5><u>Chest</u></h5>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 font-bold col-form-label">Long Sounds:</label>
+                                                    <div class="col-md-10">
+                                                        <label for="" class="pad3" style="margin-right: 25px;">Normal:</label>
+                                                        <div class="form-check form-check-inline movesp" ">
+                                                            <input class="form-check-input" type="checkbox" name="longsounds" id="inlineRadio1" value="yes">
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="longsounds" id="inlineRadio2" value="no">
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div><br>
+                                                        <div class="form-group row">
+                                                            <label for="" class="col-md-1 col-form-label">Describe</label>
+                                                            <div class="col-md-6">
+                                                                <input type="text" name="longsoundsdescribe" class="form-control" id="staticEmail">
+                                                            </div>
+                                                        </div>
+                                                        <label for="" class="pad3" style="margin-right: 25px;">Equal:</label>
+                                                        <div class="form-check form-check-inline movesp" ">
+                                                            <input class="form-check-input" type="checkbox" name="longsoundsequal" id="inlineRadio1" value="yes">
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="longsoundsequal" id="inlineRadio2" value="no">
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div><br>
+                                                    </div>
+                                                </div><br>
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 font-bold col-form-label">Chest:</label>
+                                                    <div class="col-md-10">
+                                                        <div class="form-check form-check-inline movesp" ">
+                                                            <input class="form-check-input" type="checkbox" name="chest" id="inlineRadio1" value="normal">
+                                                            <label class="form-check-label" for="">Normal</label>
+                                                        </div><br>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="chest" id="inlineRadio2" value="bruising">
+                                                            <label class="form-check-label" for="">Bruising</label>
+                                                        </div><br>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="chest" id="inlineRadio2" value="swelling">
+                                                            <label class="form-check-label" for="">Swelling</label>
+                                                        </div><br>
+                                                        <div class="form-group row">
+                                                            <label for="" class="col-md-1 col-form-label">Other</label>
+                                                            <div class="col-md-6">
+                                                                <input type="text" name="chestother" class="form-control" id="staticEmail">
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div><br>
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 font-bold col-form-label">Heart Sounds:</label>
+                                                    <div class="col-md-10">
+                                                        <div class="form-check form-check-inline movesp" ">
+                                                            <input class="form-check-input" type="checkbox" name="heartsounds" id="inlineRadio1" value="normal">
+                                                            <label class="form-check-label" for="">Normal?</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="heartsounds" id="inlineRadio2" value="abnormal">
+                                                            <label class="form-check-label" for="">Abnormal</label>
+                                                        </div><br>
+
+
+                                                        <div class="form-group row">
+                                                            <label for="" class="col-md-1 col-form-label">Describe</label>
+                                                            <div class="col-md-6">
+                                                                <input type="text" name="heartsoundsdescribe" class="form-control" id="staticEmail">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <br><br>
+                                            <div class="col-md-12">
+
+                                                <div class="row">
+                                                    <div class="col-md-12 text-center">
+                                                        <br><br>
+                                                        <h5><u>Abdomen</u></h5>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 font-bold col-form-label">Soft</label>
+                                                    <div class="col-md-10">
+
+                                                        <div class="form-check form-check-inline movesp" ">
+                                                            <input class="form-check-input" type="checkbox" name="soft" id="inlineRadio1" value="yes">
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="soft" id="inlineRadio2" value="no">
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div><br>
+                                                        <div class="form-group row">
+                                                            <label for="" class="col-md-1 col-form-label">Describe</label>
+                                                            <div class="col-md-6">
+                                                                <input type="text" name="softdescribe" class="form-control" id="staticEmail">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div><br>
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 font-bold col-form-label">Painful</label>
+                                                    <div class="col-md-10">
+
+                                                        <div class="form-check form-check-inline movesp" ">
+                                                            <input class="form-check-input" type="checkbox" name="painful" id="inlineRadio1" value="yes">
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="painful" id="inlineRadio2" value="no">
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div><br>
+                                                        <div class="form-group row">
+                                                            <label for="" class="col-md-1 col-form-label">Describe</label>
+                                                            <div class="col-md-6">
+                                                                <input type="text" name="painfuldescribe" class="form-control" id="staticEmail">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div><br>
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 font-bold col-form-label">Bowel Sounds heard?</label>
+                                                    <div class="col-md-10">
+
+                                                        <div class="form-check form-check-inline movesp" ">
+                                                            <input class="form-check-input" type="checkbox" name="bowelsoundsheard" id="inlineRadio1" value="yes">
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="bowelsoundsheard" id="inlineRadio2" value="no">
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div>
+                                                    </div>
+                                                </div><br>
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 font-bold col-form-label">Last Bowel Movement:</label>
+                                                    <div class="col-md-10">
+
+                                                        <div class="form-group row">
+                                                            <label for="" class="col-md-1 col-form-label">Date</label>
+                                                            <div class="col-md-6">
+                                                                <input type="text" name="lastbowelmovement" class="form-control" id="staticEmail">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div><br>
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 font-bold col-form-label">Voiding Normal?</label>
+                                                    <div class="col-md-10">
+
+                                                        <div class="form-check form-check-inline movesp" ">
+                                                            <input class="form-check-input" type="checkbox" name="voiding" id="inlineRadio1" value="yes">
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="voiding" id="inlineRadio2" value="no">
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div>
+                                                        <br>
+                                                        <div class="form-group row">
+                                                            <label for="" class="col-md-1 col-form-label">Describe</label>
+                                                            <div class="col-md-6">
+                                                                <input type="text" name="voidingdesciption" class="form-control" id="staticEmail">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <div class="form-check form-check-inline movesp" ">
+                                                            <input class="form-check-input" type="checkbox" name="voidingiscontinent" id="inlineRadio1" value="continent">
+                                                            <label class="form-check-label" for="">Continent</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="voidingiscontinent" id="inlineRadio2" value="incontinent">
+                                                            <label class="form-check-label" for="">incontinent</label>
+                                                        </div><br>
+                                                        <div class="form-group row">
+                                                            <label for="" class="col-md-1 col-form-label">incontinent Pads Used</label>
+                                                            <div class="col-md-6">
+                                                                <input type="text" name="voidingincontinentpadsused" class="form-control" id="staticEmail">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-check form-check-inline movesp" ">
+                                                            <input class="form-check-input" type="checkbox" name="voidingiscontinent" id="inlineRadio1" value="chater">
+                                                            <label class="form-check-label" for="">Cather?</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="voidingiscather" id="inlineRadio2" value="other">
+                                                            <label class="form-check-label" for="">Other</label>
+                                                        </div><br>
+                                                    </div>
+                                                </div><br>
+
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-12 text-center">
+                                                        <br><br>
+                                                        <h5><u>Edema</u></h5>
+                                                    </div>
+
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 font-bold col-form-label">Feet:</label>
+                                                    <div class="col-md-10">
+                                                        <label for="" class="pad3" style="margin-right: 25px;">Normal:</label>
+                                                        <div class="form-check form-check-inline movesp" ">
+                                                            <input class="form-check-input" type="checkbox" name="edmafeet" id="inlineRadio1" value="yes">
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="edmafeet" id="inlineRadio2" value="no">
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div><br>
+                                                        <div class="form-group row">
+                                                            <label for="" class="col-md-1 col-form-label">Describe</label>
+                                                            <div class="col-md-6">
+                                                                <input type="text" class="form-control" name="edmafeetdescription" id="staticEmail">
+                                                            </div>
+                                                        </div><br>
+                                                        <div class="form-check form-check-inline movesp" ">
+                                                            <input class="form-check-input" type="checkbox" name="edmafeetposition" id="inlineRadio1" value="left">
+                                                            <label class="form-check-label" for="">Left</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="edmafeetposition" id="inlineRadio2" value="right">
+                                                            <label class="form-check-label" for="">Right</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="edmafeetposition" id="inlineRadio2" value="pitting">
+                                                            <label class="form-check-label" for="">Pitting</label>
+                                                        </div>
+                                                    </div>
+                                                </div><br>
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 font-bold col-form-label">Hands:</label>
+                                                    <div class="col-md-10">
+                                                        <label for="" class="pad3" style="margin-right: 25px;">Normal:</label>
+                                                        <div class="form-check form-check-inline movesp" ">
+                                                            <input class="form-check-input" type="checkbox" name="hands" id="inlineRadio1" value="yes">
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="hands" id="inlineRadio2" value="no">
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div><br>
+                                                        <div class="form-group row">
+                                                            <label for="" class="col-md-1 col-form-label">Describe</label>
+                                                            <div class="col-md-6">
+                                                                <input type="text" name="handsdescription" class="form-control" id="staticEmail">
+                                                            </div>
+                                                        </div><br>
+                                                        <div class="form-check form-check-inline movesp" ">
+                                                            <input class="form-check-input" type="checkbox" name="handsposition" id="inlineRadio1" value="left">
+                                                            <label class="form-check-label" for="">Left</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="handsposition" id="inlineRadio2" value="right">
+                                                            <label class="form-check-label" for="">Right</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="handsposition" id="inlineRadio2" value="pitting">
+                                                            <label class="form-check-label" for="">Pitting</label>
+                                                        </div>
+                                                    </div>
+                                                </div><br>
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 font-bold col-form-label">Other:</label>
+                                                    <div class="col-md-10">
+                                                        <div class="form-check form-check-inline movesp" ">
+                                                            <input class="form-check-input" type="checkbox" name="handsother" id="inlineRadio1" value="no">
+                                                            <label class="form-check-label" for="">No?</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="handsother" id="inlineRadio2" value="yes">
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div><br>
+
+
+                                                        <div class="form-group row">
+                                                            <label for="" class="col-md-1 col-form-label">Describe</label>
+                                                            <div class="col-md-6">
+                                                                <input type="text" name="handsotherdescription" class="form-control" id="staticEmail">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-12 text-center">
+                                                        <br><br>
+                                                        <h5><u>Skin</u></h5>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2  font-bold col-form-label">Feet:</label>
+                                                    <div class="col-md-10">
+                                                        <div class="form-check form-check-inline movesp" ">
+                                                            <input class="form-check-input" type="checkbox" name="skinfeet" id="inlineRadio1" value="no">
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="skinfeet" id="inlineRadio2" value="yes">
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div><br>
+                                                        <div class="form-group row">
+                                                            <label for="" class="col-md-1 col-form-label">Describe</label>
+                                                            <div class="col-md-6">
+                                                                <input type="text" name="skinfeetdescription" class="form-control" id="staticEmail">
+                                                            </div>
+                                                        </div><br>
+                                                    </div>
+                                                </div><br>
+
+
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 font-bold col-form-label">Rashes:</label>
+                                                    <div class="col-md-10">
+                                                        <div class="form-check form-check-inline movesp" ">
+                                                            <input class="form-check-input" type="checkbox" name="rashes" id="inlineRadio1" value="no">
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="rashes" id="inlineRadio2" value="yes">
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div><br>
+                                                    </div>
+                                                </div><br>
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 font-bold col-form-label">Redness:</label>
+                                                    <div class="col-md-10">
+                                                        <div class="form-check form-check-inline movesp">
+                                                            <input class="form-check-input" type="checkbox" name="redness" id="inlineRadio1" value="no">
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="redness" id="inlineRadio2" value="yes">
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div><br>
+                                                    </div>
+                                                </div><br>
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 font-bold col-form-label">Bruising:</label>
+                                                    <div class="col-md-10">
+                                                        <div class="form-check form-check-inline movesp" ">
+                                                            <input class="form-check-input" type="checkbox" name="bruising" id="inlineRadio1" value="no">
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="bruising" id="inlineRadio2" value="yes">
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div><br>
+                                                    </div>
+                                                </div><br>
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 font-bold col-form-label">Open Areas:</label>
+                                                    <div class="col-md-10">
+                                                        <div class="form-check form-check-inline movesp" ">
+                                                            <input class="form-check-input" type="checkbox" name="openareas" id="inlineRadio1" value="no">
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="openareas" id="inlineRadio2" value="yes">
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div><br>
+                                                    </div>
+                                                </div><br>
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 font-bold col-form-label">Describe Abnormal areas:</label>
+                                                    <div class="col-md-6">
+                                                        <input type="text" required name="abnormalareasdescription" class="form-control" id="staticEmail">
+
+                                                    </div>
+                                                </div><br>
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 font-bold col-form-label">Wound / Dressing?</label>
+                                                    <div class="col-md-10">
+                                                        <div class="form-check form-check-inline movesp" ">
+                                                            <input class="form-check-input" type="checkbox" name="wound" id="inlineRadio1" value="no">
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="wound" id="inlineRadio2" value="yes">
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div><br>
+                                                    </div>
+                                                </div><br>
+
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 font-bold col-form-label">Describe</label>
+                                                    <div class="col-md-6">
+                                                        <input type="text" name="wonddescription" class="form-control" id="staticEmail">
+
+                                                    </div>
+                                                </div><br>
+
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-12 text-center">
+                                                        <br><br>
+                                                        <h5><u>Pain Assessment</u></h5>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 col-form-label">Resident having Pain:</label>
+                                                    <div class="col-md-10">
+                                                        <div class="form-check form-check-inline movesp" ">
+                                                            <input class="form-check-input" type="checkbox" name="residentishavingpain" id="inlineRadio1" value="no">
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="residentishavingpain" id="inlineRadio2" value="yes">
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div><br>
+                                                        <div class="form-group row">
+                                                            <label for="" class="col-md-1 col-form-label">Describe</label>
+                                                            <div class="col-md-6">
+                                                                <input type="text" name="residentpaindescription" class="form-control" id="staticEmail">
+                                                            </div>
+                                                        </div><br>
+                                                    </div>
+                                                </div><br>
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-3 col-form-label">Pain Scale 1(less)-10(worst)</label>
+                                                    <div class="col-md-6">
+                                                        <input type="text" name="painscale" class="form-control" id="staticEmail">
+
+                                                    </div>
+                                                </div><br>
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 font-bold col-form-label">Pain Qaulity:</label>
+                                                    <div class="col-md-10">
+
+                                                    </div>
+                                                </div><br>
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 font-bold col-form-label">Aching:</label>
+                                                    <div class="col-md-10">
+                                                        <div class="form-check form-check-inline movesp" ">
+                                                            <input class="form-check-input" type="checkbox" name="p_qaching" id="inlineRadio1" value="no">
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="p_qaching" id="inlineRadio2" value="yes">
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div><br>
+                                                    </div>
+                                                </div><br>
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 font-bold col-form-label">Sharp:</label>
+                                                    <div class="col-md-10">
+                                                        <div class="form-check form-check-inline movesp" ">
+                                                            <input class="form-check-input" type="checkbox" name="p_qsharp" id="inlineRadio1" value="no">
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="p_qsharp" id="inlineRadio2" value="yes">
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div><br>
+                                                    </div>
+                                                </div><br>
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 font-bold col-form-label">Dull:</label>
+                                                    <div class="col-md-10">
+                                                        <div class="form-check form-check-inline movesp" ">
+                                                            <input class="form-check-input" type="checkbox" name="p_qdull" id="inlineRadio1" value="no">
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="p_qdull" id="inlineRadio2" value="yes">
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div><br>
+                                                    </div>
+                                                </div><br>
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 font-bold col-form-label">Radiating:</label>
+                                                    <div class="col-md-10">
+                                                        <div class="form-check form-check-inline movesp" ">
+                                                            <input class="form-check-input" type="checkbox" name="p_qradiating" id="inlineRadio1" value="no">
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="p_qradiating" id="inlineRadio2" value="yes">
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div><br>
+                                                    </div>
+                                                </div><br>
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 font-bold col-form-label">Where</label>
+                                                    <div class="col-md-6">
+                                                        <input type="text" name="painlocation" class="form-control" id="staticEmail">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 font-bold col-form-label">What makes it better:</label>
+                                                    <div class="col-md-6">
+                                                        <input type="text" name="painwhatmakesitbetter" class="form-control" id="staticEmail">
+
+                                                    </div>
+                                                </div><br>
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 font-bold col-form-label">What makes it worst:</label>
+                                                    <div class="col-md-6">
+                                                        <input type="text" name="painwhatmakesitworse" class="form-control" id="staticEmail">
+
+                                                    </div>
+                                                </div><br>
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-3 font-bold col-form-label">Does the pain interface with ADL's:</label>
+                                                    <div class="col-md-6">
+                                                        <div class="form-check form-check-inline movesp" ">
+                                                            <input class="form-check-input" type="checkbox" name="ispainsurfacewithdl" id="inlineRadio1" value="no">
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" name="ispainsurfacewithdl" id="inlineRadio2" value="ye">
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div><br>
+                                                    </div>
+                                                </div><br>
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 font-bold col-form-label">Describe:</label>
+                                                    <div class="col-md-6">
+                                                        <input type="text" class="form-control" required name="adlsdescription" id="staticEmail">
+
+                                                    </div>
+                                                </div><br>
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 font-bold col-form-label">Other:</label>
+                                                    <div class="col-md-6">
+                                                        <input type="text" class="form-control" name="painother" id="staticEmail">
+
+                                                    </div>
+                                                </div><br>
+
+                                            </div>
+                                        </div>
+                                        <br><br>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-4 font-bold col-form-label">Completed By</label>
+                                                    <div class="col-md-6">
+                                                        <input type="text" required name="completedby" class="form-control" id="staticEmail">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-2 font-bold col-form-label">Date</label>
+                                                    <div class="col-md-6">
+                                                        <input type="text" required name="date_completed" class="form-control" id="staticEmail">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="category" value="a" />
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 text-right">
+                                                <button type="submit" class="btn btn-primary">Save</button>
+                                            </div>
+                                            <div class="col-md-6 text-right">
+                                                <a class="btn btn-danger" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Back</a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- END PLACE PAGE CONTENT HERE -->
+            </div>
+            <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+
+        @RenderPage("~/Views/Shared/_Footer.cshtml")

@@ -1,0 +1,214 @@
+﻿@model QolaMVC.ViewModels.ExcerciseActivityViewModel
+
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+
+<style>
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+</style>
+
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+
+    <!-- START PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3>HSEP Tracking Record Report</h3>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+
+            <div style="height: 60px;"></div>
+
+            <!-- START CONTAINER FLUID -->
+
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn btn-default print">PRINT</button>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <input type="hidden" value="hseptrackingreport" name="" class="filename">
+
+            <div class="container-fluid container-fixed-lg" id="fromHTMLtestdiv">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+
+                <div class="card">
+                    <div class="card-block">
+
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <img src="~/Content/assets/img/ahs.png" class="img-responsive">
+                                <br /> <br />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-3 col-form-label">Date:</label>
+                                    <div class="col-md-7">
+                                        @Html.DisplayFor(modelItem => Model.ExcerciseSummary.DateEntered)
+                                    </div>
+                                </div>
+                            </div>
+                            @*<div class="col-md-3">
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-3 col-form-label">Year:</label>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control" id="staticEmail">
+                                    </div>
+                                </div>
+                            </div>*@
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-bordered">
+                                    <thead class="bg-primary">
+                                        <tr>
+                                            <td></td>
+                                            @if (Model != null && Model.HSEPDetail != null)
+                                            {
+                                                for (int i = 0; i < Model.HSEPDetail.Count; i++)
+                                                {
+                                                    @Html.HiddenFor(m => Model.HSEPDetail[i].ActivityName)
+                                                    <th class="text-white text-center">@Model.HSEPDetail[i].ActivityName</th>
+                                                }
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>DATE OF INITIAL TEACHING</td>
+                                            @if (Model != null && Model.HSEPDetail != null)
+                                            {
+                                                for (int i = 0; i < Model.HSEPDetail.Count; i++)
+                                                {
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => Model.HSEPDetail[i].DateOfTeaching, new { @class = "form-control" })
+                                                    </td>
+                                                }
+                                            }
+                                        </tr>
+                                        <tr>
+                                            <td>TRAINER SIGNATURE</td>
+                                            @if (Model != null && Model.HSEPDetail != null)
+                                            {
+                                                for (int i = 0; i < Model.HSEPDetail.Count; i++)
+                                                {
+                                                    <td></td>
+                                                }
+                                            }
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <h5><b>Using a check mark, indicate the exercises the client completes for each day</b></h5>
+                            </div>
+
+                        </div>
+                        <table class="table table-bordered">
+                            <thead class="">
+                                <tr>
+                                    <th class="colorBlack text-center">Exercise</th>
+                                    <th class="colorBlack text-center">Sunday</th>
+                                    <th class="colorBlack text-center">Monday</th>
+                                    <th class="colorBlack text-center">Tuesday</th>
+                                    <th class="colorBlack text-center">Wednessday</th>
+                                    <th class="colorBlack text-center">Thursday</th>
+                                    <th class="colorBlack text-center">Friday</th>
+                                    <th class="colorBlack text-center">Saturday</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @if (Model != null && Model.Detail != null)
+        {
+            for (int i = 0; i < Model.Detail.Count; i++)
+            {
+                        @Html.HiddenFor(m => Model.Detail[i].ActivityName)
+                        <tr>
+                            <td>@Model.Detail[i].ActivityName</td>
+                            <td class="text-center">
+                                @Html.CheckBoxFor(modelItem => Model.Detail[i].Sunday, new { @class = "form-check-input" })
+                            </td>
+                            <td class="text-center">
+                                @Html.CheckBoxFor(modelItem => Model.Detail[i].Monday, new { @class = "form-check-input" })
+                            </td>
+                            <td class="text-center">
+                                @Html.CheckBoxFor(modelItem => Model.Detail[i].Tuesday, new { @class = "form-check-input" })
+                            </td>
+                            <td class="text-center">
+                                @Html.CheckBoxFor(modelItem => Model.Detail[i].Wednesday, new { @class = "form-check-input" })
+                            </td>
+                            <td class="text-center">
+                                @Html.CheckBoxFor(modelItem => Model.Detail[i].Thursday, new { @class = "form-check-input" })
+                            </td>
+                            <td class="text-center">
+                                @Html.CheckBoxFor(modelItem => Model.Detail[i].Friday, new { @class = "form-check-input" })
+                            </td>
+                            <td class="text-center">
+                                @Html.CheckBoxFor(modelItem => Model.Detail[i].Saturday, new { @class = "form-check-input" })
+                            </td>
+                        </tr>
+}
+}
+
+                            </tbody>
+
+                        </table>
+                        <br><br><br>
+                        <table class="table table-bordered">
+                            <tr>
+                                <td>
+                                    Include client's time or repetition for each exercise completed in the box provided
+                                </td>
+                                <td>
+                                    If Client decline indicate in the box with "D"= Declined
+                                </td>
+                                <td>
+                                    Document in Client's Chart why client did not complete the exercise
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+
+
+                <!-- END PLACE PAGE CONTENT HERE -->
+            </div>
+            <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+
+
+
+        @RenderPage("~/Views/Shared/_Footer.cshtml")

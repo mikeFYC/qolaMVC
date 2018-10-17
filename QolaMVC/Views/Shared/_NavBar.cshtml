@@ -1,0 +1,239 @@
+<!-- START PAGE HEADER WRAPPER -->
+<!-- START HEADER -->
+@using QolaMVC.Models;
+<style>
+
+    nav ul li {
+        padding-left: 1vw;
+        padding-right: 1vw;
+        margin-top: 1.5vw;
+        background-color: #015093;
+        color: white;
+        font-weight: bold;
+        height: 3vw;
+        border-radius: 0.3vw;
+    }
+
+        nav ul li:hover .icon-thumbnail {
+            background-color: cornflowerblue;
+        }
+
+    .dropdown-item:hover {
+        background-color: cornflowerblue;
+    }
+
+    nav ul li:hover {
+        background-color: cornflowerblue;
+    }
+
+    nav ul li .nav-link {
+        color: white !important;
+        height: 2vw;
+        margin-top: -0.5vw;
+    }
+
+    .icon-thumbnail {
+        background-color: #015093;
+        color: white;
+        margin-right: 5px;
+        height: 15px;
+        margin-top: 0.2vw;
+    }
+
+        .icon-thumbnail i {
+            margin-top: 0vw;
+            position: fixed;
+        }
+
+    .content {
+        padding-left: 0px !important;
+    }
+
+    .full-height {
+        padding-left: 0px !important;
+    }
+
+    h3 {
+        font-weight: 500 !important;
+        color: black;
+    }
+</style>
+<script>
+    function mike_dropdown() {
+        if (document.getElementById('dropdown_li').className != 'nav-item dropdown show') {
+            document.getElementById('dropdown_li').className = 'nav-item dropdown show';
+        }
+        else {
+            document.getElementById('dropdown_li').className = 'nav-item dropdown';
+        }
+    }
+</script>
+
+
+<div class="header ">
+    <!-- START MOBILE SIDEBAR TOGGLE -->
+    <a href="#" class="btn-link toggle-sidebar hidden-lg-up pg pg-menu" data-toggle="sidebar">
+    </a>
+    <!-- END MOBILE SIDEBAR TOGGLE -->
+    <div class="">
+        <div class="brand inline">
+            <img src="/Content/assets/img/qola_logo3.png" alt="qola_logo" data-src="/Content/assets/img/qola_logo3.png" data-src-retina="/Content/assets/img/qola_logo3.png" width="90" height="66">
+            <span>
+                <!-- <h2 class="d-inline-block mt-1">Qola</h2> -->
+            </span>
+        </div>
+        <!-- START NOTIFICATION LIST -->
+        <ul class="hidden-md-down notification-list no-margin hidden-sm-down b-grey b-l b-r no-style p-l-30 p-r-20">
+            <li class="p-r-10 inline">
+                <a href="#" class="header-icon pg pg-link"></a>
+            </li>
+            <li class="p-r-10 inline">
+                <a href="#" class="header-icon pg pg-thumbs"></a>
+            </li>
+        </ul>
+        <!-- END NOTIFICATIONS LIST -->
+        <!-- <a href="#" class="search-link hidden-md-down" data-toggle="search"><i class="pg-search"></i>Type anywhere to <span class="bold">search</span></a> -->
+    </div>
+
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- BEGIN SIDEBAR MENU ITEMS-->
+            <ul class="navbar-nav mr-auto" style="display:inline-block">
+                <li class="nav-item">
+                    <a class="nav-link" href="/Home/" style="display:inline-block;">
+                        <span style="display:inline-block;">Homes</span>
+                        <span class="icon-thumbnail" style="display:inline-block;"><i class="pg-home"></i></span>
+                    </a>
+
+                </li>
+                @{
+                    if (ViewBag.Home != null)
+                    {
+                        <li class="nav-item">
+                            <a href="/Home/Menu/?p_HomeId=@ViewBag.Home.Id" class="nav-link" style="display:inline-block;">
+                                <span style="display:inline-block;">Dashboard</span>
+                                <span class="icon-thumbnail" style="display:inline-block;"><i class="fa fa-dashboard"></i></span>
+                            </a>
+                        </li>
+                    }
+                }
+
+                @{
+                    if (ViewBag.Resident != null)
+                    {
+                        <li class="nav-item">
+                            <a href="/Home/ResidentMenu/?p_ResidentId=@ViewBag.Resident.ID" class="nav-link" style="display:inline-block;">
+                                <span style="display:inline-block;">Profile</span>
+                                <span class="icon-thumbnail" style="display:inline-block;"><i class="fa fa-user"></i></span>
+                            </a>
+                        </li>
+                    }
+                }
+
+                @*<li class="">
+                        <a href="#">
+                            <span class="title">Todo List</span>
+                        </a>
+                        <span class="icon-thumbnail "><i class="pg-social"></i></span>
+                    </li>*@
+
+                <li class="nav-item dropdown" id="dropdown_li">
+
+                    @*property inside <a>: data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"*@
+
+                    <a class="nav-link" id="navbarDropdown" role="button" style="display:inline-block;" onclick="mike_dropdown()">
+                        <span style="display:inline-block;">Masters</span>
+                        <span class="icon-thumbnail" style="display:inline-block;"><i class="pg-grid"></i></span>
+                    </a>
+                    <div class="dropdown-menu" id="master_dropdown" aria-labelledby="navbarDropdown">
+                        @{
+                            var tevar = TempData["User"] as UserModel;
+                            TempData.Keep("User");
+                            if (tevar.UserType <= 2)
+                            {
+                                <a class="dropdown-item" href="~/Master/Users">Users</a>
+                                <a class="dropdown-item" href="~/Allergy/List">Allergy</a>
+                                <a class="dropdown-item" href="~/Master/ActivityCategory">Activity Category</a>
+                                <a class="dropdown-item" href="~/Master/Activity">Activity</a>
+                                <a class="dropdown-item" href="~/DineTime/List">Dine Time</a>
+                                <a class="dropdown-item" href="~/SpecialDiet/List">Special Diet</a>
+                                <a class="dropdown-item" href="~/Suite/List">Suite</a>
+                                <a class="dropdown-item" href="~/Venue/List">Venue</a>
+                            }
+                        }
+                        <a class="dropdown-item" href="~/Master/ChangePassword">Change Password</a>
+                    </div>
+                </li>
+
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+    </nav>
+
+
+
+
+    <div class="d-flex align-items-center">
+        <!-- START User Info-->
+        <div class="dropdown pull-right hidden-md-down">
+
+            <button class="profile-dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div class="pull-left p-r-10 fs-14 font-heading hidden-md-down" style="font-weight:bold !important;color:black !important;font-size:1vw !important;">
+                    Welcome
+                    @{
+                        if (ViewBag.User != null)
+                        {
+                            <span class="semi-bold" style="font-weight:bold !important;color:black !important;font-size:1vw !important;">@ViewBag.User.FirstName </span>
+                            <span class="text-master" style="font-weight:bold !important;color:black !important;font-size:1vw !important;">@ViewBag.User.LastName</span>
+                        }
+                    }
+                </div>
+                @*<span class="thumbnail-wrapper d32 circular inline">
+
+                        <img src="/Content/assets/img/profiles/avatar.jpg" alt="" data-src="/Content/assets/img/profiles/avatar.jpg" data-src-retina="/Content/assets/img/profiles/avatar.jpg" width="32" height="32">
+                    </span>*@
+            </button>
+            <div class="dropdown-menu dropdown-menu-right profile-dropdown" role="menu">
+                <a href="#" class="dropdown-item"><i class="pg-settings_small"></i> Settings</a>
+                @*<a href="#" class="dropdown-item"><i class="pg-outdent"></i> Feedback</a>
+                    <a href="#" class="dropdown-item"><i class="pg-signals"></i> Help</a>*@
+                <a href="~/Login" class="clearfix bg-master-lighter dropdown-item">
+                    <span class="pull-left">Logout</span>
+                    <span class="pull-right"><i class="pg-power"></i></span>
+                </a>
+            </div>
+        </div>
+        <!-- END User Info-->
+        <!-- <a href="#" class="header-icon pg pg-alt_menu btn-link m-l-10 sm-no-margin d-inline-block" data-toggle="quickview" data-toggle-element="#quickview"></a> -->
+    </div>
+</div>
+<!-- END HEADER -->
+<!-- END PAGE HEADER WRAPPER -->
+
+
+<script>
+    //function nav_profile_button(ee) {
+    //    var id = document.getElementById("tempdata_residentid").innerHTML;
+    //    var archive = document.getElementById("tempdata_archive").innerHTML;
+    //    var pass = document.getElementById("tempdata_pass").innerHTML;
+    //    if (archive == "YES") {
+    //        ee.href = "/Home/ResidentMenu3/?p_ResidentId=" + id + "&pass=" + pass;
+    //    }
+    //    else
+    //        ee.href = "/Home/ResidentMenu/?p_ResidentId=" + id;
+    //}
+</script>
+
+<script>
+    document.body.addEventListener("click", function (evt) {
+        if ($(evt.target).closest('#navbarDropdown').length)
+            return;
+
+        else {
+            if (document.getElementById('dropdown_li').className == 'nav-item dropdown show') {
+                document.getElementById('dropdown_li').className = 'nav-item dropdown';
+            }
+        }
+    });
+</script>

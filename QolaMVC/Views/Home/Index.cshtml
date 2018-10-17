@@ -1,0 +1,290 @@
+﻿@model IEnumerable<QolaMVC.Models.HomeModel>
+
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+
+<style>
+
+    .home-box {
+        height: 250px;
+        background: center center no-repeat;
+        background-size: cover;
+    }
+
+    .label-arrow {
+        position: relative;
+    }
+
+    .label-arrow-right {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        margin-right: 10px;
+    }
+
+        .label-arrow-right:after {
+            left: 100%;
+            top: 50%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            border-left-color: #999;
+            border-width: 10px;
+            border-bottom-width: 9px;
+            margin-top: -10px;
+        }
+
+    .label-arrow-left {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        margin-left: 10px;
+    }
+
+        .label-arrow-left:before {
+            right: 100%;
+            top: 50%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            border-right-color: #999;
+            border-width: 10px;
+            border-bottom-width: 9px;
+            margin-top: -10px;
+        }
+
+    .label-primary.label-arrow:after {
+        border-left-color: #428bca;
+    }
+
+    .label-primary.label-arrow:before {
+        border-right-color: #428bca;
+    }
+
+    .label-primary.banner-left:before, .label-primary.banner-right:after {
+        border-color: #428bca;
+    }
+
+    .label-success.label-arrow:after {
+        border-left-color: #5cb85c;
+    }
+
+    .label-success.label-arrow:before {
+        border-right-color: #5cb85c;
+    }
+
+    .label-warning.label-arrow:after {
+        border-left-color: #f0ad4e;
+    }
+
+    .label-warning.label-arrow:before {
+        border-right-color: #f0ad4e;
+    }
+
+    .label-danger.label-arrow:after {
+        border-left-color: #d9534f;
+    }
+
+    .label-danger.label-arrow:before {
+        border-right-color: #d9534f;
+    }
+
+    .label-info.label-arrow:after {
+        border-left-color: #5bc0de;
+    }
+
+    .label-info.label-arrow:before {
+        border-right-color: #5bc0de;
+    }
+
+    .banner-left:before {
+        border: 10px solid #999;
+        border-left: 10px solid transparent !important;
+        border-bottom-width: 9px;
+        left: -18px;
+        position: absolute;
+        top: 0;
+        height: 0;
+        content: " ";
+    }
+
+    .banner-right:after {
+        border: 10px solid #999;
+        border-right: 10px solid transparent !important;
+        border-bottom-width: 9px;
+        right: -18px;
+        position: absolute;
+        top: 0;
+        height: 0;
+        content: " ";
+    }
+
+    h1 .label-arrow-right {
+        margin-right: 22px;
+    }
+
+    h1 .label-arrow-left {
+        margin-left: 22px;
+    }
+
+        h1 .label-arrow-right:after, h1 .label-arrow-left:before {
+            border-width: 22px;
+            margin-top: -22px;
+        }
+
+    h1 .banner-left:before {
+        border-width: 24px;
+        border-left-width: 24px: right:-10px;
+        border-bottom-width: 21px;
+    }
+
+    .occupy_percentage {
+        font-weight: bolder;
+        font-size: 1.2vw;
+    }
+
+    .badge.badge-danger.fs-10.px-3 {
+        
+    }
+
+    h2 {
+        font-weight: 500 !important;
+        color: black;
+    }
+</style>
+
+
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+    <!-- START PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h2>Province Homes</h2>
+                        </div>
+                        <div class="col-md-2 text-right">
+                            <h4 class="text-danger bold pr-3">
+                                @*4318
+                                    <small>Residents</small>*@
+                            </h4>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+            <div style="height: 60px;"></div>
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+                @{
+                    IEnumerable<string> l_Provinces = Model.Select(x => x.ProvinceName).Distinct();
+                }
+                @foreach (var prov in l_Provinces)
+                {
+                    <div class="row mb-5">
+                        <div class="col-md-12">
+                            <h2>@prov</h2>
+                            <hr />
+                        </div>
+
+                        @{
+                            IEnumerable<QolaMVC.Models.HomeModel> l_Homes = Model.Where(x => x.Province.Name == prov);
+                        }
+
+                        @foreach (var home in l_Homes)
+                        {
+
+                            string l_Image = "/Content/assets/" + home.IconImage;
+                            <div class="col-md-3 mb-3">
+                                <a href="~/Home/Menu/?p_HomeId=@home.Id">
+                                    <div class="card no-border  no-margin">
+                                        <div class="padding-15">
+                                            <div class="item-header clearfix">
+                                                <div class="inline m-l-10">
+                                                    <p class="no-margin">
+                                                        <strong style="font-size:1.2vw;">
+                                                            @{
+                                                                var home_Syllables = home.Name.Split(' ');
+
+                                                            }
+                                                            @home_Syllables[0] @home_Syllables[1]
+                                                        </strong>
+                                                    </p>
+                                                    <p class="no-margin hint-text">
+                                                        <span class="location semi-bold">
+                                                            @*<i class="fa fa-map-marker"></i>*@
+                                                            @home.Address
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="relative">
+                                            <div class="no-overflow home-box" style="background-image: url(@l_Image)">
+                                                <!-- <img src="assets/img/residents/resident<?php echo $i ?>.jpg" class="block center-margin relative w-100" alt="Post"> -->
+                                            </div>
+                                        </div>
+                                        <div class="padding-15">
+                                            <div class="list-inline pull-left no-margin">
+
+                                            </div>
+                                            <div class="list-inline pull-right no-margin" style="position:relative;width:4vw;height:4vw;">
+                                                <div class="badge badge-danger fs-10" style="position:absolute;top:0.3vw;left:1.7vw;opacity:0.8;">@home.OccupiedSuites/@home.TotalSuites</div>
+                                                @*<div class="label label-default label-arrow label-arrow-left banner-right">left arrow</div>
+                                                    <div class="label label-danger label-arrow label-arrow-left">left arrow</div>*@
+                                                <div class="before">
+                                                    <img class="colour_arrow_class" style="width:100%;height:100%;" />
+                                                    <div style="position:absolute;top:1.2vw;left:1.2vw;">
+                                                        <p class="occupy_percentage">@(home.OccupiedSuites * 100 / home.TotalSuites)%</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+
+                    </div>
+                }
+
+                <!-- END PLACE PAGE CONTENT HERE -->
+            </div>
+            <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+        @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+
+<script>
+
+    $().ready(function () {
+        var nodes = document.getElementsByClassName("before");
+        //var nodes = document.getElementsByClassName("colour_arrow_class");
+        for (var a = nodes.length - 1; a >= 0; a--) {
+            var nodesimg = nodes[a].getElementsByTagName("img");
+            var nodes2 = nodes[a].getElementsByTagName("div");
+            var nodes3 = nodes2[0].getElementsByTagName("p");
+            var nodes4 = nodes3[0].innerHTML;
+            if (parseFloat(nodes4) <= 20)
+                nodesimg[0].src = "/Content/pages/img/arrow_red2.png";
+            else if(parseFloat(nodes4) < 80 && parseFloat(nodes4)>20)
+                nodesimg[0].src = "/Content/pages/img/arrow_yellow2.png";
+            else
+                nodesimg[0].src = "/Content/pages/img/arrow_green2.png";
+        }
+    });
+
+</script>

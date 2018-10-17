@@ -1,0 +1,88 @@
+﻿@model QolaMVC.Models.NEW_SpecialDietModel
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+<style>
+
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+</style>
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3>Special Diet</h3>
+                        </div>
+
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+
+            <div style="height: 60px;"></div>
+
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+
+
+                <div class="card">
+                    <div class="card-block">
+
+                        <div class="row">
+                            <div class="col-md-8 offset-md-2">
+                                @using (Html.BeginForm("EditSpecialDiet", "SpecialDiet", new { p_ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "p-t-15", @role = "form" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(true)
+                                <div class="row">
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="staticEmail" class="col-form-label">Name*</label>
+                                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.Name, null, new { @style = "color: red; font-style: italic;" })
+                                        </div>
+                                    </div>
+                                </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <button class="btn btn-danger btn-lg">SAVE</button>
+                                            <input type="reset" class="btn btn-danger btn-lg" value="CLEAR">
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!-- END PLACE PAGE CONTENT HERE -->
+            </div>
+            <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+
+
+
+
+        @RenderPage("~/Views/Shared/_Footer.cshtml")

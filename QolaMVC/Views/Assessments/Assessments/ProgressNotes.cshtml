@@ -1,0 +1,165 @@
+@model QolaMVC.Models.ProgressNotesModel
+
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+@{ 
+    var resident = (QolaMVC.Models.ResidentModel)ViewBag.Resident;
+    var user = (QolaMVC.Models.UserModel)ViewBag.User;
+    var home = (QolaMVC.Models.HomeModel) ViewBag.Home;
+}
+<style>
+
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+</style>
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+
+    <!-- START PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="page-content-wrapper">
+            <!-- START PAGE CONTENT -->
+            <div class="content">
+                <!-- START JUMBOTRON -->
+                <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                    <div class="container-fluid container-fixed-lg">
+                        <!-- <div class="inner"> -->
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h3>Progress Notes</h3>
+                            </div>
+                        </div>
+                        <!-- </div> -->
+                    </div>
+                </div>
+                <!-- END JUMBOTRON -->
+                <div style="height: 60px;"></div>
+                <!-- START CONTAINER FLUID -->
+                <div class="container-fluid container-fixed-lg">
+                    <!-- BEGIN PlACE PAGE CONTENT HERE -->
+
+                    <form action="/Assessments/AddProgressNote/" method="post">
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label"><b>Resident</b></label>
+                                            <div class="col-md-12">
+                                                <input type="text" disabled class="form-control" value="@resident.SuiteNo, @resident.FirstName @resident.LastName" id="staticEmail">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @*<div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label"><b>Date</b></label>
+                                            <div class="col-md-12">
+                                                <input type="date" value="@DateTime.Now" name="date" class="form-control" id="staticEmail">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>*@
+                                @*<div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label"><b>Time</b></label>
+                                            <div class="col-md-12">
+                                                <input type="datetime-local" name="date" class="form-control" id="staticEmail">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>*@
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label"><b>Department</b></label>
+                                            <div class="col-md-12">
+                                                <input type="text" name="department" class="form-control" id="staticEmail">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label"><b>Category</b></label>
+                                            <div class="col-md-12">
+                                                <select name="category" class="form-control">
+                                                    <option value="0">Select</option>
+                                                    <option value="2">Medical Update</option>
+                                                    <option value="3">Social/activity update</option>
+                                                    <option value="4">Dietary Update</option>
+                                                    <option value="5">General Update</option>
+                                                    <option value="6">Resident Fall</option>
+                                                    <option value="7">Resident Bruised</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label"><b>Reminder</b></label>
+                                            <div class="col-md-12">
+                                                <select name="remainin" class="form-control">
+                                                    <option value="0">Select</option>
+                                                    <option value="6">1 hour</option>
+                                                    <option value="7">2 hours</option>
+                                                    <option value="1">4 hours</option>
+                                                    <option value="2">8 hours</option>
+                                                    <option value="3">12 hours</option>
+                                                    <option value="4">Tomorrow</option>
+                                                    <option value="5">Next Week</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label"><b>Title</b></label>
+                                            <div class="col-md-12">
+                                                <input name="title" type="text" class="col-md-12 form-control" id="staticEmail">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <br><br>
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-md-12 col-form-label">Multidisciplinary Notes</label>
+                                            <div class="col-md-12">
+                                                <textarea name="note" class="col-md-12 textarea" rows="5"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 text-right">
+                                        <br>
+                                        <button class="btn btn-danger btn-lg">SAVE</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- END PLACE PAGE CONTENT HERE -->
+                </div>
+                <!-- END CONTAINER FLUID -->
+            </div>
+            <!-- END PAGE CONTENT -->
+            @RenderPage("~/Views/Shared/_Footer.cshtml")

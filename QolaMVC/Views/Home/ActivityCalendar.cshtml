@@ -1,0 +1,1049 @@
+﻿@model QolaMVC.Models.Dining_Attendance_simple
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='utf-8' />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Calendar Plugin</title>
+
+    <link rel="stylesheet" href="/Content/calendar/css/calendar-plugin.min.css" media="all" />
+    <style type="text/css">
+        body {
+            visibility: hidden;
+        }
+    </style>
+    <script>
+        setTimeout(function aa() {
+            document.getElementById("mike").style.visibility = "visible";
+        }, 1000);
+
+    </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+</head>
+
+<body id="mike">
+    <!-- START PAGE-CONTAINER -->
+    <div class="page-container">
+
+        @RenderPage("~/Views/Shared/_NavBar.cshtml")
+
+        <!-- START PAGE CONTENT WRAPPER -->
+        <div class="page-content-wrapper">
+            <!-- START PAGE CONTENT -->
+            <div class="content">
+                <!-- START JUMBOTRON -->
+                <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                    <div class="container-fluid container-fixed-lg">
+                        <!-- <div class="inner"> -->
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h3>Activity Calendar</h3>
+                            </div>
+                        </div>
+                        <!-- </div> -->
+                    </div>
+                </div>
+                <!-- END JUMBOTRON -->
+                <div style="height: 60px;">
+                </div>
+                <!-- START CONTAINER FLUID -->
+                <div class="container-fluid container-fixed-lg">
+                    <div style='position: relative; float: left; width: 100%;'>
+                        <section id='calendar'></section>
+
+                        <script src="~/Content/calendar/plugins/jquery/jquery.min.js"></script>
+                        <!-- <script src="plugins/jquery-ui/jquery-ui.min.js"></script> -->
+                        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
+                        <script src="~/Content/calendar/js/calendar-plugin.js"></script>
+                        @*<script src="~/Content/calendar/js/calendar-plugin_only_for_activity_calendar.js"></script>*@
+                        <script type='text/javascript'>
+                        var l_Categories = {};
+
+                        $.ajax({
+                            type: 'get',
+                            url: '@Url.Action("getCategoriesForCalendar")',
+                            dataType: 'json',
+                            success: function (data) {
+                                //l_Categories = data;
+                              //console.log(data);
+
+                                for (var i = 0; i < data.length; i++ ) {
+                                    l_Categories[data[i].Id] = data[i].Name;
+                                }
+                                console.log(l_Categories);
+                                initCalendar();
+                            },
+                            error: function (ex) {
+                                var r = jQuery.parseJSON(response.responseText);
+                                alert("Message: " + r.Message);
+                                alert("StackTrace: " + r.StackTrace);
+                                alert("ExceptionType: " + r.ExceptionType);
+                            }
+                        });
+
+
+
+                        function initCalendar() {
+                             $('#calendar').CalendarPlugin({
+                                 url: '/Home/getEvents',
+                                 view: 'daily',
+                            form: [
+                                [
+                                    {
+                                        type: 'text',
+                                        name: 'title',
+                                        label: 'Activity Display Title',
+                                        placeholder: 'E.g. Marathon'
+                                    }
+
+                                ],
+                                [
+                                    {
+                                        type: 'select',
+                                        name: 'activity',
+                                        label: 'Activity *',
+                                        placeholder: 'Select',
+                                        options: l_Categories
+                                    }
+                                ],
+                                [
+                                    {
+                                        type: 'radio',
+                                        name: 'frequency',
+                                        label: 'Frequency',
+                                        placeholder: 'Select',
+                                        options: { 1: 'Date & Time', 2: 'Every Weekday', 3: 'Date Between'}
+                                    }
+                                ],
+                                [
+                                    {
+                                        type: 'datetime',
+                                        name: 'startDate',
+                                        label: 'Date & Time',
+                                        placeholder: 'DD/MM/YYYY',
+                                    }
+                                ],
+                                 [
+                                    {
+                                        type: 'date',
+                                        name: 'DateFrom',
+                                        label: 'Date From',
+                                        placeholder: 'DD/MM/YYYY',
+                                    }
+                                ],
+                                 [
+                                    {
+                                        type: 'date',
+                                        name: 'DateTo',
+                                        label: 'Date To',
+                                        placeholder: 'DD/MM/YYYY',
+                                    }
+                                ],
+                                 [
+                                    {
+                                        type: 'time',
+                                        name: 'Time',
+                                        label: 'Time',
+                                        placeholder: 'DD/MM/YYYY',
+                                    }
+                                ],
+                                [
+                                    {
+                                        type: 'select',
+                                        name: 'weekDay',
+                                        label: 'Week Day',
+                                        placeholder: 'Select',
+                                        options: { Monday: 'Monday', Tuesday: 'Tuesday', Wednesday: 'Wednesday', Thursday: 'Thursday', Friday: 'Friday', Saturday: 'Saturday', Sunday:'Sunday'}
+                                    }
+                                ],
+                                [
+                                    {
+                                        type: 'select',
+                                        name: 'venue',
+                                        label: 'Venue',
+                                        placeholder: 'Select',
+                                        options: { 0:'NaN' }
+                                    }
+                                ]
+                            ]
+                        });
+                        }
+                        </script>
+                    </div>
+                    <!-- END CONTAINER FLUID -->
+                </div>
+                <!-- END PAGE CONTENT -->
+            </div>
+        </div>
+    </div>
+
+    <div id="day_div" style="display:block;margin-top:-43vw;z-index:1000;">
+
+        <div class="container-fluid container-fixed-lg" id="main_page" style="margin-top:-8vw;">
+            <div class="card">
+                <div class="card-block">
+                    <div class="form-tabs mt-4">
+
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top:-7.5vw;margin-left:20vw;padding-bottom:5vw;">
+
+                            <li class="Prevbtn"><a href="#" onclick="previousday()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
+                            <li class="clear_bg"><label id="lblCalendarMsg" style="font-weight:bolder;font-size:1.5vw;margin-top:0.9vw;color:white">@TempData["datechoose"].ToString()</label></li>
+                            <li class="Nextbtn"><a href="#" onclick="nextday()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
+                        </ul>
+
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-day" role="tabpanel" aria-labelledby="pills-home-tab">
+                                <div id="select_ActivityID_index" class="" name="" english=""></div>
+                                <table class="table table-bordered">
+                                    <thead class="bg-primary">
+                                        <tr>
+                                            <th class="text-white text-center">Time</th>
+                                            <th class="text-white text-center">Today's Activities</th>
+                                            <th class="text-white text-center">Venue</th>
+                                            <th class="text-white text-center">Attendance</th>
+                                            <th class="text-white text-center" colspan="2"></th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-white text-center"></th>
+                                            <th class="text-white text-center"></th>
+                                            <th class="text-white text-center"></th>
+                                            <th class="text-white text-center"></th>
+                                            <th class="text-white text-center">Active</th>
+                                            <th class="text-white text-center">Declined</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            for (int a = 0; a < @ViewBag.Events.Count; a++)
+                                            {
+                                                <tr name=@ViewBag.Events[a].ProgramId id=@ViewBag.Events[a].ProgramName englishname=@ViewBag.Events[a].ActivityNameEnglish>
+                                                    <td>@ViewBag.Events[a].ProgramStartTime</td>
+                                                    <td>@ViewBag.Events[a].ProgramName</td>
+                                                    <td>@ViewBag.Events[a].Venue</td>
+                                                    <td>
+                                                        <a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#">
+                                                            <i class="fa fa-file-text-o"></i>
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        @ViewBag.Events[a].Active
+                                                    </td>
+                                                    <td>
+                                                        @ViewBag.Events[a].Declined
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal" id="attendent_form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div id="contactForm" class="modal" style="display:none">
+                <h3>Add Progress Notes</h3>
+                <br>
+                <form action="#">
+                    <textarea class="formtext" id="formtextarea" placeholder="Comment" style="height:170px;width:300px"></textarea>
+                    <input class="formBtn" type="button" value="Submit" onclick="progressnoteadd(this)" />
+                    <input class="formBtn" type="button" value="Reset" onclick="document.getElementById('formtextarea').value=''" />
+                    <input class="formBtn" type="button" value="Close" onclick="note_close_click()" />
+                </form>
+            </div>
+
+            <div class="modal-xlg" role="document" id="attendent_form_second_layer">
+                <div class="modal-content" id="attendent_form_third_layer">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="exampleModalLabel" style="font-weight:bolder;">Activity Attendance</h3>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="x_close()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-tabs mt-4">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home1" role="tab" aria-controls="pills-home" aria-selected="true" onclick="search_click()">Search View</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile1" role="tab" aria-controls="pills-profile" aria-selected="false" onclick="list_click()">List View</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact1" role="tab" aria-controls="pills-contact" aria-selected="false" onclick="floor_click()">Floor View</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+
+
+                            <div class="tab-content" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="pills-home1" role="tabpanel" aria-labelledby="pills-home-tab">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group row">
+                                                <label class="col-md-12 col-form-label" style="margin-left:5vw">Resident Name / Suite # :</label>
+                                                <div class="col-md-12" style="margin-left:5vw">
+                                                    <input type="text" class="form-control" id="searchresidents3" onchange="change_searchresidents3()">
+                                                </div>
+                                            </div>
+                                            <div class="searchBox p-1" id="searchBoxfor3" style="margin-left:5.5vw">
+                                                <div class="list-group searchboxresult2">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7">
+
+                                            <div class="form-group">
+                                                <br><br>
+                                                <div class="row">
+                                                    <div class="col-md-12 pads" style="margin-left:4vw">
+                                                        <div class="form-check form-check-inline movesp">
+                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                            <label class="form-check-label" name="viewlistchoose">Active</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                            <label class="form-check-label" name="viewlistchoose">Passive</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline movesp">
+                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                            <label class="form-check-label" name="viewlistchoose">Declined</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline movesp">
+                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                            <label class="form-check-label" name="viewlistchoose">Away</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2" style="display:inline-block;">
+                                            <br>
+                                            <button class="btn btn-lg btn-danger" onclick="View_List_add()" style="margin-left:-2vw;">ADD</button>
+                                            <button type="button" class="btn btn-lg btn-primary" data-dismiss="modal" onclick="View_List_save()">SAVE</button>
+                                        </div>
+
+                                        <div class="" style="border:1px solid #000;margin-left:15vw">
+                                            <table class="attend" style="min-width:50vw">
+                                                <tbody id="show_list"></tbody>
+                                            </table>
+                                        </div>
+
+
+                                        <div class="col-md-12 text-center">
+                                            <br><br><br><br><br><br>
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="View_List_save()" style="margin-left:-2vw;">SAVE</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="pills-profile1" role="tabpanel" aria-labelledby="pills-profile-tab">
+                                    <div class="row">
+
+                                        <div class="col-md-12 text-center">
+                                            <br>
+                                            <button type="button" class="btn btn-primary" style="margin-bottom:1vw;margin-left:3vw;" data-dismiss="modal" onclick="list_savebutton()">SAVE</button>
+                                            <button type="button" class="btn btn-primary" id="PrintID1" style="margin-bottom:1vw;float:right" onclick="Print_list()">Print</button>
+                                        </div>
+                                        <br>
+                                        <div class="col-md-6" style="border: 1px solid #000;">
+                                            <table class="attend">
+                                                <tbody>
+                                                    @{
+                                                        for (int i = 0; i < Model.LIST_RESIDENT.Count; i = i + 2)
+                                                        {
+                                                            var a = Model.LIST_RESIDENT[i];
+                                                            <tr name=@a.ID>
+                                                                <td style="max-width:10vw">@a.FirstName @a.LastName</td>
+                                                                <td>
+                                                                    <div class="form-check form-check-inline">
+                                                                        <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option1">
+                                                                        <label class="form-check-label">Active</label>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-check form-check-inline">
+                                                                        <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option2">
+                                                                        <label class="form-check-label">Passive</label>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-check form-check-inline">
+                                                                        <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option3">
+                                                                        <label class="form-check-label">Declined</label>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-check form-check-inline">
+                                                                        <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option4">
+                                                                        <label class="form-check-label">Away</label>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-check form-check-inline">
+                                                                        <input type="image" style="width:1.7vw;height:1.7vw" src="/Content/pages/img/icoedit.png" onclick="progressnote(this)">
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+
+                                                        }
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col-md-6" style="border: 1px solid #000">
+                                            <table class="attend">
+                                                <tbody>
+                                                    @for (int i = 1; i < Model.LIST_RESIDENT.Count; i = i + 2)
+                                                    {
+                                                        var a = Model.LIST_RESIDENT[i];
+                                                        <tr name=@a.ID>
+                                                            <td style="max-width:10vw">@a.FirstName @a.LastName</td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option1">
+                                                                    <label class="form-check-label">Active</label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option2">
+                                                                    <label class="form-check-label">Passive</label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option3">
+                                                                    <label class="form-check-label">Declined</label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option4">
+                                                                    <label class="form-check-label">Away</label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input type="image" style="width:1.7vw;height:1.7vw" src="/Content/pages/img/icoedit.png" onclick="progressnote(this)">
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div class="col-md-12 text-center">
+                                            <br><br><br><br><br><br>
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="list_savebutton()">SAVE</button>
+                                            <button type="button" class="btn btn-secondary" onclick="list_clearbutton()">CLEAR</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="pills-contact1" role="tabpanel" aria-labelledby="pills-contact-tab">
+                                    <div class="row">
+                                        <div class="col-md-12 text-center">
+                                            <br>
+                                            <button type="button" class="btn btn-primary" style="margin-bottom:1vw;margin-left:3vw;" data-dismiss="modal" onclick="floor_savebutton()">SAVE</button>
+
+                                            <button type="button" class="btn btn-primary" id="PrintID2" style="margin-bottom:1vw;float:right" onclick="Print_floor()">Print</button>
+                                        </div>
+                                        @{
+                                            int floor = 0;
+                                            foreach (var a in Model.LIST_RESIDENT)
+                                            {
+                                                if (a.No_of_floor > floor)
+                                                {
+                                                    floor = a.No_of_floor;
+                                                }
+                                            }
+
+                                            for (int b = 1; b <= floor; b++)
+                                            {
+                                                <div class="col-md-6" style="border:1px solid #000;">
+                                                    <table class="attend">
+                                                        <tbody>
+                                                            <tr>
+                                                                <th colspan="7" height=50vw>@b st Floor</th>
+                                                            </tr>
+                                                            @foreach (var a in Model.LIST_RESIDENT)
+                                                            {
+                                                                if (a.No_of_floor == b)
+                                                                {
+                                                                    <tr name=@a.ID>
+                                                                        <td>@a.FirstName @a.LastName</td>
+                                                                        <td>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option1">
+                                                                                <label class="form-check-label">Active</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option2">
+                                                                                <label class="form-check-label">Passive</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option3">
+                                                                                <label class="form-check-label">Declined</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option4">
+                                                                                <label class="form-check-label">Away</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input type="image" style="width:1.7vw;height:1.7vw" src="/Content/pages/img/icoedit.png" onclick="progressnote(this)">
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            }
+                                        }
+
+                                        <div class="col-md-12 text-center">
+                                            <br><br><br><br><br><br>
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="floor_savebutton()">SAVE</button>
+                                            <button type="button" class="btn btn-secondary" onclick="floor_clearbutton()">CLEAR</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer text-center">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    @*@RenderPage("~/Views/Shared/_Footer.cshtml")*@
+</body>
+</html>
+
+<script>
+
+    $('div[class="cp-nav-controls"]').hide();
+    $('div[class="cp-header-content"]').hide();
+    $('div[class="cp-view-list-container"]').css('z-index', 2000);
+    $('div[class="cp-view-list-container"]').css('width', "20%");
+    $('.cp-calendar.daily').hide();
+
+    function day_click() {
+        //document.getElementById("mike").style.visibility = "hidden";
+        //document.getElementById("day_div").style.display = "block";
+
+        //setTimeout(function () {
+        //    $('.cp-calendar.daily').hide();
+        //    $('div[class="cp-nav-controls"]').hide();
+        //    $('div[class="cp-header-content"]').hide();
+        //    $('div[class="cp-view-list-container"]').css('z-index', 2000);
+        //    $('div[class="cp-view-list-container"]').css('width', "20%");
+        //    document.getElementById("mike").style.visibility = "visible";
+        //}, 300);
+        window.location.href = window.location.href;
+    }
+
+    function hide_day() {
+        document.getElementById("day_div").style.display = "none";
+        $('div[class="cp-nav-controls"]').show();
+        $('div[class="cp-header-content"]').show();
+    }
+
+</script>
+<style>
+
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+
+    table.attend tbody tr td {
+        padding: 15px !important;
+    }
+
+    table.attend tbody tr {
+        border-bottom: 1px solid #000;
+    }
+
+    #attendent_form {
+        margin-left: 0;
+        z-index: 4000;
+    }
+
+    #attendent_form_second_layer {
+        margin-left: 7.5vw;
+        right: auto;
+        padding-top: 5px;
+        padding-bottom: 30px;
+        min-width: 85vw;
+    }
+
+    #attendent_form_third_layer {
+        margin-left: 0;
+    }
+
+    #contactForm {
+        display: none;
+        border: 6px solid salmon;
+        padding: 2em;
+        width: 400px;
+        text-align: center;
+        background: #fff;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        -webkit-transform: translate(-50%,-50%);
+        overflow-y: hidden;
+    }
+
+    .formBtn, .formtext {
+        margin: .8em auto;
+        font-family: inherit;
+        text-transform: inherit;
+        font-size: inherit;
+        display: block;
+        padding: .4em;
+    }
+
+    .formtext {
+        resize: none;
+    }
+
+    .formBtn {
+        display: inline-block;
+        background: teal;
+        color: #fff;
+        font-weight: 100;
+        font-size: 1.2em;
+        border: none;
+        width: 70px;
+    }
+
+    .fa-file-text-o {
+        font-size: 20px;
+        color: #015093;
+    }
+
+
+    a.active {
+        background-color: #015093 !important;
+    }
+</style>
+<script>
+
+    function list_savebutton() {
+
+        var savestring = "";
+        var mealselect = document.getElementById("select_ActivityID_index").className;
+        var eventname = document.getElementById("select_ActivityID_index").getAttribute("name");
+        var english = document.getElementById("select_ActivityID_index").getAttribute("english");
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+
+        var a = $("div[id=pills-profile1] tr td div input[class=form-check-input]");
+        for (var c = 0; c < a.length; c++) {
+            if (a[c].checked == true && a[c].disabled != true) {
+                savestring = savestring + a[c].name + "," + a[c].value + ",";
+            }
+        }
+        $.post("/Home/saveButton_Activity", { arr: savestring, whichAEID: mealselect, datesel: dateselect, eventName: eventname, englishname: english }, function (data) {
+            if (data == 1) {
+                tempAlert("Saved Successfully", 2000);
+                setTimeout(function () { window.location.reload(); }, 2000);
+            }
+            else
+                tempAlert("Saved failed", 2000);
+        });
+    }
+    function floor_savebutton() {
+        var savestring = "";
+        var mealselect = document.getElementById("select_ActivityID_index").className;
+        var eventname = document.getElementById("select_ActivityID_index").getAttribute("name");
+        var english = document.getElementById("select_ActivityID_index").getAttribute("english");
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+
+        var a = $("div[id=pills-contact1] tr td div input[class=form-check-input]");
+        for (var c = 0; c < a.length; c++) {
+            if (a[c].checked == true && a[c].disabled != true) {
+                var g = String(a[c].name);
+                var nameg = g.substring(0, g.length - 1);
+                savestring = savestring + nameg + "," + a[c].value + ",";
+            }
+        }
+        $.post("/Home/saveButton_Activity", { arr: savestring, whichAEID: mealselect, datesel: dateselect, eventName: eventname, englishname: english }, function (data) {
+            if (data == 1) {
+                tempAlert("Saved Successfully", 2000);
+                setTimeout(function () { window.location.reload(); }, 2000);
+            }
+            else
+                tempAlert("Saved failed", 2000);
+        });
+    }
+
+    function floor_clearbutton() {
+        var a = $("div[id=pills-contact1] tr td div input[class=form-check-input]");
+        for (var c = 0; c < a.length; c++) {
+            if (a[c].disabled != true) {
+                a[c].checked = false;
+            }
+        }
+    }
+    function list_clearbutton() {
+        var a = $("div[id=pills-profile1] tr td div input[class=form-check-input]");
+        for (var c = 0; c < a.length; c++) {
+            if (a[c].disabled != true) {
+                a[c].checked = false;
+            }
+        }
+    }
+
+    function open_form(ee) {
+        var node_tbody = document.getElementById("show_list")
+        while (node_tbody.hasChildNodes())
+            node_tbody.removeChild(node_tbody.lastChild);
+        var aa = $("div tr td div input[class=form-check-input]");
+        for (var cc = 0; cc < aa.length; cc++) {
+            if (aa[cc].checked == true) {
+                aa[cc].checked = false;
+            }
+        }
+        var a = document.getElementById("select_ActivityID_index");
+        a.className = ee.parentNode.parentNode.getAttribute("name");
+        a.setAttribute("name", ee.parentNode.parentNode.id);
+        a.setAttribute("english", ee.parentNode.parentNode.getAttribute("englishname"));
+        getdata();
+
+
+    }
+    function getdata() {
+        var AEventID = document.getElementById("select_ActivityID_index").className;
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+        $.get("/Home/Getting_Activity", { whichAEID: AEventID, datesel: dateselect }, function (data) {
+            var a = String(data).split(";");
+            for (var c = 0; c < a.length; c++) {
+                var cplus = c + 1;
+                for (var b = 0; b < a[c].split(",").length; b++) {
+                    if (a[c].split(",")[b] != "") {
+                        var d = $("input[name=" + a[c].split(",")[b] + "][value=option" + cplus + "]");
+                        d[0].checked = true;
+                        var e = $("input[name=\"" + a[c].split(",")[b] + "+\"][value=option" + cplus + "]");
+                        e[0].checked = true;
+                    }
+                }
+            }
+        });
+        $.get("/Home/View_List_Activity", { whichAEID: AEventID, datesel: dateselect }, function (data) {
+            var view = $("#show_list");
+            for (var i = 0; i < data.length; i++) {
+                view.append("<tr name='" + data[i][1].Value + "'><td>" + data[i][0].Value + "<\/td><td>" + data[i][3].Value + "<\/td><td><div class=\"form-check form-check-inline\"><input type=\"image\" style=\"width:1.7vw;height:1.7vw\" src=\"\/Content\/pages\/img\/icoedit.png\" onclick=\"progressnote(this)\"><\/div><\/td>" +
+                    "<td><div><input id=\"1\" type=\"image\"  onclick=\"SomeDeleteRowFunction(this)\" style=\"width:1.5vw;height:1.5vw\" src=\"\/Content\/pages\/img\/X.jpg\" class=\"clsButtonRemove\" style=\"float:right;\"><\/div><\/td><\/tr>");
+            }
+
+        });
+
+
+
+        $.get("/Home/disable_hospital", { datesel: dateselect }, function (data) {
+            for (var len = 0; len < data.toString().split(',').length; len++) {
+                if (data.toString().split(',')[len] != '') {
+                    var a = $('input[type="radio"][name="' + data.toString().split(',')[len] + '"]')
+                    a[3].checked = true;
+                    a.attr('disabled', true);
+                    var b = $('input[type="radio"][name="' + data.toString().split(',')[len] + '+"]')
+                    b[3].checked = true;
+                    b.attr('disabled', true);
+                }
+            }
+        });
+    }
+
+    function View_List_add() {
+        var a = $('#searchresidents3');
+        var residentid = a[0].name;
+        if (residentid == "" || residentid == undefined) {
+            tempAlert("No Resident was Choosen", 2000);
+            return;
+        }
+        var namesub = $('input[name=' + residentid + ']')
+        var name = namesub[1].parentNode.parentNode.previousElementSibling.innerHTML;
+        var selector = $('input[name="inlineRadioOptions"]')
+        for (var s = 0; s < selector.length; s++) {
+            if (selector[s].checked == true) {
+                var text = selector[s].nextElementSibling.innerHTML;
+            }
+        }
+        if (text == undefined) {
+            //alert("No Option was Choosen");
+            tempAlert("No Option was Choosen", 2000);
+
+            return;
+        }
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+        $.get("/Home/disable_hospital", { datesel: dateselect }, function (data) {
+            if (data.toString().includes(residentid)) {
+                tempAlert("Resident in the Hospital", 2000);
+            }
+            else {
+                var view = $("#show_list");
+                var viewtr = $("#show_list tr");
+                for (var viewindex = 0; viewindex < viewtr.length; viewindex++) {
+                    if (residentid == viewtr[viewindex].getAttribute('name')) {
+                        residentid = '-9';
+                    }
+                }
+                if (residentid == '-9') {
+                    tempAlert("Resident already exist in the List", 2000);
+                }
+                else {
+                    view.append("<tr name='" + residentid + "'><td>" + name + "<\/td><td>" + text +
+                        "<\/td><td><div class=\"form-check form-check-inline\"><input type=\"image\" style=\"width:1.7vw;height:1.7vw\" src=\"\/Content\/pages\/img\/icoedit.png\" onclick=\"progressnote(this)\">" +
+                        "<\/div><\/td><td><div><input id=\"1\" type=\"image\" style=\"width:1.5vw;height:1.5vw\" " +
+                        "onclick=\"SomeDeleteRowFunction(this)\" src=\"\/Content\/pages\/img\/X.jpg\" class=\"clsButtonRemove\" style=\"float:right;\"><\/div>" +
+                        "<\/td><\/tr>");
+                    var box = $('#searchresidents3');
+                    box[0].value = "";
+                    var choice = $('input[name="inlineRadioOptions"]');
+                    for (var ind = 0; ind < choice.length; ind++) {
+                        choice[ind].checked = false;
+                    }
+                }
+            }
+        });
+    }
+    function x_close() {
+        var box = $('#searchresidents3');
+        box[0].value = "";
+        var choice = $('input[name="inlineRadioOptions"]');
+        for (var ind = 0; ind < choice.length; ind++) {
+            choice[ind].checked = false;
+        }
+    }
+    function SomeDeleteRowFunction(o) {
+        var p = o.parentNode.parentNode.parentNode;
+        p.parentNode.removeChild(p);
+    }
+
+    function View_List_save() {
+        var savestring = "";
+        var mealselect = document.getElementById("select_ActivityID_index").className;
+        var eventname = document.getElementById("select_ActivityID_index").getAttribute("name");
+        var english = document.getElementById("select_ActivityID_index").getAttribute("english");
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+        var tr_list = $('div table[class="attend"] tbody[id="show_list"] tr');
+        for (var index = 0; index < tr_list.length; index++) {
+            var td_list = tr_list[index].childNodes
+            savestring = savestring + tr_list[index].getAttribute('name') + "," + td_list[1].innerHTML + ",";
+        }
+        $.post("/Home/saveButton_Activity", { arr: savestring, whichAEID: mealselect, datesel: dateselect, eventName: eventname, englishname: english }, function (data) {
+            if (data == 1) {
+                tempAlert("Saved Successfully", 2000);
+                setTimeout(function () { window.location.reload(); }, 2000);
+
+            }
+            else
+                tempAlert("Saved failed", 2000);
+        });
+
+    }
+
+    function previousday() {
+        var monthNames = [
+            "January", "February", "March",
+            "April", "May", "June", "July",
+            "August", "September", "October",
+            "November", "December"
+        ];
+        var a = document.getElementById("lblCalendarMsg").innerHTML;
+        var b = new Date(a);
+        b.setDate(b.getDate() - 1);
+        document.getElementById("lblCalendarMsg").innerHTML = monthNames[b.getMonth()] + " " + b.getDate() + ", " + b.getFullYear();
+
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+        if (window.location.href.toString().includes("datesel")) {
+            var indexequal = window.location.href.toString().indexOf("=");
+            var newstring = window.location.href.toString().substring(0, indexequal + 1);
+            window.location.href = newstring + dateselect;
+        }
+        else
+            window.location.href = window.location.href + "?datesel=" + dateselect;
+
+    }
+    function nextday() {
+        var monthNames = [
+            "January", "February", "March",
+            "April", "May", "June", "July",
+            "August", "September", "October",
+            "November", "December"
+        ];
+        var a = document.getElementById("lblCalendarMsg").innerHTML;
+        var b = new Date(a);
+        b.setDate(b.getDate() + 1);
+        document.getElementById("lblCalendarMsg").innerHTML = monthNames[b.getMonth()] + " " + b.getDate() + ", " + b.getFullYear();
+
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+        if (window.location.href.toString().includes("datesel")) {
+            var indexequal = window.location.href.toString().indexOf("=");
+            var newstring = window.location.href.toString().substring(0, indexequal + 1);
+            window.location.href = newstring + dateselect;
+        }
+        else
+            window.location.href = window.location.href + "?datesel=" + dateselect;
+    }
+
+    function progressnote(o) {
+        var id = o.parentNode.parentNode.parentNode.getAttribute("name");
+        document.getElementById('contactForm').style.display = "block";
+        document.getElementById('contactForm').setAttribute('uid', id);
+    }
+    function progressnoteadd(o) {
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+        var id = o.parentNode.parentNode.getAttribute("uid");
+        var idint = parseInt(id);
+        var textnote = document.getElementById("formtextarea").value;
+        $.get("/Home/click_progress_note_activity", { residentid: idint, datesel: dateselect, note: textnote }, function (data) {
+            if (data == 1) {
+                tempAlert("Saved Successfully", 2000);
+            }
+            else {
+                tempAlert("Saved failed", 2000);
+            }
+        });
+        document.getElementById('formtextarea').value = '';
+        document.getElementById('contactForm').style.display = "none";
+    }
+    function note_close_click() {
+        document.getElementById('formtextarea').value = '';
+        document.getElementById('contactForm').style.display = 'none';
+    }
+
+    function Print_list() {
+        var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+        mywindow.document.write('<html><head><title>' + document.title + '</title>');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write('<h1>' + document.title + '</h1>');
+        mywindow.document.write(document.getElementById("pills-profile1").innerHTML);
+        mywindow.document.write('</body></html>');
+
+        mywindow.document.close(); // necessary for IE >= 10
+        mywindow.focus(); // necessary for IE >= 10*/
+
+        mywindow.print();
+        mywindow.close();
+
+        return true;
+    }
+    function Print_floor() {
+        var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+        mywindow.document.write('<html><head><title>' + document.title + '</title>');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write('<h1>' + document.title + '</h1>');
+        mywindow.document.write(document.getElementById("pills-contact1").innerHTML);
+        mywindow.document.write('</body></html>');
+
+        mywindow.document.close(); // necessary for IE >= 10
+        mywindow.focus(); // necessary for IE >= 10*/
+
+        mywindow.print();
+        mywindow.close();
+
+        return true;
+    }
+
+
+</script>
+<script>
+    function tempAlert(msg, duration) {
+        var el = document.createElement("div");
+        el.setAttribute("style", "position:fixed;top:2%;left:28%;width:45vw;text-align: center;background-color:lightgrey;z-index:9999;color:black;padding:3vw 4vw 3vw 4vw;border-radius:1vw;font-size:2vw;font-weight:bold;border:black solid;");
+        el.innerHTML = msg;
+        setTimeout(function () {
+            el.parentNode.removeChild(el);
+        }, duration);
+        document.body.appendChild(el);
+    }
+
+    $('#searchresidents3').keyup(function () {
+        val = $(this).val();
+        if (val.length > 1) {
+            $('.searchboxresult2').empty();
+            $.get("/Residents/Search/", { term: val }, function (data) {
+                console.log(data);
+                for (var i = 0; i < data.length; i++) {
+                    $('.searchboxresult2').append('<a onclick="click_searchresidents3(\'' + data[i][0].Value + '\',\'' + data[i][4].Value + '\')" class=\'list-group-item list-group-item-action\' id=\'' + data[i][4].Value + '\'">' +
+                        '<img src="/Content/assets/' + data[i][5].Value + '" class="searchimg">' +
+                        '<p class="ml-3">' + data[i][0].Value + '<br></p>' +
+                        '</a>');
+                }
+                if (data.length == 0) {
+                    $('.searchboxresult2').append('No resident found with the specified name/room number');
+                }
+            });
+            $('.searchBox').show();
+        } else {
+            $('.searchBox').hide();
+        }
+    })
+
+    function click_searchresidents3(aa, bb) {
+        document.getElementById("searchresidents3").value = aa;
+        document.getElementById("searchresidents3").name = bb;
+        $('#searchBoxfor3').hide();
+    }
+
+    function change_searchresidents3() {
+        document.getElementById("searchresidents3").name = "";
+    }
+
+    document.body.addEventListener("click", function (e) {
+        $('.searchboxresult2').empty();
+        var a = $('.searchboxresult2');
+        a[0].parentElement.style.display = "none";
+        //$('#searchresidents3').val("");
+
+    });
+</script>
+
+
+<script src="~/Content/assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="~/Content/pages/js/pages.js" type="text/javascript"></script>
+<script src="~/Content/assets/js/scripts.js" type="text/javascript"></script>
+
+
+
+
+

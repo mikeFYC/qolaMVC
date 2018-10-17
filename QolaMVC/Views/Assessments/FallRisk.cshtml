@@ -1,0 +1,631 @@
+﻿@model QolaMVC.Models.FallRiskAssessmentModel
+
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+
+<style>
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+</style>
+
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+
+    <!-- START PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3>Fall Risk Assessment</h3>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+
+            <div style="height: 60px;"></div>
+
+
+            <div class="card">
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="staticEmail" class="col-form-label"><b>Resident: </b></label>
+                            <label>@ViewBag.Resident.FirstName @ViewBag.Resident.LastName </label>
+                            <label for="staticEmail" class="col-form-label"><b>Suite No: </b></label>
+                            <label>@ViewBag.Resident.SuiteNo</label>
+                            <input type="hidden" name="Resident" value="@ViewBag.Resident.ID" />
+                            <p>Note: A Fall Risk Assessment must be completed on any Resident who has a fall history, a functional decline or a need for a reassessment, Enter the points beside the applicable items and total the score. </p>
+
+
+                        </div>
+                        <div style="width:100%;">
+                            <div class="col-md-4">
+                                <div class="row">
+
+                                    <div class="col-md-12 text-right">
+                                        <div class="row">
+                                            <form action="~/Assessments/FallRisk" method="post">
+                                                <div class="col-md-6 text-right">
+                                                    <p class="text-right">Assessment History:</p>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <select name="AssessmentDate" id="" onchange="this.form.submit()">
+                                                        @if (ViewBag.AssessmentDates != null)
+                                                        {
+                                                            <option value="new">New</option>
+                                                            foreach (var l_Date in (List<DateTime>)ViewBag.AssessmentDates)
+                                                            {
+
+                                                                if (Model.DateEntered == l_Date)
+                                                                {
+                                                                    <option value="@l_Date" selected>@l_Date</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@l_Date">@l_Date</option>
+                                                                }
+                                                            }
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width:100%;">
+                            <div class="" style="display:inline-block;padding:0.3vw;margin-left:1vw;border:#015093 solid 5px">
+                                <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                <label class="form-check-label" for="inlineRadio2" style="font-weight:bold;font-size:1.2vw;margin-top:-0.3vw;">No Risk</label>
+                            </div>
+                            <div class="" style="display:inline-block;margin-left:37%;padding:0.5vw 0.3vw 0 0.5vw;border:#015093 solid 5px;">
+                                <p class="TotalScore" style="display:inline-block;font-weight:bold;font-size:1.8vw;margin-bottom:8px !important;">0</p>
+                                <p class="RiskLevel" style="display:inline-block;font-weight:bold;font-size:1.2vw;margin-bottom:8px !important;">Low Risk</p>
+                            </div>
+                            <p style="color:red;display:inline-block;float:right;font-weight:bold;font-size:0.9vw;padding:0.3vw;margin-right:1vw;margin-top:0.5vw;">Score of 0-5 pts = Low risk; 6-9 pts = Medium risk; >= 10 pts = High risk.</p>
+                        </div>
+
+                        <form action="~/Assessments/AddFallRiskAssessment" method="post">
+                            @Html.HiddenFor(m => m.TotalScore, new { Id = "fallRiskTotalScore" })
+                            @Html.HiddenFor(m => m.RiskLevel, new { Id = "fallRiskLevel" })
+
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <table class="table table-bordered">
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">Fall History</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.FallHistory_IsTwoOrMore, new { @class = "form-check-input fallRisk", data_val = "2" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                2 or more in past month = 2pts
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.FallHistory_IsOneOrTwo, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                1 to 2 in past month = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <table class="table table-bordered">
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">Mental Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.MentalStatus_IsConfused, new { @class = "form-check-input fallRisk", data_val = "2" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Confused / Dementia = 2pts
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.MentalStatus_IsResidentNonCompliance, new { @class = "form-check-input fallRisk", data_val = "2" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Resident non-compliance = 2pts
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <table class="table table-bordered">
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">Neurological/Neuromuscular Disease</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Neurological_IsCVA, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                CVA = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Neurological_IsParkinsons, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Parkinson's = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Neurological_IsAlzheimers, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Alzheimer's = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Neurological_IsSeizureDisorder, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Seizure Disorder = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Neurological_IsOther, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Other(e.g. MS,ALS,PSP) = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <table class="table table-bordered">
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">Orthopedic Disease/Concerns</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Orthopedic_IsRecent, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Recent Fracture(within past year) = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Orthopedic_IsCast, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Cast/Splint/Slings = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Orthopedic_IsAmputation, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Amputation/Prosthesis = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Orthopedic_IsSevere, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Severe Arthritis = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <table class="table table-bordered">
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">Other Disease Processes</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Other_IsDiabetes, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Diabetes = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Other_IsOsteoporosis, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Osteoporosis = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Other_IsPosturalHypotension, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Postural Hypotension = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Other_IsSyncope, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Syncope/Dizziness = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <table class="table table-bordered">
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">Sensory Deficits</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Sensory_IsDecreasedVision, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Decreased Vision = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Sensory_IsDecreasedHearing, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Decreased Hearing = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Sensory_IsAphasia, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Aphasia = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <table class="table table-bordered">
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">Incontinence</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Incontinence_IsBowel, new { @class = "form-check-input fallRisk", data_val = "2" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Bowel = 2pts
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Incontinence_IsBladder, new { @class = "form-check-input fallRisk", data_val = "2" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Bladder = 2pts
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Incontinence_IsTransfer, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Transfer difficulties = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Incontinence_IsUnsteady, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Unsteady gait = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <table class="table table-bordered">
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">Assistive Devices - use of</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Assistive_IsWheelChair, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Wheelchair = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Assistive_IsWalker, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Walker = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Assistive_IsCane, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Cane = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <table class="table table-bordered">
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">Medications</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Medication_IsCardiac, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Cardiac = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Medication_IsDiuretics, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Diuretics = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Medication_IsNarcotics, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Narcotics = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Medication_IsAnalgesics, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Analgesics = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Medication_IsSedatives, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Anti-psychotics / Sedatives = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Medication_IsAntiAnxiety, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Anti-Anxiety / Anti-depressants = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check pads">
+                                                            @Html.CheckBoxFor(m => m.Medication_IsLaxatives, new { @class = "form-check-input fallRisk", data_val = "1" })
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Laxatives = 1pt
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="col-md-12 text-center">
+                                        <br><br>
+                                        <a href="#" class="btn btn-danger">BACK</a>
+                                        <input type="submit" class="btn btn-danger" value="SAVE" />
+                                        <input type="reset" class="btn btn-danger" value="CLEAR" />
+                                        <button class="btn btn-danger">PRINT PDF</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- END PLACE PAGE CONTENT HERE -->
+        </div>
+        <!-- END CONTAINER FLUID -->
+    </div>
+    <!-- END PAGE CONTENT -->
+    @RenderPage("~/Views/Shared/_Footer.cshtml")
+    <script>
+        var total = 0;
+        var RiskValue = 'Low Risk';
+
+        /* look for all checkboes that have a class 'fallRisk' attached to it and check if it was checked */
+        $(".fallRisk:checked").each(function () {
+            total += parseInt($(this).attr('data-val'));
+        });
+
+        //Score of 0 - 5 pts = Low risk 6 - 9 pts = Medium risk >= 10 pts = High risk.
+        if (total > 0 && total <= 5) {
+            RiskValue = "Low Risk";
+        }
+        if (total >= 6 && total <= 9) {
+            RiskValue = "Medium Risk";
+        }
+        if (total >= 10) {
+            RiskValue = "High Risk";
+        }
+
+        $(".TotalScore").text(total);
+        $(".RiskLevel").text(RiskValue);
+
+        $("#fallRiskTotalScore").val(total);
+        $("#fallRiskLevel").val(RiskValue);
+
+        $(".fallRisk").click(function () {
+            total = 0;
+           /* look for all checkboes that have a class 'fallRisk' attached to it and check if it was checked */
+            $(".fallRisk:checked").each(function () {
+                total += parseInt($(this).attr('data-val'));
+            });
+            $(".TotalScore").text(total);
+            //Score of 0 - 5 pts = Low risk 6 - 9 pts = Medium risk >= 10 pts = High risk.
+            if (total >= 0 && total <= 5)
+            {
+                RiskValue = "Low Risk";
+            }
+            if (total >= 6 && total <= 9)
+            {
+                RiskValue = "Medium Risk";
+            }
+            if (total >= 10)
+            {
+                RiskValue = "High Risk";
+            }
+            $(".RiskLevel").text(RiskValue);
+
+        });
+
+       
+    </script>

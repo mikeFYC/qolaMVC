@@ -1,0 +1,632 @@
+<!-- START FOOTER -->
+
+<div class="container-fixed-lg footer" style="left:3% !important;">
+    <div class="copyright sm-text-center">
+        <p class="small no-margin pull-left sm-pull-reset">
+            <span class="hint-text">Copyright © 2018</span>
+            <span class="font-montserrat">Qola</span>.
+            <span class="hint-text">All rights reserved.</span>
+            <!-- <span class="sm-block"><a href="#" class="m-l-10 m-r-10">Terms of use</a> | <a href="#" class="m-l-10">Privacy Policy</a>   </span>-->
+        </p>
+        <div class="small no-margin pull-right sm-pull-reset">
+            <!-- <img alt="" class="m-t-5" data-src="assets/img/qola_logo.png" data-src-retina="assets/img/qola_logo_2x.png" height="30" src="assets/img/qola_logo.png" width="30"> -->
+            <!-- <a href="#">Hand-crafted</a>
+            <span class="hint-text">&amp; Made with Love ®</span> -->
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<!-- END FOOTER -->
+      </div>
+<!-- END PAGE CONTENT WRAPPER -->
+    </div>
+<!-- END PAGE CONTAINER -->
+<!-- BEGIN VENDOR JS -->
+<!-- BEGIN VENDOR JS -->
+<script src="~/Content/assets/plugins/pace/pace.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/modernizr.custom.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/tether/js/tether.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/jquery/jquery-easy.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/jquery-unveil/jquery.unveil.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/jquery-bez/jquery.bez.min.js"></script>
+<script src="~/Content/assets/plugins/jquery-ios-list/jquery.ioslist.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/imagesloaded/imagesloaded.pkgd.min.js"></script>
+<script src="~/Content/assets/plugins/jquery-actual/jquery.actual.min.js"></script>
+<script src="~/Content/assets/plugins/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+<!-- END VENDOR JS -->
+<!-- BEGIN CORE TEMPLATE JS -->
+<script src="~/Content/pages/js/pages.js" type="text/javascript"></script>
+<!-- END CORE TEMPLATE JS -->
+<!-- BEGIN PAGE LEVEL JS -->
+<script src="~/Content/assets/js/scripts.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL JS -->
+<script src="~/Content/assets/js/FileAPI/FileAPI.js"></script>
+<script src="~/Content/assets/js/datatables.min.js"></script>
+<script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="~/Content/assets/js/html2canvas.js" crossorigin="anonymous"></script>
+<!-- uploding of file -->
+<script>
+    function tempAlert(msg, duration) {
+        var el = document.createElement("div");
+        el.setAttribute("style", "position:fixed;top:2%;left:28%;width:45vw;text-align: center;background-color:lightgrey;z-index:9999;color:black;padding:3vw 4vw 3vw 4vw;border-radius:1vw;font-size:2vw;font-weight:bold;border:black solid;");
+        el.innerHTML = msg;
+        setTimeout(function () {
+            el.parentNode.removeChild(el);
+        }, duration);
+        document.body.appendChild(el);
+    }
+
+</script>
+
+<script>
+    $('.searchresidents').keyup(function () {
+        val = $(this).val();
+        if (val.length > 1) {
+            $('.searchboxresult').empty();
+            $.get("/Residents/Search/", { term: val }, function (data) {
+                console.log(data);
+                for (var i = 0; i < data.length; i++) {
+                    $('.searchboxresult').append('<a href="/Home/ResidentMenu/?p_ResidentId=' + data[i][4].Value + '" class="list-group-item list-group-item-action">' +
+                        '<img src="/Content/assets/' + data[i][5].Value + '" class="searchimg">' +
+                        '<p class="ml-3">' + data[i][0].Value + '<br></p>' +
+                        '</a>');
+                }
+                if (data.length == 0) {
+                    $('.searchboxresult').append('No resident found with the specified name/room number');
+                }
+            });
+            $('.searchBox').show();
+        } else {
+            $('.searchBox').hide();
+        }
+    })
+
+    $('.searchresidents2').keyup(function () {
+        val = $(this).val();
+        if (val.length > 1) {
+            $('.searchboxresult').empty();
+            $.get("/Residents/Search/", { term: val }, function (data) {
+                console.log(data);
+                for (var i = 0; i < data.length; i++) {
+                    $('.searchboxresult').append('<a href="/Residents/SuiteHandler/?p_ResidentId=' + data[i][4].Value + '" class="list-group-item list-group-item-action">' +
+                        '<img src="/Content/assets/' + data[i][5].Value + '" class="searchimg">' +
+                        '<p class="ml-3">' + data[i][0].Value + '<br></p>' +
+                        '</a>');
+                }
+                if (data.length == 0) {
+                    $('.searchboxresult').append('No resident found with the specified name/room number');
+                }
+            });
+            $('.searchBox').show();
+        } else {
+            $('.searchBox').hide();
+        }
+    })
+
+    $('#searchresidents3').keyup(function () {
+        val = $(this).val();
+        if (val.length > 1) {
+            $('.searchboxresult2').empty();
+            $.get("/Residents/Search/", { term: val }, function (data) {
+                console.log(data);
+                for (var i = 0; i < data.length; i++) {
+                    $('.searchboxresult2').append('<a onclick="click_searchresidents3(\'' + data[i][0].Value + '\',\'' + data[i][4].Value + '\')" class=\'list-group-item list-group-item-action\' id=\'' + data[i][4].Value + '\'">' +
+                        '<img src="/Content/assets/' + data[i][5].Value + '" class="searchimg">' +
+                        '<p class="ml-3">' + data[i][0].Value + '<br></p>' +
+                        '</a>');
+                }
+                if (data.length == 0) {
+                    $('.searchboxresult2').append('No resident found with the specified name/room number');
+                }
+            });
+            $('.searchBox').show();
+        } else {
+            $('.searchBox').hide();
+        }
+    })
+
+    $('.searchresidents_archive').keyup(function () {
+        val = $(this).val();
+        if (val.length > 1) {
+            $('.searchboxresult_archive').empty();
+            $.get("/Residents/Search_Archive/", { term: val }, function (data) {
+                console.log(data);
+                for (var i = 0; i < data.length; i++) {
+                    $('.searchboxresult_archive').append('<a href="/Home/ResidentMenu3/?p_ResidentId=' + data[i][4].Value + '&pass=' + data[i][6].Value + '" class="list-group-item list-group-item-action">' +
+                        '<img src="/Content/assets/' + data[i][5].Value + '" class="searchimg">' +
+                        '<p class="ml-3">' + data[i][0].Value + '<br></p>' +
+                        '</a>');
+                }
+                if (data.length == 0) {
+                    $('.searchboxresult_archive').append('No resident found with the specified name/room number');
+                }
+            });
+            $('.searchBox').show();
+        } else {
+            $('.searchBox').hide();
+        }
+    })
+
+    function click_searchresidents3(aa, bb) {
+        document.getElementById("searchresidents3").value = aa;
+        document.getElementById("searchresidents3").name = bb;
+        $('#searchBoxfor3').hide();
+    }
+
+    function change_searchresidents3() {
+        document.getElementById("searchresidents3").name = "";
+    }
+
+</script>
+<script>
+    function suitenumber() {
+        var group = $("a[class='nav-link active']")
+        var id = group[0].id;
+        var a = $('#occupancyselectid' + id).val();
+        var b = $('#dateinput' + id).val();
+        $('#available_Suite_' + id).children('option:not(:first)').remove();
+        $.get("/Residents/AvailableSuite", { term: b, occu: a }, function (data) {
+            for (var i = 0; i < data.length; i++) {
+                $('#available_Suite_' + id).append('<option value="' + data[i][0].Value + '">' + data[i][0].Value + '</option>');
+            }
+        });
+    }
+
+    function suitenumber2() {
+        var group = $("a[class='nav-link active']")
+        var id = group[0].id;
+        var a = $('#occupancyselectid' + id).val();
+        var b = $('#dateinput' + id).val();
+        var c = $('#QOLAContent_ddlHome').val();
+
+        $('#available_Suite_' + id).children('option:not(:first)').remove();
+        $.get("/Residents/Available2", { home_value: c, term: b, occu: a }, function (data) {
+            for (var i = 0; i < data.length; i++) {
+                $('#available_Suite_' + id).append('<option value="' + data[i][0].Value + '">' + data[i][0].Value + '</option>');
+            }
+        });
+    }
+
+    function suitenumber3() {
+        var a = $('#dateinput_archive').val();
+        var b = $('#occupancy_archive').val();
+        $('#available_Suite_archive').children('option:not(:first)').remove();
+        $.get("/Residents/AvailableSuite", { term: a, occu: b }, function (data) {
+            for (var i = 0; i < data.length; i++) {
+                $('#available_Suite_archive').append('<option value="' + data[i][0].Value + '">' + data[i][0].Value + '</option>');
+            }
+        });
+    }
+
+
+    function saveButton_ApplicationSuite() {
+        var group = $("a[class='nav-link active']")
+        var id = group[0].id;
+        var a = $('#occupancyselectid' + id).val();
+        var b = $('#dateinput' + id).val();
+        var c = $('#available_Suite_' + id).val();
+        var d = $('#notes_' + id).val();
+        if (a == "" || b == "" || c == "") {
+            //alert("Cannot Have Empty Area except notes");
+            tempAlert("Cannot Have Empty Area except notes", 2000);
+        }
+        else {
+            $.post("/Residents/saveButton_ApplicationSuite", { term: b, occu: a, suiteno: c, notes: d }, function (data) {
+                if (data == 1) {
+                    //location.reload();
+                    //alert("Update successfully");
+                    tempAlert("Update successfully", 2000);
+                    setTimeout(function () { window.location.reload(); }, 2000);
+                }
+                else if (data == 3) {
+                    //alert("Cannot choose date two weeks ago");
+                    tempAlert("Cannot choose date two weeks ago", 2000);
+                }
+
+                else if (data == 5) {
+                    //alert("Resident was already passed away");
+                    tempAlert("Resident was already passed away", 2000);
+                }
+                else {
+                    //alert("Update Failed");
+                    tempAlert("Update Failed", 2000);
+                }
+            });
+        }
+    }
+
+    function saveButton_ChangeOccupancy() {
+        var group = $("a[class='nav-link active']")
+        var id = group[0].id;
+        var a = $('#occupancyselectid' + id).val();
+        var b = $('#dateinput' + id).val();
+        var c = $('#notes_' + id).val();
+        var tbodys = document.getElementsByTagName("tbody");
+        var trs = tbodys[0].getElementsByTagName("tr");
+        var tds = trs[trs.length - 1].getElementsByTagName("td");
+        var suitenos = tds[1].innerHTML;
+        if (a == "" || b == "") {
+            //alert("Cannot Have Empty Area except notes");
+            tempAlert("Cannot Have Empty Area except notes", 2000);
+        }
+        else {
+            $.post("/Residents/saveButton_ChangeOccupancy", { transferdate: b, occu: a, notes: c, suiteno: suitenos }, function (data) {
+                if (data == 1) {
+                    //location.reload();
+                    //alert("Update successfully");
+                    tempAlert("Update successfully", 2000);
+                    setTimeout(function () { window.location.reload(); }, 2000);
+                }
+                else if (data == 2) {
+                    //alert("Cannot Select Same Occupancy");
+                    tempAlert("Cannot Select Same Occupancy", 2000);
+                }
+                else if (data == 3) {
+                    //alert("Cannot choose date two weeks ago");
+                    tempAlert("Cannot choose date two weeks ago", 2000);
+                }
+                else if (data == 4) {
+                    //alert("Invalid Date Input");
+                    tempAlert("Invalid Date Input", 2000);
+                }
+                else if (data == 5) {
+                    //alert("Resident was already passed away");
+                    tempAlert("Resident was already passed away", 2000);
+                }
+                else if (data == 6) {
+                    //alert("Resident was already moved out");
+                    tempAlert("Resident was already moved out", 2000);
+                }
+                else {
+                    //alert("Update Failed");
+                    tempAlert("Update Failed", 2000);
+                }
+            });
+        }
+    }
+
+    function saveButton_InternalTransfer() {
+        var group = $("a[class='nav-link active']")
+        var id = group[0].id;
+        var a = $('#occupancyselectid' + id).val();
+        var b = $('#dateinput' + id).val();
+        var c = $('#available_Suite_' + id).val();
+        var d = $('#notes_' + id).val();
+        if (a == "" || b == "" || c == "") {
+            //alert("Cannot Have Empty Area except notes");
+            tempAlert("Cannot Have Empty Area except notes", 2000);
+        }
+        else {
+            $.post("/Residents/saveButton_InternalTransfer", { transferdate: b, occu: a, suiteno: c, notes: d }, function (data) {
+                if (data == 1) {
+                    //location.reload();
+                    //alert("Update successfully");
+                    tempAlert("Update successfully", 2000);
+                    setTimeout(function () { window.location.reload(); }, 2000);
+                }
+                else if (data == 2) {
+                    //alert("Cannot Select Same Suite Number");
+                    tempAlert("Cannot Select Same Suite Number", 2000);
+                }
+                else if (data == 3) {
+                    //alert("Cannot choose date two weeks ago");
+                    tempAlert("Cannot choose date two weeks ago", 2000);
+                }
+                else if (data == 4) {
+                    //alert("Invalid Date Input");
+                    tempAlert("Invalid Date Input", 2000);
+                }
+                else if (data == 5) {
+                    //alert("Resident was already passed away");
+                    tempAlert("Resident was already passed away", 2000);
+                }
+                else if (data == 6) {
+                    //alert("Resident was already moved out");
+                    tempAlert("Resident was already moved out", 2000);
+                }
+                else {
+                    //alert("Update Failed");
+                    tempAlert("Update Failed", 2000);
+                }
+            });
+        }
+    }
+
+    function saveButton_TransfertoASCHOME() {
+        var group = $("a[class='nav-link active']")
+        var id = group[0].id;
+        var a = $('#occupancyselectid' + id).val();
+        var b = $('#dateinput' + id).val();
+        var c = $('#available_Suite_' + id).val();
+        var d = $('#notes_' + id).val();
+        var e = $('#QOLAContent_ddlHome').val();
+        if (a == "" || b == "" || c == "" || e == "") {
+            //alert("Cannot Have Empty Area except notes");
+            tempAlert("Cannot Have Empty Area except notes", 2000);
+        }
+        else {
+            $.post("/Residents/saveButton_TransfertoASCHOME", { transferdate: b, occu: a, suiteno: c, notes: d, homeid: e }, function (data) {
+                if (data == 1) {
+                    //location.reload();
+                    //alert("Update successfully");
+                    tempAlert("Update successfully", 2000);
+                    setTimeout(function () { window.location.reload(); }, 2000);
+                }
+                else if (data == 2) {
+                    //alert("Cannot Select Same Home ID");
+                    tempAlert("Cannot Select Same Home ID", 2000);
+                }
+                else if (data == 3) {
+                    //alert("Cannot choose date two weeks ago");
+                    tempAlert("Cannot choose date two weeks ago", 2000);
+                }
+                else if (data == 4) {
+                    //alert("Invalid Date Input");
+                    tempAlert("Invalid Date Input", 2000);
+                }
+                else if (data == 5) {
+                    //alert("Resident was already passed away");
+                    tempAlert("Resident was already passed away", 2000);
+                }
+                else if (data == 6) {
+                    //alert("Resident was already moved out");
+                    tempAlert("Resident was already moved out", 2000);
+                }
+                else {
+                    //alert("Update Failed");
+                    tempAlert("Update Failed", 2000);
+                }
+            });
+        }
+    }
+
+    function saveButton_Normal_Move_Out() {
+        var group = $("a[class='nav-link active']")
+        var id = group[0].id;
+        var move_out_reason = group[0].innerHTML;
+        var a = $('#dateinput' + id).val();
+        var b = $('#notes_' + id).val();
+        var tbodys = document.getElementsByTagName("tbody");
+        var trs = tbodys[0].getElementsByTagName("tr");
+        var tds = trs[trs.length - 1].getElementsByTagName("td");
+        var suitenos = tds[1].innerHTML;
+        if (a == "") {
+            //alert("Date cannot be empty");
+            tempAlert("Date cannot be empty", 2000);
+        }
+        else {
+            $.post("/Residents/saveButton_Normal_Move_Out", { moveout: a, notes: b, reason: move_out_reason, suiteno: suitenos }, function (data) {
+                if (data == 1) {
+                    //location.reload();
+                    //alert("Update successfully");
+                    tempAlert("Update successfully", 2000);
+                    setTimeout(function () { window.location.reload(); }, 2000);
+                }
+                else if (data == 3) {
+                    //alert("Cannot choose date two weeks ago");
+                    tempAlert("Cannot choose date two weeks ago", 2000);
+                }
+                else if (data == 4) {
+                    //alert("Invalid Date Input");
+                    tempAlert("Invalid Date Input", 2000);
+                }
+                else if (data == 5) {
+                    //alert("Resident was already passed away");
+                    tempAlert("Resident was already passed away", 2000);
+                }
+                else if (data == 6) {
+                    //alert("Resident was already moved out");
+                    tempAlert("Resident was already moved out", 2000);
+                }
+                else {
+                    //alert("Update Failed");
+                    tempAlert("Update Failed", 2000);
+                }
+            });
+        }
+    }
+
+    function saveButton_Passed_Away() {
+        var group = $("a[class='nav-link active']")
+        var id = group[0].id;
+        var move_out_reason = group[0].innerHTML;
+        var a = $('#dateinput' + id).val();
+        var b = $('#notes_' + id).val();
+        var c = $('#passawaydate' + id).val();
+        var tbodys = document.getElementsByTagName("tbody");
+        var trs = tbodys[0].getElementsByTagName("tr");
+        var tds = trs[trs.length - 1].getElementsByTagName("td");
+        var suitenos = tds[1].innerHTML;
+        if (a == "" || c == "") {
+            //alert("Date cannot be empty");
+            tempAlert("Date cannot be empty", 2000);
+        }
+        else {
+            $.post("/Residents/saveButton_Passed_Away", { moveout: a, notes: b, passaway: c, reason: move_out_reason, suiteno: suitenos }, function (data) {
+                if (data == 1) {
+                    //location.reload();
+                    //alert("Update successfully");
+                    tempAlert("Update successfully", 2000);
+                    setTimeout(function () { window.location.reload(); }, 2000);
+                }
+                else if (data == 3) {
+                    //alert("Cannot choose date two weeks ago");
+                    tempAlert("Cannot choose date two weeks ago", 2000);
+                }
+                else if (data == 4) {
+                    //alert("Invalid Date Input");
+                    tempAlert("Invalid Date Input", 2000);
+                }
+                else if (data == 5) {
+                    //alert("Resident was already passed away");
+                    tempAlert("Resident was already passed away", 2000);
+                }
+                else {
+                    //alert("Update Failed");
+                    tempAlert("Update Failed", 2000);
+                }
+            });
+        }
+    }
+
+    function saveButton_Hospitalization() {
+        var group = $("a[class='nav-link active']")
+        var id = group[0].id;
+        var move_out_reason = group[0].innerHTML;
+        var a = $('#leavingDate_' + id).val().toString();
+        var b = $('#ExpectedReturnDate_' + id).val().toString();
+        var c = $('#ActualReturnDate_' + id).val().toString();
+        var d = $('#notes_' + id).val();
+        var tbodys = document.getElementsByTagName("tbody");
+        var trs = tbodys[0].getElementsByTagName("tr");
+        var tds = trs[trs.length - 1].getElementsByTagName("td");
+        var suitenos = tds[1].innerHTML;
+        if (a == "") {
+            //alert("Leaving Date cannot be empty");
+            tempAlert("Leaving Date cannot be empty", 2000);
+        }
+        else {
+            $.post("/Residents/saveButton_Hospitalization", { leaving: a, ExpectedReturn: b, ActualReturn: c, notes: d, reason: move_out_reason, suiteno: suitenos }, function (data) {
+                if (data == 1) {
+                    //location.reload();
+                    //alert("Update successfully");
+                    tempAlert("Update successfully", 2000);
+                    setTimeout(function () { window.location.reload(); }, 2000);
+                }
+                else if (data == 3) {
+                    //alert("Cannot choose date two weeks ago");
+                    tempAlert("Cannot choose date two weeks ago", 2000);
+                }
+                else if (data == 4) {
+                    //alert("Invalid Date Input");
+                    tempAlert("Invalid Date Input", 2000);
+                }
+                else if (data == 5) {
+                    //alert("Resident was already passed away");
+                    tempAlert("Resident was already passed away", 2000);
+                }
+                else if (data == 6) {
+                    //alert("Resident was already moved out");
+                    tempAlert("Resident was already moved out", 2000);
+                }
+                else {
+                    //alert("Update Failed");
+                    tempAlert("Update Failed", 2000);
+                }
+            });
+        }
+    }
+
+    function clearButton() {
+        var inputs = $("input[type=date]").each(function () {
+            $(this).val("");
+        });
+        var inputs = $("input[type=file]").each(function () {
+            $(this).val("");
+        });
+        var selects = $("select").each(function () {
+            $(this).val("");
+        });
+        var textareas = $("textarea").each(function () {
+            $(this).val("");
+        });
+    }
+
+    function selection_onchange_empty_suite() {
+        var group = $("a[class='nav-link active']")
+        var id = group[0].id;
+        $('#available_Suite_' + id).val("");
+        $('#available_Suite_archive').val("");
+    }
+
+    function UNDO_in_edit_button_click() {
+        var reason_for_undo = $("#select_option_in_edit_form").val();
+        $.get("/Residents/undo_function", { reason: reason_for_undo }, function (data) {
+            if (data == 1) {
+                //location.reload();
+                //alert("Update successfully");
+                tempAlert("Update successfully", 2000);
+                setTimeout(function () { window.location.reload(); }, 2000);
+            }
+            else {
+                //alert("Update Failed");
+                tempAlert("Update Failed", 2000);
+            }
+        });
+    }
+
+
+</script>
+<script>
+    $('.print').click(function () {
+
+        var srcEl = document.getElementById("fromHTMLtestdiv");
+        var scaleFactor = 2;
+
+        var originalWidth = srcEl.offsetWidth;
+        var originalHeight = srcEl.offsetHeight;
+        // Force px size (no %, EMs, etc)
+        srcEl.style.width = originalWidth + "px";
+        srcEl.style.height = originalHeight + "px";
+
+        // Position the element at the top left of the document because of bugs in html2canvas. The bug exists when supplying a custom canvas, and   //the rendering on the custom canvas based on the offset of the source element on the page; thus the source element MUST be at 0, 0.
+        // See html2canvas issues #790, #820, #893, #922
+        srcEl.style.position = "absolute";
+        srcEl.style.top = "0";
+        srcEl.style.left = "0";
+
+        // Create scaled canvas
+        var scaledCanvas = document.createElement("canvas");
+        scaledCanvas.width = originalWidth * scaleFactor;
+        scaledCanvas.height = originalHeight * scaleFactor;
+        scaledCanvas.style.width = originalWidth + "px";
+        scaledCanvas.style.height = originalHeight + "px";
+        var scaledContext = scaledCanvas.getContext("2d");
+        scaledContext.scale(scaleFactor, scaleFactor);
+
+        html2canvas(srcEl, { canvas: scaledCanvas })
+            .then(function (canvas) {
+                var imgData = canvas.toDataURL('image/png');
+                var imgWidth = 210;
+                var pageHeight = 295;
+                var imgHeight = canvas.height * imgWidth / canvas.width;
+                var heightLeft = imgHeight;
+
+                var doc = new jsPDF('p', 'mm');
+                var position = 0;
+
+                doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                doc.setTextColor('#000');
+                var context = canvas.getContext('2d');
+                context.scale(2, 2);
+                heightLeft -= pageHeight;
+
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    doc.addPage();
+                    doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                    var context = canvas.getContext('2d');
+                    context.scale(2, 2);
+                    doc.setTextColor('#000');
+                    heightLeft -= pageHeight;
+                }
+                var filename = $('.filename').val();
+                doc.save(filename + '.pdf');
+            });
+
+    })
+
+
+</script>
+<!-- END VENDOR JS -->
+<!-- BEGIN CORE TEMPLATE JS -->
+<script src="~/Content/pages/js/pages.js" type="text/javascript"></script>
+<!-- END CORE TEMPLATE JS -->
+<!-- BEGIN PAGE LEVEL JS -->
+<script src="~/Content/assets/js/scripts.js" type="text/javascript"></script>
+  </body>
+</html>

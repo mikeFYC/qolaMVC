@@ -1,0 +1,913 @@
+@model QolaMVC.Models.MasterDetails  
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+
+<style>
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+    .zoom:hover {
+        transform: scale(2.5);
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+</style>
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+
+    <!-- START PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3>Post-Fall Clinical Monitoring A</h3>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+            <div style="height: 60px;"></div>
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+                <div class="card p-3">
+                    <div class="card-block">
+
+                        <div class="tab-content" id="pills-tabContent">
+
+                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <h5><b>Part A</b></h5>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <p>Complete for any client that experiences a fall. Abnormal findings must be documented in narrative charting. Refer to Blood Glucose monitoring if client is diabetic.</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 offset-md-4">
+                                            <input type="hidden" name="category" value="a" />
+
+                                            <div class="form-group">
+                                                <label>Select date</label>
+                                                <select name="chklinkid" id="chklinkid" class="form-control">
+                                                    <option value=""></option>
+                                                    if (Model.SplitMonitoring.Count() > 0){
+                                                    @foreach (var item in Model.SplitMonitoring)
+                                                    {
+                                                        <option value="@item.id">@item.Created_at</option>
+                                                    }
+                                                    }
+                                                    else
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
+                                        <button type="button" class="btn btn-primary col-md-4" id="btnGetCurData">Submit</button>
+                                              
+                                    </div>
+                                 </div><br />
+                                  <button type="button" class="btn btn-success " id="btnClear">Add New*</button>
+                                <br />
+                                    <div class="row">
+                                            <table class="table table-bordered" id="tbldataA1" >
+
+                                                <thead class="bg-primary">
+                                                    <tr>
+                                                        <th class="text-white text-center">Vital Signs</th>
+                                                        <th class="text-white text-center">1st Check</th>
+                                                        <th class="text-white text-center" colspan="2">Q 30 mins * 1 hour</th>
+                                                        <th class="text-white text-center" colspan="3">Q 30 hours * 3 hours</th>
+                                                        <th class="text-white text-center" colspan="5">Q 8 hours * 48 hours</th>
+                                                        @*<th class="text-white text-center">Action</th>*@
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+
+
+                                                    <tr>
+    <td>Date</td>
+    @{
+        if(Model == null){
+        <td>no items found</td>
+}
+else{
+                                                        if (Model.A1Model.Count() == 0)
+                                                        {
+                                                          @Html.Partial("~/Views/Shared/New_PostFallClinicalAssessmentPartAPartial.cshtml")                                                        ;
+                                                        }
+                                                         else
+                                                        {
+                                                            foreach (var item in Model.A1Model)
+                                                            {
+                                                        if (item.Category.ToLower() == "date" && item.tableid == 1)
+                                                                {
+                                                    @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                      
+                                                        }
+                                                            }
+
+                                                        }
+                                                        }
+                                                    }
+                                                    </tr>
+                                                    
+                                                <tr>
+    @{
+        <td>Time</td>
+     if(Model == null){
+    <td>no items found</td>
+}
+else{
+
+                                                    if (Model.A1Model.Count() == 0)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/New_PostFallClinicalAssessmentPartAPartial.cshtml")                                                        ;
+                                                    }
+                                                    else
+                                                    {
+                                                    foreach (var item in Model.A1Model)
+                                                    {
+                                                    if (item.Category.ToLower() == "time" && item.tableid == 1)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                    
+                                                    }
+                                                    }
+
+                                                    }
+                                                    }
+                                                    }
+                                                  </tr>
+                                                    <tr>
+                                                        <td>BP</td>
+@{
+                                                             if(Model == null){
+    <td>no items found</td>
+}
+else{
+                                                        if (Model.A1Model.Count() == 0)
+                                                        {
+                                                        @Html.Partial("~/Views/Shared/New_PostFallClinicalAssessmentPartAPartial.cshtml")                                                        ;
+                                                        }
+                                                        else
+                                                        {
+                                                        foreach (var item in Model.A1Model)
+                                                        {
+                                                        if (item.Category.ToLower() == "bp"  && item.tableid == 1)
+                                                        {
+                                                        @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                        
+                                                        }
+                                                        }
+
+                                                        }
+                                                        }
+                                                        }
+                                                      </tr>
+                                                    <tr>
+                                                        <td>Pulse</td>
+@{     if(Model == null){
+    <td>no items found</td>
+}
+else{
+                                                        if (Model.A1Model.Count() == 0)
+                                                        {
+                                                        @Html.Partial("~/Views/Shared/New_PostFallClinicalAssessmentPartAPartial.cshtml")                                                        ;
+                                                        }
+                                                        else
+                                                        {
+                                                        foreach (var item in Model.A1Model)
+                                                        {
+                                                        if (item.Category.ToLower() == "pulse" && item.tableid == 1)
+                                                        {
+                                                        @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                        break;
+                                                        }
+                                                        }
+                                                        }
+                                                        }
+                                                        }
+                                                     </tr>
+
+                                                    <tr>
+                                                        <td>RESP. rate</td>
+@{     if(Model == null){
+    <td>no items found</td>
+}
+else{
+                                                        if (Model.A1Model.Count() == 0)
+                                                        {
+                                                        @Html.Partial("~/Views/Shared/New_PostFallClinicalAssessmentPartAPartial.cshtml")                                                        ;
+                                                        }
+                                                        else
+                                                        {
+                                                        foreach (var item in Model.A1Model)
+                                                        {
+                                                        if (item.Category.ToLower() == "resp. rate" && item.tableid == 1)
+                                                        {
+                                                        @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                        break;
+                                                        }
+                                                        }
+
+                                                        }
+                                                        }
+                                                    }
+                                                    </tr>
+                                                    <tr>
+                                                        <td>TEMP</td>
+@{     if(Model == null){
+    <td>no items found</td>
+}
+else{
+                                                        if (Model.A1Model.Count() == 0)
+                                                        {
+                                                        @Html.Partial("~/Views/Shared/New_PostFallClinicalAssessmentPartAPartial.cshtml")                                                        ;
+                                                        }
+                                                        else
+                                                        {
+                                                        foreach (var item in Model.A1Model)
+                                                        {
+                                                        if (item.Category.ToLower() == "temp" && item.tableid == 1)
+                                                        {
+                                                        @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                        break;
+                                                        }
+                                                        }
+                                                        }
+                                                        }
+                                                        }
+                                                     </tr>
+                                                    <tr>
+                                                        <td>02 SAT</td>
+@{     if(Model == null){
+    <td>no items found</td>
+}
+else{
+                                                        if (Model.A1Model.Count() == 0)
+                                                        {
+                                                        @Html.Partial("~/Views/Shared/New_PostFallClinicalAssessmentPartAPartial.cshtml")                                                        ;
+                                                        }
+                                                        else
+                                                        {
+                                                        foreach (var item in Model.A1Model)
+                                                        {
+                                                        if (item.Category.ToLower() == "02 sat" && item.tableid == 1)
+                                                        {
+                                                        @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                        break;
+                                                        }
+                                                        }
+                                                        }
+                                                        }
+                                                        }
+                                                    </tr>
+                                                </tbody>  
+                                            </table>
+                                        <br><br>
+
+                                        <table class="table table-bordered" id="tbldataA2">
+
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">Vital Signs</th>
+                                                    <th class="text-white text-center">1st Check</th>
+                                                    <th class="text-white text-center" colspan="4">Q 1 hour * 4 hours</th>
+                                                    <th class="text-white text-center" colspan="6">Q 30 hours * 3 hours</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                <tr>
+                                                    <td>Date</td>
+@{     if(Model == null){
+    <td>no items found</td>
+}
+else{
+                                                    if (Model.A1Model.Count() == 0)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/New_PostFallClinicalAssessmentPartAPartial.cshtml")                                                        ;
+                                                    }
+                                                    else
+                                                    {
+                                                    foreach (var item in Model.A1Model)
+                                                    {
+                                                    if (item.Category.ToLower() == "date" && item.tableid == 2)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                    break;
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                </tr>
+
+                                                <tr>
+                                                    <td>Time</td>
+@{     if(Model == null){
+    <td>no items found</td>
+}
+else{
+                                                    if (Model.A1Model.Count() == 0)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/New_PostFallClinicalAssessmentPartAPartial.cshtml")                                                        ;
+                                                    }
+                                                    else
+                                                    {
+                                                    foreach (var item in Model.A1Model)
+                                                    {
+                                                    if (item.Category.ToLower() == "time" && item.tableid == 2)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                    break;
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                 </tr>
+                                                <tr>
+                                                    <td>PAIN (Y/N)</td>
+@{     if(Model == null){
+    <td>no items found</td>
+}
+else{
+                                                    if (Model.A1Model.Count() == 0)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/New_PostFallClinicalAssessmentPartAPartial.cshtml")                                                        ;
+                                                    }
+                                                    else
+                                                    {
+                                                    foreach (var item in Model.A1Model)
+                                                    {
+                                                    if (item.Category.ToLower() == "pain (y/n)" && item.tableid == 2)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                    break;
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                 </tr>
+                                                <tr>
+                                                    <td>PAIN SCALE(0-10)</td>
+@{     if(Model == null){
+    <td>no items found</td>
+}
+else{
+                                                    if (Model.A1Model.Count() == 0)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/New_PostFallClinicalAssessmentPartAPartial.cshtml")                                                        ;
+                                                    }
+                                                    else
+                                                    {
+                                                    foreach (var item in Model.A1Model)
+                                                    {
+                                                    if (item.Category.ToLower() == "pain scale(0-10)" && item.tableid == 2)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                    break;
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                  </tr>
+
+                                                <tr>
+                                                    <td>LOCATION</td>
+                                                    @{     if(Model == null){
+                                                        <td>no items found</td>
+}
+else{
+                                                    if (Model.A1Model.Count() == 0)
+                                                    {
+                                                        @Html.Partial("~/Views/Shared/New_PostFallClinicalAssessmentPartAPartial.cshtml")                                                        ;
+                                                    }
+                                                    else
+                                                    {
+                                                    foreach (var item in Model.A1Model)
+                                                    {
+                                                    if (item.Category.ToLower() == "location" && item.tableid == 2)
+                                                    {
+                                                        @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                    break;
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                </tr>
+
+
+                                                <tr>
+                                                     <td>STAFF INITIALS</td>
+                                                    @{     if(Model == null){
+                                                        <td>no items found</td>
+}
+else{
+                                                    if (Model.A1Model.Count() == 0)
+                                                    {
+                                                        @Html.Partial("~/Views/Shared/New_PostFallClinicalAssessmentPartAPartial.cshtml")                                                        ;
+                                                    }
+                                                    else
+                                                    {
+                                                    foreach (var item in Model.A1Model)
+                                                    {
+                                                    if (item.Category.ToLower() == "staff initials" && item.tableid == 2)
+                                                    {
+                                                        @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                    break;
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <br /><br />
+                                        <table class="table table-bordered" id="tbldataA3">
+
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">Vital Signs</th>
+                                                    <th class="text-white text-center">1st Check</th>
+                                                    <th class="text-white text-center" colspan="4">Q 1 hour * 4 hours</th>
+                                                    <th class="text-white text-center" colspan="6">Q 30 hours * 3 hours</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                <tr>
+                                                    <td>Date</td>
+@{     if(Model == null){
+    <td>no items found</td>
+}
+else{
+                                                    if (Model.A1Model.Count() == 0)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/New_PostFallClinicalAssessmentPartAPartial.cshtml")                                                        ;
+                                                    }
+                                                    else
+                                                    {
+                                                    foreach (var item in Model.A1Model)
+                                                    {
+                                                    if (item.Category.ToLower() == "date" && item.tableid == 3)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                    break;
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                 </tr>
+
+                                                <tr>
+                                                    <td>Time</td>
+@{     if(Model == null){
+    <td>no items found</td>
+}
+else{
+                                                    if (Model.A1Model.Count() == 0)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/New_PostFallClinicalAssessmentPartAPartial.cshtml")                                                        ;
+                                                    }
+                                                    else
+                                                    {
+                                                    foreach (var item in Model.A1Model)
+                                                    {
+                                                    if (item.Category.ToLower() == "time" && item.tableid == 3)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                    break;
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                  </tr>
+                                                <tr>
+                                                    <td>ORIENTED TO:</td>
+@{     if(Model == null){
+    <td>no items found</td>
+}
+else{
+                                                    if (Model.A1Model.Count() == 0)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/New_PostFallClinicalAssessmentPartAPartial.cshtml")                                                        ;
+                                                    }
+                                                    else
+                                                    {
+                                                    foreach (var item in Model.A1Model)
+                                                    {
+                                                    if (item.Category.ToLower() == "oriented to:" && item.tableid == 3)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                    break;
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                 </tr>
+                                                <tr>
+                                                    <td>PERSON</td>
+@{     if(Model == null){
+    <td>no items found</td>
+}
+else{
+                                                    if (Model.A1Model.Count() == 0)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/New_PostFallClinicalAssessmentPartAPartial.cshtml")                                                        ;
+                                                    }
+                                                    else
+                                                    {
+                                                    foreach (var item in Model.A1Model)
+                                                    {
+                                                    if (item.Category.ToLower() == "person" && item.tableid == 3)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                    break;
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                 </tr>
+
+                                                <tr>
+                                                    <td>PLACE</td>
+@{     if(Model == null){
+    <td>no items found</td>
+}
+else{
+                                                    if (Model.A1Model.Count() == 0)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/New_PostFallClinicalAssessmentPartAPartial.cshtml")                                                        ;
+                                                    }
+                                                    else
+                                                    {
+                                                    foreach (var item in Model.A1Model)
+                                                    {
+                                                    if (item.Category.ToLower() == "place" && item.tableid == 3)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                    break;
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                  </tr>
+                                                <tr>
+                                                    <td>TIME</td>
+@{     if(Model == null){
+    <td>no items found</td>
+}
+else{
+                                                    if (Model.A1Model.Count() == 0)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/New_PostFallClinicalAssessmentPartAPartial.cshtml")                                                        ;
+                                                    }
+                                                    else
+                                                    {
+                                                    foreach (var item in Model.A1Model)
+                                                    {
+                                                    if (item.Category.ToLower() == "time" && item.tableid == 3)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                    break;
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                 </tr>
+                                                <tr>
+                                                    <td>BEHAVIOUR CHANGE</td>
+@{     if(Model == null){
+    <td>no items found</td>
+}
+else{
+                                                    if (Model.A1Model.Count() == 0)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/New_PostFallClinicalAssessmentPartAPartial.cshtml")                                                        ;
+                                                    }
+                                                    else
+                                                    {
+                                                    foreach (var item in Model.A1Model)
+                                                    {
+                                                    if (item.Category.ToLower() == "behaviour change" && item.tableid == 3)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                    break;
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                </tr>
+                                                <tr>
+                                                    <td>CONFUSED</td>
+@{     if(Model == null){
+    <td>no items found</td>
+}
+else{
+                                                    if (Model.A1Model.Count() == 0)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/New_PostFallClinicalAssessmentPartAPartial.cshtml")                                                        ;
+                                                    }
+                                                    else
+                                                    {
+                                                    foreach (var item in Model.A1Model)
+                                                    {
+                                                    if (item.Category.ToLower() == "confused" && item.tableid == 3)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                    break;
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                 </tr>
+                                                <tr>
+                                                    <td>DROWSY</td>
+@{     if(Model == null){
+    <td>no items found</td>
+}
+else{
+                                                    if (Model.A1Model.Count() == 0)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/New_PostFallClinicalAssessmentPartAPartial.cshtml")                                                        ;
+                                                    }
+                                                    else
+                                                    {
+                                                    foreach (var item in Model.A1Model)
+                                                    {
+                                                    if (item.Category.ToLower() == "drowsy" && item.tableid== 3)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                    break;
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                 </tr>
+                                                <tr>
+                                                    <td>RESTLESS / AGITATED</td>
+@{     if(Model == null){
+    <td>no items found</td>
+}
+else{
+                                                    if (Model.A1Model.Count() == 0)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/New_PostFallClinicalAssessmentPartAPartial.cshtml")                                                        ;
+                                                    }
+                                                    else
+                                                    {
+                                                    foreach (var item in Model.A1Model)
+                                                    {
+                                                    if (item.Category.ToLower() == "restless / agitated" && item.tableid == 3)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                    break;
+                                                    }
+                                                    }
+                                                }
+                                                    } 
+                                                    }
+                                                </tr>
+                                                <tr>
+                                                    <td>OTHER BEHAVIOUR</td>
+@{     if(Model == null){
+    <td>no items found</td>
+}
+else{
+                                                    if (Model.A1Model.Count() == 0)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/New_PostFallClinicalAssessmentPartAPartial.cshtml")                                                        ;
+                                                    }
+                                                    else
+                                                    {
+                                                    foreach (var item in Model.A1Model)
+                                                    {
+                                                    if (item.Category.ToLower() == "other behaviour" && item.tableid == 3)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                    break;
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                  </tr>
+                                                <tr>
+                                                    <td>STAFF INITIALS</td>
+@{     if(Model == null){
+    <td>no items found</td>
+}
+else{
+                                                    if (Model.A1Model.Count() == 0)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/New_PostFallClinicalAssessmentPartAPartial.cshtml")                                                        ;
+                                                    }
+                                                    else
+                                                    {
+                                                    foreach (var item in Model.A1Model)
+                                                    {
+                                                    if (item.Category.ToLower() == "staff initials" && item.tableid== 3)
+                                                    {
+                                                    @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                    break;
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                    }
+                                                 </tr>
+                                                
+                                            </tbody>
+                                        </table>
+
+                                        <div class="row">
+                                            <div class="col-md-6 text-right">
+                                                <br />
+                                                <button id="btnSave" class="btn btn-primary">Save</button>
+                                            </div>
+                                            <div class="col-md-6 text-right">
+                                                <br>
+                                                <a class="btn btn-danger" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Next</a>
+                                            </div>
+                                        </div>
+                                        
+
+
+                                    </div>
+</div>
+
+                                                                                              @Html.Partial("~/Views/Shared/PostClinic_monitorPage2.cshtml",Model);
+              
+
+
+
+
+                        <!-- END PLACE PAGE CONTENT HERE -->
+                    </div>
+                    <!-- END CONTAINER FLUID -->
+                </div>
+                    </div>
+                </div>
+            </div>
+                <!-- END PAGE CONTENT -->
+        @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+                <script type="text/javascript" src="~/Content/assets/plugins/jquery/jquery-1.11.1.min.js"></script>
+                <script type="text/javascript">
+                   // window.sessionStorage.setItem('linkid',"")
+                     var linkidVal="0null"
+                    var tempid = "0null";
+                    var HTMLtbl =
+            {
+                getData: function (table) {
+                    var data = [];
+                    table.find('tr').not(':first').each(function (rowIndex, r) {
+                        var cols = [];
+                        $(this).find('td').each(function (colIndex, c) {
+
+                            if ($(this).children(':text,:hidden,textarea,select').length > 0)
+                                cols.push($(this).children('input,textarea,select').val().trim());
+
+                                // if dropdown text is needed then uncomment it and remove SELECT from above IF condition//
+                                // else if ($(this).children('select').length > 0)
+                                // cols.push($(this).find('option:selected').text());
+
+                            else if ($(this).children(':checkbox').length > 0)
+                                cols.push($(this).children(':checkbox').is(':checked') ? 1 : 0);
+                            else
+                                cols.push($(this).text().trim());
+                        });
+                        data.push(cols);
+                    });
+                    return data;
+                }
+            }
+                    $(document).ready(function () {
+                       // alert(window.sessionStorage.getItem('linkid'))
+                        $(document).on('click', '#btnSave', function () {
+                            console.log(window.sessionStorage.getItem('linkid'))
+                            if (window.sessionStorage.getItem('linkid') == null || window.sessionStorage.getItem('linkid') == undefined || window.sessionStorage.getItem('linkid') == "") {
+                                addRecord();
+                            }
+                            else {
+                                updateRecord();
+                            }
+                            // console.log(parameters)
+                        });
+
+                         $(document).on('click', '#btnClear', function () {
+                             window.sessionStorage.setItem('linkid', "")
+                             window.location.href = '@Url.Action("PostfallClinicalMonitoringA", "Assessments")';
+                             var inputs = document.getElementsByTagName("input");
+                             for (var i = 0; i < inputs.length; i++)
+                                 inputs[i].value = '';
+                        });
+
+                        $(document).on('click', '#btnGetCurData', function () {
+                            linkidVal = $('#chklinkid').val();
+
+                            if (linkidVal == "" || linkidVal == undefined) {
+                                alert("No record selected")
+                            }
+                            else {
+                                window.sessionStorage.setItem('linkid', linkidVal)
+                                window.location.href = '@Url.Action("PostfallClinicalMonitoringA", "Assessments")?linkid=' + linkidVal;
+
+                            }
+                        });
+                    });
+                    function addRecord() {
+                        var data1 = HTMLtbl.getData($('#tbldataA1'));  // passing that table's ID //
+                        var data2 = HTMLtbl.getData($('#tbldataA2'));
+                        var data3 = HTMLtbl.getData($('#tbldataA3'));
+                        var parameters = {};
+                        parameters.list1 = data1;
+                        parameters.list2 = data2;
+                        parameters.list3 = data3;
+                        //parameters.array = ["Amit", "Singh", "23", "Amit's Address", "your comments", "0", 0, "1"];
+                        // console.log(JSON.stringify(parameters))
+                        var request = $.ajax({
+                            dataType: "json",
+                            type: "POST",
+                            contentType: "application/json; charset=utf-8",
+                            url: "/Assessments/PostfallClinicalMonitoringA1",
+                            data: JSON.stringify(parameters)
+                        });
+
+                        request.done(function (msg) {
+                            alert("Record saved ");
+                            tempid = msg;
+                            console.log(tempid)
+                            window.sessionStorage.setItem('linkid', tempid)
+                            window.location.href = '@Url.Action("PostfallClinicalMonitoringA", "Assessments")';
+                        });
+
+                        request.fail(function (jqXHR, textStatus) {
+                            alert("Request failed: " + textStatus);
+                            console.log(jqXHR);
+                            //console.log(JSON.stringify(parameters))
+                        });
+                    }
+
+                    function updateRecord() {
+                        var data1 = HTMLtbl.getData($('#tbldataA1'));  // passing that table's ID //
+                        var data2 = HTMLtbl.getData($('#tbldataA2'));
+                        var data3 = HTMLtbl.getData($('#tbldataA3'));
+                        var parameters = {};
+                        parameters.list1 = data1;
+                        parameters.list2 = data2;
+                        parameters.list3 = data3;
+                        parameters.tempid = [window.sessionStorage.getItem('linkid')];
+                        //parameters.array = ["Amit", "Singh", "23", "Amit's Address", "your comments", "0", 0, "1"];
+
+                        var request = $.ajax({
+                            dataType: "json",
+                            type: "POST",
+                            contentType: "application/json; charset=utf-8",
+                            url: "/Assessments/EditPostfallClinicalMonitoringA",
+                            data: JSON.stringify(parameters)
+                        });
+
+                        request.done(function (msg) {
+                            alert("Record saved ");
+                            tempid = msg;
+                            console.log(msg + "okkk")
+                        });
+
+                        request.fail(function (jqXHR, textStatus) {
+                            alert("Request failed: " + textStatus);
+                            console.log(jqXHR);
+                            // console.log(JSON.stringify(parameters))
+                        });
+                    }
+
+                </script>
+
+               

@@ -1,0 +1,1205 @@
+@model QolaMVC.Models.ResidentModel
+
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+<style>
+
+    .menu-box:hover .menu {
+        transform: scale(1.05);
+        transition: all .5s;
+    }
+
+    .pointer {
+        cursor: pointer;
+    }
+    .nav-link.active {
+        background-color: #015093 !important;
+    }
+</style>
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+
+   @RenderPage("~/Views/Shared/_NavBar.cshtml")
+
+
+
+    <!-- START PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3>Resident Profile</h3>
+                        </div>
+                        @{
+                            if (@TempData["archive"].ToString() == "YES")
+                            {
+                                <div id="Resident_Archive_label" class="row align-items-center" style="margin-left:12vw;border:black solid;padding-left:1vw;padding-right:1vw;">
+                                    <h3>Resident Archive</h3>
+                                </div>
+                            }
+                        }
+
+
+
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+            <div style="height: 60px;"></div>
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <img id="image" src="~/Content/assets/@Model.ResidentImage" class="img-responsive">
+                                        <button id="rotatebutton" class="btn btn-default btn-group-sm"><i class="fa fa-rotate-right"></i></button>
+                                        <button id="rotatebutton2" class="btn btn-default btn-group-sm"><i class="fa fa-rotate-left"></i></button>
+                                    </div>
+                                    <div class="col-md-8 pl-4">
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p style="font-size:1.3vw !important;">@Model.FirstName  @Model.LastName</p>
+                                                <p style="font-size:1.3vw !important;">@Model.Gendar</p>
+                                                <p style="font-size:1.3vw !important;">@Model.BirthDate.ToShortDateString()</p>
+                                                @{
+                                                    if (TempData["pass"] != null && TempData["pass"].ToString() != "")
+                                                    {
+                                                        <p style="font-size:1.3vw !important;width:15vw;">Pass Away : <span>@TempData["pass"]</span></p>
+                                                    }
+                                                }
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p style="font-size:1.3vw !important;width:25vw;">@Model.Home.Name</p>
+                                                <p style="font-size:1.3vw !important;">@Model.SuiteNo</p>
+                                                <p style="font-size:1.3vw !important;">@Model.Physician</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 text-right">
+                                <div class="Row" style="padding: 5px;">
+                                    <a href="/Reports/CarePlan" style="padding: 5px;" class="btn btn-danger">Print Emergency Resident Details</a>
+                                </div>
+                                <div class="Row" style="padding: 5px;">
+                                    <button style="padding: 5px;" class="btn btn-primary">Print QOLAFIED Assessment</button>
+                                    @*<a href="/Reports/" style="padding: 5px;" class="btn btn-primary">Assessment Forms (Left here for demo only)</a>*@
+
+                                </div>
+                                <div class="Row" style="padding: 5px;">
+                                    <a href="#" style="padding: 5px;" class="btn btn-primary" onclick="form_click(this)">Forms</a>
+                                    <a href="~/Home/PersonalCalendar" style="padding: 5px;" class="btn btn-primary">Personal Calendar</a>
+                                    @{
+                                        if (@TempData["archive"].ToString() == "NO")
+                                        {
+                                            <a href="~/Home/SuggestedActivityCalendar" id="SAC_a_tag" style="padding: 5px;" class="btn btn-primary">Suggested Activity Calendar</a>
+                                        }
+                                    }
+
+                                </div>
+                                @{
+                                    if (@TempData["pass"].ToString() == "" && @TempData["archive"].ToString() == "YES")
+                                    {
+                                        <div id="Restore_RP" class="Row" style="padding:5px;">
+                                            <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#Restore_Resident" style="padding:5px;background-color:#f55753;border-color:#f55753;">Restore Resident Profile</a>
+                                        </div>
+                                    }
+                                }
+
+                                <div class="modal fade" id="Restore_Resident" role="dialog" style="right:0">
+                                    <div class="modal-dialog" style="left:0;right:0;">
+                                        <div class="modal-content" style="width:60vw;right:45%;margin-top:-3.6vw;">
+
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h3 class="modal-title" style="font-weight:500 !important;color:black;">Restore Resident Profile</h3>
+                                                <br>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div id="ck" class="">
+                                                    <div class="" style="padding:15px;display:block;">
+                                                        <a href="#" title="" class="float-left">
+                                                            <img id="QOLAContent_ImgResidentReturn" src="~/Content/assets/@Model.ResidentImage" style="height:120px;width:100px;">
+                                                        </a>
+
+                                                        <div class="residentInfo" style="margin-left:9vw;">
+                                                            <table class="TabletTable" style="font-size:1.3vw;">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td align="left">
+                                                                            Name :
+                                                                            <span id="QOLAContent_lResiName">@Model.FirstName @Model.LastName</span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td align="left">
+                                                                            Gender :
+                                                                            <span id="QOLAContent_lGender">@Model.Gendar</span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        @{
+                                                                            if (TempData["pass"] == null || TempData["pass"].ToString() == "")
+                                                                            {
+                                                                                <td align="left">
+                                                                                    Age :
+                                                                                    <span id="QOLAContent_lAge">@Model.Age (@Model.BirthDate.ToShortDateString())</span>
+                                                                                </td>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <td align="left">
+                                                                                    Pass Away :
+                                                                                    <span id="QOLAContent_lAge">@TempData["pass"]</span>
+                                                                                </td>
+                                                                            }
+                                                                        }
+
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+
+                                                    <div style="border: 2px solid gray; padding: 15px; width: 100%; display:inline-block;margin-top:2vw;">
+
+                                                        <div class="tab-pane fade show active" id="pills-InternalTransfer" role="tabpanel" aria-labelledby="pills-contact-tab">
+                                                            <br>
+                                                            <br>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group row">
+                                                                        <label for="staticEmail" class="col-md-4 col-form-label">Return Date</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="date" class="form-control" id="dateinput_archive" onchange="selection_onchange_empty_suite()">
+                                                                        </div>
+                                                                        <div class="col-md-2">
+                                                                            <p style="font-size:9px;float:left;margin-left:-1vw;">(MM/DD/YYYY)</p>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group row" style="margin-top:1.5vw;">
+                                                                        <label for="staticEmail" class="col-md-4 col-form-label">Suite #</label>
+                                                                        <div class="col-md-6">
+                                                                            <select id="available_Suite_archive" class="form-control" onfocus="suitenumber3()">
+                                                                                <option value="">--Suite--</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group row" style="margin-top:1.5vw;">
+                                                                        <label for="staticEmail" class="col-md-4 text-right col-form-label">Reason</label>
+                                                                        <div class="col-md-6">
+                                                                            <select id="reason_archive" tabindex="2" class="" style="height:35px;width:100%;float:left;">
+                                                                                <option selected="selected" value="">-- Select --</option>
+                                                                                <option value="Personal Leave">Personal Leave</option>
+                                                                                <option value="Medical Leave">Medical Leave</option>
+                                                                                <option value="Reason Unknown">Reason Unknown</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group row">
+                                                                        <label for="staticEmail" class="col-md-4 text-right col-form-label">Occupancy</label>
+                                                                        <div class="col-md-6">
+                                                                            <select id="occupancy_archive" class="form-control" onchange="selection_onchange_empty_suite()">
+                                                                                <option value="">--Select--</option>
+                                                                                <option value="1">Single</option>
+                                                                                <option value="2">Double</option>
+                                                                                <option value="3">Triple</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group row" style="margin-top:1.5vw;">
+                                                                        <label for="staticEmail" class="col-md-4 text-right col-form-label">Resident Image</label>
+                                                                        <div class="col-md-7">
+                                                                            <input type="file" id="img_archive" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+
+                                                                <div class="col-md-12" style="margin-top:1.5vw;">
+                                                                    <div class="form-group row">
+                                                                        <label for="staticEmail" class="col-md-2 col-form-label">Notes</label>
+                                                                        <div class="col-md-9">
+                                                                            <textarea class="textarea" id="notes_archive" rows="5" style="width:100% !important;max-width:100%;float:left;"></textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <br>
+                                                <div class="row">
+                                                    <div class="col-md-12 text-center">
+                                                        @*<button class="btn btn-danger" data-dismiss="modal">
+                                                        BACK
+                                                    </button>*@
+                                                        <button class="btn btn-danger" onclick="saveButton_archive()" style="width:6vw;">
+                                                            SAVE
+                                                        </button>
+                                                        <button class="btn btn-danger" onclick="clearButton()" style="width:6vw;">
+                                                            CLEAR
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+                            </div>
+                            <br>
+                            @{
+                                if (ViewBag.Message != null && ViewBag.Message != string.Empty)
+                                {
+                                    <div class="alert alert-success" role="alert">
+                                        <button class="close" data-dismiss="alert"></button>
+                                        <strong>Success: </strong> @ViewBag.Message
+                                    </div>
+                                }
+                            }
+
+                            <div class="row" style="min-width:95%;padding-bottom:80px">
+                                <div class="col-md-12">
+
+                                    <div class="form-tabs mt-5">
+                                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                            <li class="nav-item">
+                                                <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true"><b>General Info</b> </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" id="pills-medication-tab" data-toggle="pill" href="#pills-medication" role="tab" aria-controls="pills-medication" aria-selected="false"><b>Medication History</b></a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" id="pills-care-tab" data-toggle="pill" href="#pills-care" role="tab" aria-controls="pills-care" aria-selected="false"><b>Plan of Care</b></a>
+                                            </li>
+                                            @*<li class="nav-item">
+                                            <a class="nav-link" id="pills-goals-tab" data-toggle="pill" href="#pills-goals" role="tab" aria-controls="pills-goals" aria-selected="false"><b>Resident Specific Goals</b></a>
+                                        </li>*@
+                                            <li class="nav-item">
+                                                <a class="nav-link" id="pills-notes-tab" data-toggle="pill" href="#pills-notes" role="tab" aria-controls="pills-notes" aria-selected="false"><b>Progress Notes</b></a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" id="pills-story-tab" data-toggle="pill" href="#pills-story" role="tab" aria-controls="pills-story" aria-selected="false"><b>Life Story Summary</b></a>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content" id="pills-tabContent">
+                                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+
+                                                <table class="table table-bordered">
+                                                    <thead class="bg-primary">
+                                                        <tr>
+                                                            <th class="text-white text-center" colspan="3">Resident Details</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                        <tr>
+                                                            <td>Name: @Model.FirstName @Model.LastName</td>
+                                                            <td>Gender: @Model.Gendar</td>
+                                                            <td>Date Of Birth: @Model.BirthDate.ToShortDateString()</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Marital Status: @Model.MaritalStatus </td>
+                                                            <td>Birth Place: @Model.BirthPlace</td>
+                                                            <td>Phone: @Model.Phone</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Physician: @Model.Physician</td>
+                                                            <td>Physician Phone: @Model.PhysicianPhone </td>
+                                                            <td>Fax #: @Model.PhysicianFaxNo</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Contract Number: @Model.ContractNumber</td>
+                                                            <td colspan="2">POA Care: @Model.POACare</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Care Home Phone: @Model.CareHomePhone</td>
+                                                            <td>Care Work Phone: @Model.CareWorkPhone </td>
+                                                            <td>Care Email: @Model.CareEmail</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3">POA Finance: @Model.POAFinance</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Finance Home Phone: @Model.FinanceHomePhone</td>
+                                                            <td>Finance Work Phone: @Model.FinanceWorkPhone</td>
+                                                            <td>Finance Email: @Model.FinanceEmail</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <br><br>
+                                                <table class="table table-bordered">
+                                                    <thead class="bg-primary">
+                                                        <tr>
+                                                            <th class="text-white text-center" colspan="4">Contact Details</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-center"><b>Description</b></td>
+                                                            <td class="text-center"><b>1st Contact</b></td>
+                                                            <td class="text-center"><b>2nd Contact</b></td>
+                                                            <td class="text-center"><b>3rd Contact</b></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>Contact</td>
+                                                            <td>@Model.Contract1</td>
+                                                            <td>@Model.Contract2</td>
+                                                            <td>@Model.Contract3</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Address</td>
+                                                            <td>@Model.Address1</td>
+                                                            <td>@Model.Address2</td>
+                                                            <td>@Model.Address3</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Relationship</td>
+                                                            <td>@Model.Relationship1</td>
+                                                            <td>@Model.Relationship2</td>
+                                                            <td>@Model.Relationship3</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Primary Contact </td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Secondary Contact </td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Tertiary Contact </td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>E-Mail</td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <br><br>
+                                                <table class="table table-bordered">
+                                                    <thead class="bg-primary">
+                                                        <tr>
+                                                            <th class="text-white text-center" colspan="7">Suite Details</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-center"><b>S.No </b></td>
+                                                            <td class="text-center"><b>Home</b></td>
+                                                            <td class="text-center"><b>Suite No </b></td>
+                                                            <td class="text-center"><b>Move In Date </b></td>
+                                                            <td class="text-center"><b>Move Out Date</b></td>
+                                                            <td class="text-center"><b>Occupancy</b></td>
+                                                            <td class="text-center"><b>Reason</b></td>
+                                                        </tr>
+                                                        @{
+
+                                                        }
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Sample</td>
+                                                            <td>1</td>
+                                                            <td>10-26-2015</td>
+                                                            <td></td>
+                                                            <td>Single</td>
+                                                            <td>New</td>
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                            <div class="tab-pane fade" id="pills-medication" role="tabpanel" aria-labelledby="pills-medication-tab">
+
+                                                <table class="table table-bordered">
+                                                    <thead class="bg-primary">
+                                                        <tr>
+                                                            <th class="text-white text-center" colspan="8">Medication Details</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-center"><b>S.No</b></td>
+                                                            <td class="text-center"><b>Form</b></td>
+                                                            <td class="text-center"><b>Drug</b></td>
+                                                            <td class="text-center"><b>Start Date</b></td>
+                                                            <td class="text-center"><b>End Date</b></td>
+                                                            <td class="text-center"><b>Time</b></td>
+                                                            <td class="text-center"><b>Sig</b></td>
+                                                            <td class="text-center"><b>Status</b></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Tablet</td>
+                                                            <td>Trihexyphenidyl</td>
+                                                            <td>10-27-2014</td>
+                                                            <td></td>
+                                                            <td>06:00AM|01:00PM</td>
+                                                            <td>1 TABLET BY MOUTH EVERY MORNING| 1 TABLET BY MOUTH EVERY MORNING</td>
+                                                            <td>AAP</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>2</td>
+                                                            <td>Eye Drops</td>
+                                                            <td>EYE LUBE</td>
+                                                            <td>10-28-2015</td>
+                                                            <td></td>
+                                                            <td>09:00PM</td>
+                                                            <td>INSTILL 1 DROP EACH EYE AT BED TIME</td>
+                                                            <td>AAP</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="8"><b>Legend :</b>DIS-Discontinue, HLD-Hold, RLS-Release, CAN-Cancel, AAP-Acknowledge and Approved, PEN-Pending.</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="8"><b>Disclaimer :</b>All information provided has been obtained exclusively from the resident, guardian, power of attorney or family member thereof. We have not independently verified the information, and, as such, it may contain errors, omissions or inaccuracies. Use of the information by third-parties shall be solely at their own risk. All Seniors Care Living Centres, or any related entity, assumes no responsibility or liability for damages of any kind resulting from any reliance or use of the information.</td>
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                                <br><br>
+                                                <table class="table table-bordered">
+                                                    <thead class="bg-primary">
+                                                        <tr>
+                                                            <th class="text-white text-center" colspan="3">Medical Allergy Details</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-center"><b>S.No</b></td>
+                                                            <td class="text-center"><b>Medical Allergy</b></td>
+                                                            <td class="text-center"><b>Notes</b></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Hydantoins</td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>2</td>
+                                                            <td>tape</td>
+                                                            <td></td>
+                                                        </tr>
+
+
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                            <div class="tab-pane fade" id="pills-care" role="tabpanel" aria-labelledby="pills-care-tab">
+
+
+
+                                            </div>
+                                            <div class="tab-pane fade" id="pills-goals" role="tabpanel" aria-labelledby="pills-goals-tab">
+
+                                                <table style="border: 1px solid #000; padding: 3px;">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th colspan="3" style="border-bottom: 0px solid;border-left: 1px solid;border-right: 1px solid; border-top: 1px solid;">Resident Need/Goal: Skin and Wound Care</th>
+                                                            <th style="border-bottom: 1px solid;border-top: 1px solid;border-left: 1px solid Black;border-Right: 0px solid;width:10%;">Date </th>
+                                                            <td colspan="2" style="border-bottom: 1px solid;border-top: 1px solid;border-left: 0px solid Black;border-Right: 1px solid; width:20%;">11-22-2016</td>
+
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3" style="border-top: 0px solid;border-bottom: 1px solid; border-left: 1px solid;">SkinWoundtest</td>
+                                                            <th style="border: 1px solid Black;">Point Of Contact </th>
+                                                            <td colspan="2" style="border: 1px solid Black;">Test Nurse T (Developer - RN)</td>
+
+                                                        </tr>
+                                                        <tr>
+                                                            <th colspan="3" style="border-bottom: 0px solid;border-left: 1px solid;border-top: 1px solid Black;"><u>Action/Intervention</u></th>
+                                                            <th style="border: 1px solid Black;">Goal Met</th>
+                                                            <th style="border: 1px solid Black;">Change in Need</th>
+                                                            <th style="border: 1px solid Black;">Ineffective</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th colspan="3" style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid;">(Direction to Staff) </th>
+                                                            <td style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid Black;border-right: 1px solid;"></td>
+                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid Black;border-right: 0px solid;"></td>
+                                                            <td style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid Black;border-right: 1px solid;"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid Black;border-right: 0px solid;">11-22-2016 -    </td>
+                                                            <td style="border-bottom: 1px solid #000;border-left: 0px solid;border-top: 0px solid Black;border-right: 0px solid;">SkinFollowUp</td>
+                                                            <td style="border-bottom: 1px solid #000;border-left: 0px solid;border-top: 0px solid Black;border-right: 0px solid;">Admin Admin <br> (Head Office)</td>
+                                                            <td style="border-bottom: 1px solid Black;border-top: 1px solid Black;border-left: 1px solid Black;border-Right: 0px solid;"></td>
+                                                            <td style="border-bottom: 1px solid Black;border-top: 1px solid Black;border-left: 1px solid Black;border-Right: 0px solid;"></td>
+                                                            <td style="border-bottom: 1px solid Black;border-top: 1px solid Black;border-left: 1px solid Black;border-Right: 1px solid Black;"></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td colspan="3" style="border-bottom: 0px solid;border-top: 1px solid;border-left: 1px solid;">Outcomes / Effectiveness </td>
+                                                            <td style="border-bottom: 0px solid black;border-top: 1px solid;border-left: 0px solid;"></td>
+                                                            <td></td>
+                                                            <td style="border-bottom: 0px solid #000;border-left: 0px solid;border-top: 0px solid Black;border-right: 1px solid;"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="border-bottom: 1px solid Black;border-left: 1px solid;border-top: 0px solid;border-right: 0px solid">11-22-2016 -    </td>
+                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid">Skinwoundoutcome</td>
+                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid">Admin Admin <br> (Head Office)</td>
+                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid">11-08-2016</td>
+                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid"></td>
+                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 1px solid"></td>
+                                                        </tr>
+
+
+                                                    </tbody>
+                                                </table>
+                                                <br><br>
+                                                <table style="border: 1px solid #000; padding: 3px;">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th colspan="3" style="border-bottom: 0px solid;border-left: 1px solid;border-right: 1px solid; border-top: 1px solid;">Resident Need/Goal: Physician</th>
+                                                            <th style="border-bottom: 1px solid;border-top: 1px solid;border-left: 1px solid Black;border-Right: 0px solid;width:10%;">Date </th>
+                                                            <td colspan="2" style="border-bottom: 1px solid;border-top: 1px solid;border-left: 0px solid Black;border-Right: 1px solid; width:20%;">11-22-2016</td>
+
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3" style="border-top: 0px solid;border-bottom: 1px solid; border-left: 1px solid;">physician test</td>
+                                                            <th style="border: 1px solid Black;">Point Of Contact </th>
+                                                            <td colspan="2" style="border: 1px solid Black;">Test Nurse T (Developer - RN)</td>
+
+                                                        </tr>
+                                                        <tr>
+                                                            <th colspan="3" style="border-bottom: 0px solid;border-left: 1px solid;border-top: 1px solid Black;"><u>Action/Intervention</u></th>
+                                                            <th style="border: 1px solid Black;">Goal Met</th>
+                                                            <th style="border: 1px solid Black;">Change in Need</th>
+                                                            <th style="border: 1px solid Black;">Ineffective</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th colspan="3" style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid;">(Direction to Staff) </th>
+                                                            <td style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid Black;border-right: 1px solid;"></td>
+                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid Black;border-right: 0px solid;"></td>
+                                                            <td style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid Black;border-right: 1px solid;"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid Black;border-right: 0px solid;">11-22-2016 -    </td>
+                                                            <td style="border-bottom: 1px solid #000;border-left: 0px solid;border-top: 0px solid Black;border-right: 0px solid;">SkinFollowUp</td>
+                                                            <td style="border-bottom: 1px solid #000;border-left: 0px solid;border-top: 0px solid Black;border-right: 0px solid;">Admin Admin <br> (Head Office)</td>
+                                                            <td style="border-bottom: 1px solid Black;border-top: 1px solid Black;border-left: 1px solid Black;border-Right: 0px solid;"></td>
+                                                            <td style="border-bottom: 1px solid Black;border-top: 1px solid Black;border-left: 1px solid Black;border-Right: 0px solid;"></td>
+                                                            <td style="border-bottom: 1px solid Black;border-top: 1px solid Black;border-left: 1px solid Black;border-Right: 1px solid Black;"></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td colspan="3" style="border-bottom: 0px solid;border-top: 1px solid;border-left: 1px solid;">Outcomes / Effectiveness </td>
+                                                            <td style="border-bottom: 0px solid black;border-top: 1px solid;border-left: 0px solid;"></td>
+                                                            <td></td>
+                                                            <td style="border-bottom: 0px solid #000;border-left: 0px solid;border-top: 0px solid Black;border-right: 1px solid;"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="border-bottom: 1px solid Black;border-left: 1px solid;border-top: 0px solid;border-right: 0px solid">11-22-2016 -    </td>
+                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid">Skinwoundoutcome</td>
+                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid">Admin Admin <br> (Head Office)</td>
+                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid">11-08-2016</td>
+                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid"></td>
+                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 1px solid"></td>
+                                                        </tr>
+
+
+                                                    </tbody>
+                                                </table>
+                                                <br><br>
+                                                <table style="border: 1px solid #000; padding: 3px;">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th colspan="3" style="border-bottom: 0px solid;border-left: 1px solid;border-right: 1px solid; border-top: 1px solid;">Resident Need/Goal: Assistance with Ambulation</th>
+                                                            <th style="border-bottom: 1px solid;border-top: 1px solid;border-left: 1px solid Black;border-Right: 0px solid;width:10%;">Date </th>
+                                                            <td colspan="2" style="border-bottom: 1px solid;border-top: 1px solid;border-left: 0px solid Black;border-Right: 1px solid; width:20%;">11-22-2016</td>
+
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3" style="border-top: 0px solid;border-bottom: 1px solid; border-left: 1px solid;">testno22</td>
+                                                            <th style="border: 1px solid Black;">Point Of Contact </th>
+                                                            <td colspan="2" style="border: 1px solid Black;">Test Nurse T (Developer - RN)</td>
+
+                                                        </tr>
+                                                        <tr>
+                                                            <th colspan="3" style="border-bottom: 0px solid;border-left: 1px solid;border-top: 1px solid Black;"><u>Action/Intervention</u></th>
+                                                            <th style="border: 1px solid Black;">Goal Met</th>
+                                                            <th style="border: 1px solid Black;">Change in Need</th>
+                                                            <th style="border: 1px solid Black;">Ineffective</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th colspan="3" style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid;">(Direction to Staff) </th>
+                                                            <td style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid Black;border-right: 1px solid;"></td>
+                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid Black;border-right: 0px solid;"></td>
+                                                            <td style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid Black;border-right: 1px solid;"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid Black;border-right: 0px solid;">11-22-2016 -    </td>
+                                                            <td style="border-bottom: 1px solid #000;border-left: 0px solid;border-top: 0px solid Black;border-right: 0px solid;">SkinFollowUp</td>
+                                                            <td style="border-bottom: 1px solid #000;border-left: 0px solid;border-top: 0px solid Black;border-right: 0px solid;">Admin Admin <br> (Head Office)</td>
+                                                            <td style="border-bottom: 1px solid Black;border-top: 1px solid Black;border-left: 1px solid Black;border-Right: 0px solid;"></td>
+                                                            <td style="border-bottom: 1px solid Black;border-top: 1px solid Black;border-left: 1px solid Black;border-Right: 0px solid;"></td>
+                                                            <td style="border-bottom: 1px solid Black;border-top: 1px solid Black;border-left: 1px solid Black;border-Right: 1px solid Black;"></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td colspan="3" style="border-bottom: 0px solid;border-top: 1px solid;border-left: 1px solid;">Outcomes / Effectiveness </td>
+                                                            <td style="border-bottom: 0px solid black;border-top: 1px solid;border-left: 0px solid;"></td>
+                                                            <td></td>
+                                                            <td style="border-bottom: 0px solid #000;border-left: 0px solid;border-top: 0px solid Black;border-right: 1px solid;"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="border-bottom: 1px solid Black;border-left: 1px solid;border-top: 0px solid;border-right: 0px solid">11-22-2016 -    </td>
+                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid">Skinwoundoutcome</td>
+                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid">Admin Admin <br> (Head Office)</td>
+                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid">11-08-2016</td>
+                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid"></td>
+                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 1px solid"></td>
+                                                        </tr>
+
+
+                                                    </tbody>
+                                                </table>
+                                                <br><br>
+                                                <table style="border: 1px solid #000; padding: 3px;">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th colspan="3" style="border-bottom: 0px solid;border-left: 1px solid;border-right: 1px solid; border-top: 1px solid;">Resident Need/Goal: Assistance with Ambulation  </th>
+                                                            <th style="border-bottom: 1px solid;border-top: 1px solid;border-left: 1px solid Black;border-Right: 0px solid;width:10%;">Date </th>
+                                                            <td colspan="2" style="border-bottom: 1px solid;border-top: 1px solid;border-left: 0px solid Black;border-Right: 1px solid; width:20%;">11-22-2016</td>
+
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3" style="border-top: 0px solid;border-bottom: 1px solid; border-left: 1px solid;">Test Goal</td>
+                                                            <th style="border: 1px solid Black;">Point Of Contact </th>
+                                                            <td colspan="2" style="border: 1px solid Black;">Test Nurse T (Developer - RN)</td>
+
+                                                        </tr>
+                                                        <tr>
+                                                            <th colspan="3" style="border-bottom: 0px solid;border-left: 1px solid;border-top: 1px solid Black;"><u>Action/Intervention</u></th>
+                                                            <th style="border: 1px solid Black;">Goal Met</th>
+                                                            <th style="border: 1px solid Black;">Change in Need</th>
+                                                            <th style="border: 1px solid Black;">Ineffective</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th colspan="3" style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid;">(Direction to Staff) </th>
+                                                            <td style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid Black;border-right: 1px solid;"></td>
+                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid Black;border-right: 0px solid;"></td>
+                                                            <td style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid Black;border-right: 1px solid;"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid Black;border-right: 0px solid;">11-22-2016 -    </td>
+                                                            <td style="border-bottom: 1px solid #000;border-left: 0px solid;border-top: 0px solid Black;border-right: 0px solid;">SkinFollowUp</td>
+                                                            <td style="border-bottom: 1px solid #000;border-left: 0px solid;border-top: 0px solid Black;border-right: 0px solid;">Admin Admin <br> (Head Office)</td>
+                                                            <td style="border-bottom: 1px solid Black;border-top: 1px solid Black;border-left: 1px solid Black;border-Right: 0px solid;"></td>
+                                                            <td style="border-bottom: 1px solid Black;border-top: 1px solid Black;border-left: 1px solid Black;border-Right: 0px solid;"></td>
+                                                            <td style="border-bottom: 1px solid Black;border-top: 1px solid Black;border-left: 1px solid Black;border-Right: 1px solid Black;"></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td colspan="3" style="border-bottom: 0px solid;border-top: 1px solid;border-left: 1px solid;">Outcomes / Effectiveness </td>
+                                                            <td style="border-bottom: 0px solid black;border-top: 1px solid;border-left: 0px solid;"></td>
+                                                            <td></td>
+                                                            <td style="border-bottom: 0px solid #000;border-left: 0px solid;border-top: 0px solid Black;border-right: 1px solid;"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="border-bottom: 1px solid Black;border-left: 1px solid;border-top: 0px solid;border-right: 0px solid">11-22-2016 -    </td>
+                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid">Skinwoundoutcome</td>
+                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid">Admin Admin <br> (Head Office)</td>
+                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid">11-08-2016</td>
+                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid"></td>
+                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 1px solid"></td>
+                                                        </tr>
+
+
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                            <div class="tab-pane fade" id="pills-notes" role="tabpanel" aria-labelledby="pills-notes-tab" style="min-width:90vw;">
+                                                <div class="row">
+                                                    <div class="col-md-12 mb-2">
+                                                        <a href="/Assessments/ProgressNotes/" style="padding: 8px;font-size:1vw;" class="btn btn-primary ml-3">New Progress Note</a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <div class="card card-default">
+                                                        <div class="card-header  separator">
+                                                            <div class="card-title">
+                                                                Progress Notes Report
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-block my-2">
+                                                            <form action="/Home/btnPdf_Click" method="post">
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="row align-center align-content-center">
+                                                                            <div class="col-md-5">
+                                                                                <div>From</div>
+                                                                                <input id="searchFrom" name="From" type="date" class="form-control searchInput" onkeydown="return false;">
+                                                                            </div>
+                                                                            <div class="col-md-5">
+                                                                                <div>To</div>
+                                                                                <input id="searchTo" name="To" type="date" class="form-control searchInput" onkeydown="return false;">
+                                                                            </div>
+                                                                            <div class="col-md-2">
+                                                                                <div>&nbsp; </div>
+                                                                                <input id="aPrint" type="submit" value="Print" class="btn btn-block btn-primary">
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <table class="table table-bordered fbody">
+                                                    <thead class="bg-primary">
+                                                        <tr>
+                                                            <th class="text-white text-center" colspan="7">Progress Notes</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-center"><b>S.No</b></td>
+                                                            <td class="text-center"><b>Date</b></td>
+                                                            <td class="text-center"><b>Time</b></td>
+                                                            <td class="text-center"><b>Category</b></td>
+                                                            <td class="text-center"><b>Title</b></td>
+                                                            <td class="text-center"><b>Progress Notes</b></td>
+                                                            <td class="text-center" style="width:12vw;"><b>User</b></td>
+                                                            @*<td class="text-center"><b>Signature</b></td>*@
+                                                        </tr>
+                                                        @{
+                                                            int i = 1;
+                                                            var progressNotes = (IEnumerable<QolaMVC.Models.ProgressNotesModel>)ViewBag.ProgressNotes;
+                                                            foreach (var p in progressNotes)
+                                                            {
+                                                                <tr>
+                                                                    <td>@i</td>
+                                                                    <td>@p.Date.ToShortDateString() </td>
+                                                                    <td>@p.Date.ToShortTimeString()</td>
+                                                                    <td>@p.category_full</td>
+                                                                    <td>@p.Title</td>
+                                                                    <td>
+                                                                        @p.Note
+                                                                    </td>
+                                                                    <td>@p.ModifiedBy.FirstName @p.ModifiedBy.LastName<br>(@p.ModifiedBy.UserTypeName)</td>
+
+                                                                </tr>
+                                                                i = i + 1;
+                                                            }
+                                                        }
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                            <div class="tab-pane fade" id="pills-story" role="tabpanel" aria-labelledby="pills-story-tab">
+
+                                                <table class="table table-bordered">
+                                                    <thead class="bg-primary">
+                                                        <tr>
+                                                            <th class="text-white text-center" colspan="3">Resident Details</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                        <tr>
+                                                            <td>Name: Sample John</td>
+                                                            <td>Gender: Male</td>
+                                                            <td>Date Of Birth: 05-20-1941</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Marital Status: Married </td>
+                                                            <td>Birth Place: Toronto</td>
+                                                            <td>Phone: (416) 728-1418</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Physician: Dr. Smith</td>
+                                                            <td>Physician Phone: (416) 444-4444 </td>
+                                                            <td>Fax #:</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Contract Number:</td>
+                                                            <td colspan="2">POA Care: Ckg</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Care Home Phone: (987) 568-4561</td>
+                                                            <td>Care Work Phone: (545) 642-1564 </td>
+                                                            <td>Care Email: Nir@mit.com</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3">POA Finance: Fkg</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Finance Home Phone: (789) 462-5198</td>
+                                                            <td>Finance Work Phone: (544) 652-1987  </td>
+                                                            <td>Finance Email: niranch.harvey@gmail.com</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <br><br>
+                                                <table class="table table-bordered">
+                                                    <thead class="bg-primary">
+                                                        <tr>
+                                                            <th class="text-white text-center" colspan="4">Contact Details</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-center"><b>Description</b></td>
+                                                            <td class="text-center"><b>1st Contact</b></td>
+                                                            <td class="text-center"><b>2nd Contact</b></td>
+                                                            <td class="text-center"><b>3rd Contact</b></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>Contact</td>
+                                                            <td>Hannah Sommerville</td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Contact</td>
+                                                            <td>Hannah Sommerville</td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Address</td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Relationship</td>
+                                                            <td>daughter</td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Primary Contact </td>
+                                                            <td>(416) 728-1418 (Home)   </td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Secondary Contact </td>
+                                                            <td>(416) 728-1418 (Home)   </td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Tertiary Contact </td>
+                                                            <td>(416) 728-1418 (Home)   </td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>E-Mail</td>
+                                                            <td>hsommerville@allseniorscare.com   </td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <br><br>
+                                                <table class="table table-bordered">
+                                                    <thead class="bg-primary">
+                                                        <tr>
+                                                            <th class="text-white text-center" colspan="7">Suite Details</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-center"><b>S.No </b></td>
+                                                            <td class="text-center"><b>Home</b></td>
+                                                            <td class="text-center"><b>Suite No </b></td>
+                                                            <td class="text-center"><b>Move In Date </b></td>
+                                                            <td class="text-center"><b>Move Out Date</b></td>
+                                                            <td class="text-center"><b>Occupancy</b></td>
+                                                            <td class="text-center"><b>Reason</b></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Sample</td>
+                                                            <td>1</td>
+                                                            <td>10-26-2015</td>
+                                                            <td></td>
+                                                            <td>Single</td>
+                                                            <td>New</td>
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                                <br><br>
+                                                <table class="table table-bordered">
+                                                    <thead class="bg-primary">
+                                                        <tr>
+                                                            <th class="text-white text-center" colspan="7">Other Details</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                        <tr>
+                                                            <td>Favourite song: Singing in the rain</td>
+                                                            <td>Favourite movie: Breakfast at Tiffany's </td>
+                                                            <td>Number of children: 1</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Number of grandchildren: 1</td>
+                                                            <td>Favourite dessert: Chocolate cake</td>
+                                                            <td>Favourite drink: Earl Gray Tea</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Favourite flower: Peonies</td>
+                                                            <td>Favourite pets: Dogs</td>
+                                                            <td>Wakeup time: 10:00pm</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Go to bed at: 9:00am</td>
+                                                            <td>Favourite past time: Knitting</td>
+                                                            <td></td>
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <!-- END PLACE PAGE CONTENT HERE -->
+                </div>
+                <!-- END CONTAINER FLUID -->
+            </div>
+            <!-- END PAGE CONTENT -->
+            <!-- START PAGE CONTENT WRAPPER -->
+            <input id="jsNote" type="hidden" value="@TempData["NOTE"]" />
+            <input id="tempdata_archive" type="hidden" value="@TempData["archive"]" />
+            <input id="pass_away_index" type="hidden" value="@TempData["pass"]" />
+            <input id="temp_RID" type="hidden" value="@TempData["tempRID"]" />
+
+            @RenderPage("~/Views/Shared/_Footer.cshtml")
+            <script type="text/javascript" src="http://cdn.sobekrepository.org/includes/jquery-rotate/2.2/jquery-rotate.min.js"></script>
+            <script type="text/javascript">
+                var angle = 0;
+                $('#rotatebutton').on('click', function () {
+                    angle += 90;
+                    $("#image").rotate(angle);
+                });
+                $('#rotatebutton2').on('click', function () {
+                    angle -= 90;
+                    $("#image").rotate(angle);
+                });
+            </script>
+            <script>
+                $("#btnReport").on('click', function () {
+                    var from = stringToDate($("#searchFrom").val());
+                    var to = stringToDate($("#searchTo").val());
+
+                    $(".fbody tr").each(function () {
+                        var row = $(this);
+                        var date = stringToDate2(row.find("td").eq(1).text());
+
+                        //show all rows by default
+                        var show = true;
+
+                        //if from date is valid and row date is less than from date, hide the row
+                        if (from && date < from)
+                            show = false;
+
+                        //if to date is valid and row date is greater than to date, hide the row
+                        if (to && date > to)
+                            show = false;
+
+                        if (show)
+                            row.show();
+                        else
+                            row.hide();
+                    });
+                });
+
+                //parse entered date. return NaN if invalid
+                function stringToDate(s) {
+                    var ret = NaN;
+                    var parts = s.split("/");
+                    date = new Date(parts[0], parts[1], parts[2]);
+                    if (!isNaN(date.getTime())) {
+                        ret = date;
+                    }
+                    return ret;
+                }
+
+                function stringToDate2(s) {
+                    var ret = NaN;
+                    var parts = s.split("/");
+                    date = new Date(parts[2], parts[0], parts[1]);
+                    if (!isNaN(date.getTime())) {
+                        ret = date;
+                    }
+                    return ret;
+                }
+            </script>
+            <script>
+                var a = $("#jsNote").val();
+                if (a == "YES") {
+                    document.getElementById("pills-home-tab").className = "nav-link";
+                    document.getElementById("pills-home").className = "tab-pane fade";
+                    document.getElementById("pills-notes-tab").className = "nav-link active";
+                    document.getElementById("pills-notes").className = "tab-pane fade show active";
+                }
+                //var b = $("#tempdata_archive").val();
+                //var c = $("#pass_away_index").val();
+                //if (b == "YES") {
+                //    $("#SAC_a_tag").hide();
+                //    $("#Resident_Archive_label").show();
+                //    if (c == "") {
+                //        $("#Restore_RP").show();
+                //    }
+                //}
+            </script>
+            <script>
+                function saveButton_archive() {
+                    var tempRID = $("#temp_RID").val();
+                    var date = $("#dateinput_archive").val();
+                    var occu = $("#occupancy_archive").val();
+                    var suite = $("#available_Suite_archive").val();
+                    var reason = $("#reason_archive").val();
+                    var note = $("#notes_archive").val();
+
+                    if (date == "" || occu == "" || suite == "") {
+                        tempAlert("Date, Occupancy and Suite Cannot be Empty", 2000);
+                    }
+                    else {
+                        var formdata = new FormData();
+                        var fileInput = document.getElementById('img_archive');
+                        for (i = 0; i < fileInput.files.length; i++) {
+                            formdata.append(fileInput.files[i].name, fileInput.files[i]);
+                        }
+
+                        formdata.append('returndate', date);
+                        formdata.append('occu', occu);
+                        formdata.append('suiteno', suite);
+                        formdata.append('reason', reason);
+                        formdata.append('notes', note);
+
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('POST', '/Home/saveButton_Archive');
+                        xhr.send(formdata);
+                        xhr.onreadystatechange = function () {
+                            if (xhr.responseText == 1) {
+                                tempAlert("Restore successfully", 2000);
+                                setTimeout(function () {
+                                    window.location.reload(true);
+                                    window.location.href = '/Home/ResidentMenu/?p_ResidentId=' + tempRID.toString();
+                                }, 2000);
+                            }
+                            else if (xhr.responseText == 2) {
+                                tempAlert("Cannot choose date two weeks ago", 2000);
+                            }
+                            else {
+                                tempAlert("Update Failed", 2000);
+                            }
+                        }
+                    }
+
+
+                    //if (date == "" || occu == "" || suite == "") {
+                    //    tempAlert("Date, Occupancy and Suite Cannot be Empty", 2000);
+                    //}
+                    //else {
+                    //$.post("/Home/saveButton_Archive", { returndate: date, occu: occu, suiteno: suite, reason: reason, img: img, notes: note }, function (data) {
+                    //        if (data == 1) {
+                    //            tempAlert("Update successfully", 2000);
+                    //            setTimeout(function () { window.location.reload(); }, 2000);
+                    //        }
+                    //        else if (data == 2) {
+                    //            tempAlert("Cannot choose date two weeks ago", 2000);
+                    //        }
+                    //        else {
+                    //            tempAlert("Update Failed", 2000);
+                    //        }
+                    //    });
+                    //}
+
+                    //var formdata = new FormData();
+                    //var fileInput = document.getElementById('img_archive');
+
+                    //for (i = 0; i < fileInput.files.length; i++) {
+                    //    formdata.append(fileInput.files[i].name, fileInput.files[i]);
+                    //}
+                    //var xhr = new XMLHttpRequest();
+                    //xhr.open('POST', '/Home/saveButton_Image');
+                    //xhr.send(formdata);
+                    //xhr.onreadystatechange = function () {
+                    //    if (xhr.readyState == 4 && xhr.status == 200) {
+                    //        alert(xhr.responseText);
+                    //    }
+                    //}
+                    //return false;
+
+                }
+
+                function form_click(ee) {
+                    var b = $("#tempdata_archive").val();
+                    if (b == "YES") {
+                        ee.href = "/Assessments/Index2";
+                    }
+                    else
+                        ee.href = "/Assessments/";
+                }
+            </script>
+

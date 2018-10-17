@@ -1,0 +1,162 @@
+﻿@model QolaMVC.Models.ActivityAssessmentCollectionViewModel
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+<style>
+
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+</style>
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+
+    <div class="page-content-wrapper">
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3>Activity Assessment</h3>
+                        </div>
+                        <!-- <div class="col-md-2 text-right">
+                            <h4 class="text-danger bold pr-3">
+                                31
+                                <small>Residents</small>
+                            </h4>
+                        </div> -->
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+
+            <div style="height: 60px;"></div>
+
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+              
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>P = Past Interest    C = Current Interest   W = Would Like to Learn/Do</p>
+                                <input type="submit" form="AssessmentForm" class="btn btn-primary" value="Save" />
+                                <a href="#" class="btn btn-primary">Print PDF</a>
+                                <input type="reset" form="AssessmentForm" class="btn btn-primary" value="Clear" />
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row">
+
+                                    <div class="col-md-12 text-right">
+                                        <div class="row">
+                                            <form action="~/Assessments/Activity" method="post">
+                                                <div class="col-md-6 text-right">
+                                                    <p class="text-right">Assessment History:</p>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <select name="AssessmentDate" id="" onchange="this.form.submit()">
+                                                        @if (ViewBag.AssessmentDates != null)
+                                                        {
+                                                            <option value="new">New</option>
+                                                            foreach (var l_Date in (List<DateTime>)ViewBag.AssessmentDates)
+                                                            {
+
+                                                                if (Model.DateEntered == l_Date)
+                                                                {
+                                                                    <option value="@l_Date" selected>@l_Date</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@l_Date">@l_Date</option>
+                                                                }
+                                                            }
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <form action="~/Assessments/SubmitActivityAssessment" id="AssessmentForm" method="post">
+                            <div class="row">
+                                <div class="col-md-4">
+
+                                    @{
+                                        int i = 0; int j = 0;
+                                        foreach (var l_Category in Model.Category)
+                                        {
+                                            <table class="table table-bordered">
+                                                <thead class="bg-primary">
+                                                    <tr>
+                                                        <th class="text-white text-center" colspan="4"> <!-- Hide the name @l_Category.EnglishName --></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-center">P</td>
+                                                        <td class="text-center">C</td>
+                                                        <td class="text-center">W</td>
+                                                        <td class="text-center"></td>
+                                                    </tr>
+                                                    @foreach (var l_Activity in Model.ActivityAssessments.Where(m => m.Activity.Category.Id == l_Category.Id))
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                <div class="form-check form-check-inline pads">
+                                                                    @Html.RadioButtonFor(m => m.ActivityAssessments[j].Value, "P", new { @class = "form-check-input" })
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline pads">
+                                                                    @Html.RadioButtonFor(m => m.ActivityAssessments[j].Value, "C", new { @class = "form-check-input" })
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline pads">
+                                                                    @Html.RadioButtonFor(m => m.ActivityAssessments[j].Value, "W", new { @class = "form-check-input" })
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                @Html.HiddenFor(m => m.ActivityAssessments[j].Activity.Id)
+                                                                @l_Activity.Activity.EnglishName
+                                                            </td>
+                                                        </tr>
+                                                        j++;
+                                                    }
+
+                                                </tbody>
+                                            </table>
+                                            <br><br>
+                                        }
+                                    }
+
+
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+                <!-- END PLACE PAGE CONTENT HERE -->
+            </div>
+            <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+
+
+        @RenderPage("~/Views/Shared/_Footer.cshtml")

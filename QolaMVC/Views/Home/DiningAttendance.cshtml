@@ -1,0 +1,1087 @@
+﻿@model QolaMVC.Models.Dining_Attendance_simple
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+<style>
+
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+
+    table.attend tbody tr td {
+        padding: 15px !important;
+    }
+
+    table.attend tbody tr {
+        border-bottom: 1px solid #000;
+    }
+
+    #attendent_form {
+        margin-left: 0;
+    }
+
+    #attendent_form_second_layer {
+        margin-left: 7.5vw;
+        right: auto;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        min-width: 85vw;
+    }
+
+    #attendent_form_third_layer {
+        margin-left: 0;
+    }
+</style>
+<style>
+
+    #contactForm {
+        display: none;
+        border: 6px solid salmon;
+        padding: 2em;
+        width: 400px;
+        text-align: center;
+        background: #fff;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        -webkit-transform: translate(-50%,-50%)
+    }
+
+    .formBtn, .formtext {
+        margin: .8em auto;
+        font-family: inherit;
+        text-transform: inherit;
+        font-size: inherit;
+        display: block;
+        padding: .4em;
+    }
+
+    .formtext {
+        resize: none;
+    }
+
+    .formBtn {
+        display: inline-block;
+        background: teal;
+        color: #fff;
+        font-weight: 100;
+        font-size: 1.2em;
+        border: none;
+        width: 70px;
+    }
+
+    .fa-file-text-o {
+        font-size: 20px;
+        color: #015093;
+    }
+
+
+    a.active {
+        background-color: #015093 !important;
+    }
+</style>
+@*<script>
+        function tempAlert(msg, duration) {
+            var el = document.createElement("div");
+            el.setAttribute("style", "position:absolute;top:2%;left:35%;background-color:lightgrey;z-index:9999;color:black;padding:3vw 5vw 3vw 5vw;border-radius:1vw;font-size:2vw;font-weight:bold;border:black solid;");
+            el.innerHTML = msg;
+            setTimeout(function () {
+                el.parentNode.removeChild(el);
+            }, duration);
+            document.body.appendChild(el);
+        }
+
+    </script>*@
+<script>
+
+    function list_select_all() {
+        var a = $("div[id=pills-profile1] tr td div input");
+        for (var c = 0; c < a.length; c = c + 7) {
+            a[c].checked = true;
+        }
+    }
+    function floor_select_all() {
+        var a = $("div[id=pills-contact1] tr td div input");
+        for (var c = 0; c < a.length; c = c + 7) {
+            a[c].checked = true;
+        }
+    }
+    function list_savebutton() {
+
+        var savestring = "";
+        var mealselect = document.getElementById("select_meal_index").className;
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+
+        var a = $("div[id=pills-profile1] tr td div input");
+        for (var c = 0; c < a.length; c++) {
+            if (a[c].checked == true && a[c].value != 'option3') {
+                savestring = savestring + a[c].name + "," + a[c].value + ",";
+            }
+        }
+        $.post("/Home/saveButton_Dining", { arr: savestring, whichmeal: mealselect, datesel: dateselect }, function (data) {
+            if (data == 1) {
+                //alert("Saved Successfully");
+                //window.location.reload();
+                tempAlert("Saved Successfully", 2000);
+                setTimeout(function () { window.location.reload(); }, 2000);
+            }
+            else
+                //alert("Saved failed");
+                tempAlert("Saved failed", 2000);
+        });
+    }
+    function floor_savebutton() {
+        var savestring = "";
+        var mealselect = document.getElementById("select_meal_index").className;
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+
+        var a = $("div[id=pills-contact1] tr td div input");
+        for (var c = 0; c < a.length; c++) {
+            if (a[c].checked == true && a[c].value != 'option3') {
+                var g = String(a[c].name);
+                var nameg = g.substring(0, g.length - 1);
+                savestring = savestring + nameg + "," + a[c].value + ",";
+            }
+        }
+        $.post("/Home/saveButton_Dining", { arr: savestring, whichmeal: mealselect, datesel: dateselect }, function (data) {
+            if (data == 1) {
+                //alert("Saved Successfully");
+                //window.location.reload();
+                tempAlert("Saved Successfully", 2000);
+                setTimeout(function () { window.location.reload(); }, 2000);
+            }
+            else
+                //alert("Saved failed");
+                tempAlert("Saved failed", 2000);
+        });
+    }
+    function floor_clearbutton() {
+        var a = $("div[id=pills-contact1] tr td div input");
+        for (var c = 0; c < a.length; c++) {
+            if (a[c].disabled != true) {
+                a[c].checked = false;
+            }
+        }
+    }
+    function list_clearbutton() {
+        var a = $("div[id=pills-profile1] tr td div input");
+        for (var c = 0; c < a.length; c++) {
+            if (a[c].disabled != true) {
+                a[c].checked = false;
+            }
+        }
+    }
+
+    function open_form1() {
+        var node_tbody = document.getElementById("show_list")
+        while (node_tbody.hasChildNodes())
+            node_tbody.removeChild(node_tbody.lastChild);
+        var aa = $("div tr td div input");
+        for (var cc = 0; cc < aa.length; cc++) {
+            if (aa[cc].checked == true) {
+                aa[cc].checked = false;
+            }
+        }
+        var a = document.getElementById("select_meal_index");
+        a.className = "1";
+        getdata();
+
+
+    }
+    function open_form2() {
+        var node_tbody = document.getElementById("show_list")
+        while (node_tbody.hasChildNodes())
+            node_tbody.removeChild(node_tbody.lastChild);
+        var aa = $("div tr td div input");
+        for (var cc = 0; cc < aa.length; cc++) {
+            if (aa[cc].checked == true) {
+                aa[cc].checked = false;
+            }
+        }
+        var a = document.getElementById("select_meal_index");
+        a.className = "2";
+        getdata();
+    }
+    function open_form3() {
+        var node_tbody = document.getElementById("show_list")
+        while (node_tbody.hasChildNodes())
+            node_tbody.removeChild(node_tbody.lastChild);
+        var aa = $("div tr td div input");
+        for (var cc = 0; cc < aa.length; cc++) {
+            if (aa[cc].checked == true) {
+                aa[cc].checked = false;
+            }
+        }
+        var a = document.getElementById("select_meal_index");
+        a.className = "3";
+        getdata();
+    }
+
+    function getdata() {
+        var mealselect = document.getElementById("select_meal_index").className;
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+        $.get("/Home/Getting_Dining", { whichmeal: mealselect, datesel: dateselect }, function (data) {
+            var a = String(data).split(";");
+            for (var c = 0; c < a.length; c++) {
+                var cplus = c + 1;
+                for (var b = 0; b < a[c].split(",").length; b++) {
+                    if (a[c].split(",")[b] != "") {
+                        var d = $("input[name=" + a[c].split(",")[b] + "][value=option" + cplus + "]");
+                        d[0].checked = true;
+                        var e = $("input[name=\"" + a[c].split(",")[b] + "+\"][value=option" + cplus + "]");
+                        e[0].checked = true;
+                    }
+                }
+            }
+        });
+        $.get("/Home/View_List", { whichmeal: mealselect, datesel: dateselect }, function (data) {
+            var view = $("#show_list");
+            for (var i = 0; i < data.length; i++) {
+                view.append("<tr name='" + data[i][1].Value + "'><td>" + data[i][0].Value + "<\/td><td>" + data[i][3].Value + "<\/td><td><div class=\"form-check form-check-inline\"><input type=\"image\" style=\"width:1.7vw;height:1.7vw\" src=\"\/Content\/pages\/img\/icoedit.png\" onclick=\"progressnote(this)\"><\/div><\/td>" +
+                    "<td><div><input id=\"1\" type=\"image\"  onclick=\"SomeDeleteRowFunction(this)\" style=\"width:1.5vw;height:1.5vw\" src=\"\/Content\/pages\/img\/X.jpg\" class=\"clsButtonRemove\" style=\"float:right;\"><\/div><\/td><\/tr>");
+            }
+
+        });
+
+
+
+        $.get("/Home/disable_hospital", { datesel: dateselect }, function (data) {
+            for (var len = 0; len < data.toString().split(',').length; len++) {
+                if (data.toString().split(',')[len] != '') {
+                    var a = $('input[type="radio"][name="' + data.toString().split(',')[len] + '"]')
+                    a[2].checked = true;
+                    a.attr('disabled', true);
+                    var b = $('input[type="radio"][name="' + data.toString().split(',')[len] + '+"]')
+                    b[2].checked = true;
+                    b.attr('disabled', true);
+                }
+            }
+        });
+    }
+
+    function View_List_add() {
+        var a = $('#searchresidents3');
+        var residentid = a[0].name;
+        if (residentid == "" || residentid == undefined) {
+            //alert("No Resident was Choosen");
+            tempAlert("No Resident was Choosen", 2000);
+
+
+            return;
+        }
+        var namesub = $('input[name=' + residentid + ']')
+        var name = namesub[1].parentNode.parentNode.previousElementSibling.innerHTML;
+        var selector = $('input[name="inlineRadioOptions"]')
+        for (var s = 0; s < selector.length; s++) {
+            if (selector[s].checked == true) {
+                var text = selector[s].nextElementSibling.innerHTML;
+            }
+        }
+        if (text == undefined) {
+            //alert("No Option was Choosen");
+            tempAlert("No Option was Choosen", 2000);
+
+            return;
+        }
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+        $.get("/Home/disable_hospital", { datesel: dateselect }, function (data) {
+            if (data.toString().includes(residentid)) {
+                //alert("Resident in the Hospital");
+                tempAlert("Resident in the Hospital", 2000);
+            }
+            else {
+                var view = $("#show_list");
+                var viewtr = $("#show_list tr");
+                for (var viewindex = 0; viewindex < viewtr.length; viewindex++) {
+                    if (residentid == viewtr[viewindex].getAttribute('name')) {
+                        residentid = '-9';
+                    }
+                }
+                if (residentid == '-9') {
+                    //alert("Resident already exist in the List");
+                    tempAlert("Resident already exist in the List", 2000);
+                }
+                else {
+                    view.append("<tr name='" + residentid + "'><td>" + name + "<\/td><td>" + text +
+                        "<\/td><td><div class=\"form-check form-check-inline\"><input type=\"image\" style=\"width:1.7vw;height:1.7vw\" src=\"\/Content\/pages\/img\/icoedit.png\" onclick=\"progressnote(this)\">" +
+                        "<\/div><\/td><td><div><input id=\"1\" type=\"image\" style=\"width:1.5vw;height:1.5vw\" " +
+                        "onclick=\"SomeDeleteRowFunction(this)\" src=\"\/Content\/pages\/img\/X.jpg\" class=\"clsButtonRemove\" style=\"float:right;\"><\/div>" +
+                        "<\/td><\/tr>");
+                    var box = $('#searchresidents3');
+                    box[0].value = "";
+                    var choice = $('input[name="inlineRadioOptions"]');
+                    for (var ind = 0; ind < choice.length; ind++) {
+                        choice[ind].checked = false;
+                    }
+                }
+            }
+        });
+    }
+
+    function x_close() {
+        var box = $('#searchresidents3');
+        box[0].value = "";
+        var choice = $('input[name="inlineRadioOptions"]');
+        for (var ind = 0; ind < choice.length; ind++) {
+            choice[ind].checked = false;
+        }
+    }
+
+    //function View_List_clear() {
+    //    var node_tbody = document.getElementById("show_list")
+    //    while (node_tbody.hasChildNodes())
+    //        node_tbody.removeChild(node_tbody.lastChild);
+    //}
+
+    function SomeDeleteRowFunction(o) {
+        var p = o.parentNode.parentNode.parentNode;
+        p.parentNode.removeChild(p);
+    }
+
+    function View_List_save() {
+        var savestring = "";
+        var mealselect = document.getElementById("select_meal_index").className;
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+        var tr_list = $('div table[class="attend"] tbody[id="show_list"] tr');
+        for (var index = 0; index < tr_list.length; index++) {
+            var td_list = tr_list[index].childNodes
+            savestring = savestring + tr_list[index].getAttribute('name') + "," + td_list[1].innerHTML + ",";
+        }
+        $.post("/Home/saveButton_Dining", { arr: savestring, whichmeal: mealselect, datesel: dateselect }, function (data) {
+            if (data == 1) {
+                //alert("Saved Successfully");
+                //window.location.reload();
+                tempAlert("Saved Successfully", 2000);
+                setTimeout(function () { window.location.reload(); }, 2000);
+
+            }
+            else
+                //alert("Saved failed");
+                tempAlert("Saved failed", 2000);
+
+        });
+
+    }
+
+    function previousday() {
+        var monthNames = [
+            "January", "February", "March",
+            "April", "May", "June", "July",
+            "August", "September", "October",
+            "November", "December"
+        ];
+        var a = document.getElementById("lblCalendarMsg").innerHTML;
+        var b = new Date(a);
+        b.setDate(b.getDate() - 1);
+        document.getElementById("lblCalendarMsg").innerHTML = monthNames[b.getMonth()] + " " + b.getDate() + ", " + b.getFullYear();
+
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+        if (window.location.href.toString().includes("datesel")) {
+            var indexequal = window.location.href.toString().indexOf("=");
+            var newstring = window.location.href.toString().substring(0, indexequal + 1);
+            window.location.href = newstring + dateselect;
+        }
+        else
+            window.location.href = window.location.href + "?datesel=" + dateselect;
+
+    }
+
+    function nextday() {
+        var monthNames = [
+            "January", "February", "March",
+            "April", "May", "June", "July",
+            "August", "September", "October",
+            "November", "December"
+        ];
+        var a = document.getElementById("lblCalendarMsg").innerHTML;
+        var b = new Date(a);
+        b.setDate(b.getDate() + 1);
+        document.getElementById("lblCalendarMsg").innerHTML = monthNames[b.getMonth()] + " " + b.getDate() + ", " + b.getFullYear();
+
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+        if (window.location.href.toString().includes("datesel")) {
+            var indexequal = window.location.href.toString().indexOf("=");
+            var newstring = window.location.href.toString().substring(0, indexequal + 1);
+            window.location.href = newstring + dateselect;
+        }
+        else
+            window.location.href = window.location.href + "?datesel=" + dateselect;
+    }
+
+    function progressnote(o) {
+        var id = o.parentNode.parentNode.parentNode.getAttribute("name");
+        document.getElementById('contactForm').style.display = "block";
+        document.getElementById('contactForm').setAttribute('uid', id);
+    }
+
+    function progressnoteadd(o) {
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+        var id = o.parentNode.parentNode.getAttribute("uid");
+        var idint = parseInt(id);
+        var textnote = document.getElementById("formtextarea").value;
+        $.get("/Home/click_progress_note", { residentid: idint, datesel: dateselect, note: textnote }, function (data) {
+            if (data == 1) {
+                //alert("Saved Successfully");
+                tempAlert("Saved Successfully", 2000);
+            }
+            else {
+                //alert("Saved Failed");
+                tempAlert("Saved failed", 2000);
+            }
+        });
+        document.getElementById('formtextarea').value = '';
+        document.getElementById('contactForm').style.display = "none";
+    }
+
+    function note_close_click() {
+        document.getElementById('formtextarea').value = '';
+        document.getElementById('contactForm').style.display = 'none';
+    }
+
+    function Print_list() {
+        var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+        mywindow.document.write('<html><head><title>' + document.title + '</title>');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write('<h1>' + document.title + '</h1>');
+        mywindow.document.write(document.getElementById("pills-profile1").innerHTML);
+        mywindow.document.write('</body></html>');
+
+        mywindow.document.close(); // necessary for IE >= 10
+        mywindow.focus(); // necessary for IE >= 10*/
+
+        mywindow.print();
+        mywindow.close();
+
+        return true;
+    }
+
+    function Print_floor() {
+        var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+        mywindow.document.write('<html><head><title>' + document.title + '</title>');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write('<h1>' + document.title + '</h1>');
+        mywindow.document.write(document.getElementById("pills-contact1").innerHTML);
+        mywindow.document.write('</body></html>');
+
+        mywindow.document.close(); // necessary for IE >= 10
+        mywindow.focus(); // necessary for IE >= 10*/
+
+        mywindow.print();
+        mywindow.close();
+
+        return true;
+    }
+
+
+</script>
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+
+
+    <!-- START PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+                        <div class="col-md-12">
+                            <h3>Dining Attendance</h3>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <div style="height: 60px;"></div>
+            <div class="container-fluid container-fixed-lg" id="main_page">
+                <!-- <div class="inner"> -->
+                <div class="card">
+                    <div class="card-block">
+                        <div class="form-tabs mt-4">
+                            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true" onclick="day_click()">Day</a>
+                                </li>
+                                @*<li class="nav-item">
+                                        <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false" onclick="week_click()">Week</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false" onclick="month_click()">Month</a>
+                                    </li>*@
+                                <li class="Prevbtn" style="margin-left:20vw;"><a href="#" onclick="previousday()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
+                                <li class="clear_bg"><label id="lblCalendarMsg" style="font-weight:bolder;font-size:1.5vw;margin-top:0.7vw">@TempData["datechoose"].ToString()</label></li>
+                                <li class="Nextbtn"><a href="#" onclick="nextday()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
+                            </ul>
+                            <div class="tab-content" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="pills-day" role="tabpanel" aria-labelledby="pills-home-tab">
+                                    <div id="select_meal_index" class=""></div>
+                                    <table class="table table-bordered">
+                                        <thead class="bg-primary">
+                                            <tr>
+                                                <th class="text-white text-center">S.No</th>
+                                                <th class="text-white text-center">Description</th>
+                                                <th class="text-white text-center">Attendance</th>
+                                                <th class="text-white text-center" colspan="2"></th>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-white text-center"></th>
+                                                <th class="text-white text-center"></th>
+                                                <th class="text-white text-center"></th>
+                                                <th class="text-white text-center">Taken</th>
+                                                <th class="text-white text-center">Refused</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    1
+                                                </td>
+                                                <td>
+                                                    Breakfast
+                                                </td>
+                                                <td>
+                                                    <a data-toggle="modal" data-target="#attendent_form" onclick="open_form1()">
+                                                        <i class="fa fa-file-text-o"></i>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    @(((string[])TempData["number_attendance_array"])[0])
+
+                                                </td>
+                                                <td>
+                                                    @(((string[])TempData["number_attendance_array"])[1])
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    2
+                                                </td>
+                                                <td>
+                                                    Lunch
+                                                </td>
+                                                <td>
+                                                    <a data-toggle="modal" data-target="#attendent_form" onclick="open_form2()">
+                                                        <i class="fa fa-file-text-o"></i>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    @(((string[])TempData["number_attendance_array"])[2])
+                                                </td>
+                                                <td>
+                                                    @(((string[])TempData["number_attendance_array"])[3])
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    3
+                                                </td>
+                                                <td>
+                                                    Dinner
+                                                </td>
+                                                <td>
+                                                    <a data-toggle="modal" data-target="#attendent_form" onclick="open_form3()">
+                                                        <i class="fa fa-file-text-o"></i>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    @(((string[])TempData["number_attendance_array"])[4])
+                                                </td>
+                                                <td>
+                                                    @(((string[])TempData["number_attendance_array"])[5])
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                @*<div class="tab-pane fade" id="pills-week" role="tabpanel" aria-labelledby="pills-profile-tab">
+
+                                        <table class="table table-bordered">
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">
+                                                        Sunday <br>
+                                                        @DateTime.Parse(TempData["Sunday"].ToString()).ToString("MM/dd/yyyy")
+                                                    </th>
+                                                    <th class="text-white text-center">
+                                                        Monday <br>
+                                                        @DateTime.Parse(TempData["Sunday"].ToString()).AddDays(1).ToString("MM/dd/yyyy")
+                                                    </th>
+                                                    <th class="text-white text-center">
+                                                        Tuesday <br>
+                                                        @DateTime.Parse(TempData["Sunday"].ToString()).AddDays(2).ToString("MM/dd/yyyy")
+                                                    </th>
+                                                    <th class="text-white text-center">
+                                                        Wednesday <br>
+                                                        @DateTime.Parse(TempData["Sunday"].ToString()).AddDays(3).ToString("MM/dd/yyyy")
+                                                    </th>
+                                                    <th class="text-white text-center">
+                                                        Thursday <br>
+                                                        @DateTime.Parse(TempData["Sunday"].ToString()).AddDays(4).ToString("MM/dd/yyyy")
+                                                    </th>
+                                                    <th class="text-white text-center">
+                                                        Friday <br>
+                                                        @DateTime.Parse(TempData["Sunday"].ToString()).AddDays(5).ToString("MM/dd/yyyy")
+                                                    </th>
+                                                    <th class="text-white text-center">
+                                                        Satursday <br>
+                                                        @DateTime.Parse(TempData["Sunday"].ToString()).AddDays(6).ToString("MM/dd/yyyy")
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        Breakfast
+                                                    </td>
+                                                    <td>Breakfast</td>
+                                                    <td>Breakfast</td>
+                                                    <td>Breakfast</td>
+                                                    <td>Breakfast</td>
+                                                    <td>Breakfast</td>
+                                                    <td>Breakfast</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        Lunch
+                                                    </td>
+                                                    <td>Lunch</td>
+                                                    <td>Lunch</td>
+                                                    <td>Lunch</td>
+                                                    <td>Lunch</td>
+                                                    <td>Lunch</td>
+                                                    <td>Lunch</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        Dinner
+                                                    </td>
+                                                    <td>Dinner</td>
+                                                    <td>Dinner</td>
+                                                    <td>Dinner</td>
+                                                    <td>Dinner</td>
+                                                    <td>Dinner</td>
+                                                    <td>Dinner</td>
+                                                </tr>
+
+
+
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                    <div class="tab-pane fade" id="pills-month" role="tabpanel" aria-labelledby="pills-contact-tab">
+                                        <table class="table table-bordered">
+                                            <thead class="bg-primary">
+                                                <tr>
+                                                    <th class="text-white text-center">
+                                                        Sunday
+                                                    </th>
+                                                    <th class="text-white text-center">
+                                                        Monday
+                                                    </th>
+                                                    <th class="text-white text-center">
+                                                        Tuesday
+                                                    </th>
+                                                    <th class="text-white text-center">
+                                                        Wednesday
+                                                    </th>
+                                                    <th class="text-white text-center">
+                                                        Thursday
+                                                    </th>
+                                                    <th class="text-white text-center">
+                                                        Friday
+                                                    </th>
+                                                    <th class="text-white text-center">
+                                                        Friday
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- </div> -->
+            </div>
+        </div>
+        <!-- END JUMBOTRON -->
+        <div style="height: 60px;"></div>
+        <!-- START CONTAINER FLUID -->
+        <!-- END CONTAINER FLUID -->
+    </div>
+    <!-- END PAGE CONTENT -->
+    <!-- New Resident Modal -->
+    <div class="modal" id="attendent_form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div id="contactForm" class="modal" style="display:none">
+            <h3>Add Progress Notes</h3>
+            <br>
+            <form action="#">
+                <textarea class="formtext" id="formtextarea" placeholder="Comment" style="height:170px;width:300px"></textarea>
+                <input class="formBtn" type="button" value="Submit" onclick="progressnoteadd(this)" />
+                <input class="formBtn" type="button" value="Reset" onclick="document.getElementById('formtextarea').value=''" />
+                <input class="formBtn" type="button" value="Close" onclick="note_close_click()" />
+            </form>
+        </div>
+
+        <div class="modal-xlg" role="document" id="attendent_form_second_layer">
+            <div class="modal-content" id="attendent_form_third_layer">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel" style="font-weight:bolder;">Attendance</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="x_close()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-tabs mt-4">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home1" role="tab" aria-controls="pills-home" aria-selected="true" onclick="search_click()">Search View</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile1" role="tab" aria-controls="pills-profile" aria-selected="false" onclick="list_click()">List View</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact1" role="tab" aria-controls="pills-contact" aria-selected="false" onclick="floor_click()">Floor View</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-7">
+                                <a href="" style="font-size: 14px">
+                                    <b>Legend</b>: &nbsp;&nbsp;<b>T</b>-Taken &nbsp;&nbsp;<b>R</b>-Refused &nbsp;&nbsp;<b>H</b>-Hospital &nbsp;&nbsp;<b>W</b>-Waiver &nbsp;&nbsp;<b>A</b>-Away &nbsp;&nbsp;<b>TC</b>-Tray Complimentary
+                                </a>
+                            </div>
+                        </div>
+
+
+
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-home1" role="tabpanel" aria-labelledby="pills-home-tab">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group row">
+                                            <label class="col-md-12 col-form-label" style="margin-left:5vw">Resident Name / Suite # :</label>
+                                            <div class="col-md-12" style="margin-left:5vw">
+                                                <input type="text" class="form-control" id="searchresidents3" onchange="change_searchresidents3()">
+                                            </div>
+                                        </div>
+                                        <div class="searchBox p-1" id="searchBoxfor3" style="margin-left:5.5vw">
+                                            <div class="list-group searchboxresult2">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+
+                                        <div class="form-group">
+                                            <br><br>
+                                            <div class="row">
+                                                <div class="col-md-12 pads" style="margin-left:4vw">
+                                                    <div class="form-check form-check-inline movesp">
+                                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                        <label class="form-check-label" name="viewlistchoose">Taken</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                        <label class="form-check-label" name="viewlistchoose">Refused</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline movesp">
+                                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                        <label class="form-check-label" name="viewlistchoose">Waiver</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline movesp">
+                                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                        <label class="form-check-label" name="viewlistchoose">Away</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                        <label class="form-check-label" name="viewlistchoose">Tray Complimentary</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2" style="display:inline-block;">
+                                        <br>
+                                        <button class="btn btn-lg btn-danger" onclick="View_List_add()" style="margin-left:-2vw;">ADD</button>
+                                        <button type="button" class="btn btn-lg btn-primary" data-dismiss="modal" onclick="View_List_save()">SAVE</button>
+                                    </div>
+
+                                    @*<div class="col-md-12 text-center">
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="View_List_save()" style="margin-bottom:1vw;margin-left:-2vw;">SAVE</button>
+                                            <br>
+                                        </div>*@
+
+                                    <div class="" style="border:1px solid #000;margin-left:15vw">
+                                        <table class="attend" style="min-width:50vw">
+                                            <tbody id="show_list"></tbody>
+                                        </table>
+                                    </div>
+
+
+                                    <div class="col-md-12 text-center">
+                                        <br><br><br><br><br><br>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="View_List_save()" style="margin-left:-2vw;">SAVE</button>
+                                        @*<button type="button" class="btn btn-secondary" onclick="View_List_clear()">CLEAR</button>*@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="pills-profile1" role="tabpanel" aria-labelledby="pills-profile-tab">
+                                <div class="row">
+                                    @*<div class="col-md-12">
+                                            <h6>Resident List   <a href="#" onclick="list_select_all()">Select All</a></h6>
+                                        </div>*@
+                                    <div class="col-md-12 text-center">
+                                        <br>
+                                        <button type="button" class="btn btn-primary" style="margin-bottom:1vw;margin-left:3vw;" data-dismiss="modal" onclick="list_savebutton()">SAVE</button>
+                                        @*<button type="button" class="btn btn-secondary" style="margin-bottom:1vw" onclick="list_clearbutton()">CLEAR</button>*@
+                                        <button type="button" class="btn btn-primary" id="PrintID1" style="margin-bottom:1vw;float:right" onclick="Print_list()">Print</button>
+                                    </div>
+                                    <br>
+                                    <div class="col-md-6" style="border: 1px solid #000;">
+                                        <table class="attend">
+                                            <tbody>
+                                                @{
+                                                    for (int i = 0; i < Model.LIST_RESIDENT.Count; i = i + 2)
+                                                    {
+                                                        var a = Model.LIST_RESIDENT[i];
+                                                        <tr name=@a.ID>
+                                                            <td style="max-width:10vw">@a.FirstName @a.LastName</td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option1">
+                                                                    <label class="form-check-label">T</label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option2">
+                                                                    <label class="form-check-label">R</label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option3">
+                                                                    <label class="form-check-label">H</label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option4">
+                                                                    <label class="form-check-label">W</label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option5">
+                                                                    <label class="form-check-label">A</label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option6">
+                                                                    <label class="form-check-label">TC</label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline">
+                                                                    <input type="image" style="width:1.7vw;height:1.7vw" src="/Content/pages/img/icoedit.png" onclick="progressnote(this)">
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-6" style="border: 1px solid #000">
+                                        <table class="attend">
+                                            <tbody>
+                                                @for (int i = 1; i < Model.LIST_RESIDENT.Count; i = i + 2)
+                                                {
+                                                    var a = Model.LIST_RESIDENT[i];
+                                                    <tr name=@a.ID>
+                                                        <td style="max-width:10vw">@a.FirstName @a.LastName</td>
+                                                        <td>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option1">
+                                                                <label class="form-check-label">T</label>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option2">
+                                                                <label class="form-check-label">R</label>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option3">
+                                                                <label class="form-check-label">H</label>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option4">
+                                                                <label class="form-check-label">W</label>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option5">
+                                                                <label class="form-check-label">A</label>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option6">
+                                                                <label class="form-check-label">TC</label>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check form-check-inline">
+                                                                <input type="image" style="width:1.7vw;height:1.7vw" src="/Content/pages/img/icoedit.png" onclick="progressnote(this)">
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="col-md-12 text-center">
+                                        <br><br><br><br><br><br>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="list_savebutton()">SAVE</button>
+                                        <button type="button" class="btn btn-secondary" onclick="list_clearbutton()">CLEAR</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="pills-contact1" role="tabpanel" aria-labelledby="pills-contact-tab">
+                                <div class="row">
+                                    @*<div class="col-md-12">
+                                            <h6>Resident List   <a href="#" onclick="floor_select_all()">Select All</a></h6>
+                                        </div>*@
+                                    <div class="col-md-12 text-center">
+                                        <br>
+                                        <button type="button" class="btn btn-primary" style="margin-bottom:1vw;margin-left:3vw;" data-dismiss="modal" onclick="floor_savebutton()">SAVE</button>
+                                        @*<button type="button" class="btn btn-secondary" style="margin-bottom:1vw" onclick="floor_clearbutton()">CLEAR</button>*@
+                                        <button type="button" class="btn btn-primary" id="PrintID2" style="margin-bottom:1vw;float:right" onclick="Print_floor()">Print</button>
+                                    </div>
+                                    @{
+                                        int floor = 0;
+                                        foreach (var a in Model.LIST_RESIDENT)
+                                        {
+                                            if (a.No_of_floor > floor)
+                                            {
+                                                floor = a.No_of_floor;
+                                            }
+                                        }
+
+                                        for (int b = 1; b <= floor; b++)
+                                        {
+                                            <div class="col-md-6" style="border:1px solid #000;">
+                                                <table class="attend">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th colspan="7" height=50vw>@b st Floor</th>
+                                                        </tr>
+                                                        @foreach (var a in Model.LIST_RESIDENT)
+                                                        {
+                                                            if (a.No_of_floor == b)
+                                                            {
+                                                                <tr name=@a.ID>
+                                                                    <td>@a.FirstName @a.LastName</td>
+                                                                    <td>
+                                                                        <div class="form-check form-check-inline">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option1">
+                                                                            <label class="form-check-label">T</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check form-check-inline">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option2">
+                                                                            <label class="form-check-label">R</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check form-check-inline">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option3">
+                                                                            <label class="form-check-label">H</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check form-check-inline">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option4">
+                                                                            <label class="form-check-label">W</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check form-check-inline">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option5">
+                                                                            <label class="form-check-label">A</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check form-check-inline">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option6">
+                                                                            <label class="form-check-label">TC</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check form-check-inline">
+                                                                            <input type="image" style="width:1.7vw;height:1.7vw" src="/Content/pages/img/icoedit.png" onclick="progressnote(this)">
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        }
+                                    }
+
+                                    <div class="col-md-12 text-center">
+                                        <br><br><br><br><br><br>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="floor_savebutton()">SAVE</button>
+                                        <button type="button" class="btn btn-secondary" onclick="floor_clearbutton()">CLEAR</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer text-center">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+    <script>
+        document.body.addEventListener("click", function (e) {
+            $('.searchboxresult2').empty();
+            var a = $('.searchboxresult2');
+            a[0].parentElement.style.display = "none";
+            //$('#searchresidents3').val("");
+
+        });
+    </script>

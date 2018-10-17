@@ -1,0 +1,234 @@
+@model QolaMVC.ViewModels.ExcerciseActivityViewModel
+
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+
+<style>
+
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+</style>
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+
+    <!-- START PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+
+                        <div class="col-md-8">
+                            <h3>Exercise Activity</h3>
+                        </div>
+                        <div class="col-md-1">
+                            <a href="~/Reports/ExcerciseActivityReport" class="btn btn-primary"><i class="fa fa-file-pdf-o"></i> Print</a>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+            <div style="height: 60px;"></div>
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+                <div class="card">
+                    @using (Html.BeginForm("AddExcerciseActivity", "Assessments", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        <div class="card-block" id="details">
+
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-3"><a href="~/Content/Docs/VPS_TUG.pdf" class="btn btn-primary">Download Legend <i class="fa fa-download"></i></a></div>
+                                        <div class="col-md-3">Baseline</div>
+                                        <div class="col-md-3">3 Month</div>
+                                        <div class="col-md-3">6 Month</div>
+                                    </div>
+                                    <br>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-2 col-form-label">Date</label>
+                                        <div class="col-md-3">
+                                            @Html.TextBoxFor(modelItem => Model.ExcerciseSummary.BaselineDate, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-md-3">
+                                            @Html.TextBoxFor(modelItem => Model.ExcerciseSummary.TMonthDate, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-md-3">
+                                            @Html.TextBoxFor(modelItem => Model.ExcerciseSummary.SMonthDate, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-2 col-form-label">TUG</label>
+                                        <div class="col-md-3">
+                                            @Html.TextBoxFor(modelItem => Model.ExcerciseSummary.BaselineTug, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-md-3">
+                                            @Html.TextBoxFor(modelItem => Model.ExcerciseSummary.TMonthTug, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-md-3">
+                                            @Html.TextBoxFor(modelItem => Model.ExcerciseSummary.SMonthTug, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-2 col-form-label">VPS</label>
+                                        <div class="col-md-3">
+                                            @Html.TextBoxFor(modelItem => Model.ExcerciseSummary.BaselineVPS, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-md-3">
+                                            @Html.TextBoxFor(modelItem => Model.ExcerciseSummary.TMonthVPS, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-md-3">
+                                            @Html.TextBoxFor(modelItem => Model.ExcerciseSummary.SMonthVPS, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="row">
+                                <table class="table table-bordered">
+                                    <thead class="bg-primary">
+                                        <tr>
+                                            <td></td>
+                                            @if (Model != null && Model.HSEPDetail != null)
+                                            {
+                                                for (int i = 0; i < Model.HSEPDetail.Count; i++)
+                                                {
+                                                    @Html.HiddenFor(m => Model.HSEPDetail[i].ActivityName)
+                                                    <th class="text-white text-center">@Model.HSEPDetail[i].ActivityName</th>
+                                                    @*<th class="text-white text-center">Wall Push-ups</td>
+                                                        <th class="text-white text-center">Rise Up on toes</th>
+                                                        <th class="text-white text-center">Toe Taps</td>
+                                                        <th class="text-white text-center">Seat Walk</th>
+                                                        <th class="text-white text-center">Get up from chair</td>
+                                                        <th class="text-white text-center">Leg Lift</th>
+                                                        <th class="text-white text-center">Reaching</th>
+                                                        <th class="text-white text-center">Standing Stretch</th>
+                                                        <th class="text-white text-center">Seated Stretch</th>*@
+                                                }
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>DATE OF INITIAL TEACHING</td>
+                                            @if (Model != null && Model.HSEPDetail != null)
+                                            {
+                                                for (int i = 0; i < Model.HSEPDetail.Count; i++)
+                                                {
+                                                    <td>
+                                                        @Html.TextBoxFor(modelItem => Model.HSEPDetail[i].DateOfTeaching, new { @class = "form-control" })
+                                                    </td>
+                                                }
+                                            }
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <br>
+                                    <a href="#" id="btnSave" class="btn btn-danger btn-lg">SAVE</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-block" id="assessment">
+                            <div class="row">
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <h5>Using a check mark, indicate which exercises client completes for each day</h5>
+                                    </div>
+                                    <table class="table table-bordered">
+                                        <thead class="bg-primary">
+                                            <tr>
+                                                <td></td>
+                                                <th class="text-white text-center">Sunday</th>
+                                                <th class="text-white text-center">Monday</th>
+                                                <th class="text-white text-center">Tuesday</th>
+                                                <th class="text-white text-center">Wednessday</th>
+                                                <th class="text-white text-center">Thursday</th>
+                                                <th class="text-white text-center">Friday</th>
+                                                <th class="text-white text-center">Saturday</th>
+                                                <th class="text-white text-center">Check all</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            @if (Model != null && Model.Detail != null)
+                                            {
+                                                for (int i = 0; i < Model.Detail.Count; i++)
+                                                {
+                                                     @Html.HiddenFor(m => Model.Detail[i].ActivityName)<tr>
+                                                        <td>@Model.Detail[i].ActivityName</td>
+                                                        <td class="text-center">
+                                                            @Html.CheckBoxFor(modelItem => Model.Detail[i].Sunday, new { @class = "form-check-input" })
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @Html.CheckBoxFor(modelItem => Model.Detail[i].Monday, new { @class = "form-check-input" })
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @Html.CheckBoxFor(modelItem => Model.Detail[i].Tuesday, new { @class = "form-check-input" })
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @Html.CheckBoxFor(modelItem => Model.Detail[i].Wednesday, new { @class = "form-check-input" })
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @Html.CheckBoxFor(modelItem => Model.Detail[i].Thursday, new { @class = "form-check-input" })
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @Html.CheckBoxFor(modelItem => Model.Detail[i].Friday, new { @class = "form-check-input" })
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @Html.CheckBoxFor(modelItem => Model.Detail[i].Saturday, new { @class = "form-check-input" })
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <br>
+                                    <input type="submit" id="btnFinalSave" class="btn btn-danger btn-lg" value="SAVE" />
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <!-- END PLACE PAGE CONTENT HERE -->
+            </div>
+            <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+        @RenderPage("~/Views/Shared/_Footer.cshtml")
+        <script>
+            $("#assessment").hide();
+            $('#btnSave').on('click', function () {
+                $("#details").fadeOut();
+                $("#assessment").fadeIn();
+            });
+        </script>

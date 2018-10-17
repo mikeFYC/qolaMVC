@@ -1,0 +1,326 @@
+@model QolaMVC.Models.nDietaryAssessmentModel
+
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+<style>
+
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+</style>
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+    <!-- START PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+                        <div class="col-md-1">
+                            <a href="~/Assessments/" class="btn btn-primary"><i class="fa fa-backward"></i> Back</a>
+                        </div>
+                        <div class="col-md-8">
+                            <h3>Dietary Assessment</h3>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+            <div style="height: 60px;"></div>
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            
+                            <div class="col-12">
+                                Assessment History: 
+                            </div>
+                        </div>
+                        <div class="row">
+                            <form action="~/Assessments/DietaryHistory" method="post">
+                                <div class="col-10">
+                                    <select class="form-control col-12" name="DateEntered">
+                                        @{
+                                            if (Model.DateEntered != null)
+                                            {
+                                                <option selected>@Model.DateEntered</option>
+                                            }
+                                            else
+                                            {
+                                                <option>New</option>
+                                            }
+                                        }
+
+                                        @{
+                                            if (ViewBag.AssessmentDates.Count > 0)
+                                            {
+                                                foreach (var d in ViewBag.AssessmentDates)
+                                                {
+                                                    <option>@d</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-2">
+                                    <button class="btn btn-danger">GO</button>
+                                </div>
+                            </form>
+                        </div>
+                    
+                        @using (Html.BeginForm("AddDietaryAssessment", "Assessments", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                           
+                            <div class="col-md-12">
+                                <h5>Nutrition</h5>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="staticEmail" class="col-form-label">Appetite</label>
+                                        <select name="Apetite" class="form-control">
+                                            @{
+                                                if (Model.Apetite != null && Model.Apetite != string.Empty)
+                                                {
+                                                    <option selected>@Model.Apetite</option>
+                                                }
+                                            }
+                                            <option>Select</option>
+                                            <option>Good</option>
+                                            <option>Fair</option>
+                                            <option>Poor</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="staticEmail" class="col-form-label">Nutritional Status</label>
+                                        <select name="NutritionalStatus" class="form-control">
+                                            @{
+                                                if (Model.NutritionalStatus != null && Model.NutritionalStatus != string.Empty)
+                                                {
+                                                    <option selected>@Model.NutritionalStatus</option>
+                                                }
+                                            }
+                                            <option value="0">Select</option>
+                                            <option value="10SI">Independent</option>
+                                            <option value="11SS">Supervised</option>
+                                            <option value="12SA">Assisted</option>
+                                            <option value="13SD">Dependant</option>
+                                            <option value="15TS4">SL4</option>
+                                            <option value="16SD4">SL4D</option>
+                                            <option value="17TP">Private (Supportive)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="staticEmail" class="col-form-label">Risk</label>
+                                        <select name="Risk" class="form-control">
+                                            @{
+                                                if (Model.Risk != null && Model.Risk != string.Empty)
+                                                {
+                                                    <option selected>@Model.Risk</option>
+                                                }
+                                            }
+                                            <option value="0">Select</option>
+                                            <option value="N/A">N/A</option>
+                                            <option value="Swallowing">Swallowing</option>
+                                            <option value="Choking Risk">Choking risk</option>
+                                            <option value="Difficulty in Chewing">Difficulty in Chewing</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="staticEmail" class="col-form-label">Assistive Devices</label>
+                                        @Html.TextBoxFor(m => m.AssistiveDevices, new { @class = "form-control", placeholder = "Assistive Device" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5>Diet</h5>
+                                </div>
+
+                                <br>
+                                <div class="col-md-3 pads">
+                                    @{
+                                        for (int i = 0; i < Model.Diet.Count; i++)
+                                        {
+                                            <div class="form-check">
+                                                <input name="Diet[]" class="form-check-input" type="checkbox" checked value="@Model.Diet[i]" id="defaultCheck1">
+                                                <label class="form-check-label" for="defaultCheck1">
+                                                    @Model.Diet[i]
+                                                </label>
+                                            </div>
+                                        }
+                                    }
+                                    <div class="form-check">
+                                        <input name="Diet[]" class="form-check-input" type="checkbox" value="Other" id="defaultCheck1">
+                                        <label class="form-check-label" for="defaultCheck1">
+                                            Other
+                                        </label>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="staticEmail" class="col-form-label">Texture</label>
+                                        <select name="texture" class="form-control">
+                                            @{
+                                                if (Model.Texture != null && Model.Texture != string.Empty)
+                                                {
+                                                    <option selected>@Model.Texture</option>
+                                                }
+                                            }
+                                            <option value="0">Select</option>
+                                            <option value="N/A">N/A</option>
+                                            <option value="Swallowing">Swallowing</option>
+                                            <option value="Choking Risk">Choking risk</option>
+                                            <option value="Difficulty in Chewing">Difficulty in Chewing</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="staticEmail" class="col-form-label">Other</label>
+                                        @Html.TextBoxFor(m => m.Other, new { @class = "form-control"})
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5>Allergies/Sensitivities</h5>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-check pads">
+                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                        <label class="form-check-label" for="defaultCheck1">
+                                            No Allergy
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-3 col-form-label">Allergies/Sensitivities</label>
+                                        <div class="col-md-6">
+                                            <select class="form-control" id="SelectedAllergy">
+                                                <option>Select</option>
+                                                @{
+                                                    foreach (var allergy in ViewBag.Allergies)
+                                                    {
+                                                        <option value="@allergy.ID">@allergy.Name</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <a href="#" id="AddAllergy" class="btn btn-danger">ADD</a>
+                                        </div>
+                                        <div class="col-md-1">
+                                            @*<a href="#" id="DeleteAllergy" class="btn btn-danger">DELETE</a>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <table>
+                                    <tbody id="Allergies">
+                                        <tr>
+                                            <th>Diet Allergy</th>
+                                            <th>Notes</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5>Personal Preferences</h5>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="staticEmail" class="col-form-label">Likes</label><br>
+                                       
+                                            @Html.TextAreaFor(m => m.Likes, new { @class = "textarea col-md-12", style = "width: 95% !important;", rows = "5" })
+                                        </div>
+                                    <div class="form-group">
+                                        <label for="staticEmail" class="col-form-label">Dislikes</label><br>
+                                        @Html.TextAreaFor(m => m.DisLikes, new { @class = "textarea col-md-12", style = "width: 95% !important;", rows = "5" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5>Notes</h5>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        @Html.TextAreaFor(m => m.Notes, new { @class = "textarea col-md-12", style = "width: 95% !important;", rows = "5" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <br>
+                                    <button class="btn btn-danger btn-lg">SAVE</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- END PLACE PAGE CONTENT HERE -->
+            </div>
+            <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+
+        @RenderPage("~/Views/Shared/_Footer.cshtml")
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var count = 0;
+        $("#AddAllergy").click(function(){
+            var name = $("#SelectedAllergy :selected").text();
+            var id = $("#SelectedAllergy").val();
+            var markup = "<tr><td><input type='hidden' name='Allergies[" + count + "].ID' value='" + id + "'/><input type='hidden' name='Allergies[" + count + "].Name' value='" + name + "'/>"+ name + "</td> <td><input type='text' class='form-control' name='AllergyNotes[" + count +"]' /></td> <td><input type='button' value='delete' class='btn btn-danger'></td></tr > ";
+            $("#Allergies").append(markup);
+            count++;
+        });
+
+        // Find and remove selected table rows
+        $("#DeleteAllergy").click(function(){
+            $("#Allergies").find('input[name="record"]').each(function(){
+                if($(this).is(":checked")){
+                    $(this).parents("tr").remove();
+                }
+            });
+        });
+
+        $('table').on('click', 'input[type="button"]', function (e) {
+            $(this).closest('tr').remove()
+        })
+    });
+        </script>

@@ -1,0 +1,119 @@
+@model IEnumerable<QolaMVC.Models.ResidentModel>
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+
+<style>
+
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+</style>
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+
+    <!-- START PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3>Manage Residents</h3>
+                        </div>
+                        <div class="col-md-2 text-right">
+                            <h4 class="text-danger bold pr-3">
+                                @Model.Count()
+                                <small>Residents</small>
+                            </h4>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+            <div style="height: 60px;"></div>
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+                <div class="row">
+                    <div class="col-md-6 py-4 text-left">
+                        <form class="form-inline">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <select class="form-control">
+                                        <option>All fields</option>
+                                        <option>First Name</option>
+                                        <option>Last Name</option>
+                                        <option>Suite No</option>
+                                        <option>Emergency Contact</option>
+                                        <option>Physician</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="exampleInputAmount" placeholder="Search for">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-danger">Search</button>
+                        </form>
+                    </div>
+                    <div class="col-md-6 py-4 text-right">
+                        <a class="btn btn-lg btn-primary" href="addnewresident">Add a new Resident</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-block">
+                        <table class="table">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th class="text-white">First Name</th>
+                                    <th class="text-white">Last Name</th>
+                                    <th class="text-white">Suite No</th>
+                                    <th class="text-white">Emergency Contact</th>
+                                    <th class="text-white">Physician</th>
+                                    <th class="text-white"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                               @foreach (var resident in Model)
+                               {
+                                    <tr>
+                                        <td class="align-middle">@resident.FirstName</td>
+                                        <td class="align-middle">@resident.LastName</td>
+                                        <td class="align-middle">@resident.SuiteNo</td>
+                                        <td class="align-middle">@resident.ReligionContact</td>
+                                        <td class="align-middle">@resident.Physician (@resident.PhysicianPhone)</td>
+                                        <td class="align-middle text-right">
+                                            <button class="btn btn-default btn-xs">
+                                                <i class="fa fa-pencil"></i>
+                                            </button>
+                                            <button class="btn btn-default btn-xs">
+                                                <i class="fa fa-file-text-o"></i>
+                                            </button>
+                                            <a href="/Home/ResidentMenu/?p_ResidentId=@resident.ID" class="btn btn-info btn-xs">
+                                                Manage
+                                            </a>
+                                        </td>
+                                    </tr>
+                               }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- END PLACE PAGE CONTENT HERE -->
+            </div>
+            <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+       
+        @RenderPage("~/Views/Shared/_Footer.cshtml")

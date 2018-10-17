@@ -1,0 +1,125 @@
+﻿@model List<QolaMVC.Models.ActivityCategoryModel>
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+<style>
+
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+    h3 {
+        font-weight: 500 !important;
+        color: black;
+    }
+
+</style>
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+
+    <!-- START PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3>Activity Category</h3>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+
+            <div style="height: 60px;"></div>
+
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+
+                <div class="card">
+                    <div class="card-block">
+
+                        <div class="form-tabs mt-4">
+                            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                <li class="nav-item">
+                                 @*   <a class="nav-link active" id="pills-active-tab" data-toggle="pill" href="#pills-active" role="tab" aria-controls="pills-active" aria-selected="true">Active User</a>*@
+                                </li>
+                                
+
+                            </ul>
+                            <div class="tab-content" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="pills-active" role="tabpanel" aria-labelledby="pills-active-tab">
+
+                                    <div class="row">
+                                        <div class="col-md-6 py-4 text-left">
+
+                                        </div>
+                                        <div class="col-md-6 py-4 text-right">
+                                            <a class="btn btn-lg btn-primary" href="~/Master/AddActivityCategory">Add New</a>
+                                        </div>
+                                    </div>
+
+                                    <table class="table table-bordered">
+                                        <thead class="bg-primary">
+                                            <tr>
+                                                <th class="text-white">S/N</th>
+                                                <th class="text-white">Activity Category</th>
+                                                <th class="text-white">Activity Category (French)</th>
+                                                <th class="text-white">Edit</th>
+                                                <th class="text-white">Delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{ int i = 1; }
+                                            @{ foreach (var l_AC in Model)
+                                                {
+                                                <tr>
+                                                    <td class="align-middle">@i</td>
+                                                    <td class="align-middle">@l_AC.EnglishName</td>
+                                                    <td class="align-middle">@l_AC.FrenchName</td>
+                                                    <td class="align-middle">
+                                                        <a class="btn btn-success btn-xs" href="~/Master/EditActivityCategory/?CategoryId=@l_AC.Id">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+                                                    </td>
+                                                    <td class="align-middle">
+
+                                                        <a class="btn btn-danger btn-xs" href="~/Master/DeleteActivityCategory/?CategoryId=@l_AC.Id">
+                                                            <i class="fa fa-trash-o"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+
+                                                i = i + 1;
+                                                    }
+                                                }
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                          
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!-- END PLACE PAGE CONTENT HERE -->
+            </div>
+            <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+
+
+        @RenderPage("~/Views/Shared/_Footer.cshtml")
