@@ -268,6 +268,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             if (!form || form.constructor != Array) {
                 return;
             }
+
+            self.formFields = {};
+
             for (var i = 0; i < form.length; i++) {
                 if (form[i] == undefined) {
                     continue;
@@ -278,6 +281,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 }
                 for (var j = 0; j < form[i].length; j++) {
                     fields[form[i][j]['name']] = _extends({}, form[i][j]);
+                    self.formFields[form[i][j]['name']] = form[i][j]['defaultValue'] || '';
                 }
             }
         };
@@ -311,7 +315,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         };
 
         var renderEventMenu = function renderEventMenu() {
-            return ('\n                <div class=\'' + CLASSNAMES.EVENT_MENU_CONTAINER + '\' id=\'eventMenuComponent\'>\n                    <div class=\'' + CLASSNAMES.EVENT_MENU_INNER + '\'>\n                        <div class=\'' + CLASSNAMES.EVENT_MENU_BUTTONS_CONTAINER + '\'>\n                            <button class=\'' + CLASSNAMES.EVENT_MENU_BUTTON + '\' type=\'button\' data-action=\'edit-event\'>Edit Event</button>\n                            <button class=\'' + CLASSNAMES.EVENT_MENU_BUTTON + '\' type=\'button\' data-action=\'copy-event\'>Copy Event</button>\n                            <button class=\'' + CLASSNAMES.EVENT_MENU_BUTTON + ' cancel\' data-action=\'cancel\' type=\'button\'>Cancel</button>\n                        </div>\n                        <span class=\'caret\'></span>\n                    </div>\n                </div>\n            ').trim();
+            return ('\n                <div class=\'' + CLASSNAMES.EVENT_MENU_CONTAINER + '\' id=\'eventMenuComponent\'>\n                    <div class=\'' + CLASSNAMES.EVENT_MENU_INNER + '\'>\n                        <div class=\'' + CLASSNAMES.EVENT_MENU_BUTTONS_CONTAINER + '\'>\n                            <button class=\'' + CLASSNAMES.EVENT_MENU_BUTTON + '\' type=\'button\' data-action=\'edit-event\'>Edit Event</button>\n                            <button class=\'' + CLASSNAMES.EVENT_MENU_BUTTON + '\' type=\'button\' data-action=\'copy-event\'>Copy Event</button>\n                            <button class=\'' + CLASSNAMES.EVENT_MENU_BUTTON + ' cancel\' data-action=\'delete-event\' type=\'button\'>Delete Event</button>\n                            <button class=\'' + CLASSNAMES.EVENT_MENU_BUTTON + ' cancel\' data-action=\'cancel\' type=\'button\'>Cancel</button>\n                        </div>\n                        <span class=\'caret\'></span>\n                    </div>\n                </div>\n            ').trim();
         };
 
         var renderDailyHeading = function renderDailyHeading() {
@@ -881,11 +885,18 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             switch (action) {
                 case 'edit-event':
                     // pop up modal
-                    self.editFormModal.show(self.selectedEvent, self.selectedEvent.id);
+                    self.editFormModal.show(Object.assign({}, self.formFields, self.selectedEvent), self.selectedEvent.id);
                     break;
                 case 'copy-event':
                     // display form with selected event's data
                     copyEvent(self.selectedEvent);
+                    break;
+                case 'delete-event':
+                    if (!confirm("Are you sure you want to delete, this event?")) {
+                        return;
+                    }
+                    // delete event
+                    deleteEvent(self.selectedEvent.id);
                     break;
                 case 'cancel':
                     // cancel selection
@@ -931,7 +942,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             };
 
             // show modal
-            self.createFormModal.show(data);
+            self.createFormModal.show(Object.assign({}, self.formFields, data));
 
             // calcel selection
             cancelSelection();
@@ -966,6 +977,31 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             }).fail(function (err) {
                 // get and display error message
                 var message = 'Failed to paste event to date.';
+                var message = err.message && err.message.length > 0 ? err.message : message;
+                alert(message);
+            });
+
+            // calcel selection
+            cancelSelection();
+            cancelEventCopy();
+        };
+
+        var deleteEvent = function deleteEvent(eventId) {
+            // stop if no event was passed
+            if (!eventId || !self.settings.deleteUrl) {
+                return;
+            }
+
+            // make ajax post request and try to save new event
+            $.ajax({
+                url: self.settings.deleteUrl.replace(':id', eventId),
+                headers: self.settings.headers,
+                method: 'POST'
+            }).done(function () {
+                refreshCalendarEvents();
+            }).fail(function (err) {
+                // get and display error message
+                var message = 'Could not delete event, please try again in a moment.';
                 var message = err.message && err.message.length > 0 ? err.message : message;
                 alert(message);
             });
@@ -1375,7 +1411,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             }
 
             // get url
-            var url = self.settings.list_url || self.settings.url || null;
+            var url = self.settings.getUrl || self.settings.url || null;
 
             // stop if url is not set
             if (!url) return;
@@ -1906,7 +1942,7 @@ var CPEventFormModal = function () {
             // reset/set listeners
             this.listeners();
             // enable datetime fields
-            this.enableDatetieFields();
+            this.enableDateteFields();
         }
     }, {
         key: 'render',
@@ -1939,9 +1975,9 @@ var CPEventFormModal = function () {
         value: function html() {
             var _this3 = this;
 
-            return ('\n            <div class="' + this.PREFIX + '-modal">\n                <div class="' + this.PREFIX + '-backdrop">&nbsp;</div>\n                <div class="' + this.PREFIX + '-content">\n                    <div class="' + this.PREFIX + '-dialog">\n                        <form action="javascript:;" class="' + this.PREFIX + '-form" method="POST">\n                            <fieldset>\n                            ' + (this.options.fieldsList.constructor == Array ? this.options.fieldsList.map(function (group, index) {
+            return ('\n            <div class="' + this.PREFIX + '-modal">\n                <div class="' + this.PREFIX + '-backdrop">&nbsp;</div>\n                <div class="' + this.PREFIX + '-content">\n                    <div class="' + this.PREFIX + '-dialog">\n                        <form action="javascript:;" class="' + this.PREFIX + '-form" method="POST">\n                            <fieldset>\n                                ' + (this.options.fieldsList.constructor == Array ? this.options.fieldsList.map(function (group, index) {
                 return _this3.renderFieldsList(group, index);
-            }).join('') : null) + '\n                                <div class="' + this.PREFIX + '-actions">\n                                    ' + (this.options.editting ? '<button type="button" \n                                            class="' + this.PREFIX + '-button delete"\n                                        > Delete </button>' : "") + '\n                                    <button type="button" class="' + this.PREFIX + '-button ' + this.CLASSNAMES().CANCEL + '">Cancel</button>\n                                    <button type="submit" class="' + this.PREFIX + '-button ' + this.CLASSNAMES().SAVE + '">Save</button>\n                                </div>\n                            </fieldset>\n                        </form>\n                    </div>\n                </div>\n            </div>\n        ').trim();
+            }).join('') : null) + '\n                                <div class="' + this.PREFIX + '-actions">\n                                    ' + (this.options.editting ? '<button type="button" class="' + this.PREFIX + '-button delete"> Delete </button>' : "") + '\n                                    <button type="button" class="' + this.PREFIX + '-button ' + this.CLASSNAMES().CANCEL + '">Cancel</button>\n                                    <button type="submit" class="' + this.PREFIX + '-button ' + this.CLASSNAMES().SAVE + '">Save</button>\n                                </div>\n                            </fieldset>\n                        </form>\n                    </div>\n                </div>\n            </div>\n        ').trim();
         }
     }, {
         key: 'renderFieldsList',
@@ -1960,27 +1996,28 @@ var CPEventFormModal = function () {
             var id = '' + parent + this.PREFIX + '-group-item' + index;
             var container = '#' + id;
             var composition = null;
+            // console.log($(`#${this.uniqueID}`));
             if (field && (typeof field === 'undefined' ? 'undefined' : _typeof(field)) == 'object' && field.constructor == Object && Object.keys(field)) {
                 // create field based on type
                 switch (field.type) {
                     case 'text':
-                        composition = new CPFText(container, _extends({}, field));
+                        composition = new CPFText(container, _extends({}, field, { modal: '#' + this.uniqueID }));
                         break;
                     case 'date':
-                        composition = new CPFDate(container, _extends({}, field));
+                        composition = new CPFDate(container, _extends({}, field, { modal: '#' + this.uniqueID }));
                         break;
                     case 'datetime':
-                        composition = new CPFDatetime(container, _extends({}, field));
+                        composition = new CPFDatetime(container, _extends({}, field, { modal: '#' + this.uniqueID }));
                         this.dateTimeFields.push(composition);
                         break;
                     case 'select':
-                        composition = new CPFSelect(container, _extends({}, field));
+                        composition = new CPFSelect(container, _extends({}, field, { modal: '#' + this.uniqueID }));
                         break;
                     case 'radio':
-                        composition = new CPFRadioGroup(container, _extends({}, field));
+                        composition = new CPFRadioGroup(container, _extends({}, field, { modal: '#' + this.uniqueID }));
                         break;
                     case 'time':
-                        composition = new CPFTime(container, _extends({}, field));
+                        composition = new CPFTime(container, _extends({}, field, { modal: '#' + this.uniqueID }));
                         break;
                 }
             }
@@ -2032,8 +2069,8 @@ var CPEventFormModal = function () {
             this.modal.find(FORM).on('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', this.handleFormTransitionEnd.bind(this));
         }
     }, {
-        key: 'enableDatetieFields',
-        value: function enableDatetieFields() {
+        key: 'enableDateteFields',
+        value: function enableDateteFields() {
             if (this.dateTimeFields.length > 0 && flatpickr !== undefined) {
                 this.flatpickrs = {};
                 for (var i = 0; i < this.dateTimeFields.length; i++) {
@@ -2101,8 +2138,7 @@ var CPEventFormModal = function () {
     }, {
         key: 'confirmDelete',
         value: function confirmDelete() {
-            if (confirm("Are you sure you want to delete, this event?")) ;
-            {
+            if (confirm("Are you sure you want to delete, this event?")) {
                 this.delete();
             }
         }
@@ -2277,6 +2313,9 @@ var CPEventFormModal = function () {
         value: function getFormData() {
             var data = {};
             for (var i = 0; i < this.fields.length; i++) {
+                if (this.fields[i].muted) {
+                    continue;
+                }
                 data[this.fields[i].name] = this.fields[i].getValue();
             }
             // get form values
@@ -2285,10 +2324,8 @@ var CPEventFormModal = function () {
     }, {
         key: 'save',
         value: function save() {
-            // get post url
-            var url = this.buildUrl();
             // stop if no url was specified
-            if (url == null) return;
+            if (!this.buildUrl()) return;
             // join default data and form data
             var data = Object.assign({}, this.options.data, this.getFormData());
             data = this.addStructs(data);
@@ -2298,10 +2335,10 @@ var CPEventFormModal = function () {
             this.disable(true);
             // make ajax post request and try to save new event
             $.ajax({
-                url: this.options.url,
+                url: this.buildUrl(),
                 data: data,
                 headers: headers,
-                method: this.options.editting ? 'PUT' : 'POST'
+                method: 'POST'
             }).done(this.saveDone.bind(this)).fail(this.saveFailed.bind(this));
         }
     }, {
@@ -2362,10 +2399,10 @@ var CPEventFormModal = function () {
             this.disable(true);
             // make ajax post request and try to delete new event
             $.ajax({
-                url: this.options.url,
+                url: url,
                 data: data,
                 headers: headers,
-                method: 'DELETE'
+                method: 'POST'
             }).done(this.deleteDone.bind(this)).fail(this.deleteFailed.bind(this));
         }
     }, {
@@ -2401,13 +2438,9 @@ var CPEventFormModal = function () {
             deleteUrl = deleteUrl ? true : false;
             if (!deleteUrl && this.options.url == null || deleteUrl && this.options.deleteUrl == null) return null;
             var url = deleteUrl ? JSON.parse(JSON.stringify(this.options.deleteUrl)) : JSON.parse(JSON.stringify(this.options.url));
-            var regex = new RegExp(/^(:id)$/, 'ig');
             if (this.options.editting) {
-                if (regex.test(url)) {
-                    url = url.replace(regex, this.id);
-                } else {
-                    this.options.data = Object.assign({}, this.options.data, { id: this.id });
-                }
+                url = url.replace(':id', this.id);
+                this.options.data = Object.assign({}, this.options.data, { id: this.id });
             }
             return url;
         }
@@ -2489,6 +2522,16 @@ var CPField = function () {
             writable: true,
             value: null
         });
+        Object.defineProperty(this, "value", {
+            enumerable: true,
+            writable: true,
+            value: null
+        });
+        Object.defineProperty(this, "muted", {
+            enumerable: true,
+            writable: true,
+            value: false
+        });
 
         this.container = container;
         this.props = Object.assign({}, this.props, props);
@@ -2533,6 +2576,11 @@ var CPField = function () {
             if (typeof this.completedRender == 'function') {
                 this.completedRender();
             }
+            this.initiateListener();
+            if (this.props.bindTo && typeof this.props.bindTo.name == 'string') {
+                this.handleSiblinOnChange();
+            }
+            this.initiateBound();
         }
     }, {
         key: "setDefaultValue",
@@ -2600,17 +2648,15 @@ var CPField = function () {
                 return;
             }
 
-            if (this.type == 'radio') {
-                $(this.containerSelector).children(this.htmlType() + "[value=\"" + value + "\"]").prop('checked', true);
-                return;
-            }
-
-            $(this.containerSelector).children(this.htmlType() + "[name=\"" + this.name + "\"]").val(value);
+            $(this.containerSelector).children(this.fieldSelector).val(value);
         }
     }, {
         key: "getValue",
         value: function getValue() {
-            return $(this.containerSelector).children(this.fieldSelector).val();
+            // return $(this.containerSelector)
+            //     .children(this.fieldSelector)
+            //     .val();
+            return this.value;
         }
     }, {
         key: "htmlType",
@@ -2625,8 +2671,91 @@ var CPField = function () {
             }
         }
     }, {
+        key: "initiateBound",
+        value: function initiateBound() {
+            var _this = this;
+
+            if (this.props.bindTo) {
+                $(this.props.modal).find(this.props.bindTo.name).off('change keyup', function () {
+                    return _this.handleSiblinOnChange();
+                });
+
+                $(this.props.modal).find(this.props.bindTo.name).on('change keyup', function () {
+                    return _this.handleSiblinOnChange();
+                });
+            }
+        }
+    }, {
+        key: "handleSiblinOnChange",
+        value: function handleSiblinOnChange() {
+            var whenVals = this.props.bindTo && typeof this.props.bindTo.when == 'string' && this.props.bindTo.when.split('|') || [];
+            var value = void 0;
+            var target = void 0;
+            var selector = $(this.props.modal).find("" + this.props.bindTo.name);
+            var tagName = selector.length > 0 && selector[0].tagName || null;
+            var fieldType = tagName && selector[0].type || null;
+
+            if (tagName && fieldType) {
+                if (tagName == 'INPUT' && fieldType == 'radio') {
+                    target = $(this.props.modal).find(this.props.bindTo.name + ":checked");
+                    value = target.val();
+                } else if (tagName == 'INPUT' && fieldType == 'checkbox') {
+                    target = $(this.props.modal).find("" + this.props.bindTo.name);
+                } else {
+                    target = $(this.props.modal).find(this.props.bindTo.name);
+                    value = target.val();
+                }
+            }
+
+            if (fieldType == 'checkbox') {
+                if (this.props.bindTo.when == ':checked') {
+                    this.muted = !target.is(this.props.bindTo.when);
+                } else {
+                    this.muted = target.is(this.props.bindTo.when);
+                }
+            } else {
+                this.muted = whenVals.indexOf(value) == -1;
+            }
+
+            if (this.muted) {
+                $(this.container).addClass('muted');
+            } else {
+                $(this.container).removeClass('muted');
+            }
+        }
+    }, {
+        key: "initiateListener",
+        value: function initiateListener() {
+            var _this2 = this;
+
+            $(this.containerSelector).find(this.fieldSelector).off('change keyup', function (event) {
+                return _this2.handleOnChange(event);
+            });
+
+            $(this.containerSelector).find(this.fieldSelector).on('change keyup', function (event) {
+                return _this2.handleOnChange(event);
+            });
+        }
+    }, {
+        key: "handleOnChange",
+        value: function handleOnChange(event) {
+            this.value = event.target.value;
+        }
+    }, {
         key: "destory",
         value: function destory() {
+            var _this3 = this;
+
+            $(this.containerSelector).find(this.fieldSelector).off('change keyup', function (event) {
+                return _this3.handleOnChange(event);
+            });
+
+            if (this.props.bindTo) {
+                $(this.props.modal).find(this.props.bindTo.name).on('change keyup', function (event) {
+                    return _this3.handleSiblinOnChange(event);
+                });
+            }
+
             $(this.containerSelector).remove();
         }
     }]);
@@ -2736,6 +2865,19 @@ var CPFRadioGroup = function (_CPField) {
             return '\n            <div class="' + this.prefix + '-control-group radio-group" ' + this.idAttribute + '="' + this.id + '">\n                ' + this.label() + '\n                ' + optionKeys.map(function (key) {
                 return _this2.renderOptions(key, options[key]);
             }).join("") + '\n            </div>\n        ';
+        }
+    }, {
+        key: 'setValue',
+        value: function setValue(value) {
+            if (this.type == 'radio') {
+                var checkedOne = $(this.containerSelector).find(this.fieldSelector + ':checked');
+                if (checkedOne.length > 0) {
+                    checkedOne.prop('checked', false).trigger("change");
+                }
+
+                $(this.containerSelector).find(this.htmlType() + '[value="' + value + '"]').prop('checked', true).trigger("change");
+                return;
+            }
         }
     }, {
         key: 'getValue',

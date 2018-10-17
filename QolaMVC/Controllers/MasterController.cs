@@ -380,5 +380,23 @@ namespace QolaMVC.Controllers
             UserDAL.AddNewUsers(p_Model);
             return RedirectToAction("Users");
         }
+
+        public ActionResult ChangePassword()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            return View();
+        }
     }
 }
