@@ -259,7 +259,7 @@ namespace QolaMVC.Controllers
 
             return RedirectToAction("ExerciseActivity");
         }
-
+        [HttpPost]
         public ActionResult UpdateExcerciseActivity_mike(ExcerciseActivityViewModel vm)
         {
             var home = (HomeModel)TempData["Home"];
