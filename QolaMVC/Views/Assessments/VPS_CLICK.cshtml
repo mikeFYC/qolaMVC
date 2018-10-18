@@ -1,0 +1,215 @@
+﻿@model QolaMVC.ViewModels.ExcerciseActivityViewModel
+@{
+    ViewBag.Title = "VPS_CLICK";
+}
+
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+
+<style>
+    tr b{
+        font-size:20px;
+        color:black;
+    }
+
+
+
+
+</style>
+
+
+<div class="page-container">
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+    <div class="page-content-wrapper">
+        <div class="content">
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3>Vitality Plus Scale (VPS)</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="height: 60px;"></div>
+
+            <div class="container-fluid container-fixed-lg">
+                <div class="card">
+                    
+                    <div class="modal fade" id="VPS_legend" role="dialog" style="right: 0px; display: none;">
+
+                        <div class="modal-dialog" style="left:0;right:0;">
+
+                            <!-- Modal content-->
+                            <div class="modal-content" style="width:60vw;right:45%;">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">×</button>
+                                    <h2 class="modal-title" style="color:black;font-weight:bold;">VPS Legend</h2>
+                                    <br>
+                                </div>
+                                <div class="modal-body">
+                                    <p style="font-size:15px;color:black;">This scale asks generally about how you are currently feeling, For each statement, choose an option from 1-5 thast best describes you. For instance, if you usually fall asleep quickly, circle 5. Otherwise, circle a number from 1-4, depending on the extend to which you usually have difficulty falling asleep.</p>
+                                    <br>
+                                    <h4>Instructions:</h4>
+                                    <p style="font-size:15px;color:black;">Remove the scale title prior to administration. The VPS can be either self-administered, or administered via personal or telephone interview. Each respondent should be queried to ensure that they understand the instructions and rating format.</p>
+                                    <br>
+                                    <h4>Scoring:</h4>
+                                    <p style="font-size:15px;color:black;">Each item is scored from 1 to 5. The total VPS score is calculated by summarizing item scores. Total scores can range from 10 to 50, with higher scores indicating positive states. Total scores should not be computed unless the person has answered at least 7 of the items. Individual change can be calculated using the following formula: (follow-ip/baseline score)*100.</p>
+                                    <br>
+                                    <p style="font-size:15px;color:black;">Reference: Myers,A.M.,Malott,O.W.,Gray,E.,Tudor-Locke,C.,Ecclestone,N.A.,O'Brien Cousins,S.,&Petrella,R. (1999). Measuring accumulated health-related benefits of exercise participation for older adults: The Vitality Plus Scale. Journal of Gerontology: Medical Sciences, 54A, M456-466.</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <br>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @using (Html.BeginForm("", "Assessments"))
+                    {
+
+                        <div class="card-block" id="details">
+                            <div class="row" id="Questions">
+                                <div class="col-md-10" id="title">
+                                    <table class="table table-bordered" id="assessment_table">
+                                        <thead>
+                                            <tr>
+                                                <th style="color:red;font-weight:bold;font-size:1vw;">Total Score : <p class="TotalScore" style="font-weight:bold;font-size:2vw;display:inline;margin-left:10px;"></p></th>
+                                                <th class="text-center"><b>1</b></th>
+                                                <th class="text-center"><b>2</b></th>
+                                                <th class="text-center"><b>3</b></th>
+                                                <th class="text-center"><b>4</b></th>
+                                                <th class="text-center"><b>5</b></th>
+                                                <th class="text-center"><button class="btn btn-primary" type="button" data-toggle="modal" data-target="#VPS_legend" style="color:white">Legend</button></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><b>1. Takes a long time to fall asleep</b></td>
+                                                <td><input name="radio1" id="1" type="radio" /></td>
+                                                <td><input name="radio1" id="2" type="radio" /></td>
+                                                <td><input name="radio1" id="3" type="radio" /></td>
+                                                <td><input name="radio1" id="4" type="radio" /></td>
+                                                <td><input name="radio1" id="5" type="radio" /></td>
+                                                <td><b>Fall asleep quickly</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>2. Sleep poorly</b></td>
+                                                <td><input name="radio2" id="1" type="radio" /></td>
+                                                <td><input name="radio2" id="2" type="radio" /></td>
+                                                <td><input name="radio2" id="3" type="radio" /></td>
+                                                <td><input name="radio2" id="4" type="radio" /></td>
+                                                <td><input name="radio2" id="5" type="radio" /></td>
+                                                <td><b>Sleep well</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>3. Tired or drowsy during the day</b></td>
+                                                <td><input name="radio3" id="1" type="radio" /></td>
+                                                <td><input name="radio3" id="2" type="radio" /></td>
+                                                <td><input name="radio3" id="3" type="radio" /></td>
+                                                <td><input name="radio3" id="4" type="radio" /></td>
+                                                <td><input name="radio3" id="5" type="radio" /></td>
+                                                <td><b>Well rested</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>4. Rarely hungry</b></td>
+                                                <td><input name="radio4" id="1" type="radio" /></td>
+                                                <td><input name="radio4" id="2" type="radio" /></td>
+                                                <td><input name="radio4" id="3" type="radio" /></td>
+                                                <td><input name="radio4" id="4" type="radio" /></td>
+                                                <td><input name="radio4" id="5" type="radio" /></td>
+                                                <td><b>Excellent appetite</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>5. Often constipated</b></td>
+                                                <td><input name="radio5" id="1" type="radio" /></td>
+                                                <td><input name="radio5" id="2" type="radio" /></td>
+                                                <td><input name="radio5" id="3" type="radio" /></td>
+                                                <td><input name="radio5" id="4" type="radio" /></td>
+                                                <td><input name="radio5" id="5" type="radio" /></td>
+                                                <td><b>Do not get constipated</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>6. Often have aches and pains</b></td>
+                                                <td><input name="radio6" id="1" type="radio" /></td>
+                                                <td><input name="radio6" id="2" type="radio" /></td>
+                                                <td><input name="radio6" id="3" type="radio" /></td>
+                                                <td><input name="radio6" id="4" type="radio" /></td>
+                                                <td><input name="radio6" id="5" type="radio" /></td>
+                                                <td><b>No aches or pains</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>7. Low energy level</b></td>
+                                                <td><input name="radio7" id="1" type="radio" /></td>
+                                                <td><input name="radio7" id="2" type="radio" /></td>
+                                                <td><input name="radio7" id="3" type="radio" /></td>
+                                                <td><input name="radio7" id="4" type="radio" /></td>
+                                                <td><input name="radio7" id="5" type="radio" /></td>
+                                                <td><b>Full of pep and energy</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>8. Often still in the morning</b></td>
+                                                <td><input name="radio8" id="1" type="radio" /></td>
+                                                <td><input name="radio8" id="2" type="radio" /></td>
+                                                <td><input name="radio8" id="3" type="radio" /></td>
+                                                <td><input name="radio8" id="4" type="radio" /></td>
+                                                <td><input name="radio8" id="5" type="radio" /></td>
+                                                <td><b>Not stiff in the morning</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>9. Often restless or agitated</b></td>
+                                                <td><input name="radio9" id="1" type="radio" /></td>
+                                                <td><input name="radio9" id="2" type="radio" /></td>
+                                                <td><input name="radio9" id="3" type="radio" /></td>
+                                                <td><input name="radio9" id="4" type="radio" /></td>
+                                                <td><input name="radio9" id="5" type="radio" /></td>
+                                                <td><b>Fell relaxed</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>10. Often do not fell well</b></td>
+                                                <td><input name="radio10" id="1" type="radio" /></td>
+                                                <td><input name="radio10" id="2" type="radio" /></td>
+                                                <td><input name="radio10" id="3" type="radio" /></td>
+                                                <td><input name="radio10" id="4" type="radio" /></td>
+                                                <td><input name="radio10" id="5" type="radio" /></td>
+                                                <td><b>Fell well</b></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <br>
+                                    <button class="btn btn-danger btn-lg" type="button"  style="color:white;float:right">Submit</button>
+                                </div>
+                                </div>
+
+                            </div>
+                    }
+
+
+                </div>
+
+                <!-- END PLACE PAGE CONTENT HERE -->
+            </div>
+            <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+        @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+<script>
+    
+
+    $("input[type='radio']").click(function () {
+        var a = $("input[type='radio']");
+        var total = 0;
+        for (var b = 0; b < a.length; b++) {
+            if (a[b].checked == true) {
+                total += parseInt(a[b].id)
+            }
+        }
+        $(".TotalScore").text(total.toString());
+        //$(".TotalScore").val(total);
+    });
+
+
+
+</script>

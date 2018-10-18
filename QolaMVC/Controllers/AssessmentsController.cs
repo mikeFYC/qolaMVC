@@ -366,6 +366,21 @@ namespace QolaMVC.Controllers
             return View();
         }
 
+        public ActionResult VPS_CLICK(string ID, string number)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            string ind = TempData["index"].ToString();
+            string num = TempData["number"].ToString();
+            TempData.Keep("index");
+            TempData.Keep("number");
+            return View();
+        }
+
         #endregion
 
 
