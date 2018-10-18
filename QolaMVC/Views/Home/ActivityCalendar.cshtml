@@ -10,6 +10,47 @@
     <title>Calendar Plugin</title>
 
     <link rel="stylesheet" href="/Content/calendar/css/calendar-plugin.min.css" media="all" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <script src="~/Content/calendar/plugins/jquery/jquery.min.js"></script>
+    <!-- <script src="plugins/jquery-ui/jquery-ui.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
+    <script src="~/Content/calendar/js/calendar-plugin.js"></script>
+
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="apple-touch-icon" href="~/Content/pages/ico/60.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="~/Content/pages/ico/76.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="~/Content/pages/ico/120.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="~/Content/pages/ico/152.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    @*  @Styles.Render("~/Content/css")*@
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+
+    <link href="/Content/bootstrap.css" rel="stylesheet">
+    <link href="/Content/site.css" rel="stylesheet">
+    <link href="/Content/assets/plugins/pace/pace-theme-flash.css" rel="stylesheet">
+    <link href="/Content/assets/plugins/bootstrap/css/bootstrap.min.css" " rel="stylesheet">
+    <link href="/Content/assets/plugins/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/Content/assets/plugins/jquery-scrollbar/jquery.scrollbar.css" rel="stylesheet">
+    <link href="/Content/assets/plugins/select2/css/select2.min.css" rel="stylesheet">
+    <link href="/Content/assets/plugins/switchery/css/switchery.min.css" rel="stylesheet">
+    <link href="/Content/pages/css/pages-icons.css" rel="stylesheet">
+    <link href="/Content/assets/css/pages.css" rel="stylesheet">
+    <link href="/Content/assets/css/datatables.css" rel="stylesheet">
+    <link href="/Content/assets/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+
+
+
     <style type="text/css">
         body {
             visibility: hidden;
@@ -21,8 +62,6 @@
         }, 1000);
 
     </script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-
 </head>
 
 <body id="mike">
@@ -48,21 +87,30 @@
                     </div>
                 </div>
                 <!-- END JUMBOTRON -->
-                <div style="height: 60px;">
-                </div>
+                <div style="height: 60px;"></div>
                 <!-- START CONTAINER FLUID -->
                 <div class="container-fluid container-fixed-lg">
-                    <div style='position: relative; float: left; width: 100%;'>
-                        <section id='calendar'></section>
+                    <div class="card">
+                        <div class="card-block">
+                            <div class="form-tabs mt-4">
+                                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="pills-active-tab" data-toggle="pill" href="#pills-active" role="tab" aria-controls="pills-active" aria-selected="true" onclick="calendar_one()">Calendar one</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="pills-achive-tab" data-toggle="pill" href="#pills-achive" role="tab" aria-controls="pills-achive" aria-selected="false" onclick="calendar_two()">Calendar two</a>
+                                    </li>
+                                </ul>
 
-                        <script src="~/Content/calendar/plugins/jquery/jquery.min.js"></script>
-                        <!-- <script src="plugins/jquery-ui/jquery-ui.min.js"></script> -->
-                        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-                        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
-                        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
-                        <script src="~/Content/calendar/js/calendar-plugin.js"></script>
-                        @*<script src="~/Content/calendar/js/calendar-plugin_only_for_activity_calendar.js"></script>*@
-                        <script type='text/javascript'>
+                                <div class="tab-content" id="pills-tabContent">
+
+                                    <div class="tab-pane fade show active" id="pills-active" role="tabpanel" aria-labelledby="pills-active-tab">
+                                        <div style='position: relative; float: left; width: 100%;'>
+                                            <section id='calendar'></section>
+                                        </div>
+
+
+                                        <script type='text/javascript'>
                         var l_Categories = {};
 
                         $.ajax({
@@ -118,7 +166,7 @@
                                         name: 'frequency',
                                         label: 'Frequency',
                                         placeholder: 'Select',
-                                        options: { 1: 'Date & Time', 2: 'Every Weekday', 3: 'Date Between'}
+                                        options: { 1: 'Date & Time', 2: 'Every Weekday', 3: 'Date between' }
                                     }
                                 ],
                                 [
@@ -127,30 +175,10 @@
                                         name: 'startDate',
                                         label: 'Date & Time',
                                         placeholder: 'DD/MM/YYYY',
-                                    }
-                                ],
-                                 [
-                                    {
-                                        type: 'date',
-                                        name: 'DateFrom',
-                                        label: 'Date From',
-                                        placeholder: 'DD/MM/YYYY',
-                                    }
-                                ],
-                                 [
-                                    {
-                                        type: 'date',
-                                        name: 'DateTo',
-                                        label: 'Date To',
-                                        placeholder: 'DD/MM/YYYY',
-                                    }
-                                ],
-                                 [
-                                    {
-                                        type: 'time',
-                                        name: 'Time',
-                                        label: 'Time',
-                                        placeholder: 'DD/MM/YYYY',
+                                        bindTo: {
+                                            name: 'input[name="frequency"]',
+                                            when: '1'
+                                        }
                                     }
                                 ],
                                 [
@@ -159,7 +187,46 @@
                                         name: 'weekDay',
                                         label: 'Week Day',
                                         placeholder: 'Select',
-                                        options: { Monday: 'Monday', Tuesday: 'Tuesday', Wednesday: 'Wednesday', Thursday: 'Thursday', Friday: 'Friday', Saturday: 'Saturday', Sunday:'Sunday'}
+                                        options: { Monday: 'Monday', Tuesday: 'Tuesday', Wednesday: 'Wednesday', Thursday: 'Thursday', Friday: 'Friday', Saturday: 'Saturday', Sunday: 'Sunday' },
+                                        bindTo: {
+                                            name: 'input[name="frequency"]',
+                                            when: '2'
+                                        }
+                                    }
+                                ],
+                                [
+                                    {
+                                        type: 'date',
+                                        name: 'DateFrom',
+                                        label: 'Date From',
+                                        placeholder: 'DD/MM/YYYY',
+                                        bindTo: {
+                                            name: 'input[name="frequency"]',
+                                            when: '3'
+                                        }
+                                    }
+                                ],
+                                [
+                                    {
+                                        type: 'date',
+                                        name: 'DateTo',
+                                        label: 'Date To',
+                                        placeholder: 'DD/MM/YYYY',
+                                        bindTo: {
+                                            name: 'input[name="frequency"]',
+                                            when: '3'
+                                        }
+                                    }
+                                ],
+                                [
+                                    {
+                                        type: 'time',
+                                        name: 'time',
+                                        label: 'Time',
+                                        bindTo: {
+                                            name: 'input[name="frequency"]',
+                                            when: '3'
+                                        }
                                     }
                                 ],
                                 [
@@ -174,7 +241,153 @@
                             ]
                         });
                         }
-                        </script>
+                                        </script>
+                                    </div>
+
+                                    <div class="tab-pane fade" id="pills-achive" role="tabpanel" aria-labelledby="pills-achive-tab">
+                                        <div style='position: relative; float: left; width: 100%;'>
+                                            <section id='calendar2'></section>
+                                        </div>
+
+                                        <script type='text/javascript'>
+
+
+                    var l_Categories2 = {};
+
+                        $.ajax({
+                            type: 'get',
+                            url: '@Url.Action("getCategoriesForCalendar")',
+                            dataType: 'json',
+                            success: function (data) {
+                                //l_Categories = data;
+                              //console.log(data);
+
+                                for (var i = 0; i < data.length; i++ ) {
+                                    l_Categories2[data[i].Id] = data[i].Name;
+                                }
+                                console.log(l_Categories2);
+                                initCalendar2();
+                            },
+                            error: function (ex) {
+                                var r = jQuery.parseJSON(response.responseText);
+                                alert("Message: " + r.Message);
+                                alert("StackTrace: " + r.StackTrace);
+                                alert("ExceptionType: " + r.ExceptionType);
+                            }
+                        });
+
+
+                        function initCalendar2() {
+                             $('#calendar2').CalendarPlugin({
+                                 url: '/Home/getEvents',
+                                 view: 'monthly',
+                            form: [
+                                [
+                                    {
+                                        type: 'text',
+                                        name: 'title',
+                                        label: 'Activity Display Title',
+                                        placeholder: 'E.g. Marathon'
+                                    }
+
+                                ],
+                                [
+                                    {
+                                        type: 'select',
+                                        name: 'activity',
+                                        label: 'Activity *',
+                                        placeholder: 'Select',
+                                        options: l_Categories2
+                                    }
+                                ],
+                                [
+                                    {
+                                        type: 'radio',
+                                        name: 'frequency',
+                                        label: 'Frequency',
+                                        placeholder: 'Select',
+                                        options: { 1: 'Date & Time', 2: 'Every Weekday', 3: 'Date between' }
+                                    }
+                                ],
+                                [
+                                    {
+                                        type: 'datetime',
+                                        name: 'startDate',
+                                        label: 'Date & Time',
+                                        placeholder: 'DD/MM/YYYY',
+                                        bindTo: {
+                                            name: 'input[name="frequency"]',
+                                            when: '1'
+                                        }
+                                    }
+                                ],
+                                [
+                                    {
+                                        type: 'select',
+                                        name: 'weekDay',
+                                        label: 'Week Day',
+                                        placeholder: 'Select',
+                                        options: { Monday: 'Monday', Tuesday: 'Tuesday', Wednesday: 'Wednesday', Thursday: 'Thursday', Friday: 'Friday', Saturday: 'Saturday', Sunday: 'Sunday' },
+                                        bindTo: {
+                                            name: 'input[name="frequency"]',
+                                            when: '2'
+                                        }
+                                    }
+                                ],
+                                [
+                                    {
+                                        type: 'date',
+                                        name: 'DateFrom',
+                                        label: 'Date From',
+                                        placeholder: 'DD/MM/YYYY',
+                                        bindTo: {
+                                            name: 'input[name="frequency"]',
+                                            when: '3'
+                                        }
+                                    }
+                                ],
+                                [
+                                    {
+                                        type: 'date',
+                                        name: 'DateTo',
+                                        label: 'Date To',
+                                        placeholder: 'DD/MM/YYYY',
+                                        bindTo: {
+                                            name: 'input[name="frequency"]',
+                                            when: '3'
+                                        }
+                                    }
+                                ],
+                                [
+                                    {
+                                        type: 'time',
+                                        name: 'time',
+                                        label: 'Time',
+                                        bindTo: {
+                                            name: 'input[name="frequency"]',
+                                            when: '3'
+                                        }
+                                    }
+                                ],
+                                [
+                                    {
+                                        type: 'select',
+                                        name: 'venue',
+                                        label: 'Venue',
+                                        placeholder: 'Select',
+                                        options: { 0:'NaN' }
+                                    }
+                                ]
+                            ]
+                        });
+                        }
+                                        </script>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <!-- END CONTAINER FLUID -->
                 </div>
@@ -183,7 +396,7 @@
         </div>
     </div>
 
-    <div id="day_div" style="display:block;margin-top:-43vw;z-index:1000;">
+    <div id="day_div" style="display:block;margin-top:-30vw;z-index:1000;">
 
         <div class="container-fluid container-fixed-lg" id="main_page" style="margin-top:-8vw;">
             <div class="card">
@@ -489,25 +702,25 @@
                                                                         <td>@a.FirstName @a.LastName</td>
                                                                         <td>
                                                                             <div class="form-check form-check-inline">
-                                                                                <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option1">
+                                                                                <input class="form-check-input" type="radio" name=@a.ID + id="inlineRadio2" value="option1">
                                                                                 <label class="form-check-label">Active</label>
                                                                             </div>
                                                                         </td>
                                                                         <td>
                                                                             <div class="form-check form-check-inline">
-                                                                                <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option2">
+                                                                                <input class="form-check-input" type="radio" name=@a.ID + id="inlineRadio2" value="option2">
                                                                                 <label class="form-check-label">Passive</label>
                                                                             </div>
                                                                         </td>
                                                                         <td>
                                                                             <div class="form-check form-check-inline">
-                                                                                <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option3">
+                                                                                <input class="form-check-input" type="radio" name=@a.ID + id="inlineRadio2" value="option3">
                                                                                 <label class="form-check-label">Declined</label>
                                                                             </div>
                                                                         </td>
                                                                         <td>
                                                                             <div class="form-check form-check-inline">
-                                                                                <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option4">
+                                                                                <input class="form-check-input" type="radio" name=@a.ID + id="inlineRadio2" value="option4">
                                                                                 <label class="form-check-label">Away</label>
                                                                             </div>
                                                                         </td>
@@ -551,6 +764,7 @@
 
 <script>
 
+
     $('div[class="cp-nav-controls"]').hide();
     $('div[class="cp-header-content"]').hide();
     $('div[class="cp-view-list-container"]').css('z-index', 2000);
@@ -569,15 +783,36 @@
         //    $('div[class="cp-view-list-container"]').css('width', "20%");
         //    document.getElementById("mike").style.visibility = "visible";
         //}, 300);
-        window.location.href = window.location.href;
+        if (document.getElementById('pills-active-tab').className == "nav-link active") {
+            window.location.href = window.location.href;
+        }
     }
 
     function hide_day() {
-        document.getElementById("day_div").style.display = "none";
-        $('div[class="cp-nav-controls"]').show();
-        $('div[class="cp-header-content"]').show();
+        if (document.getElementById('pills-active-tab').className == "nav-link active") {
+            document.getElementById("day_div").style.display = "none";
+            $('div[class="cp-nav-controls"]').show();
+            $('div[class="cp-header-content"]').show();
+        }
     }
 
+    function calendar_two() {
+        document.getElementById("day_div").style.display = "none";
+    }
+    function calendar_one() {
+        //window.location.href = window.location.href;
+        document.getElementById("mike").style.visibility = "hidden";
+        document.getElementById("day_div").style.display = "block";
+
+        setTimeout(function () {
+            $('.cp-calendar.daily').hide();
+            $('div[class="cp-nav-controls"]').hide();
+            $('div[class="cp-header-content"]').hide();
+            $('div[class="cp-view-list-container"]').css('z-index', 2000);
+            $('div[class="cp-view-list-container"]').css('width', "20%");
+            document.getElementById("mike").style.visibility = "visible";
+        }, 300);
+    }
 </script>
 <style>
 
@@ -1039,11 +1274,37 @@
 </script>
 
 
-<script src="~/Content/assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+@*<script src="~/Content/assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="~/Content/pages/js/pages.js" type="text/javascript"></script>
+<script src="~/Content/assets/js/scripts.js" type="text/javascript"></script>*@
+
+
+
+
+
+
+<script src="~/Content/assets/plugins/pace/pace.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/modernizr.custom.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/tether/js/tether.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/jquery/jquery-easy.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/jquery-unveil/jquery.unveil.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/jquery-bez/jquery.bez.min.js"></script>
+<script src="~/Content/assets/plugins/jquery-ios-list/jquery.ioslist.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/imagesloaded/imagesloaded.pkgd.min.js"></script>
+<script src="~/Content/assets/plugins/jquery-actual/jquery.actual.min.js"></script>
+<script src="~/Content/assets/plugins/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+<!-- END VENDOR JS -->
+<!-- BEGIN CORE TEMPLATE JS -->
+<script src="~/Content/pages/js/pages.js" type="text/javascript"></script>
+<!-- END CORE TEMPLATE JS -->
+<!-- BEGIN PAGE LEVEL JS -->
 <script src="~/Content/assets/js/scripts.js" type="text/javascript"></script>
-
-
-
+<!-- END PAGE LEVEL JS -->
+<script src="~/Content/assets/js/FileAPI/FileAPI.js"></script>
+<script src="~/Content/assets/js/datatables.min.js"></script>
+<script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="~/Content/assets/js/html2canvas.js" crossorigin="anonymous"></script>
 
 

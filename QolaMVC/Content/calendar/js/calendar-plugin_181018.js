@@ -27,7 +27,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
          * here we have possible class names that may occure
          * during the lifecycle of the event.
          */
-    };var CLASSNAMES = {
+    }; var CLASSNAMES = {
         ACTIVE: 'active',
         LOADER_SHOW: 'show-loader',
         CONTAINER: PREFIX + '-container',
@@ -82,7 +82,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
          * required for selecting different parts of an instantiated
          * calendar plugin.
          */
-    };var SELECTORS = {
+    }; var SELECTORS = {
         BODY: 'body',
         CONTAINER: '.' + PREFIX + '-container',
         CONTAINER_ID: PREFIX + '-container-id',
@@ -129,7 +129,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         /**
          * html month templates for all the different parts of the calendar
          */
-    };var TEMPLATES = {
+    }; var TEMPLATES = {
         CONTAINER: "<div class='" + CLASSNAMES.CONTAINER + "' id='" + SELECTORS.CONTAINER_ID + "'>{header}{calendar}{add_menu}{event_menu}</div>",
         MAIN: "<table class='" + CLASSNAMES.CALENDAR + " {classnames}'  cellspacing='0' cellpadding='0'><thead>{heading}</thead><tbody>{content}</tbody></table>",
         DAYS_HEADING: "<tr class='" + CLASSNAMES.MONTH_HEADING + "'> <th>Sun</th> <th>Mon</th> <th>Tue</th> <th>Wed</th> <th>Thur</th> <th>Fri</th> <th>Sat</th> </tr>",
@@ -168,33 +168,32 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
      */
     var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-    var CalenderPlugin = function CalenderPlugin() {
-        var _this = this;
-
-        // var self = this;
-        this.now = new Date();
-        this.selection = [];
-        this.createFormModal = null;
-        this.editFormModal = null;
-        this.events = [];
-        this.eventInstances = [];
-        this.viewOptions = ['daily', 'weekly', 'monthly'];
+    var CalenderPlugin = new function () {
+        var self = this;
+        self.now = new Date();
+        self.selection = [];
+        self.createFormModal = null;
+        self.editFormModal = null;
+        self.events = [];
+        self.eventInstances = [];
+        self.viewOptions = ['daily', 'weekly', 'monthly'];
         var weekStart = moment(moment().format('YYYY-MM-DD 00:00:00'));
         var weekEnd = moment(weekStart).add(6, 'days');
         var dailyDate = moment();
 
         // plugin settings
-        this.settings = {};
+        self.settings = {};
 
         // initializer
-        this.init = function (el, options) {
-            _this.el = el;
-            _this.settings = $.extend({
-                month: _this.now.getMonth() + 1,
-                year: _this.now.getFullYear(),
+        self.init = function (options) {
+            self.el = this;
+            self.settings = $.extend({
+                month: self.now.getMonth() + 1,
+                year: self.now.getFullYear(),
                 dayStyle: 'short',
                 cellMaxHeigh: 200,
                 respData: 'data',
+                // reference to event data
                 id: 'id',
                 title: 'title',
                 startDate: 'startDate',
@@ -215,11 +214,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             var seasons = $.extend(SEASONS, options ? options.seasons : {});
 
             // add seasons to settings
-            _this.settings.seasons = seasons;
+            self.settings.seasons = seasons;
 
             // ensure month is with in the 1 - 12 range
-            if (_this.settings.month < 1 || _this.settings.month > 12) {
-                _this.settings.month = 1;
+            if (self.settings.month < 1 || self.settings.month > 12) {
+                self.settings.month = 1;
             }
 
             setupForm();
@@ -227,9 +226,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             launch();
 
             if (options == 'destroy') {
-                _this.destroy();
+                self.destroy();
             }
-            return _this;
+            return self;
         };
 
         var launch = function launch() {
@@ -237,41 +236,38 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             render();
 
             // create new event modal
-            _this.createFormModal = new CPEventFormModal('new-event' + _this.now.getTime(), {
-                url: _this.settings.createUrl || _this.settings.url || null,
-                data: _this.settings.data,
-                headers: _this.settings.headers,
+            self.createFormModal = new CPEventFormModal('new-event' + self.now.getTime(), {
+                url: self.settings.createUrl || self.settings.url || null,
+                data: self.settings.data,
+                headers: self.settings.headers,
                 onSaved: refreshCalendarEvents,
-                requestStruct: _this.settings.creatRequest || null,
-                fieldsList: _this.settings.form
+                requestStruct: self.settings.creatRequest || null,
+                fieldsList: self.settings.form
             });
-            _this.createFormModal.render();
+            self.createFormModal.render();
 
             // edit new event modal
-            _this.editFormModal = new CPEventFormModal('edit-event' + _this.now.getTime(), {
+            self.editFormModal = new CPEventFormModal('edit-event' + self.now.getTime(), {
                 editting: true,
-                url: _this.settings.editUrl || _this.settings.url || null,
-                deleteUrl: _this.settings.deleteUrl || _this.settings.url || null,
-                data: _this.settings.data,
-                headers: _this.settings.headers,
+                url: self.settings.editUrl || self.settings.url || null,
+                deleteUrl: self.settings.deleteUrl || self.settings.url || null,
+                data: self.settings.data,
+                headers: self.settings.headers,
                 onSaved: refreshCalendarEvents,
                 onDelete: refreshCalendarEvents,
-                requestStruct: _this.settings.editRequest || null,
-                fieldsList: _this.settings.form
+                requestStruct: self.settings.editRequest || null,
+                fieldsList: self.settings.form
             });
-            _this.editFormModal.render();
+            self.editFormModal.render();
         };
 
         setupForm = function setupForm() {
-            var form = _this.settings.form;
+            var form = self.settings.form;
 
             var fields = {};
             if (!form || form.constructor != Array) {
                 return;
             }
-
-            _this.formFields = {};
-
             for (var i = 0; i < form.length; i++) {
                 if (form[i] == undefined) {
                     continue;
@@ -282,14 +278,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 }
                 for (var j = 0; j < form[i].length; j++) {
                     fields[form[i][j]['name']] = _extends({}, form[i][j]);
-                    _this.formFields[form[i][j]['name']] = form[i][j]['defaultValue'] || '';
                 }
             }
         };
 
         var render = function render() {
             var html = '';
-            switch (_this.settings.view) {
+            switch (self.settings.view) {
                 case 'daily':
                     html = dailyCalendar();
                     break;
@@ -301,8 +296,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                     break;
             }
 
-            $(_this.el).html('');
-            $(html).prependTo($(_this.el));
+            $(self.el).html('');
+            $(html).prependTo($(self.el));
             refreshCalendarEvents();
             start();
         };
@@ -316,7 +311,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         };
 
         var renderEventMenu = function renderEventMenu() {
-            return ('\n                <div class=\'' + CLASSNAMES.EVENT_MENU_CONTAINER + '\' id=\'eventMenuComponent\'>\n                    <div class=\'' + CLASSNAMES.EVENT_MENU_INNER + '\'>\n                        <div class=\'' + CLASSNAMES.EVENT_MENU_BUTTONS_CONTAINER + '\'>\n                            <button class=\'' + CLASSNAMES.EVENT_MENU_BUTTON + '\' type=\'button\' data-action=\'edit-event\'>Edit Event</button>\n                            <button class=\'' + CLASSNAMES.EVENT_MENU_BUTTON + '\' type=\'button\' data-action=\'copy-event\'>Copy Event</button>\n                            <button class=\'' + CLASSNAMES.EVENT_MENU_BUTTON + ' cancel\' data-action=\'delete-event\' type=\'button\'>Delete Event</button>\n                            <button class=\'' + CLASSNAMES.EVENT_MENU_BUTTON + ' cancel\' data-action=\'cancel\' type=\'button\'>Cancel</button>\n                        </div>\n                        <span class=\'caret\'></span>\n                    </div>\n                </div>\n            ').trim();
+            return ('\n                <div class=\'' + CLASSNAMES.EVENT_MENU_CONTAINER + '\' id=\'eventMenuComponent\'>\n                    <div class=\'' + CLASSNAMES.EVENT_MENU_INNER + '\'>\n                        <div class=\'' + CLASSNAMES.EVENT_MENU_BUTTONS_CONTAINER + '\'>\n                            <button class=\'' + CLASSNAMES.EVENT_MENU_BUTTON + '\' type=\'button\' data-action=\'edit-event\'>Edit Event</button>\n                            <button class=\'' + CLASSNAMES.EVENT_MENU_BUTTON + '\' type=\'button\' data-action=\'copy-event\'>Copy Event</button>\n                            <button class=\'' + CLASSNAMES.EVENT_MENU_BUTTON + ' cancel\' data-action=\'cancel\' type=\'button\'>Cancel</button>\n                        </div>\n                        <span class=\'caret\'></span>\n                    </div>\n                </div>\n            ').trim();
         };
 
         var renderDailyHeading = function renderDailyHeading() {
@@ -366,9 +361,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         };
 
         var renderHeader = function renderHeader(type) {
-            var month_name = getMonthName(_this.settings.month - 1);
+            var month_name = getMonthName(self.settings.month - 1);
             var headerClassnames = '';
-            headerClassnames += ' ' + CLASSNAMES.MONTH_HEADER.replace('{month}', getMonthName(_this.settings.month - 1).toLowerCase()) + ' ';
+            headerClassnames += ' ' + CLASSNAMES.MONTH_HEADER.replace('{month}', getMonthName(self.settings.month - 1).toLowerCase()) + ' ';
             headerClassnames += ' ' + CLASSNAMES.SEASON_HEADER.replace('{season}', getSeason() ? getSeason().name : '') + ' ';
             // create view specific name
             if (type == 'weekly') {
@@ -395,18 +390,18 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         };
 
         var renderViewOptions = function renderViewOptions() {
-            if (!_this.settings.changableView) {
+            if (!self.settings.changableView) {
                 return '';
             }
-            return "<div class='" + CLASSNAMES.VIEWS_LIST_CONTAINER + "'><ul class='" + CLASSNAMES.VIEWS_LIST + "'>" + "<li class='" + CLASSNAMES.VIEWS_ITEM + "'>" + "<button type='button' class='" + CLASSNAMES.VIEW_BUTTON + " daily' data-toggle='calendar-view' data-option='daily'  onclick=\"day_click()\">Day</button>" + "</li>" + "<li class='" + CLASSNAMES.VIEWS_ITEM + "'>" + "<button type='button' class='" + CLASSNAMES.VIEW_BUTTON + " weekly' data-toggle='calendar-view' data-option='weekly' onclick=\"hide_day()\">Week</button>" + "</li>" + "<li class='" + CLASSNAMES.VIEWS_ITEM + "'>" + "<button type='button' class='" + CLASSNAMES.VIEW_BUTTON + " monthly' data-toggle='calendar-view' data-option='monthly' onclick=\"hide_day()\">Month</button>" + "</li>" + "</ul></div>";
+            return "<div class='" + CLASSNAMES.VIEWS_LIST_CONTAINER + "'><ul class='" + CLASSNAMES.VIEWS_LIST + "'>" + "<li class='" + CLASSNAMES.VIEWS_ITEM + "'>" + "<button type='button' class='" + CLASSNAMES.VIEW_BUTTON + " daily' data-toggle='calendar-view' data-option='daily' onclick=\"day_click()\">Day</button>" + "</li>" + "<li class='" + CLASSNAMES.VIEWS_ITEM + "'>" + "<button type='button' class='" + CLASSNAMES.VIEW_BUTTON + " weekly' data-toggle='calendar-view' data-option='weekly' onclick=\"hide_day()\">Week</button>" + "</li>" + "<li class='" + CLASSNAMES.VIEWS_ITEM + "'>" + "<button type='button' class='" + CLASSNAMES.VIEW_BUTTON + " monthly' data-toggle='calendar-view' data-option='monthly' onclick=\"hide_day()\">Month</button>" + "</li>" + "</ul></div>";
         };
 
         var renderAddMenu = function renderAddMenu() {
-            if (_this.settings.disableForm) {
+            if (self.settings.disableForm) {
                 return '';
             }
             var copiedMenuClass = '';
-            if (_this.copiedEvent) {
+            if (self.copiedEvent) {
                 copiedMenuClass = CLASSNAMES.SHOW_COPIED_EVENT_MENU;
             }
             return ('\n                <div class=\'' + CLASSNAMES.ADD_MENU_CONTAINER + ' ' + copiedMenuClass + '\' id=\'addMenuComponent\'>\n                    <div class=\'' + CLASSNAMES.ADD_MENU_INNER + '\'>\n                        <div class=\'' + CLASSNAMES.ADD_MENU_BUTTONS_CONTAINER + '\'>\n                            <button \n                                class=\'' + CLASSNAMES.ADD_MENU_BUTTON + ' anti-copied-button\' \n                                type=\'button\' data-action=\'add-event\'\n                            >\n                                Add Event\n                            </button>\n                            <button \n                                class=\'' + CLASSNAMES.ADD_MENU_BUTTON + ' copied-button\' \n                                type=\'button\' data-action=\'paste-event\'\n                            >\n                                Paste Event\n                            </button>\n                            <button \n                                class=\'' + CLASSNAMES.ADD_MENU_BUTTON + ' copied-button cancel\'\n                                data-action=\'cancel-copy\'\n                                type=\'button\'\n                            >\n                                Clear Copy\n                            </button>\n                            <button \n                                class=\'' + CLASSNAMES.ADD_MENU_BUTTON + ' destructive\'\n                                data-action=\'cancel\'\n                                type=\'button\'\n                            >\n                                Cancel\n                            </button>\n                        </div>\n                        <span class=\'caret\'></span>\n                    </div>\n                </div>\n            ').trim();
@@ -421,7 +416,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 WEEK_EVENTS = SELECTORS.WEEK_EVENTS,
                 DATE_CELL = SELECTORS.DATE_CELL,
                 DATE_CELL_CONTENT = SELECTORS.DATE_CELL_CONTENT,
-                weeks = $(_this.el).find(CALENDAR).find(WEEK_ROW),
+                weeks = $(CALENDAR).find(WEEK_ROW),
                 week,
                 eventsContainer,
                 eventObj,
@@ -430,7 +425,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 evStart,
                 evEnd;
 
-            var dateCells = $(_this.el).find(CALENDAR).find(DATE_CELL);
+            var dateCells = $(CALENDAR).find(DATE_CELL);
             for (var i = 0; i < dateCells.length; i++) {
                 // get date cell
                 container = dateCells.eq(i);
@@ -441,8 +436,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 // only if the cell's date is not a number
                 if (typeof cellTimestamp == 'number' && cellTimestamp >= 0) {
                     // create instances
-                    for (var j = 0; j < _this.events.length; j++) {
-                        var event = _this.events[j];
+                    for (var j = 0; j < self.events.length; j++) {
+                        var event = self.events[j];
                         evStart = new Date(event.startDate + ' ' + event.startTime).getTime();
                         evEnd = new Date(event.endDate + ' ' + event.endTime).getTime();
 
@@ -462,12 +457,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                              * check if it's happening at the time within current
                              * cell's date
                              */
-                            if (_this.settings.view == 'monthly' || cellTimestamp >= st && cellTimestamp <= et) {
+                            if (self.settings.view == 'monthly' || cellTimestamp >= st && cellTimestamp <= et) {
                                 eventObj = new CPEvent(event, container.find(DATE_CELL_CONTENT), week, DATE_CELL, {
                                     onClick: handleEventClick
                                 });
                                 eventObj.render();
-                                _this.eventInstances.push(eventObj);
+                                self.eventInstances.push(eventObj);
                             }
                         }
                     }
@@ -476,11 +471,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         };
 
         var destroyEvents = function destroyEvents() {
-            for (var i = 0; i < _this.eventInstances.length; i++) {
-                var eventInstance = _this.eventInstances[i];
+            for (var i = 0; i < self.eventInstances.length; i++) {
+                var eventInstance = self.eventInstances[i];
                 eventInstance.destroy();
             }
-            _this.eventInstances = [];
+            self.eventInstances = [];
         };
 
         var start = function start() {
@@ -506,16 +501,16 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             $(window).on('resize', repositionCellBackground);
 
             // listen for click on add menu buttons
-            $(_this.el).find(CONTAINER).find(ADD_MENU_BUTTON).off('click', handleAddMenuButtonClick);
-            $(_this.el).find(CONTAINER).find(ADD_MENU_BUTTON).on('click', handleAddMenuButtonClick);
+            $(CONTAINER).find(ADD_MENU_BUTTON).off('click', handleAddMenuButtonClick);
+            $(CONTAINER).find(ADD_MENU_BUTTON).on('click', handleAddMenuButtonClick);
 
             // listen for click on event menu buttons
-            $(_this.el).find(CONTAINER).find(EVENT_MENU_BUTTON).off('click', handleEventMenuButtonClick);
-            $(_this.el).find(CONTAINER).find(EVENT_MENU_BUTTON).on('click', handleEventMenuButtonClick);
+            $(CONTAINER).find(EVENT_MENU_BUTTON).off('click', handleEventMenuButtonClick);
+            $(CONTAINER).find(EVENT_MENU_BUTTON).on('click', handleEventMenuButtonClick);
 
             // listen for click on export button
-            $(_this.el).find(CONTAINER).find(EXPORT_BUTTON).off('click', exportTo);
-            $(_this.el).find(CONTAINER).find(EXPORT_BUTTON).on('click', exportTo);
+            $(CONTAINER).find(EXPORT_BUTTON).off('click', exportTo);
+            $(CONTAINER).find(EXPORT_BUTTON).on('click', exportTo);
 
             document.removeEventListener('keyup', handleDocumentKeyUp);
             document.addEventListener('keyup', handleDocumentKeyUp);
@@ -536,13 +531,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             listenViewSelect();
         };
 
-        createView = function createView(calendar) {
+        var createView = function createView(calendar) {
             var container_tpl = copyVar(TEMPLATES.CONTAINER);
             var calendar_tpl = copyVar(TEMPLATES.MAIN);
             var days_heading_tpl = copyVar(TEMPLATES.DAYS_HEADING);
             var cell_tpl = copyVar(TEMPLATES.DAY_CELL);
             var week_tpl = copyVar(TEMPLATES.WEEK_ROW);
-            var month_name = getMonthName(_this.settings.month - 1);
+            var month_name = getMonthName(self.settings.month - 1);
             var season = getSeason();
             var weeks = '';
 
@@ -578,7 +573,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                         classnames += ' ' + CLASSNAMES.DATE_DAY;
 
                         // create new date object from current dat
-                        var d = new Date(_this.settings.month + '/' + calendar[i][j] + '/' + _this.settings.year);
+                        var d = new Date(self.settings.month + '/' + calendar[i][j] + '/' + self.settings.year);
 
                         // fill date attribute with current date
                         day = day.replace('{date}', d.getTime());
@@ -619,8 +614,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         };
 
         var createCalendar = function createCalendar() {
-            var days = getMonthDays(_this.settings.month, _this.settings.year);
-            var firstDay = new Date(_this.settings.year, _this.settings.month - 1, 1);
+            var days = getMonthDays(self.settings.month, self.settings.year);
+            var firstDay = new Date(self.settings.year, self.settings.month - 1, 1);
             var startDay = firstDay.getDay();
             return arrayChunk(createMonthArrays(startDay, days), 7);
         };
@@ -653,8 +648,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             var _30Days = ['4', '6', '9', '11', '8'];
 
             // get days in the specified month
-            if (_31Days.indexOf(monthStr) != -1) days = 31;else if (_30Days.indexOf(monthStr) != -1) days = 30;else if (month == 2) {
-                if (isLeapYear(year)) days = 29;else days = 28;
+            if (_31Days.indexOf(monthStr) != -1) days = 31; else if (_30Days.indexOf(monthStr) != -1) days = 30; else if (month == 2) {
+                if (isLeapYear(year)) days = 29; else days = 28;
             }
 
             // return the number of the days for the given month
@@ -675,9 +670,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 DATE_CELL = SELECTORS.DATE_CELL,
                 DATE_CELL_CONTENT = SELECTORS.DATE_CELL_CONTENT;
 
-            var cells = $(_this.el).find(CONTAINER + ' ' + CALENDAR + ' ' + WEEK_ROW + ' ' + DATE_CELL);
-            var height = $(cells[0]).outerWidth() > _this.settings.cellMaxHeigh ? _this.settings.cellMaxHeigh + 'px' : $(cells[0]).outerWidth() + 'px';
-            if (_this.settings.view != 'monthly') {
+            var cells = $(CONTAINER + ' ' + CALENDAR + ' ' + WEEK_ROW + ' ' + DATE_CELL);
+            var height = $(cells[0]).outerWidth() > self.settings.cellMaxHeigh ? self.settings.cellMaxHeigh + 'px' : $(cells[0]).outerWidth() + 'px';
+            if (self.settings.view != 'monthly') {
                 height = 'initial';
             }
             cells.find(DATE_CELL_CONTENT).css({ height: height });
@@ -690,8 +685,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 WEEK_ROW = SELECTORS.WEEK_ROW,
                 DATE_CELL = SELECTORS.DATE_CELL;
 
-            var cells = $(_this.el).find(CONTAINER + ' ' + CALENDAR + ' ' + WEEK_ROW + ' ' + DATE_CELL);
-            var width = $(_this.el).find(cells[0]).outerWidth();
+            var cells = $(CONTAINER + ' ' + CALENDAR + ' ' + WEEK_ROW + ' ' + DATE_CELL);
+            var width = $(cells[0]).outerWidth();
             var bgDistance = 0;
 
             for (var i = 0; i < cells.length; i++) {
@@ -716,8 +711,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         var listenForControlButtonClick = function listenForControlButtonClick() {
             // copy selector name
             var BUTTONS = copyVar(SELECTORS.CONTROL_BUTTONS);
-            $(_this.el).find(BUTTONS).off('click', handleControlButtonClick);
-            $(_this.el).find(BUTTONS).on('click', handleControlButtonClick);
+            $(BUTTONS).off('click', handleControlButtonClick);
+            $(BUTTONS).on('click', handleControlButtonClick);
         };
 
         var handleControlButtonClick = function handleControlButtonClick(ev) {
@@ -725,7 +720,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             var el = ev.target;
             var left = $(el).attr('left');
             var right = $(el).attr('right');
-            var settings = copyVar(_this.settings);
+            var settings = copyVar(self.settings);
             var direction = left !== undefined ? 'left' : undefined;
             direction = right !== undefined ? 'right' : direction;
 
@@ -746,7 +741,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         };
 
         var changeMonth = function changeMonth(direction) {
-            var settings = copyVar(_this.settings);
+            var settings = copyVar(self.settings);
 
             if (direction == 'left') {
                 // set year
@@ -761,7 +756,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             }
 
             // update object settings
-            _this.settings = $.extend({}, _this.settings, settings);
+            self.settings = $.extend({}, self.settings, settings);
             // get now
             var now = moment();
             // reset week start
@@ -775,7 +770,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         };
 
         var changeWeek = function changeWeek(direction) {
-            var settings = copyVar(_this.settings);
+            var settings = copyVar(self.settings);
             if (direction == 'left') {
                 weekStart = moment(weekStart).subtract(8, 'day');
             } else if (direction == 'right') {
@@ -785,7 +780,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             // get now
             var now = moment();
             // reset year start
-            _this.settings = $.extend({}, _this.settings, {
+            self.settings = $.extend({}, self.settings, {
                 year: weekStart.get('year'),
                 month: weekStart.get('month') + 1
             });
@@ -796,7 +791,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         };
 
         var changeDate = function changeDate(direction) {
-            var settings = copyVar(_this.settings);
+            var settings = copyVar(self.settings);
             if (direction == 'left') {
                 dailyDate = moment(dailyDate).subtract(1, 'day');
             } else if (direction == 'right') {
@@ -811,7 +806,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             }
 
             // reset year start
-            _this.settings = $.extend({}, _this.settings, {
+            self.settings = $.extend({}, self.settings, {
                 year: dailyDate.get('year'),
                 month: dailyDate.get('month') + 1
             });
@@ -824,7 +819,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             var CONTAINER = SELECTORS.CONTAINER,
                 ADD_MENU_CONTAINER = SELECTORS.ADD_MENU_CONTAINER;
 
-            var el = $(_this.el).find(CONTAINER).find(ADD_MENU_CONTAINER);
+            var el = $(CONTAINER).find(ADD_MENU_CONTAINER);
             if (!hide && el.length > 0 && !el.hasClass(CLASSNAMES.SHOW_COPIED_EVENT_MENU)) {
                 el.addClass(CLASSNAMES.SHOW_COPIED_EVENT_MENU);
             }
@@ -840,7 +835,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
             // turn click event listener off
 
-            $(_this.el).find(CONTAINER).find(ADD_MENU_BUTTON).off('click', handleAddMenuButtonClick);
+            $(CONTAINER).find(ADD_MENU_BUTTON).off('click', handleAddMenuButtonClick);
 
             // get element
             var el = $(ev.currentTarget);
@@ -878,7 +873,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
             // turn click event listener off
 
-            $(_this.el).find(CONTAINER).find(ADD_MENU_BUTTON).off('click', handleAddMenuButtonClick);
+            $(CONTAINER).find(ADD_MENU_BUTTON).off('click', handleAddMenuButtonClick);
 
             // get element
             var el = $(ev.currentTarget);
@@ -886,18 +881,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             switch (action) {
                 case 'edit-event':
                     // pop up modal
-                    _this.editFormModal.show(Object.assign({}, _this.formFields, _this.selectedEvent), _this.selectedEvent.id);
+                    self.editFormModal.show(self.selectedEvent, self.selectedEvent.id);
                     break;
                 case 'copy-event':
                     // display form with selected event's data
-                    copyEvent(_this.selectedEvent);
-                    break;
-                case 'delete-event':
-                    if (!confirm("Are you sure you want to delete, this event?")) {
-                        return;
-                    }
-                    // delete event
-                    deleteEvent(_this.selectedEvent.id);
+                    copyEvent(self.selectedEvent);
                     break;
                 case 'cancel':
                     // cancel selection
@@ -916,19 +904,19 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
         var copyEvent = function copyEvent(data) {
             // create new event data
-            _this.copiedEvent = Object.assign({}, data);
+            self.copiedEvent = Object.assign({}, data);
 
             // toggle copied event option on add menu
             toggleCopiedEventMenu();
 
             // show modal
-            // this.createFormModal.show(copyData);
+            // self.createFormModal.show(copyData);
         };
 
         var addEvent = function addEvent() {
             // get start and end
-            var start = _this.selection.length > 0 ? _this.selection[0] : null;
-            var end = _this.selection.length > 1 ? _this.selection[1] : start;
+            var start = self.selection.length > 0 ? self.selection[0] : null;
+            var end = self.selection.length > 1 ? self.selection[1] : start;
             // only continue if start is not null
             if (start == null) return;
 
@@ -943,7 +931,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             };
 
             // show modal
-            _this.createFormModal.show(Object.assign({}, _this.formFields, data));
+            self.createFormModal.show(data);
 
             // calcel selection
             cancelSelection();
@@ -951,8 +939,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
         var pasteEvent = function pasteEvent() {
             // get start and end
-            var start = _this.selection.length > 0 ? _this.selection[0] : null;
-            var end = _this.selection.length > 1 ? _this.selection[1] : start;
+            var start = self.selection.length > 0 ? self.selection[0] : null;
+            var end = self.selection.length > 1 ? self.selection[1] : start;
             // only continue if start is not null
             if (start == null) return;
 
@@ -961,16 +949,16 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             var endDate = new Date(end);
 
             // create new event data
-            var data = Object.assign({}, _this.copiedEvent, {
+            var data = Object.assign({}, self.copiedEvent, {
                 startDate: startDate.getMonth() + 1 + '/' + startDate.getDate() + '/' + startDate.getFullYear(),
                 endDate: endDate.getMonth() + 1 + '/' + endDate.getDate() + '/' + endDate.getFullYear()
-            }, _this.settings.data || {});
+            }, self.settings.data || {});
 
             // make ajax post request and try to save new event
             $.ajax({
-                url: _this.settings.createUrl || _this.settings.url,
+                url: self.settings.createUrl || self.settings.url,
                 data: data,
-                headers: _this.settings.headers,
+                headers: self.settings.headers,
                 method: 'POST'
             }).done(function () {
                 alert('Event pasted to date successfully!');
@@ -987,45 +975,20 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             cancelEventCopy();
         };
 
-        var deleteEvent = function deleteEvent(eventId) {
-            // stop if no event was passed
-            if (!eventId || !_this.settings.deleteUrl) {
-                return;
-            }
-
-            // make ajax post request and try to save new event
-            $.ajax({
-                url: _this.settings.deleteUrl.replace(':id', eventId),
-                headers: _this.settings.headers,
-                method: 'POST'
-            }).done(function () {
-                refreshCalendarEvents();
-            }).fail(function (err) {
-                // get and display error message
-                var message = 'Could not delete event, please try again in a moment.';
-                var message = err.message && err.message.length > 0 ? err.message : message;
-                alert(message);
-            });
-
-            // calcel selection
-            cancelSelection();
-            cancelEventCopy();
-        };
-
         var cancelEventCopy = function cancelEventCopy() {
-            _this.copiedEvent = undefined;
+            self.copiedEvent = undefined;
             toggleCopiedEventMenu(true);
         };
 
         var cancelSelection = function cancelSelection() {
-            _this.selection = [];
+            self.selection = [];
             updateSelection();
         };
 
         var cancelEventSelection = function cancelEventSelection() {
             toggleSelectedEventHighlight(true);
-            _this.selectedEvent = undefined;
-            _this.selectedEventTarget = undefined;
+            self.selectedEvent = undefined;
+            self.selectedEventTarget = undefined;
             toggleEventMenuVisiblity();
         };
 
@@ -1033,18 +996,18 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             // detect escape key press
             if (event && event.keyCode == 27) {
                 // detect if focused
-                if (_this.selectedEvent) {
+                if (self.selectedEvent) {
                     // check if escape close for event menu is enabled
-                    if (_this.settings.escCloseEventMenu) {
+                    if (self.settings.escCloseEventMenu) {
                         // dismiss popover
                         cancelEventSelection();
                     }
                 }
 
                 // check if escape close for event menu is enabled
-                if (_this.settings.escCloseAddMenu) {
+                if (self.settings.escCloseAddMenu) {
                     // detect if dates havve been selected
-                    if (_this.selection && _this.selection.length > 0) {
+                    if (self.selection && self.selection.length > 0) {
                         cancelSelection();
                     }
                 }
@@ -1052,7 +1015,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         };
 
         var handleEventClick = function handleEventClick(eventData, ev) {
-            if (_this.settings.disableForm) {
+            if (self.settings.disableForm) {
                 return;
             }
 
@@ -1073,20 +1036,21 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             toggleSelectedEventHighlight(true);
 
             // set selected eventData
-            _this.selectedEvent = Object.assign({}, data);
-            _this.selectedEventTarget = $(ev.currentTarget);
+            self.selectedEvent = Object.assign({}, data);
+            self.selectedEventTarget = $(ev.currentTarget);
 
             // highlight selected events
             toggleSelectedEventHighlight();
 
+            // console.log(ev.currentTarget);
             toggleEventMenuVisiblity();
 
-            // this.editFormModal.show(data, eventData.id);
+            // self.editFormModal.show(data, eventData.id);
         };
 
         var toggleSelectedEventHighlight = function toggleSelectedEventHighlight(remove) {
-            if (_this.selectedEventTarget) {
-                var eventButtons = $(_this.el).find('.cp-ev-event[data-evid=' + _this.selectedEventTarget.attr('data-evid') + ']');
+            if (self.selectedEventTarget) {
+                var eventButtons = $('.cp-ev-event[data-evid=' + self.selectedEventTarget.attr('data-evid') + ']');
                 if (eventButtons.length > 0) {
                     if (remove) {
                         eventButtons.removeClass('cp-ev-event-selected');
@@ -1100,17 +1064,17 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         var listenForDateSelect = function listenForDateSelect() {
             var DATE_DAY = SELECTORS.DATE_DAY;
 
-            $(_this.el).find(DATE_DAY).off('click', handleDateSelect);
-            $(_this.el).find(DATE_DAY).on('click', handleDateSelect);
+            $(DATE_DAY).off('click', handleDateSelect);
+            $(DATE_DAY).on('click', handleDateSelect);
         };
 
         var handleDateSelect = function handleDateSelect(ev) {
             // turn off click event listener
             var DATE_DAY = SELECTORS.DATE_DAY;
 
-            $(_this.el).find(DATE_DAY).off('click', handleDateSelect);
+            $(DATE_DAY).off('click', handleDateSelect);
 
-            if (_this.settings.disableForm) {
+            if (self.settings.disableForm) {
                 return;
             }
 
@@ -1118,20 +1082,20 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             var el = ev.currentTarget;
             if (!$(ev.target).hasClass('cp-ev-event') && !$(ev.target).hasClass('cp-ev-event-label')) {
                 var date = $(el).attr('data-date');
-                var start = _this.selection.length > 0 ? _this.selection[0] : 0;
-                var end = _this.selection.length > 1 ? _this.selection[1] : start;
+                var start = self.selection.length > 0 ? self.selection[0] : 0;
+                var end = self.selection.length > 1 ? self.selection[1] : start;
                 if (date != undefined) {
                     date = parseInt(date);
                     if (start < 1 || start > 0 && date < start) {
                         // make start date equal to date
-                        _this.selection[0] = date;
+                        self.selection[0] = date;
                     } else if (date == start && end == start) {
                         // reset 
-                        _this.selection = [];
+                        self.selection = [];
                     } else if (date == start) {
-                        _this.selection = [start];
+                        self.selection = [start];
                     } else {
-                        _this.selection[1] = date;
+                        self.selection[1] = date;
                     }
                 }
 
@@ -1148,9 +1112,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 DATE_DAY = SELECTORS.DATE_DAY;
             var DATE_SELECTED = CLASSNAMES.DATE_SELECTED;
 
-            var days = $(_this.el).find(CALENDAR).find(DATE_DAY);
-            var start = _this.selection.length > 0 ? _this.selection[0] : 0;
-            var end = _this.selection.length > 1 ? _this.selection[1] : start;
+            var days = $(CALENDAR).find(DATE_DAY);
+            var start = self.selection.length > 0 ? self.selection[0] : 0;
+            var end = self.selection.length > 1 ? self.selection[1] : start;
             if (days && days.length > 0) {
                 for (var i = 0; i < days.length; i++) {
                     // get element and date
@@ -1173,13 +1137,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                             $(el).addClass(DATE_SELECTED);
                         }
                     } else // if date is found in selection
-                        {
-                            // if the element has the selected class
-                            if ($(el).hasClass(DATE_SELECTED)) {
-                                // remove selected class from element
-                                $(el).removeClass(DATE_SELECTED);
-                            }
+                    {
+                        // if the element has the selected class
+                        if ($(el).hasClass(DATE_SELECTED)) {
+                            // remove selected class from element
+                            $(el).removeClass(DATE_SELECTED);
                         }
+                    }
                 }
             }
             toggleAddMenuVisiblity();
@@ -1196,7 +1160,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
             // select elements
 
-            var container = $(_this.el).find(CONTAINER);
+            var container = $(CONTAINER);
             var selected = container.find(DATE_SELECTED);
             var addMenuEl = container.find(ADD_MENU_CONTAINER);
 
@@ -1227,12 +1191,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
             // select elements
 
-            var container = $(_this.el).find(CONTAINER);
+            var container = $(CONTAINER);
             var selected = container.find(DATE_SELECTED);
             var eventMenuEl = container.find(EVENT_MENU_CONTAINER);
 
             // toggle visibility
-            if (_this.selectedEventTarget && _this.selectedEventTarget.length > 0) {
+            if (self.selectedEventTarget && self.selectedEventTarget.length > 0) {
                 if (!eventMenuEl.hasClass(EVENT_MENU_VISIBLE)) {
                     eventMenuEl.addClass(EVENT_MENU_VISIBLE);
                     cancelSelection();
@@ -1241,7 +1205,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 if (eventMenuEl.hasClass(EVENT_MENU_VISIBLE)) {
                     eventMenuEl.removeClass(EVENT_MENU_VISIBLE);
                 }
-                _this.selectedEventTarget = undefined;
+                self.selectedEventTarget = undefined;
             }
 
             // reposition event menu
@@ -1257,15 +1221,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
             // get end element
 
-            var end = _this.selectedEventTarget;
-            var container = $(_this.el).find(CONTAINER);
+            var end = self.selectedEventTarget;
+            var container = $(CONTAINER);
             var eventMenuEl = container.find(EVENT_MENU_CONTAINER);
             var viewport = getViewport();
 
             if (end != null && end != undefined) {
                 var offset = end.offset();
                 var left = offset ? offset.left : 0;
-                var top = offset ? offset.top + end.outerHeight() - 10 - container.position().top : 0;
+                var top = offset ? offset.top + end.outerHeight() - 10 : 0;
 
                 if (end.outerWidth() > eventMenuEl.outerWidth()) {
                     left = left + (end.outerWidth() - eventMenuEl.outerWidth()) / 2;
@@ -1299,14 +1263,14 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             // get end element
 
             var end = getSelectionEndCell();
-            var container = $(_this.el).find(CONTAINER);
+            var container = $(CONTAINER);
             var addMenuEl = container.find(ADD_MENU_CONTAINER);
             var viewport = getViewport();
 
             if (end != null && end != undefined) {
                 var offset = end.offset();
                 var left = offset ? offset.left : 0;
-                var top = offset ? offset.top + end.outerHeight() - 10 - container.position().top : 0;
+                var top = offset ? offset.top + end.outerHeight() - 10 : 0;
 
                 if (end.outerWidth() > addMenuEl.outerWidth()) {
                     left = left + (end.outerWidth() - addMenuEl.outerWidth()) / 2;
@@ -1331,8 +1295,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         };
 
         var repositionEvents = function repositionEvents() {
-            for (var i = 0; i < _this.eventInstances.length; i++) {
-                var eventInstance = _this.eventInstances[i];
+            for (var i = 0; i < self.eventInstances.length; i++) {
+                var eventInstance = self.eventInstances[i];
                 eventInstance.reposition();
             }
         };
@@ -1359,15 +1323,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         };
 
         var getSeason = function getSeason() {
-            for (var name in _this.settings.seasons) {
+            for (var name in self.settings.seasons) {
                 // get season
-                var season = _this.settings.seasons[name];
+                var season = self.settings.seasons[name];
 
                 // skip season if not supported
                 if (season == null) continue;
 
                 // skip if month is not season
-                if (season.months.indexOf(_this.settings.month) == -1) continue;
+                if (season.months.indexOf(self.settings.month) == -1) continue;
 
                 // return season info
                 return {
@@ -1381,8 +1345,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
         var getSelectionEndCell = function getSelectionEndCell() {
             // get end date from selection
-            var start = _this.selection.length > 0 ? _this.selection[0] : null;
-            var end = _this.selection.length > 1 ? _this.selection[1] : start;
+            var start = self.selection.length > 0 ? self.selection[0] : null;
+            var end = self.selection.length > 1 ? self.selection[1] : start;
 
             // get plugin html selector references
             var CONTAINER = SELECTORS.CONTAINER,
@@ -1391,7 +1355,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             // select end element if an end date is set
 
             if (end) {
-                end = $(_this.el).find(CONTAINER).find('[data-date="' + end + '"]');
+                end = $(CONTAINER).find('[data-date="' + end + '"]');
             }
 
             // return end
@@ -1411,19 +1375,19 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             }
 
             // get url
-            var url = _this.settings.getUrl || _this.settings.url || null;
+            var url = self.settings.list_url || self.settings.url || null;
 
             // stop if url is not set
             if (!url) return;
 
             // join default data and form data
-            var data = $.extend({}, _this.settings.data, {
-                month: _this.settings.month,
-                year: _this.settings.year
+            var data = $.extend({}, self.settings.data, {
+                month: self.settings.month,
+                year: self.settings.year
             });
 
             // join default headers with custom headers
-            var headers = $.extend({}, _this.settings.headers);
+            var headers = $.extend({}, self.settings.headers);
 
             // get event
             var getEventsRequest = $.ajax({
@@ -1436,7 +1400,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
         var refreshCalendarEventsDone = function refreshCalendarEventsDone(resp) {
             // get the events
-            _this.events = getEventsData(resp);
+            self.events = getEventsData(resp);
             // render events
             renderEvents();
         };
@@ -1450,14 +1414,14 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         };
 
         var getEventsData = function getEventsData(data) {
-            if (_this.settings.respData === null) return data;
+            if (self.settings.respData === null) return data;
 
-            if (typeof _this.settings.respData != 'string') {
+            if (typeof self.settings.respData != 'string') {
                 console.error(new Error('Data path invalid, please contact system\'s admin.'));
                 return data;
             }
 
-            var dataPath = copyVar(_this.settings.respData);
+            var dataPath = copyVar(self.settings.respData);
             dataPath = dataPath.trim();
             dataPath = dataPath.split('.');
 
@@ -1478,11 +1442,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         };
 
         var parseEvent = function parseEvent(data) {
-            if (_this.settings.map && _this.settings.map.constructor == Object) {
+            if (self.settings.map && self.settings.map.constructor == Object) {
                 var transform = Object.assign({}, data);
-                var mapKeys = Object.keys(_this.settings.map);
+                var mapKeys = Object.keys(self.settings.map);
                 for (var i = 0; i < mapKeys.length; i++) {
-                    transform[mapKeys[i]] = findData(data, _this.settings.map[mapKeys[i]]);
+                    transform[mapKeys[i]] = findData(data, self.settings.map[mapKeys[i]]);
                 }
                 return transform;
             }
@@ -1543,26 +1507,25 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 CONTAINER = SELECTORS.CONTAINER,
                 CONTAINER_ID = SELECTORS.CONTAINER_ID,
                 format = el.attr('data-format'),
-                target = $(_this.el).find('#' + CONTAINER_ID);
+                target = $('#' + CONTAINER_ID);
 
 
-            if (format == 'pdf') {} else if (format == 'docx') {}
+            if (format == 'pdf') { } else if (format == 'docx') { }
         };
 
         var listenViewSelect = function listenViewSelect() {
-            $(_this.el).find(SELECTORS.VIEW_SELECTOR).off('click', handleViewSelect);
-            $(_this.el).find(SELECTORS.VIEW_SELECTOR).on('click', handleViewSelect);
+            $(SELECTORS.VIEW_SELECTOR).off('click', handleViewSelect);
+            $(SELECTORS.VIEW_SELECTOR).on('click', handleViewSelect);
         };
 
         var handleViewSelect = function handleViewSelect(ev) {
-
             var el = $(ev.currentTarget);
             var option = el.attr('data-option');
-            if (_this.viewOptions.indexOf(option) == -1) {
+            if (self.viewOptions.indexOf(option) == -1) {
                 option = 'monthly';
             }
-            if (_this.settings.view != option) {
-                _this.settings = $.extend({}, _this.settings, {
+            if (self.settings.view != option) {
+                self.settings = $.extend({}, self.settings, {
                     view: option
                 });
                 // remove any selection
@@ -1576,11 +1539,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             var VIEWS_LIST_CONTAINER = SELECTORS.VIEWS_LIST_CONTAINER;
 
 
-            var option = $(_this.el).find(VIEWS_LIST_CONTAINER).find("[data-option='" + _this.settings.view + "']");
+            var option = $(VIEWS_LIST_CONTAINER).find("[data-option='" + self.settings.view + "']");
 
             if (option.length > 0) {
                 if (!option.hasClass(CLASSNAMES.ACTIVE)) {
-                    $(_this.el).find(VIEWS_LIST_CONTAINER).find("[data-toggle='calendar-view']").removeClass(CLASSNAMES.ACTIVE);
+                    $(VIEWS_LIST_CONTAINER).find("[data-toggle='calendar-view']").removeClass(CLASSNAMES.ACTIVE);
                     option.addClass(CLASSNAMES.ACTIVE);
                 }
             }
@@ -1594,23 +1557,20 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         };
 
         var destroy = function destroy() {
-            if (_this.createFormModal) {
-                _this.createFormModal.destroy();
+            if (self.createFormModal) {
+                self.createFormModal.destroy();
             }
-            if (_this.editFormModal) {
-                _this.editFormModal.destroy();
+            if (self.editFormModal) {
+                self.editFormModal.destroy();
             }
-            $(_this.el).children().remove().call(function () {
-                $(_this.el).html('');
+            $(self.el).children().remove().call(function () {
+                $(self.el).html('');
             });
         };
-    };
+    }();
 
     // initialize plugin
-    $.fn[NAME] = function (options) {
-        var c334Ted = new CalenderPlugin();
-        c334Ted.init(this, options);
-    };
+    $.fn[NAME] = CalenderPlugin.init;
 
     /**
      * This simply allows for adding the call method to jquery
@@ -1946,7 +1906,7 @@ var CPEventFormModal = function () {
             // reset/set listeners
             this.listeners();
             // enable datetime fields
-            this.enableDateteFields();
+            this.enableDatetieFields();
         }
     }, {
         key: 'render',
@@ -1979,9 +1939,9 @@ var CPEventFormModal = function () {
         value: function html() {
             var _this3 = this;
 
-            return ('\n            <div class="' + this.PREFIX + '-modal">\n                <div class="' + this.PREFIX + '-backdrop">&nbsp;</div>\n                <div class="' + this.PREFIX + '-content">\n                    <div class="' + this.PREFIX + '-dialog">\n                        <form action="javascript:;" class="' + this.PREFIX + '-form" method="POST">\n                            <fieldset>\n                                ' + (this.options.fieldsList.constructor == Array ? this.options.fieldsList.map(function (group, index) {
+            return ('\n            <div class="' + this.PREFIX + '-modal">\n                <div class="' + this.PREFIX + '-backdrop">&nbsp;</div>\n                <div class="' + this.PREFIX + '-content">\n                    <div class="' + this.PREFIX + '-dialog">\n                        <form action="javascript:;" class="' + this.PREFIX + '-form" method="POST">\n                            <fieldset>\n                            ' + (this.options.fieldsList.constructor == Array ? this.options.fieldsList.map(function (group, index) {
                 return _this3.renderFieldsList(group, index);
-            }).join('') : null) + '\n                                <div class="' + this.PREFIX + '-actions">\n                                    ' + (this.options.editting ? '<button type="button" class="' + this.PREFIX + '-button delete"> Delete </button>' : "") + '\n                                    <button type="button" class="' + this.PREFIX + '-button ' + this.CLASSNAMES().CANCEL + '">Cancel</button>\n                                    <button type="submit" class="' + this.PREFIX + '-button ' + this.CLASSNAMES().SAVE + '">Save</button>\n                                </div>\n                            </fieldset>\n                        </form>\n                    </div>\n                </div>\n            </div>\n        ').trim();
+            }).join('') : null) + '\n                                <div class="' + this.PREFIX + '-actions">\n                                    ' + (this.options.editting ? '<button type="button" \n                                            class="' + this.PREFIX + '-button delete"\n                                        > Delete </button>' : "") + '\n                                    <button type="button" class="' + this.PREFIX + '-button ' + this.CLASSNAMES().CANCEL + '">Cancel</button>\n                                    <button type="submit" class="' + this.PREFIX + '-button ' + this.CLASSNAMES().SAVE + '">Save</button>\n                                </div>\n                            </fieldset>\n                        </form>\n                    </div>\n                </div>\n            </div>\n        ').trim();
         }
     }, {
         key: 'renderFieldsList',
@@ -2000,28 +1960,27 @@ var CPEventFormModal = function () {
             var id = '' + parent + this.PREFIX + '-group-item' + index;
             var container = '#' + id;
             var composition = null;
-            // console.log($(`#${this.uniqueID}`));
             if (field && (typeof field === 'undefined' ? 'undefined' : _typeof(field)) == 'object' && field.constructor == Object && Object.keys(field)) {
                 // create field based on type
                 switch (field.type) {
                     case 'text':
-                        composition = new CPFText(container, _extends({}, field, { modal: '#' + this.uniqueID }));
+                        composition = new CPFText(container, _extends({}, field));
                         break;
                     case 'date':
-                        composition = new CPFDate(container, _extends({}, field, { modal: '#' + this.uniqueID }));
+                        composition = new CPFDate(container, _extends({}, field));
                         break;
                     case 'datetime':
-                        composition = new CPFDatetime(container, _extends({}, field, { modal: '#' + this.uniqueID }));
+                        composition = new CPFDatetime(container, _extends({}, field));
                         this.dateTimeFields.push(composition);
                         break;
                     case 'select':
-                        composition = new CPFSelect(container, _extends({}, field, { modal: '#' + this.uniqueID }));
+                        composition = new CPFSelect(container, _extends({}, field));
                         break;
                     case 'radio':
-                        composition = new CPFRadioGroup(container, _extends({}, field, { modal: '#' + this.uniqueID }));
+                        composition = new CPFRadioGroup(container, _extends({}, field));
                         break;
                     case 'time':
-                        composition = new CPFTime(container, _extends({}, field, { modal: '#' + this.uniqueID }));
+                        composition = new CPFTime(container, _extends({}, field));
                         break;
                 }
             }
@@ -2073,8 +2032,8 @@ var CPEventFormModal = function () {
             this.modal.find(FORM).on('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', this.handleFormTransitionEnd.bind(this));
         }
     }, {
-        key: 'enableDateteFields',
-        value: function enableDateteFields() {
+        key: 'enableDatetieFields',
+        value: function enableDatetieFields() {
             if (this.dateTimeFields.length > 0 && flatpickr !== undefined) {
                 this.flatpickrs = {};
                 for (var i = 0; i < this.dateTimeFields.length; i++) {
@@ -2123,7 +2082,7 @@ var CPEventFormModal = function () {
         }
     }, {
         key: 'handleFormTransitionEnd',
-        value: function handleFormTransitionEnd(ev) {}
+        value: function handleFormTransitionEnd(ev) { }
     }, {
         key: 'show',
         value: function show(data, id) {
@@ -2142,7 +2101,8 @@ var CPEventFormModal = function () {
     }, {
         key: 'confirmDelete',
         value: function confirmDelete() {
-            if (confirm("Are you sure you want to delete, this event?")) {
+            if (confirm("Are you sure you want to delete, this event?"));
+            {
                 this.delete();
             }
         }
@@ -2317,9 +2277,6 @@ var CPEventFormModal = function () {
         value: function getFormData() {
             var data = {};
             for (var i = 0; i < this.fields.length; i++) {
-                if (this.fields[i].muted) {
-                    continue;
-                }
                 data[this.fields[i].name] = this.fields[i].getValue();
             }
             // get form values
@@ -2328,8 +2285,10 @@ var CPEventFormModal = function () {
     }, {
         key: 'save',
         value: function save() {
+            // get post url
+            var url = this.buildUrl();
             // stop if no url was specified
-            if (!this.buildUrl()) return;
+            if (url == null) return;
             // join default data and form data
             var data = Object.assign({}, this.options.data, this.getFormData());
             data = this.addStructs(data);
@@ -2339,10 +2298,10 @@ var CPEventFormModal = function () {
             this.disable(true);
             // make ajax post request and try to save new event
             $.ajax({
-                url: this.buildUrl(),
+                url: this.options.url,
                 data: data,
                 headers: headers,
-                method: 'POST'
+                method: this.options.editting ? 'PUT' : 'POST'
             }).done(this.saveDone.bind(this)).fail(this.saveFailed.bind(this));
         }
     }, {
@@ -2403,10 +2362,10 @@ var CPEventFormModal = function () {
             this.disable(true);
             // make ajax post request and try to delete new event
             $.ajax({
-                url: url,
+                url: this.options.url,
                 data: data,
                 headers: headers,
-                method: 'POST'
+                method: 'DELETE'
             }).done(this.deleteDone.bind(this)).fail(this.deleteFailed.bind(this));
         }
     }, {
@@ -2442,9 +2401,13 @@ var CPEventFormModal = function () {
             deleteUrl = deleteUrl ? true : false;
             if (!deleteUrl && this.options.url == null || deleteUrl && this.options.deleteUrl == null) return null;
             var url = deleteUrl ? JSON.parse(JSON.stringify(this.options.deleteUrl)) : JSON.parse(JSON.stringify(this.options.url));
+            var regex = new RegExp(/^(:id)$/, 'ig');
             if (this.options.editting) {
-                url = url.replace(':id', this.id);
-                this.options.data = Object.assign({}, this.options.data, { id: this.id });
+                if (regex.test(url)) {
+                    url = url.replace(regex, this.id);
+                } else {
+                    this.options.data = Object.assign({}, this.options.data, { id: this.id });
+                }
             }
             return url;
         }
@@ -2526,16 +2489,6 @@ var CPField = function () {
             writable: true,
             value: null
         });
-        Object.defineProperty(this, "value", {
-            enumerable: true,
-            writable: true,
-            value: null
-        });
-        Object.defineProperty(this, "muted", {
-            enumerable: true,
-            writable: true,
-            value: false
-        });
 
         this.container = container;
         this.props = Object.assign({}, this.props, props);
@@ -2580,11 +2533,6 @@ var CPField = function () {
             if (typeof this.completedRender == 'function') {
                 this.completedRender();
             }
-            this.initiateListener();
-            if (this.props.bindTo && typeof this.props.bindTo.name == 'string') {
-                this.handleSiblinOnChange();
-            }
-            this.initiateBound();
         }
     }, {
         key: "setDefaultValue",
@@ -2652,15 +2600,17 @@ var CPField = function () {
                 return;
             }
 
-            $(this.containerSelector).children(this.fieldSelector).val(value);
+            if (this.type == 'radio') {
+                $(this.containerSelector).children(this.htmlType() + "[value=\"" + value + "\"]").prop('checked', true);
+                return;
+            }
+
+            $(this.containerSelector).children(this.htmlType() + "[name=\"" + this.name + "\"]").val(value);
         }
     }, {
         key: "getValue",
         value: function getValue() {
-            // return $(this.containerSelector)
-            //     .children(this.fieldSelector)
-            //     .val();
-            return this.value;
+            return $(this.containerSelector).children(this.fieldSelector).val();
         }
     }, {
         key: "htmlType",
@@ -2675,91 +2625,8 @@ var CPField = function () {
             }
         }
     }, {
-        key: "initiateBound",
-        value: function initiateBound() {
-            var _this = this;
-
-            if (this.props.bindTo) {
-                $(this.props.modal).find(this.props.bindTo.name).off('change keyup', function () {
-                    return _this.handleSiblinOnChange();
-                });
-
-                $(this.props.modal).find(this.props.bindTo.name).on('change keyup', function () {
-                    return _this.handleSiblinOnChange();
-                });
-            }
-        }
-    }, {
-        key: "handleSiblinOnChange",
-        value: function handleSiblinOnChange() {
-            var whenVals = this.props.bindTo && typeof this.props.bindTo.when == 'string' && this.props.bindTo.when.split('|') || [];
-            var value = void 0;
-            var target = void 0;
-            var selector = $(this.props.modal).find("" + this.props.bindTo.name);
-            var tagName = selector.length > 0 && selector[0].tagName || null;
-            var fieldType = tagName && selector[0].type || null;
-
-            if (tagName && fieldType) {
-                if (tagName == 'INPUT' && fieldType == 'radio') {
-                    target = $(this.props.modal).find(this.props.bindTo.name + ":checked");
-                    value = target.val();
-                } else if (tagName == 'INPUT' && fieldType == 'checkbox') {
-                    target = $(this.props.modal).find("" + this.props.bindTo.name);
-                } else {
-                    target = $(this.props.modal).find(this.props.bindTo.name);
-                    value = target.val();
-                }
-            }
-
-            if (fieldType == 'checkbox') {
-                if (this.props.bindTo.when == ':checked') {
-                    this.muted = !target.is(this.props.bindTo.when);
-                } else {
-                    this.muted = target.is(this.props.bindTo.when);
-                }
-            } else {
-                this.muted = whenVals.indexOf(value) == -1;
-            }
-
-            if (this.muted) {
-                $(this.container).addClass('muted');
-            } else {
-                $(this.container).removeClass('muted');
-            }
-        }
-    }, {
-        key: "initiateListener",
-        value: function initiateListener() {
-            var _this2 = this;
-
-            $(this.containerSelector).find(this.fieldSelector).off('change keyup', function (event) {
-                return _this2.handleOnChange(event);
-            });
-
-            $(this.containerSelector).find(this.fieldSelector).on('change keyup', function (event) {
-                return _this2.handleOnChange(event);
-            });
-        }
-    }, {
-        key: "handleOnChange",
-        value: function handleOnChange(event) {
-            this.value = event.target.value;
-        }
-    }, {
         key: "destory",
         value: function destory() {
-            var _this3 = this;
-
-            $(this.containerSelector).find(this.fieldSelector).off('change keyup', function (event) {
-                return _this3.handleOnChange(event);
-            });
-
-            if (this.props.bindTo) {
-                $(this.props.modal).find(this.props.bindTo.name).on('change keyup', function (event) {
-                    return _this3.handleSiblinOnChange(event);
-                });
-            }
-
             $(this.containerSelector).remove();
         }
     }]);
@@ -2869,19 +2736,6 @@ var CPFRadioGroup = function (_CPField) {
             return '\n            <div class="' + this.prefix + '-control-group radio-group" ' + this.idAttribute + '="' + this.id + '">\n                ' + this.label() + '\n                ' + optionKeys.map(function (key) {
                 return _this2.renderOptions(key, options[key]);
             }).join("") + '\n            </div>\n        ';
-        }
-    }, {
-        key: 'setValue',
-        value: function setValue(value) {
-            if (this.type == 'radio') {
-                var checkedOne = $(this.containerSelector).find(this.fieldSelector + ':checked');
-                if (checkedOne.length > 0) {
-                    checkedOne.prop('checked', false).trigger("change");
-                }
-
-                $(this.containerSelector).find(this.htmlType() + '[value="' + value + '"]').prop('checked', true).trigger("change");
-                return;
-            }
         }
     }, {
         key: 'getValue',
