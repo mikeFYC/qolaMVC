@@ -157,7 +157,11 @@ namespace QolaMVC.Controllers
             return RedirectToAction("DietaryHistory");
         }
 
-        public ActionResult ExerciseActivity(string index)
+
+
+        #region EXERCISE ACTIVITY
+
+        public ActionResult ExerciseActivity(string index,string number)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -166,27 +170,18 @@ namespace QolaMVC.Controllers
             ViewBag.Resident = resident;
             ViewBag.Home = home;
             var vm = new ExcerciseActivityViewModel();
-            vm.Detail = AssessmentDAL.GetExcerciseActivityDetail(resident.ID);
-            vm.ExcerciseSummary = AssessmentDAL.GetExcerciseActivitySummary(resident.ID);
-            vm.HSEPDetail = AssessmentDAL.GetHSEPDetail(resident.ID);
-            if(vm.Detail.Count == 0 || vm.HSEPDetail.Count == 0)
-            {
-                QolaCulture.InitExcerciseActivity(ref vm);
-            }
+            //vm.Detail = AssessmentDAL.GetExcerciseActivityDetail(resident.ID);
+            //vm.ExcerciseSummary = AssessmentDAL.GetExcerciseActivitySummary(resident.ID);
+            //vm.HSEPDetail = AssessmentDAL.GetHSEPDetail(resident.ID);
+            //if(vm.Detail.Count == 0 || vm.HSEPDetail.Count == 0)
+            //{
+            //    QolaCulture.InitExcerciseActivity(ref vm);
+            //}
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
 
-            //vm.FIRST_WEEK = AssessmentDAL.get_week(resident.ID, "1");
-            //vm.SECOND_WEEK = AssessmentDAL.get_week(resident.ID, "2");
-            //vm.THIRD_WEEK = AssessmentDAL.get_week(resident.ID, "3");
-            //vm.FORTH_WEEK = AssessmentDAL.get_week(resident.ID, "4");
-
-            //if (vm.FIRST_WEEK.Count == 0)   { QolaCulture.InitExcerciseActivity_week1(ref vm);}
-            //if (vm.SECOND_WEEK.Count == 0)  { QolaCulture.InitExcerciseActivity_week2(ref vm); }
-            //if (vm.THIRD_WEEK.Count == 0)   { QolaCulture.InitExcerciseActivity_week3(ref vm); }
-            //if (vm.FORTH_WEEK.Count == 0)   { QolaCulture.InitExcerciseActivity_week4(ref vm); }
 
             vm.mike= AssessmentDAL.getmike(resident.ID);
             if (vm.mike.Count == 0)
@@ -202,12 +197,26 @@ namespace QolaMVC.Controllers
                 vm.HSEPDetail_mike.Add(new HSEPDetailModel_mike());
             }
 
+            vm.ExcerciseSummary_mike = AssessmentDAL.GetExcerciseActivitySummary_mike(resident.ID);
+            if (vm.ExcerciseSummary_mike.Count == 0)
+            {
+                vm.ExcerciseSummary_mike = new Collection<ExcerciseActivitySummaryModel_mike>();
+                vm.ExcerciseSummary_mike.Add(new ExcerciseActivitySummaryModel_mike());
+            }
+
             List<DateTime> l_AssessmentDates = new List<DateTime>();
             foreach (var l_A in vm.mike)
             {
                 l_AssessmentDates.Add(l_A.start_time);
             }
             ViewBag.AssessmentDates = l_AssessmentDates;
+
+            List<DateTime> l_AssessmentDates2 = new List<DateTime>();
+            foreach (var l_A in vm.ExcerciseSummary_mike)
+            {
+                l_AssessmentDates2.Add(l_A.StartTime);
+            }
+            ViewBag.AssessmentDates2 = l_AssessmentDates2;
 
 
             if (index == null || index == "")
@@ -223,7 +232,19 @@ namespace QolaMVC.Controllers
                 vm.HSEPDetail_mike_single = vm.HSEPDetail_mike[int.Parse(index)];
             }
 
+            if (number == null || number == "")
+            {
+                TempData["number"] = "0";
+                vm.ExcerciseSummary_mike_single = vm.ExcerciseSummary_mike[0];
+            }
+            else
+            {
+                TempData["number"] = number;
+                vm.ExcerciseSummary_mike_single = vm.ExcerciseSummary_mike[int.Parse(number)];
+            }
+
             TempData.Keep("index");
+            TempData.Keep("number");
             return View(vm);
         }
 
@@ -294,8 +315,9 @@ namespace QolaMVC.Controllers
             //AssessmentDAL.AddExcerciseActivitySummary(vm.ExcerciseSummary);
 
             var ind = TempData["index"];
+            var num = TempData["number"];
 
-            return RedirectToAction("ExerciseActivity", new { index = ind });
+            return RedirectToAction("ExerciseActivity", new { index = ind , number = num});
         }
 
         public ActionResult Add_ExcerciseActivity_mike()
@@ -309,9 +331,43 @@ namespace QolaMVC.Controllers
             DateTime sameTime = DateTime.Now;
             AssessmentDAL.ADDExcerciseActivity_mike(resident.ID,user.ID, sameTime);
             AssessmentDAL.ADDHSEPDetail_mike(resident.ID, user.ID, sameTime);
-
-            return RedirectToAction("ExerciseActivity");
+            string ind = TempData["index"].ToString();
+            string num = TempData["number"].ToString();
+            return RedirectToAction("ExerciseActivity", new { index = 0, number = num });
         }
+
+        public ActionResult Add_ExcerciseSummary_mike()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            DateTime sameTime = DateTime.Now;
+            AssessmentDAL.Add_ExcerciseSummary_mike(resident.ID, user.ID, sameTime);
+            string ind=TempData["index"].ToString();
+            string num=TempData["number"].ToString();
+            return RedirectToAction("ExerciseActivity" , new { index = ind, number=0 });
+        }
+
+        public ActionResult TUG_CLICK(string ID,string number)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            string ind = TempData["index"].ToString();
+            string num = TempData["number"].ToString();
+            TempData.Keep("index");
+            TempData.Keep("number");
+            return View();
+        }
+
+        #endregion
+
 
 
         public ActionResult FamilyConference()

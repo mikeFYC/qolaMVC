@@ -23,4 +23,27 @@ namespace QolaMVC.Models
         public UserModel EnteredBy { get; set; }
         public DateTime DateEntered { get; set; }
     }
+
+    public class ExcerciseActivitySummaryModel_mike
+    {
+        public int Id { get; set; }
+        public int Residentid { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+        public int EnteredBy { get; set; }
+        public DateTime DateEntered { get; set; }
+
+        public string BaselineDate { get; set; }
+        public string BaselineTug { get; set; }
+        public string BaselineVPS { get; set; }
+
+        public string TMonthDate { get; set; }
+        public string TMonthTug { get; set; }
+        public string TMonthVPS { get; set; }
+
+        public string SMonthDate { get; set; }
+        public string SMonthTug { get; set; }
+        public string SMonthVPS { get; set; }
+
+    }
 }

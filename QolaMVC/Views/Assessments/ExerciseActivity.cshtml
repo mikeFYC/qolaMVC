@@ -61,15 +61,21 @@
 <script>
     function formsubmit(ee) {
         var index = $('#selectdate').val();
+        var number = $('#selectdate2').val();
         if (window.location.href.includes("?")) {
-            window.location.href = window.location.href.substring(0, window.location.href.length - 1) + index;
+            var question_location = window.location.href.indexOf('?');
+            window.location.href = window.location.href.substring(0, question_location) + '?index='+index+"&number="+number;
         }
         else {
-            window.location.href = window.location.href + "?index=" + index;
+            window.location.href = window.location.href + "?index=" + index+'&number='+number;
         }
     }
 
-
+    function TUG_CLICK(ee) {
+        var number = ee.getAttribute('number');
+        var ID = ee.getAttribute('name');
+        location.href = '@Url.Action("TUG_CLICK", "Assessments")?ID=' + ID + '&number=' + number;
+    }
 
 </script>
 
@@ -111,9 +117,26 @@
 
 
                             <div class="row">
+
+                                <div style="max-width:50%;">
+                                    <label style="font-size:1.5vw;display:inline-block;">TUG/VPS History:</label>
+                                    <select name="AssessmentDate" id="selectdate2" onchange="formsubmit(this)" style="width:12vw;height:2.5vw;font-size:1.5vw;display:inline-block;">
+                                        @if (ViewBag.AssessmentDates != null)
+                                        {
+
+                                            for (var ind = 0; ind < ((List<DateTime>)ViewBag.AssessmentDates2).Count(); ind++)
+                                            {
+                                                <option value=@ind>@(((List<DateTime>)ViewBag.AssessmentDates2)[ind].ToShortDateString())</option>
+                                            }
+                                        }
+                                    </select>
+                                    <button class="btn btn-primary" type="button" style="display:inline-block;" onclick="location.href='@Url.Action("Add_ExcerciseSummary_mike", "Assessments")'">New</button>
+                                </div>
+                                <br><br>
+
                                 <div class="col-md-12">
                                     <div class="row">
-                                        <div class="col-md-3"><a href="~/Content/Docs/VPS_TUG.pdf" class="btn btn-primary">Download Legend <i class="fa fa-download"></i></a></div>
+                                        <div class="col-md-3">@*<a href="~/Content/Docs/VPS_TUG.pdf" class="btn btn-primary">Download Legend <i class="fa fa-download"></i></a>*@</div>
                                         <div class="col-md-3">Baseline</div>
                                         <div class="col-md-3">3 Month</div>
                                         <div class="col-md-3">6 Month</div>
@@ -124,37 +147,39 @@
                                     <div class="form-group row">
                                         <label for="staticEmail" class="col-md-2 col-form-label">Date</label>
                                         <div class="col-md-3">
-                                            @Html.TextBoxFor(modelItem => Model.ExcerciseSummary.BaselineDate, new { @class = "form-control" })
+                                            @*@Html.TextBoxFor(modelItem => Model.ExcerciseSummary_mike_single.BaselineDate, new { @class = "form-control" })*@
+                                            <input class="form-control" type="button" value="@(Model.ExcerciseSummary_mike_single.BaselineDate)" />
                                         </div>
                                         <div class="col-md-3">
-                                            @Html.TextBoxFor(modelItem => Model.ExcerciseSummary.TMonthDate, new { @class = "form-control" })
+                                            @Html.TextBoxFor(modelItem => Model.ExcerciseSummary_mike_single.TMonthDate, new { @class = "form-control" })
                                         </div>
                                         <div class="col-md-3">
-                                            @Html.TextBoxFor(modelItem => Model.ExcerciseSummary.SMonthDate, new { @class = "form-control" })
+                                            @Html.TextBoxFor(modelItem => Model.ExcerciseSummary_mike_single.SMonthDate, new { @class = "form-control" })
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="staticEmail" class="col-md-2 col-form-label">TUG</label>
                                         <div class="col-md-3">
-                                            @Html.TextBoxFor(modelItem => Model.ExcerciseSummary.BaselineTug, new { @class = "form-control" })
+                                            @*@Html.TextBoxFor(modelItem => Model.ExcerciseSummary_mike_single.BaselineTug, new { @class = "form-control" })*@
+                                            <input class="form-control" name="@(Model.ExcerciseSummary_mike_single.Id)" number="1" type="button" onclick="TUG_CLICK(this)" value="@(Model.ExcerciseSummary_mike_single.BaselineTug)" />
                                         </div>
                                         <div class="col-md-3">
-                                            @Html.TextBoxFor(modelItem => Model.ExcerciseSummary.TMonthTug, new { @class = "form-control" })
+                                            @Html.TextBoxFor(modelItem => Model.ExcerciseSummary_mike_single.TMonthTug, new { @class = "form-control" })
                                         </div>
                                         <div class="col-md-3">
-                                            @Html.TextBoxFor(modelItem => Model.ExcerciseSummary.SMonthTug, new { @class = "form-control" })
+                                            @Html.TextBoxFor(modelItem => Model.ExcerciseSummary_mike_single.SMonthTug, new { @class = "form-control" })
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="staticEmail" class="col-md-2 col-form-label">VPS</label>
                                         <div class="col-md-3">
-                                            @Html.TextBoxFor(modelItem => Model.ExcerciseSummary.BaselineVPS, new { @class = "form-control" })
+                                            @Html.TextBoxFor(modelItem => Model.ExcerciseSummary_mike_single.BaselineVPS, new { @class = "form-control" })
                                         </div>
                                         <div class="col-md-3">
-                                            @Html.TextBoxFor(modelItem => Model.ExcerciseSummary.TMonthVPS, new { @class = "form-control" })
+                                            @Html.TextBoxFor(modelItem => Model.ExcerciseSummary_mike_single.TMonthVPS, new { @class = "form-control" })
                                         </div>
                                         <div class="col-md-3">
-                                            @Html.TextBoxFor(modelItem => Model.ExcerciseSummary.SMonthVPS, new { @class = "form-control" })
+                                            @Html.TextBoxFor(modelItem => Model.ExcerciseSummary_mike_single.SMonthVPS, new { @class = "form-control" })
                                         </div>
                                     </div>
                                 </div>
@@ -1377,6 +1402,7 @@
                         </div>
 
                         <input id="hiddeninput1" type="hidden" value="@TempData["index"]" />
+                        <input id="hiddeninput2" type="hidden" value="@TempData["number"]" />
                     }
 
 
@@ -1401,8 +1427,12 @@
     });
 
 
-    var a = $('#hiddeninput1').val();
-    $('#selectdate').val(a);
+    var index_date = $('#hiddeninput1').val();
+    $('#selectdate').val(index_date);
+    var number_date = $('#hiddeninput2').val();
+    $('#selectdate2').val(number_date);
+
+
     var inputs_check = $('input[type=checkbox]');
     for (var b = 0; b < inputs_check.length; b++) {
         if (inputs_check[b].checked == true) {

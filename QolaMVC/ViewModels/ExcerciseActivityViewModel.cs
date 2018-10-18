@@ -9,15 +9,14 @@ namespace QolaMVC.ViewModels
 {
     public class ExcerciseActivityViewModel
     {
-        //public Collection<ExcerciseActivityDetailModel> FIRST_WEEK { get; set; }
-        //public Collection<ExcerciseActivityDetailModel> SECOND_WEEK { get; set; }
-        //public Collection<ExcerciseActivityDetailModel> THIRD_WEEK { get; set; }
-        //public Collection<ExcerciseActivityDetailModel> FORTH_WEEK { get; set; }
 
         public Collection<ExcerciseActivityDetailModel_mike> mike { get; set; }
         public ExcerciseActivityDetailModel_mike mike_single { get; set; }
         public Collection<HSEPDetailModel_mike> HSEPDetail_mike { get; set; }
         public HSEPDetailModel_mike HSEPDetail_mike_single { get; set; }
+        public Collection<ExcerciseActivitySummaryModel_mike> ExcerciseSummary_mike { get; set; }
+        public ExcerciseActivitySummaryModel_mike ExcerciseSummary_mike_single { get; set; }
+
 
         public ExcerciseActivitySummaryModel ExcerciseSummary { get; set; }
         public Collection<HSEPDetailModel> HSEPDetail { get; set; }

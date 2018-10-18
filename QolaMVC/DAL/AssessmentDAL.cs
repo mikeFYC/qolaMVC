@@ -1573,66 +1573,6 @@ namespace QolaMVC.DAL
 
 
 
-        public static Collection<ExcerciseActivityDetailModel> get_week(int p_ResidentId,string num)
-        {
-            string exception = string.Empty;
-            Collection<ExcerciseActivityDetailModel> l_Models = new Collection<ExcerciseActivityDetailModel>();
-
-            ResidentModel l_Resident = new ResidentModel();
-            UserModel l_User = new UserModel();
-
-            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
-            try
-            {
-                SqlDataAdapter l_DA = new SqlDataAdapter();
-                SqlCommand l_Cmd = new SqlCommand("spAB_Get_Excercise_Activity_Detail_week"+num, l_Conn);
-                l_Conn.Open();
-                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                l_Cmd.Parameters.AddWithValue("@ResidentId", p_ResidentId);
-                DataSet dataReceive = new DataSet();
-
-                l_DA.SelectCommand = l_Cmd;
-                l_DA.Fill(dataReceive);
-
-                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
-                {
-                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
-                    {
-                        ExcerciseActivityDetailModel l_Model = new ExcerciseActivityDetailModel();
-                        l_Model.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
-                        l_Model.ActivityName = Convert.ToString(dataReceive.Tables[0].Rows[index]["ActivityName"]);
-                        l_Model.Week = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["WeekId"]);
-                        l_Model.Sunday = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["Sunday"]);
-                        l_Model.Monday = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["Monday"]);
-                        l_Model.Tuesday = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["Tuesday"]);
-                        l_Model.Wednesday = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["Wednesday"]);
-                        l_Model.Thursday = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["Thursday"]);
-                        l_Model.Friday = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["Friday"]);
-                        l_Model.Saturday = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["Saturday"]);
-                        l_Resident.ID = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
-                        l_Resident.SuiteNo = Convert.ToString(dataReceive.Tables[0].Rows[index]["SuiteNumber"]);
-                        l_Resident.FirstName = Convert.ToString(dataReceive.Tables[0].Rows[index]["ResidentFirstName"]);
-                        l_Resident.LastName = Convert.ToString(dataReceive.Tables[0].Rows[index]["ResidentLastName"]);
-                        l_Model.Resident = l_Resident;
-                        l_Model.DateEntered = Convert.ToDateTime(dataReceive.Tables[0].Rows[index]["DateEntered"]);
-                        l_User.ID = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["EnteredBy"]);
-                        l_User.Name = Convert.ToString(dataReceive.Tables[0].Rows[index]["EnteredByName"]);
-                        l_Model.EnteredBy = l_User;
-                        l_Models.Add(l_Model);
-                    }
-                }
-                return l_Models;
-            }
-            catch (Exception ex)
-            {
-                exception = "AssessmentDAL GetExcerciseActivitySummary |" + ex.ToString();
-                throw;
-            }
-            finally
-            {
-                l_Conn.Close();
-            }
-        }
 
         public static Collection<ExcerciseActivityDetailModel_mike>getmike(int p_ResidentId)
         {
@@ -2750,5 +2690,90 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
+
+        public static Collection<ExcerciseActivitySummaryModel_mike> GetExcerciseActivitySummary_mike(int p_ResidentId)
+        {
+            string exception = string.Empty;
+
+            Collection<ExcerciseActivitySummaryModel_mike> l_Assessments = new Collection<ExcerciseActivitySummaryModel_mike>();
+            ExcerciseActivitySummaryModel_mike l_Assessment;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("select * from [tbl_AB_Excercise_Activity_Summary_mike] where ResidentId=@ResidentId order by start_time DESC", l_Conn);
+                l_Conn.Open();
+                l_Cmd.Parameters.AddWithValue("@ResidentId", p_ResidentId);
+                DataSet AssesmentsReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(AssesmentsReceive);
+                if (AssesmentsReceive.Tables[0].Rows.Count > 0)
+                {
+                    for (int index = 0; index <= AssesmentsReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_Assessment = new ExcerciseActivitySummaryModel_mike();
+                        l_Assessment.Id = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["Id"]);
+                        l_Assessment.Residentid = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_Assessment.StartTime = Convert.ToDateTime(AssesmentsReceive.Tables[0].Rows[index]["start_time"]);
+                        l_Assessment.EndTime = Convert.ToDateTime(AssesmentsReceive.Tables[0].Rows[index]["end_time"]);
+                        l_Assessment.EnteredBy = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["EnteredBy"]);
+                        l_Assessment.DateEntered = Convert.ToDateTime(AssesmentsReceive.Tables[0].Rows[index]["DateEntered"]);
+
+                        l_Assessment.BaselineDate = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["BaselineDate"]);
+                        l_Assessment.BaselineTug = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["BaselineTug"]);
+                        l_Assessment.BaselineVPS = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["BaselineVPS"]);
+
+                        l_Assessment.TMonthDate = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["TMonthDate"]);
+                        l_Assessment.TMonthTug = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["TMonthTug"]);
+                        l_Assessment.TMonthVPS = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["TMonthVPS"]);
+
+                        l_Assessment.SMonthDate = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["SMonthDate"]);
+                        l_Assessment.SMonthTug = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["SMonthTug"]);
+                        l_Assessment.SMonthVPS = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["SMonthVPS"]);
+
+                        l_Assessments.Add(l_Assessment);
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                exception = "GetExcerciseActivitySummary_mike |" + ex.ToString();
+                throw;
+            }
+            return l_Assessments;
+        }
+
+        public static void Add_ExcerciseSummary_mike(int residentid, int userid, DateTime sameTime)
+        {
+            string exception = string.Empty;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Add_Excercise_Activity_Summary_mike", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@ResidentId", residentid);
+                l_Cmd.Parameters.AddWithValue("@start_time", sameTime);
+                l_Cmd.Parameters.AddWithValue("@end_time", sameTime);
+                l_Cmd.Parameters.AddWithValue("@EnteredBy", userid);
+                l_Cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                exception = "Add_ExcerciseSummary_mike |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
     }
 }
