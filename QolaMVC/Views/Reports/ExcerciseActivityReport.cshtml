@@ -1,9 +1,8 @@
 ﻿@model QolaMVC.ViewModels.ExcerciseActivityViewModel
-
 @RenderPage("~/Views/Shared/_Header.cshtml")
 @RenderPage("~/Views/Shared/_SideBar.cshtml")
-
 <style>
+
     .form-tabs .nav-link {
         font-size: 1rem;
     }
@@ -13,12 +12,98 @@
         max-width: 1000px !important;
     }
 </style>
+<style>
+
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+
+    input[type=checkbox] {
+        /* Double-sized Checkboxes */
+        -ms-transform: scale(2); /* IE */
+        -moz-transform: scale(2); /* FF */
+        -webkit-transform: scale(2); /* Safari and Chrome */
+        -o-transform: scale(2); /* Opera */
+        padding: 10px;
+    }
+
+    /* Might want to wrap a span around your checkbox text */
+    .checkboxtext {
+        /* Checkbox text */
+        font-size: 110%;
+        display: inline;
+    }
+
+    #assessment_table tbody tr td {
+        padding: 15px 20px 15px 20px !important;
+    }
+
+    #assessment_table thead tr th {
+        padding: 5px 20px 5px 20px !important;
+    }
+
+    #assessment_table tbody tr td:first-child {
+        font-size: 1.4vw;
+    }
+
+    #assessment_table thead tr th {
+        font-size: 1vw;
+    }
+
+    #HSEP_table tbody tr td input {
+        padding: 2px !important;
+    }
+
+    #HSEP_table tbody tr td {
+        padding: 5px !important;
+    }
+
+    #ROW1 div div {
+        font-size: 1.2vw;
+    }
+
+    #ROW2 div div input {
+        font-weight: bold;
+        font-size: 1.1vw;
+    }
+
+        #ROW2 div div input:hover {
+            background-color: grey;
+        }
+
+    #ROW2 div label {
+        font-size: 1.2vw;
+    }
+</style>
+<script>
+    function Print_button() {
+        var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+        mywindow.document.write('<html><head><title>' + document.title + '</title>');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write('<h1>' + document.title + '</h1>');
+        mywindow.document.write(document.getElementById("fromHTMLtestdiv").innerHTML);
+        mywindow.document.write('</body></html>');
+
+        mywindow.document.close(); // necessary for IE >= 10
+        mywindow.focus(); // necessary for IE >= 10*/
+
+        mywindow.document.write('<script type="text/javascript">$(window).load(function() { window.print(); window.close(); });<\/script>');
+        //mywindow.print();
+        //mywindow.close();
+        return true;
+    }
+</script>
+
 
 <!-- START PAGE-CONTAINER -->
 <div class="page-container">
-
     @RenderPage("~/Views/Shared/_NavBar.cshtml")
-
     <div class="page-content-wrapper">
         <!-- START PAGE CONTENT -->
         <div class="content">
@@ -27,165 +112,1308 @@
                 <div class="container-fluid container-fixed-lg">
                     <!-- <div class="inner"> -->
                     <div class="row align-items-center">
-                        <div class="col-md-8">
+                        <div class="col-md-10">
                             <h3>Exercise Activity Report</h3>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-danger print" id="EA_PRINT" style="float:right;">PRINT</button>
+                            <button class="btn btn-danger" type="button" style="float:right;margin-right:10px !important;" onclick="location.href='@Url.Action("BACK_Click", "Assessments")'">BACK</button>
+
                         </div>
                     </div>
                     <!-- </div> -->
                 </div>
             </div>
             <!-- END JUMBOTRON -->
-
             <div style="height: 60px;"></div>
-
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <button class="btn btn-default print">PRINT</button>
-                    </div>
-                </div>
+            <div style="margin-left:2.2vw !important;">
             </div>
             <br>
             <input type="hidden" value="exerciseactivityreport" name="" class="filename">
-
             <!-- START CONTAINER FLUID -->
             <div class="container-fluid container-fixed-lg" id="fromHTMLtestdiv">
                 <!-- BEGIN PlACE PAGE CONTENT HERE -->
-
                 <div class="card">
                     <div class="card-block">
-
-                        <div class="row">
-                            <div class="col-md-12">
+                        <div class="row" id="EA_firstrow">
+                            
+                            <div class="col-md-8">
+                                <hr>
                                 <img src="~/Content/assets/img/ahs.png" class="img-responsive">
-
+                            </div>
+                            <div class="col-md-4">
+                                <hr>
+                                <h4><b>Supportive Living/Home Living</b></h4>
+                                <h5  style="margin-top:-15px;margin-left:20px;"><b>Home Support Exercise Program</b></h5>
                             </div>
                         </div>
                         <div class="row">
+                            <div class="col-md-8">
+                                <p style="font-size:1.5vw;font-weight:bolder;color:black;margin-top:30px;">HSEP Tracking Record</p>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="text-center" style="width:300px;height:50px;border:black solid;margin-top:30px;">
+                                    <p style="margin-top:12px;">Place Patient Sticker Here</p>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <hr>
+                        <br>
+                        <div class="row">
                             <div class="col-md-5">
                                 <table class="table table-bordered">
-                                    <thead class="">
+                                    <thead class="bg-primary">
                                         <tr>
-                                            <th class="colorBlack text-center"></th>
-                                            <th class="colorBlack text-center">Baseline</th>
-                                            <th class="colorBlack text-center">3 Month</th>
-                                            <th class="colorBlack text-center">6 Month</th>
+                                            <th class="text-white text-center"></th>
+                                            <th class="text-white text-center" style="width:10vw;">Baseline</th>
+                                            <th class="text-white text-center" style="width:10vw;">3 Month</th>
+                                            <th class="text-white text-center" style="width:10vw;">6 Month</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>Date</td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => Model.ExcerciseSummary.BaselineDate)
+                                            <td class="text-center">Date</td>
+                                            <td class="text-center">
+                                                @Html.DisplayFor(modelItem => Model.ExcerciseSummary_mike_single.BaselineDate)
                                             </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => Model.ExcerciseSummary.TMonthDate)
+                                            <td class="text-center">
+                                                @Html.DisplayFor(modelItem => Model.ExcerciseSummary_mike_single.TMonthDate)
                                             </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => Model.ExcerciseSummary.SMonthDate)
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>TUG</td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => Model.ExcerciseSummary.BaselineTug)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => Model.ExcerciseSummary.TMonthTug)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => Model.ExcerciseSummary.SMonthTug)
+                                            <td class="text-center">
+                                                @Html.DisplayFor(modelItem => Model.ExcerciseSummary_mike_single.SMonthDate)
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>VPS</td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => Model.ExcerciseSummary.BaselineVPS)
+                                            <td class="text-center">TUG</td>
+                                            <td class="text-center">
+                                                @Html.DisplayFor(modelItem => Model.ExcerciseSummary_mike_single.BaselineTug)
                                             </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => Model.ExcerciseSummary.TMonthVPS)
+                                            <td class="text-center">
+                                                @Html.DisplayFor(modelItem => Model.ExcerciseSummary_mike_single.TMonthTug)
                                             </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => Model.ExcerciseSummary.SMonthVPS)
+                                            <td class="text-center">
+                                                @Html.DisplayFor(modelItem => Model.ExcerciseSummary_mike_single.SMonthTug)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center">VPS</td>
+                                            <td class="text-center">
+                                                @Html.DisplayFor(modelItem => Model.ExcerciseSummary_mike_single.BaselineVPS)
+                                            </td>
+                                            <td class="text-center">
+                                                @Html.DisplayFor(modelItem => Model.ExcerciseSummary_mike_single.TMonthVPS)
+                                            </td>
+                                            <td class="text-center">
+                                                @Html.DisplayFor(modelItem => Model.ExcerciseSummary_mike_single.SMonthVPS)
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12 text-center">
-                                <h5><b>Using a check mark, indicate the exercises the client completes for each day</b></h5>
-                            </div>
-
-                        </div>
-                        <table class="table table-bordered">
-                            <thead class="">
+                        <br>
+                        <hr>
+                        <br>
+                        <table class="table table-bordered" id="HSEP_table">
+                            <thead class="bg-primary">
                                 <tr>
-                                    <th class="colorBlack text-center">Exercise</th>
-                                    <th class="colorBlack text-center">Sunday</th>
-                                    <th class="colorBlack text-center">Monday</th>
-                                    <th class="colorBlack text-center">Tuesday</th>
-                                    <th class="colorBlack text-center">Wednessday</th>
-                                    <th class="colorBlack text-center">Thursday</th>
-                                    <th class="colorBlack text-center">Friday</th>
-                                    <th class="colorBlack text-center">Saturday</th>
+                                    <td></td>
+                                    @Html.HiddenFor(m => Model.HSEPDetail_mike_single.Id)
+                                    @*<th class="text-white text-center">@Model.HSEPDetail[0].ActivityName</th>*@
+                                    <th class="text-white text-center">Walking</th>
+                                    <th class="text-white text-center">Wall Push-ups</th>
+                                    <th class="text-white text-center">Rise Up on toes</th>
+                                    <th class="text-white text-center">Toe Taps</th>
+                                    <th class="text-white text-center">Seat Walk</th>
+                                    <th class="text-white text-center">Get up from chair</th>
+                                    <th class="text-white text-center">Leg Lift</th>
+                                    <th class="text-white text-center">Reaching</th>
+                                    <th class="text-white text-center">Standing Stretch</th>
+                                    <th class="text-white text-center">Seated Stretch</th>
                                 </tr>
                             </thead>
                             <tbody>
-
-                                @if (Model != null && Model.Detail != null)
-        {
-            for (int i = 0; i < Model.Detail.Count; i++)
-            {
-                        @Html.HiddenFor(m => Model.Detail[i].ActivityName)
-                        <tr>
-                            <td>@Model.Detail[i].ActivityName</td>
-                            <td class="text-center">
-                                @Html.CheckBoxFor(modelItem => Model.Detail[i].Sunday, new { @class = "form-check-input" })
-                            </td>
-                            <td class="text-center">
-                                @Html.CheckBoxFor(modelItem => Model.Detail[i].Monday, new { @class = "form-check-input" })
-                            </td>
-                            <td class="text-center">
-                                @Html.CheckBoxFor(modelItem => Model.Detail[i].Tuesday, new { @class = "form-check-input" })
-                            </td>
-                            <td class="text-center">
-                                @Html.CheckBoxFor(modelItem => Model.Detail[i].Wednesday, new { @class = "form-check-input" })
-                            </td>
-                            <td class="text-center">
-                                @Html.CheckBoxFor(modelItem => Model.Detail[i].Thursday, new { @class = "form-check-input" })
-                            </td>
-                            <td class="text-center">
-                                @Html.CheckBoxFor(modelItem => Model.Detail[i].Friday, new { @class = "form-check-input" })
-                            </td>
-                            <td class="text-center">
-                                @Html.CheckBoxFor(modelItem => Model.Detail[i].Saturday, new { @class = "form-check-input" })
-                            </td>
-                        </tr>
-}
-}
-
+                                <tr>
+                                    <td>DATE OF INITIAL TEACHING</td>
+                                    <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.DateOfTeaching_1, new { @class = "form-control" })</td>
+                                    <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.DateOfTeaching_2, new { @class = "form-control" })</td>
+                                    <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.DateOfTeaching_3, new { @class = "form-control" })</td>
+                                    <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.DateOfTeaching_4, new { @class = "form-control" })</td>
+                                    <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.DateOfTeaching_5, new { @class = "form-control" })</td>
+                                    <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.DateOfTeaching_6, new { @class = "form-control" })</td>
+                                    <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.DateOfTeaching_7, new { @class = "form-control" })</td>
+                                    <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.DateOfTeaching_8, new { @class = "form-control" })</td>
+                                    <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.DateOfTeaching_9, new { @class = "form-control" })</td>
+                                    <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.DateOfTeaching_10, new { @class = "form-control" })</td>
+                                </tr>
+                                <tr id="Sigiture">
+                                    <td>TRAINER SIGNITURE</td>
+                                    <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.SignName_1, new { @class = "form-control" })</td>
+                                    <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.SignName_2, new { @class = "form-control" })</td>
+                                    <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.SignName_3, new { @class = "form-control" })</td>
+                                    <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.SignName_4, new { @class = "form-control" })</td>
+                                    <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.SignName_5, new { @class = "form-control" })</td>
+                                    <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.SignName_6, new { @class = "form-control" })</td>
+                                    <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.SignName_7, new { @class = "form-control" })</td>
+                                    <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.SignName_8, new { @class = "form-control" })</td>
+                                    <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.SignName_9, new { @class = "form-control" })</td>
+                                    <td>@Html.TextBoxFor(modelItem => Model.HSEPDetail_mike_single.SignName_10, new { @class = "form-control" })</td>
+                                </tr>
                             </tbody>
-                          
                         </table>
-                        <br><br><br><br><br><br>
-                        <table class="table table-bordered">
-                            <tr>
-                                <td>
-                                    Include client's time or repetition for each exercise completed in the box provided
-                                </td>
-                                <td>
-                                    If Client decline indicate in the box with "D"= Declined
-                                </td>
-                                <td>
-                                    Document in Client's Chart why client did not complete the exercise
-                                </td>
-                            </tr>
-                        </table>
+                        <br>
+                        <hr>
+                        <br>
+                        <div class="card-block" id="assessment">
+                            <div class="row">
+                                <div class="row">
+
+
+                                    <table class="table table-bordered" id="assessment_table">
+                                        <thead class="bg-primary">
+                                            <tr>
+                                                <th style="color:white;font-weight:bolder;font-size:2vw;">FIRST WEEK</th>
+                                                <th class="text-white text-center" style="width:9vw;">Sunday</th>
+                                                <th class="text-white text-center" style="width:9vw;">Monday</th>
+                                                <th class="text-white text-center" style="width:9vw;">Tuesday</th>
+                                                <th class="text-white text-center" style="width:9vw;">Wednessday</th>
+                                                <th class="text-white text-center" style="width:9vw;">Thursday</th>
+                                                <th class="text-white text-center" style="width:9vw;">Friday</th>
+                                                <th class="text-white text-center" style="width:9vw;">Saturday</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="font-size:1.5vw;">
+                                            @{
+                                                var index = int.Parse(TempData["index"].ToString());
+                                            }
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_1_week1)
+                                            @Html.HiddenFor(m => Model.mike_single.Id)
+                                            <tr>
+                                                <td>1. Walking</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_1_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_1_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_1_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_1_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_1_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_1_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_1_week1, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_2_week1)
+                                            <tr>
+                                                <td>2. Wall Push-ups</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_2_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_2_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_2_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_2_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_2_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_2_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_2_week1, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_3_week1)
+                                            <tr>
+                                                <td>3. Rise Up on toes</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_3_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_3_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_3_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_3_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_3_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_3_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_3_week1, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_4_week1)
+                                            <tr>
+                                                <td>4. Toe Taps</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_4_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_4_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_4_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_4_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_4_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_4_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_4_week1, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_5_week1)
+                                            <tr>
+                                                <td>5. Seat Walk</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_5_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_5_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_5_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_5_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_5_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_5_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_5_week1, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_6_week1)
+                                            <tr>
+                                                <td>6. Get up from chair</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_6_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_6_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_6_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_6_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_6_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_6_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_6_week1, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_7_week1)
+                                            <tr>
+                                                <td>7. Leg Lift</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_7_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_7_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_7_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_7_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_7_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_7_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_7_week1, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_8_week1)
+                                            <tr>
+                                                <td>8. Reaching</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_8_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_8_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_8_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_8_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_8_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_8_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_8_week1, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_9_week1)
+                                            <tr>
+                                                <td>9. Standing Stretch</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_9_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_9_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_9_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_9_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_9_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_9_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_9_week1, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_10_week1)
+                                            <tr>
+                                                <td>10. Seated Stretch</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_10_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_10_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_10_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_10_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_10_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_10_week1, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_10_week1, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+
+                                    
+
+                                    <table class="table table-bordered" id="assessment_table">
+                                        <thead class="bg-primary">
+                                            <tr>
+                                                <th style="color:white;font-weight:bolder;font-size:2vw;">SECOND WEEK</th>
+                                                <th class="text-white text-center" style="width:9vw;">Sunday</th>
+                                                <th class="text-white text-center" style="width:9vw;">Monday</th>
+                                                <th class="text-white text-center" style="width:9vw;">Tuesday</th>
+                                                <th class="text-white text-center" style="width:9vw;">Wednessday</th>
+                                                <th class="text-white text-center" style="width:9vw;">Thursday</th>
+                                                <th class="text-white text-center" style="width:9vw;">Friday</th>
+                                                <th class="text-white text-center" style="width:9vw;">Saturday</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="font-size:1.5vw;">
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_1_week2)
+                                            <tr>
+                                                <td>1. Walking</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_1_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_1_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_1_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_1_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_1_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_1_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_1_week2, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_2_week2)
+                                            <tr>
+                                                <td>2. Wall Push-ups</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_2_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_2_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_2_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_2_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_2_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_2_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_2_week2, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+                                            <tr style="height:350px;"></tr>
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_3_week2)
+                                            <tr>
+                                                <td>3. Rise Up on toes</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_3_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_3_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_3_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_3_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_3_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_3_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_3_week2, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_4_week2)
+                                            <tr>
+                                                <td>4. Toe Taps</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_4_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_4_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_4_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_4_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_4_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_4_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_4_week2, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_5_week2)
+                                            <tr>
+                                                <td>5. Seat Walk</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_5_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_5_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_5_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_5_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_5_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_5_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_5_week2, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_6_week2)
+                                            <tr>
+                                                <td>6. Get up from chair</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_6_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_6_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_6_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_6_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_6_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_6_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_6_week2, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_7_week2)
+                                            <tr>
+                                                <td>7. Leg Lift</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_7_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_7_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_7_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_7_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_7_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_7_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_7_week2, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_8_week2)
+                                            <tr>
+                                                <td>8. Reaching</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_8_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_8_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_8_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_8_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_8_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_8_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_8_week2, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_9_week2)
+                                            <tr>
+                                                <td>9. Standing Stretch</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_9_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_9_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_9_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_9_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_9_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_9_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_9_week2, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_10_week2)
+                                            <tr>
+                                                <td>10. Seated Stretch</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_10_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_10_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_10_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_10_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_10_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_10_week2, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_10_week2, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+
+                                    <table class="table table-bordered" id="assessment_table">
+                                        <thead class="bg-primary">
+                                            <tr>
+                                                <th style="color:white;font-weight:bolder;font-size:2vw;">THIRD WEEK</th>
+                                                <th class="text-white text-center" style="width:9vw;">Sunday</th>
+                                                <th class="text-white text-center" style="width:9vw;">Monday</th>
+                                                <th class="text-white text-center" style="width:9vw;">Tuesday</th>
+                                                <th class="text-white text-center" style="width:9vw;">Wednessday</th>
+                                                <th class="text-white text-center" style="width:9vw;">Thursday</th>
+                                                <th class="text-white text-center" style="width:9vw;">Friday</th>
+                                                <th class="text-white text-center" style="width:9vw;">Saturday</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="font-size:1.5vw;">
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_1_week3)
+                                            <tr>
+                                                <td>1. Walking</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_1_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_1_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_1_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_1_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_1_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_1_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_1_week3, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_2_week3)
+                                            <tr>
+                                                <td>2. Wall Push-ups</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_2_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_2_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_2_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_2_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_2_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_2_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_2_week3, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_3_week3)
+                                            <tr>
+                                                <td>3. Rise Up on toes</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_3_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_3_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_3_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_3_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_3_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_3_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_3_week3, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_4_week3)
+                                            <tr>
+                                                <td>4. Toe Taps</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_4_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_4_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_4_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_4_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_4_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_4_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_4_week3, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_5_week3)
+                                            <tr>
+                                                <td>5. Seat Walk</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_5_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_5_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_5_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_5_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_5_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_5_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_5_week3, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_6_week3)
+                                            <tr>
+                                                <td>6. Get up from chair</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_6_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_6_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_6_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_6_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_6_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_6_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_6_week3, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_7_week3)
+                                            <tr>
+                                                <td>7. Leg Lift</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_7_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_7_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_7_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_7_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_7_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_7_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_7_week3, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_8_week3)
+                                            <tr>
+                                                <td>8. Reaching</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_8_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_8_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_8_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_8_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_8_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_8_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_8_week3, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_9_week3)
+                                            <tr>
+                                                <td>9. Standing Stretch</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_9_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_9_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_9_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_9_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_9_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_9_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_9_week3, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_10_week3)
+                                            <tr>
+                                                <td>10. Seated Stretch</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_10_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_10_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_10_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_10_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_10_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_10_week3, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_10_week3, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+
+                                    <table class="table table-bordered" id="assessment_table">
+                                        <thead class="bg-primary">
+                                            <tr>
+                                                <th style="color:white;font-weight:bolder;font-size:2vw;">FORTH WEEK</th>
+                                                <th class="text-white text-center" style="width:9vw;">Sunday</th>
+                                                <th class="text-white text-center" style="width:9vw;">Monday</th>
+                                                <th class="text-white text-center" style="width:9vw;">Tuesday</th>
+                                                <th class="text-white text-center" style="width:9vw;">Wednessday</th>
+                                                <th class="text-white text-center" style="width:9vw;">Thursday</th>
+                                                <th class="text-white text-center" style="width:9vw;">Friday</th>
+                                                <th class="text-white text-center" style="width:9vw;">Saturday</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="font-size:1.5vw;">
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_1_week4)
+                                            <tr>
+                                                <td>1. Walking</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_1_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_1_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_1_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_1_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_1_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_1_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_1_week4, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_2_week4)
+                                            <tr>
+                                                <td>2. Wall Push-ups</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_2_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_2_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_2_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_2_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_2_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_2_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_2_week4, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_3_week4)
+                                            <tr>
+                                                <td>3. Rise Up on toes</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_3_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_3_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_3_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_3_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_3_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_3_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_3_week4, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_4_week4)
+                                            <tr>
+                                                <td>4. Toe Taps</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_4_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_4_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_4_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_4_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_4_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_4_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_4_week4, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_5_week4)
+                                            <tr>
+                                                <td>5. Seat Walk</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_5_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_5_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_5_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_5_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_5_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_5_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_5_week4, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_6_week4)
+                                            <tr>
+                                                <td>6. Get up from chair</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_6_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_6_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_6_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_6_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_6_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_6_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_6_week4, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_7_week4)
+                                            <tr>
+                                                <td>7. Leg Lift</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_7_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_7_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_7_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_7_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_7_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_7_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_7_week4, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_8_week4)
+                                            <tr>
+                                                <td>8. Reaching</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_8_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_8_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_8_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_8_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_8_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_8_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_8_week4, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_9_week4)
+                                            <tr>
+                                                <td>9. Standing Stretch</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_9_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_9_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_9_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_9_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_9_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_9_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_9_week4, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                            @Html.HiddenFor(m => Model.mike_single.ActivityName_10_week4)
+                                            <tr>
+                                                <td>10. Seated Stretch</td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Sunday_10_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Monday_10_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Tuesday_10_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Wednesday_10_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Thursday_10_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Friday_10_week4, new { @class = "form-check-input" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @Html.CheckBoxFor(modelItem => Model.mike_single.Saturday_10_week4, new { @class = "form-check-input" })
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <br><br>
+
+                        @*<table class="table table-bordered">
+                                <tr>
+                                    <td>
+                                        Include client's time or repetition for each exercise completed in the box provided
+                                    </td>
+                                    <td>
+                                        If Client decline indicate in the box with "D"= Declined
+                                    </td>
+                                    <td>
+                                        Document in Client's Chart why client did not complete the exercise
+                                    </td>
+                                </tr>
+                            </table>*@
+
                     </div>
                 </div>
-
 
                 <!-- END PLACE PAGE CONTENT HERE -->
             </div>
@@ -193,5 +1421,5 @@
         </div>
         <!-- END PAGE CONTENT -->
 
+@RenderPage("~/Views/Shared/_Footer.cshtml")
 
-        @RenderPage("~/Views/Shared/_Footer.cshtml")

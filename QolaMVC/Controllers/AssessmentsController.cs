@@ -159,6 +159,8 @@ namespace QolaMVC.Controllers
 
 
 
+
+
         #region EXERCISE ACTIVITY
 
         public ActionResult ExerciseActivity(string index,string number)
@@ -246,6 +248,25 @@ namespace QolaMVC.Controllers
             TempData.Keep("index");
             TempData.Keep("number");
             return View(vm);
+        }
+
+        public ActionResult BACK_Click()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            var ind = TempData["index"];
+            var num = TempData["number"];
+
+            return RedirectToAction("ExerciseActivity", new { index = ind, number = num });
         }
 
         public ActionResult AddExcerciseActivity(ExcerciseActivityViewModel vm)
@@ -356,14 +377,29 @@ namespace QolaMVC.Controllers
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
             var resident = (ResidentModel)TempData["Resident"];
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
+            TUG_mike TUG = new TUG_mike();
+            TUG = AssessmentDAL.Get_TUG_mike(resident.ID, int.Parse(ID), int.Parse(number));
+            if (TUG.Summary_Table_ID == 0)
+            {
+                TempData["View_Mode"] = "NO";
+                TUG.Summary_Table_ID = int.Parse(ID);
+                TUG.Index_in_Summary_Table = int.Parse(number);
+            }
+            else
+            {
+                TempData["View_Mode"] = "YES";
+            }
             string ind = TempData["index"].ToString();
             string num = TempData["number"].ToString();
             TempData.Keep("index");
             TempData.Keep("number");
-            return View();
+            return View(TUG);
         }
 
         public ActionResult VPS_CLICK(string ID, string number)
@@ -371,17 +407,77 @@ namespace QolaMVC.Controllers
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
             var resident = (ResidentModel)TempData["Resident"];
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
+            VPS_mike VPS = new VPS_mike();
+            VPS= AssessmentDAL.Get_VPS_mike(resident.ID, int.Parse(ID), int.Parse(number));
+            if (VPS.Summary_Table_ID == 0)
+            {
+                TempData["View_Mode"] = "NO";
+                VPS.Summary_Table_ID = int.Parse(ID);
+                VPS.Index_in_Summary_Table = int.Parse(number);
+            }
+            else
+            {
+                TempData["View_Mode"] = "YES";
+            }
             string ind = TempData["index"].ToString();
             string num = TempData["number"].ToString();
             TempData.Keep("index");
             TempData.Keep("number");
-            return View();
+            return View(VPS);
+        }
+
+        public ActionResult Submit_VPS_mike(VPS_mike VPS)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            VPS.EnteredBy = user.ID;
+            VPS.DateEntered = DateTime.Now;
+            VPS.Residentid = resident.ID;
+            AssessmentDAL.Add_VPS_mike(VPS);
+
+            string ind = TempData["index"].ToString();
+            string num = TempData["number"].ToString();
+            TempData.Keep("index");
+            TempData.Keep("number");
+            return RedirectToAction("ExerciseActivity", new { index = ind, number = num });
+        }
+
+        public ActionResult Submit_TUG_mike(TUG_mike TUG)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            TUG.EnteredBy = user.ID;
+            TUG.DateEntered = DateTime.Now;
+            TUG.Residentid = resident.ID;
+            TUG.userName = user.FirstName + " " + user.LastName;
+            AssessmentDAL.Add_TUG_mike(TUG);
+
+            string ind = TempData["index"].ToString();
+            string num = TempData["number"].ToString();
+            TempData.Keep("index");
+            TempData.Keep("number");
+            return RedirectToAction("ExerciseActivity", new { index = ind, number = num });
         }
 
         #endregion
+
+
 
 
 
@@ -1373,7 +1469,7 @@ List<MasterDetails> MasterData = objDet.GetPostfall_clinial_monitoring_details_a
         }
 
    [HttpPost]
-          public string PostfallClinicalMonitoringA(MasterDetails data,string c_c,string edema_hands1,string edema_feet1,int linkid)
+         public string PostfallClinicalMonitoringA(MasterDetails data,string c_c,string edema_hands1,string edema_feet1,int linkid)
         {
                
                  Postfall_Clinial_Monitoring_PartDAL.AddPartAPage2(data,c_c, edema_hands1, edema_feet1, linkid);
@@ -1390,7 +1486,7 @@ List<MasterDetails> MasterData = objDet.GetPostfall_clinial_monitoring_details_a
              return Json(l_model, JsonRequestBehavior.AllowGet);
 
         }
-        public ActionResult PostfallClinicalMonitoringB(int linkid=0)
+         public ActionResult PostfallClinicalMonitoringB(int linkid=0)
         {
             Postfall_Clinial_Monitoring_PartDAL objDet = new Postfall_Clinial_Monitoring_PartDAL();  
              MasterDetails CustData = new MasterDetails(); 
@@ -1487,7 +1583,8 @@ return View(CustData);
             return "d  dsrd "+result;
        }
    }
-private DataTable dataTable1(string[][] array, int linkid, int tableid){
+
+   private DataTable dataTable1(string[][] array, int linkid, int tableid){
            Random rnd=new Random();
 
            DataTable dt=new DataTable();

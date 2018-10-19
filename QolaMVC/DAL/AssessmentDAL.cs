@@ -1988,6 +1988,10 @@ namespace QolaMVC.DAL
                 exception = "getmike |" + ex.ToString();
                 throw;
             }
+            finally
+            {
+                l_Conn.Close();
+            }
             return l_Assessments;
         }
 
@@ -2470,6 +2474,10 @@ namespace QolaMVC.DAL
                 exception = "GetHSEPDetail_mike |" + ex.ToString();
                 throw;
             }
+            finally
+            {
+                l_Conn.Close();
+            }
             return l_Assessments;
         }
 
@@ -2743,6 +2751,10 @@ namespace QolaMVC.DAL
                 exception = "GetExcerciseActivitySummary_mike |" + ex.ToString();
                 throw;
             }
+            finally
+            {
+                l_Conn.Close();
+            }
             return l_Assessments;
         }
 
@@ -2775,5 +2787,347 @@ namespace QolaMVC.DAL
             }
         }
 
+        public static VPS_mike Get_VPS_mike(int p_ResidentId, int ID, int number)
+        {
+            string exception = string.Empty;
+            VPS_mike l_Assessment;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("select * from [tbl_AB_VPS_mike] where ResidentId=@ResidentId and Summary_Table_ID=@STID and Index_in_Summary_Table=@INDEX", l_Conn);
+                l_Conn.Open();
+                l_Cmd.Parameters.AddWithValue("@ResidentId", p_ResidentId);
+                l_Cmd.Parameters.AddWithValue("@STID", ID);
+                l_Cmd.Parameters.AddWithValue("@INDEX", number);
+                DataSet AssesmentsReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(AssesmentsReceive);
+                if (AssesmentsReceive.Tables[0].Rows.Count > 0)
+                {
+                    l_Assessment = new VPS_mike();
+                    l_Assessment.Id = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[0]["Id"]);
+                    l_Assessment.Residentid = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[0]["ResidentID"]);
+                    l_Assessment.Summary_Table_ID = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[0]["Summary_Table_ID"]);
+                    l_Assessment.Index_in_Summary_Table = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[0]["Index_in_Summary_Table"]);
+                    l_Assessment.EnteredBy = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[0]["EnteredBy"]);
+                    l_Assessment.DateEntered = Convert.ToDateTime(AssesmentsReceive.Tables[0].Rows[0]["DateEntered"]);
+                    l_Assessment.TotalScore = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[0]["Total_Score"]);
+
+                    l_Assessment.radio1 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio1"]);
+                    l_Assessment.radio2 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio2"]);
+                    l_Assessment.radio3 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio3"]);
+                    l_Assessment.radio4 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio4"]);
+                    l_Assessment.radio5 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio5"]);
+                    l_Assessment.radio6 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio6"]);
+                    l_Assessment.radio7 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio7"]);
+                    l_Assessment.radio8 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio8"]);
+                    l_Assessment.radio9 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio9"]);
+                    l_Assessment.radio10 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio10"]);
+                    l_Assessment.radio11 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio11"]);
+                    l_Assessment.radio12 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio12"]);
+                    l_Assessment.radio13 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio13"]);
+                    l_Assessment.radio14 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio14"]);
+                    l_Assessment.radio15 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio15"]);
+                    l_Assessment.radio16 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio16"]);
+                    l_Assessment.radio17 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio17"]);
+                    l_Assessment.radio18 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio18"]);
+                    l_Assessment.radio19 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio19"]);
+                    l_Assessment.radio20 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio20"]);
+                    l_Assessment.radio21 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio21"]);
+                    l_Assessment.radio22 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio22"]);
+                    l_Assessment.radio23 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio23"]);
+                    l_Assessment.radio24 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio24"]);
+                    l_Assessment.radio25 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio25"]);
+                    l_Assessment.radio26 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio26"]);
+                    l_Assessment.radio27 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio27"]);
+                    l_Assessment.radio28 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio28"]);
+                    l_Assessment.radio29 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio29"]);
+                    l_Assessment.radio30 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio30"]);
+                    l_Assessment.radio31 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio31"]);
+                    l_Assessment.radio32 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio32"]);
+                    l_Assessment.radio33 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio33"]);
+                    l_Assessment.radio34 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio34"]);
+                    l_Assessment.radio35 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio35"]);
+                    l_Assessment.radio36 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio36"]);
+                    l_Assessment.radio37 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio37"]);
+                    l_Assessment.radio38 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio38"]);
+                    l_Assessment.radio39 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio39"]);
+                    l_Assessment.radio40 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio40"]);
+                    l_Assessment.radio41 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio41"]);
+                    l_Assessment.radio42 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio42"]);
+                    l_Assessment.radio43 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio43"]);
+                    l_Assessment.radio44 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio44"]);
+                    l_Assessment.radio45 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio45"]);
+                    l_Assessment.radio46 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio46"]);
+                    l_Assessment.radio47 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio47"]);
+                    l_Assessment.radio48 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio48"]);
+                    l_Assessment.radio49 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio49"]);
+                    l_Assessment.radio50 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["radio50"]);
+                }
+                else
+                {
+                    l_Assessment = new VPS_mike();
+                }
+            }
+            catch (Exception ex)
+            {
+                exception = "Get_VPS_mike |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+            return l_Assessment;
+        }
+
+        public static void Add_VPS_mike(VPS_mike VPS)
+        {
+            string exception = string.Empty;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Add_VPS_mike", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@ResidentId", VPS.Residentid);
+                l_Cmd.Parameters.AddWithValue("@STID", VPS.Summary_Table_ID);
+                l_Cmd.Parameters.AddWithValue("@INDEX", VPS.Index_in_Summary_Table);
+                l_Cmd.Parameters.AddWithValue("@DateEntered", VPS.DateEntered);
+                l_Cmd.Parameters.AddWithValue("@EnteredBy", VPS.EnteredBy);
+                l_Cmd.Parameters.AddWithValue("@TotalScore", VPS.TotalScore);
+                l_Cmd.Parameters.AddWithValue("@radio1", VPS.radio1);
+                l_Cmd.Parameters.AddWithValue("@radio2", VPS.radio2);
+                l_Cmd.Parameters.AddWithValue("@radio3", VPS.radio3);
+                l_Cmd.Parameters.AddWithValue("@radio4", VPS.radio4);
+                l_Cmd.Parameters.AddWithValue("@radio5", VPS.radio5);
+                l_Cmd.Parameters.AddWithValue("@radio6", VPS.radio6);
+                l_Cmd.Parameters.AddWithValue("@radio7", VPS.radio7);
+                l_Cmd.Parameters.AddWithValue("@radio8", VPS.radio8);
+                l_Cmd.Parameters.AddWithValue("@radio9", VPS.radio9);
+                l_Cmd.Parameters.AddWithValue("@radio10", VPS.radio10);
+                l_Cmd.Parameters.AddWithValue("@radio11", VPS.radio11);
+                l_Cmd.Parameters.AddWithValue("@radio12", VPS.radio12);
+                l_Cmd.Parameters.AddWithValue("@radio13", VPS.radio13);
+                l_Cmd.Parameters.AddWithValue("@radio14", VPS.radio14);
+                l_Cmd.Parameters.AddWithValue("@radio15", VPS.radio15);
+                l_Cmd.Parameters.AddWithValue("@radio16", VPS.radio16);
+                l_Cmd.Parameters.AddWithValue("@radio17", VPS.radio17);
+                l_Cmd.Parameters.AddWithValue("@radio18", VPS.radio18);
+                l_Cmd.Parameters.AddWithValue("@radio19", VPS.radio19);
+                l_Cmd.Parameters.AddWithValue("@radio20", VPS.radio20);
+                l_Cmd.Parameters.AddWithValue("@radio21", VPS.radio21);
+                l_Cmd.Parameters.AddWithValue("@radio22", VPS.radio22);
+                l_Cmd.Parameters.AddWithValue("@radio23", VPS.radio23);
+                l_Cmd.Parameters.AddWithValue("@radio24", VPS.radio24);
+                l_Cmd.Parameters.AddWithValue("@radio25", VPS.radio25);
+                l_Cmd.Parameters.AddWithValue("@radio26", VPS.radio26);
+                l_Cmd.Parameters.AddWithValue("@radio27", VPS.radio27);
+                l_Cmd.Parameters.AddWithValue("@radio28", VPS.radio28);
+                l_Cmd.Parameters.AddWithValue("@radio29", VPS.radio29);
+                l_Cmd.Parameters.AddWithValue("@radio30", VPS.radio30);
+                l_Cmd.Parameters.AddWithValue("@radio31", VPS.radio31);
+                l_Cmd.Parameters.AddWithValue("@radio32", VPS.radio32);
+                l_Cmd.Parameters.AddWithValue("@radio33", VPS.radio33);
+                l_Cmd.Parameters.AddWithValue("@radio34", VPS.radio34);
+                l_Cmd.Parameters.AddWithValue("@radio35", VPS.radio35);
+                l_Cmd.Parameters.AddWithValue("@radio36", VPS.radio36);
+                l_Cmd.Parameters.AddWithValue("@radio37", VPS.radio37);
+                l_Cmd.Parameters.AddWithValue("@radio38", VPS.radio38);
+                l_Cmd.Parameters.AddWithValue("@radio39", VPS.radio39);
+                l_Cmd.Parameters.AddWithValue("@radio40", VPS.radio40);
+                l_Cmd.Parameters.AddWithValue("@radio41", VPS.radio41);
+                l_Cmd.Parameters.AddWithValue("@radio42", VPS.radio42);
+                l_Cmd.Parameters.AddWithValue("@radio43", VPS.radio43);
+                l_Cmd.Parameters.AddWithValue("@radio44", VPS.radio44);
+                l_Cmd.Parameters.AddWithValue("@radio45", VPS.radio45);
+                l_Cmd.Parameters.AddWithValue("@radio46", VPS.radio46);
+                l_Cmd.Parameters.AddWithValue("@radio47", VPS.radio47);
+                l_Cmd.Parameters.AddWithValue("@radio48", VPS.radio48);
+                l_Cmd.Parameters.AddWithValue("@radio49", VPS.radio49);
+                l_Cmd.Parameters.AddWithValue("@radio50", VPS.radio50);
+                l_Cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                exception = "Add_VPS_mike |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+
+        }
+
+        public static TUG_mike Get_TUG_mike(int p_ResidentId, int ID, int number)
+        {
+            string exception = string.Empty;
+            TUG_mike l_Assessment;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("select * from [tbl_AB_TUG_mike] where ResidentId=@ResidentId and Summary_Table_ID=@STID and Index_in_Summary_Table=@INDEX", l_Conn);
+                l_Conn.Open();
+                l_Cmd.Parameters.AddWithValue("@ResidentId", p_ResidentId);
+                l_Cmd.Parameters.AddWithValue("@STID", ID);
+                l_Cmd.Parameters.AddWithValue("@INDEX", number);
+                DataSet AssesmentsReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(AssesmentsReceive);
+                if (AssesmentsReceive.Tables[0].Rows.Count > 0)
+                {
+                    l_Assessment = new TUG_mike();
+                    l_Assessment.Id = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[0]["Id"]);
+                    l_Assessment.Residentid = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[0]["ResidentID"]);
+                    l_Assessment.Summary_Table_ID = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[0]["Summary_Table_ID"]);
+                    l_Assessment.Index_in_Summary_Table = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[0]["Index_in_Summary_Table"]);
+                    l_Assessment.EnteredBy = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[0]["EnteredBy"]);
+                    l_Assessment.DateEntered = Convert.ToDateTime(AssesmentsReceive.Tables[0].Rows[0]["DateEntered"]);
+                    l_Assessment.Total_Time = Convert.ToString(AssesmentsReceive.Tables[0].Rows[0]["Total_Time"]);
+                    l_Assessment.userName = Convert.ToString(AssesmentsReceive.Tables[0].Rows[0]["userName"]);
+
+                    l_Assessment.check1 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["check1"]);
+                    l_Assessment.check2 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["check2"]);
+                    l_Assessment.check3 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["check3"]);
+                    l_Assessment.check4 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["check4"]);
+                    l_Assessment.check5 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["check5"]);
+                    l_Assessment.check6 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["check6"]);
+                    l_Assessment.check7 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["check7"]);
+                    l_Assessment.check8 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["check8"]);
+                    l_Assessment.check9 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["check9"]);
+                    l_Assessment.check10 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["check10"]);
+                    l_Assessment.check11 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["check11"]);
+                    l_Assessment.check12 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["check12"]);
+                    l_Assessment.check13 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["check13"]);
+                    l_Assessment.check14 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["check14"]);
+                    l_Assessment.check15 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["check15"]);
+                    l_Assessment.check16 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["check16"]);
+                    l_Assessment.check17 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["check17"]);
+                    l_Assessment.check18 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["check18"]);
+                    l_Assessment.check19 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["check19"]);
+                    l_Assessment.check20 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["check20"]);
+                    l_Assessment.check21 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[0]["check21"]);
+
+                    l_Assessment.specify1 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[0]["specify1"]);
+                    l_Assessment.specify2 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[0]["specify2"]);
+                    l_Assessment.specify3 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[0]["specify3"]);
+                    l_Assessment.specify4 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[0]["specify4"]);
+                }
+                else
+                {
+                    l_Assessment = new TUG_mike();
+                }
+            }
+            catch (Exception ex)
+            {
+                exception = "Get_TUG_mike |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+            return l_Assessment;
+        }
+
+        public static void Add_TUG_mike(TUG_mike VPS)
+        {
+            string exception = string.Empty;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Add_TUG_mike", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@ResidentID", VPS.Residentid);
+                l_Cmd.Parameters.AddWithValue("@STID", VPS.Summary_Table_ID);
+                l_Cmd.Parameters.AddWithValue("@INDEX", VPS.Index_in_Summary_Table);
+                l_Cmd.Parameters.AddWithValue("@DateEntered", VPS.DateEntered);
+                l_Cmd.Parameters.AddWithValue("@EnteredBy", VPS.EnteredBy);
+                l_Cmd.Parameters.AddWithValue("@Total_Time", VPS.Total_Time);
+                l_Cmd.Parameters.AddWithValue("@userName", VPS.userName);
+
+                l_Cmd.Parameters.AddWithValue("@check1", VPS.check1);
+                l_Cmd.Parameters.AddWithValue("@check2", VPS.check2);
+                l_Cmd.Parameters.AddWithValue("@check3", VPS.check3);
+                l_Cmd.Parameters.AddWithValue("@check4", VPS.check4);
+                l_Cmd.Parameters.AddWithValue("@check5", VPS.check5);
+                l_Cmd.Parameters.AddWithValue("@check6", VPS.check6);
+                l_Cmd.Parameters.AddWithValue("@check7", VPS.check7);
+                l_Cmd.Parameters.AddWithValue("@check8", VPS.check8);
+                l_Cmd.Parameters.AddWithValue("@check9", VPS.check9);
+                l_Cmd.Parameters.AddWithValue("@check10", VPS.check10);
+                l_Cmd.Parameters.AddWithValue("@check11", VPS.check11);
+                l_Cmd.Parameters.AddWithValue("@check12", VPS.check12);
+                l_Cmd.Parameters.AddWithValue("@check13", VPS.check13);
+                l_Cmd.Parameters.AddWithValue("@check14", VPS.check14);
+                l_Cmd.Parameters.AddWithValue("@check15", VPS.check15);
+                l_Cmd.Parameters.AddWithValue("@check16", VPS.check16);
+                l_Cmd.Parameters.AddWithValue("@check17", VPS.check17);
+                l_Cmd.Parameters.AddWithValue("@check18", VPS.check18);
+                l_Cmd.Parameters.AddWithValue("@check19", VPS.check19);
+                l_Cmd.Parameters.AddWithValue("@check20", VPS.check20);
+                l_Cmd.Parameters.AddWithValue("@check21", VPS.check21);
+                if (VPS.specify1 != null)
+                {
+                    l_Cmd.Parameters.AddWithValue("@specify1", VPS.specify1);
+                }
+                else
+                {
+                    l_Cmd.Parameters.AddWithValue("@specify1", "");
+                }
+
+                if (VPS.specify2 != null)
+                {
+                    l_Cmd.Parameters.AddWithValue("@specify2", VPS.specify2);
+                }
+                else
+                {
+                    l_Cmd.Parameters.AddWithValue("@specify2", "");
+                }
+
+                if (VPS.specify3 != null)
+                {
+                    l_Cmd.Parameters.AddWithValue("@specify3", VPS.specify3);
+                }
+                else
+                {
+                    l_Cmd.Parameters.AddWithValue("@specify3", "");
+                }
+
+                if (VPS.specify4 != null)
+                {
+                    l_Cmd.Parameters.AddWithValue("@specify4", VPS.specify4);
+                }
+                else
+                {
+                    l_Cmd.Parameters.AddWithValue("@specify4", "");
+                }
+
+
+                l_Cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                exception = "Add_TUG_mike |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+
+        }
     }
 }

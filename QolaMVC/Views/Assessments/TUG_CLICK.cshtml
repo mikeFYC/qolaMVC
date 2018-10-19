@@ -1,4 +1,4 @@
-﻿@model QolaMVC.ViewModels.ExcerciseActivityViewModel
+﻿@model QolaMVC.Models.TUG_mike
 @{
     ViewBag.Title = "TUG_CLICK";
 }
@@ -33,126 +33,239 @@
             <div class="jumbotron w-100" style="position: fixed; z-index: 400">
                 <div class="container-fluid container-fixed-lg">
                     <div class="row align-items-center">
-                        <div class="col-md-8">
+                        <div class="col-md-9">
                             <h3>Timed Up-and-Go (TUG) Test Score Sheet</h3>
-                        </div>                    
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-danger print" id="TUG_PRINT" style="float:right;">PRINT</button>
+                            <button class="btn btn-danger" type="button" style="float:right;margin-right:10px !important;" onclick="location.href='@Url.Action("BACK_Click", "Assessments")'">BACK</button>
+                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#TUG_legend" style="float:right;margin-right:10px !important;">LEGEND</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" value="TUG_test" name="" class="filename">
+            <div style="height: 60px;"></div>
+
+            <div class="modal fade" id="TUG_legend" role="dialog" style="right: 0px; display: none;">
+
+                <div class="modal-dialog" style="left:0;right:0;">
+
+                    <!-- Modal content-->
+                    <div class="modal-content" style="width:60vw;right:45%;">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">×</button>
+                            <h2 class="modal-title" style="color:black;font-weight:bold;">TUG Legend</h2>
+                            <br>
+                        </div>
+                        <div class="modal-body">
+                            <img src="~/Content/pages/img/TUG_legend.PNG" />
+                        </div>
+                        <div class="modal-footer">
+                            <br>
+
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div style="height: 60px;"></div>
-
-            <div class="container-fluid container-fixed-lg">
+            <div class="container-fluid container-fixed-lg" id="fromHTMLtestdiv">
                 <div class="card">
-                    @using (Html.BeginForm("", "Assessments"))
-                    {
-
-                    <div class="card-block" id="details">
-                        <div class="row" id="Q1">
-                            <div class="col-md-12">
-                                <b>Gait Aid used for the TUG test ?</b>
-                                <input id="checkbox1" type="checkbox" />
-                                <p>Yes</p>
-                                <input id="checkbox2" type="checkbox" />
-                                <p>No</p>
-                            </div>
+                    <div class="row" id="TUG_firstrow">
+                        <div style="margin-left:20px;">
+                            <img src="~/Content/pages/img/TUG_test_picture.png">
                         </div>
-
-                        <div class="row" id="Q2">
-                            <div class="col-md-12">
-                                <p>If <b>Yes</b>, specify:</p>
-                            </div>
-                            <div class="col-md-5" style="margin-left:5vw;">
-                                <input id="checkbox3" type="checkbox" />
-                                <label>Cane</label>
-                                <br>
-                                <input id="checkbox4" type="checkbox" />
-                                <label>Wheeled Walker (4 Wheels)</label>
-                                <br>
-                                <input id="checkbox5" type="checkbox" />
-                                <label>Solid Walker (No Wheels)</label>
-                            </div>
-                            <div class="col-md-5">
-                                <input id="checkbox6" type="checkbox" />
-                                <label>Quad Cane</label>
-                                <br>
-                                <input id="checkbox7" type="checkbox" />
-                                <label>Walker (2 Wheels, 2 Solid Feet)</label>
-                                <br>
-                                <input id="checkbox8" type="checkbox" />
-                                <label>Other, Specify: <input type="text" /></label>
-                            </div>
+                        <div class="col-md-7" style="margin-top:40px;">
+                            <p>CANADIAN CENTRE FOR ACTIVITY AND AGING</p>
+                            <hr style="display:block;height:1px;border-top:black solid;width:160%;margin-top:-10px;">
                         </div>
-
-                        <div class="row" id="Q3">
-                            <div class="col-md-12">
-                                <b>Difficulties observed during the TUG test</b>
-                            </div>
-                            <br><br>
-                            <div class="col-md-5" style="margin-left:5vw;">
-                                <input id="checkbox9" type="checkbox" />
-                                <label>Getting out of the chair</label>
-                                <br>
-                                <input id="checkbox10" type="checkbox" />
-                                <label>Turning</label>
-                                <br>
-                                <input id="checkbox11" type="checkbox" />
-                                <label>Sitting Down</label>
-                            </div>
-                            <div class="col-md-5">
-                                <input id="checkbox12" type="checkbox" />
-                                <label>Walking</label>
-                                <br>
-                                <input id="checkbox13" type="checkbox" />
-                                <label>Standing</label>
-                                <br>
-                                <input id="checkbox14" type="checkbox" />
-                                <label>Balance</label>
-                                <br>
-                                <input id="checkbox15" type="checkbox" />
-                                <label>Other, Specify: <input type="text" /></label>
-                            </div>
-                        </div>
-
-                        <div class="row" id="Q4">
-                            <div class="col-md-12">
-                                <b>What type of chair was used for the test ?</b>
-                            </div>
-                            <br><br>
-                            <div class="col-md-5" style="margin-left:5vw;">
-                                <input id="checkbox16" type="checkbox" />
-                                <label>Standard</label>
-                            </div>
-                            <div class="col-md-5">
-                                <input id="checkbox17" type="checkbox" />
-                                <label>Other, Specify: <input type="text" /></label>
-                            </div>
-
+                        <div class="col-md-4" style="margin-top:40px;">
+                            <p style="float:right;">Home Support Exercise Program</p>
 
                         </div>
 
-                        <div class="row" id="Q5">
-                            <div class="col-md-12">
-                                <b>Difficulties observed during the TUG test</b>
-                            </div>
-                            <br><br>
-                            <div class="col-md-5" style="margin-left:5vw;">
-                                <input id="checkbox18" type="checkbox" />
-                                <label>Thin Carpet</label>
-                                <br>
-                                <input id="checkbox19" type="checkbox" />
-                                <label>Hard Surface</label>
-                            </div>
-                            <div class="col-md-5">
-                                <input id="checkbox20" type="checkbox" />
-                                <label>Thick Carpet</label>
-                                <br>
-                                <input id="checkbox21" type="checkbox" />
-                                <label>Other, Specify: <input type="text" /></label>
-                            </div>
-                        </div>
 
                     </div>
+
+
+                    @using (Html.BeginForm("Submit_TUG_mike", "Assessments"))
+                    {
+                        @Html.HiddenFor(m => Model.Summary_Table_ID)
+                        @Html.HiddenFor(m => Model.Index_in_Summary_Table)
+
+                        <div class="card-block" id="details">
+                            <div class="row" style="margin-left:60px;">
+                                <div class="col-md-3">
+                                    <b>Assessor: </b>
+                                    @Model.userName
+                                </div>
+                                <div class="col-md-3">
+                                    <b>Date: </b>
+                                    @if (Model.DateEntered.ToString() != "1/1/0001 12:00:00 AM")
+                                    {
+                                        @Model.DateEntered.ToShortDateString()
+                                    }
+                                </div>
+                            </div>
+                            <hr>
+
+
+                            <div class="row" id="Q1" style="margin-left:60px;">
+                                <div class="col-md-12">
+                                    <b>Gait Aid used for the TUG test ?</b>
+                                    @*<input id="checkbox1" type="checkbox" />*@
+                                    @Html.CheckBoxFor(m => Model.check1, new { @id = "checkbox1" })
+                                    <p>Yes</p>
+                                    @*<input id="checkbox2" type="checkbox" />*@
+                                    @Html.CheckBoxFor(m => Model.check2, new { @id = "checkbox2" })
+                                    <p>No</p>
+                                </div>
+                            </div>
+
+                            <div class="row" id="Q2" style="margin-left:60px;">
+                                <div class="col-md-12">
+                                    <p>If <b>Yes</b>, specify:</p>
+                                </div>
+                                <div class="col-md-5" style="margin-left:5vw;">
+                                    @*<input id="checkbox3" type="checkbox" />*@
+                                    @Html.CheckBoxFor(m => Model.check3, new { @id = "checkbox3" })
+                                    <label>Cane</label>
+                                    <br>
+                                    @*<input id="checkbox4" type="checkbox" />*@
+                                    @Html.CheckBoxFor(m => Model.check4, new { @id = "checkbox4" })
+                                    <label>Wheeled Walker (4 Wheels)</label>
+                                    <br>
+                                    @*<input id="checkbox5" type="checkbox" />*@
+                                    @Html.CheckBoxFor(m => Model.check5, new { @id = "checkbox5" })
+                                    <label>Solid Walker (No Wheels)</label>
+                                </div>
+                                <div class="col-md-5">
+                                    @*<input id="checkbox6" type="checkbox" />*@
+                                    @Html.CheckBoxFor(m => Model.check6, new { @id = "checkbox6" })
+                                    <label>Quad Cane</label>
+                                    <br>
+                                    @*<input id="checkbox7" type="checkbox" />*@
+                                    @Html.CheckBoxFor(m => Model.check7, new { @id = "checkbox7" })
+                                    <label>Walker (2 Wheels, 2 Solid Feet)</label>
+                                    <br>
+                                    @*<input id="checkbox8" type="checkbox" />*@
+                                    @Html.CheckBoxFor(m => Model.check8, new { @id = "checkbox8" })
+                                    <label>Other, Specify: @Html.TextBoxFor(modelItem => Model.specify1)</label>
+                                </div>
+                            </div>
+
+                            <div class="row" id="Q3" style="margin-left:60px;">
+                                <div class="col-md-12">
+                                    <b>Difficulties observed during the TUG test</b>
+                                </div>
+                                <br><br>
+                                <div class="col-md-5" style="margin-left:5vw;">
+                                    @*<input id="checkbox9" type="checkbox" />*@
+                                    @Html.CheckBoxFor(m => Model.check9, new { @id = "checkbox9" })
+                                    <label>Getting out of the chair</label>
+                                    <br>
+                                    @*<input id="checkbox10" type="checkbox" />*@
+                                    @Html.CheckBoxFor(m => Model.check10, new { @id = "checkbox10" })
+                                    <label>Turning</label>
+                                    <br>
+                                    @*<input id="checkbox11" type="checkbox" />*@
+                                    @Html.CheckBoxFor(m => Model.check11, new { @id = "checkbox11" })
+                                    <label>Sitting Down</label>
+                                </div>
+                                <div class="col-md-5">
+                                    @*<input id="checkbox12" type="checkbox" />*@
+                                    @Html.CheckBoxFor(m => Model.check12, new { @id = "checkbox12" })
+                                    <label>Walking</label>
+                                    <br>
+                                    @*<input id="checkbox13" type="checkbox" />*@
+                                    @Html.CheckBoxFor(m => Model.check13, new { @id = "checkbox13" })
+                                    <label>Standing</label>
+                                    <br>
+                                    @*<input id="checkbox14" type="checkbox" />*@
+                                    @Html.CheckBoxFor(m => Model.check14, new { @id = "checkbox14" })
+                                    <label>Balance</label>
+                                    <br>
+                                    @*<input id="checkbox15" type="checkbox" />*@
+                                    @Html.CheckBoxFor(m => Model.check15, new { @id = "checkbox15" })
+                                    <label>Other, Specify: @Html.TextBoxFor(modelItem => Model.specify2)</label>
+                                </div>
+                            </div>
+
+                            <div class="row" id="Q4" style="margin-left:60px;">
+                                <div class="col-md-12">
+                                    <b>What type of chair was used for the test ?</b>
+                                </div>
+                                <br><br>
+                                <div class="col-md-5" style="margin-left:5vw;">
+                                    @*<input id="checkbox16" type="checkbox" />*@
+                                    @Html.CheckBoxFor(m => Model.check16, new { @id = "checkbox16" })
+                                    <label>Standard</label>
+                                </div>
+                                <div class="col-md-5">
+                                    @*<input id="checkbox17" type="checkbox" />*@
+                                    @Html.CheckBoxFor(m => Model.check17, new { @id = "checkbox17" })
+                                    <label>Other, Specify: @Html.TextBoxFor(modelItem => Model.specify3)</label>
+                                </div>
+
+
+                            </div>
+
+                            <div class="row" id="Q5" style="margin-left:60px;">
+                                <div class="col-md-12">
+                                    <b>Difficulties observed during the TUG test</b>
+                                </div>
+                                <br><br>
+                                <div class="col-md-5" style="margin-left:5vw;">
+                                    @*<input id="checkbox18" type="checkbox" />*@
+                                    @Html.CheckBoxFor(m => Model.check18, new { @id = "checkbox18" })
+                                    <label>Thin Carpet</label>
+                                    <br>
+                                    @*<input id="checkbox19" type="checkbox" />*@
+                                    @Html.CheckBoxFor(m => Model.check19, new { @id = "checkbox19" })
+                                    <label>Hard Surface</label>
+                                </div>
+                                <div class="col-md-5">
+                                    @*<input id="checkbox20" type="checkbox" />*@
+                                    @Html.CheckBoxFor(m => Model.check20, new { @id = "checkbox20" })
+                                    <label>Thick Carpet</label>
+                                    <br>
+                                    @*<input id="checkbox21" type="checkbox" />*@
+                                    @Html.CheckBoxFor(m => Model.check21, new { @id = "checkbox21" })
+                                    <label>Other, Specify: @Html.TextBoxFor(modelItem => Model.specify4)</label>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row" style="margin-left:60px;">
+                                <div class="col-md-12">
+                                    <b style="color:red">Completed by Assessor</b>
+                                </div>
+                                <br><br>
+                                <div class="col-md-5" style="margin-left:5vw;">
+                                    <label>Total Time (nearest second): </label>
+                                    @Html.TextBoxFor(modelItem => Model.Total_Time)
+                                </div>
+
+                            </div>
+                            <br>
+
+                            <div class="row" style="margin-left:60px;">
+                                <div class="col-md-10">
+                                    @{
+                                        if (@TempData["View_Mode"].ToString() == "NO")
+                                        {
+                                            <button class="btn btn-danger btn-lg" type="submit" style="color:white;float:right;">Submit</button>
+                                        }
+                                    }
+
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
                     }
 
 
@@ -167,4 +280,17 @@
 
 
 
-
+        <script>
+            $('input[id="checkbox1"]').change(function (event) {
+                if (this.checked == true) {
+                    var a = $('input[id="checkbox2"]');
+                    a[0].checked = false;
+                }
+            });
+            $('input[id="checkbox2"]').change(function (event) {
+                if (this.checked == true) {
+                var a = $('input[id="checkbox1"]');
+                    a[0].checked = false;
+                }
+            });
+        </script>

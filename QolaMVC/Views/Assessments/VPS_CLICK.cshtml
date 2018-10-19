@@ -1,4 +1,4 @@
-﻿@model QolaMVC.ViewModels.ExcerciseActivityViewModel
+﻿@model QolaMVC.Models.VPS_mike
 @{
     ViewBag.Title = "VPS_CLICK";
 }
@@ -25,18 +25,23 @@
             <div class="jumbotron w-100" style="position: fixed; z-index: 400">
                 <div class="container-fluid container-fixed-lg">
                     <div class="row align-items-center">
-                        <div class="col-md-8">
+                        <div class="col-md-10">
                             <h3>Vitality Plus Scale (VPS)</h3>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-danger print" id="VPS_PRINT" style="float:right;">PRINT</button>
+                            <button class="btn btn-danger" type="button" style="float:right;margin-right:10px !important;" onclick="location.href='@Url.Action("BACK_Click", "Assessments")'">BACK</button>
+
                         </div>
                     </div>
                 </div>
             </div>
-
+            <input type="hidden" value="VPS_test" name="" class="filename">
             <div style="height: 60px;"></div>
 
-            <div class="container-fluid container-fixed-lg">
+            <div class="container-fluid container-fixed-lg" id="fromHTMLtestdiv">
                 <div class="card">
-                    
+
                     <div class="modal fade" id="VPS_legend" role="dialog" style="right: 0px; display: none;">
 
                         <div class="modal-dialog" style="left:0;right:0;">
@@ -66,16 +71,17 @@
                             </div>
                         </div>
                     </div>
-                    @using (Html.BeginForm("", "Assessments"))
+                    @using (Html.BeginForm("Submit_VPS_mike", "Assessments"))
                     {
-
+                        @Html.HiddenFor(m => Model.Summary_Table_ID)
+                        @Html.HiddenFor(m => Model.Index_in_Summary_Table)
                         <div class="card-block" id="details">
-                            <div class="row" id="Questions">
+                            <div class="row" id="VPS_firstrow">
                                 <div class="col-md-10" id="title">
                                     <table class="table table-bordered" id="assessment_table">
                                         <thead>
                                             <tr>
-                                                <th style="color:red;font-weight:bold;font-size:1vw;">Total Score : <p class="TotalScore" style="font-weight:bold;font-size:2vw;display:inline;margin-left:10px;"></p></th>
+                                                <th style="color:red;font-weight:bold;font-size:1vw;">Total Score : @Html.TextBoxFor(m => Model.TotalScore, new { @class = "TotalScore", @style = "font-weight:bold;font-size:2vw;display:inline;margin-left:10px;width:10vw;border:none;color:red;" })</th>
                                                 <th class="text-center"><b>1</b></th>
                                                 <th class="text-center"><b>2</b></th>
                                                 <th class="text-center"><b>3</b></th>
@@ -86,103 +92,112 @@
                                         </thead>
                                         <tbody>
                                             <tr>
+
                                                 <td><b>1. Takes a long time to fall asleep</b></td>
-                                                <td><input name="radio1" id="1" type="radio" /></td>
-                                                <td><input name="radio1" id="2" type="radio" /></td>
-                                                <td><input name="radio1" id="3" type="radio" /></td>
-                                                <td><input name="radio1" id="4" type="radio" /></td>
-                                                <td><input name="radio1" id="5" type="radio" /></td>
+                                                <td>@Html.RadioButtonFor(m => m.radio1, true, new { Score = "1" })</td>
+                                                <td>@Html.RadioButtonFor(m => m.radio2, true, new { Score = "2" })</td>
+                                                <td>@Html.RadioButtonFor(m => m.radio3, true, new { Score = "3" })</td>
+                                                <td>@Html.RadioButtonFor(m => m.radio4, true, new { Score = "4" })</td>
+                                                <td>@Html.RadioButtonFor(m => m.radio5, true, new { Score = "5" })</td>
                                                 <td><b>Fall asleep quickly</b></td>
                                             </tr>
                                             <tr>
                                                 <td><b>2. Sleep poorly</b></td>
-                                                <td><input name="radio2" id="1" type="radio" /></td>
-                                                <td><input name="radio2" id="2" type="radio" /></td>
-                                                <td><input name="radio2" id="3" type="radio" /></td>
-                                                <td><input name="radio2" id="4" type="radio" /></td>
-                                                <td><input name="radio2" id="5" type="radio" /></td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio6, true, new { Score = "1" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio7, true, new { Score = "2" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio8, true, new { Score = "3" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio9, true, new { Score = "4" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio10, true, new { Score = "5" })</td>
                                                 <td><b>Sleep well</b></td>
                                             </tr>
                                             <tr>
                                                 <td><b>3. Tired or drowsy during the day</b></td>
-                                                <td><input name="radio3" id="1" type="radio" /></td>
-                                                <td><input name="radio3" id="2" type="radio" /></td>
-                                                <td><input name="radio3" id="3" type="radio" /></td>
-                                                <td><input name="radio3" id="4" type="radio" /></td>
-                                                <td><input name="radio3" id="5" type="radio" /></td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio11, true, new { Score = "1" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio12, true, new { Score = "2" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio13, true, new { Score = "3" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio14, true, new { Score = "4" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio15, true, new { Score = "5" })</td>
                                                 <td><b>Well rested</b></td>
                                             </tr>
                                             <tr>
                                                 <td><b>4. Rarely hungry</b></td>
-                                                <td><input name="radio4" id="1" type="radio" /></td>
-                                                <td><input name="radio4" id="2" type="radio" /></td>
-                                                <td><input name="radio4" id="3" type="radio" /></td>
-                                                <td><input name="radio4" id="4" type="radio" /></td>
-                                                <td><input name="radio4" id="5" type="radio" /></td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio16, true, new { Score = "1" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio17, true, new { Score = "2" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio18, true, new { Score = "3" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio19, true, new { Score = "4" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio20, true, new { Score = "5" })</td>
                                                 <td><b>Excellent appetite</b></td>
                                             </tr>
                                             <tr>
                                                 <td><b>5. Often constipated</b></td>
-                                                <td><input name="radio5" id="1" type="radio" /></td>
-                                                <td><input name="radio5" id="2" type="radio" /></td>
-                                                <td><input name="radio5" id="3" type="radio" /></td>
-                                                <td><input name="radio5" id="4" type="radio" /></td>
-                                                <td><input name="radio5" id="5" type="radio" /></td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio21, true, new { Score = "1" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio22, true, new { Score = "2" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio23, true, new { Score = "3" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio24, true, new { Score = "4" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio25, true, new { Score = "5" })</td>
                                                 <td><b>Do not get constipated</b></td>
                                             </tr>
                                             <tr>
                                                 <td><b>6. Often have aches and pains</b></td>
-                                                <td><input name="radio6" id="1" type="radio" /></td>
-                                                <td><input name="radio6" id="2" type="radio" /></td>
-                                                <td><input name="radio6" id="3" type="radio" /></td>
-                                                <td><input name="radio6" id="4" type="radio" /></td>
-                                                <td><input name="radio6" id="5" type="radio" /></td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio26, true, new { Score = "1" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio27, true, new { Score = "2" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio28, true, new { Score = "3" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio29, true, new { Score = "4" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio30, true, new { Score = "5" })</td>
                                                 <td><b>No aches or pains</b></td>
                                             </tr>
                                             <tr>
                                                 <td><b>7. Low energy level</b></td>
-                                                <td><input name="radio7" id="1" type="radio" /></td>
-                                                <td><input name="radio7" id="2" type="radio" /></td>
-                                                <td><input name="radio7" id="3" type="radio" /></td>
-                                                <td><input name="radio7" id="4" type="radio" /></td>
-                                                <td><input name="radio7" id="5" type="radio" /></td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio31, true, new { Score = "1" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio32, true, new { Score = "2" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio33, true, new { Score = "3" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio34, true, new { Score = "4" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio35, true, new { Score = "5" })</td>
                                                 <td><b>Full of pep and energy</b></td>
                                             </tr>
                                             <tr>
                                                 <td><b>8. Often still in the morning</b></td>
-                                                <td><input name="radio8" id="1" type="radio" /></td>
-                                                <td><input name="radio8" id="2" type="radio" /></td>
-                                                <td><input name="radio8" id="3" type="radio" /></td>
-                                                <td><input name="radio8" id="4" type="radio" /></td>
-                                                <td><input name="radio8" id="5" type="radio" /></td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio36, true, new { Score = "1" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio37, true, new { Score = "2" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio38, true, new { Score = "3" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio39, true, new { Score = "4" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio40, true, new { Score = "5" })</td>
                                                 <td><b>Not stiff in the morning</b></td>
                                             </tr>
                                             <tr>
                                                 <td><b>9. Often restless or agitated</b></td>
-                                                <td><input name="radio9" id="1" type="radio" /></td>
-                                                <td><input name="radio9" id="2" type="radio" /></td>
-                                                <td><input name="radio9" id="3" type="radio" /></td>
-                                                <td><input name="radio9" id="4" type="radio" /></td>
-                                                <td><input name="radio9" id="5" type="radio" /></td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio41, true, new { Score = "1" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio42, true, new { Score = "2" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio43, true, new { Score = "3" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio44, true, new { Score = "4" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio45, true, new { Score = "5" })</td>
                                                 <td><b>Fell relaxed</b></td>
                                             </tr>
                                             <tr>
                                                 <td><b>10. Often do not fell well</b></td>
-                                                <td><input name="radio10" id="1" type="radio" /></td>
-                                                <td><input name="radio10" id="2" type="radio" /></td>
-                                                <td><input name="radio10" id="3" type="radio" /></td>
-                                                <td><input name="radio10" id="4" type="radio" /></td>
-                                                <td><input name="radio10" id="5" type="radio" /></td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio46, true, new { Score = "1" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio47, true, new { Score = "2" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio48, true, new { Score = "3" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio49, true, new { Score = "4" })</td>
+                                                <td>@Html.RadioButtonFor(m => Model.radio50, true, new { Score = "5" })</td>
                                                 <td><b>Fell well</b></td>
                                             </tr>
                                         </tbody>
                                     </table>
                                     <br>
-                                    <button class="btn btn-danger btn-lg" type="button"  style="color:white;float:right">Submit</button>
-                                </div>
-                                </div>
 
+                                    @{
+                                        if (@TempData["View_Mode"].ToString() == "NO")
+                                        {
+                                            <button class="btn btn-danger btn-lg" type="submit" style="color:white;float:right;">Submit</button>
+                                        }
+                                    }
+
+
+                                </div>
                             </div>
+
+                        </div>
                     }
 
 
@@ -199,16 +214,27 @@
     
 
     $("input[type='radio']").click(function () {
+        var inn = this.parentElement.parentElement.getElementsByTagName('input')
+        for (var index = 0; index < inn.length; index++) {
+            if (inn[index] != this) {
+                inn[index].checked = false;
+            }
+        }
+
+
         var a = $("input[type='radio']");
         var total = 0;
         for (var b = 0; b < a.length; b++) {
             if (a[b].checked == true) {
-                total += parseInt(a[b].id)
+                total += parseInt(a[b].getAttribute("Score"))
             }
         }
-        $(".TotalScore").text(total.toString());
+        $(".TotalScore").val(total.toString());
+
         //$(".TotalScore").val(total);
     });
+
+
 
 
 

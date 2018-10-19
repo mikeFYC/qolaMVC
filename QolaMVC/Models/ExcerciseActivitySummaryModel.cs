@@ -46,4 +46,5 @@ namespace QolaMVC.Models
         public string SMonthVPS { get; set; }
 
     }
+
 }
