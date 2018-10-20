@@ -280,7 +280,7 @@
                         function initCalendar2() {
                              $('#calendar2').CalendarPlugin({
                                  url: '/Home/getEvents',
-                                 view: 'monthly',
+                                 view: 'daily',
                             form: [
                                 [
                                     {
@@ -396,7 +396,7 @@
         </div>
     </div>
 
-    <div id="day_div" style="display:block;margin-top:-26vw;z-index:1000;">
+    <div id="day_div" style="display:block;margin-top:-400px;z-index:1000;">
 
         <div class="container-fluid container-fixed-lg" id="main_page" style="margin-top:-8vw;">
             <div class="card">
@@ -463,164 +463,199 @@
         </div>
 
 
-        <div class="modal" id="attendent_form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div id="contactForm" class="modal" style="display:none">
-                <h3>Add Progress Notes</h3>
-                <br>
-                <form action="#">
-                    <textarea class="formtext" id="formtextarea" placeholder="Comment" style="height:170px;width:300px"></textarea>
-                    <input class="formBtn" type="button" value="Submit" onclick="progressnoteadd(this)" />
-                    <input class="formBtn" type="button" value="Reset" onclick="document.getElementById('formtextarea').value=''" />
-                    <input class="formBtn" type="button" value="Close" onclick="note_close_click()" />
-                </form>
-            </div>
 
-            <div class="modal-xlg" role="document" id="attendent_form_second_layer">
-                <div class="modal-content" id="attendent_form_third_layer">
-                    <div class="modal-header">
-                        <h3 class="modal-title" id="exampleModalLabel" style="font-weight:bolder;">Activity Attendance</h3>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="x_close()">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-tabs mt-4">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                                        <li class="nav-item">
-                                            <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home1" role="tab" aria-controls="pills-home" aria-selected="true" onclick="search_click()">Search View</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile1" role="tab" aria-controls="pills-profile" aria-selected="false" onclick="list_click()">List View</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact1" role="tab" aria-controls="pills-contact" aria-selected="false" onclick="floor_click()">Floor View</a>
-                                        </li>
-                                    </ul>
-                                </div>
+
+
+    </div>
+
+    <div id="day_div2" style="display:none;margin-top:-400px;z-index:1000;">
+
+        <div class="container-fluid container-fixed-lg" id="main_page" style="margin-top:-8vw;">
+            <div class="card">
+                <div class="card-block">
+                    <div class="form-tabs mt-4">
+
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top:-7.5vw;margin-left:20vw;padding-bottom:5vw;">
+
+                            <li class="Prevbtn"><a href="#" onclick="previousday()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
+                            <li class="clear_bg"><label id="lblCalendarMsg" style="font-weight:bolder;font-size:1.5vw;margin-top:0.9vw;color:white">@TempData["datechoose"].ToString()</label></li>
+                            <li class="Nextbtn"><a href="#" onclick="nextday()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
+                        </ul>
+
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-day" role="tabpanel" aria-labelledby="pills-home-tab">
+                                <div id="select_ActivityID_index" class="" name="" english=""></div>
+                                <table class="table table-bordered">
+                                    <thead class="bg-primary">
+                                        <tr>
+                                            <th class="text-white text-center">Time</th>
+                                            <th class="text-white text-center">Today's Activities</th>
+                                            <th class="text-white text-center">Venue</th>
+                                            <th class="text-white text-center">Attendance</th>
+                                            <th class="text-white text-center" colspan="2"></th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-white text-center"></th>
+                                            <th class="text-white text-center"></th>
+                                            <th class="text-white text-center"></th>
+                                            <th class="text-white text-center"></th>
+                                            <th class="text-white text-center">Active</th>
+                                            <th class="text-white text-center">Declined</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            for (int a = 0; a < @ViewBag.Events.Count; a++)
+                                            {
+                                                <tr name=@ViewBag.Events[a].ProgramId id=@ViewBag.Events[a].ProgramName englishname=@ViewBag.Events[a].ActivityNameEnglish>
+                                                    <td>@ViewBag.Events[a].ProgramStartTime</td>
+                                                    <td>@ViewBag.Events[a].ProgramName</td>
+                                                    <td>@ViewBag.Events[a].Venue</td>
+                                                    <td>
+                                                        <a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#">
+                                                            <i class="fa fa-file-text-o"></i>
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        @ViewBag.Events[a].Active
+                                                    </td>
+                                                    <td>
+                                                        @ViewBag.Events[a].Declined
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
 
-                            <div class="tab-content" id="pills-tabContent">
-                                <div class="tab-pane fade show active" id="pills-home1" role="tabpanel" aria-labelledby="pills-home-tab">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="form-group row">
-                                                <label class="col-md-12 col-form-label" style="margin-left:5vw">Resident Name / Suite # :</label>
-                                                <div class="col-md-12" style="margin-left:5vw">
-                                                    <input type="text" class="form-control" id="searchresidents3" onchange="change_searchresidents3()">
-                                                </div>
-                                            </div>
-                                            <div class="searchBox p-1" id="searchBoxfor3" style="margin-left:5.5vw">
-                                                <div class="list-group searchboxresult2">
-                                                </div>
+
+
+    </div>
+
+
+
+    <div class="modal" id="attendent_form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div id="contactForm" class="modal" style="display:none">
+            <h3>Add Progress Notes</h3>
+            <br>
+            <form action="#">
+                <textarea class="formtext" id="formtextarea" placeholder="Comment" style="height:170px;width:300px"></textarea>
+                <input class="formBtn" type="button" value="Submit" onclick="progressnoteadd(this)" />
+                <input class="formBtn" type="button" value="Reset" onclick="document.getElementById('formtextarea').value=''" />
+                <input class="formBtn" type="button" value="Close" onclick="note_close_click()" />
+            </form>
+        </div>
+
+        <div class="modal-xlg" role="document" id="attendent_form_second_layer">
+            <div class="modal-content" id="attendent_form_third_layer">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel" style="font-weight:bolder;">Activity Attendance</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="x_close()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-tabs mt-4">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home1" role="tab" aria-controls="pills-home" aria-selected="true" onclick="search_click()">Search View</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile1" role="tab" aria-controls="pills-profile" aria-selected="false" onclick="list_click()">List View</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact1" role="tab" aria-controls="pills-contact" aria-selected="false" onclick="floor_click()">Floor View</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+
+
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-home1" role="tabpanel" aria-labelledby="pills-home-tab">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group row">
+                                            <label class="col-md-12 col-form-label" style="margin-left:5vw">Resident Name / Suite # :</label>
+                                            <div class="col-md-12" style="margin-left:5vw">
+                                                <input type="text" class="form-control" id="searchresidents3" onchange="change_searchresidents3()">
                                             </div>
                                         </div>
-                                        <div class="col-md-7">
+                                        <div class="searchBox p-1" id="searchBoxfor3" style="margin-left:5.5vw">
+                                            <div class="list-group searchboxresult2">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
 
-                                            <div class="form-group">
-                                                <br><br>
-                                                <div class="row">
-                                                    <div class="col-md-12 pads" style="margin-left:4vw">
-                                                        <div class="form-check form-check-inline movesp">
-                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                            <label class="form-check-label" name="viewlistchoose">Active</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                            <label class="form-check-label" name="viewlistchoose">Passive</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline movesp">
-                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                            <label class="form-check-label" name="viewlistchoose">Declined</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline movesp">
-                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                            <label class="form-check-label" name="viewlistchoose">Away</label>
-                                                        </div>
+                                        <div class="form-group">
+                                            <br><br>
+                                            <div class="row">
+                                                <div class="col-md-12 pads" style="margin-left:4vw">
+                                                    <div class="form-check form-check-inline movesp">
+                                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                        <label class="form-check-label" name="viewlistchoose">Active</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                        <label class="form-check-label" name="viewlistchoose">Passive</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline movesp">
+                                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                        <label class="form-check-label" name="viewlistchoose">Declined</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline movesp">
+                                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                        <label class="form-check-label" name="viewlistchoose">Away</label>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-2" style="display:inline-block;">
-                                            <br>
-                                            <button class="btn btn-lg btn-danger" onclick="View_List_add()" style="margin-left:-2vw;">ADD</button>
-                                            <button type="button" class="btn btn-lg btn-primary" data-dismiss="modal" onclick="View_List_save()">SAVE</button>
-                                        </div>
+                                    </div>
+                                    <div class="col-md-2" style="display:inline-block;">
+                                        <br>
+                                        <button class="btn btn-lg btn-danger" onclick="View_List_add()" style="margin-left:-2vw;">ADD</button>
+                                        <button type="button" class="btn btn-lg btn-primary" data-dismiss="modal" onclick="View_List_save()">SAVE</button>
+                                    </div>
 
-                                        <div class="" style="border:1px solid #000;margin-left:15vw">
-                                            <table class="attend" style="min-width:50vw">
-                                                <tbody id="show_list"></tbody>
-                                            </table>
-                                        </div>
+                                    <div class="" style="border:1px solid #000;margin-left:15vw">
+                                        <table class="attend" style="min-width:50vw">
+                                            <tbody id="show_list"></tbody>
+                                        </table>
+                                    </div>
 
 
-                                        <div class="col-md-12 text-center">
-                                            <br><br><br><br><br><br>
-                                            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="View_List_save()" style="margin-left:-2vw;">SAVE</button>
-                                        </div>
+                                    <div class="col-md-12 text-center">
+                                        <br><br><br><br><br><br>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="View_List_save()" style="margin-left:-2vw;">SAVE</button>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" id="pills-profile1" role="tabpanel" aria-labelledby="pills-profile-tab">
-                                    <div class="row">
+                            </div>
+                            <div class="tab-pane fade" id="pills-profile1" role="tabpanel" aria-labelledby="pills-profile-tab">
+                                <div class="row">
 
-                                        <div class="col-md-12 text-center">
-                                            <br>
-                                            <button type="button" class="btn btn-primary" style="margin-bottom:1vw;margin-left:3vw;" data-dismiss="modal" onclick="list_savebutton()">SAVE</button>
-                                            <button type="button" class="btn btn-primary" id="PrintID1" style="margin-bottom:1vw;float:right" onclick="Print_list()">Print</button>
-                                        </div>
+                                    <div class="col-md-12 text-center">
                                         <br>
-                                        <div class="col-md-6" style="border: 1px solid #000;">
-                                            <table class="attend">
-                                                <tbody>
-                                                    @{
-                                                        for (int i = 0; i < Model.LIST_RESIDENT.Count; i = i + 2)
-                                                        {
-                                                            var a = Model.LIST_RESIDENT[i];
-                                                            <tr name=@a.ID>
-                                                                <td style="max-width:10vw">@a.FirstName @a.LastName</td>
-                                                                <td>
-                                                                    <div class="form-check form-check-inline">
-                                                                        <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option1">
-                                                                        <label class="form-check-label">Active</label>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="form-check form-check-inline">
-                                                                        <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option2">
-                                                                        <label class="form-check-label">Passive</label>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="form-check form-check-inline">
-                                                                        <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option3">
-                                                                        <label class="form-check-label">Declined</label>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="form-check form-check-inline">
-                                                                        <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option4">
-                                                                        <label class="form-check-label">Away</label>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="form-check form-check-inline">
-                                                                        <input type="image" style="width:1.7vw;height:1.7vw" src="/Content/pages/img/icoedit.png" onclick="progressnote(this)">
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-
-                                                        }
-                                                    }
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="col-md-6" style="border: 1px solid #000">
-                                            <table class="attend">
-                                                <tbody>
-                                                    @for (int i = 1; i < Model.LIST_RESIDENT.Count; i = i + 2)
+                                        <button type="button" class="btn btn-primary" style="margin-bottom:1vw;margin-left:3vw;" data-dismiss="modal" onclick="list_savebutton()">SAVE</button>
+                                        <button type="button" class="btn btn-primary" id="PrintID1" style="margin-bottom:1vw;float:right" onclick="Print_list()">Print</button>
+                                    </div>
+                                    <br>
+                                    <div class="col-md-6" style="border: 1px solid #000;">
+                                        <table class="attend">
+                                            <tbody>
+                                                @{
+                                                    for (int i = 0; i < Model.LIST_RESIDENT.Count; i = i + 2)
                                                     {
                                                         var a = Model.LIST_RESIDENT[i];
                                                         <tr name=@a.ID>
@@ -657,106 +692,154 @@
                                                         </tr>
 
                                                     }
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-6" style="border: 1px solid #000">
+                                        <table class="attend">
+                                            <tbody>
+                                                @for (int i = 1; i < Model.LIST_RESIDENT.Count; i = i + 2)
+                                                {
+                                                    var a = Model.LIST_RESIDENT[i];
+                                                    <tr name=@a.ID>
+                                                        <td style="max-width:10vw">@a.FirstName @a.LastName</td>
+                                                        <td>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option1">
+                                                                <label class="form-check-label">Active</label>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option2">
+                                                                <label class="form-check-label">Passive</label>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option3">
+                                                                <label class="form-check-label">Declined</label>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option4">
+                                                                <label class="form-check-label">Away</label>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-check form-check-inline">
+                                                                <input type="image" style="width:1.7vw;height:1.7vw" src="/Content/pages/img/icoedit.png" onclick="progressnote(this)">
+                                                            </div>
+                                                        </td>
+                                                    </tr>
 
-                                        <div class="col-md-12 text-center">
-                                            <br><br><br><br><br><br>
-                                            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="list_savebutton()">SAVE</button>
-                                            <button type="button" class="btn btn-secondary" onclick="list_clearbutton()">CLEAR</button>
-                                        </div>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="col-md-12 text-center">
+                                        <br><br><br><br><br><br>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="list_savebutton()">SAVE</button>
+                                        <button type="button" class="btn btn-secondary" onclick="list_clearbutton()">CLEAR</button>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" id="pills-contact1" role="tabpanel" aria-labelledby="pills-contact-tab">
-                                    <div class="row">
-                                        <div class="col-md-12 text-center">
-                                            <br>
-                                            <button type="button" class="btn btn-primary" style="margin-bottom:1vw;margin-left:3vw;" data-dismiss="modal" onclick="floor_savebutton()">SAVE</button>
+                            </div>
+                            <div class="tab-pane fade" id="pills-contact1" role="tabpanel" aria-labelledby="pills-contact-tab">
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <br>
+                                        <button type="button" class="btn btn-primary" style="margin-bottom:1vw;margin-left:3vw;" data-dismiss="modal" onclick="floor_savebutton()">SAVE</button>
 
-                                            <button type="button" class="btn btn-primary" id="PrintID2" style="margin-bottom:1vw;float:right" onclick="Print_floor()">Print</button>
-                                        </div>
-                                        @{
-                                            int floor = 0;
-                                            foreach (var a in Model.LIST_RESIDENT)
+                                        <button type="button" class="btn btn-primary" id="PrintID2" style="margin-bottom:1vw;float:right" onclick="Print_floor()">Print</button>
+                                    </div>
+                                    @{
+                                        int floor = 0;
+                                        foreach (var a in Model.LIST_RESIDENT)
+                                        {
+                                            if (a.No_of_floor > floor)
                                             {
-                                                if (a.No_of_floor > floor)
-                                                {
-                                                    floor = a.No_of_floor;
-                                                }
-                                            }
-
-                                            for (int b = 1; b <= floor; b++)
-                                            {
-                                                <div class="col-md-6" style="border:1px solid #000;">
-                                                    <table class="attend">
-                                                        <tbody>
-                                                            <tr>
-                                                                <th colspan="7" height=50vw>@b st Floor</th>
-                                                            </tr>
-                                                            @foreach (var a in Model.LIST_RESIDENT)
-                                                            {
-                                                                if (a.No_of_floor == b)
-                                                                {
-                                                                    <tr name=@a.ID>
-                                                                        <td>@a.FirstName @a.LastName</td>
-                                                                        <td>
-                                                                            <div class="form-check form-check-inline">
-                                                                                <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option1">
-                                                                                <label class="form-check-label">Active</label>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td>
-                                                                            <div class="form-check form-check-inline">
-                                                                                <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option2">
-                                                                                <label class="form-check-label">Passive</label>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td>
-                                                                            <div class="form-check form-check-inline">
-                                                                                <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option3">
-                                                                                <label class="form-check-label">Declined</label>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td>
-                                                                            <div class="form-check form-check-inline">
-                                                                                <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option4">
-                                                                                <label class="form-check-label">Away</label>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td>
-                                                                            <div class="form-check form-check-inline">
-                                                                                <input type="image" style="width:1.7vw;height:1.7vw" src="/Content/pages/img/icoedit.png" onclick="progressnote(this)">
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                }
-                                                            }
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                                                floor = a.No_of_floor;
                                             }
                                         }
 
-                                        <div class="col-md-12 text-center">
-                                            <br><br><br><br><br><br>
-                                            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="floor_savebutton()">SAVE</button>
-                                            <button type="button" class="btn btn-secondary" onclick="floor_clearbutton()">CLEAR</button>
-                                        </div>
+                                        for (int b = 1; b <= floor; b++)
+                                        {
+                                            <div class="col-md-6" style="border:1px solid #000;">
+                                                <table class="attend">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th colspan="7" height=50vw>@b st Floor</th>
+                                                        </tr>
+                                                        @foreach (var a in Model.LIST_RESIDENT)
+                                                        {
+                                                            if (a.No_of_floor == b)
+                                                            {
+                                                                <tr name=@a.ID>
+                                                                    <td>@a.FirstName @a.LastName</td>
+                                                                    <td>
+                                                                        <div class="form-check form-check-inline">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID + id="inlineRadio2" value="option1">
+                                                                            <label class="form-check-label">Active</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check form-check-inline">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID + id="inlineRadio2" value="option2">
+                                                                            <label class="form-check-label">Passive</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check form-check-inline">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID + id="inlineRadio2" value="option3">
+                                                                            <label class="form-check-label">Declined</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check form-check-inline">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID + id="inlineRadio2" value="option4">
+                                                                            <label class="form-check-label">Away</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check form-check-inline">
+                                                                            <input type="image" style="width:1.7vw;height:1.7vw" src="/Content/pages/img/icoedit.png" onclick="progressnote(this)">
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        }
+                                    }
+
+                                    <div class="col-md-12 text-center">
+                                        <br><br><br><br><br><br>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="floor_savebutton()">SAVE</button>
+                                        <button type="button" class="btn btn-secondary" onclick="floor_clearbutton()">CLEAR</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer text-center">
+                    </div>
+                    <div class="modal-footer text-center">
 
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-
     </div>
+
+
+
+
+
+
+
 
     @*@RenderPage("~/Views/Shared/_Footer.cshtml")*@
 </body>
@@ -786,33 +869,55 @@
         if (document.getElementById('pills-active-tab').className == "nav-link active") {
             window.location.href = window.location.href;
         }
-    }
+        else if (document.getElementById('pills-achive-tab').className == "nav-link active") {
+            document.getElementById("mike").style.visibility = "hidden";
+            document.getElementById("day_div2").style.display = "block";
 
-    function hide_day() {
-        if (document.getElementById('pills-active-tab').className == "nav-link active") {
-            document.getElementById("day_div").style.display = "none";
-            $('div[class="cp-nav-controls"]').show();
-            $('div[class="cp-header-content"]').show();
+            setTimeout(function () {
+                $('.cp-calendar.daily').hide();
+                $('div[class="cp-nav-controls"]').hide();
+                $('div[class="cp-header-content"]').hide();
+                $('div[class="cp-view-list-container"]').css('z-index', 2000);
+                $('div[class="cp-view-list-container"]').css('width', "20%");
+                document.getElementById("mike").style.visibility = "visible";
+            }, 300);
         }
     }
 
+    function hide_day() {
+
+            document.getElementById("day_div").style.display = "none";
+            document.getElementById("day_div2").style.display = "none";
+            $('div[class="cp-nav-controls"]').show();
+            $('div[class="cp-header-content"]').show();
+        
+    }
+
     function calendar_two() {
+        $('.cp-calendar').hide();
         document.getElementById("day_div").style.display = "none";
+        document.getElementById("day_div2").style.display = "block";
+        var a = $('.cp-view-button.daily');
+        setTimeout(function () {
+            a[1].click(function () { });
+        },200);
     }
     function calendar_one() {
-        //window.location.href = window.location.href;
-        document.getElementById("mike").style.visibility = "hidden";
-        document.getElementById("day_div").style.display = "block";
+        window.location.href = window.location.href;
+        //document.getElementById("mike").style.visibility = "hidden";
+        //document.getElementById("day_div2").style.display = "none";
+        //document.getElementById("day_div").style.display = "block";
 
-        setTimeout(function () {
-            $('.cp-calendar.daily').hide();
-            $('div[class="cp-nav-controls"]').hide();
-            $('div[class="cp-header-content"]').hide();
-            $('div[class="cp-view-list-container"]').css('z-index', 2000);
-            $('div[class="cp-view-list-container"]').css('width', "20%");
-            document.getElementById("mike").style.visibility = "visible";
-        }, 300);
+        //setTimeout(function () {
+        //    $('.cp-calendar.daily').hide();
+        //    $('div[class="cp-nav-controls"]').hide();
+        //    $('div[class="cp-header-content"]').hide();
+        //    $('div[class="cp-view-list-container"]').css('z-index', 2000);
+        //    $('div[class="cp-view-list-container"]').css('width', "20%");
+        //    document.getElementById("mike").style.visibility = "visible";
+        //}, 200);
     }
+
 </script>
 <style>
 
@@ -947,7 +1052,6 @@
                 tempAlert("Saved failed", 2000);
         });
     }
-
     function floor_clearbutton() {
         var a = $("div[id=pills-contact1] tr td div input[class=form-check-input]");
         for (var c = 0; c < a.length; c++) {

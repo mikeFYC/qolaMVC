@@ -1918,6 +1918,14 @@ namespace QolaMVC.Controllers
                 LIST_VIEW_RESIDENT = HomeDAL.get_list_resident(home.Id, DateTime.Today);
                 Collection<ActivityEventModel> l_Events = HomeDAL.GetActivityEvents_mike(DateTime.Today.Date, home.Id);
                 ViewBag.Events = l_Events;
+
+
+                //Collection<ActivityEventModel_Calendar2> l_Events_2 = HomeDAL.GetActivityEvents_Calendar2_mike(DateTime.Today.Date, home.Id);
+                //Collection<ActivityEventModel_Calendar3> l_Events_3 = HomeDAL.GetActivityEvents_Calendar3_mike(DateTime.Today.Date, home.Id);
+                //Collection<ActivityEventModel_Calendar4> l_Events_4 = HomeDAL.GetActivityEvents_Calendar4_mike(DateTime.Today.Date, home.Id);
+                //ViewBag.Events2 = l_Events_2;
+                //ViewBag.Events3 = l_Events_3;
+                //ViewBag.Events4 = l_Events_4;
             }
             else
             {
@@ -1925,6 +1933,14 @@ namespace QolaMVC.Controllers
                 LIST_VIEW_RESIDENT = HomeDAL.get_list_resident(home.Id, DateTime.Parse(datesel));
                 Collection<ActivityEventModel> l_Events = HomeDAL.GetActivityEvents_mike(DateTime.Parse(datesel).Date, home.Id);
                 ViewBag.Events = l_Events;
+
+
+                //Collection<ActivityEventModel_Calendar2> l_Events_2 = HomeDAL.GetActivityEvents_Calendar2_mike(DateTime.Today.Date, home.Id);
+                //Collection<ActivityEventModel_Calendar3> l_Events_3 = HomeDAL.GetActivityEvents_Calendar3_mike(DateTime.Today.Date, home.Id);
+                //Collection<ActivityEventModel_Calendar4> l_Events_4 = HomeDAL.GetActivityEvents_Calendar4_mike(DateTime.Today.Date, home.Id);
+                //ViewBag.Events2 = l_Events_2;
+                //ViewBag.Events3 = l_Events_3;
+                //ViewBag.Events4 = l_Events_4;
             }
             TempData["LIST_VIEW_RESIDENT"] = LIST_VIEW_RESIDENT;
             TempData.Keep("LIST_VIEW_RESIDENT");
@@ -1934,6 +1950,8 @@ namespace QolaMVC.Controllers
             return View(LIST_VIEW_RESIDENT);
 
         }
+
+
 
         [HttpPost]
         public int saveButton_Activity(string arr, int whichAEID, string datesel,string eventName, string englishname)

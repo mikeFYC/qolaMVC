@@ -942,6 +942,10 @@ namespace QolaMVC.DAL
             }
         }
 
+
+
+
+
         public static Collection<ActivityEventModel> GetActivityEvents_mike(DateTime datemike, int homeid)
         {
             string exception = string.Empty;
@@ -996,6 +1000,184 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
+
+
+
+        #region other tabs in activity calendar
+
+        public static Collection<ActivityEventModel_Calendar2> GetActivityEvents_Calendar2_mike(DateTime datemike, int homeid)
+        {
+            string exception = string.Empty;
+            Collection<ActivityEventModel_Calendar2> l_Events = new Collection<ActivityEventModel_Calendar2>();
+            ActivityEventModel_Calendar2 l_Event;
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("", l_Conn);
+                l_Cmd.Parameters.AddWithValue("@date", datemike.ToShortDateString());
+                l_Cmd.Parameters.AddWithValue("@homeid", homeid);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                DataSet homeReceive = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(homeReceive);
+
+                if ((homeReceive != null) && (homeReceive.Tables.Count > 0) && (homeReceive.Tables[0].Rows.Count > 0))
+                {
+                    foreach (DataRow homeTypeRow in homeReceive.Tables[0].Rows)
+                    {
+                        l_Event = new ActivityEventModel_Calendar2();
+
+                        l_Event.ProgramId = Convert.ToInt32(homeTypeRow["Id"]);
+                        l_Event.ActivityId = Convert.ToInt32(homeTypeRow["ActivityId"]);
+                        l_Event.ProgramName = Convert.ToString(homeTypeRow["EventTitle"]);
+                        l_Event.ProgramStartDate = Convert.ToDateTime(homeTypeRow["StartDate"]);
+                        l_Event.ProgramEndDate = Convert.ToDateTime(homeTypeRow["EndDate"]);
+                        l_Event.ProgramStartTime = Convert.ToString(homeTypeRow["StartTime"]);
+                        l_Event.ProgramEndTime = Convert.ToString(homeTypeRow["EndTime"]);
+                        l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
+                        l_Event.Active = Convert.ToInt32(homeTypeRow["Active"]);
+                        l_Event.Declined = Convert.ToInt32(homeTypeRow["Declined"]);
+
+                        l_Event.ActivityNameEnglish = homeTypeRow["ActivityNameEnglish"].ToString();
+                        l_Event.CategoryId = homeTypeRow["CategoryId"].ToString();
+
+                        l_Events.Add(l_Event);
+                    }
+                }
+                return l_Events;
+            }
+            catch (Exception ex)
+            {
+                exception = "GetActivityEvents |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+        public static Collection<ActivityEventModel_Calendar3> GetActivityEvents_Calendar3_mike(DateTime datemike, int homeid)
+        {
+            string exception = string.Empty;
+            Collection<ActivityEventModel_Calendar3> l_Events = new Collection<ActivityEventModel_Calendar3>();
+            ActivityEventModel_Calendar3 l_Event;
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("", l_Conn);
+                l_Cmd.Parameters.AddWithValue("@date", datemike.ToShortDateString());
+                l_Cmd.Parameters.AddWithValue("@homeid", homeid);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                DataSet homeReceive = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(homeReceive);
+
+                if ((homeReceive != null) && (homeReceive.Tables.Count > 0) && (homeReceive.Tables[0].Rows.Count > 0))
+                {
+                    foreach (DataRow homeTypeRow in homeReceive.Tables[0].Rows)
+                    {
+                        l_Event = new ActivityEventModel_Calendar3();
+
+                        l_Event.ProgramId = Convert.ToInt32(homeTypeRow["Id"]);
+                        l_Event.ActivityId = Convert.ToInt32(homeTypeRow["ActivityId"]);
+                        l_Event.ProgramName = Convert.ToString(homeTypeRow["EventTitle"]);
+                        l_Event.ProgramStartDate = Convert.ToDateTime(homeTypeRow["StartDate"]);
+                        l_Event.ProgramEndDate = Convert.ToDateTime(homeTypeRow["EndDate"]);
+                        l_Event.ProgramStartTime = Convert.ToString(homeTypeRow["StartTime"]);
+                        l_Event.ProgramEndTime = Convert.ToString(homeTypeRow["EndTime"]);
+                        l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
+                        l_Event.Active = Convert.ToInt32(homeTypeRow["Active"]);
+                        l_Event.Declined = Convert.ToInt32(homeTypeRow["Declined"]);
+
+                        l_Event.ActivityNameEnglish = homeTypeRow["ActivityNameEnglish"].ToString();
+                        l_Event.CategoryId = homeTypeRow["CategoryId"].ToString();
+
+                        l_Events.Add(l_Event);
+                    }
+                }
+                return l_Events;
+            }
+            catch (Exception ex)
+            {
+                exception = "GetActivityEvents |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+        public static Collection<ActivityEventModel_Calendar4> GetActivityEvents_Calendar4_mike(DateTime datemike, int homeid)
+        {
+            string exception = string.Empty;
+            Collection<ActivityEventModel_Calendar4> l_Events = new Collection<ActivityEventModel_Calendar4>();
+            ActivityEventModel_Calendar4 l_Event;
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("[spAB_Get_Activity_Events_mike]", l_Conn);
+                l_Cmd.Parameters.AddWithValue("@date", datemike.ToShortDateString());
+                l_Cmd.Parameters.AddWithValue("@homeid", homeid);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                DataSet homeReceive = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(homeReceive);
+
+                if ((homeReceive != null) && (homeReceive.Tables.Count > 0) && (homeReceive.Tables[0].Rows.Count > 0))
+                {
+                    foreach (DataRow homeTypeRow in homeReceive.Tables[0].Rows)
+                    {
+                        l_Event = new ActivityEventModel_Calendar4();
+
+                        l_Event.ProgramId = Convert.ToInt32(homeTypeRow["Id"]);
+                        l_Event.ActivityId = Convert.ToInt32(homeTypeRow["ActivityId"]);
+                        l_Event.ProgramName = Convert.ToString(homeTypeRow["EventTitle"]);
+                        l_Event.ProgramStartDate = Convert.ToDateTime(homeTypeRow["StartDate"]);
+                        l_Event.ProgramEndDate = Convert.ToDateTime(homeTypeRow["EndDate"]);
+                        l_Event.ProgramStartTime = Convert.ToString(homeTypeRow["StartTime"]);
+                        l_Event.ProgramEndTime = Convert.ToString(homeTypeRow["EndTime"]);
+                        l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
+                        l_Event.Active = Convert.ToInt32(homeTypeRow["Active"]);
+                        l_Event.Declined = Convert.ToInt32(homeTypeRow["Declined"]);
+
+                        l_Event.ActivityNameEnglish = homeTypeRow["ActivityNameEnglish"].ToString();
+                        l_Event.CategoryId = homeTypeRow["CategoryId"].ToString();
+
+                        l_Events.Add(l_Event);
+                    }
+                }
+                return l_Events;
+            }
+            catch (Exception ex)
+            {
+                exception = "GetActivityEvents |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+        
+        #endregion
+
+
+
+
+
+
+
 
         public static void AddNewActivityEvent(ActivityEventModel p_Model,int homeid)
         {
