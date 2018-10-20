@@ -1899,7 +1899,7 @@ namespace QolaMVC.Controllers
 
         #region Activity Attendance
 
-        public ActionResult ActivityCalendar(string datesel)
+        public ActionResult ActivityCalendar(string datesel,string tab)
         {
             var user = (UserModel)TempData["User"];
             var home = (HomeModel)TempData["Home"];
@@ -1946,6 +1946,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("LIST_VIEW_RESIDENT");
             ViewBag.LIST_VIEW_RESIDENT = LIST_VIEW_RESIDENT;
 
+            TempData["tab"] = tab;
 
             return View(LIST_VIEW_RESIDENT);
 
