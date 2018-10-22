@@ -158,7 +158,7 @@
                             <div style="max-width:50%;">
                                 <label style="font-size:1.3vw;display:inline-block;">TUG/VPS History:</label>
                                 <select name="AssessmentDate" id="selectdate2" onchange="formsubmit(this)" style="width:12vw;height:30px;font-size:1.3vw;display:inline-block;">
-                                    @if (ViewBag.AssessmentDates != null)
+                                    @if (ViewBag.AssessmentDates2 != null && ViewBag.AssessmentDates2[0].ToShortDateString() != "1/1/0001")
                                     {
 
                                         for (var ind = 0; ind < ((List<DateTime>)ViewBag.AssessmentDates2).Count(); ind++)
@@ -166,6 +166,11 @@
                                             <option value=@ind>@(((List<DateTime>)ViewBag.AssessmentDates2)[ind].ToShortDateString())</option>
                                         }
                                     }
+                                    else
+                                    {
+                                        <option value="0"></option>
+                                    }
+
                                 </select>
                                 <button class="btn btn-primary" type="button" style="display:inline-block;margin-top:-6px;" onclick="location.href='@Url.Action("Add_ExcerciseSummary_mike", "Assessments")'">New</button>
                             </div>
@@ -315,7 +320,7 @@
                                             </td>
                                             <td class="text-center">
                                                 @{
-                                                    if (@Model.ExcerciseSummary_mike_single.BaselineTug != "")
+                                                    if (@Model.ExcerciseSummary_mike_single.BaselineTug != "" && @Model.ExcerciseSummary_mike_single.BaselineTug != null)
                                                     {
                                                         <input class="form-control" name="@(Model.ExcerciseSummary_mike_single.Id)" number="1" type="button" onclick="TUG_CLICK(this)" value="@(Model.ExcerciseSummary_mike_single.BaselineTug) seconds" />
                                                     }
@@ -327,7 +332,7 @@
                                             </td>
                                             <td class="text-center">
                                                 @{
-                                                    if (@Model.ExcerciseSummary_mike_single.TMonthTug != "")
+                                                    if (@Model.ExcerciseSummary_mike_single.TMonthTug != "" && @Model.ExcerciseSummary_mike_single.TMonthTug != null)
                                                     {
                                                         <input class="form-control" name="@(Model.ExcerciseSummary_mike_single.Id)" number="2" type="button" onclick="TUG_CLICK(this)" value="@(Model.ExcerciseSummary_mike_single.TMonthTug) seconds" />
                                                     }
@@ -339,7 +344,7 @@
                                             </td>
                                             <td class="text-center">
                                                 @{
-                                                    if (@Model.ExcerciseSummary_mike_single.SMonthTug != "")
+                                                    if (@Model.ExcerciseSummary_mike_single.SMonthTug != "" && @Model.ExcerciseSummary_mike_single.SMonthTug != null)
                                                     {
                                                         <input class="form-control" name="@(Model.ExcerciseSummary_mike_single.Id)" number="3" type="button" onclick="TUG_CLICK(this)" value="@(Model.ExcerciseSummary_mike_single.SMonthTug) seconds" />
                                                     }
@@ -356,7 +361,7 @@
                                             </td>
                                             <td class="text-center">
                                                 @{
-                                                    if (@Model.ExcerciseSummary_mike_single.BaselineVPS != "")
+                                                    if (@Model.ExcerciseSummary_mike_single.BaselineVPS != "" && @Model.ExcerciseSummary_mike_single.BaselineVPS != null)
                                                     {
                                                         <input class="form-control" name="@(Model.ExcerciseSummary_mike_single.Id)" number="1" type="button" onclick="VPS_CLICK(this)" value="@(Model.ExcerciseSummary_mike_single.BaselineVPS) points" />
                                                     }
@@ -368,7 +373,7 @@
                                             </td>
                                             <td class="text-center">
                                                 @{
-                                                    if (@Model.ExcerciseSummary_mike_single.TMonthVPS != "")
+                                                    if (@Model.ExcerciseSummary_mike_single.TMonthVPS != "" && @Model.ExcerciseSummary_mike_single.TMonthVPS != null)
                                                     {
                                                         <input class="form-control" name="@(Model.ExcerciseSummary_mike_single.Id)" number="2" type="button" onclick="VPS_CLICK(this)" value="@(Model.ExcerciseSummary_mike_single.TMonthVPS) points" />
                                                     }
@@ -380,7 +385,7 @@
                                             </td>
                                             <td class="text-center">
                                                 @{
-                                                    if (@Model.ExcerciseSummary_mike_single.SMonthVPS != "")
+                                                    if (@Model.ExcerciseSummary_mike_single.SMonthVPS != "" && @Model.ExcerciseSummary_mike_single.SMonthVPS != null)
                                                     {
                                                         <input class="form-control" name="@(Model.ExcerciseSummary_mike_single.Id)" number="3" type="button" onclick="VPS_CLICK(this)" value="@(Model.ExcerciseSummary_mike_single.SMonthVPS) points" />
                                                     }
@@ -402,13 +407,17 @@
                             <div style="max-width:50%;">
                                 <label style="font-size:1.3vw;display:inline-block;">Assessment History:</label>
                                 <select name="AssessmentDate" id="selectdate" onchange="formsubmit(this)" style="width:12vw;height:30px;font-size:1.3vw;display:inline-block;">
-                                    @if (ViewBag.AssessmentDates != null)
+                                    @if (ViewBag.AssessmentDates != null && ViewBag.AssessmentDates[0].ToShortDateString() != "1/1/0001")
                                     {
 
                                         for (var ind = 0; ind < ((List<DateTime>)ViewBag.AssessmentDates).Count(); ind++)
                                         {
                                             <option value=@ind>@(((List<DateTime>)ViewBag.AssessmentDates)[ind].ToShortDateString())</option>
                                         }
+                                    }
+                                    else
+                                    {
+                                        <option value="0"></option>
                                     }
                                 </select>
                                 <button class="btn btn-primary" type="button" style="display:inline-block;margin-top:-6px" onclick="location.href='@Url.Action("Add_ExcerciseActivity_mike", "Assessments")'">New</button>

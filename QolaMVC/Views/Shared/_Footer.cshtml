@@ -52,8 +52,8 @@
 <script>
     function tempAlert(msg, duration) {
         var el = document.createElement("div");
-        el.setAttribute("style", "position:fixed;top:2%;left:28%;width:45vw;text-align: center;background-color:white;z-index:9999;color:black;padding:3vw 4vw 3vw 4vw;border-radius:1vw;font-size:2vw;font-weight:bold;border:black solid;");
-        el.innerHTML = "<img src=\"\/Content\/assets\/img\/qola_logo3.png\" style=\"width:120px;height:80px;margin-left:-2vw;\" \/><div style=\"margin-left:5vw;display:inline;\">"+msg+"<\/div>";
+        el.setAttribute("style", "position:fixed;top:2%;left:28%;width:45vw;text-align: center;background-color:white;z-index:9999;color:black;padding:2.5vw 4vw 2.5vw 4vw;border-radius:1vw;font-size:2vw;font-weight:bold;border:black solid;");
+        el.innerHTML = "<img src=\"\/Content\/assets\/img\/qola_logo3.png\" style=\"width:120px;height:80px;margin-left:-2vw;\" \/><div style=\"margin-left:3vw;display:inline;\">"+msg+"<\/div>";
         
         setTimeout(function () {
             el.parentNode.removeChild(el);
@@ -212,8 +212,7 @@
         var c = $('#available_Suite_' + id).val();
         var d = $('#notes_' + id).val();
         if (a == "" || b == "" || c == "") {
-            //alert("Cannot Have Empty Area except notes");
-            tempAlert("Cannot Have Empty Area except notes", 2000);
+            tempAlert("No Empty Area except notes", 2000);
         }
         else {
             $.post("/Residents/saveButton_ApplicationSuite", { term: b, occu: a, suiteno: c, notes: d }, function (data) {
@@ -251,8 +250,7 @@
         var tds = trs[trs.length - 1].getElementsByTagName("td");
         var suitenos = tds[1].innerHTML;
         if (a == "" || b == "") {
-            //alert("Cannot Have Empty Area except notes");
-            tempAlert("Cannot Have Empty Area except notes", 2000);
+            tempAlert("No Empty Area except notes", 2000);
         }
         else {
             $.post("/Residents/saveButton_ChangeOccupancy", { transferdate: b, occu: a, notes: c, suiteno: suitenos }, function (data) {
@@ -298,8 +296,7 @@
         var c = $('#available_Suite_' + id).val();
         var d = $('#notes_' + id).val();
         if (a == "" || b == "" || c == "") {
-            //alert("Cannot Have Empty Area except notes");
-            tempAlert("Cannot Have Empty Area except notes", 2000);
+            tempAlert("No Empty Area except notes", 2000);
         }
         else {
             $.post("/Residents/saveButton_InternalTransfer", { transferdate: b, occu: a, suiteno: c, notes: d }, function (data) {
@@ -346,8 +343,8 @@
         var d = $('#notes_' + id).val();
         var e = $('#QOLAContent_ddlHome').val();
         if (a == "" || b == "" || c == "" || e == "") {
-            //alert("Cannot Have Empty Area except notes");
-            tempAlert("Cannot Have Empty Area except notes", 2000);
+
+            tempAlert("No Empty Area except notes", 2000);
         }
         else {
             $.post("/Residents/saveButton_TransfertoASCHOME", { transferdate: b, occu: a, suiteno: c, notes: d, homeid: e }, function (data) {

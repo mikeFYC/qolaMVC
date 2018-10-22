@@ -29,7 +29,13 @@
                             <h3>Vitality Plus Scale (VPS)</h3>
                         </div>
                         <div class="col-md-2">
-                            <button class="btn btn-danger print" id="VPS_PRINT" style="float:right;">PRINT</button>
+                            @{
+                                if (@TempData["View_Mode"].ToString() == "YES")
+                                {
+                                    <button class="btn btn-danger print" id="VPS_PRINT" style="float:right;">PRINT</button>
+                                }
+                            }
+
                             <button class="btn btn-danger" type="button" style="float:right;margin-right:10px !important;" onclick="location.href='@Url.Action("BACK_Click", "Assessments")'">BACK</button>
 
                         </div>
@@ -205,7 +211,7 @@
                         </div>
                     }
 
-
+                    <input id="viewmode" type="hidden" value="@TempData["View_Mode"]" />
                 </div>
 
                 <!-- END PLACE PAGE CONTENT HERE -->
@@ -240,7 +246,13 @@
     });
 
 
-
+    var g = $('#viewmode').val();
+    if (g == "YES") {
+        var textlist = $('input[type="radio"]');
+        for (var a = 0; a < textlist.length; a++) {
+            textlist[a].disabled = true;
+        }
+    }
 
 
 </script>

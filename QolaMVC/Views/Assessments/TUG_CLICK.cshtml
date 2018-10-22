@@ -37,7 +37,13 @@
                             <h3>Timed Up-and-Go (TUG)</h3>
                         </div>
                         <div class="col-md-3">
-                            <button class="btn btn-danger print" id="TUG_PRINT" style="float:right;">PRINT</button>
+                            @{
+                                if (@TempData["View_Mode"].ToString() == "YES")
+                                {
+                                    <button class="btn btn-danger print" id="TUG_PRINT" style="float:right;">PRINT</button>
+                                }
+                            }
+
                             <button class="btn btn-danger" type="button" style="float:right;margin-right:10px !important;" onclick="location.href='@Url.Action("BACK_Click", "Assessments")'">BACK</button>
                             <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#TUG_legend" style="float:right;margin-right:10px !important;">LEGEND</button>
 
@@ -271,7 +277,7 @@
 
                     }
 
-
+                    <input id="viewmode" type="hidden" value="@TempData["View_Mode"]"/>
                 </div>
 
                 <!-- END PLACE PAGE CONTENT HERE -->
@@ -296,4 +302,18 @@
                     a[0].checked = false;
                 }
             });
+
+            var g = $('#viewmode').val();
+            if (g == "YES") {
+                var textlist = $('input[type="text"]');
+                for (var a = 0; a < textlist.length; a++) {
+                    textlist[a].disabled = true;
+                    textlist[a].style.color = "black";
+                }
+                var radiolist = $('input[type="checkbox"]');
+                for (var b = 0; b < radiolist.length; b++) {
+                    radiolist[b].disabled = true;
+                }
+
+            }
         </script>

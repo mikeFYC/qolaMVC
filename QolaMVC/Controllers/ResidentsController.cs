@@ -256,8 +256,8 @@ namespace QolaMVC.Controllers
             }
             else
             {
-                DateTime moveout = transferdate;
-                DateTime movein = transferdate.AddDays(1);
+                DateTime moveout = transferdate.AddDays(-1);
+                DateTime movein = transferdate;
                 int returnint = update_Suite_Handler_Table.InternalTransfer(user.ID, home.Id, resident.ID, suiteno, occu, movein, moveout, notes, DateTime.Now);
                 return returnint;
             }
@@ -286,8 +286,8 @@ namespace QolaMVC.Controllers
             }
             else
             {
-                DateTime moveout = transferdate;
-                DateTime movein = transferdate.AddDays(1);
+                DateTime moveout = transferdate.AddDays(-1);
+                DateTime movein = transferdate;
                 int returnint = update_Suite_Handler_Table.TransfertoASCHOME(user.ID,homeid, resident.ID, suiteno, occu, movein, moveout, notes, DateTime.Now);
                 return returnint;
             }
