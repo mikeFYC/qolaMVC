@@ -438,7 +438,7 @@
                         function initCalendar3() {
                              $('#calendar3').CalendarPlugin({
                                  url: '/Home/getEvents_C3',
-                                 view: 'monthly',
+                                 view: 'daily',
                             form: [
                                 [
                                     {
@@ -581,7 +581,7 @@
                         function initCalendar4() {
                              $('#calendar4').CalendarPlugin({
                                  url: '/Home/getEvents_C4',
-                                 view: 'monthly',
+                                 view: 'daily',
                             form: [
                                 [
                                     {
@@ -807,22 +807,166 @@
                                     </thead>
                                     <tbody>
                                         @{
-                                            for (int a = 0; a < @ViewBag.Events.Count; a++)
+                                            for (int a = 0; a < @ViewBag.Events2.Count; a++)
                                             {
-                                                <tr name=@ViewBag.Events[a].ProgramId id=@ViewBag.Events[a].ProgramName englishname=@ViewBag.Events[a].ActivityNameEnglish>
-                                                    <td>@ViewBag.Events[a].ProgramStartTime</td>
-                                                    <td>@ViewBag.Events[a].ProgramName</td>
-                                                    <td>@ViewBag.Events[a].Venue</td>
+                                                <tr name=@ViewBag.Events2[a].ProgramId id=@ViewBag.Events2[a].ProgramName englishname=@ViewBag.Events2[a].ActivityNameEnglish>
+                                                    <td>@ViewBag.Events2[a].ProgramStartTime</td>
+                                                    <td>@ViewBag.Events2[a].ProgramName</td>
+                                                    <td>@ViewBag.Events2[a].Venue</td>
                                                     <td>
                                                         <a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#">
                                                             <i class="fa fa-file-text-o"></i>
                                                         </a>
                                                     </td>
                                                     <td>
-                                                        @ViewBag.Events[a].Active
+                                                        @ViewBag.Events2[a].Active
                                                     </td>
                                                     <td>
-                                                        @ViewBag.Events[a].Declined
+                                                        @ViewBag.Events2[a].Declined
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+
+    <div id="day_div3" style="display:none;margin-top:-400px;z-index:1000;">
+
+        <div class="container-fluid container-fixed-lg" id="main_page" style="margin-top:-8vw;">
+            <div class="card">
+                <div class="card-block">
+                    <div class="form-tabs mt-4">
+
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top:-7.5vw;margin-left:20vw;padding-bottom:5vw;">
+
+                            <li class="Prevbtn"><a href="#" onclick="previousday()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
+                            <li class="clear_bg"><label id="lblCalendarMsg" style="font-weight:bolder;font-size:1.5vw;margin-top:0.9vw;color:white">@TempData["datechoose"].ToString()</label></li>
+                            <li class="Nextbtn"><a href="#" onclick="nextday()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
+                        </ul>
+
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-day" role="tabpanel" aria-labelledby="pills-home-tab">
+                                <div id="select_ActivityID_index" class="" name="" english=""></div>
+                                <table class="table table-bordered">
+                                    <thead class="bg-primary">
+                                        <tr>
+                                            <th class="text-white text-center">Time</th>
+                                            <th class="text-white text-center">Today's Activities</th>
+                                            <th class="text-white text-center">Venue</th>
+                                            <th class="text-white text-center">Attendance</th>
+                                            <th class="text-white text-center" colspan="2"></th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-white text-center"></th>
+                                            <th class="text-white text-center"></th>
+                                            <th class="text-white text-center"></th>
+                                            <th class="text-white text-center"></th>
+                                            <th class="text-white text-center">Active</th>
+                                            <th class="text-white text-center">Declined</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            for (int a = 0; a < @ViewBag.Events3.Count; a++)
+                                            {
+                                                <tr name=@ViewBag.Events3[a].ProgramId id=@ViewBag.Events3[a].ProgramName englishname=@ViewBag.Events3[a].ActivityNameEnglish>
+                                                    <td>@ViewBag.Events3[a].ProgramStartTime</td>
+                                                    <td>@ViewBag.Events3[a].ProgramName</td>
+                                                    <td>@ViewBag.Events3[a].Venue</td>
+                                                    <td>
+                                                        <a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#">
+                                                            <i class="fa fa-file-text-o"></i>
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        @ViewBag.Events3[a].Active
+                                                    </td>
+                                                    <td>
+                                                        @ViewBag.Events3[a].Declined
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+
+    <div id="day_div4" style="display:none;margin-top:-400px;z-index:1000;">
+
+        <div class="container-fluid container-fixed-lg" id="main_page" style="margin-top:-8vw;">
+            <div class="card">
+                <div class="card-block">
+                    <div class="form-tabs mt-4">
+
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top:-7.5vw;margin-left:20vw;padding-bottom:5vw;">
+
+                            <li class="Prevbtn"><a href="#" onclick="previousday()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
+                            <li class="clear_bg"><label id="lblCalendarMsg" style="font-weight:bolder;font-size:1.5vw;margin-top:0.9vw;color:white">@TempData["datechoose"].ToString()</label></li>
+                            <li class="Nextbtn"><a href="#" onclick="nextday()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
+                        </ul>
+
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-day" role="tabpanel" aria-labelledby="pills-home-tab">
+                                <div id="select_ActivityID_index" class="" name="" english=""></div>
+                                <table class="table table-bordered">
+                                    <thead class="bg-primary">
+                                        <tr>
+                                            <th class="text-white text-center">Time</th>
+                                            <th class="text-white text-center">Today's Activities</th>
+                                            <th class="text-white text-center">Venue</th>
+                                            <th class="text-white text-center">Attendance</th>
+                                            <th class="text-white text-center" colspan="2"></th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-white text-center"></th>
+                                            <th class="text-white text-center"></th>
+                                            <th class="text-white text-center"></th>
+                                            <th class="text-white text-center"></th>
+                                            <th class="text-white text-center">Active</th>
+                                            <th class="text-white text-center">Declined</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            for (int a = 0; a < @ViewBag.Events4.Count; a++)
+                                            {
+                                                <tr name=@ViewBag.Events4[a].ProgramId id=@ViewBag.Events4[a].ProgramName englishname=@ViewBag.Events4[a].ActivityNameEnglish>
+                                                    <td>@ViewBag.Events4[a].ProgramStartTime</td>
+                                                    <td>@ViewBag.Events4[a].ProgramName</td>
+                                                    <td>@ViewBag.Events4[a].Venue</td>
+                                                    <td>
+                                                        <a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#">
+                                                            <i class="fa fa-file-text-o"></i>
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        @ViewBag.Events4[a].Active
+                                                    </td>
+                                                    <td>
+                                                        @ViewBag.Events4[a].Declined
                                                     </td>
                                                 </tr>
                                             }
@@ -1083,25 +1227,25 @@
                                                                     <td>@a.FirstName @a.LastName</td>
                                                                     <td>
                                                                         <div class="form-check form-check-inline">
-                                                                            <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option1">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID + id="inlineRadio2" value="option1">
                                                                             <label class="form-check-label">Active</label>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="form-check form-check-inline">
-                                                                            <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option2">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID + id="inlineRadio2" value="option2">
                                                                             <label class="form-check-label">Passive</label>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="form-check form-check-inline">
-                                                                            <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option3">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID + id="inlineRadio2" value="option3">
                                                                             <label class="form-check-label">Declined</label>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="form-check form-check-inline">
-                                                                            <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option4">
+                                                                            <input class="form-check-input" type="radio" name=@a.ID + id="inlineRadio2" value="option4">
                                                                             <label class="form-check-label">Away</label>
                                                                         </div>
                                                                     </td>

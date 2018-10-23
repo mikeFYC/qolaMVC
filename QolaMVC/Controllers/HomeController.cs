@@ -2381,12 +2381,12 @@ namespace QolaMVC.Controllers
                 ViewBag.Events = l_Events;
 
 
-                //Collection<ActivityEventModel_Calendar2> l_Events_2 = HomeDAL.GetActivityEvents_Calendar2_mike(DateTime.Today.Date, home.Id);
-                //Collection<ActivityEventModel_Calendar3> l_Events_3 = HomeDAL.GetActivityEvents_Calendar3_mike(DateTime.Today.Date, home.Id);
-                //Collection<ActivityEventModel_Calendar4> l_Events_4 = HomeDAL.GetActivityEvents_Calendar4_mike(DateTime.Today.Date, home.Id);
-                //ViewBag.Events2 = l_Events_2;
-                //ViewBag.Events3 = l_Events_3;
-                //ViewBag.Events4 = l_Events_4;
+                Collection<ActivityEventModel_Calendar2> l_Events_2 = HomeDAL.GetActivityEvents_Calendar2_mike(DateTime.Today.Date, home.Id);
+                Collection<ActivityEventModel_Calendar3> l_Events_3 = HomeDAL.GetActivityEvents_Calendar3_mike(DateTime.Today.Date, home.Id);
+                Collection<ActivityEventModel_Calendar4> l_Events_4 = HomeDAL.GetActivityEvents_Calendar4_mike(DateTime.Today.Date, home.Id);
+                ViewBag.Events2 = l_Events_2;
+                ViewBag.Events3 = l_Events_3;
+                ViewBag.Events4 = l_Events_4;
             }
             else
             {
@@ -2396,12 +2396,12 @@ namespace QolaMVC.Controllers
                 ViewBag.Events = l_Events;
 
 
-                //Collection<ActivityEventModel_Calendar2> l_Events_2 = HomeDAL.GetActivityEvents_Calendar2_mike(DateTime.Today.Date, home.Id);
-                //Collection<ActivityEventModel_Calendar3> l_Events_3 = HomeDAL.GetActivityEvents_Calendar3_mike(DateTime.Today.Date, home.Id);
-                //Collection<ActivityEventModel_Calendar4> l_Events_4 = HomeDAL.GetActivityEvents_Calendar4_mike(DateTime.Today.Date, home.Id);
-                //ViewBag.Events2 = l_Events_2;
-                //ViewBag.Events3 = l_Events_3;
-                //ViewBag.Events4 = l_Events_4;
+                Collection<ActivityEventModel_Calendar2> l_Events_2 = HomeDAL.GetActivityEvents_Calendar2_mike(DateTime.Today.Date, home.Id);
+                Collection<ActivityEventModel_Calendar3> l_Events_3 = HomeDAL.GetActivityEvents_Calendar3_mike(DateTime.Today.Date, home.Id);
+                Collection<ActivityEventModel_Calendar4> l_Events_4 = HomeDAL.GetActivityEvents_Calendar4_mike(DateTime.Today.Date, home.Id);
+                ViewBag.Events2 = l_Events_2;
+                ViewBag.Events3 = l_Events_3;
+                ViewBag.Events4 = l_Events_4;
             }
             TempData["LIST_VIEW_RESIDENT"] = LIST_VIEW_RESIDENT;
             TempData.Keep("LIST_VIEW_RESIDENT");

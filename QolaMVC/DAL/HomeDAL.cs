@@ -1014,7 +1014,7 @@ namespace QolaMVC.DAL
             try
             {
                 SqlDataAdapter l_DA = new SqlDataAdapter();
-                SqlCommand l_Cmd = new SqlCommand("", l_Conn);
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_Activity_Events_mike_2", l_Conn);
                 l_Cmd.Parameters.AddWithValue("@date", datemike.ToShortDateString());
                 l_Cmd.Parameters.AddWithValue("@homeid", homeid);
                 l_Conn.Open();
@@ -1069,7 +1069,7 @@ namespace QolaMVC.DAL
             try
             {
                 SqlDataAdapter l_DA = new SqlDataAdapter();
-                SqlCommand l_Cmd = new SqlCommand("", l_Conn);
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_Activity_Events_mike_3", l_Conn);
                 l_Cmd.Parameters.AddWithValue("@date", datemike.ToShortDateString());
                 l_Cmd.Parameters.AddWithValue("@homeid", homeid);
                 l_Conn.Open();
@@ -1124,7 +1124,7 @@ namespace QolaMVC.DAL
             try
             {
                 SqlDataAdapter l_DA = new SqlDataAdapter();
-                SqlCommand l_Cmd = new SqlCommand("[spAB_Get_Activity_Events_mike]", l_Conn);
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_Activity_Events_mike_4", l_Conn);
                 l_Cmd.Parameters.AddWithValue("@date", datemike.ToShortDateString());
                 l_Cmd.Parameters.AddWithValue("@homeid", homeid);
                 l_Conn.Open();

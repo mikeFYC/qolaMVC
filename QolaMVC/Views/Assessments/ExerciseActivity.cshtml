@@ -163,7 +163,7 @@
 
                                         for (var ind = 0; ind < ((List<DateTime>)ViewBag.AssessmentDates2).Count(); ind++)
                                         {
-                                            <option value=@ind>@(((List<DateTime>)ViewBag.AssessmentDates2)[ind].ToShortDateString())</option>
+                                            <option value=@ind>@(((List<DateTime>)ViewBag.AssessmentDates2)[ind].ToString("yyyy-MM-dd"))</option>
                                         }
                                     }
                                     else
@@ -412,7 +412,7 @@
 
                                         for (var ind = 0; ind < ((List<DateTime>)ViewBag.AssessmentDates).Count(); ind++)
                                         {
-                                            <option value=@ind>@(((List<DateTime>)ViewBag.AssessmentDates)[ind].ToShortDateString())</option>
+                                            <option value=@ind>@(((List<DateTime>)ViewBag.AssessmentDates)[ind].ToString("yyyy-MM-dd"))</option>
                                         }
                                     }
                                     else
@@ -475,7 +475,7 @@
                         <div class="row">
                             <div class="col-md-12 text-right">
                                 <br>
-                                <input type="submit" id="btnSave" class="btn btn-danger btn-lg" name="HSEP" value="SAVE" />
+                                <input type="submit" id="btnSave" class="btn btn-danger btn-lg" name="HSEP" value="SAVE" onclick="return btnClick();" />
                             </div>
                         </div>
                     </div>
@@ -1642,11 +1642,20 @@
 
 
     $('form').submit(function (event) {
-        $("input").removeAttr("disabled");
-        form = this;
-        //event.preventDefault();
-        form.submit();
+        var firstdate = $('#selectdate option:selected').text()
+        if (firstdate != "") {
+            $("input").removeAttr("disabled");
+            form = this;
+            //event.preventDefault();
+            form.submit();
+        }
+        else {
+            tempAlert("New a Date First", 2000);
+            return false;
+        }
     });
+
+
 
 
     var index_date = $('#hiddeninput1').val();
@@ -1668,5 +1677,17 @@
             inputs_text[b].style.color = "black";
         }
     }
+
+    var firstdate = $('#selectdate option:selected').text()
+    if (firstdate == "") {
+        $('input[type=text]').attr('disabled', 'true');
+        $('input[type=checkbox]').attr('disabled', 'true');
+
+    }
+    var seconddate = $('#selectdate2 option:selected').text()
+    if (seconddate == "") {
+        $('input[type=button]').attr('disabled', 'true');
+    }
+
 
 </script>
