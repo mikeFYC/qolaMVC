@@ -203,6 +203,24 @@
         });
     }
 
+    function suitenumber4(ee) {
+        var aa = ee.parentElement.parentElement.getElementsByClassName("edit_occu")
+        var a = aa[0].value;
+        var bb = ee.parentElement.parentElement.getElementsByClassName("edit_movein")
+        var b = bb[0].value;
+        var cc = ee.parentElement.parentElement.getElementsByClassName("edit_home")
+        var c = cc[0].value;
+
+        var SHid = ee.parentElement.parentElement.id;
+
+        $('select[name=' + SHid + ']').children('option:not(:first)').remove();
+        $.get("/Residents/Available2", { home_value: c, term: b, occu: a }, function (data) {
+            for (var i = 0; i < data.length; i++) {
+                $('select[name=' + SHid +']').append('<option value="' + data[i][0].Value + '">' + data[i][0].Value + '</option>');
+            }
+        });
+    }
+
 
     function saveButton_ApplicationSuite() {
         var group = $("a[class='nav-link active']")
@@ -499,10 +517,6 @@
                     //alert("Cannot choose date two weeks ago");
                     tempAlert("Cannot choose date two weeks ago", 2000);
                 }
-                else if (data == 4) {
-                    //alert("Invalid Date Input");
-                    tempAlert("Invalid Date Input", 2000);
-                }
                 else if (data == 5) {
                     //alert("Resident was already passed away");
                     tempAlert("Resident was already passed away", 2000);
@@ -541,6 +555,11 @@
         $('#available_Suite_archive').val("");
     }
 
+    function edit_selection_onchange_empty_suite(ee) {
+        var suite_edit = ee.parentElement.parentElement.getElementsByClassName("available_Suite_EDIT");
+        suite_edit[0].value = "0";
+    }
+
     function UNDO_in_edit_button_click() {
         var reason_for_undo = $("#select_option_in_edit_form").val();
         $.get("/Residents/undo_function", { reason: reason_for_undo }, function (data) {
@@ -555,6 +574,45 @@
                 tempAlert("Update Failed", 2000);
             }
         });
+    }
+
+
+    function Edit_Button_Save() {
+        var checkbox = $('.checkboxlist');
+        for (var a = 0; a < checkbox.length; a++) {
+            if (checkbox[a].checked == true) {
+                var main_tr = checkbox[a].parentElement.parentElement;
+                var SHid = main_tr.id;
+                var children = main_tr.getElementsByTagName("td");
+                var homeID = children[1].firstElementChild.value;
+                var suiteno = children[2].firstElementChild.value;
+                var movein = children[3].firstElementChild.value;
+                var moveout = children[4].firstElementChild.value;
+                var occu = children[5].firstElementChild.value;
+                var notes = children[6].innerHTML;
+                var hos = children[7].firstElementChild.value;
+            }
+        }
+        if (main_tr == undefined) {
+            tempAlert("No Row was choosen", 2000);
+        }
+        else if (suiteno == "0") {
+            tempAlert("Suite No cannot be empty", 2000);
+        }
+        else {
+            $.get("/Residents/EDIT_SAVE_function", { a: SHid, b: homeID, c: suiteno, d: movein, e: moveout, f: occu, g: notes, h: hos }, function (data) {
+                if (data == 1) {
+                    //location.reload();
+                    //alert("Update successfully");
+                    tempAlert("Update successfully", 2000);
+                    setTimeout(function () { window.location.reload(); }, 2000);
+                }
+                else {
+                    //alert("Update Failed");
+                    tempAlert("Update Failed", 2000);
+                }
+            });
+        }
     }
 
 

@@ -113,6 +113,11 @@ namespace QolaMVC.Controllers
             ProgressNotesHelper.RegisterSession(resident);
             TempData["Table"] = update_Suite_Handler_Table.get_innerHTML(resident.ID);
 
+            //TempData["Table2"] = update_Suite_Handler_Table.get_innerHTML_temperary(resident.ID);
+
+            TempData["TableEDIT"] = update_Suite_Handler_Table.get_innerHTML_temperary2(resident.ID);
+            ViewBag.TableEDIT = update_Suite_Handler_Table.get_innerHTML_temperary2(resident.ID);
+
             TempData["hospital"] = "NO";
 
             return View(resident);
@@ -357,10 +362,6 @@ namespace QolaMVC.Controllers
                 return 3;
             }
             
-            else if (DateTime.Parse(leaving) < resident.MoveInDate)
-            {
-                return 4;
-            }
             else
             {
                 int returnint = update_Suite_Handler_Table.Hospitalization(user.ID, home.Id, resident.ID, suiteno, resident.Occupancy, leaving, ExpectedReturn, ActualReturn, notes, DateTime.Now, reason);
@@ -378,6 +379,30 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");              
             TempData.Keep("Resident");
             int returnint=update_Suite_Handler_Table.undo_function_for_SQL(resident.ID, reason);
+            return returnint;
+        }
+
+        [HttpGet]
+        public int EDIT_SAVE_function(string a, string b, string c, string d, string e, string f, string g, string h)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            EDIT_SH_Model sam = new EDIT_SH_Model();
+            sam.residentid = resident.ID.ToString();
+            sam.SHid = a;
+            sam.homeid = b;
+            sam.suiteno = c;
+            sam.movein = d;
+            sam.moveout = e;
+            sam.occuID = f;
+            sam.notes = g;
+            sam.hospital = h;
+
+            int returnint = update_Suite_Handler_Table.EDIT_SAVE_function(sam);
             return returnint;
         }
 
