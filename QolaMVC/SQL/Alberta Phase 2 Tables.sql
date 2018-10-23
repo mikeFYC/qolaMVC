@@ -134,3 +134,58 @@ CREATE TABLE [dbo].[tbl_AB_FallRiskAssessment](
 	PRIMARY KEY (Id)
 	)
 GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tbl_AB_ActivityEvents_C2]') AND type in (N'U'))
+DROP TABLE [dbo].[tbl_AB_ActivityEvents_C2]
+GO
+
+CREATE TABLE [dbo].[tbl_AB_ActivityEvents_C2](
+	Id [int] IDENTITY(1,1) NOT NULL,
+	ActivityId int,
+	EventTitle nvarchar(200),
+	StartDate datetime,
+	EndDate datetime,
+	StartTime nvarchar(20),
+	EndTime nvarchar(20),
+	note nvarchar(max),
+	PRIMARY KEY (Id)
+	)
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tbl_AB_ActivityEvents_C3]') AND type in (N'U'))
+DROP TABLE [dbo].[tbl_AB_ActivityEvents_C3]
+GO
+
+CREATE TABLE [dbo].[tbl_AB_ActivityEvents_C3](
+	Id [int] IDENTITY(1,1) NOT NULL,
+	ActivityId int,
+	EventTitle nvarchar(200),
+	StartDate datetime,
+	EndDate datetime,
+	StartTime nvarchar(20),
+	EndTime nvarchar(20),
+	note nvarchar(max),
+	PRIMARY KEY (Id)
+	)
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tbl_AB_ActivityEvents_C4]') AND type in (N'U'))
+DROP TABLE [dbo].[tbl_AB_ActivityEvents_C4]
+GO
+
+CREATE TABLE [dbo].[tbl_AB_ActivityEvents_C4](
+	Id [int] IDENTITY(1,1) NOT NULL,
+	ActivityId int,
+	EventTitle nvarchar(200),
+	StartDate datetime,
+	EndDate datetime,
+	StartTime nvarchar(20),
+	EndTime nvarchar(20),
+	note nvarchar(max),
+	PRIMARY KEY (Id)
+	)
+GO
+
