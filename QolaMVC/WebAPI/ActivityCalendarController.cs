@@ -20,6 +20,26 @@ namespace QolaMVC.WebAPI
             return l_ActivityEvents;
         }
 
+        public Collection<ActivityEventModel> Get_C2()
+        {
+            Collection<ActivityEventModel> l_ActivityEvents = new Collection<ActivityEventModel>();
+            l_ActivityEvents = HomeDAL.GetActivityEvents_C2();
+            return l_ActivityEvents;
+        }
+
+        public Collection<ActivityEventModel> Get_C3()
+        {
+            Collection<ActivityEventModel> l_ActivityEvents = new Collection<ActivityEventModel>();
+            l_ActivityEvents = HomeDAL.GetActivityEvents_C3();
+            return l_ActivityEvents;
+        }
+
+        public Collection<ActivityEventModel> Get_C4()
+        {
+            Collection<ActivityEventModel> l_ActivityEvents = new Collection<ActivityEventModel>();
+            l_ActivityEvents = HomeDAL.GetActivityEvents_C4();
+            return l_ActivityEvents;
+        }
         // GET: api/ActivityCalendar/5
         public string Get(int id)
         {

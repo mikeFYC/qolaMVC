@@ -409,26 +409,26 @@ GO
 
 
 
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_Activity_Events]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
-DROP PROCEDURE [dbo].[spAB_Get_Activity_Events]
-GO
-CREATE PROCEDURE [dbo].[spAB_Get_Activity_Events]
-AS
---20180912 chime created
-BEGIN
-	SELECT
-		Id,
-		ActivityId,
-		EventTitle,
-		StartDate,
-		EndDate,
-		StartTime,
-		EndTime,
-		note
-	FROM 
-		tbl_AB_ActivityEvents
-END
-GO
+--IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_Activity_Events]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+--DROP PROCEDURE [dbo].[spAB_Get_Activity_Events]
+--GO
+--CREATE PROCEDURE [dbo].[spAB_Get_Activity_Events]
+--AS
+----20180912 chime created
+--BEGIN
+--	SELECT
+--		Id,
+--		ActivityId,
+--		EventTitle,
+--		StartDate,
+--		EndDate,
+--		StartTime,
+--		EndTime,
+--		note
+--	FROM 
+--		tbl_AB_ActivityEvents
+--END
+--GO
 
 
 
@@ -573,3 +573,189 @@ BEGIN
 		ResidentId = @ResidentId
 END
 GO
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_Activity_Events]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_Activity_Events]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_Activity_Events]
+AS
+--20180912 chime created
+BEGIN
+	SELECT
+		Id,
+		ActivityId,
+		EventTitle = EventTitle + ' ' + StartTime,
+		StartDate,
+		EndDate,
+		StartTime,
+		EndTime,
+		note
+	FROM 
+		tbl_AB_ActivityEvents
+END
+go
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_SuggestedActivityCalendar]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_SuggestedActivityCalendar]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_SuggestedActivityCalendar]
+@ResidentId int
+AS
+--20181023 chime created
+BEGIN
+	
+	SELECT 
+		AE.Id,
+		AE.ActivityId, 
+		EventTitle = AE.EventTitle + ' ' + AE.StartTime, 
+		AE.StartDate, 
+		AE.EndDate, 
+		AE.StartTime, 
+		AE.EndTime, 
+		AE.note 
+	FROM 
+		tbl_AB_ActivityAssessment AA
+		LEFT OUTer JOIN 
+		tbl_AB_ActivityEvents AE ON
+	AA.ActivityId = AE.ActivityId
+	WHERE 
+		AA.ResidentId = @ResidentId
+		AND AE.Id IS NOT NULL
+		AND AA.CheckedValue = 'P'
+END
+GO
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_Activity_Events_C2]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_Activity_Events_C2]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_Activity_Events_C2]
+AS
+--20180912 chime created
+BEGIN
+	SELECT
+		Id,
+		ActivityId,
+		EventTitle = EventTitle + ' ' + StartTime,
+		StartDate,
+		EndDate,
+		StartTime,
+		EndTime,
+		note
+	FROM 
+		tbl_AB_ActivityEvents_C2
+END
+go
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_Activity_Events_C3]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_Activity_Events_C3]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_Activity_Events_C3]
+AS
+--20180912 chime created
+BEGIN
+	SELECT
+		Id,
+		ActivityId,
+		EventTitle = EventTitle + ' ' + StartTime,
+		StartDate,
+		EndDate,
+		StartTime,
+		EndTime,
+		note
+	FROM 
+		tbl_AB_ActivityEvents_C3
+END
+go
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Get_Activity_Events_C4]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Get_Activity_Events_C4]
+GO
+CREATE PROCEDURE [dbo].[spAB_Get_Activity_Events_C4]
+AS
+--20180912 chime created
+BEGIN
+	SELECT
+		Id,
+		ActivityId,
+		EventTitle = EventTitle + ' ' + StartTime,
+		StartDate,
+		EndDate,
+		StartTime,
+		EndTime,
+		note
+	FROM 
+		tbl_AB_ActivityEvents_C4
+END
+go
+
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_Activity_Events_C2]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_Activity_Events_C2]
+GO
+CREATE PROCEDURE [dbo].[spAB_Add_Activity_Events_C2]
+@ActivityId int,
+@EventTitle nvarchar(100),
+@StartDate datetime,
+@EndDate datetime,
+@StartTime nvarchar(20),
+@EndTime nvarchar(20),
+@note nvarchar(max) = ''
+AS
+--20180912 chime created
+BEGIN
+	INSERT INTO tbl_AB_ActivityEvents_C2 (ActivityId, EventTitle, StartDate, EndDate, StartTime, EndTime, note)
+	VALUES (@ActivityId, @EventTitle, @StartDate, @EndDate, @StartTime, @EndTime, @note)
+
+END
+GO
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_Activity_Events_C3]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_Activity_Events_C3]
+GO
+CREATE PROCEDURE [dbo].[spAB_Add_Activity_Events_C3]
+@ActivityId int,
+@EventTitle nvarchar(100),
+@StartDate datetime,
+@EndDate datetime,
+@StartTime nvarchar(20),
+@EndTime nvarchar(20),
+@note nvarchar(max) = ''
+AS
+--20180912 chime created
+BEGIN
+	INSERT INTO tbl_AB_ActivityEvents_C3 (ActivityId, EventTitle, StartDate, EndDate, StartTime, EndTime, note)
+	VALUES (@ActivityId, @EventTitle, @StartDate, @EndDate, @StartTime, @EndTime, @note)
+
+END
+GO
+
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[spAB_Add_Activity_Events_C4]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[spAB_Add_Activity_Events_C4]
+GO
+CREATE PROCEDURE [dbo].[spAB_Add_Activity_Events_C4]
+@ActivityId int,
+@EventTitle nvarchar(100),
+@StartDate datetime,
+@EndDate datetime,
+@StartTime nvarchar(20),
+@EndTime nvarchar(20),
+@note nvarchar(max) = ''
+AS
+--20180912 chime created
+BEGIN
+	INSERT INTO tbl_AB_ActivityEvents_C4 (ActivityId, EventTitle, StartDate, EndDate, StartTime, EndTime, note)
+	VALUES (@ActivityId, @EventTitle, @StartDate, @EndDate, @StartTime, @EndTime, @note)
+
+END
+GO
+

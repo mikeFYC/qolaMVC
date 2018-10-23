@@ -88,6 +88,12 @@
                                     <li class="nav-item">
                                         <a class="nav-link" id="pills-achive-tab" data-toggle="pill" href="#pills-achive" role="tab" aria-controls="pills-achive" aria-selected="false">Calendar two</a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="pills-achive-tab" data-toggle="pill" href="#pills-c3" role="tab" aria-controls="pills-achive" aria-selected="false">Calendar three</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="pills-achive-tab" data-toggle="pill" href="#pills-c4" role="tab" aria-controls="pills-achive" aria-selected="false">Calendar four</a>
+                                    </li>
 
                                 </ul>
                                 <div class="tab-content" id="pills-tabContent">
@@ -128,6 +134,9 @@
                              $('#calendar').CalendarPlugin({
                                  url: '/Home/getEvents',
                                  view: 'daily',
+                                 deleteUrl: 'http://localhost:8040/php/events.php?type=delete&id=:id',
+                                 editUrl: 'http://localhost:8040/php/events.php?type=edit&id=:id',
+
                             form: [
                                 [
                                     {
@@ -152,7 +161,160 @@
                                         type: 'radio',
                                         name: 'frequency',
                                         label: 'Frequency',
+                                        defaultValue: 1,
+                                        options: { 1: 'Date & Time', 2: 'Every Weekday', 3: 'Date between' }
+                                    }
+                                ],
+                                [
+                                    {
+                                        type: 'datetime',
+                                        name: 'startDate',
+                                        label: 'Date & Time',
+                                        placeholder: 'DD/MM/YYYY',
+                                        bindTo: {
+                                            name: 'input[name="frequency"]',
+                                            when: '1'
+                                        }
+                                    }
+                                ],
+                                [
+                                    {
+                                        type: 'select',
+                                        name: 'weekDay',
+                                        label: 'Week Day',
                                         placeholder: 'Select',
+                                        options: { Monday: 'Monday', Tuesday: 'Tuesday', Wednesday: 'Wednesday', Thursday: 'Thursday', Friday: 'Friday', Saturday: 'Saturday', Sunday: 'Sunday' },
+                                        bindTo: {
+                                            name: 'input[name="frequency"]',
+                                            when: '2'
+                                        }
+                                    }
+                                ],
+                                [
+                                    {
+                                        type: 'time',
+                                        name: 'time',
+                                        label: 'Time',
+                                        bindTo: {
+                                            name: 'input[name="frequency"]',
+                                            when: '2'
+                                        }
+                                    }
+                                ],
+                                [
+                                    {
+                                        type: 'date',
+                                        name: 'DateFrom',
+                                        label: 'Date From',
+                                        placeholder: 'DD/MM/YYYY',
+                                        bindTo: {
+                                            name: 'input[name="frequency"]',
+                                            when: '3'
+                                        }
+                                    }
+                                ],
+                                [
+                                    {
+                                        type: 'date',
+                                        name: 'DateTo',
+                                        label: 'Date To',
+                                        placeholder: 'DD/MM/YYYY',
+                                        bindTo: {
+                                            name: 'input[name="frequency"]',
+                                            when: '3'
+                                        }
+                                    }
+                                ],
+                                [
+                                    {
+                                        type: 'time',
+                                        name: 'time',
+                                        label: 'Time',
+                                        bindTo: {
+                                            name: 'input[name="frequency"]',
+                                            when: '3'
+                                        }
+                                    }
+                                ],
+                                [
+                                    {
+                                        type: 'select',
+                                        name: 'venue',
+                                        label: 'Venue',
+                                        placeholder: 'Select',
+                                        options: { 0:'NaN' }
+                                    }
+                                ]
+                            ]
+                        });
+                        }
+                                        </script>
+                                    </div>
+                                    <div class="tab-pane fade" id="pills-achive" role="tabpanel" aria-labelledby="pills-achive-tab">
+
+                                        <div style='position: relative; float: left; width: 100%;'>
+                                            <section id='calendar2'></section>
+                                        </div>
+
+
+                                        <script type='text/javascript'>
+
+
+ var l_Categories2 = {};
+
+                        $.ajax({
+                            type: 'get',
+                            url: '@Url.Action("getCategoriesForCalendar")',
+                            dataType: 'json',
+                            success: function (data) {
+                                //l_Categories = data;
+                              //console.log(data);
+
+                                for (var i = 0; i < data.length; i++ ) {
+                                    l_Categories2[data[i].Id] = data[i].Name;
+                                }
+                                console.log(l_Categories2);
+                                initCalendar2();
+                            },
+                            error: function (ex) {
+                                var r = jQuery.parseJSON(response.responseText);
+                                alert("Message: " + r.Message);
+                                alert("StackTrace: " + r.StackTrace);
+                                alert("ExceptionType: " + r.ExceptionType);
+                            }
+                        });
+
+
+                        function initCalendar2() {
+                             $('#calendar2').CalendarPlugin({
+                                 url: '/Home/getEvents_C2',
+                                 view: 'monthly',
+                            form: [
+                                [
+                                    {
+                                        type: 'text',
+                                        name: 'title',
+                                        label: 'Activity Display Title',
+                                        placeholder: 'E.g. Marathon'
+                                    }
+
+                                ],
+                                [
+                                    {
+                                        type: 'select',
+                                        name: 'activity',
+                                        label: 'Activity *',
+                                        placeholder: 'Select',
+                                        options: l_Categories2
+                                    }
+                                ],
+                                [
+                                    {
+                                        type: 'radio',
+                                        name: 'frequency',
+                                        label: 'Frequency',
+                                        placeholder: 'Select',
+                                        defaultValue: 1,
                                         options: { 1: 'Date & Time', 2: 'Every Weekday', 3: 'Date between' }
                                     }
                                 ],
@@ -230,17 +392,18 @@
                         }
                                         </script>
                                     </div>
-                                    <div class="tab-pane fade" id="pills-achive" role="tabpanel" aria-labelledby="pills-achive-tab">
+
+                                    <div class="tab-pane fade" id="pills-C3" role="tabpanel" aria-labelledby="pills-achive-tab">
 
                                         <div style='position: relative; float: left; width: 100%;'>
-                                            <section id='calendar2'></section>
+                                            <section id='calendar3'></section>
                                         </div>
 
 
                                         <script type='text/javascript'>
-                      
 
- var l_Categories2 = {};
+
+ var l_Categories3 = {};
 
                         $.ajax({
                             type: 'get',
@@ -251,10 +414,10 @@
                               //console.log(data);
 
                                 for (var i = 0; i < data.length; i++ ) {
-                                    l_Categories2[data[i].Id] = data[i].Name;
+                                    l_Categories3[data[i].Id] = data[i].Name;
                                 }
-                                console.log(l_Categories2);
-                                initCalendar2();
+                                console.log(l_Categories3);
+                                initCalendar3();
                             },
                             error: function (ex) {
                                 var r = jQuery.parseJSON(response.responseText);
@@ -265,9 +428,9 @@
                         });
 
 
-                        function initCalendar2() {
-                             $('#calendar2').CalendarPlugin({
-                                 url: '/Home/getEvents',
+                        function initCalendar3() {
+                             $('#calendar3').CalendarPlugin({
+                                 url: '/Home/getEvents_C3',
                                  view: 'monthly',
                             form: [
                                 [
@@ -285,7 +448,7 @@
                                         name: 'activity',
                                         label: 'Activity *',
                                         placeholder: 'Select',
-                                        options: l_Categories2
+                                        options: l_Categories3
                                     }
                                 ],
                                 [
@@ -294,6 +457,150 @@
                                         name: 'frequency',
                                         label: 'Frequency',
                                         placeholder: 'Select',
+                                        defaultValue: 1,
+                                        options: { 1: 'Date & Time', 2: 'Every Weekday', 3: 'Date between' }
+                                    }
+                                ],
+                                [
+                                    {
+                                        type: 'datetime',
+                                        name: 'startDate',
+                                        label: 'Date & Time',
+                                        placeholder: 'DD/MM/YYYY',
+                                        bindTo: {
+                                            name: 'input[name="frequency"]',
+                                            when: '1'
+                                        }
+                                    }
+                                ],
+                                [
+                                    {
+                                        type: 'select',
+                                        name: 'weekDay',
+                                        label: 'Week Day',
+                                        placeholder: 'Select',
+                                        options: { Monday: 'Monday', Tuesday: 'Tuesday', Wednesday: 'Wednesday', Thursday: 'Thursday', Friday: 'Friday', Saturday: 'Saturday', Sunday: 'Sunday' },
+                                        bindTo: {
+                                            name: 'input[name="frequency"]',
+                                            when: '2'
+                                        }
+                                    }
+                                ],
+                                [
+                                    {
+                                        type: 'date',
+                                        name: 'DateFrom',
+                                        label: 'Date From',
+                                        placeholder: 'DD/MM/YYYY',
+                                        bindTo: {
+                                            name: 'input[name="frequency"]',
+                                            when: '3'
+                                        }
+                                    }
+                                ],
+                                [
+                                    {
+                                        type: 'date',
+                                        name: 'DateTo',
+                                        label: 'Date To',
+                                        placeholder: 'DD/MM/YYYY',
+                                        bindTo: {
+                                            name: 'input[name="frequency"]',
+                                            when: '3'
+                                        }
+                                    }
+                                ],
+                                [
+                                    {
+                                        type: 'time',
+                                        name: 'time',
+                                        label: 'Time',
+                                        bindTo: {
+                                            name: 'input[name="frequency"]',
+                                            when: '3'
+                                        }
+                                    }
+                                ],
+                                [
+                                    {
+                                        type: 'select',
+                                        name: 'venue',
+                                        label: 'Venue',
+                                        placeholder: 'Select',
+                                        options: { 0:'NaN' }
+                                    }
+                                ]
+                            ]
+                        });
+                        }
+                                        </script>
+                                    </div>
+
+                                    <div class="tab-pane fade" id="pills-C4" role="tabpanel" aria-labelledby="pills-achive-tab">
+
+                                        <div style='position: relative; float: left; width: 100%;'>
+                                            <section id='calendar4'></section>
+                                        </div>
+
+
+                                        <script type='text/javascript'>
+
+
+ var l_Categories4 = {};
+
+                        $.ajax({
+                            type: 'get',
+                            url: '@Url.Action("getCategoriesForCalendar")',
+                            dataType: 'json',
+                            success: function (data) {
+                                //l_Categories = data;
+                              //console.log(data);
+
+                                for (var i = 0; i < data.length; i++ ) {
+                                    l_Categories4[data[i].Id] = data[i].Name;
+                                }
+                                console.log(l_Categories4);
+                                initCalendar4();
+                            },
+                            error: function (ex) {
+                                var r = jQuery.parseJSON(response.responseText);
+                                alert("Message: " + r.Message);
+                                alert("StackTrace: " + r.StackTrace);
+                                alert("ExceptionType: " + r.ExceptionType);
+                            }
+                        });
+
+
+                        function initCalendar4() {
+                             $('#calendar4').CalendarPlugin({
+                                 url: '/Home/getEvents_C4',
+                                 view: 'monthly',
+                            form: [
+                                [
+                                    {
+                                        type: 'text',
+                                        name: 'title',
+                                        label: 'Activity Display Title',
+                                        placeholder: 'E.g. Marathon'
+                                    }
+
+                                ],
+                                [
+                                    {
+                                        type: 'select',
+                                        name: 'activity',
+                                        label: 'Activity *',
+                                        placeholder: 'Select',
+                                        options: l_Categories4
+                                    }
+                                ],
+                                [
+                                    {
+                                        type: 'radio',
+                                        name: 'frequency',
+                                        label: 'Frequency',
+                                        placeholder: 'Select',
+                                        defaultValue = 1,
                                         options: { 1: 'Date & Time', 2: 'Every Weekday', 3: 'Date between' }
                                     }
                                 ],

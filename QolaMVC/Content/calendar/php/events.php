@@ -14,6 +14,7 @@
             'lastName' => 'Barde',
             'startTime' => '06:00',
             'endTime' => '12:00',
+            'happiness-level' => 'good'
         ],
         [
             'id' => '29',
@@ -40,7 +41,7 @@
             'endTime' => '08:45',
         ],
         [
-            'id' => '27',
+            'id' => '90',
             'title' => 'Sample event five',
             'startDate' => date('m/02/Y'),
             'endDate' => date('m/03/Y'),

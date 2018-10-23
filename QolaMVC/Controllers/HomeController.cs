@@ -230,28 +230,13 @@ namespace QolaMVC.Controllers
             l_Model.ActivityId = Convert.ToInt32(Request.Form["activity"]);
             l_Model.ProgramName = Convert.ToString(Request.Form["title"]);
             var frequency = Convert.ToInt32(Request.Form["frequency"]);
-            var startDate = Convert.ToDateTime(Request.Form["startDate"]);
-            var weekDay = Convert.ToString(Request.Form["weekDay"]);
-
             List<DateTime> l_Dates = new List<DateTime>();
-            if(frequency == 2)
-            {
-                l_Dates = Enumerable.Range(1, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month))
-                .Where(d => new DateTime(DateTime.Now.Year, DateTime.Now.Month, d).ToString("dddd").Equals(weekDay))
-               .Select(d => new DateTime(DateTime.Now.Year, DateTime.Now.Month, d)).ToList();
 
-                foreach(var l_D in l_Dates)
-                {
-                    l_Model.ProgramStartDate = l_D;
-                    l_Model.ProgramStartTime = l_D.ToLongTimeString();
-                    l_Model.ProgramEndDate = l_D;
-                    l_Model.ProgramEndTime = l_D.ToLongTimeString();
-
-                    HomeDAL.AddNewActivityEvent(l_Model);
-                }
-            }
-            else
+            if (frequency == 1) //date & time
             {
+                var startDate = Convert.ToDateTime(Request.Form["startDate"]);
+                var time = Convert.ToString(Request.Form["time"]);
+
                 l_Model.ProgramStartDate = startDate;
                 l_Model.ProgramStartTime = startDate.ToLongTimeString();
                 l_Model.ProgramEndDate = startDate;
@@ -259,29 +244,88 @@ namespace QolaMVC.Controllers
 
                 HomeDAL.AddNewActivityEvent(l_Model);
             }
+            else if(frequency == 2) //every week day
+            {
+                var time = Convert.ToString(Request.Form["time"]);
+                var weekDay = Convert.ToString(Request.Form["weekDay"]);
+                l_Dates = Enumerable.Range(1, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month))
+                .Where(d => new DateTime(DateTime.Now.Year, DateTime.Now.Month, d).ToString("dddd").Equals(weekDay))
+               .Select(d => new DateTime(DateTime.Now.Year, DateTime.Now.Month, d)).ToList();
 
+                foreach (var l_D in l_Dates)
+                {
+                    l_Model.ProgramStartDate = l_D;
+                    l_Model.ProgramStartTime = time;
+                    l_Model.ProgramEndDate = l_D;
+                    l_Model.ProgramEndTime = l_D.ToLongTimeString();
 
+                    HomeDAL.AddNewActivityEvent(l_Model);
+                }
+            }
+            else if(frequency == 3) //date between
+            {
+                var dateFrom = Convert.ToDateTime(Request.Form["dateFrom"]);
+                var dateTo = Convert.ToDateTime(Request.Form["dateTo"]);
+                var time = Convert.ToString(Request.Form["time"]);
 
+                for (var dt = dateFrom; dt <= dateTo; dt = dt.AddDays(1))
+                {
+                    l_Model.ProgramStartDate = dt;
+                    l_Model.ProgramStartTime = time;
+                    l_Model.ProgramEndDate = dt;
+                    l_Model.ProgramEndTime = dt.ToLongTimeString();
+
+                    HomeDAL.AddNewActivityEvent(l_Model);
+                }
+            }
+            
 
             var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get();//HomeDAL.GetActivityEvents();
 
             List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
 
-            foreach (var l_Data in l_ActivityEvents)
+            //foreach (var l_Data in l_ActivityEvents)
+            //{
+            //    var columns = new Dictionary<string, string>
+            //    {
+            //        { "id", l_Data.ProgramId.ToString()},
+            //        { "title", l_Data.ProgramName},
+            //        { "startDate", l_Data.ProgramStartDate.ToShortDateString()},
+            //        { "endDate", l_Data.ProgramEndDate.ToShortDateString()},
+            //        { "startTime", l_Data.ProgramStartTime},
+            //        { "endTime", l_Data.ProgramEndTime}
+            //    };
+
+            //    l_Events.Add(columns);
+            //}
+
+            var dtF = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            var end = dtF.AddMonths(5);
+
+            for( var d = dtF; d <= end; d = d.AddMonths(1))
             {
-                var columns = new Dictionary<string, string>
+                foreach (var l_Data in l_ActivityEvents)
                 {
-                    { "id", l_Data.ProgramId.ToString()},
-                    { "title", l_Data.ProgramName},
-                    { "startDate", l_Data.ProgramStartDate.ToShortDateString()},
-                    { "endDate", l_Data.ProgramEndDate.ToShortDateString()},
-                    { "startTime", l_Data.ProgramStartTime},
-                    { "endTime", l_Data.ProgramEndTime}
-                };
+                    try
+                    {
+                        var columns = new Dictionary<string, string>
+                        {
+                            { "id", l_Data.ProgramId.ToString()},
+                            { "title", l_Data.ProgramName},
+                            { "startDate", new DateTime(d.Year, d.Month, l_Data.ProgramStartDate.Day).ToShortDateString()},
+                            { "endDate", new DateTime(d.Year, d.Month, l_Data.ProgramEndDate.Day).ToShortDateString()},
+                            { "startTime", l_Data.ProgramStartTime},
+                            { "endTime", l_Data.ProgramEndTime}
+                        };
 
-                l_Events.Add(columns);
+                        l_Events.Add(columns);
+                    }
+                    catch(Exception ex)
+                    {
+
+                    }
+                }
             }
-
             return Json(l_Events, JsonRequestBehavior.AllowGet);
         }
 
@@ -291,21 +335,27 @@ namespace QolaMVC.Controllers
 
             List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
 
-            foreach(var l_Data in l_ActivityEvents)
-            {
-                var columns = new Dictionary<string, string>
-                {
-                    { "id", l_Data.ProgramId.ToString()},
-                    { "title", l_Data.ProgramName},
-                    { "startDate", l_Data.ProgramStartDate.ToShortDateString()},
-                    { "endDate", l_Data.ProgramEndDate.ToShortDateString()},
-                    { "startTime", l_Data.ProgramStartTime},
-                    { "endTime", l_Data.ProgramEndTime}
-                };
+            var dtF = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            var end = dtF.AddMonths(2);
 
-                l_Events.Add(columns);
+            for (var d = dtF; d <= end; d = d.AddMonths(1))
+            {
+                foreach (var l_Data in l_ActivityEvents)
+                {
+                    var columns = new Dictionary<string, string>
+                    {
+                        { "id", l_Data.ProgramId.ToString()},
+                        { "title", l_Data.ProgramName},
+                        { "startDate", new DateTime(d.Year, d.Month, l_Data.ProgramStartDate.Day).ToShortDateString()},
+                        { "endDate", new DateTime(d.Year, d.Month, l_Data.ProgramEndDate.Day).ToShortDateString()},
+                        { "startTime", l_Data.ProgramStartTime},
+                        { "endTime", l_Data.ProgramEndTime}
+                    };
+
+                    l_Events.Add(columns);
+                }
             }
-            
+
             return Json(l_Events, JsonRequestBehavior.AllowGet);
         }
 
@@ -360,6 +410,408 @@ namespace QolaMVC.Controllers
 
             return Json(l_Events, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult GetSuggestedActivityCalendar()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            Collection<ActivityEventModel> l_ActivityEvents = new Collection<ActivityEventModel>();
+            l_ActivityEvents = HomeDAL.GetSuggestedActivityEvents(resident.ID);
+            
+            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
+
+            foreach (var l_Data in l_ActivityEvents)
+            {
+                var columns = new Dictionary<string, string>
+                {
+                    { "id", l_Data.ProgramId.ToString()},
+                    { "title", l_Data.ProgramName},
+                    { "startDate", l_Data.ProgramStartDate.ToShortDateString()},
+                    { "endDate", l_Data.ProgramEndDate.ToShortDateString()},
+                    { "startTime", l_Data.ProgramStartTime},
+                    { "endTime", l_Data.ProgramEndTime}
+                };
+
+                l_Events.Add(columns);
+            }
+
+            return Json(l_Events, JsonRequestBehavior.AllowGet);
+        }
+
+        #region calendar 2
+        [HttpPost]
+        public JsonResult getEvents_C2(FormCollection form)
+        {
+            ActivityEventModel l_Model = new ActivityEventModel();
+            l_Model.ActivityId = Convert.ToInt32(Request.Form["activity"]);
+            l_Model.ProgramName = Convert.ToString(Request.Form["title"]);
+            var frequency = Convert.ToInt32(Request.Form["frequency"]);
+            List<DateTime> l_Dates = new List<DateTime>();
+
+            if (frequency == 1) //date & time
+            {
+                var startDate = Convert.ToDateTime(Request.Form["startDate"]);
+                var time = Convert.ToString(Request.Form["time"]);
+
+                l_Model.ProgramStartDate = startDate;
+                l_Model.ProgramStartTime = startDate.ToLongTimeString();
+                l_Model.ProgramEndDate = startDate;
+                l_Model.ProgramEndTime = startDate.ToLongTimeString();
+
+                HomeDAL.AddNewActivityEvent_C2(l_Model);
+            }
+            else if (frequency == 2) //every week day
+            {
+                var time = Convert.ToString(Request.Form["time"]);
+                var weekDay = Convert.ToString(Request.Form["weekDay"]);
+                l_Dates = Enumerable.Range(1, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month))
+                .Where(d => new DateTime(DateTime.Now.Year, DateTime.Now.Month, d).ToString("dddd").Equals(weekDay))
+               .Select(d => new DateTime(DateTime.Now.Year, DateTime.Now.Month, d)).ToList();
+
+                foreach (var l_D in l_Dates)
+                {
+                    l_Model.ProgramStartDate = l_D;
+                    l_Model.ProgramStartTime = time;
+                    l_Model.ProgramEndDate = l_D;
+                    l_Model.ProgramEndTime = l_D.ToLongTimeString();
+
+                    HomeDAL.AddNewActivityEvent_C2(l_Model);
+                }
+            }
+            else if (frequency == 3) //date between
+            {
+                var dateFrom = Convert.ToDateTime(Request.Form["dateFrom"]);
+                var dateTo = Convert.ToDateTime(Request.Form["dateTo"]);
+                var time = Convert.ToString(Request.Form["time"]);
+
+                for (var dt = dateFrom; dt <= dateTo; dt = dt.AddDays(1))
+                {
+                    l_Model.ProgramStartDate = dt;
+                    l_Model.ProgramStartTime = time;
+                    l_Model.ProgramEndDate = dt;
+                    l_Model.ProgramEndTime = dt.ToLongTimeString();
+
+                    HomeDAL.AddNewActivityEvent_C2(l_Model);
+                }
+            }
+
+
+            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get_C2();//HomeDAL.GetActivityEvents();
+
+            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
+
+            var dtF = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            var end = dtF.AddMonths(5);
+
+            for (var d = dtF; d <= end; d = d.AddMonths(1))
+            {
+                foreach (var l_Data in l_ActivityEvents)
+                {
+                    try
+                    {
+                        var columns = new Dictionary<string, string>
+                        {
+                            { "id", l_Data.ProgramId.ToString()},
+                            { "title", l_Data.ProgramName},
+                            { "startDate", new DateTime(d.Year, d.Month, l_Data.ProgramStartDate.Day).ToShortDateString()},
+                            { "endDate", new DateTime(d.Year, d.Month, l_Data.ProgramEndDate.Day).ToShortDateString()},
+                            { "startTime", l_Data.ProgramStartTime},
+                            { "endTime", l_Data.ProgramEndTime}
+                        };
+
+                        l_Events.Add(columns);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                }
+            }
+            return Json(l_Events, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult getEvents_C2()
+        {
+            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get_C2();//HomeDAL.GetActivityEvents();
+
+            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
+
+            var dtF = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            var end = dtF.AddMonths(2);
+
+            for (var d = dtF; d <= end; d = d.AddMonths(1))
+            {
+                foreach (var l_Data in l_ActivityEvents)
+                {
+                    var columns = new Dictionary<string, string>
+                    {
+                        { "id", l_Data.ProgramId.ToString()},
+                        { "title", l_Data.ProgramName},
+                        { "startDate", new DateTime(d.Year, d.Month, l_Data.ProgramStartDate.Day).ToShortDateString()},
+                        { "endDate", new DateTime(d.Year, d.Month, l_Data.ProgramEndDate.Day).ToShortDateString()},
+                        { "startTime", l_Data.ProgramStartTime},
+                        { "endTime", l_Data.ProgramEndTime}
+                    };
+
+                    l_Events.Add(columns);
+                }
+            }
+
+            return Json(l_Events, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
+        #region calendar 3
+        [HttpPost]
+        public JsonResult getEvents_C3(FormCollection form)
+        {
+            ActivityEventModel l_Model = new ActivityEventModel();
+            l_Model.ActivityId = Convert.ToInt32(Request.Form["activity"]);
+            l_Model.ProgramName = Convert.ToString(Request.Form["title"]);
+            var frequency = Convert.ToInt32(Request.Form["frequency"]);
+            List<DateTime> l_Dates = new List<DateTime>();
+
+            if (frequency == 1) //date & time
+            {
+                var startDate = Convert.ToDateTime(Request.Form["startDate"]);
+                var time = Convert.ToString(Request.Form["time"]);
+
+                l_Model.ProgramStartDate = startDate;
+                l_Model.ProgramStartTime = startDate.ToLongTimeString();
+                l_Model.ProgramEndDate = startDate;
+                l_Model.ProgramEndTime = startDate.ToLongTimeString();
+
+                HomeDAL.AddNewActivityEvent_C3(l_Model);
+            }
+            else if (frequency == 2) //every week day
+            {
+                var time = Convert.ToString(Request.Form["time"]);
+                var weekDay = Convert.ToString(Request.Form["weekDay"]);
+                l_Dates = Enumerable.Range(1, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month))
+                .Where(d => new DateTime(DateTime.Now.Year, DateTime.Now.Month, d).ToString("dddd").Equals(weekDay))
+               .Select(d => new DateTime(DateTime.Now.Year, DateTime.Now.Month, d)).ToList();
+
+                foreach (var l_D in l_Dates)
+                {
+                    l_Model.ProgramStartDate = l_D;
+                    l_Model.ProgramStartTime = time;
+                    l_Model.ProgramEndDate = l_D;
+                    l_Model.ProgramEndTime = l_D.ToLongTimeString();
+
+                    HomeDAL.AddNewActivityEvent_C3(l_Model);
+                }
+            }
+            else if (frequency == 3) //date between
+            {
+                var dateFrom = Convert.ToDateTime(Request.Form["dateFrom"]);
+                var dateTo = Convert.ToDateTime(Request.Form["dateTo"]);
+                var time = Convert.ToString(Request.Form["time"]);
+
+                for (var dt = dateFrom; dt <= dateTo; dt = dt.AddDays(1))
+                {
+                    l_Model.ProgramStartDate = dt;
+                    l_Model.ProgramStartTime = time;
+                    l_Model.ProgramEndDate = dt;
+                    l_Model.ProgramEndTime = dt.ToLongTimeString();
+
+                    HomeDAL.AddNewActivityEvent_C3(l_Model);
+                }
+            }
+
+
+            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get_C3();//HomeDAL.GetActivityEvents();
+
+            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
+
+            var dtF = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            var end = dtF.AddMonths(5);
+
+            for (var d = dtF; d <= end; d = d.AddMonths(1))
+            {
+                foreach (var l_Data in l_ActivityEvents)
+                {
+                    try
+                    {
+                        var columns = new Dictionary<string, string>
+                        {
+                            { "id", l_Data.ProgramId.ToString()},
+                            { "title", l_Data.ProgramName},
+                            { "startDate", new DateTime(d.Year, d.Month, l_Data.ProgramStartDate.Day).ToShortDateString()},
+                            { "endDate", new DateTime(d.Year, d.Month, l_Data.ProgramEndDate.Day).ToShortDateString()},
+                            { "startTime", l_Data.ProgramStartTime},
+                            { "endTime", l_Data.ProgramEndTime}
+                        };
+
+                        l_Events.Add(columns);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                }
+            }
+            return Json(l_Events, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult getEvents_C3()
+        {
+            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get_C3();//HomeDAL.GetActivityEvents();
+
+            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
+
+            var dtF = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            var end = dtF.AddMonths(2);
+
+            for (var d = dtF; d <= end; d = d.AddMonths(1))
+            {
+                foreach (var l_Data in l_ActivityEvents)
+                {
+                    var columns = new Dictionary<string, string>
+                    {
+                        { "id", l_Data.ProgramId.ToString()},
+                        { "title", l_Data.ProgramName},
+                        { "startDate", new DateTime(d.Year, d.Month, l_Data.ProgramStartDate.Day).ToShortDateString()},
+                        { "endDate", new DateTime(d.Year, d.Month, l_Data.ProgramEndDate.Day).ToShortDateString()},
+                        { "startTime", l_Data.ProgramStartTime},
+                        { "endTime", l_Data.ProgramEndTime}
+                    };
+
+                    l_Events.Add(columns);
+                }
+            }
+
+            return Json(l_Events, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
+        #region calendar 4
+        [HttpPost]
+        public JsonResult getEvents_C4(FormCollection form)
+        {
+            ActivityEventModel l_Model = new ActivityEventModel();
+            l_Model.ActivityId = Convert.ToInt32(Request.Form["activity"]);
+            l_Model.ProgramName = Convert.ToString(Request.Form["title"]);
+            var frequency = Convert.ToInt32(Request.Form["frequency"]);
+            List<DateTime> l_Dates = new List<DateTime>();
+
+            if (frequency == 1) //date & time
+            {
+                var startDate = Convert.ToDateTime(Request.Form["startDate"]);
+                var time = Convert.ToString(Request.Form["time"]);
+
+                l_Model.ProgramStartDate = startDate;
+                l_Model.ProgramStartTime = startDate.ToLongTimeString();
+                l_Model.ProgramEndDate = startDate;
+                l_Model.ProgramEndTime = startDate.ToLongTimeString();
+
+                HomeDAL.AddNewActivityEvent_C4(l_Model);
+            }
+            else if (frequency == 2) //every week day
+            {
+                var time = Convert.ToString(Request.Form["time"]);
+                var weekDay = Convert.ToString(Request.Form["weekDay"]);
+                l_Dates = Enumerable.Range(1, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month))
+                .Where(d => new DateTime(DateTime.Now.Year, DateTime.Now.Month, d).ToString("dddd").Equals(weekDay))
+               .Select(d => new DateTime(DateTime.Now.Year, DateTime.Now.Month, d)).ToList();
+
+                foreach (var l_D in l_Dates)
+                {
+                    l_Model.ProgramStartDate = l_D;
+                    l_Model.ProgramStartTime = time;
+                    l_Model.ProgramEndDate = l_D;
+                    l_Model.ProgramEndTime = l_D.ToLongTimeString();
+
+                    HomeDAL.AddNewActivityEvent_C4(l_Model);
+                }
+            }
+            else if (frequency == 3) //date between
+            {
+                var dateFrom = Convert.ToDateTime(Request.Form["dateFrom"]);
+                var dateTo = Convert.ToDateTime(Request.Form["dateTo"]);
+                var time = Convert.ToString(Request.Form["time"]);
+
+                for (var dt = dateFrom; dt <= dateTo; dt = dt.AddDays(1))
+                {
+                    l_Model.ProgramStartDate = dt;
+                    l_Model.ProgramStartTime = time;
+                    l_Model.ProgramEndDate = dt;
+                    l_Model.ProgramEndTime = dt.ToLongTimeString();
+
+                    HomeDAL.AddNewActivityEvent_C4(l_Model);
+                }
+            }
+
+
+            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get_C4();//HomeDAL.GetActivityEvents();
+
+            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
+
+            var dtF = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            var end = dtF.AddMonths(5);
+
+            for (var d = dtF; d <= end; d = d.AddMonths(1))
+            {
+                foreach (var l_Data in l_ActivityEvents)
+                {
+                    try
+                    {
+                        var columns = new Dictionary<string, string>
+                        {
+                            { "id", l_Data.ProgramId.ToString()},
+                            { "title", l_Data.ProgramName},
+                            { "startDate", new DateTime(d.Year, d.Month, l_Data.ProgramStartDate.Day).ToShortDateString()},
+                            { "endDate", new DateTime(d.Year, d.Month, l_Data.ProgramEndDate.Day).ToShortDateString()},
+                            { "startTime", l_Data.ProgramStartTime},
+                            { "endTime", l_Data.ProgramEndTime}
+                        };
+
+                        l_Events.Add(columns);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                }
+            }
+            return Json(l_Events, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult getEvents_C4()
+        {
+            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get_C4();//HomeDAL.GetActivityEvents();
+
+            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
+
+            var dtF = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            var end = dtF.AddMonths(2);
+
+            for (var d = dtF; d <= end; d = d.AddMonths(1))
+            {
+                foreach (var l_Data in l_ActivityEvents)
+                {
+                    var columns = new Dictionary<string, string>
+                    {
+                        { "id", l_Data.ProgramId.ToString()},
+                        { "title", l_Data.ProgramName},
+                        { "startDate", new DateTime(d.Year, d.Month, l_Data.ProgramStartDate.Day).ToShortDateString()},
+                        { "endDate", new DateTime(d.Year, d.Month, l_Data.ProgramEndDate.Day).ToShortDateString()},
+                        { "startTime", l_Data.ProgramStartTime},
+                        { "endTime", l_Data.ProgramEndTime}
+                    };
+
+                    l_Events.Add(columns);
+                }
+            }
+
+            return Json(l_Events, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
 
         #endregion
 
