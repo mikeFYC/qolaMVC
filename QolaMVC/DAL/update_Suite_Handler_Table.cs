@@ -245,7 +245,7 @@ namespace QolaMVC.DAL
                                 " WHERE SH.fd_resident_id ="+ residentID;
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
-            table.Append("<table class=\"table table-bordered\" style=\"margin-left:1vw\">");
+            table.Append("<table class=\"table table-bordered\" id=\"showtable\" style=\"margin-left:1vw\">");
             table.Append("<thead class=\"bg-primary\">");
             table.Append("<tr>");
             table.Append("<th class=\"text-white text-center\">Home</th>");
@@ -489,7 +489,10 @@ namespace QolaMVC.DAL
                 cmdGARead.Parameters.AddWithValue("@homeID", int.Parse(sam.homeid));
                 cmdGARead.Parameters.AddWithValue("@suiteno", sam.suiteno);
                 cmdGARead.Parameters.AddWithValue("@movein", DateTime.Parse(sam.movein));
-                cmdGARead.Parameters.AddWithValue("@moveout", DateTime.Parse(sam.moveout));
+                if(sam.moveout!="" && sam.moveout!= null)
+                    cmdGARead.Parameters.AddWithValue("@moveout", DateTime.Parse(sam.moveout));
+                else
+                    cmdGARead.Parameters.AddWithValue("@moveout", DBNull.Value);
                 cmdGARead.Parameters.AddWithValue("@occu", int.Parse(sam.occuID));
                 cmdGARead.Parameters.AddWithValue("@notes", sam.notes);
                 cmdGARead.Parameters.AddWithValue("@hos", sam.hospital);

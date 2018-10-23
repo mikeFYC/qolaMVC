@@ -27,13 +27,13 @@
 
     function option_button_click_hos(click_id) {
 
-        var inputs = $("input[type=date]").each(function () {
+        var inputs = $('#pills-tabContent input[type="date"]').each(function () {
             $(this).val("");
         });
-        var selects = $("select").each(function () {
+        var selects = $("#pills-tabContent select").each(function () {
             $(this).val("");
         });
-        var textareas = $("textarea").each(function () {
+        var textareas = $("#pills-tabContent textarea").each(function () {
             $(this).val("");
         });
         var nodes = document.getElementsByClassName("nav-link active");
@@ -82,13 +82,13 @@
     }
 
     function option_button_click(click_id) {
-        var inputs = $("input[type=date]").each(function () {
+        var inputs = $('#pills-tabContent input[type="date"]').each(function () {
             $(this).val("");
         });
-        var selects = $("select").each(function () {
+        var selects = $("#pills-tabContent select").each(function () {
             $(this).val("");
         });
-        var textareas = $("textarea").each(function () {
+        var textareas = $("#pills-tabContent textarea").each(function () {
             $(this).val("");
         });
         var nodes = document.getElementsByClassName("nav-link active");
@@ -110,15 +110,15 @@
     }
 
     function Back_in_edit_button_click() {
-        //var inputs = $("input[type=date]").each(function () {
-        //    $(this).val("");
-        //});
-        //var selects = $("select").each(function () {
-        //    $(this).val("");
-        //});
-        //var textareas = $("textarea").each(function () {
-        //    $(this).val("");
-        //});
+        var inputs = $("#pills-tabContent input[type=date]").each(function () {
+            $(this).val("");
+        });
+        var selects = $("#pills-tabContent select").each(function () {
+            $(this).val("");
+        });
+        var textareas = $("#pills-tabContent textarea").each(function () {
+            $(this).val("");
+        });
         if (document.getElementById('editform').style.display == 'block') {
             document.getElementById('editform').style.display = 'none';
             document.getElementById('suitehandlerform').style.display = 'block';
@@ -207,7 +207,8 @@
                                                         <tr id=@rd.SHid>
                                                             <td><input type="checkbox" class="checkboxlist" id=@rd.SHid /></td>
                                                             <td>
-                                                                <select class="edit_home form-control" value=@rd.homeid onchange="edit_selection_onchange_empty_suite(this)">
+                                                                <select class="edit_home form-control" onchange="edit_selection_onchange_empty_suite(this)">
+                                                                    <option value=@rd.homeid selected >@rd.homename</option>
                                                                     <option value="15">Auburn Heights Retirement Residence</option>
                                                                     <option value="5"> Laurel Heights Retirement Residence </option>
                                                                     <option value="26">Lewis Estates</option>
@@ -238,19 +239,20 @@
                                                                     <option value="21">475 Boulevard De La Gappe</option>
                                                                     <option value="22">485 Boulevard De La Gappe</option>
                                                                     <option value="23">495 Boulevard De La Gappe</option>
-                                                                    <option value="19\">Chateau Symmes Retirement Residence</option>
+                                                                    <option value="19">Chateau Symmes Retirement Residence</option>
                                                                 </select>
                                                             </td>
                                                             <td>
                                                                 <select name=@rd.SHid class="available_Suite_EDIT form-control" onfocus="suitenumber4(this)" value="">
                                                                     <option value="0">Suite No</option>
-                                                                    <option selected>@rd.suiteno</option>
+                                                                    <option selected value=@rd.suiteno>@rd.suiteno</option>
                                                                 </select>
                                                             </td>
                                                             <td><input type="date" class="edit_movein form-control" value=@rd.movein onchange="edit_selection_onchange_empty_suite(this)" /></td>
                                                             <td><input type="date" class="form-control" value=@rd.moveout /></td>
                                                             <td>
-                                                                <select class="edit_occu form-control" value=@rd.occuID onchange="edit_selection_onchange_empty_suite(this)">
+                                                                <select class="edit_occu form-control"  onchange="edit_selection_onchange_empty_suite(this)">
+                                                                    <option value=@rd.occuID selected>@rd.occu</option>
                                                                     <option value="1">Single</option>
                                                                     <option value="2">Double</option>
                                                                     <option value="3">Triple</option>
@@ -300,7 +302,7 @@
                                         UNDO
                                     </button>
                                     <button class="btn btn-danger" id="Edit_Button" onclick="Edit_Button_Save()">
-                                        SAVE
+                                        UPDATE
                                     </button>
                                     <br>
                                 </div>

@@ -115,7 +115,6 @@ namespace QolaMVC.Controllers
 
             //TempData["Table2"] = update_Suite_Handler_Table.get_innerHTML_temperary(resident.ID);
 
-            TempData["TableEDIT"] = update_Suite_Handler_Table.get_innerHTML_temperary2(resident.ID);
             ViewBag.TableEDIT = update_Suite_Handler_Table.get_innerHTML_temperary2(resident.ID);
 
             TempData["hospital"] = "NO";
