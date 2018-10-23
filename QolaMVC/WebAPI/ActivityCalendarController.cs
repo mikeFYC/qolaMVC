@@ -16,7 +16,10 @@ namespace QolaMVC.WebAPI
         public Collection<ActivityEventModel> Get()
         {
             Collection<ActivityEventModel> l_ActivityEvents = new Collection<ActivityEventModel>();
+            //l_ActivityEvents = HomeDAL.GetActivityEvents();
             l_ActivityEvents = HomeDAL.GetActivityEvents();
+
+
             return l_ActivityEvents;
         }
 

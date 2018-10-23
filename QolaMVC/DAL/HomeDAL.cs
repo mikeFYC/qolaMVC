@@ -923,7 +923,7 @@ namespace QolaMVC.DAL
                         l_Event.ProgramEndDate = Convert.ToDateTime(homeTypeRow["EndDate"]);
                         l_Event.ProgramStartTime = Convert.ToString(homeTypeRow["StartTime"]);
                         l_Event.ProgramEndTime = Convert.ToString(homeTypeRow["EndTime"]);
-                        l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
+                        //l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
 
                         l_Events.Add(l_Event);
                     }
@@ -1194,7 +1194,7 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@EndDate", p_Model.ProgramEndDate);
                 l_Cmd.Parameters.AddWithValue("@StartTime", p_Model.ProgramStartTime);
                 l_Cmd.Parameters.AddWithValue("@EndTime", p_Model.ProgramEndTime);
-                l_Cmd.Parameters.AddWithValue("@homeid", homeid);
+                l_Cmd.Parameters.AddWithValue("@homtId", homeid);
                 l_Cmd.ExecuteNonQuery();
             }
             catch (Exception ex)
@@ -1260,7 +1260,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static void AddNewActivityEvent_C2(ActivityEventModel p_Model)
+        public static void AddNewActivityEvent_C2(ActivityEventModel p_Model, int homeid)
         {
             string exception = string.Empty;
             SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
@@ -1275,6 +1275,7 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@EndDate", p_Model.ProgramEndDate);
                 l_Cmd.Parameters.AddWithValue("@StartTime", p_Model.ProgramStartTime);
                 l_Cmd.Parameters.AddWithValue("@EndTime", p_Model.ProgramEndTime);
+                l_Cmd.Parameters.AddWithValue("@homtId", homeid);
                 l_Cmd.ExecuteNonQuery();
             }
             catch (Exception ex)
@@ -1341,7 +1342,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static void AddNewActivityEvent_C3(ActivityEventModel p_Model)
+        public static void AddNewActivityEvent_C3(ActivityEventModel p_Model, int homeid)
         {
             string exception = string.Empty;
             SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
@@ -1356,6 +1357,7 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@EndDate", p_Model.ProgramEndDate);
                 l_Cmd.Parameters.AddWithValue("@StartTime", p_Model.ProgramStartTime);
                 l_Cmd.Parameters.AddWithValue("@EndTime", p_Model.ProgramEndTime);
+                l_Cmd.Parameters.AddWithValue("@homtId", homeid);
                 l_Cmd.ExecuteNonQuery();
             }
             catch (Exception ex)
@@ -1422,7 +1424,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static void AddNewActivityEvent_C4(ActivityEventModel p_Model)
+        public static void AddNewActivityEvent_C4(ActivityEventModel p_Model, int homeid)
         {
             string exception = string.Empty;
             SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
@@ -1437,6 +1439,7 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@EndDate", p_Model.ProgramEndDate);
                 l_Cmd.Parameters.AddWithValue("@StartTime", p_Model.ProgramStartTime);
                 l_Cmd.Parameters.AddWithValue("@EndTime", p_Model.ProgramEndTime);
+                l_Cmd.Parameters.AddWithValue("@homtId", homeid);
                 l_Cmd.ExecuteNonQuery();
             }
             catch (Exception ex)

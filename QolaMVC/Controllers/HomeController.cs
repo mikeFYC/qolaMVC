@@ -270,7 +270,7 @@ namespace QolaMVC.Controllers
                 l_Model.ProgramEndDate = startDate;
                 l_Model.ProgramEndTime = startDate.ToLongTimeString();
 
-                HomeDAL.AddNewActivityEvent(l_Model);
+                HomeDAL.AddNewActivityEvent(l_Model,home.Id);
             }
             else if(frequency == 2) //every week day
             {
@@ -303,7 +303,7 @@ namespace QolaMVC.Controllers
                     l_Model.ProgramEndDate = dt;
                     l_Model.ProgramEndTime = dt.ToLongTimeString();
 
-                    HomeDAL.AddNewActivityEvent(l_Model);
+                    HomeDAL.AddNewActivityEvent(l_Model,home.Id);
                 }
             }
             
@@ -476,6 +476,9 @@ namespace QolaMVC.Controllers
         [HttpPost]
         public JsonResult getEvents_C2(FormCollection form)
         {
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("Home");
+            ViewBag.Home = home;
             ActivityEventModel l_Model = new ActivityEventModel();
             l_Model.ActivityId = Convert.ToInt32(Request.Form["activity"]);
             l_Model.ProgramName = Convert.ToString(Request.Form["title"]);
@@ -492,7 +495,7 @@ namespace QolaMVC.Controllers
                 l_Model.ProgramEndDate = startDate;
                 l_Model.ProgramEndTime = startDate.ToLongTimeString();
 
-                HomeDAL.AddNewActivityEvent_C2(l_Model);
+                HomeDAL.AddNewActivityEvent_C2(l_Model,home.Id);
             }
             else if (frequency == 2) //every week day
             {
@@ -509,7 +512,7 @@ namespace QolaMVC.Controllers
                     l_Model.ProgramEndDate = l_D;
                     l_Model.ProgramEndTime = l_D.ToLongTimeString();
 
-                    HomeDAL.AddNewActivityEvent_C2(l_Model);
+                    HomeDAL.AddNewActivityEvent_C2(l_Model, home.Id);
                 }
             }
             else if (frequency == 3) //date between
@@ -525,7 +528,7 @@ namespace QolaMVC.Controllers
                     l_Model.ProgramEndDate = dt;
                     l_Model.ProgramEndTime = dt.ToLongTimeString();
 
-                    HomeDAL.AddNewActivityEvent_C2(l_Model);
+                    HomeDAL.AddNewActivityEvent_C2(l_Model, home.Id);
                 }
             }
 
@@ -599,6 +602,9 @@ namespace QolaMVC.Controllers
         [HttpPost]
         public JsonResult getEvents_C3(FormCollection form)
         {
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("Home");
+            ViewBag.Home = home;
             ActivityEventModel l_Model = new ActivityEventModel();
             l_Model.ActivityId = Convert.ToInt32(Request.Form["activity"]);
             l_Model.ProgramName = Convert.ToString(Request.Form["title"]);
@@ -615,7 +621,7 @@ namespace QolaMVC.Controllers
                 l_Model.ProgramEndDate = startDate;
                 l_Model.ProgramEndTime = startDate.ToLongTimeString();
 
-                HomeDAL.AddNewActivityEvent_C3(l_Model);
+                HomeDAL.AddNewActivityEvent_C3(l_Model,home.Id);
             }
             else if (frequency == 2) //every week day
             {
@@ -632,7 +638,7 @@ namespace QolaMVC.Controllers
                     l_Model.ProgramEndDate = l_D;
                     l_Model.ProgramEndTime = l_D.ToLongTimeString();
 
-                    HomeDAL.AddNewActivityEvent_C3(l_Model);
+                    HomeDAL.AddNewActivityEvent_C3(l_Model, home.Id);
                 }
             }
             else if (frequency == 3) //date between
@@ -648,7 +654,7 @@ namespace QolaMVC.Controllers
                     l_Model.ProgramEndDate = dt;
                     l_Model.ProgramEndTime = dt.ToLongTimeString();
 
-                    HomeDAL.AddNewActivityEvent_C3(l_Model);
+                    HomeDAL.AddNewActivityEvent_C3(l_Model, home.Id);
                 }
             }
 
@@ -722,6 +728,9 @@ namespace QolaMVC.Controllers
         [HttpPost]
         public JsonResult getEvents_C4(FormCollection form)
         {
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("Home");
+            ViewBag.Home = home;
             ActivityEventModel l_Model = new ActivityEventModel();
             l_Model.ActivityId = Convert.ToInt32(Request.Form["activity"]);
             l_Model.ProgramName = Convert.ToString(Request.Form["title"]);
@@ -738,7 +747,7 @@ namespace QolaMVC.Controllers
                 l_Model.ProgramEndDate = startDate;
                 l_Model.ProgramEndTime = startDate.ToLongTimeString();
 
-                HomeDAL.AddNewActivityEvent_C4(l_Model);
+                HomeDAL.AddNewActivityEvent_C4(l_Model,home.Id);
             }
             else if (frequency == 2) //every week day
             {
@@ -755,7 +764,7 @@ namespace QolaMVC.Controllers
                     l_Model.ProgramEndDate = l_D;
                     l_Model.ProgramEndTime = l_D.ToLongTimeString();
 
-                    HomeDAL.AddNewActivityEvent_C4(l_Model);
+                    HomeDAL.AddNewActivityEvent_C4(l_Model, home.Id);
                 }
             }
             else if (frequency == 3) //date between
@@ -771,7 +780,7 @@ namespace QolaMVC.Controllers
                     l_Model.ProgramEndDate = dt;
                     l_Model.ProgramEndTime = dt.ToLongTimeString();
 
-                    HomeDAL.AddNewActivityEvent_C4(l_Model);
+                    HomeDAL.AddNewActivityEvent_C4(l_Model, home.Id);
                 }
             }
 

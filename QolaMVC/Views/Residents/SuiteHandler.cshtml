@@ -22,6 +22,15 @@
     .nav-link.active {
         background-color: #015093 !important;
     }
+    input[type=checkbox] {
+        /* Double-sized Checkboxes */
+        -ms-transform: scale(2); /* IE */
+        -moz-transform: scale(2); /* FF */
+        -webkit-transform: scale(2); /* Safari and Chrome */
+        -o-transform: scale(2); /* Opera */
+        padding: 10px;
+        margin-top:15px;
+    }
 </style>
 <script>
 
@@ -252,7 +261,7 @@
                                                             <td><input type="date" class="form-control" value=@rd.moveout /></td>
                                                             <td>
                                                                 <select class="edit_occu form-control"  onchange="edit_selection_onchange_empty_suite(this)">
-                                                                    <option value=@rd.occuID selected>@rd.occu</option>
+                                                                    <option value=@rd.occuID selected>@rd.occupancy</option>
                                                                     <option value="1">Single</option>
                                                                     <option value="2">Double</option>
                                                                     <option value="3">Triple</option>
@@ -986,5 +995,17 @@
                 document.getElementById("Hospitalization").className = "nav-link active";
                 document.getElementById("pills-Hospitalization").className = "tab-pane fade show active";
             }
+
+            $('.checkboxlist').change(function () {
+                if (this.checked == true) {
+                    var che = $('.checkboxlist');
+                    for (var b = 0; b < che.length; b++) {
+                        if (che[b]!=this) {
+                            che[b].checked = false;
+                        }
+                    }
+                }
+            });
+
         </script>
 
