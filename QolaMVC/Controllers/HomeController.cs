@@ -2204,14 +2204,14 @@ namespace QolaMVC.Controllers
             {
                 TempData["datechoose"] = DateTime.Now.ToString("MMMM dd, yyyy");
                 LIST_VIEW_RESIDENT = HomeDAL.get_list_resident(home.Id, DateTime.Today);
-                string[] genderinfo = HomeDAL.get_gender_info(home.Id, DateTime.Today);
+                string[] genderinfo = HomeDAL.get_TR_info(home.Id, DateTime.Today);
                 TempData["number_attendance_array"] = genderinfo;
             }
             else
             {
                 TempData["datechoose"] = datesel;
                 LIST_VIEW_RESIDENT = HomeDAL.get_list_resident(home.Id, DateTime.Parse(datesel));
-                string[] genderinfo = HomeDAL.get_gender_info(home.Id, DateTime.Parse(datesel));
+                string[] genderinfo = HomeDAL.get_TR_info(home.Id, DateTime.Parse(datesel));
                 TempData["number_attendance_array"] = genderinfo;
             }
             TempData["LIST_VIEW_RESIDENT"] = LIST_VIEW_RESIDENT;
@@ -2396,9 +2396,9 @@ namespace QolaMVC.Controllers
                 ViewBag.Events = l_Events;
 
 
-                Collection<ActivityEventModel_Calendar2> l_Events_2 = HomeDAL.GetActivityEvents_Calendar2_mike(DateTime.Today.Date, home.Id);
-                Collection<ActivityEventModel_Calendar3> l_Events_3 = HomeDAL.GetActivityEvents_Calendar3_mike(DateTime.Today.Date, home.Id);
-                Collection<ActivityEventModel_Calendar4> l_Events_4 = HomeDAL.GetActivityEvents_Calendar4_mike(DateTime.Today.Date, home.Id);
+                Collection<ActivityEventModel_Calendar2> l_Events_2 = HomeDAL.GetActivityEvents_Calendar2_mike(DateTime.Parse(datesel).Date, home.Id);
+                Collection<ActivityEventModel_Calendar3> l_Events_3 = HomeDAL.GetActivityEvents_Calendar3_mike(DateTime.Parse(datesel).Date, home.Id);
+                Collection<ActivityEventModel_Calendar4> l_Events_4 = HomeDAL.GetActivityEvents_Calendar4_mike(DateTime.Parse(datesel).Date, home.Id);
                 ViewBag.Events2 = l_Events_2;
                 ViewBag.Events3 = l_Events_3;
                 ViewBag.Events4 = l_Events_4;
@@ -2413,11 +2413,10 @@ namespace QolaMVC.Controllers
 
         }
 
-
-
         [HttpPost]
-        public int saveButton_Activity(string arr, int whichAEID, string datesel,string eventName, string englishname)
+        public int saveButton_Activity(string arr, int whichAEID, string datesel,string eventName, string englishname, string tab)
         {
+            int returnint=0;
             string arr_2 = arr.Replace("Active", "option1").Replace("Passive", "option2").Replace("Declined", "option3").Replace("Away", "option4");
             arr = arr.Replace("option1", "Active").Replace("option2", "Passive").Replace("option3", "Declined").Replace("option4", "Away");
             var home = (HomeModel)TempData["Home"];
@@ -2443,36 +2442,85 @@ namespace QolaMVC.Controllers
                         Save_summary[Save_sum_array[a + 1]] += "," + Save_sum_array[a];
                 }
             }
-            Activity_Attendance_functions.save_Button(home.Id, whichAEID, DateTime.Parse(datesel).Date, Save_summary, user.ID, DateTime.Now);
-
-            return 1;
+            if (tab == "a" || tab == "")
+            {
+                returnint = Activity_Attendance_functions.save_Button(home.Id, whichAEID, DateTime.Parse(datesel).Date, Save_summary, user.ID, DateTime.Now);
+            }
+            else if (tab == "b")
+            {
+                returnint = Activity_Attendance_functions.save_Button2(home.Id, whichAEID, DateTime.Parse(datesel).Date, Save_summary, user.ID, DateTime.Now);
+            }
+            else if (tab == "c")
+            {
+                returnint = Activity_Attendance_functions.save_Button3(home.Id, whichAEID, DateTime.Parse(datesel).Date, Save_summary, user.ID, DateTime.Now);
+            }
+            else if (tab == "d")
+            {
+                returnint = Activity_Attendance_functions.save_Button4(home.Id, whichAEID, DateTime.Parse(datesel).Date, Save_summary, user.ID, DateTime.Now);
+            }
+            else
+            {
+                returnint = 0;
+            }
+            return returnint;
         }
 
         [HttpGet]
-        public StringBuilder Getting_Activity(int whichAEID, string datesel)
+        public StringBuilder Getting_Activity(int whichAEID, string datesel, string tab)
         {
+            StringBuilder returnstring= new StringBuilder();
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
             TempData.Keep("User");
             TempData.Keep("Home");
-
-            StringBuilder returnstring = Activity_Attendance_functions.getting_LIST(whichAEID, DateTime.Parse(datesel), home.Id);
+            if (tab == "a" || tab=="")
+            {
+                returnstring = Activity_Attendance_functions.getting_LIST(whichAEID, DateTime.Parse(datesel), home.Id);
+            }
+            else if (tab == "b")
+            {
+                returnstring = Activity_Attendance_functions.getting_LIST2(whichAEID, DateTime.Parse(datesel), home.Id);
+            }
+            else if(tab == "c")
+            {
+                returnstring = Activity_Attendance_functions.getting_LIST3(whichAEID, DateTime.Parse(datesel), home.Id);
+            }
+            else if(tab == "d")
+            {
+                returnstring = Activity_Attendance_functions.getting_LIST4(whichAEID, DateTime.Parse(datesel), home.Id);
+            }
             return returnstring;
 
         }
 
         [HttpGet]
-        public ActionResult View_List_Activity(int whichAEID, string datesel)
+        public ActionResult View_List_Activity(int whichAEID, string datesel, string tab)
         {
+            StringBuilder returnstring = new StringBuilder();
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
             TempData.Keep("User");
             TempData.Keep("Home");
-            StringBuilder returnstring = Activity_Attendance_functions.getting_LIST(whichAEID, DateTime.Parse(datesel), home.Id);
+
+            if (tab == "a" || tab == "")
+            {
+                returnstring = Activity_Attendance_functions.getting_LIST(whichAEID, DateTime.Parse(datesel), home.Id);
+            }
+            else if (tab == "b")
+            {
+                returnstring = Activity_Attendance_functions.getting_LIST2(whichAEID, DateTime.Parse(datesel), home.Id);
+            }
+            else if (tab == "c")
+            {
+                returnstring = Activity_Attendance_functions.getting_LIST3(whichAEID, DateTime.Parse(datesel), home.Id);
+            }
+            else if (tab == "d")
+            {
+                returnstring = Activity_Attendance_functions.getting_LIST4(whichAEID, DateTime.Parse(datesel), home.Id);
+            }
+
             string[] viewlist = returnstring.ToString().Split(';');
-
             List<dynamic> l_Json = new List<dynamic>();
-
             for (var c = 0; c < viewlist.Length; c++)
             {
                 var cplus = c + 1;
@@ -2516,6 +2564,7 @@ namespace QolaMVC.Controllers
 
             return returnint;
         }
+
         #endregion
 
         #region To Do List
@@ -2854,7 +2903,6 @@ namespace QolaMVC.Controllers
             return View();
         }
         #endregion
-
 
         #region Resident_Archive
 

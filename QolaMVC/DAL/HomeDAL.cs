@@ -1694,7 +1694,7 @@ namespace QolaMVC.DAL
 
         }
 
-        public static string[] get_gender_info(int homeid, DateTime todaydate)
+        public static string[] get_TR_info(int homeid, DateTime todaydate)
         {
             using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
             using (var cmdGARead = new SqlCommand("Get_Taken_Refused_Information", conn)

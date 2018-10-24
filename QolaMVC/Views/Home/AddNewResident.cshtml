@@ -12,7 +12,21 @@
         width: 900px !important;
         max-width: 1000px !important;
     }
+
+
 </style>
+
+<script>
+    function restore_picture() {
+        var a = $('#blah');
+        a[0].src = "/Content/pages/img/photo_dummysize.PNG";
+        var b = $('.upload__link');
+        var c = b[0].getElementsByTagName("input");
+        c[0].click(function () { })
+    }
+</script>
+
+
 <!-- START PAGE-CONTAINER -->
 <div class="page-container">
 
@@ -82,7 +96,7 @@
                                                 <div class="form-group row">
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Birth Date</label>
                                                     <div class="col-md-7">
-                                                        @Html.TextBoxFor(m => m.BirthDate, new { @class = "form-control", placeholder = "Date of Birth" })
+                                                        @Html.TextBoxFor(m => m.BirthDate, new { @class = "form-control", id = "DOB", @type = "date" })
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -111,12 +125,15 @@
                                                         </select>
                                                     </div>
                                                 </div>
+
+
                                                 <div class="form-group row">
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Phone Number</label>
                                                     <div class="col-md-7">
                                                         <div class="row">
                                                             <div class="col-md-7">
-                                                                @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", placeholder = "Phone Number" })
+
+                                                                @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", placeholder = "Phone Number", id = "phonenumber" })
                                                             </div>
                                                             <div class="col-md-5">
                                                                 <div class="form-check">
@@ -242,13 +259,17 @@
                                             <div class="col-md-6">
                                                 <div class="form-group row">
                                                     <div class="col-md-12">
-                                                        <div id="preview" class="upload__preview">
-                                                                <img id="blah" src="#" alt="your image" />
-                                                            </div>
-                                                            <div class="upload__progress">Uploading…</div>
-                                                            <div class="upload__link">
-                                                                <input type='file' onchange="readURL(this);" />
-                                                            </div>
+
+                                                        <div class="upload__progress">Uploading…</div>
+
+                                                        <div class="upload__link">
+                                                            <input type='file' onchange="readURL(this);" style="margin-top:-10px;" />
+                                                        </div>
+                                                        <div id="preview" class="upload__preview" style="margin-left:20vw;width:150px;height:130px;">
+                                                            <img id="blah" src="~/Content/pages/img/photo_dummysize.PNG" style="border-width:1px;border-style:Solid;width:70%;height:100%;display:inline-block;" />
+                                                            <img id="QOLAContent_Image1" src="~/Content/pages/img/button_error.png" style="border-width:1px;border-style:Solid;display:inline-block;margin-top:70%;" onclick="restore_picture()">
+                                                        </div>
+
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -1332,16 +1353,15 @@
                     reader.onload = function (e) {
                         $('#blah')
                             .attr('src', e.target.result)
-                            .width(150)
-                            .height(200);
+                        //.width(150)
+                        //.height(200);
                     };
 
                     reader.readAsDataURL(input.files[0]);
                 }
             }
 
-            function getAvailableSuites()
-            {
+            function getAvailableSuites() {
                 var occupancy = $("#Occupancy").val();
                 var moveInDate = $("#MoveInDate").val();
                 var availableSuites = $("#AvailableSuites").val();
@@ -1365,4 +1385,16 @@
             }
         </script>
 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.1.62/jquery.inputmask.bundle.js"></script>
 
+        <script>
+            $(window).load(function () {
+                var phones = [{ "mask": "(###) ###-####" }, { "mask": "(###) ###-####" }];
+                $('#phonenumber').inputmask({
+                    mask: phones,
+                    greedy: false,
+                    definitions: { '#': { validator: "[0-9]", cardinality: 1 } }
+                });
+            });
+        </script>
