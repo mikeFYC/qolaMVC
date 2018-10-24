@@ -221,17 +221,35 @@ namespace QolaMVC.Controllers
             ViewBag.User = user;
             ViewBag.Home = home;
 
-            return View();
+            ResidentModel AA = new ResidentModel();
+            AA.MaritalStatusList=new[]{
+                new SelectListItem { Value = "", Text = "-- Select --" },
+                new SelectListItem { Value = "1", Text = "Married" },
+                new SelectListItem { Value = "2", Text = "Widowed" },
+                new SelectListItem { Value = "3", Text = "Single" },
+                new SelectListItem { Value = "3", Text = "Divorced" },
+            };
+
+
+            return View(AA);
         }
 
         [HttpPost]
-        public ActionResult CreateNewResident(ResidentModel p_Model)
+        public ActionResult CreateNewResident(ResidentModel p_Model,string NEXT)
         {
             var user = (UserModel)TempData["User"];
             var home = (HomeModel)TempData["Home"];
             TempData.Keep("User");
             TempData.Keep("Home");
             ViewBag.User = user;
+
+            if(NEXT== "Save/Next")
+            {
+                TempData["level"] = "second";
+                return View("AddNewResident", p_Model);
+            }
+
+
 
             p_Model.ModifiedBy = user;
             p_Model.ModifiedOn = DateTime.Now;

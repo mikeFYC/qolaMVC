@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 using static QolaMVC.Constants.EnumerationTypes;
 
 namespace QolaMVC.Models
@@ -222,11 +224,13 @@ namespace QolaMVC.Models
             set { _occupancy = value; }
         }
 
+
         public string FirstName
         {
             get { return _firstName; }
             set { _firstName = value; }
         }
+
 
         public string LastName
         {
@@ -1088,6 +1092,9 @@ namespace QolaMVC.Models
         }
         #endregion
 
+
+
+        public IEnumerable<SelectListItem> MaritalStatusList{ get; set; }
 
     }
 }
