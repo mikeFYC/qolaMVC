@@ -226,7 +226,7 @@ namespace QolaMVC.Controllers
                 new SelectListItem { Value = "", Text = "-- Select --" },
                 new SelectListItem { Value = "1", Text = "Married" },
                 new SelectListItem { Value = "2", Text = "Widowed" },
-                new SelectListItem { Value = "3", Text = "Single" },
+                new SelectListItem { Value = "2", Text = "Single" },
                 new SelectListItem { Value = "3", Text = "Divorced" },
             };
 
@@ -243,7 +243,15 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             ViewBag.User = user;
 
-            if(NEXT== "Save/Next")
+
+            p_Model.MaritalStatusList = new[]{
+                new SelectListItem { Value = "", Text = "-- Select --" },
+                new SelectListItem { Value = "1", Text = "Married" },
+                new SelectListItem { Value = "2", Text = "Widowed" },
+                new SelectListItem { Value = "2", Text = "Single" },
+                new SelectListItem { Value = "3", Text = "Divorced" },
+            };
+            if (NEXT== "Save/Next")
             {
                 TempData["level"] = "second";
                 return View("AddNewResident", p_Model);
