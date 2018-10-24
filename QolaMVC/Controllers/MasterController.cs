@@ -377,6 +377,18 @@ namespace QolaMVC.Controllers
             var l_Status = Convert.ToBoolean(Request.Form["Status"]);
             p_Model.Status = l_Status ? Constants.EnumerationTypes.AvailabilityStatus.A : Constants.EnumerationTypes.AvailabilityStatus.I;
             p_Model.Password = Helpers.QolaCulture.Sha1Hash(p_Model.Password);
+
+            if (p_Model.Address == null) p_Model.Address = "";
+            if (p_Model.City == null) p_Model.City = "";
+            if (p_Model.PostalCode == null) p_Model.PostalCode = "";
+            if (p_Model.Province == null) p_Model.Province = "";
+            if (p_Model.Country == null) p_Model.Country = "";
+            if (p_Model.Email == null) p_Model.Email = "";
+            if (p_Model.WorkPhone == null) p_Model.WorkPhone = "";
+            if (p_Model.HomePhone == null) p_Model.HomePhone = "";
+            if (p_Model.Mobile == null) p_Model.Mobile = "";
+            p_Model.ModifiedBy = user.ID;
+
             UserDAL.AddNewUsers(p_Model);
             return RedirectToAction("Users");
         }
