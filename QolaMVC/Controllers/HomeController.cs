@@ -17,6 +17,7 @@ using static QolaMVC.Helpers.ProgressNotesHelper;
 using System.Data;
 using System.Collections;
 using System.Text;
+using System.Reflection;
 
 namespace QolaMVC.Controllers
 {
@@ -246,23 +247,159 @@ namespace QolaMVC.Controllers
             ViewBag.User = user;
 
 
-            ResidentsDAL.SetUp_ResidentModel_ListItems(p_Model);
+            if (p_Model.ReligiousAffiliation == "Other")
+            {
+                p_Model.ReligiousAffiliation = p_Model.ReligiousAffiliationOther;
+            }
+            if(p_Model.Vetaran== "Other" || p_Model.Vetaran == "None")
+            {
+                p_Model.Vetaran = p_Model.VeteranOther;
+            }
+            if (p_Model.EducationLevel == "Other")
+            {
+                p_Model.EducationLevel = p_Model.EducationLevelOther;
+            }
+            if (p_Model.callHospital_replacement == true)
+            {
+                p_Model.CallHospital =Convert.ToChar("Y");
+            }
+            if (p_Model.FirstName == null) p_Model.FirstName = "";
+            if (p_Model.LastName == null) p_Model.LastName = "";
+            if (p_Model.ShortName == null) p_Model.ShortName = "";
+            if (p_Model.Phone == null) p_Model.Phone = "";
+            if (p_Model.BirthPlace == null) p_Model.BirthPlace = "";
+            if (p_Model.ReligiousAffiliation == null) p_Model.ReligiousAffiliation = "";
+            if (p_Model.ReligiousAffiliationOther == null) p_Model.ReligiousAffiliationOther = "";
+            if (p_Model.AbilityToRead == null) p_Model.AbilityToRead = "";
+            if (p_Model.RelationshipWithFamily == null) p_Model.RelationshipWithFamily = "";
+            if (p_Model.PastOccupationJobs == null) p_Model.PastOccupationJobs = "";
+            if (p_Model.Vetaran == null) p_Model.Vetaran = "";
+            if (p_Model.VeteranOther == null) p_Model.VeteranOther = "";
+            if (p_Model.SuiteNo == null) p_Model.SuiteNo = "";
+            if (p_Model.MBhealthNumber == null) p_Model.MBhealthNumber = "";
+            if (p_Model.SignificatOther == null) p_Model.SignificatOther = "";
+            if (p_Model.EducationLevel == null) p_Model.EducationLevel = "";
+            if (p_Model.EducationLevelOther == null) p_Model.EducationLevelOther = "";
+            if (p_Model.AbilityToWrite == null) p_Model.AbilityToWrite = "";
+            if (p_Model.OtherLanguage == null) p_Model.OtherLanguage = "";
+            if (p_Model.RegisteredVoter == null) p_Model.RegisteredVoter = "";
+            if (p_Model.CulturalPreferences == null) p_Model.CulturalPreferences = "";
+            if (p_Model.Favourite_song == null) p_Model.Favourite_song = "";
+            if (p_Model.Number_of_children == null) p_Model.Number_of_children = "";
+            if (p_Model.Favourite_dessert == null) p_Model.Favourite_dessert = "";
+            if (p_Model.Favourite_flower == null) p_Model.Favourite_flower = "";
+            if (p_Model.Go_to_bed_at == null) p_Model.Go_to_bed_at = "";
+            if (p_Model.Favourite_past_time == null) p_Model.Favourite_past_time = "";
+            if (p_Model.Favourite_movie == null) p_Model.Favourite_movie = "";
+            if (p_Model.Number_of_grandchildren == null) p_Model.Number_of_grandchildren = "";
+            if (p_Model.Favourite_drink == null) p_Model.Favourite_drink = "";
+            if (p_Model.Favourite_pets == null) p_Model.Favourite_pets = "";
+            if (p_Model.Wakeup_time == null) p_Model.Wakeup_time = "";
+            if (p_Model.Contract1 == null) p_Model.Contract1 = "";
+            if (p_Model.Contract2 == null) p_Model.Contract2 = "";
+            if (p_Model.Contract3 == null) p_Model.Contract3 = "";
+            if (p_Model.Address1 == null) p_Model.Address1 = "";
+            if (p_Model.Address2 == null) p_Model.Address2 = "";
+            if (p_Model.Address3 == null) p_Model.Address3 = "";
+            if (p_Model.Relationship1 == null) p_Model.Relationship1 = "";
+            if (p_Model.Relationship2 == null) p_Model.Relationship2 = "";
+            if (p_Model.Relationship3 == null) p_Model.Relationship3 = "";
+            if (p_Model.HomePhone1 == null) p_Model.HomePhone1 = "";
+            if (p_Model.HomePhone2 == null) p_Model.HomePhone2 = "";
+            if (p_Model.HomePhone3 == null) p_Model.HomePhone3 = "";
+            if (p_Model.BusinessPhone1 == null) p_Model.BusinessPhone1 = "";
+            if (p_Model.BusinessPhone2 == null) p_Model.BusinessPhone2 = "";
+            if (p_Model.BusinessPhone3 == null) p_Model.BusinessPhone3 = "";
+            if (p_Model.CellPhone1 == null) p_Model.CellPhone1 = "";
+            if (p_Model.CellPhone2 == null) p_Model.CellPhone2 = "";
+            if (p_Model.CellPhone3 == null) p_Model.CellPhone3 = "";
+            if (p_Model.Email1 == null) p_Model.Email1 = "";
+            if (p_Model.Email2 == null) p_Model.Email2 = "";
+            if (p_Model.Email3 == null) p_Model.Email3 = "";
+            if (p_Model.POACare == null) p_Model.POACare = "";
+            if (p_Model.CareAddress == null) p_Model.CareAddress = "";
+            if (p_Model.CareEmail == null) p_Model.CareEmail = "";
+            if (p_Model.CareHomePhone == null) p_Model.CareHomePhone = "";
+            if (p_Model.CareWorkPhone == null) p_Model.CareWorkPhone = "";
+            if (p_Model.CareCellPhone == null) p_Model.CareCellPhone = "";
+            if (p_Model.POAFinance == null) p_Model.POAFinance = "";
+            if (p_Model.FinanceAddress == null) p_Model.FinanceAddress = "";
+            if (p_Model.FinanceEmail == null) p_Model.FinanceEmail = "";
+            if (p_Model.FinanceHomePhone == null) p_Model.FinanceHomePhone = "";
+            if (p_Model.FinanceWorkPhone == null) p_Model.FinanceWorkPhone = "";
+            if (p_Model.FinanceCellPhone == null) p_Model.FinanceCellPhone = "";
+            if (p_Model.InsuranceCompany == null) p_Model.InsuranceCompany = "";
+            if (p_Model.ContractNumber == null) p_Model.ContractNumber = "";
+            if (p_Model.GroupNumber == null) p_Model.GroupNumber = "";
+            if (p_Model.HealthHistory == null) p_Model.HealthHistory = "";
+            if (p_Model.CurrentDiagnoses == null) p_Model.CurrentDiagnoses = "";
+            if (p_Model.FuneralArguments == null) p_Model.FuneralArguments = "";
+            if (p_Model.Physician == null) p_Model.Physician = "";
+            if (p_Model.PhysicianPhone == null) p_Model.PhysicianPhone = "";
+            if (p_Model.PhysicianFaxNo == null) p_Model.PhysicianFaxNo = "";
+            if (p_Model.PharmacyName == null) p_Model.PharmacyName = "";
+            if (p_Model.PharmacePhoneNo == null) p_Model.PharmacePhoneNo = "";
+            if (p_Model.PharmaceFaxNumber == null) p_Model.PharmaceFaxNumber = "";
+            if (p_Model.ReligionContact == null) p_Model.ReligionContact = "";
+            if (p_Model.ReligionOffice == null) p_Model.ReligionOffice = "";
+            if (p_Model.ReligionHomePhone == null) p_Model.ReligionHomePhone = "";
+            if (p_Model.Alergies == null) p_Model.Alergies = "";
 
+            if (p_Model.PersonalInvolvement == null) p_Model.PersonalInvolvement = "";
+
+            //POACareStatus                     char
+            //POACareType2Status                char
+            //POACareType3Status                char
+            //POAFinanceStatus                  char
+            //POAFinanceType2Status             char
+            //POAFinanceType3Status             char
+            //HomePhoneType1                    Int16
+            //HomePhoneType2                    Int16
+            //HomePhoneType3                    Int16
+            //BusinessPhoneType1                Int16
+            //BusinessPhoneType2                Int16
+            //BusinessPhoneType3                Int16
+            //CellPhoneType1                    Int16
+            //CellPhoneType2                    Int16
+            //CellPhoneType3                    Int16
+            //POACareHomePhoneType              Int16
+            //POACareBusinessPhoneType          Int16
+            //POACareCellPhoneType              Int16
+            //POAFinanceHomePhoneType           Int16
+            //POAFinanceBusinessPhoneType       Int16
+            //POAFinanceCellPhoneType           Int16
+
+
+            int returnint2 = 0;
+            //for (int i = 0; i < Request.Files.Count; i++)
+            //{
+            //    HttpPostedFileBase file = Request.Files[i];
+            //    int fileSize = file.ContentLength;
+            //    string fileName = file.FileName;
+            //    string mimeType = file.ContentType;
+            //    System.IO.Stream fileContent = file.InputStream;
+            //    //file.SaveAs(Server.MapPath("~/Content/assets/Images/Home/" + home.Id + "/Resident_Image/") + resident.ID.ToString() + ".png");
+            //    //returnint2 = HomeDAL.Save_Image(home.Id, resident.ID);
+
+            //}
+
+            p_Model.SuiteIds= SuiteDAL.GetSuiteID_By_SuiteNo_and_Homeid(p_Model.SuiteNo, home.Id);
+
+            ResidentsDAL.SetUp_ResidentModel_ListItems(p_Model);
             if (Sub == "Submit/Next")
             {
                 TempData["level"] = "LAST";
                 TempData.Keep("level");
             }
 
-
-
-
             p_Model.ModifiedBy = user;
             p_Model.ModifiedOn = DateTime.Now;
             p_Model.Home = home;
             int[] RR = new int[2];
-            //RR=ResidentsDAL.AddNewResidentGeneralInfo(p_Model);
-            //ResidentsDAL.update_checklist(user.ID,RR[0]);
+            RR=ResidentsDAL.AddNewResidentGeneralInfo(p_Model);
+            ResidentsDAL.update_checklist(user.ID,RR[0]);
+
+
             return RedirectToAction("AddNewResident");
         }
 

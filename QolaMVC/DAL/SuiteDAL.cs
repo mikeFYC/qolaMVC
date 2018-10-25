@@ -115,6 +115,29 @@ namespace QolaMVC.DAL
             }
         }
 
+        public static string GetSuiteID_By_SuiteNo_and_Homeid(string SuiteNo,int homeid)
+        {
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                l_Conn.Open();
+                string suiteid="";
+                SqlCommand l_Cmd = new SqlCommand("select fd_id from tbl_Suite where fd_home_id="+ homeid + " and fd_suite_no='"+ SuiteNo+"'", l_Conn);
+                SqlDataReader l_Reader = l_Cmd.ExecuteReader();
+
+                while (l_Reader.Read())
+                {
+                    suiteid = l_Reader["fd_id"].ToString();
+                }
+
+                return suiteid;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(".GetSuite_By_Id\n" + ex.Message);
+            }
+        }
+
         public static List<NEW_SuiteModel> GetSuite_By_Column(string column, string value)
         {
             SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);

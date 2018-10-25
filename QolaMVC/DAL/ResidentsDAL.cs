@@ -73,10 +73,20 @@ namespace QolaMVC.DAL
                 {
                     l_Cmd.Parameters.AddWithValue("@shortName", Convert.ToString(addResidentGeneralInfo.ShortName));
                 }
-                l_Cmd.Parameters.AddWithValue("@DNRStatus", addResidentGeneralInfo.DNRStatus);
-                l_Cmd.Parameters.AddWithValue("@FullCodeStatus", addResidentGeneralInfo.FullCodeStatus);
+                if (addResidentGeneralInfo.DNRStatus.ToString() != "\0")
+                {
+                    l_Cmd.Parameters.AddWithValue("@DNRStatus", addResidentGeneralInfo.DNRStatus);
+                }
+                if (addResidentGeneralInfo.FullCodeStatus.ToString() != "\0")
+                {
+                    l_Cmd.Parameters.AddWithValue("@FullCodeStatus", addResidentGeneralInfo.FullCodeStatus);
+                }
                 DateTime aniversary = addResidentGeneralInfo.AnniversaryDate;
-                if (aniversary.Day != 1 && aniversary.Month != 1 && aniversary.Year != 1)
+                if (aniversary.Day == 1 && aniversary.Month == 1 && aniversary.Year == 1)
+                {
+                    l_Cmd.Parameters.AddWithValue("@aniversaryDate", DBNull.Value);
+                }
+                else
                 {
                     l_Cmd.Parameters.AddWithValue("@aniversaryDate", addResidentGeneralInfo.AnniversaryDate);
                 }
@@ -2647,7 +2657,25 @@ namespace QolaMVC.DAL
             AAA.SuiteNoList = new[]{
                 new SelectListItem { Value = "", Text = "-- Select --" },
             };
+            AAA.ReligiousAffiliationList = new[]{
+                new SelectListItem { Value = "", Text = "-- Select --" },
+                new SelectListItem { Value = "Prefer not to say", Text = "Prefer not to say" },
+                new SelectListItem { Value = "Christian", Text = "Christian" },
+                new SelectListItem { Value = "Jewish", Text = "Jewish" },
+                new SelectListItem { Value = "Islamic", Text = "Islamic" },
+                new SelectListItem { Value = "Hindu", Text = "Hindu" },
+                new SelectListItem { Value = "Buddhist", Text = "Buddhist" },
+                new SelectListItem { Value = "Other", Text = "Other" },
+            };
+            AAA.AbilityToReadList = new[]{
+                new SelectListItem { Value = "", Text = "-- Select --" },
+                new SelectListItem { Value = "Very Well", Text = "Very Well" },
+                new SelectListItem { Value = "Good", Text = "Good" },
+                new SelectListItem { Value = "Poor", Text = "Poor" },
+                new SelectListItem { Value = "With Cueing", Text = "With Cueing" },
+                new SelectListItem { Value = "No", Text = "No" },
 
+            };
         }
 
     }

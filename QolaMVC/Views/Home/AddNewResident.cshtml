@@ -40,6 +40,7 @@
 
     function check_1st() {
         var Gendar = $('input[name="Gendar"]');
+        var no_phone = $('#gridCheck1');
 
         if ($('#FirstName').val() == "") {
             tempAlert("FirstName Needed", 2000);
@@ -57,7 +58,7 @@
             tempAlert("Gendar Needed", 2000);
             return false;
         }
-        else if ($('#phonenumber').val() == "") {
+        else if ($('#phonenumber').val() == "" && no_phone[0].checked==false) {
             tempAlert("Phone Needed", 2000);
             return false;
         }
@@ -252,7 +253,7 @@
                                 </li>
                                 <li class="nav-item">
                                     @*<a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Emergency Contact</a>*@
-                                    <a class="nav-link" id="pills-profile-tab" href="#" >Emergency Contact</a>
+                                    <a class="nav-link" id="pills-profile-tab" href="#">Emergency Contact</a>
                                 </li>
                                 <li class="nav-item">
                                     @*<a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Medical Info</a>*@
@@ -260,13 +261,16 @@
                                 </li>
                                 <li class="nav-item">
                                     @*<a class="nav-link" id="pills-other-tab" data-toggle="pill" href="#pills-other" role="tab" aria-controls="pills-other" aria-selected="false">Other</a>*@
-                                    <a class="nav-link" id="pills-other-tab" href="#" >Other</a>
+                                    <a class="nav-link" id="pills-other-tab" href="#">Other</a>
                                 </li>
                             </ul>
                             <hr>
 
-                            <form action="~/Home/CreateNewResident/" method="post">
+                            <form action="~/Home/CreateNewResident/" method="post" enctype = "multipart/form-data">
+
                                 <div class="tab-content" id="pills-tabContent">
+
+
                                     <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
 
                                         <div class="row">
@@ -300,11 +304,11 @@
                                                         <label class="col-md-5 col-form-label">Gender<span class="required_sign">&nbsp;*</span></label>
                                                         <div class="col-md-7 pads">
                                                             <div class="form-check form-check-inline movesp">
-                                                                @Html.RadioButtonFor(m => m.Gendar, "Male", new { @class = "form-check-input" })
+                                                                @Html.RadioButtonFor(m => m.Gendar, "M", new { @class = "form-check-input" })
                                                                 <label class="form-check-label" for="">Male</label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
-                                                                @Html.RadioButtonFor(m => m.Gendar, "Female", new { @class = "form-check-input" })
+                                                                @Html.RadioButtonFor(m => m.Gendar, "F", new { @class = "form-check-input" })
                                                                 <label class="form-check-label" for="inlineRadio2">Female</label>
                                                             </div>
                                                         </div>
@@ -344,12 +348,12 @@
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Marital Status<span class="required_sign">&nbsp;*</span></label>
                                                     <div class="col-md-7">
                                                         @*<select name="MaritalStatus" class="form-control" required>
-                                        <option value="">-- Select --</option>
-                                        <option value="Married">Married</option>
-                                        <option value="Widowed">Widowed</option>
-                                        <option value="Single">Single</option>
-                                        <option value="Divorced">Divorced</option>
-                                    </select>*@
+                                                            <option value="">-- Select --</option>
+                                                            <option value="Married">Married</option>
+                                                            <option value="Widowed">Widowed</option>
+                                                            <option value="Single">Single</option>
+                                                            <option value="Divorced">Divorced</option>
+                                                        </select>*@
 
                                                         @Html.DropDownListFor(x => x.MaritalStatus, Model.MaritalStatusList, new { @class = "form-control", placeholder = "Place of Birth", name = "MaritalStatus" })
                                                     </div>
@@ -357,7 +361,7 @@
                                                 <div class="form-group row">
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Religious affiliation</label>
                                                     <div class="col-md-7">
-                                                        <select name="ReligiousAffiliation" class="form-control">
+                                                        @*<select name="ReligiousAffiliation" class="form-control">
                                                             <option>Select</option>
                                                             <option>Prefer not to say</option>
                                                             <option>Christian</option>
@@ -366,26 +370,29 @@
                                                             <option>Hindu</option>
                                                             <option>Buddhist</option>
                                                             <option>Other</option>
-                                                        </select>
+                                                        </select>*@
+                                                        @Html.DropDownListFor(x => x.ReligiousAffiliation, Model.ReligiousAffiliationList, new { @class = "form-control", name = "ReligiousAffiliation" })
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Religious affiliation-Other</label>
                                                     <div class="col-md-7">
-                                                        <input type="text" name="ReligiousAffiliationOther" class="form-control" id="staticEmail">
+                                                        @*<input type="text" name="ReligiousAffiliationOther" class="form-control" id="staticEmail">*@
+                                                        @Html.TextBoxFor(m => m.ReligiousAffiliationOther, new { @class = "form-control", placeholder = "Religious Affiliation Other", name = "ReligiousAffiliationOther", id = "ReligiousAffiliationOther" })
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Ability to read</label>
                                                     <div class="col-md-7">
-                                                        <select name="AbilityToRead" class="form-control">
+                                                        @*<select name="AbilityToRead" class="form-control">
                                                             <option>Select</option>
                                                             <option>Very Well</option>
                                                             <option>Good</option>
                                                             <option>Poor</option>
                                                             <option>With Cueing</option>
                                                             <option>No</option>
-                                                        </select>
+                                                        </select>*@
+                                                        @Html.DropDownListFor(x => x.AbilityToRead, Model.AbilityToReadList, new { @class = "form-control", name = "AbilityToRead" })
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -438,7 +445,8 @@
 
 
                                                                     Other<br>
-                                                                    <input type="text" name="VeteranOther" class="form-control" id="staticEmail">
+                                                                    @*<input type="text" name="VeteranOther" class="form-control" id="staticEmail">*@
+                                                                    @Html.TextBoxFor(m => m.VeteranOther, new { @class = "form-control", placeholder = "Veteran Other", name = "VeteranOther", id = "VeteranOther" })
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -452,7 +460,7 @@
                                                         <div class="upload__progress">Uploading…</div>
 
                                                         <div class="upload__link">
-                                                            <input type='file' onchange="readURL(this);" style="margin-top:-10px;" />
+                                                            <input type='file' name="file" id="file" onchange="readURL(this);" style="margin-top:-10px;" />
                                                         </div>
                                                         <div id="preview" class="upload__preview" style="margin-left:20vw;width:150px;height:130px;">
                                                             <img id="blah" src="/Content/pages/img/photo_dummysize.PNG" style="border-width:1px;border-style:Solid;width:70%;height:100%;display:inline-block;" />
@@ -465,18 +473,18 @@
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Move In Date<span class="required_sign">&nbsp;*</span></label>
                                                     <div class="col-md-7">
                                                         @*<input type="date" name="MoveInDate" class="form-control" id="MoveInDate" onchange="getAvailableSuites();" required>(MM/DD/YYYY)*@
-                                                        @Html.TextBoxFor(m => m.BirthDate, new { @class = "form-control", id = "MoveInDate", @type = "date", name = "MoveInDate", onchange = "getAvailableSuites();" })
+                                                        @Html.TextBoxFor(m => m.MoveInDate, new { @class = "form-control", id = "MoveInDate", @type = "date", name = "MoveInDate", onchange = "getAvailableSuites();" })
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Occupancy<span class="required_sign">&nbsp;*</span></label>
                                                     <div class="col-md-7">
                                                         @*<select id="Occupancy" name="Occupancy" class="form-control" onchange="getAvailableSuites();" required>
-                                        <option value="">-- Select --</option>
-                                        <option value="1">Single</option>
-                                        <option value="2">Double</option>
-                                        <option value="3">Triple</option>
-                                    </select>*@
+                                                            <option value="">-- Select --</option>
+                                                            <option value="1">Single</option>
+                                                            <option value="2">Double</option>
+                                                            <option value="3">Triple</option>
+                                                        </select>*@
                                                         @Html.DropDownListFor(x => x.Occupancy, Model.OccupancyList, new { @class = "form-control", id = "Occupancy", name = "Occupancy", onchange = "getAvailableSuites();" })
                                                     </div>
                                                 </div>
@@ -484,9 +492,9 @@
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Suite #<span class="required_sign">&nbsp;*</span></label>
                                                     <div class="col-md-7">
                                                         @*<select class="form-control" name="SuiteIds" id="AvailableSuites" required>
-                                        <option value="">-- Suite No --</option>
-                                    </select>(Please select move-in-date and occupancy first)*@
-                                                        @Html.DropDownListFor(x => x.SuiteNo, Model.SuiteNoList, new { @class = "form-control", id = "AvailableSuites", name = "SuiteIds"})
+                                                            <option value="">-- Suite No --</option>
+                                                        </select>(Please select move-in-date and occupancy first)*@
+                                                        @Html.DropDownListFor(x => x.SuiteNo, Model.SuiteNoList, new { @class = "form-control", id = "AvailableSuites", name = "SuiteIds" })
                                                     </div>
                                                 </div>
                                                 <div class="form-group row pad">
@@ -512,27 +520,27 @@
                                                 <div class="form-group row">
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Significant Other</label>
                                                     <div class="col-md-7">
-                                                        <input type="text" name="SignificatOther" class="form-control" id="staticEmail">
+                                                        <input type="text" name="SignificatOther" class="form-control" id="SignificatOther">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Anniversary Date</label>
                                                     <div class="col-md-7">
-                                                        <input type="text" name="AdmittedFrom" class="form-control" id="staticEmail">(MM/DD/YYYY)
+                                                        <input type="date" name="AnniversaryDate" class="form-control" id="AnniversaryDate">(MM/DD/YYYY)
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Education level</label>
                                                     <div class="col-md-7">
                                                         <select class="form-control" name="EducationLevel">
-                                                            <option>Select</option>
-                                                            <option>Prefer not to say</option>
-                                                            <option>High School Diploma</option>
-                                                            <option>Some School Diploma</option>
-                                                            <option>Vocational/Technical Training</option>
-                                                            <option>Some College/ University</option>
-                                                            <option>College/ University Graduate</option>
-                                                            <option>Other</option>
+                                                            <option value="">-- Select --</option>
+                                                            <option value="Prefer not to say">Prefer not to say</option>
+                                                            <option value="High School Diploma">High School Diploma</option>
+                                                            <option value="Some School Diploma">Some School Diploma</option>
+                                                            <option value="Vocational/Technical Training">Vocational/Technical Training</option>
+                                                            <option value="Some College/ University">Some College/ University</option>
+                                                            <option value="College/ University Graduate">College/ University Graduate</option>
+                                                            <option value="Other">Other</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -546,12 +554,12 @@
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Ability to write</label>
                                                     <div class="col-md-7">
                                                         <select class="form-control" name="AbilityToWrite">
-                                                            <option>Select</option>
-                                                            <option>Very Well</option>
-                                                            <option>Good</option>
-                                                            <option>Poor</option>
-                                                            <option>With Cueing</option>
-                                                            <option>No</option>
+                                                            <option value="">-- Select --</option>
+                                                            <option value="Very Well">Very Well</option>
+                                                            <option value="Good">Good</option>
+                                                            <option value="Poor">Poor</option>
+                                                            <option value="With Cueing">With Cueing</option>
+                                                            <option value="No">No</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -565,9 +573,9 @@
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Hand dominance</label>
                                                     <div class="col-md-7">
                                                         <select name="HandDominance" class="form-control">
-                                                            <option>Select</option>
-                                                            <option>Left</option>
-                                                            <option>Right</option>
+                                                            <option value="">-- Select --</option>
+                                                            <option value="0">Left</option>
+                                                            <option value="1">Right</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -577,26 +585,26 @@
                                                         <div class="col-md-7">
                                                             <div class="row pad">
                                                                 <div class="col-md-6">
-                                                                    <div class="form-check form-check-inline movesp" ">
-                                                                        <input class="form-check-input" type="radio" name="RegisteredVoter" id="inlineRadio1" value="Municipal Election">
+                                                                    <div class="form-check form-check-inline movesp">
+                                                                        <input class="form-check-input" type="radio" name="RegisteredVoter" id="inlineRadio1" value="Municipal Election" >
                                                                         <label class="form-check-label" for="">Municipal Election</label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <div class="form-check form-check-inline movesp">
-                                                                        <input class="form-check-input" type="radio" name="RegisteredVoter" id="inlineRadio1" value="Federal Election">
+                                                                        <input class="form-check-input" type="radio" name="RegisteredVoter" id="inlineRadio1" value="Federal Election" >
                                                                         <label class="form-check-label" for="inlineRadio2">Federal Election</label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <div class="form-check form-check-inline movesp">
-                                                                        <input class="form-check-input" type="radio" name="RegisteredVoter" id="inlineRadio1" value="Provincial Election">
+                                                                        <input class="form-check-input" type="radio" name="RegisteredVoter" id="inlineRadio1" value="Provincial Election" >
                                                                         <label class="form-check-label" for="inlineRadio2">Provincial Election</label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <div class="form-check form-check-inline movesp">
-                                                                        <input class="form-check-input" type="checkbox" name="RegisteredVoter" id="inlineRadio2" value="None of the above">
+                                                                        <input class="form-check-input" type="radio" name="RegisteredVoter" id="inlineRadio1" value="None of the above">
                                                                         <label class="form-check-label" for="inlineRadio2">None of the above</label>
                                                                     </div>
                                                                 </div>
@@ -623,6 +631,7 @@
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Number of Children</label>
                                                     <div class="col-md-7">
                                                         <select name="Number_of_children" class="form-control">
+                                                            <option></option>
                                                             <option>1</option>
                                                             <option>2</option>
                                                             <option>3</option>
@@ -667,6 +676,7 @@
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Number of Grandchildren</label>
                                                     <div class="col-md-7">
                                                         <select name="Number_of_grandchildren" class="form-control">
+                                                            <option></option>
                                                             <option>1</option>
                                                             <option>2</option>
                                                             <option>3</option>
@@ -734,10 +744,10 @@
                                                         @Html.TextBoxFor(m => m.Contract1, new { @class = "form-control", name = "Contract1", id = "Contract1" })
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input name="contract2" type="text" class="form-control" id="staticEmail">
+                                                        <input name="Contract2" type="text" class="form-control" id="staticEmail">
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input name="contract3" type="text" class="form-control" id="staticEmail">
+                                                        <input name="Contract3" type="text" class="form-control" id="staticEmail">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -747,10 +757,10 @@
                                                         @Html.TextBoxFor(m => m.Address1, new { @class = "form-control", name = "Address1", id = "Address1" })
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input name="address2" type="text" class="form-control" id="staticEmail">
+                                                        <input name="Address2" type="text" class="form-control" id="staticEmail">
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input name="address3" type="text" class="form-control" id="staticEmail">
+                                                        <input name="Address3" type="text" class="form-control" id="staticEmail">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -760,10 +770,10 @@
                                                         @Html.TextBoxFor(m => m.Relationship1, new { @class = "form-control", name = "Relationship1", id = "Relationship1" })
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input name="relationship2" type="text" class="form-control" id="staticEmail">
+                                                        <input name="Relationship2" type="text" class="form-control" id="staticEmail">
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input name="relationship3" type="text" class="form-control" id="staticEmail">
+                                                        <input name="Relationship3" type="text" class="form-control" id="staticEmail">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -775,12 +785,12 @@
                                                                 @Html.TextBoxFor(m => m.HomePhone1, new { @class = "form-control", name = "HomePhone1", id = "HomePhone1" })
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <select class="form-control">
-                                                                    <option>Select</option>
-                                                                    <option>Home</option>
-                                                                    <option>Work</option>
-                                                                    <option>Mobile</option>
-                                                                    <option>Other</option>
+                                                                <select class="form-control" name="HomePhoneType1">
+                                                                    <option value="">Select</option>
+                                                                    <option value="1">Home</option>
+                                                                    <option value="2">Work</option>
+                                                                    <option value="3">Mobile</option>
+                                                                    <option value="4">Other</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -789,15 +799,15 @@
                                                     <div class="col-md-3">
                                                         <div class="row">
                                                             <div class="col-md-8">
-                                                                <input type="text" class="form-control" id="staticEmail">
+                                                                <input type="text" class="form-control" id="staticEmail" name="BusinessPhone1">
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <select class="form-control">
-                                                                    <option>Select</option>
-                                                                    <option>Home</option>
-                                                                    <option>Work</option>
-                                                                    <option>Mobile</option>
-                                                                    <option>Other</option>
+                                                                <select class="form-control" name="BusinessPhoneType1">
+                                                                    <option value="">Select</option>
+                                                                    <option value="1">Home</option>
+                                                                    <option value="2">Work</option>
+                                                                    <option value="3">Mobile</option>
+                                                                    <option value="4">Other</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -805,15 +815,15 @@
                                                     <div class="col-md-3">
                                                         <div class="row">
                                                             <div class="col-md-8">
-                                                                <input type="text" class="form-control" id="staticEmail">
+                                                                <input type="text" class="form-control" id="staticEmail" name="CellPhone1">
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <select class="form-control">
-                                                                    <option>Select</option>
-                                                                    <option>Home</option>
-                                                                    <option>Work</option>
-                                                                    <option>Mobile</option>
-                                                                    <option>Other</option>
+                                                                <select class="form-control" name="CellPhoneType1">
+                                                                    <option value="">Select</option>
+                                                                    <option value="1">Home</option>
+                                                                    <option value="2">Work</option>
+                                                                    <option value="3">Mobile</option>
+                                                                    <option value="4">Other</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -824,10 +834,10 @@
                                                     <div class="col-md-3">
                                                         <div class="row">
                                                             <div class="col-md-8">
-                                                                <input type="text" class="form-control" id="staticEmail">
+                                                                <input type="text" class="form-control" id="staticEmail" name="HomePhone2">
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <select class="form-control">
+                                                                <select class="form-control" name="HomePhoneType2">
                                                                     <option>Select</option>
                                                                     <option>Home</option>
                                                                     <option>Work</option>
@@ -841,10 +851,10 @@
                                                     <div class="col-md-3">
                                                         <div class="row">
                                                             <div class="col-md-8">
-                                                                <input type="text" class="form-control" id="staticEmail">
+                                                                <input type="text" class="form-control" id="staticEmail" name="BusinessPhone2">
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <select class="form-control">
+                                                                <select class="form-control" name="BusinessPhoneType2">
                                                                     <option>Select</option>
                                                                     <option>Home</option>
                                                                     <option>Work</option>
@@ -857,10 +867,10 @@
                                                     <div class="col-md-3">
                                                         <div class="row">
                                                             <div class="col-md-8">
-                                                                <input type="text" class="form-control" id="staticEmail">
+                                                                <input type="text" class="form-control" id="staticEmail" name="CellPhone2">
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <select class="form-control">
+                                                                <select class="form-control" name="CellPhoneType2">
                                                                     <option>Select</option>
                                                                     <option>Home</option>
                                                                     <option>Work</option>
@@ -876,10 +886,10 @@
                                                     <div class="col-md-3">
                                                         <div class="row">
                                                             <div class="col-md-8">
-                                                                <input type="text" class="form-control" id="staticEmail">
+                                                                <input type="text" class="form-control" id="staticEmail" name="HomePhone3">
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <select class="form-control">
+                                                                <select class="form-control" name="HomePhoneType3">
                                                                     <option>Select</option>
                                                                     <option>Home</option>
                                                                     <option>Work</option>
@@ -893,10 +903,10 @@
                                                     <div class="col-md-3">
                                                         <div class="row">
                                                             <div class="col-md-8">
-                                                                <input type="text" class="form-control" id="staticEmail">
+                                                                <input type="text" class="form-control" id="staticEmail" name="BusinessPhone3">
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <select class="form-control">
+                                                                <select class="form-control" name="BusinessPhoneType3">
                                                                     <option>Select</option>
                                                                     <option>Home</option>
                                                                     <option>Work</option>
@@ -909,10 +919,10 @@
                                                     <div class="col-md-3">
                                                         <div class="row">
                                                             <div class="col-md-8">
-                                                                <input type="text" class="form-control" id="staticEmail">
+                                                                <input type="text" class="form-control" id="staticEmail" name="CellPhone3">
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <select class="form-control">
+                                                                <select class="form-control" name="CellPhoneType3">
                                                                     <option>Select</option>
                                                                     <option>Home</option>
                                                                     <option>Work</option>
@@ -930,10 +940,10 @@
                                                         @Html.TextBoxFor(m => m.Email1, new { @class = "form-control", name = "Email1", id = "Email1" })
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input type="text" class="form-control" id="staticEmail">
+                                                        <input type="text" class="form-control" id="staticEmail" name="Email2">
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input type="text" class="form-control" id="staticEmail">
+                                                        <input type="text" class="form-control" id="staticEmail" name="Email3">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -952,21 +962,21 @@
                                                     </div>
                                                     <div class="col-md-3">
                                                         <div class="form-check form-check-inline movesp pads">
-                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                            <input class="form-check-input" type="radio" name="POACareType2Status" id="inlineRadio1" value="option1">
                                                             <label class="form-check-label" for="">Yes</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                            <input class="form-check-input" type="radio" name="POACareType2Status" id="inlineRadio2" value="option2">
                                                             <label class="form-check-label" for="inlineRadio2">No</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3">
                                                         <div class="form-check form-check-inline movesp pads">
-                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                            <input class="form-check-input" type="radio" name="POACareType3Status" id="inlineRadio1" value="option1">
                                                             <label class="form-check-label" for="">Yes</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                            <input class="form-check-input" type="radio" name="POACareType3Status" id="inlineRadio2" value="option2">
                                                             <label class="form-check-label" for="inlineRadio2">No</label>
                                                         </div>
                                                     </div>
@@ -987,21 +997,21 @@
                                                     </div>
                                                     <div class="col-md-3">
                                                         <div class="form-check form-check-inline movesp pads">
-                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                            <input class="form-check-input" type="radio" name="POAFinanceType2Status" id="inlineRadio1" value="option1">
                                                             <label class="form-check-label" for="">Yes</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                            <input class="form-check-input" type="radio" name="POAFinanceType2Status" id="inlineRadio2" value="option2">
                                                             <label class="form-check-label" for="inlineRadio2">No</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3">
                                                         <div class="form-check form-check-inline movesp pads">
-                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                            <input class="form-check-input" type="radio" name="POAFinanceType3Status" id="inlineRadio1" value="option1">
                                                             <label class="form-check-label" for="">Yes</label>
                                                         </div>
                                                         <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                            <input class="form-check-input" type="radio" name="POAFinanceType3Status" id="inlineRadio2" value="option2">
                                                             <label class="form-check-label" for="inlineRadio2">No</label>
                                                         </div>
                                                     </div>
@@ -1016,21 +1026,21 @@
                                                             <label for="staticEmail" class="col-md-5  col-form-label">Name</label>
                                                             <div class="col-md-1"></div>
                                                             <div class="col-md-6">
-                                                                <input type="text" class="form-control" id="staticEmail">
+                                                                <input type="text" class="form-control" id="staticEmail" name="POACare">
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
                                                             <label for="staticEmail" class="col-md-5 col-form-label">Address</label>
                                                             <div class="col-md-1"></div>
                                                             <div class="col-md-6">
-                                                                <input type="text" class="form-control" id="staticEmail">
+                                                                <input type="text" class="form-control" id="staticEmail" name="CareAddress">
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
                                                             <label for="staticEmail" class="col-md-5 col-form-label">Email Address</label>
                                                             <div class="col-md-1"></div>
                                                             <div class="col-md-6">
-                                                                <input type="text" class="form-control" id="staticEmail">
+                                                                <input type="text" class="form-control" id="staticEmail" name="CareEmail">
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
@@ -1047,15 +1057,15 @@
                                                             <div class="col-md-8">
                                                                 <div class="row">
                                                                     <div class="col-md-8">
-                                                                        <input type="text" class="form-control" id="staticEmail">
+                                                                        <input type="text" class="form-control" id="staticEmail" name="CareHomePhone">
                                                                     </div>
                                                                     <div class="col-md-4">
-                                                                        <select class="form-control">
-                                                                            <option>Select</option>
-                                                                            <option>Home</option>
-                                                                            <option>Work</option>
-                                                                            <option>Mobile</option>
-                                                                            <option>Other</option>
+                                                                        <select class="form-control" name="POACareHomePhoneType">
+                                                                            <option value="">Select</option>
+                                                                            <option value="1">Home</option>
+                                                                            <option value="2">Work</option>
+                                                                            <option value="3">Mobile</option>
+                                                                            <option value="4">Other</option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -1067,15 +1077,15 @@
                                                             <div class="col-md-8">
                                                                 <div class="row">
                                                                     <div class="col-md-8">
-                                                                        <input type="text" class="form-control" id="staticEmail">
+                                                                        <input type="text" class="form-control" id="staticEmail" name="CareWorkPhone">
                                                                     </div>
                                                                     <div class="col-md-4">
-                                                                        <select class="form-control">
-                                                                            <option>Select</option>
-                                                                            <option>Home</option>
-                                                                            <option>Work</option>
-                                                                            <option>Mobile</option>
-                                                                            <option>Other</option>
+                                                                        <select class="form-control" name="POACareBusinessPhoneType">
+                                                                            <option value="">Select</option>
+                                                                            <option value="1">Home</option>
+                                                                            <option value="2">Work</option>
+                                                                            <option value="3">Mobile</option>
+                                                                            <option value="4">Other</option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -1087,15 +1097,15 @@
                                                             <div class="col-md-8">
                                                                 <div class="row">
                                                                     <div class="col-md-8">
-                                                                        <input type="text" class="form-control" id="staticEmail">
+                                                                        <input type="text" class="form-control" id="staticEmail" name="CareCellPhone">
                                                                     </div>
                                                                     <div class="col-md-4">
-                                                                        <select class="form-control">
-                                                                            <option>Select</option>
-                                                                            <option>Home</option>
-                                                                            <option>Work</option>
-                                                                            <option>Mobile</option>
-                                                                            <option>Other</option>
+                                                                        <select class="form-control" name="POACareCellPhoneType">
+                                                                            <option value="">Select</option>
+                                                                            <option value="1">Home</option>
+                                                                            <option value="2">Work</option>
+                                                                            <option value="3">Mobile</option>
+                                                                            <option value="4">Other</option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -1114,21 +1124,21 @@
                                                             <label for="staticEmail" class="col-md-5  col-form-label">Name</label>
                                                             <div class="col-md-1"></div>
                                                             <div class="col-md-6">
-                                                                <input type="text" class="form-control" id="staticEmail">
+                                                                <input type="text" class="form-control" id="staticEmail" name="POAFinance">
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
                                                             <label for="staticEmail" class="col-md-5 col-form-label">Address</label>
                                                             <div class="col-md-1"></div>
                                                             <div class="col-md-6">
-                                                                <input type="text" class="form-control" id="staticEmail">
+                                                                <input type="text" class="form-control" id="staticEmail" name="FinanceAddress">
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
                                                             <label for="staticEmail" class="col-md-5 col-form-label">Email Address</label>
                                                             <div class="col-md-1"></div>
                                                             <div class="col-md-6">
-                                                                <input type="text" class="form-control" id="staticEmail">
+                                                                <input type="text" class="form-control" id="staticEmail" name="FinanceEmail">
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
@@ -1145,15 +1155,15 @@
                                                             <div class="col-md-8">
                                                                 <div class="row">
                                                                     <div class="col-md-8">
-                                                                        <input type="text" class="form-control" id="staticEmail">
+                                                                        <input type="text" class="form-control" id="staticEmail" name="FinanceHomePhone">
                                                                     </div>
                                                                     <div class="col-md-4">
-                                                                        <select class="form-control">
-                                                                            <option>Select</option>
-                                                                            <option>Home</option>
-                                                                            <option>Work</option>
-                                                                            <option>Mobile</option>
-                                                                            <option>Other</option>
+                                                                        <select class="form-control" name="POAFinanceHomePhoneType">
+                                                                            <option value="">Select</option>
+                                                                            <option value="1">Home</option>
+                                                                            <option value="2">Work</option>
+                                                                            <option value="3">Mobile</option>
+                                                                            <option value="4">Other</option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -1165,15 +1175,15 @@
                                                             <div class="col-md-8">
                                                                 <div class="row">
                                                                     <div class="col-md-8">
-                                                                        <input type="text" class="form-control" id="staticEmail">
+                                                                        <input type="text" class="form-control" id="staticEmail" name="FinanceWorkPhone">
                                                                     </div>
                                                                     <div class="col-md-4">
-                                                                        <select class="form-control">
-                                                                            <option>Select</option>
-                                                                            <option>Home</option>
-                                                                            <option>Work</option>
-                                                                            <option>Mobile</option>
-                                                                            <option>Other</option>
+                                                                        <select class="form-control" name="POAFinanceBusinessPhoneType">
+                                                                            <option value="">Select</option>
+                                                                            <option value="1">Home</option>
+                                                                            <option value="2">Work</option>
+                                                                            <option value="3">Mobile</option>
+                                                                            <option value="4">Other</option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -1185,15 +1195,15 @@
                                                             <div class="col-md-8">
                                                                 <div class="row">
                                                                     <div class="col-md-8">
-                                                                        <input type="text" class="form-control" id="staticEmail">
+                                                                        <input type="text" class="form-control" id="staticEmail" name="FinanceCellPhone">
                                                                     </div>
                                                                     <div class="col-md-4">
-                                                                        <select class="form-control">
-                                                                            <option>Select</option>
-                                                                            <option>Home</option>
-                                                                            <option>Work</option>
-                                                                            <option>Mobile</option>
-                                                                            <option>Other</option>
+                                                                        <select class="form-control" name="POAFinanceCellPhoneType">
+                                                                            <option value="">Select</option>
+                                                                            <option value="1">Home</option>
+                                                                            <option value="2">Work</option>
+                                                                            <option value="3">Mobile</option>
+                                                                            <option value="4">Other</option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -1211,7 +1221,7 @@
                                                         <div class="form-group row">
                                                             <label for="staticEmail" class="col-md-3 col-form-label">Insurance Company</label>
                                                             <div class="col-md-9">
-                                                                <input type="text" class="form-control" id="staticEmail">
+                                                                <input type="text" class="form-control" id="staticEmail" name="InsuranceCompany">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1222,7 +1232,7 @@
                                                             <label for="staticEmail" class="col-md-5 col-form-label">Contract Number</label>
                                                             <div class="col-md-1"></div>
                                                             <div class="col-md-6">
-                                                                <input type="text" class="form-control" id="staticEmail">
+                                                                <input type="text" class="form-control" id="staticEmail" name="ContractNumber">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1230,7 +1240,7 @@
                                                         <div class="form-group row">
                                                             <label for="staticEmail" class="col-md-4 col-form-label">Group Number</label>
                                                             <div class="col-md-6">
-                                                                <input type="text" class="form-control" id="staticEmail">
+                                                                <input type="text" class="form-control" id="staticEmail" name="GroupNumber">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1256,7 +1266,7 @@
                                                     <label for="staticEmail" class="col-md-2 col-form-label">Medical History<span class="required_sign">&nbsp;*</span></label>
                                                     <div class="col-md-10">
                                                         @*<textarea class="textarea" rows="4" style="width: 95% !important; margin-left: 47px"></textarea>*@
-                                                        @Html.TextAreaFor(m => m.HealthHistory, new {  name = "HealthHistory", id = "HealthHistory", rows = "4", style = "width: 95% !important; margin-left: 47px" })
+                                                        @Html.TextAreaFor(m => m.HealthHistory, new { name = "HealthHistory", id = "HealthHistory", rows = "4", style = "width: 95% !important; margin-left: 47px" })
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -1269,7 +1279,8 @@
                                                 <div class="form-group row">
                                                     <label for="staticEmail" class="col-md-2 col-form-label">Funeral Arrangements</label>
                                                     <div class="col-md-10">
-                                                        <textarea class="textarea" rows="4" style="width: 95% !important; margin-left: 47px"></textarea>
+                                                        @*<textarea class="textarea" rows="4" style="width: 95% !important; margin-left: 47px"></textarea>*@
+                                                        @Html.TextAreaFor(m => m.FuneralArguments, new { name = "FuneralArguments", id = "FuneralArguments", rows = "4", style = "width: 95% !important; margin-left: 47px" })
                                                     </div>
                                                 </div>
                                             </div>
@@ -1282,7 +1293,7 @@
                                                             <label for="staticEmail" class="col-md-5 col-form-label">Name<span class="required_sign">&nbsp;*</span></label>
                                                             <div class="col-md-7">
                                                                 @*<input type="text" class="form-control" id="staticEmail">*@
-                                                                @Html.TextBoxFor(m => m.Physician, new { @class = "form-control", name= "Physician",id= "Physician" })
+                                                                @Html.TextBoxFor(m => m.Physician, new { @class = "form-control", name = "Physician", id = "Physician" })
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
@@ -1297,7 +1308,7 @@
                                                         <div class="form-group row">
                                                             <label for="staticEmail" class="col-md-5 col-form-label">Fax Number</label>
                                                             <div class="col-md-7">
-                                                                <input type="text" class="form-control" id="staticEmail">
+                                                                <input type="text" class="form-control" id="PhysicianFaxNo" name="PhysicianFaxNo">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1328,7 +1339,7 @@
                                                         <div class="form-group row">
                                                             <label for="staticEmail" class="col-md-5 col-form-label">Fax Number</label>
                                                             <div class="col-md-7">
-                                                                <input type="text" class="form-control" id="staticEmail">
+                                                                <input type="text" class="form-control" id="PharmaceFaxNumber" name="PharmaceFaxNumber">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1343,13 +1354,13 @@
                                                         <div class="form-group row">
                                                             <label for="staticEmail" class="col-md-5 col-form-label">Contact</label>
                                                             <div class="col-md-7">
-                                                                <input type="text" class="form-control" id="staticEmail">
+                                                                <input type="text" class="form-control" id="ReligionContact" name="ReligionContact">
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
                                                             <label for="staticEmail" class="col-md-5 col-form-label">Office</label>
                                                             <div class="col-md-7">
-                                                                <input type="text" class="form-control" id="staticEmail">
+                                                                <input type="text" class="form-control" id="ReligionOffice" name="ReligionOffice">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1357,7 +1368,7 @@
                                                         <div class="form-group row">
                                                             <label for="staticEmail" class="col-md-5 col-form-label">Phone (Home)</label>
                                                             <div class="col-md-7">
-                                                                <input type="text" class="form-control" id="staticEmail">
+                                                                <input type="text" class="form-control" id="ReligionHomePhone" name="ReligionHomePhone">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1372,7 +1383,7 @@
                                                         <div class="form-group row">
                                                             <label for="staticEmail" class="col-md-5 col-form-label">Medical Allergy</label>
                                                             <div class="col-md-6">
-                                                                <input type="text" class="form-control" id="staticEmail">
+                                                                <input type="text" class="form-control" id="Alergies" name="Alergies">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1404,9 +1415,12 @@
                                             <div class="col-md-4"></div>
                                         </div>
                                     </div>
+
+
                                 </div>
+                            
                             </form>
-                        </div>
+                            </div>
                     </div>
                 </div>
                 <input id="hiddeninput" type="hidden" value="@TempData["LEVEL"]" />
