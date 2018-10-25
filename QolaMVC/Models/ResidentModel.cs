@@ -1095,6 +1095,10 @@ namespace QolaMVC.Models
 
 
         public IEnumerable<SelectListItem> MaritalStatusList{ get; set; }
+        public IEnumerable<SelectListItem> OccupancyList { get; set; }
+        public IEnumerable<SelectListItem> SuiteNoList { get; set; }
+
+        public bool callHospital_replacement { get; set; }
 
     }
 }

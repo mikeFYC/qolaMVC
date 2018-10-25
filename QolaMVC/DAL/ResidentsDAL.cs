@@ -10,6 +10,7 @@ using System.Xml;
 using System.Data.SqlTypes;
 using QolaMVC.Models;
 using static QolaMVC.Constants.EnumerationTypes;
+using System.Web.Mvc;
 
 namespace QolaMVC.DAL
 {
@@ -2628,7 +2629,26 @@ namespace QolaMVC.DAL
         }
 
 
+        public static void SetUp_ResidentModel_ListItems(ResidentModel AAA)
+        {
+            AAA.MaritalStatusList = new[]{
+                new SelectListItem { Value = "", Text = "-- Select --" },
+                new SelectListItem { Value = "1", Text = "Married" },
+                new SelectListItem { Value = "2", Text = "Widowed" },
+                new SelectListItem { Value = "3", Text = "Single" },
+                new SelectListItem { Value = "4", Text = "Divorced" },
+            };
+            AAA.OccupancyList = new[]{
+                new SelectListItem { Value = "", Text = "-- Select --" },
+                new SelectListItem { Value = "1", Text = "Single" },
+                new SelectListItem { Value = "2", Text = "Double" },
+                new SelectListItem { Value = "3", Text = "Triple" },
+            };
+            AAA.SuiteNoList = new[]{
+                new SelectListItem { Value = "", Text = "-- Select --" },
+            };
 
+        }
 
     }
 

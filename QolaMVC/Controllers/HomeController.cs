@@ -220,22 +220,24 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             ViewBag.User = user;
             ViewBag.Home = home;
+            if (TempData["level"]==null || TempData["level"].ToString() == "")
+            {
+                TempData["LEVEL"] = "";
+            }
+            else
+            {
+                TempData["LEVEL"] = TempData["level"];
+            }
 
             ResidentModel AA = new ResidentModel();
-            AA.MaritalStatusList=new[]{
-                new SelectListItem { Value = "", Text = "-- Select --" },
-                new SelectListItem { Value = "1", Text = "Married" },
-                new SelectListItem { Value = "2", Text = "Widowed" },
-                new SelectListItem { Value = "2", Text = "Single" },
-                new SelectListItem { Value = "3", Text = "Divorced" },
-            };
+            ResidentsDAL.SetUp_ResidentModel_ListItems(AA);
 
 
             return View(AA);
         }
 
         [HttpPost]
-        public ActionResult CreateNewResident(ResidentModel p_Model,string NEXT)
+        public ActionResult CreateNewResident(ResidentModel p_Model, string Sub)
         {
             var user = (UserModel)TempData["User"];
             var home = (HomeModel)TempData["Home"];
@@ -244,18 +246,14 @@ namespace QolaMVC.Controllers
             ViewBag.User = user;
 
 
-            p_Model.MaritalStatusList = new[]{
-                new SelectListItem { Value = "", Text = "-- Select --" },
-                new SelectListItem { Value = "1", Text = "Married" },
-                new SelectListItem { Value = "2", Text = "Widowed" },
-                new SelectListItem { Value = "2", Text = "Single" },
-                new SelectListItem { Value = "3", Text = "Divorced" },
-            };
-            if (NEXT== "Save/Next")
+            ResidentsDAL.SetUp_ResidentModel_ListItems(p_Model);
+
+            if (Sub == "Submit/Next")
             {
-                TempData["level"] = "second";
-                return View("AddNewResident", p_Model);
+                TempData["level"] = "LAST";
+                TempData.Keep("level");
             }
+
 
 
 
@@ -263,8 +261,8 @@ namespace QolaMVC.Controllers
             p_Model.ModifiedOn = DateTime.Now;
             p_Model.Home = home;
             int[] RR = new int[2];
-            RR=ResidentsDAL.AddNewResidentGeneralInfo(p_Model);
-            ResidentsDAL.update_checklist(user.ID,RR[0]);
+            //RR=ResidentsDAL.AddNewResidentGeneralInfo(p_Model);
+            //ResidentsDAL.update_checklist(user.ID,RR[0]);
             return RedirectToAction("AddNewResident");
         }
 

@@ -15,7 +15,18 @@
     .required_sign{
         color:red;
     }
+    div[class="content"] div[class="card"] div div ul li a[class="nav-link active"] { 
+        background-color: #015093 !important;
 
+    }
+    #CallHospital {
+        /* Double-sized Checkboxes */
+        -ms-transform: scale(2); /* IE */
+        -moz-transform: scale(2); /* FF */
+        -webkit-transform: scale(2); /* Safari and Chrome */
+        -o-transform: scale(2); /* Opera */
+        padding: 10px;
+    }
 </style>
 
 <script>
@@ -27,11 +38,179 @@
         c[0].click(function () { })
     }
 
+    function check_1st() {
+        var Gendar = $('input[name="Gendar"]');
+
+        if ($('#FirstName').val() == "") {
+            tempAlert("FirstName Needed", 2000);
+            return false;
+        }
+        else if ($('#LastName').val() == "") {
+            tempAlert("LastName Needed", 2000);
+            return false;
+        }
+        else if ($('#DOB').val() == "") {
+            tempAlert("DOB Needed", 2000);
+            return false;
+        }
+        else if (Gendar[0].checked == false && Gendar[1].checked == false) {
+            tempAlert("Gendar Needed", 2000);
+            return false;
+        }
+        else if ($('#phonenumber').val() == "") {
+            tempAlert("Phone Needed", 2000);
+            return false;
+        }
+        else if ($('#MaritalStatus').val() == "") {
+            tempAlert("MaritalStatus Needed", 2000);
+            return false;
+        }
+        else if ($('#MoveInDate').val() == "") {
+            tempAlert("MoveInDate Needed", 2000);
+            return false;
+        }
+        else if ($('#Occupancy').val() == "") {
+            tempAlert("Occupancy Needed", 2000);
+            return false;
+        }
+        else if ($('#AvailableSuites').val() == "") {
+            tempAlert("AvailableSuites Needed", 2000);
+            return false;
+        }
+        else if ($('#MBhealthNumber').val() == "") {
+            tempAlert("HealthNumber Needed", 2000);
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    function check_2nd() {
+        var POACareStatus = $('input[name="POACareStatus"]');
+        var POAFinanceStatus = $('input[name="POAFinanceStatus"]');
+
+        var hos = $('#CallHospital');
+        if (hos[0].checked == true) {
+            return true;
+        }
+        else {
+            if ($('#Contract1').val() == "") {
+                tempAlert("Contact1 Name Needed", 2000);
+                return false;
+            }
+            else if ($('#Address1').val() == "") {
+                tempAlert("Contact1 Address Needed", 2000);
+                return false;
+            }
+            else if ($('#Relationship1').val() == "") {
+                tempAlert("Contact1 Relationship Needed", 2000);
+                return false;
+            }
+            else if ($('#HomePhone1').val() == "") {
+                tempAlert("Contact1 Primary Phone Needed", 2000);
+                return false;
+            }
+            else if ($('#Email1').val() == "") {
+                tempAlert("Contact1 Email Needed", 2000);
+                return false;
+            }
+            else if (POACareStatus[0].checked == false && POACareStatus[1].checked == false) {
+                tempAlert("Contact1 POA Care Needed", 2000);
+                return false;
+            }
+            else if (POAFinanceStatus[0].checked == false && POAFinanceStatus[1].checked == false) {
+                tempAlert("Contact1 POA Finance Needed", 2000);
+                return false;
+            }
+            else {
+                return true;
+            }
+
+        }
+    }
+
+    function check_3rd() {
+        if ($('#HealthHistory').val() == "") {
+            tempAlert("Medical History Needed", 2000);
+            return false;
+        }
+        else if ($('#CurrentDiagnoses').val() == "") {
+            tempAlert("Current Diagnoses Needed", 2000);
+            return false;
+        }
+        else if ($('#Physician').val() == "") {
+            tempAlert("Physician Name Needed", 2000);
+            return false;
+        }
+        else if ($('#PhysicianPhone').val() == "") {
+            tempAlert("Physician Phone Needed", 2000);
+            return false;
+        }
+        else if ($('#PharmacyName').val() == "") {
+            tempAlert("Pharmacy Name Needed", 2000);
+            return false;
+        }
+        else if ($('#PharmacePhoneNo').val() == "") {
+            tempAlert("Pharmace Phone Needed", 2000);
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
     function goto_second() {
+        if (check_1st()==true){
+            document.getElementById("pills-home-tab").className = "nav-link";
+            document.getElementById("pills-profile-tab").className = "nav-link active";
+            document.getElementById("pills-home").className = "tab-pane fade";
+            document.getElementById("pills-profile").className = "tab-pane fade show active";
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+    }
+
+    function goto_third() {
+        if (check_1st() == true && check_2nd() == true) {
+            document.getElementById("pills-profile-tab").className = "nav-link";
+            document.getElementById("pills-contact-tab").className = "nav-link active";
+            document.getElementById("pills-profile").className = "tab-pane fade";
+            document.getElementById("pills-contact").className = "tab-pane fade show active";
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+
+
+    }
+
+    function goto_last() {
         document.getElementById("pills-home-tab").className = "nav-link";
-        document.getElementById("pills-profile-tab").className = "nav-link active";
+        document.getElementById("pills-profile-tab").className = "nav-link";
+        document.getElementById("pills-contact-tab").className = "nav-link";
+        document.getElementById("pills-other-tab").className = "nav-link active";
         document.getElementById("pills-home").className = "tab-pane fade";
+        document.getElementById("pills-profile").className = "tab-pane fade";
+        document.getElementById("pills-contact").className = "tab-pane fade";
+        document.getElementById("pills-other").className = "tab-pane fade show active";
+    }
+
+    function back_first() {
+        document.getElementById("pills-profile-tab").className = "nav-link";
+        document.getElementById("pills-home-tab").className = "nav-link active";
+        document.getElementById("pills-profile").className = "tab-pane fade";
+        document.getElementById("pills-home").className = "tab-pane fade show active";
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+
+    function back_second() {
+        document.getElementById("pills-contact-tab").className = "nav-link";
+        document.getElementById("pills-profile-tab").className = "nav-link active";
+        document.getElementById("pills-contact").className = "tab-pane fade";
         document.getElementById("pills-profile").className = "tab-pane fade show active";
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
     }
 
 </script>
@@ -68,33 +247,40 @@
                         <div class="form-tabs mt-4">
                             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">General Info</a>
+                                    @*<a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">General Info</a>*@
+                                    <a class="nav-link active" id="pills-home-tab" href="#">General Info</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Emergency Contact</a>
+                                    @*<a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Emergency Contact</a>*@
+                                    <a class="nav-link" id="pills-profile-tab" href="#" >Emergency Contact</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Medical Info</a>
+                                    @*<a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Medical Info</a>*@
+                                    <a class="nav-link" id="pills-contact-tab" href="#">Medical Info</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-other" role="tab" aria-controls="pills-contact" aria-selected="false">Other</a>
+                                    @*<a class="nav-link" id="pills-other-tab" data-toggle="pill" href="#pills-other" role="tab" aria-controls="pills-other" aria-selected="false">Other</a>*@
+                                    <a class="nav-link" id="pills-other-tab" href="#" >Other</a>
                                 </li>
                             </ul>
-                            <div class="tab-content" id="pills-tabContent">
-                                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                                    <form action="~/Home/CreateNewResident/" method="post">
+                            <hr>
+
+                            <form action="~/Home/CreateNewResident/" method="post">
+                                <div class="tab-content" id="pills-tabContent">
+                                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group row">
                                                     <label for="staticEmail" class="col-md-5 col-form-label">First Name<span class="required_sign">&nbsp;*</span></label>
                                                     <div class="col-md-7">
-                                                        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "First Name", @required = "required" })
+                                                        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "First Name" })
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Last Name<span class="required_sign">&nbsp;*</span></label>
                                                     <div class="col-md-7">
-                                                        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Last Name", @required = "required" })
+                                                        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Last Name" })
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -106,7 +292,7 @@
                                                 <div class="form-group row">
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Birth Date<span class="required_sign">&nbsp;*</span></label>
                                                     <div class="col-md-7">
-                                                        @Html.TextBoxFor(m => m.BirthDate, new { @class = "form-control", id = "DOB", @type = "date", @required = "required" })
+                                                        @Html.TextBoxFor(m => m.BirthDate, new { @class = "form-control", id = "DOB", @type = "date" })
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -114,11 +300,11 @@
                                                         <label class="col-md-5 col-form-label">Gender<span class="required_sign">&nbsp;*</span></label>
                                                         <div class="col-md-7 pads">
                                                             <div class="form-check form-check-inline movesp">
-                                                                @Html.RadioButtonFor(m => m.Gendar, "Male", new { @class = "form-check-input", @required = "required" })
+                                                                @Html.RadioButtonFor(m => m.Gendar, "Male", new { @class = "form-check-input" })
                                                                 <label class="form-check-label" for="">Male</label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
-                                                                @Html.RadioButtonFor(m => m.Gendar, "Female", new { @class = "form-check-input", @required = "required" })
+                                                                @Html.RadioButtonFor(m => m.Gendar, "Female", new { @class = "form-check-input" })
                                                                 <label class="form-check-label" for="inlineRadio2">Female</label>
                                                             </div>
                                                         </div>
@@ -133,7 +319,7 @@
                                                         <div class="row">
                                                             <div class="col-md-7">
 
-                                                                @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", placeholder = "Phone Number", id = "phonenumber", @required = "required" })
+                                                                @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", placeholder = "Phone Number", id = "phonenumber" })
                                                                 @*@Html.TextBoxFor(m => m.Phone, new { @class = "form-control", placeholder = "Phone Number", id = "phonenumber2" })*@
                                                             </div>
                                                             <div class="col-md-5">
@@ -158,14 +344,14 @@
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Marital Status<span class="required_sign">&nbsp;*</span></label>
                                                     <div class="col-md-7">
                                                         @*<select name="MaritalStatus" class="form-control" required>
-                                                            <option value="">-- Select --</option>
-                                                            <option value="Married">Married</option>
-                                                            <option value="Widowed">Widowed</option>
-                                                            <option value="Single">Single</option>
-                                                            <option value="Divorced">Divorced</option>
-                                                        </select>*@
+                                        <option value="">-- Select --</option>
+                                        <option value="Married">Married</option>
+                                        <option value="Widowed">Widowed</option>
+                                        <option value="Single">Single</option>
+                                        <option value="Divorced">Divorced</option>
+                                    </select>*@
 
-                                                        @Html.DropDownListFor(x => x.MaritalStatus, Model.MaritalStatusList, new { @class = "form-control", placeholder = "Place of Birth", name= "MaritalStatus", @required = "required" })
+                                                        @Html.DropDownListFor(x => x.MaritalStatus, Model.MaritalStatusList, new { @class = "form-control", placeholder = "Place of Birth", name = "MaritalStatus" })
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -279,26 +465,28 @@
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Move In Date<span class="required_sign">&nbsp;*</span></label>
                                                     <div class="col-md-7">
                                                         @*<input type="date" name="MoveInDate" class="form-control" id="MoveInDate" onchange="getAvailableSuites();" required>(MM/DD/YYYY)*@
-                                                        @Html.TextBoxFor(m => m.BirthDate, new { @class = "form-control", id = "MoveInDate", @type = "date", @required = "required", name= "MoveInDate", onchange = "getAvailableSuites();" })
+                                                        @Html.TextBoxFor(m => m.BirthDate, new { @class = "form-control", id = "MoveInDate", @type = "date", name = "MoveInDate", onchange = "getAvailableSuites();" })
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Occupancy<span class="required_sign">&nbsp;*</span></label>
                                                     <div class="col-md-7">
-                                                        <select id="Occupancy" name="Occupancy" class="form-control" onchange="getAvailableSuites();" required>
-                                                            <option value="">-- Select --</option>
-                                                            <option value="1">Single</option>
-                                                            <option value="2">Double</option>
-                                                            <option value="3">Triple</option>
-                                                        </select>
+                                                        @*<select id="Occupancy" name="Occupancy" class="form-control" onchange="getAvailableSuites();" required>
+                                        <option value="">-- Select --</option>
+                                        <option value="1">Single</option>
+                                        <option value="2">Double</option>
+                                        <option value="3">Triple</option>
+                                    </select>*@
+                                                        @Html.DropDownListFor(x => x.Occupancy, Model.OccupancyList, new { @class = "form-control", id = "Occupancy", name = "Occupancy", onchange = "getAvailableSuites();" })
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Suite #<span class="required_sign">&nbsp;*</span></label>
                                                     <div class="col-md-7">
-                                                        <select class="form-control" name="SuiteIds" id="AvailableSuites" required>
-                                                            <option value="">-- Suite No --</option>
-                                                        </select>(Please select move-in-date and occupancy first)
+                                                        @*<select class="form-control" name="SuiteIds" id="AvailableSuites" required>
+                                        <option value="">-- Suite No --</option>
+                                    </select>(Please select move-in-date and occupancy first)*@
+                                                        @Html.DropDownListFor(x => x.SuiteNo, Model.SuiteNoList, new { @class = "form-control", id = "AvailableSuites", name = "SuiteIds"})
                                                     </div>
                                                 </div>
                                                 <div class="form-group row pad">
@@ -318,7 +506,7 @@
                                                 <div class="form-group row">
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Health Card #<span class="required_sign">&nbsp;*</span></label>
                                                     <div class="col-md-7">
-                                                        <input type="text" name="MBhealthNumber" class="form-control" id="staticEmail" required>
+                                                        @Html.TextBoxFor(m => m.MBhealthNumber, new { @class = "form-control", name = "MBhealthNumber", id = "MBhealthNumber" })
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -507,689 +695,722 @@
                                                 </div>
                                                 <br><br><br><br>
                                                 <div class="form-group row">
-                                                    <label for="staticEmail" class="col-md-5 col-form-label"></label>
-                                                    <div class="col-md-7">
-                                                        <input type="submit" class="btn btn-success" name="NEXT" value="Save/Next">
+                                                    <label for="staticEmail" class="col-md-8 col-form-label"></label>
+                                                    <div class="col-md-4">
+                                                        <input type="button" class="btn btn-primary btn-lg" name="FIRST" value="Save/Next" onclick="goto_second()">
                                                     </div>
                                                 </div>
                                             </div>
 
                                         </div>
-                                    </form>
-                                </div>
-                                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="col-md-2">
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" name="CallHospital" id="inlineRadio2" value="Call Hospital">
-                                                    <label class="form-check-label" for="inlineRadio2">Call Hospital</label>
+
+                                    </div>
+                                    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="col-md-2" style="margin-left:1vw;">
+                                                    <div class="form-check form-check-inline">
+                                                        @*<input class="form-check-input" type="checkbox" name="CallHospital" id="CallHospital" value="Call Hospital">*@
+                                                        @Html.CheckBoxFor(x => x.callHospital_replacement, new { @class = "form-check-input", name = "CallHospital", id = "CallHospital", value = "Call Hospital" })
+                                                        <label class="form-check-label" for="CallHospital" style="font-weight:bold;font-size:1.4vw;margin-left:1vw;">Call Hospital</label>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-3"></div>
+                                                    <div class="col-md-3">1st Contact<span class="required_sign">&nbsp;*</span></div>
+                                                    <div class="col-md-3">2nd Contact</div>
+                                                    <div class="col-md-3">3rd Contact</div>
+                                                </div>
+                                                <br>
+                                            </div>
+                                            <div class="col-md-12" name="contactInformation">
+                                                <div class="form-group row">
+                                                    <label for="staticEmail" class="col-md-3 col-form-label">Name<span class="required_sign">&nbsp;*</span></label>
+                                                    <div class="col-md-3">
+                                                        @*<input name="contract1" type="text" class="form-control" id="staticEmail">*@
+                                                        @Html.TextBoxFor(m => m.Contract1, new { @class = "form-control", name = "Contract1", id = "Contract1" })
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input name="contract2" type="text" class="form-control" id="staticEmail">
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input name="contract3" type="text" class="form-control" id="staticEmail">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="staticEmail" class="col-md-3 col-form-label">Address<span class="required_sign">&nbsp;*</span></label>
+                                                    <div class="col-md-3">
+                                                        @*<input name="address1" type="text" class="form-control" id="staticEmail">*@
+                                                        @Html.TextBoxFor(m => m.Address1, new { @class = "form-control", name = "Address1", id = "Address1" })
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input name="address2" type="text" class="form-control" id="staticEmail">
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input name="address3" type="text" class="form-control" id="staticEmail">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="staticEmail" class="col-md-3 col-form-label">Relationship<span class="required_sign">&nbsp;*</span></label>
+                                                    <div class="col-md-3">
+                                                        @*<input name="relationship1" type="text" class="form-control" id="staticEmail">*@
+                                                        @Html.TextBoxFor(m => m.Relationship1, new { @class = "form-control", name = "Relationship1", id = "Relationship1" })
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input name="relationship2" type="text" class="form-control" id="staticEmail">
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input name="relationship3" type="text" class="form-control" id="staticEmail">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="staticEmail" class="col-md-3 col-form-label">Primary Contact#<span class="required_sign">&nbsp;*</span></label>
+                                                    <div class="col-md-3">
+                                                        <div class="row">
+                                                            <div class="col-md-8">
+                                                                @*<input name="relationship1" type="text" class="form-control" id="staticEmail">*@
+                                                                @Html.TextBoxFor(m => m.HomePhone1, new { @class = "form-control", name = "HomePhone1", id = "HomePhone1" })
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <select class="form-control">
+                                                                    <option>Select</option>
+                                                                    <option>Home</option>
+                                                                    <option>Work</option>
+                                                                    <option>Mobile</option>
+                                                                    <option>Other</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="row">
+                                                            <div class="col-md-8">
+                                                                <input type="text" class="form-control" id="staticEmail">
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <select class="form-control">
+                                                                    <option>Select</option>
+                                                                    <option>Home</option>
+                                                                    <option>Work</option>
+                                                                    <option>Mobile</option>
+                                                                    <option>Other</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="row">
+                                                            <div class="col-md-8">
+                                                                <input type="text" class="form-control" id="staticEmail">
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <select class="form-control">
+                                                                    <option>Select</option>
+                                                                    <option>Home</option>
+                                                                    <option>Work</option>
+                                                                    <option>Mobile</option>
+                                                                    <option>Other</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="staticEmail" class="col-md-3 col-form-label">Secondary Contact#</label>
+                                                    <div class="col-md-3">
+                                                        <div class="row">
+                                                            <div class="col-md-8">
+                                                                <input type="text" class="form-control" id="staticEmail">
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <select class="form-control">
+                                                                    <option>Select</option>
+                                                                    <option>Home</option>
+                                                                    <option>Work</option>
+                                                                    <option>Mobile</option>
+                                                                    <option>Other</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="row">
+                                                            <div class="col-md-8">
+                                                                <input type="text" class="form-control" id="staticEmail">
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <select class="form-control">
+                                                                    <option>Select</option>
+                                                                    <option>Home</option>
+                                                                    <option>Work</option>
+                                                                    <option>Mobile</option>
+                                                                    <option>Other</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="row">
+                                                            <div class="col-md-8">
+                                                                <input type="text" class="form-control" id="staticEmail">
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <select class="form-control">
+                                                                    <option>Select</option>
+                                                                    <option>Home</option>
+                                                                    <option>Work</option>
+                                                                    <option>Mobile</option>
+                                                                    <option>Other</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="staticEmail" class="col-md-3 col-form-label">Tertiary Contact#</label>
+                                                    <div class="col-md-3">
+                                                        <div class="row">
+                                                            <div class="col-md-8">
+                                                                <input type="text" class="form-control" id="staticEmail">
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <select class="form-control">
+                                                                    <option>Select</option>
+                                                                    <option>Home</option>
+                                                                    <option>Work</option>
+                                                                    <option>Mobile</option>
+                                                                    <option>Other</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="row">
+                                                            <div class="col-md-8">
+                                                                <input type="text" class="form-control" id="staticEmail">
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <select class="form-control">
+                                                                    <option>Select</option>
+                                                                    <option>Home</option>
+                                                                    <option>Work</option>
+                                                                    <option>Mobile</option>
+                                                                    <option>Other</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="row">
+                                                            <div class="col-md-8">
+                                                                <input type="text" class="form-control" id="staticEmail">
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <select class="form-control">
+                                                                    <option>Select</option>
+                                                                    <option>Home</option>
+                                                                    <option>Work</option>
+                                                                    <option>Mobile</option>
+                                                                    <option>Other</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="staticEmail" class="col-md-3 col-form-label">Email Address<span class="required_sign">&nbsp;*</span></label>
+                                                    <div class="col-md-3">
+                                                        @*<input type="text" class="form-control" id="staticEmail">*@
+                                                        @Html.TextBoxFor(m => m.Email1, new { @class = "form-control", name = "Email1", id = "Email1" })
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input type="text" class="form-control" id="staticEmail">
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input type="text" class="form-control" id="staticEmail">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="staticEmail" class="col-md-3 col-form-label">POA Care<span class="required_sign">&nbsp;*</span></label>
+                                                    <div class="col-md-3">
+                                                        <div class="form-check form-check-inline movesp pads">
+                                                            @*<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">*@
+                                                            @Html.RadioButtonFor(m => m.POACareStatus, "Yes", new { @class = "form-check-input" })
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            @*<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">*@
+                                                            @Html.RadioButtonFor(m => m.POACareStatus, "No", new { @class = "form-check-input" })
+                                                            <label class="form-check-label" for="inlineRadio2">No</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-check form-check-inline movesp pads">
+                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                            <label class="form-check-label" for="inlineRadio2">No</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-check form-check-inline movesp pads">
+                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                            <label class="form-check-label" for="inlineRadio2">No</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="staticEmail" class="col-md-3 col-form-label">POA Finance<span class="required_sign">&nbsp;*</span></label>
+                                                    <div class="col-md-3">
+                                                        <div class="form-check form-check-inline movesp pads">
+                                                            @*<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">*@
+                                                            @Html.RadioButtonFor(m => m.POAFinanceStatus, "Yes", new { @class = "form-check-input" })
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            @*<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">*@
+                                                            @Html.RadioButtonFor(m => m.POAFinanceStatus, "No", new { @class = "form-check-input" })
+                                                            <label class="form-check-label" for="inlineRadio2">No</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-check form-check-inline movesp pads">
+                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                            <label class="form-check-label" for="inlineRadio2">No</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-check form-check-inline movesp pads">
+                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                            <label class="form-check-label" for="inlineRadio2">No</label>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <br>
+                                            <div class="col-md-12">
+                                                <h5>Care</h5>
+                                                <hr>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group row">
+                                                            <label for="staticEmail" class="col-md-5  col-form-label">Name</label>
+                                                            <div class="col-md-1"></div>
+                                                            <div class="col-md-6">
+                                                                <input type="text" class="form-control" id="staticEmail">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label for="staticEmail" class="col-md-5 col-form-label">Address</label>
+                                                            <div class="col-md-1"></div>
+                                                            <div class="col-md-6">
+                                                                <input type="text" class="form-control" id="staticEmail">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label for="staticEmail" class="col-md-5 col-form-label">Email Address</label>
+                                                            <div class="col-md-1"></div>
+                                                            <div class="col-md-6">
+                                                                <input type="text" class="form-control" id="staticEmail">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label for="staticEmail" class="col-md-5 col-form-label">Relationship</label>
+                                                            <div class="col-md-1"></div>
+                                                            <div class="col-md-6">
+                                                                <input type="text" class="form-control" id="staticEmail">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group row">
+                                                            <label for="staticEmail" class="col-md-4 col-form-label">Primary Contact</label>
+                                                            <div class="col-md-8">
+                                                                <div class="row">
+                                                                    <div class="col-md-8">
+                                                                        <input type="text" class="form-control" id="staticEmail">
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <select class="form-control">
+                                                                            <option>Select</option>
+                                                                            <option>Home</option>
+                                                                            <option>Work</option>
+                                                                            <option>Mobile</option>
+                                                                            <option>Other</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label for="staticEmail" class="col-md-4 col-form-label">Secondary Contact</label>
+                                                            <div class="col-md-8">
+                                                                <div class="row">
+                                                                    <div class="col-md-8">
+                                                                        <input type="text" class="form-control" id="staticEmail">
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <select class="form-control">
+                                                                            <option>Select</option>
+                                                                            <option>Home</option>
+                                                                            <option>Work</option>
+                                                                            <option>Mobile</option>
+                                                                            <option>Other</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label for="staticEmail" class="col-md-4 col-form-label">Tertiary Contact</label>
+                                                            <div class="col-md-8">
+                                                                <div class="row">
+                                                                    <div class="col-md-8">
+                                                                        <input type="text" class="form-control" id="staticEmail">
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <select class="form-control">
+                                                                            <option>Select</option>
+                                                                            <option>Home</option>
+                                                                            <option>Work</option>
+                                                                            <option>Mobile</option>
+                                                                            <option>Other</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <h5>Finance</h5>
+                                                <hr>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group row">
+                                                            <label for="staticEmail" class="col-md-5  col-form-label">Name</label>
+                                                            <div class="col-md-1"></div>
+                                                            <div class="col-md-6">
+                                                                <input type="text" class="form-control" id="staticEmail">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label for="staticEmail" class="col-md-5 col-form-label">Address</label>
+                                                            <div class="col-md-1"></div>
+                                                            <div class="col-md-6">
+                                                                <input type="text" class="form-control" id="staticEmail">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label for="staticEmail" class="col-md-5 col-form-label">Email Address</label>
+                                                            <div class="col-md-1"></div>
+                                                            <div class="col-md-6">
+                                                                <input type="text" class="form-control" id="staticEmail">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label for="staticEmail" class="col-md-5 col-form-label">Relationship</label>
+                                                            <div class="col-md-1"></div>
+                                                            <div class="col-md-6">
+                                                                <input type="text" class="form-control" id="staticEmail">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group row">
+                                                            <label for="staticEmail" class="col-md-4 col-form-label">Primary Contact</label>
+                                                            <div class="col-md-8">
+                                                                <div class="row">
+                                                                    <div class="col-md-8">
+                                                                        <input type="text" class="form-control" id="staticEmail">
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <select class="form-control">
+                                                                            <option>Select</option>
+                                                                            <option>Home</option>
+                                                                            <option>Work</option>
+                                                                            <option>Mobile</option>
+                                                                            <option>Other</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label for="staticEmail" class="col-md-4 col-form-label">Secondary Contact</label>
+                                                            <div class="col-md-8">
+                                                                <div class="row">
+                                                                    <div class="col-md-8">
+                                                                        <input type="text" class="form-control" id="staticEmail">
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <select class="form-control">
+                                                                            <option>Select</option>
+                                                                            <option>Home</option>
+                                                                            <option>Work</option>
+                                                                            <option>Mobile</option>
+                                                                            <option>Other</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label for="staticEmail" class="col-md-4 col-form-label">Tertiary Contact</label>
+                                                            <div class="col-md-8">
+                                                                <div class="row">
+                                                                    <div class="col-md-8">
+                                                                        <input type="text" class="form-control" id="staticEmail">
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <select class="form-control">
+                                                                            <option>Select</option>
+                                                                            <option>Home</option>
+                                                                            <option>Work</option>
+                                                                            <option>Mobile</option>
+                                                                            <option>Other</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <h5>Insurance Info</h5>
+                                                <hr>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group row">
+                                                            <label for="staticEmail" class="col-md-3 col-form-label">Insurance Company</label>
+                                                            <div class="col-md-9">
+                                                                <input type="text" class="form-control" id="staticEmail">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group row">
+                                                            <label for="staticEmail" class="col-md-5 col-form-label">Contract Number</label>
+                                                            <div class="col-md-1"></div>
+                                                            <div class="col-md-6">
+                                                                <input type="text" class="form-control" id="staticEmail">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group row">
+                                                            <label for="staticEmail" class="col-md-4 col-form-label">Group Number</label>
+                                                            <div class="col-md-6">
+                                                                <input type="text" class="form-control" id="staticEmail">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-md-12" style="margin-top:1vh;">
+                                                <hr>
+                                                <label for="staticEmail" class="col-md-9 col-form-label"></label>
+                                                <div class="col-md-3">
+                                                    <input type="button" class="btn btn-primary btn-lg" name="SECOND" value="Back" onclick="back_first()">
+                                                    <input type="button" class="btn btn-primary btn-lg" name="SECOND" value="Save/Next" onclick="goto_third()">
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-md-12">
-                                            <div class="row">
-                                                <div class="col-md-3"></div>
-                                                <div class="col-md-3">1st Contact*</div>
-                                                <div class="col-md-3">2nd Contact</div>
-                                                <div class="col-md-3">3rd Contact</div>
-                                            </div>
-                                            <br>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group row">
-                                                <label for="staticEmail" class="col-md-3 col-form-label">Name</label>
-                                                <div class="col-md-3">
-                                                    <input name="contract1" type="text" class="form-control" id="staticEmail">
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <input name="contract2" type="text" class="form-control" id="staticEmail">
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <input name="contract3" type="text" class="form-control" id="staticEmail">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label for="staticEmail" class="col-md-3 col-form-label">Address</label>
-                                                <div class="col-md-3">
-                                                    <input name="address1" type="text" class="form-control" id="staticEmail">
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <input name="address2" type="text" class="form-control" id="staticEmail">
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <input name="address3" type="text" class="form-control" id="staticEmail">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label for="staticEmail" class="col-md-3 col-form-label">Relationship</label>
-                                                <div class="col-md-3">
-                                                    <input name="relationship1" type="text" class="form-control" id="staticEmail">
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <input name="relationship2" type="text" class="form-control" id="staticEmail">
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <input name="relationship3" type="text" class="form-control" id="staticEmail">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label for="staticEmail" class="col-md-3 col-form-label">Primary Contact#</label>
-                                                <div class="col-md-3">
-                                                    <div class="row">
-                                                        <div class="col-md-8">
-                                                            <input name="relationship1" type="text" class="form-control" id="staticEmail">
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <select class="form-control">
-                                                                <option>Select</option>
-                                                                <option>Home</option>
-                                                                <option>Work</option>
-                                                                <option>Mobile</option>
-                                                                <option>Other</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
 
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="row">
-                                                        <div class="col-md-8">
-                                                            <input type="text" class="form-control" id="staticEmail">
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <select class="form-control">
-                                                                <option>Select</option>
-                                                                <option>Home</option>
-                                                                <option>Work</option>
-                                                                <option>Mobile</option>
-                                                                <option>Other</option>
-                                                            </select>
-                                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group row">
+                                                    <label for="staticEmail" class="col-md-2 col-form-label">Medical History<span class="required_sign">&nbsp;*</span></label>
+                                                    <div class="col-md-10">
+                                                        @*<textarea class="textarea" rows="4" style="width: 95% !important; margin-left: 47px"></textarea>*@
+                                                        @Html.TextAreaFor(m => m.HealthHistory, new {  name = "HealthHistory", id = "HealthHistory", rows = "4", style = "width: 95% !important; margin-left: 47px" })
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
-                                                    <div class="row">
-                                                        <div class="col-md-8">
-                                                            <input type="text" class="form-control" id="staticEmail">
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <select class="form-control">
-                                                                <option>Select</option>
-                                                                <option>Home</option>
-                                                                <option>Work</option>
-                                                                <option>Mobile</option>
-                                                                <option>Other</option>
-                                                            </select>
-                                                        </div>
+                                                <div class="form-group row">
+                                                    <label for="staticEmail" class="col-md-2 col-form-label">Current Diagnoses<span class="required_sign">&nbsp;*</span></label>
+                                                    <div class="col-md-10">
+                                                        @*<textarea class="textarea" rows="4" style="width: 95% !important; margin-left: 47px"></textarea>*@
+                                                        @Html.TextAreaFor(m => m.CurrentDiagnoses, new { name = "CurrentDiagnoses", id = "CurrentDiagnoses", rows = "4", style = "width: 95% !important; margin-left: 47px" })
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="staticEmail" class="col-md-2 col-form-label">Funeral Arrangements</label>
+                                                    <div class="col-md-10">
+                                                        <textarea class="textarea" rows="4" style="width: 95% !important; margin-left: 47px"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <label for="staticEmail" class="col-md-3 col-form-label">Secondary Contact#</label>
-                                                <div class="col-md-3">
-                                                    <div class="row">
-                                                        <div class="col-md-8">
-                                                            <input type="text" class="form-control" id="staticEmail">
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <select class="form-control">
-                                                                <option>Select</option>
-                                                                <option>Home</option>
-                                                                <option>Work</option>
-                                                                <option>Mobile</option>
-                                                                <option>Other</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="row">
-                                                        <div class="col-md-8">
-                                                            <input type="text" class="form-control" id="staticEmail">
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <select class="form-control">
-                                                                <option>Select</option>
-                                                                <option>Home</option>
-                                                                <option>Work</option>
-                                                                <option>Mobile</option>
-                                                                <option>Other</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="row">
-                                                        <div class="col-md-8">
-                                                            <input type="text" class="form-control" id="staticEmail">
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <select class="form-control">
-                                                                <option>Select</option>
-                                                                <option>Home</option>
-                                                                <option>Work</option>
-                                                                <option>Mobile</option>
-                                                                <option>Other</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label for="staticEmail" class="col-md-3 col-form-label">Tertiary Contact#</label>
-                                                <div class="col-md-3">
-                                                    <div class="row">
-                                                        <div class="col-md-8">
-                                                            <input type="text" class="form-control" id="staticEmail">
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <select class="form-control">
-                                                                <option>Select</option>
-                                                                <option>Home</option>
-                                                                <option>Work</option>
-                                                                <option>Mobile</option>
-                                                                <option>Other</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="row">
-                                                        <div class="col-md-8">
-                                                            <input type="text" class="form-control" id="staticEmail">
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <select class="form-control">
-                                                                <option>Select</option>
-                                                                <option>Home</option>
-                                                                <option>Work</option>
-                                                                <option>Mobile</option>
-                                                                <option>Other</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="row">
-                                                        <div class="col-md-8">
-                                                            <input type="text" class="form-control" id="staticEmail">
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <select class="form-control">
-                                                                <option>Select</option>
-                                                                <option>Home</option>
-                                                                <option>Work</option>
-                                                                <option>Mobile</option>
-                                                                <option>Other</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label for="staticEmail" class="col-md-3 col-form-label">Email Address</label>
-                                                <div class="col-md-3">
-                                                    <input type="text" class="form-control" id="staticEmail">
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <input type="text" class="form-control" id="staticEmail">
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <input type="text" class="form-control" id="staticEmail">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label for="staticEmail" class="col-md-3 col-form-label">POA Care</label>
-                                                <div class="col-md-3">
-                                                    <div class="form-check form-check-inline movesp pads">
-                                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                        <label class="form-check-label" for="">Yes</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                        <label class="form-check-label" for="inlineRadio2">No</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-check form-check-inline movesp pads">
-                                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                        <label class="form-check-label" for="">Yes</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                        <label class="form-check-label" for="inlineRadio2">No</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-check form-check-inline movesp pads">
-                                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                        <label class="form-check-label" for="">Yes</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                        <label class="form-check-label" for="inlineRadio2">No</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label for="staticEmail" class="col-md-3 col-form-label">POA Finance</label>
-                                                <div class="col-md-3">
-                                                    <div class="form-check form-check-inline movesp pads">
-                                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                        <label class="form-check-label" for="">Yes</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                        <label class="form-check-label" for="inlineRadio2">No</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-check form-check-inline movesp pads">
-                                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                        <label class="form-check-label" for="">Yes</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                        <label class="form-check-label" for="inlineRadio2">No</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-check form-check-inline movesp pads">
-                                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                        <label class="form-check-label" for="">Yes</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                        <label class="form-check-label" for="inlineRadio2">No</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <h5>Care</h5>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-5  col-form-label">Name</label>
-                                                        <div class="col-md-1"></div>
-                                                        <div class="col-md-6">
-                                                            <input type="text" class="form-control" id="staticEmail">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-5 col-form-label">Address</label>
-                                                        <div class="col-md-1"></div>
-                                                        <div class="col-md-6">
-                                                            <input type="text" class="form-control" id="staticEmail">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-5 col-form-label">Email Address</label>
-                                                        <div class="col-md-1"></div>
-                                                        <div class="col-md-6">
-                                                            <input type="text" class="form-control" id="staticEmail">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-5 col-form-label">Relationship</label>
-                                                        <div class="col-md-1"></div>
-                                                        <div class="col-md-6">
-                                                            <input type="text" class="form-control" id="staticEmail">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Primary Contact</label>
-                                                        <div class="col-md-8">
-                                                            <div class="row">
-                                                                <div class="col-md-8">
-                                                                    <input type="text" class="form-control" id="staticEmail">
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <select class="form-control">
-                                                                        <option>Select</option>
-                                                                        <option>Home</option>
-                                                                        <option>Work</option>
-                                                                        <option>Mobile</option>
-                                                                        <option>Other</option>
-                                                                    </select>
-                                                                </div>
+                                            <div class="col-md-12">
+                                                <h5>Physician</h5>
+                                                <hr>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group row">
+                                                            <label for="staticEmail" class="col-md-5 col-form-label">Name<span class="required_sign">&nbsp;*</span></label>
+                                                            <div class="col-md-7">
+                                                                @*<input type="text" class="form-control" id="staticEmail">*@
+                                                                @Html.TextBoxFor(m => m.Physician, new { @class = "form-control", name= "Physician",id= "Physician" })
                                                             </div>
-
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label for="staticEmail" class="col-md-5 col-form-label">Phone<span class="required_sign">&nbsp;*</span></label>
+                                                            <div class="col-md-7">
+                                                                @*<input type="text" class="form-control" id="staticEmail">*@
+                                                                @Html.TextBoxFor(m => m.PhysicianPhone, new { @class = "form-control", name = "PhysicianPhone", id = "PhysicianPhone" })
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Secondary Contact</label>
-                                                        <div class="col-md-8">
-                                                            <div class="row">
-                                                                <div class="col-md-8">
-                                                                    <input type="text" class="form-control" id="staticEmail">
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <select class="form-control">
-                                                                        <option>Select</option>
-                                                                        <option>Home</option>
-                                                                        <option>Work</option>
-                                                                        <option>Mobile</option>
-                                                                        <option>Other</option>
-                                                                    </select>
-                                                                </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group row">
+                                                            <label for="staticEmail" class="col-md-5 col-form-label">Fax Number</label>
+                                                            <div class="col-md-7">
+                                                                <input type="text" class="form-control" id="staticEmail">
                                                             </div>
-
                                                         </div>
                                                     </div>
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Tertiary Contact</label>
-                                                        <div class="col-md-8">
-                                                            <div class="row">
-                                                                <div class="col-md-8">
-                                                                    <input type="text" class="form-control" id="staticEmail">
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <select class="form-control">
-                                                                        <option>Select</option>
-                                                                        <option>Home</option>
-                                                                        <option>Work</option>
-                                                                        <option>Mobile</option>
-                                                                        <option>Other</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
+                                                </div>
 
+                                            </div>
+                                            <div class="col-md-12">
+                                                <h5>Pharmacy</h5>
+                                                <hr>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group row">
+                                                            <label for="staticEmail" class="col-md-5 col-form-label">Name<span class="required_sign">&nbsp;*</span></label>
+                                                            <div class="col-md-7">
+                                                                @*<input type="text" class="form-control" id="staticEmail">*@
+                                                                @Html.TextBoxFor(m => m.PharmacyName, new { @class = "form-control", name = "PharmacyName", id = "PharmacyName" })
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label for="staticEmail" class="col-md-5 col-form-label">Phone<span class="required_sign">&nbsp;*</span></label>
+                                                            <div class="col-md-7">
+                                                                @*<input type="text" class="form-control" id="staticEmail">*@
+                                                                @Html.TextBoxFor(m => m.PharmacePhoneNo, new { @class = "form-control", name = "PharmacePhoneNo", id = "PharmacePhoneNo" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group row">
+                                                            <label for="staticEmail" class="col-md-5 col-form-label">Fax Number</label>
+                                                            <div class="col-md-7">
+                                                                <input type="text" class="form-control" id="staticEmail">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-12">
+                                                <h5>Religious Representative</h5>
+                                                <hr>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group row">
+                                                            <label for="staticEmail" class="col-md-5 col-form-label">Contact</label>
+                                                            <div class="col-md-7">
+                                                                <input type="text" class="form-control" id="staticEmail">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label for="staticEmail" class="col-md-5 col-form-label">Office</label>
+                                                            <div class="col-md-7">
+                                                                <input type="text" class="form-control" id="staticEmail">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group row">
+                                                            <label for="staticEmail" class="col-md-5 col-form-label">Phone (Home)</label>
+                                                            <div class="col-md-7">
+                                                                <input type="text" class="form-control" id="staticEmail">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-12">
+                                                <h5>Medical Allergy</h5>
+                                                <hr>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group row">
+                                                            <label for="staticEmail" class="col-md-5 col-form-label">Medical Allergy</label>
+                                                            <div class="col-md-6">
+                                                                <input type="text" class="form-control" id="staticEmail">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <h5>Finance</h5>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-5  col-form-label">Name</label>
-                                                        <div class="col-md-1"></div>
-                                                        <div class="col-md-6">
-                                                            <input type="text" class="form-control" id="staticEmail">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-5 col-form-label">Address</label>
-                                                        <div class="col-md-1"></div>
-                                                        <div class="col-md-6">
-                                                            <input type="text" class="form-control" id="staticEmail">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-5 col-form-label">Email Address</label>
-                                                        <div class="col-md-1"></div>
-                                                        <div class="col-md-6">
-                                                            <input type="text" class="form-control" id="staticEmail">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-5 col-form-label">Relationship</label>
-                                                        <div class="col-md-1"></div>
-                                                        <div class="col-md-6">
-                                                            <input type="text" class="form-control" id="staticEmail">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Primary Contact</label>
-                                                        <div class="col-md-8">
-                                                            <div class="row">
-                                                                <div class="col-md-8">
-                                                                    <input type="text" class="form-control" id="staticEmail">
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <select class="form-control">
-                                                                        <option>Select</option>
-                                                                        <option>Home</option>
-                                                                        <option>Work</option>
-                                                                        <option>Mobile</option>
-                                                                        <option>Other</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Secondary Contact</label>
-                                                        <div class="col-md-8">
-                                                            <div class="row">
-                                                                <div class="col-md-8">
-                                                                    <input type="text" class="form-control" id="staticEmail">
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <select class="form-control">
-                                                                        <option>Select</option>
-                                                                        <option>Home</option>
-                                                                        <option>Work</option>
-                                                                        <option>Mobile</option>
-                                                                        <option>Other</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Tertiary Contact</label>
-                                                        <div class="col-md-8">
-                                                            <div class="row">
-                                                                <div class="col-md-8">
-                                                                    <input type="text" class="form-control" id="staticEmail">
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <select class="form-control">
-                                                                        <option>Select</option>
-                                                                        <option>Home</option>
-                                                                        <option>Work</option>
-                                                                        <option>Mobile</option>
-                                                                        <option>Other</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
+                                            <div class="col-md-12">
+                                                <hr>
+                                                <div class="row">
+                                                    <div class="col-md-9"></div>
+                                                    <div class="col-md-3">
+                                                        <input type="button" class="btn btn-primary btn-lg" name="SECOND" value="Back" onclick="back_second()">
+                                                        <input type="submit" class="btn btn-danger btn-lg" name="Sub" value="Submit/Next">
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <h5>Insurance Info</h5>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-3 col-form-label">Insurance Company</label>
-                                                        <div class="col-md-9">
-                                                            <input type="text" class="form-control" id="staticEmail">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-5 col-form-label">Contract Number</label>
-                                                        <div class="col-md-1"></div>
-                                                        <div class="col-md-6">
-                                                            <input type="text" class="form-control" id="staticEmail">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Group Number</label>
-                                                        <div class="col-md-6">
-                                                            <input type="text" class="form-control" id="staticEmail">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
                                         </div>
                                     </div>
-
-                                </div>
-                                <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group row">
-                                                <label for="staticEmail" class="col-md-2 col-form-label">Medical History*</label>
-                                                <div class="col-md-10">
-                                                    <textarea class="textarea" rows="4" style="width: 95% !important; margin-left: 47px"></textarea>
-                                                </div>
+                                    <div class="tab-pane fade" id="pills-other" role="tabpanel" aria-labelledby="pills-other-tab">
+                                        <div class="row">
+                                            <div class="col-md-4"></div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-danger btn-lg btnfull">Medication History</button><br>
+                                                <a href="~/Home/DietaryHistory" class="btn btn-danger btn-lg btnfull">Dietary History</a><br>
+                                                <button class="btn btn-danger btn-lg btnfull">Resident Care Assessment</button><br>
+                                                <button class="btn btn-danger btn-lg btnfull">Resident Specific Goals</button><br>
+                                                <button class="btn btn-danger btn-lg btnfull">Activity Assessment</button><br>
+                                                <button class="btn btn-default btn-lg btnfull">Print QOLAFIED resident</button>
                                             </div>
-                                            <div class="form-group row">
-                                                <label for="staticEmail" class="col-md-2 col-form-label">Current Diagnoses*</label>
-                                                <div class="col-md-10">
-                                                    <textarea class="textarea" rows="4" style="width: 95% !important; margin-left: 47px"></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label for="staticEmail" class="col-md-2 col-form-label">Funeral Arrangements</label>
-                                                <div class="col-md-10">
-                                                    <textarea class="textarea" rows="4" style="width: 95% !important; margin-left: 47px"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <h5>Physician</h5>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-5 col-form-label">Name</label>
-                                                        <div class="col-md-7">
-                                                            <input type="text" class="form-control" id="staticEmail">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-5 col-form-label">Phone<span class="required_sign">&nbsp;*</span></label>
-                                                        <div class="col-md-7">
-                                                            <input type="text" class="form-control" id="staticEmail" required>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-5 col-form-label">Fax Number</label>
-                                                        <div class="col-md-7">
-                                                            <input type="text" class="form-control" id="staticEmail">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="col-md-12">
-                                            <h5>Pharmacy</h5>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-5 col-form-label">Name</label>
-                                                        <div class="col-md-7">
-                                                            <input type="text" class="form-control" id="staticEmail">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-5 col-form-label">Phone</label>
-                                                        <div class="col-md-7">
-                                                            <input type="text" class="form-control" id="staticEmail">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-5 col-form-label">Fax Number</label>
-                                                        <div class="col-md-7">
-                                                            <input type="text" class="form-control" id="staticEmail">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="col-md-12">
-                                            <h5>Religious Representative</h5>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-5 col-form-label">Contact</label>
-                                                        <div class="col-md-7">
-                                                            <input type="text" class="form-control" id="staticEmail">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-5 col-form-label">Office</label>
-                                                        <div class="col-md-7">
-                                                            <input type="text" class="form-control" id="staticEmail">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-5 col-form-label">Phone (Home)</label>
-                                                        <div class="col-md-7">
-                                                            <input type="text" class="form-control" id="staticEmail">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="col-md-12">
-                                            <h5>Medical Allergy</h5>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-5 col-form-label">Medical Allergy</label>
-                                                        <div class="col-md-6">
-                                                            <input type="text" class="form-control" id="staticEmail">
-                                                        </div>
-                                                        <div class="col-md-1">
-                                                            <button type="submit" class="btn btn-danger">ADD</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
+                                            <div class="col-md-4"></div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" id="pills-other" role="tabpanel" aria-labelledby="pills-contact-tab">
-                                    <div class="row">
-                                        <div class="col-md-4"></div>
-                                        <div class="col-md-4">
-                                            <button class="btn btn-danger btn-lg btnfull">Medication History</button><br>
-                                            <a href="~/Home/DietaryHistory" class="btn btn-danger btn-lg btnfull">Dietary History</a><br>
-                                            <button class="btn btn-danger btn-lg btnfull">Resident Care Assessment</button><br>
-                                            <button class="btn btn-danger btn-lg btnfull">Resident Specific Goals</button><br>
-                                            <button class="btn btn-danger btn-lg btnfull">Activity Assessment</button><br>
-                                            <button class="btn btn-default btn-lg btnfull">Print QOLAFIED resident</button>
-                                        </div>
-                                        <div class="col-md-4"></div>
-                                    </div>
-                                </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-                <input id="hiddeninput" type="hidden" value="@TempData["level"]" />
+                <input id="hiddeninput" type="hidden" value="@TempData["LEVEL"]" />
+                <input id="hiddeninput2" type="hidden" value=@Model.SuiteNo />
                 <!-- END PLACE PAGE CONTENT HERE -->
             </div>
             <!-- END CONTAINER FLUID -->
@@ -1198,7 +1419,26 @@
         @RenderPage("~/Views/Shared/_Footer.cshtml")
 
         <!-- uploding of file -->
+
         <script>
+            //var occupancy = $("#Occupancy").val();
+            //var moveInDate = $("#MoveInDate").val();
+            //var input2 = $("#hiddeninput2").val();
+            //if (occupancy > 0 && moveInDate != "") {
+            //    $('#AvailableSuites').children('option:not(:first)').remove();
+            //    $.get("/Residents/AvailableSuite", { term: moveInDate, occu: occupancy }, function (data) {
+            //        for (var i = 0; i < data.length; i++) {
+            //            $('#AvailableSuites').append('<option value="' + data[i][0].Value + '">' + data[i][0].Value + '</option>');
+            //        }
+            //    });
+            //    $(document).ajaxStop(function () {
+            //        $("#AvailableSuites").val(input2);
+            //    });
+            //}
+            //else {
+            //    $("#AvailableSuites").attr("disabled", true);
+            //}
+
             $("#AvailableSuites").attr("disabled", true);
 
             function readURL(input) {
@@ -1251,6 +1491,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.1.62/jquery.inputmask.bundle.js"></script>
 
         <script>
+
             $(window).load(function () {
                 var phones = [{ "mask": "(###) ###-####" }, { "mask": "(###) ###-####" }];
                 $('#phonenumber').inputmask({
@@ -1259,15 +1500,47 @@
                     definitions: { '#': { validator: "[0-9]", cardinality: 1 } }
                 });
             });
+
             //$("#phonenumber2").keyup(function () {
             //    $(this).val($(this).val().replace(/^(\d{3})(\d{3})(\d)+$/, "($1)$2-$3"));
             //});
 
-            var a = $('#hiddeninput').val();
-            if (a == "second") {
-                goto_second();
+            $('#CallHospital').click(function () {
+                var hos = $('#CallHospital')
+                if (hos[0].checked == true) {
+                    $('div[name="contactInformation"] input').each(function () {
+                        this.disabled = true;
+                    })
+                    $('div[name="contactInformation"] select').each(function () {
+                        this.disabled = true;
+                    })
+                }
+                else {
+                    $('div[name="contactInformation"] input').each(function () {
+                        this.disabled = false;
+                    })
+                    $('div[name="contactInformation"] select').each(function () {
+                        this.disabled = false;
+                    })
+                }
+            });
+
+            $('form').submit(function (event) {
+                if (check_1st() == true && check_2nd() == true && check_3rd()==true) {
+                    form = this;
+                    form.submit();
+                }
+                else {
+                    check_1st();
+                    check_2nd();
+                    check_3rd();
+                    return false;
+                }
+            });
+
+            var level = $('#hiddeninput').val();
+            if (level == "LAST") {
+                goto_last();
             }
-
-
 
         </script>
