@@ -230,6 +230,12 @@ namespace QolaMVC.Controllers
                 TempData["LEVEL"] = TempData["level"];
             }
 
+            if (TempData["ResidentID"] != null)
+            {
+                TempData.Keep("ResidentID");
+            }
+
+
             ResidentModel AA = new ResidentModel();
             ResidentsDAL.SetUp_ResidentModel_ListItems(AA);
 
@@ -354,6 +360,8 @@ namespace QolaMVC.Controllers
             if (p_Model.PharmaceSelf == null) p_Model.PharmaceSelf = "";
             if (p_Model.PharmaceNursing == null) p_Model.PharmaceNursing = "";
             if (p_Model.DeleteRowAllergyId == null) p_Model.DeleteRowAllergyId = "";
+            if (p_Model.VoterType == null) p_Model.VoterType = "";
+            if (p_Model.VeteranType == null) p_Model.VeteranType = "";
 
 
             if (p_Model.ReligiousAffiliation == "Other")
@@ -437,29 +445,8 @@ namespace QolaMVC.Controllers
 
             #endregion Phone arrangement in second Page
 
-
-
-            //POACareStatus                     char
-            //POACareType2Status                char
-            //POACareType3Status                char
-            //POAFinanceStatus                  char
-            //POAFinanceType2Status             char
-            //POAFinanceType3Status             char
-            //HomePhoneType1                    Int16
-            //HomePhoneType2                    Int16
-            //HomePhoneType3                    Int16
-            //BusinessPhoneType1                Int16
-            //BusinessPhoneType2                Int16
-            //BusinessPhoneType3                Int16
-            //CellPhoneType1                    Int16
-            //CellPhoneType2                    Int16
-            //CellPhoneType3                    Int16
-            //POACareHomePhoneType              Int16
-            //POACareBusinessPhoneType          Int16
-            //POACareCellPhoneType              Int16
-            //POAFinanceHomePhoneType           Int16
-            //POAFinanceBusinessPhoneType       Int16
-            //POAFinanceCellPhoneType           Int16
+            if (p_Model.FullCodeStatus == '\0') p_Model.FullCodeStatus = 'N';
+            if (p_Model.DNRStatus == '\0') p_Model.DNRStatus = 'N';
 
             p_Model.SuiteIds= SuiteDAL.GetSuiteID_By_SuiteNo_and_Homeid(p_Model.SuiteNo, home.Id);
 
@@ -486,14 +473,34 @@ namespace QolaMVC.Controllers
             {
                 HttpPostedFileBase file = Request.Files[i];
                 int fileSize = file.ContentLength;
-                string fileName = file.FileName;
-                string mimeType = file.ContentType;
-                System.IO.Stream fileContent = file.InputStream;
-                file.SaveAs(Server.MapPath("~/Content/assets/Images/Home/" + home.Id + "/Resident_Image/") + RR[0].ToString() + ".png");
-                returnint2 = HomeDAL.Save_Image(home.Id, RR[0]);
+                if (fileSize > 0)
+                {
+                    string fileName = file.FileName;
+                    string mimeType = file.ContentType;
+                    System.IO.Stream fileContent = file.InputStream;
+                    file.SaveAs(Server.MapPath("~/Content/assets/Images/Home/" + home.Id + "/Resident_Image/") + RR[0].ToString() + ".png");
+                    returnint2 = HomeDAL.Save_Image(home.Id, RR[0]);
+                }
 
             }
-            ResidentsDAL.update_checklist(user.ID,RR[0]);
+            string[] arrayMain = new string[22];
+            for (int a = 0; a < arrayMain.Length; a++)
+            {
+                if (a == 0)
+                {
+                    MasterDAL.save_button(a + 1, user.ID, RR[0]);
+                }
+                else
+                {
+                    MasterDAL.save_button(a + 1, RR[0]);
+                }
+            }
+
+
+            TempData["ResidentID"] = RR[0];
+            TempData.Keep("ResidentID");
+
+            //ResidentsDAL.update_checklist(user.ID,RR[0]);
 
 
             return RedirectToAction("AddNewResident");

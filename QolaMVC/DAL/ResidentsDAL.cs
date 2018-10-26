@@ -58,6 +58,7 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@relationshipFamily", addResidentGeneralInfo.RelationshipWithFamily);
                 l_Cmd.Parameters.AddWithValue("@educationLevel ", addResidentGeneralInfo.EducationLevel);
                 l_Cmd.Parameters.AddWithValue("@abilityToWrite", addResidentGeneralInfo.AbilityToWrite);
+                l_Cmd.Parameters.AddWithValue("@abilityToRead", addResidentGeneralInfo.AbilityToRead);
                 l_Cmd.Parameters.AddWithValue("@pastOccupationJobs", addResidentGeneralInfo.PastOccupationJobs);
                 l_Cmd.Parameters.AddWithValue("@veteran", addResidentGeneralInfo.Vetaran);
                 l_Cmd.Parameters.AddWithValue("@PersonalInvolve", addResidentGeneralInfo.PersonalInvolvement);
@@ -173,6 +174,7 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@relationshipFamily", updateResidentGeneralInfo.RelationshipWithFamily);
                 l_Cmd.Parameters.AddWithValue("@educationLevel ", updateResidentGeneralInfo.EducationLevel);
                 l_Cmd.Parameters.AddWithValue("@abilityToWrite", updateResidentGeneralInfo.AbilityToWrite);
+                l_Cmd.Parameters.AddWithValue("@abilityToRead", updateResidentGeneralInfo.AbilityToRead);
                 l_Cmd.Parameters.AddWithValue("@pastOccupationJobs", updateResidentGeneralInfo.PastOccupationJobs);
                 l_Cmd.Parameters.AddWithValue("@veteran", updateResidentGeneralInfo.Vetaran);
                 l_Cmd.Parameters.AddWithValue("@PersonalInvolve", updateResidentGeneralInfo.PersonalInvolvement);
