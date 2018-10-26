@@ -1106,5 +1106,41 @@ namespace QolaMVC.Models
         public string ReligiousAffiliationOther { get; set; }
         public string VeteranOther { get; set; }
         public string EducationLevelOther { get; set; }
+        public string First_phone1 { get; set; }
+        public string First_phone2 { get; set; }
+        public string First_phone3 { get; set; }
+        public string Second_phone1 { get; set; }
+        public string Second_phone2 { get; set; }
+        public string Second_phone3 { get; set; }
+        public string Third_phone1 { get; set; }
+        public string Third_phone2 { get; set; }
+        public string Third_phone3 { get; set; }
+        public int First_phone_type1 { get; set; }
+        public int First_phone_type2 { get; set; }
+        public int First_phone_type3 { get; set; }
+        public int Second_phone_type1 { get; set; }
+        public int Second_phone_type2 { get; set; }
+        public int Second_phone_type3 { get; set; }
+        public int Third_phone_type1 { get; set; }
+        public int Third_phone_type2 { get; set; }
+        public int Third_phone_type3 { get; set; }
+
+        public string Care_First_phone { get; set; }
+        public string Care_Second_phone { get; set; }
+        public string Care_Third_phone { get; set; }
+        public int Care_First_phone_type { get; set; }
+        public int Care_Second_phone_type { get; set; }
+        public int Care_Third_phone_type { get; set; }
+
+        public string Finance_First_phone { get; set; }
+        public string Finance_Second_phone { get; set; }
+        public string Finance_Third_phone { get; set; }
+        public int Finance_First_phone_type { get; set; }
+        public int Finance_Second_phone_type { get; set; }
+        public int Finance_Third_phone_type { get; set; }
+
+
+
+
     }
 }

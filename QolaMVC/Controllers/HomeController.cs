@@ -246,23 +246,6 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             ViewBag.User = user;
 
-
-            if (p_Model.ReligiousAffiliation == "Other")
-            {
-                p_Model.ReligiousAffiliation = p_Model.ReligiousAffiliationOther;
-            }
-            if(p_Model.Vetaran== "Other" || p_Model.Vetaran == "None")
-            {
-                p_Model.Vetaran = p_Model.VeteranOther;
-            }
-            if (p_Model.EducationLevel == "Other")
-            {
-                p_Model.EducationLevel = p_Model.EducationLevelOther;
-            }
-            if (p_Model.callHospital_replacement == true)
-            {
-                p_Model.CallHospital =Convert.ToChar("Y");
-            }
             if (p_Model.FirstName == null) p_Model.FirstName = "";
             if (p_Model.LastName == null) p_Model.LastName = "";
             if (p_Model.ShortName == null) p_Model.ShortName = "";
@@ -344,8 +327,117 @@ namespace QolaMVC.Controllers
             if (p_Model.ReligionOffice == null) p_Model.ReligionOffice = "";
             if (p_Model.ReligionHomePhone == null) p_Model.ReligionHomePhone = "";
             if (p_Model.Alergies == null) p_Model.Alergies = "";
+            if (p_Model.CareRelationship == null) p_Model.CareRelationship = "";
+            if (p_Model.FinanceRelationship == null) p_Model.FinanceRelationship = "";
+
+            if (p_Model.ReligiousAffiliationOther == null) p_Model.ReligiousAffiliationOther = "";
+            if (p_Model.VeteranOther == null) p_Model.VeteranOther = "";
+            if (p_Model.EducationLevelOther == null) p_Model.EducationLevelOther = "";
+            if (p_Model.First_phone1 == null) p_Model.First_phone1 = "";
+            if (p_Model.First_phone2 == null) p_Model.First_phone2 = "";
+            if (p_Model.First_phone3 == null) p_Model.First_phone3 = "";
+            if (p_Model.Second_phone1 == null) p_Model.Second_phone1 = "";
+            if (p_Model.Second_phone2 == null) p_Model.Second_phone2 = "";
+            if (p_Model.Second_phone3 == null) p_Model.Second_phone3 = "";
+            if (p_Model.Third_phone1 == null) p_Model.Third_phone1 = "";
+            if (p_Model.Third_phone2 == null) p_Model.Third_phone2 = "";
+            if (p_Model.Third_phone3 == null) p_Model.Third_phone3 = "";
+            if (p_Model.Care_First_phone == null) p_Model.Care_First_phone = "";
+            if (p_Model.Care_Second_phone == null) p_Model.Care_Second_phone = "";
+            if (p_Model.Care_Third_phone == null) p_Model.Care_Third_phone = "";
+            if (p_Model.Finance_First_phone == null) p_Model.Finance_First_phone = "";
+            if (p_Model.Finance_Second_phone == null) p_Model.Finance_Second_phone = "";
+            if (p_Model.Finance_Third_phone == null) p_Model.Finance_Third_phone = "";
+
 
             if (p_Model.PersonalInvolvement == null) p_Model.PersonalInvolvement = "";
+            if (p_Model.PharmaceSelf == null) p_Model.PharmaceSelf = "";
+            if (p_Model.PharmaceNursing == null) p_Model.PharmaceNursing = "";
+            if (p_Model.DeleteRowAllergyId == null) p_Model.DeleteRowAllergyId = "";
+
+
+            if (p_Model.ReligiousAffiliation == "Other")
+            {
+                p_Model.ReligiousAffiliation = p_Model.ReligiousAffiliationOther;
+            }
+            if (p_Model.Vetaran == "Other" || p_Model.Vetaran == "None")
+            {
+                p_Model.Vetaran = p_Model.VeteranOther;
+            }
+            if (p_Model.EducationLevel == "Other")
+            {
+                p_Model.EducationLevel = p_Model.EducationLevelOther;
+            }
+            if (p_Model.callHospital_replacement == true)
+            {
+                p_Model.CallHospital = Convert.ToChar("Y");
+            }
+
+            #region Phone arrangement in second Page
+
+            if (p_Model.First_phone_type1 == 1) { p_Model.HomePhone1 = p_Model.First_phone1; p_Model.HomePhoneType1 = 1; }
+            else if (p_Model.First_phone_type1 == 2) { p_Model.BusinessPhone1 = p_Model.First_phone1; p_Model.BusinessPhoneType1 = 1; }
+            else if (p_Model.First_phone_type1 == 3) { p_Model.CellPhone1 = p_Model.First_phone1; p_Model.CellPhoneType1 = 1; }
+
+            if (p_Model.First_phone_type2 == 1) { p_Model.HomePhone2 = p_Model.First_phone2; p_Model.HomePhoneType2 = 1; }
+            else if (p_Model.First_phone_type2 == 2) { p_Model.BusinessPhone2 = p_Model.First_phone2; p_Model.BusinessPhoneType2 = 1; }
+            else if (p_Model.First_phone_type2 == 3) { p_Model.CellPhone2 = p_Model.First_phone2; p_Model.CellPhoneType2 = 1; }
+
+            if (p_Model.First_phone_type3 == 1) { p_Model.HomePhone3 = p_Model.First_phone3; p_Model.HomePhoneType3 = 1; }
+            else if (p_Model.First_phone_type3 == 2) { p_Model.BusinessPhone3 = p_Model.First_phone3; p_Model.BusinessPhoneType3 = 1; }
+            else if (p_Model.First_phone_type3 == 3) { p_Model.CellPhone3 = p_Model.First_phone3; p_Model.CellPhoneType3 = 1; }
+
+            if (p_Model.Second_phone_type1 == 1) { p_Model.HomePhone1 = p_Model.Second_phone1; p_Model.HomePhoneType1 = 2; }
+            else if (p_Model.Second_phone_type1 == 2) { p_Model.BusinessPhone1 = p_Model.Second_phone1; p_Model.BusinessPhoneType1 = 2; }
+            else if (p_Model.Second_phone_type1 == 3) { p_Model.CellPhone1 = p_Model.Second_phone1; p_Model.CellPhoneType1 = 2; }
+
+            if (p_Model.Second_phone_type2 == 1) { p_Model.HomePhone2 = p_Model.Second_phone2; p_Model.HomePhoneType2 = 2; }
+            else if (p_Model.Second_phone_type2 == 2) { p_Model.BusinessPhone2 = p_Model.Second_phone2; p_Model.BusinessPhoneType2 = 2; }
+            else if (p_Model.Second_phone_type2 == 3) { p_Model.CellPhone2 = p_Model.Second_phone2; p_Model.CellPhoneType2 = 2; }
+
+            if (p_Model.Second_phone_type3 == 1) { p_Model.HomePhone3 = p_Model.Second_phone3; p_Model.HomePhoneType3 = 2; }
+            else if (p_Model.Second_phone_type3 == 2) { p_Model.BusinessPhone3 = p_Model.Second_phone3; p_Model.BusinessPhoneType3 = 2; }
+            else if (p_Model.Second_phone_type3 == 3) { p_Model.CellPhone3 = p_Model.Second_phone3; p_Model.CellPhoneType3 = 2; }
+
+            if (p_Model.Third_phone_type1 == 1) { p_Model.HomePhone1 = p_Model.Third_phone1; p_Model.HomePhoneType1 = 3; }
+            else if (p_Model.Third_phone_type1 == 2) { p_Model.BusinessPhone1 = p_Model.Third_phone1; p_Model.BusinessPhoneType1 = 3; }
+            else if (p_Model.Third_phone_type1 == 3) { p_Model.CellPhone1 = p_Model.Third_phone1; p_Model.CellPhoneType1 = 3; }
+
+            if (p_Model.Third_phone_type2 == 1) { p_Model.HomePhone2 = p_Model.Third_phone2; p_Model.HomePhoneType2 = 3; }
+            else if (p_Model.Third_phone_type2 == 2) { p_Model.BusinessPhone2 = p_Model.Third_phone2; p_Model.BusinessPhoneType2 = 3; }
+            else if (p_Model.Third_phone_type2 == 3) { p_Model.CellPhone2 = p_Model.Third_phone2; p_Model.CellPhoneType2 = 3; }
+
+            if (p_Model.Third_phone_type3 == 1) { p_Model.HomePhone3 = p_Model.Third_phone3; p_Model.HomePhoneType3 = 3; }
+            else if (p_Model.Third_phone_type3 == 2) { p_Model.BusinessPhone3 = p_Model.Third_phone3; p_Model.BusinessPhoneType3 = 3; }
+            else if (p_Model.Third_phone_type3 == 3) { p_Model.CellPhone3 = p_Model.Third_phone3; p_Model.CellPhoneType3 = 3; }
+
+            if (p_Model.Care_First_phone_type == 1) { p_Model.CareHomePhone = p_Model.Care_First_phone; p_Model.POACareHomePhoneType = 1; }
+            else if (p_Model.Care_First_phone_type == 2) { p_Model.CareWorkPhone = p_Model.Care_First_phone; p_Model.POACareBusinessPhoneType = 1; }
+            else if (p_Model.Care_First_phone_type == 3) { p_Model.CareCellPhone = p_Model.Care_First_phone; p_Model.POACareCellPhoneType = 1; }
+
+            if (p_Model.Care_Second_phone_type == 1) { p_Model.CareHomePhone = p_Model.Care_Second_phone; p_Model.POACareHomePhoneType = 2; }
+            else if (p_Model.Care_Second_phone_type == 2) { p_Model.CareWorkPhone = p_Model.Care_Second_phone; p_Model.POACareBusinessPhoneType = 2; }
+            else if (p_Model.Care_Second_phone_type == 3) { p_Model.CareCellPhone = p_Model.Care_Second_phone; p_Model.POACareCellPhoneType = 2; }
+
+            if (p_Model.Care_Third_phone_type == 1) { p_Model.CareHomePhone = p_Model.Care_Third_phone; p_Model.POACareHomePhoneType = 3; }
+            else if (p_Model.Care_Third_phone_type == 2) { p_Model.CareWorkPhone = p_Model.Care_Third_phone; p_Model.POACareBusinessPhoneType = 3; }
+            else if (p_Model.Care_Third_phone_type == 3) { p_Model.CareCellPhone = p_Model.Care_Third_phone; p_Model.POACareCellPhoneType = 3; }
+
+            if (p_Model.Finance_First_phone_type == 1) { p_Model.FinanceHomePhone = p_Model.Finance_First_phone; p_Model.POAFinanceHomePhoneType = 1; }
+            else if (p_Model.Finance_First_phone_type == 2) { p_Model.FinanceWorkPhone = p_Model.Finance_First_phone; p_Model.POAFinanceBusinessPhoneType = 1; }
+            else if (p_Model.Finance_First_phone_type == 3) { p_Model.FinanceCellPhone = p_Model.Finance_First_phone; p_Model.POAFinanceCellPhoneType = 1; }
+
+            if (p_Model.Finance_Second_phone_type == 1) { p_Model.FinanceHomePhone = p_Model.Finance_Second_phone; p_Model.POAFinanceHomePhoneType = 2; }
+            else if (p_Model.Finance_Second_phone_type == 2) { p_Model.FinanceWorkPhone = p_Model.Finance_Second_phone; p_Model.POAFinanceBusinessPhoneType = 2; }
+            else if (p_Model.Finance_Second_phone_type == 3) { p_Model.FinanceCellPhone = p_Model.Finance_Second_phone; p_Model.POAFinanceCellPhoneType = 2; }
+
+            if (p_Model.Finance_Third_phone_type == 1) { p_Model.FinanceHomePhone = p_Model.Finance_Third_phone; p_Model.POAFinanceHomePhoneType = 3; }
+            else if (p_Model.Finance_Third_phone_type == 2) { p_Model.FinanceWorkPhone = p_Model.Finance_Third_phone; p_Model.POAFinanceBusinessPhoneType = 3; }
+            else if (p_Model.Finance_Third_phone_type == 3) { p_Model.FinanceCellPhone = p_Model.Finance_Third_phone; p_Model.POAFinanceCellPhoneType = 3; }
+
+            #endregion Phone arrangement in second Page
+
+
 
             //POACareStatus                     char
             //POACareType2Status                char
@@ -369,20 +461,6 @@ namespace QolaMVC.Controllers
             //POAFinanceBusinessPhoneType       Int16
             //POAFinanceCellPhoneType           Int16
 
-
-            int returnint2 = 0;
-            //for (int i = 0; i < Request.Files.Count; i++)
-            //{
-            //    HttpPostedFileBase file = Request.Files[i];
-            //    int fileSize = file.ContentLength;
-            //    string fileName = file.FileName;
-            //    string mimeType = file.ContentType;
-            //    System.IO.Stream fileContent = file.InputStream;
-            //    //file.SaveAs(Server.MapPath("~/Content/assets/Images/Home/" + home.Id + "/Resident_Image/") + resident.ID.ToString() + ".png");
-            //    //returnint2 = HomeDAL.Save_Image(home.Id, resident.ID);
-
-            //}
-
             p_Model.SuiteIds= SuiteDAL.GetSuiteID_By_SuiteNo_and_Homeid(p_Model.SuiteNo, home.Id);
 
             ResidentsDAL.SetUp_ResidentModel_ListItems(p_Model);
@@ -397,6 +475,24 @@ namespace QolaMVC.Controllers
             p_Model.Home = home;
             int[] RR = new int[2];
             RR=ResidentsDAL.AddNewResidentGeneralInfo(p_Model);
+            bool result1 = ResidentsDAL.UpdateResidentEmergencyContacts(p_Model);
+            bool result2 = ResidentsDAL.UpdateResidentGeneralInfo(p_Model);
+
+            bool result3 = ResidentsDAL.UpdateResidentMedicalInfo_mike(p_Model);
+
+
+            int returnint2 = 0;
+            for (int i = 0; i < Request.Files.Count; i++)
+            {
+                HttpPostedFileBase file = Request.Files[i];
+                int fileSize = file.ContentLength;
+                string fileName = file.FileName;
+                string mimeType = file.ContentType;
+                System.IO.Stream fileContent = file.InputStream;
+                file.SaveAs(Server.MapPath("~/Content/assets/Images/Home/" + home.Id + "/Resident_Image/") + RR[0].ToString() + ".png");
+                returnint2 = HomeDAL.Save_Image(home.Id, RR[0]);
+
+            }
             ResidentsDAL.update_checklist(user.ID,RR[0]);
 
 

@@ -381,6 +381,58 @@ namespace QolaMVC.DAL
             }
         }
 
+        public static bool UpdateResidentMedicalInfo_mike(ResidentModel updateResidentMedicalInfo)
+        {
+            string exception = string.Empty;
+            bool result = false;
+            int affected = 0;
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand(Constants.StoredProcedureName.USP_UPDATE_RESIDENT_MEDICAL_INFO, l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@id", updateResidentMedicalInfo.ID);
+                l_Cmd.Parameters.AddWithValue("@physician", updateResidentMedicalInfo.Physician);
+                l_Cmd.Parameters.AddWithValue("@physicianPhone", updateResidentMedicalInfo.PhysicianPhone);
+                l_Cmd.Parameters.AddWithValue("@allergies", updateResidentMedicalInfo.Alergies);
+                l_Cmd.Parameters.AddWithValue("@healthHistory", updateResidentMedicalInfo.HealthHistory);
+                l_Cmd.Parameters.AddWithValue("@AssFreq", updateResidentMedicalInfo.AssFrequency);
+                l_Cmd.Parameters.AddWithValue("@qolaResident", Convert.ToChar(updateResidentMedicalInfo.QolaResident));
+                l_Cmd.Parameters.AddWithValue("@funeralArguments", updateResidentMedicalInfo.FuneralArguments);
+                l_Cmd.Parameters.AddWithValue("@pharmaceSelf", updateResidentMedicalInfo.PharmaceSelf);
+                l_Cmd.Parameters.AddWithValue("@pharmaceNursing", updateResidentMedicalInfo.PharmaceNursing);
+                l_Cmd.Parameters.AddWithValue("@pharmaceFaxNumber", updateResidentMedicalInfo.PharmaceFaxNumber);
+                l_Cmd.Parameters.AddWithValue("@pharmacePhoneNo", updateResidentMedicalInfo.PharmacePhoneNo);
+                l_Cmd.Parameters.AddWithValue("@religionContact", updateResidentMedicalInfo.ReligionContact);
+                l_Cmd.Parameters.AddWithValue("@religionHomePhone", updateResidentMedicalInfo.ReligionHomePhone);
+                l_Cmd.Parameters.AddWithValue("@religionOffice", updateResidentMedicalInfo.ReligionOffice);
+                l_Cmd.Parameters.AddWithValue("@deleteRowIds", updateResidentMedicalInfo.DeleteRowAllergyId);
+                l_Cmd.Parameters.AddWithValue("@xmlInsertString", DBNull.Value);
+                l_Cmd.Parameters.AddWithValue("@xmlUpdateString", DBNull.Value);
+                l_Cmd.Parameters.AddWithValue("@modifiedby", updateResidentMedicalInfo.ModifiedBy.ID);
+                l_Cmd.Parameters.AddWithValue("@physicanFax", updateResidentMedicalInfo.PhysicianFaxNo);
+                l_Cmd.Parameters.AddWithValue("@currentDiagnose", updateResidentMedicalInfo.CurrentDiagnoses);
+                affected = l_Cmd.ExecuteNonQuery();
+                if (affected > 0)
+                {
+                    return true;
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                exception = "UpdateResidentMedicalInfo |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
         public static bool RemoveResident(int residentId)
         {
             string exception = string.Empty;
