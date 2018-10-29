@@ -3131,6 +3131,7 @@ namespace QolaMVC.DAL
         }
 
 
+
         public static Collection<SBSWTL> getSBSWTL(int p_ResidentId)
         {
             string exception = string.Empty;
@@ -3182,7 +3183,6 @@ namespace QolaMVC.DAL
 
             return l_Assessments;
         }
-
 
         public static List<SBSWTL_row> getSBSWTL_row(int SBSWTL_Table_ID)
         {

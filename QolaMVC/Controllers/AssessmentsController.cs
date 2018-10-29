@@ -1510,11 +1510,11 @@ namespace QolaMVC.Controllers
         public ActionResult PostfallClinicalMonitoringA(int linkid=0)
         {
             Postfall_Clinial_Monitoring_PartDAL objDet = new Postfall_Clinial_Monitoring_PartDAL();  
-             MasterDetails CustData = new MasterDetails(); 
-List<MasterDetails> MasterData = objDet.GetPostfall_clinial_monitoring_details_a1_by_id(linkid,"A").ToList();  
+            MasterDetails CustData = new MasterDetails(); 
+            List<MasterDetails> MasterData = objDet.GetPostfall_clinial_monitoring_details_a1_by_id(linkid,"A").ToList();  
             CustData.A1Model = MasterData[0].A1Model;  
             CustData.SplitMonitoring = MasterData[0].SplitMonitoring; 
-                return View(CustData); 
+            return View(CustData); 
             //return View();
 
         }

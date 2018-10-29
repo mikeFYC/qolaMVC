@@ -268,23 +268,23 @@ namespace QolaMVC.DAL
              SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
             try
             {
-               MasterDetails ObjMaster  = new MasterDetails();
+                MasterDetails ObjMaster  = new MasterDetails();
                 l_Conn.Open();
                     
-    DynamicParameters param=new DynamicParameters();
-param.Add("@pf_clinical_monitoring_part", pf_clinical_monitoring_part);   
-param.Add("@linkid", linkid);  
+                DynamicParameters param=new DynamicParameters();
+                param.Add("@pf_clinical_monitoring_part", pf_clinical_monitoring_part);   
+                param.Add("@linkid", linkid);  
 
-     var objDetails = SqlMapper.QueryMultiple(l_Conn, "sp_get_by_id_new_tbl_postfall_clinial_monitoring_details_a1",param,commandType: CommandType.StoredProcedure);
+                var objDetails = SqlMapper.QueryMultiple(l_Conn, "sp_get_by_id_new_tbl_postfall_clinial_monitoring_details_a1",param,commandType: CommandType.StoredProcedure);
          
-ObjMaster.A1Model = objDetails.Read<NEW_Postfall_Clinial_Monitoring_Part_Details_A1Model>().ToList();  
-            ObjMaster.SplitMonitoring = objDetails.Read<NEW_Postfall_Clinial_Monitoring_SplitModel>().ToList();  
+                ObjMaster.A1Model = objDetails.Read<NEW_Postfall_Clinial_Monitoring_Part_Details_A1Model>().ToList();  
+                ObjMaster.SplitMonitoring = objDetails.Read<NEW_Postfall_Clinial_Monitoring_SplitModel>().ToList();  
             
-            List<MasterDetails> CustomerObj = new List<MasterDetails>();  
-            CustomerObj.Add(ObjMaster);  
-            l_Conn.Close();  
+                List<MasterDetails> CustomerObj = new List<MasterDetails>();  
+                CustomerObj.Add(ObjMaster);  
+                l_Conn.Close();  
               
-            return CustomerObj; 
+                return CustomerObj; 
                
         }
             catch (Exception ex)
