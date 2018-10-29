@@ -1469,82 +1469,83 @@ namespace QolaMVC.Controllers
 
 
        
-        [HttpGet]
-        public string saveButtonMain(string [] arrayMain)
+    [HttpGet]
+    public string saveButtonMain(string [] arrayMain)
+    {
+        var home = (HomeModel)TempData["Home"];
+        var user = (UserModel)TempData["User"];
+        var resident = (ResidentModel)TempData["Resident"];
+        TempData.Keep("User");
+        TempData.Keep("Home");
+        TempData.Keep("Resident");
+        for(int a = 0; a < arrayMain.Length; a++)
         {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
-            var resident = (ResidentModel)TempData["Resident"];
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
-            for(int a = 0; a < arrayMain.Length; a++)
+            if (arrayMain[a]== "checked")
             {
-                if (arrayMain[a]== "checked")
-                {
-                    MasterDAL.save_button(a+1, user.ID, resident.ID);
-                }
-                else if (arrayMain[a] == "unchecked")
-                {
-                    MasterDAL.save_button(a+1, resident.ID);
-                }
+                MasterDAL.save_button(a+1, user.ID, resident.ID);
             }
-            string str = MasterDAL.get_checklist(resident.ID);
-            return str;
+            else if (arrayMain[a] == "unchecked")
+            {
+                MasterDAL.save_button(a+1, resident.ID);
+            }
         }
+        string str = MasterDAL.get_checklist(resident.ID);
+        return str;
+    }
 
 
-        [HttpGet]
-        public string get_checklist_data()
-        {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
-            var resident = (ResidentModel)TempData["Resident"];
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
-            string str = MasterDAL.get_checklist(resident.ID);
-            return str;
-        }
+    [HttpGet]
+    public string get_checklist_data()
+    {
+        var home = (HomeModel)TempData["Home"];
+        var user = (UserModel)TempData["User"];
+        var resident = (ResidentModel)TempData["Resident"];
+        TempData.Keep("User");
+        TempData.Keep("Home");
+        TempData.Keep("Resident");
+        string str = MasterDAL.get_checklist(resident.ID);
+        return str;
+    }
 
-        public ActionResult PostfallClinicalMonitoringA(int linkid=0)
-        {
-            Postfall_Clinial_Monitoring_PartDAL objDet = new Postfall_Clinial_Monitoring_PartDAL();  
-            MasterDetails CustData = new MasterDetails(); 
-            List<MasterDetails> MasterData = objDet.GetPostfall_clinial_monitoring_details_a1_by_id(linkid,"A").ToList();  
-            CustData.A1Model = MasterData[0].A1Model;  
-            CustData.SplitMonitoring = MasterData[0].SplitMonitoring; 
-            return View(CustData); 
-            //return View();
+    public ActionResult PostfallClinicalMonitoringA(int linkid=0)
+    {
+        Postfall_Clinial_Monitoring_PartDAL objDet = new Postfall_Clinial_Monitoring_PartDAL();  
+        MasterDetails CustData = new MasterDetails(); 
+        List<MasterDetails> MasterData = objDet.GetPostfall_clinial_monitoring_details_a1_by_id(linkid,"A").ToList();  
+        CustData.A1Model = MasterData[0].A1Model;  
+        CustData.SplitMonitoring = MasterData[0].SplitMonitoring; 
+        return View(CustData); 
+        //return View();
 
-        }
+    }
 
-   [HttpPost]
-         public string PostfallClinicalMonitoringA(MasterDetails data,string c_c,string edema_hands1,string edema_feet1,int linkid)
+
+        [HttpPost]
+        public string PostfallClinicalMonitoringA(MasterDetails data,string c_c,string edema_hands1,string edema_feet1,int linkid)
         {
                
-                 Postfall_Clinial_Monitoring_PartDAL.AddPartAPage2(data,c_c, edema_hands1, edema_feet1, linkid);
-                //return RedirectToAction("/");
+            Postfall_Clinial_Monitoring_PartDAL.AddPartAPage2(data,c_c, edema_hands1, edema_feet1, linkid);
+            //return RedirectToAction("/");
          
-            return "true"; 
-  
+            return "true";
         }
           
-         public JsonResult GetPostfallPage2PartB (int linkid)
+        public JsonResult GetPostfallPage2PartB (int linkid)
         {
-             MasterDetails l_model=Postfall_Clinial_Monitoring_PartDAL.GetPartAPage2(linkid);
+                MasterDetails l_model=Postfall_Clinial_Monitoring_PartDAL.GetPartAPage2(linkid);
              
-             return Json(l_model, JsonRequestBehavior.AllowGet);
+                return Json(l_model, JsonRequestBehavior.AllowGet);
 
         }
-         public ActionResult PostfallClinicalMonitoringB(int linkid=0)
+
+        public ActionResult PostfallClinicalMonitoringB(int linkid=0)
         {
             Postfall_Clinial_Monitoring_PartDAL objDet = new Postfall_Clinial_Monitoring_PartDAL();  
-             MasterDetails CustData = new MasterDetails(); 
-List<MasterDetails> MasterData = objDet.GetPostfall_clinial_monitoring_details_a1_by_id(linkid,"B").ToList();  
+                MasterDetails CustData = new MasterDetails(); 
+        List<MasterDetails> MasterData = objDet.GetPostfall_clinial_monitoring_details_a1_by_id(linkid,"B").ToList();  
             CustData.A1Model = MasterData[0].A1Model;  
             CustData.SplitMonitoring = MasterData[0].SplitMonitoring; 
-return View(CustData); 
+        return View(CustData); 
         }
 
    [HttpPost]
