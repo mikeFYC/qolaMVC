@@ -1,4 +1,4 @@
-﻿@model QolaMVC.ViewModels.ExcerciseActivityViewModel
+﻿@model QolaMVC.Models.SBSWTL
 
 @RenderPage("~/Views/Shared/_Header.cshtml")
 @RenderPage("~/Views/Shared/_SideBar.cshtml")
@@ -31,20 +31,16 @@
     }
 
     #assessment_table tbody tr td {
-        padding: 15px 20px 15px 20px !important;
+        padding: 15px 10px 15px 10px !important;
     }
 
     #assessment_table thead tr th {
-        padding: 5px 20px 5px 20px !important;
+        padding: 5px 10px 5px 10px !important;
     }
 
-    #assessment_table tbody tr td:first-child {
-        font-size: 1.4vw;
-    }
 
-    #assessment_table thead tr th {
-        font-size: 1vw;
-    }
+
+
 
     #HSEP_table tbody tr td input {
         padding: 2px !important;
@@ -170,7 +166,7 @@
                                             <option value="0"></option>
                                         }
                                     </select>
-                                    <button class="btn btn-primary" type="button" style="display:inline-block;margin-top:-6px" onclick="location.href='@Url.Action("Add_ExcerciseActivity_mike", "Assessments")'">New</button>
+                                    <button class="btn btn-primary" type="button" style="display:inline-block;margin-top:-6px" onclick="location.href='@Url.Action("", "Assessments")'">New</button>
                                 </div>
                             </div>
                         </div>
@@ -230,7 +226,7 @@
                                                 <th class="text-white text-center">Date & Time</th>
                                                 <th class="text-white text-center" colspan="3">Bath</th>
                                                 <th class="text-white text-center" colspan="3">Shower</th>
-                                                <th class="text-white text-center">Assisted by (Staff signature)</th>
+                                                <th class="text-white text-center" style="width:10vw;">Assisted by (Staff signature)</th>
                                             </tr>
                                             <tr>
                                                 <th class="text-white text-center"></th>
@@ -247,8 +243,22 @@
                                             @{
                                                 var index = int.Parse(TempData["index"].ToString());
                                             }
-                                            @Html.HiddenFor(m => Model.mike_single.Id)
-
+                                            @Html.HiddenFor(m => Model.ID)
+                                            @{
+                                                for (var a = 0; a < Model.SBSWTL_List.Count(); a++)
+                                                {
+                                                    <tr>
+                                                        <td>@Html.TextBoxFor(m => Model.SBSWTL_List[a].DateEntered, new { @class = "form-control" })</td>
+                                                        <td>@Html.TextBoxFor(m => Model.SBSWTL_List[a].Bath1, new { @class = "form-control" })</td>
+                                                        <td>@Html.TextBoxFor(m => Model.SBSWTL_List[a].Bath2, new { @class = "form-control" })</td>
+                                                        <td>@Html.TextBoxFor(m => Model.SBSWTL_List[a].Bath3, new { @class = "form-control" })</td>
+                                                        <td>@Html.TextBoxFor(m => Model.SBSWTL_List[a].Shower1, new { @class = "form-control" })</td>
+                                                        <td>@Html.TextBoxFor(m => Model.SBSWTL_List[a].Shower2, new { @class = "form-control" })</td>
+                                                        <td>@Html.TextBoxFor(m => Model.SBSWTL_List[a].Shower3, new { @class = "form-control" })</td>
+                                                        <td>@Html.TextBoxFor(m => Model.SBSWTL_List[a].userName, new { @class = "form-control" }) @Html.TextBoxFor(m => Model.SBSWTL_List[a].userNameType, new { @class = "form-control" })</td>
+                                                    </tr>
+                                                }
+                                            }
 
 
 

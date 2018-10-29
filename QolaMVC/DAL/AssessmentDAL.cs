@@ -3129,5 +3129,117 @@ namespace QolaMVC.DAL
             }
 
         }
+
+
+        public static Collection<SBSWTL> getSBSWTL(int p_ResidentId)
+        {
+            string exception = string.Empty;
+
+            Collection<SBSWTL> l_Assessments = new Collection<SBSWTL>();
+            SBSWTL l_Assessment = new SBSWTL();
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_SBSWTL_mike", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@residentID", p_ResidentId);
+                DataSet AssesmentsReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(AssesmentsReceive);
+                if (AssesmentsReceive.Tables[0].Rows.Count > 0)
+                {
+                    for (int index = 0; index <= AssesmentsReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_Assessment = new SBSWTL();
+                        l_Assessment.ID = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["ID"]);
+                        l_Assessment.residentID = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["residentID"]);
+                        l_Assessment.start_time = Convert.ToDateTime(AssesmentsReceive.Tables[0].Rows[index]["start_time"]);
+                        l_Assessment.modified_by = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["modified_by"]);
+                        l_Assessment.modified_on = Convert.ToDateTime(AssesmentsReceive.Tables[0].Rows[index]["modified_on"]);
+                        l_Assessments.Add(l_Assessment);
+                    }
+                }       
+            }
+            catch (Exception ex)
+            {
+                exception = "getSBSWTL |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+
+            for (int a = 0; a< l_Assessments.Count(); a++)
+            {
+                l_Assessments[a].SBSWTL_List = getSBSWTL_row(l_Assessments[a].ID);
+            }
+
+
+            return l_Assessments;
+        }
+
+
+        public static List<SBSWTL_row> getSBSWTL_row(int SBSWTL_Table_ID)
+        {
+            string exception = string.Empty;
+
+            List<SBSWTL_row> l_Assessments = new List<SBSWTL_row>();
+            SBSWTL_row l_Assessment;
+
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_SBSWTL_row_mike", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@SBSWTL_Table_ID", SBSWTL_Table_ID);
+                DataSet AssesmentsReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(AssesmentsReceive);
+                if (AssesmentsReceive.Tables[0].Rows.Count > 0)
+                {
+                    for (int index = 0; index <= AssesmentsReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_Assessment = new SBSWTL_row();
+                        l_Assessment.Id = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["Id"]);
+                        l_Assessment.SBSWTL_Table_ID = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["SBSWTL_Table_ID"]);
+                        l_Assessment.Residentid = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["Residentid"]);
+                        l_Assessment.row_index = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["row_index"]);
+                        l_Assessment.EnteredBy = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["EnteredBy"]);
+                        l_Assessment.userName = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["userName"]);
+                        l_Assessment.userNameType = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["userNameType"]);
+                        l_Assessment.DateEntered = Convert.ToDateTime(AssesmentsReceive.Tables[0].Rows[index]["DateEntered"]);
+                        l_Assessment.Bath1 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Bath1"]);
+                        l_Assessment.Bath2 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Bath2"]);
+                        l_Assessment.Bath3 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Bath3"]);
+                        l_Assessment.Shower1 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Shower1"]);
+                        l_Assessment.Shower2 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Shower2"]);
+                        l_Assessment.Shower3 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Shower3"]);
+                        l_Assessments.Add(l_Assessment);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                exception = "getSBSWTL_row |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+            return l_Assessments;
+        }
+
+
     }
 }

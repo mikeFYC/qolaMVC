@@ -485,19 +485,33 @@ namespace QolaMVC.Controllers
             ViewBag.User = user;
             ViewBag.Resident = resident;
             ViewBag.Home = home;
-            var vm = new ExcerciseActivityViewModel();
+            var vm = new Collection<SBSWTL>();
+            var vm_single = new SBSWTL();
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
-            vm.mike = AssessmentDAL.getmike(resident.ID);
-            if (vm.mike.Count == 0)
+            vm = AssessmentDAL.getSBSWTL(resident.ID);
+            if (vm.Count() == 0)
             {
-                vm.mike = new Collection<ExcerciseActivityDetailModel_mike>();
-                vm.mike.Add(new ExcerciseActivityDetailModel_mike());
+                vm.Add(new SBSWTL());
             }
+            for(int ind=0;ind< vm.Count(); ind++)
+            {
+                if (vm[ind].SBSWTL_List == null)
+                {
+                    List<SBSWTL_row> l_Assessments = new List<SBSWTL_row>();
+                    for (int g = 0; g < 16; g++)
+                    {
+                        SBSWTL_row l_Assessment = new SBSWTL_row();
+                        l_Assessments.Add(l_Assessment);
+                    }
+                    vm[ind].SBSWTL_List = l_Assessments;
+                }
+            }
+
             List<DateTime> l_AssessmentDates = new List<DateTime>();
-            foreach (var l_A in vm.mike)
+            foreach (var l_A in vm)
             {
                 l_AssessmentDates.Add(l_A.start_time);
             }
@@ -505,15 +519,15 @@ namespace QolaMVC.Controllers
             if (index == null || index == "")
             {
                 TempData["index"] = "0";
-                vm.mike_single = vm.mike[0];
+                vm_single = vm[0];
             }
             else
             {
                 TempData["index"] = index;
-                vm.mike_single = vm.mike[int.Parse(index)];
+                vm_single = vm[int.Parse(index)];
             }
             TempData.Keep("index");
-            return View(vm);
+            return View(vm_single);
         }
 
 
