@@ -477,7 +477,44 @@ namespace QolaMVC.Controllers
 
         #endregion
 
+        public ActionResult SBSWTL(string index)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+            var vm = new ExcerciseActivityViewModel();
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
 
+            vm.mike = AssessmentDAL.getmike(resident.ID);
+            if (vm.mike.Count == 0)
+            {
+                vm.mike = new Collection<ExcerciseActivityDetailModel_mike>();
+                vm.mike.Add(new ExcerciseActivityDetailModel_mike());
+            }
+            List<DateTime> l_AssessmentDates = new List<DateTime>();
+            foreach (var l_A in vm.mike)
+            {
+                l_AssessmentDates.Add(l_A.start_time);
+            }
+            ViewBag.AssessmentDates = l_AssessmentDates;
+            if (index == null || index == "")
+            {
+                TempData["index"] = "0";
+                vm.mike_single = vm.mike[0];
+            }
+            else
+            {
+                TempData["index"] = index;
+                vm.mike_single = vm.mike[int.Parse(index)];
+            }
+            TempData.Keep("index");
+            return View(vm);
+        }
 
 
 

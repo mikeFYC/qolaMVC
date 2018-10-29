@@ -191,12 +191,12 @@
 
     function goto_last() {
         document.getElementById("pills-home-tab").className = "nav-link";
-        document.getElementById("pills-profile-tab").className = "nav-link";
-        document.getElementById("pills-contact-tab").className = "nav-link";
+        //document.getElementById("pills-profile-tab").className = "nav-link";
+        //document.getElementById("pills-contact-tab").className = "nav-link";
         document.getElementById("pills-other-tab").className = "nav-link active";
         document.getElementById("pills-home").className = "tab-pane fade";
-        document.getElementById("pills-profile").className = "tab-pane fade";
-        document.getElementById("pills-contact").className = "tab-pane fade";
+        //document.getElementById("pills-profile").className = "tab-pane fade";
+        //document.getElementById("pills-contact").className = "tab-pane fade";
         document.getElementById("pills-other").className = "tab-pane fade show active";
     }
 
@@ -253,7 +253,8 @@
                             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                 <li class="nav-item">
                                     @*<a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">General Info</a>*@
-                                    <a class="nav-link active" id="pills-home-tab" href="#">General Info</a>
+                                    <a class="@TempData["tab1class"]" id="pills-home-tab" href="#">General Info</a>
+                                    
                                 </li>
                                 <li class="nav-item">
                                     @*<a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Emergency Contact</a>*@
@@ -265,7 +266,7 @@
                                 </li>
                                 <li class="nav-item">
                                     @*<a class="nav-link" id="pills-other-tab" data-toggle="pill" href="#pills-other" role="tab" aria-controls="pills-other" aria-selected="false">Other</a>*@
-                                    <a class="nav-link" id="pills-other-tab" href="#">Other</a>
+                                    <a class="@TempData["tab4class"]" id="pills-other-tab" href="#">Other</a>
                                 </li>
                             </ul>
                             <hr>
@@ -275,7 +276,7 @@
                                 <div class="tab-content" id="pills-tabContent">
 
 
-                                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                                    <div class="@TempData["body1class"]" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
 
                                         <div class="row">
                                             <div class="col-md-6">
@@ -518,19 +519,19 @@
                                                 <div class="form-group row">
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Health Card #<span class="required_sign">&nbsp;*</span></label>
                                                     <div class="col-md-7">
-                                                        @Html.TextBoxFor(m => m.MBhealthNumber, new { @class = "form-control", name = "MBhealthNumber", id = "MBhealthNumber" })
+                                                        @Html.TextBoxFor(m => m.MBhealthNumber, new { @class = "form-control", name = "MBhealthNumber", id = "MBhealthNumber", placeholder="Health Card" })
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Significant Other</label>
                                                     <div class="col-md-7">
-                                                        <input type="text" name="SignificatOther" class="form-control" id="SignificatOther">
+                                                        <input type="text" name="SignificatOther" class="form-control" id="SignificatOther" placeholder="Significant Other">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Anniversary Date</label>
                                                     <div class="col-md-7">
-                                                        <input type="date" name="AnniversaryDate" class="form-control" id="AnniversaryDate">(MM/DD/YYYY)
+                                                        <input type="date" name="AnniversaryDate" class="form-control" id="AnniversaryDate">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -551,7 +552,7 @@
                                                 <div class="form-group row">
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Education level-Other</label>
                                                     <div class="col-md-7">
-                                                        <input type="text" name="EducationLevelOther" class="form-control" id="staticEmail">
+                                                        <input type="text" name="EducationLevelOther" class="form-control" id="staticEmail" placeholder="Education level-Other">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -570,7 +571,7 @@
                                                 <div class="form-group row">
                                                     <label for="staticEmail" class="col-md-5 col-form-label">Primary Language</label>
                                                     <div class="col-md-7">
-                                                        <input type="text" name="OtherLanguage" class="form-control" id="staticEmail">
+                                                        <input type="text" name="OtherLanguage" class="form-control" id="staticEmail" placeholder="Primary Language">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -1405,14 +1406,14 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane fade" id="pills-other" role="tabpanel" aria-labelledby="pills-other-tab">
+                                    <div class="@TempData["body4class"]" id="pills-other" role="tabpanel" aria-labelledby="pills-other-tab">
                                         <div class="row">
                                             <div class="col-md-4"></div>
                                             <div class="col-md-4">
-                                                <button type="button" class="btn btn-danger btn-lg btnfull">Medication History</button><br>
+                                                <button type="button" class="btn btn-danger btn-lg btnfull" style="display:none;">Medication History</button><br>
                                                 <button type="button" class="btn btn-danger btn-lg btnfull" onclick="window.location.href='/Assessments/DietaryHistory2/?p_ResidentId='+@TempData["ResidentID"]">Dietary History</button><br>
                                                 <button type="button" class="btn btn-danger btn-lg btnfull" onclick="window.location.href='/Assessments/CarePlan2/?p_ResidentId='+@TempData["ResidentID"]">Resident Care Assessment</button><br>
-                                                <button type="button" class="btn btn-danger btn-lg btnfull">Resident Specific Goals</button><br>
+                                                <button type="button" class="btn btn-danger btn-lg btnfull" style="display:none;">Resident Specific Goals</button>@*<br>*@
                                                 <button type="button" class="btn btn-danger btn-lg btnfull" onclick="window.location.href='/Assessments/Activity2/?p_ResidentId='+@TempData["ResidentID"]">Activity Assessment</button><br>
                                                 <button type="button" class="btn btn-default btn-lg btnfull">Print QOLAFIED resident</button>
                                             </div>
@@ -1427,7 +1428,7 @@
                             </div>
                     </div>
                 </div>
-                <input id="hiddeninput" type="hidden" value="@TempData["LEVEL"]" />
+                <input id="hiddeninput" type="hidden" value="@TempData["level"]" />
                 <input id="hiddeninput2" type="hidden" value=@Model.SuiteNo />
                 <!-- END PLACE PAGE CONTENT HERE -->
             </div>
@@ -1456,6 +1457,12 @@
             //else {
             //    $("#AvailableSuites").attr("disabled", true);
             //}
+
+            //var level = $('#hiddeninput').val();
+            //if (level == "LAST") {
+            //    goto_last();
+            //}
+
 
             $("#AvailableSuites").attr("disabled", true);
 
@@ -1556,10 +1563,7 @@
                 }
             });
 
-            var level = $('#hiddeninput').val();
-            if (level == "LAST") {
-                goto_last();
-            }
+
 
             $('#gridCheck1').click(function () {
                 var phoneindex = $('#gridCheck1');

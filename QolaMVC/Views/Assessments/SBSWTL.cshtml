@@ -1,0 +1,341 @@
+﻿@model QolaMVC.ViewModels.ExcerciseActivityViewModel
+
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+
+<style>
+
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+
+    input[type=checkbox] {
+        /* Double-sized Checkboxes */
+        -ms-transform: scale(2); /* IE */
+        -moz-transform: scale(2); /* FF */
+        -webkit-transform: scale(2); /* Safari and Chrome */
+        -o-transform: scale(2); /* Opera */
+        padding: 10px;
+    }
+
+    /* Might want to wrap a span around your checkbox text */
+    .checkboxtext {
+        /* Checkbox text */
+        font-size: 110%;
+        display: inline;
+    }
+
+    #assessment_table tbody tr td {
+        padding: 15px 20px 15px 20px !important;
+    }
+
+    #assessment_table thead tr th {
+        padding: 5px 20px 5px 20px !important;
+    }
+
+    #assessment_table tbody tr td:first-child {
+        font-size: 1.4vw;
+    }
+
+    #assessment_table thead tr th {
+        font-size: 1vw;
+    }
+
+    #HSEP_table tbody tr td input {
+        padding: 2px !important;
+    }
+
+    #HSEP_table tbody tr td {
+        padding: 5px !important;
+    }
+    /*#ROW1 div div{
+        font-size:1.2vw;
+    }
+    #ROW2 div div input {
+        font-weight: bold;
+        font-size: 1.1vw;
+    }
+    #ROW2 div div input:hover {
+        background-color:grey;
+    }
+    #ROW2 div label {
+        font-size: 1.2vw;
+    }*/
+
+    #summary_table thead th {
+        font-size: 1.3vw;
+        font-weight: bold;
+    }
+
+    #summary_table tbody tr td label {
+        font-size: 1.3vw;
+        font-weight: bold;
+    }
+
+    #summary_table tbody tr td input {
+        font-size: 1.3vw;
+        font-weight: bold;
+    }
+
+        #summary_table tbody tr td input:hover {
+            background-color: grey;
+        }
+
+    #summary_table tbody tr td {
+        padding: 10px;
+    }
+</style>
+
+<script>
+    function formsubmit(ee) {
+        var index = $('#selectdate').val();
+        var number = $('#selectdate2').val();
+        if (window.location.href.includes("?")) {
+            var question_location = window.location.href.indexOf('?');
+            window.location.href = window.location.href.substring(0, question_location) + '?index='+index+"&number="+number;
+        }
+        else {
+            window.location.href = window.location.href + "?index=" + index+'&number='+number;
+        }
+    }
+
+    function TUG_CLICK(ee) {
+        var number = ee.getAttribute('number');
+        var ID = ee.getAttribute('name');
+        location.href = '@Url.Action("TUG_CLICK", "Assessments")?ID=' + ID + '&number=' + number;
+    }
+
+    function VPS_CLICK(ee) {
+        var number = ee.getAttribute('number');
+        var ID = ee.getAttribute('name');
+        location.href = '@Url.Action("VPS_CLICK", "Assessments")?ID=' + ID + '&number=' + number;
+    }
+
+</script>
+
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+
+    <!-- START PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+
+                        <div class="col-md-11">
+                            <h3>Exercise Activity</h3>
+                        </div>
+                        <div class="col-md-1">
+                            <a href="~/Reports/ExcerciseActivityReport" class="btn btn-primary"><i class="fa fa-file-pdf-o"></i> Print</a>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+            <div style="height: 60px;"></div>
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+                <div class="card">
+                    @using (Html.BeginForm("", "Assessments"))
+                    {
+
+                        <div class="card-block" id="details">
+                            <div class="">
+                                <div style="max-width:50%;">
+                                    <label style="font-size:1.3vw;display:inline-block;">Assessment History:</label>
+                                    <select name="AssessmentDate" id="selectdate" onchange="formsubmit(this)" style="width:12vw;height:30px;font-size:1.3vw;display:inline-block;">
+                                        @if (ViewBag.AssessmentDates != null && ViewBag.AssessmentDates[0].ToShortDateString() != "1/1/0001")
+                                        {
+
+                                            for (var ind = 0; ind < ((List<DateTime>)ViewBag.AssessmentDates).Count(); ind++)
+                                            {
+                                                <option value=@ind>@(((List<DateTime>)ViewBag.AssessmentDates)[ind].ToString("yyyy-MM-dd"))</option>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <option value="0"></option>
+                                        }
+                                    </select>
+                                    <button class="btn btn-primary" type="button" style="display:inline-block;margin-top:-6px" onclick="location.href='@Url.Action("Add_ExcerciseActivity_mike", "Assessments")'">New</button>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="card-block" id="assessment">
+                            <div class="row">
+                                <div class="row">
+
+                                    <div class="col-md-12">
+                                        <div class="col-md-1">
+                                        </div>
+                                        <div class="col-md-5">
+                                            <img src="~/Content/assets/img/logo (2).png" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h2 style="font-weight:bold;">@ViewBag.Home.Name</h2>
+                                        </div>
+                                    </div>
+                                    <br><br><br><br><br><br>
+                                    <div class="col-md-12 text-center">
+                                        <h2 style="font-weight:bold;">SAFE BATH/SHOWER WATER TEMPERATURE LOG</h2>
+                                    </div>
+                                    <br><br><br><br>
+                                    <div class="col-md-12">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-2">
+                                            <p class="" style="font-size:20px;margin-bottom:0;">Resident's Name:</p>
+                                        </div>
+                                        <div class="col-md-5" style="border-bottom-style:solid;margin-left:-2vw;">
+                                            <p class="text-center" style="font-size:20px;margin-bottom:0;">@ViewBag.Resident.FirstName @ViewBag.Resident.LastName </p>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <p class="text-center" style="font-size:20px;margin-bottom:0;">Suite #:</p>
+                                        </div>
+                                        <div class="col-md-2" style="border-bottom-style:solid;">
+                                            <p class="text-center" style="font-size:20px;margin-bottom:0;">@ViewBag.Resident.SuiteNo</p>
+                                        </div>
+
+                                    </div>
+                                    <br><br><br>
+                                    <div class="col-md-12 text-center">
+                                        <p style="font-size:16px">Staff Will ensure that water temperature is taken before it comes in contact with resident during a bath/shower</p>
+                                        <p style="font-size:16px">assist. Temperature for a therapeutic tub must be taken prior to the first bath of each day</p>
+                                    </div>
+                                    <br><br><br><br>
+                                    <div class="col-md-12 text-center">
+                                        <p style="font-size:25px;font-weight:bold;color:black;">SAFE WATER TEMPERATURE is minimun 38C to maximum 43C</p>
+                                    </div>
+                                    <br><br><br>
+
+
+                                    <table class="table table-bordered" id="assessment_table">
+                                        <thead class="bg-primary">
+                                            <tr>
+                                                <th class="text-white text-center">Date & Time</th>
+                                                <th class="text-white text-center" colspan="3">Bath</th>
+                                                <th class="text-white text-center" colspan="3">Shower</th>
+                                                <th class="text-white text-center">Assisted by (Staff signature)</th>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-white text-center"></th>
+                                                <th class="text-white text-center"><p>Check 1</p> Temp while filling tub Using hand held thermometer</th>
+                                                <th class="text-white text-center"><p>Check 2</p> Temp once tub is filled using hand held thermometer</th>
+                                                <th class="text-white text-center"><p>Check 3</p> Temp prior to resident going into the tub using staff forearm</th>
+                                                <th class="text-white text-center"><p>Check 1</p> Temp while shower is going using Card thermometer</th>
+                                                <th class="text-white text-center"><p>Check 2</p> Temp while shower is going using staff forearm</th>
+                                                <th class="text-white text-center"><p>Check 3</p> Temp prior to resident going into the shower (if not contraindicated) or staff forearm</th>
+                                                <th class="text-white text-center"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="font-size:1.5vw;">
+                                            @{
+                                                var index = int.Parse(TempData["index"].ToString());
+                                            }
+                                            @Html.HiddenFor(m => Model.mike_single.Id)
+
+
+
+
+                                        </tbody>
+                                    </table>
+
+
+
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <br>
+                                    <input type="submit" id="btnFinalSave" class="btn btn-danger btn-lg" name="FORM" value="SAVE" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <input id="hiddeninput1" type="hidden" value="@TempData["index"]" />
+
+                    }
+
+
+                </div>
+
+                <!-- END PLACE PAGE CONTENT HERE -->
+            </div>
+            <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+        @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+
+        <script>
+
+
+    $('form').submit(function (event) {
+        var firstdate = $('#selectdate option:selected').text()
+        if (firstdate != "") {
+            $("input").removeAttr("disabled");
+            form = this;
+            //event.preventDefault();
+            form.submit();
+        }
+        else {
+            tempAlert("New a Date First", 2000);
+            return false;
+        }
+    });
+
+
+
+
+    var index_date = $('#hiddeninput1').val();
+    $('#selectdate').val(index_date);
+    var number_date = $('#hiddeninput2').val();
+    $('#selectdate2').val(number_date);
+
+
+    var inputs_check = $('input[type=checkbox]');
+    for (var b = 0; b < inputs_check.length; b++) {
+        if (inputs_check[b].checked == true) {
+            inputs_check[b].disabled = true;
+        }
+    }
+    var inputs_text = $('input[type=text]');
+    for (var b = 0; b < inputs_text.length; b++) {
+        if (inputs_text[b].value != "" || inputs_text[b].parentElement.parentElement.id == "Sigiture") {
+            inputs_text[b].disabled = true;
+            inputs_text[b].style.color = "black";
+        }
+    }
+
+    var firstdate = $('#selectdate option:selected').text()
+    if (firstdate == "") {
+        $('input[type=text]').attr('disabled', 'true');
+        $('input[type=checkbox]').attr('disabled', 'true');
+
+    }
+    var seconddate = $('#selectdate2 option:selected').text()
+    if (seconddate == "") {
+        $('input[type=button]').attr('disabled', 'true');
+    }
+
+
+
+
+        </script>

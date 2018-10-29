@@ -221,13 +221,18 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             ViewBag.User = user;
             ViewBag.Home = home;
-            if (TempData["level"]==null || TempData["level"].ToString() == "")
+
+            TempData["tab1class"] = "nav-link active";
+            TempData["tab4class"] = "nav-link";
+            TempData["body1class"] = "tab-pane fade show active";
+            TempData["body4class"] = "tab-pane fade";
+
+            if (TempData["level"]!=null)
             {
-                TempData["LEVEL"] = "";
-            }
-            else
-            {
-                TempData["LEVEL"] = TempData["level"];
+                TempData["tab1class"] = "nav-link";
+                TempData["tab4class"] = "nav-link active";
+                TempData["body1class"] = "tab-pane fade";
+                TempData["body4class"] = "tab-pane fade show active";
             }
 
             if (TempData["ResidentID"] != null)
