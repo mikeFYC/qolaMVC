@@ -222,6 +222,7 @@ namespace QolaMVC.Controllers
             ViewBag.User = user;
             ViewBag.Home = home;
 
+
             TempData["tab1class"] = "nav-link active";
             TempData["tab4class"] = "nav-link";
             TempData["body1class"] = "tab-pane fade show active";
@@ -244,8 +245,15 @@ namespace QolaMVC.Controllers
             ResidentModel AA = new ResidentModel();
             ResidentsDAL.SetUp_ResidentModel_ListItems(AA);
 
-
-            return View(AA);
+            ResidentModel p_Model = (ResidentModel)TempData["p_Model"];
+            if (p_Model == null)
+            {
+                return View(AA);
+            }
+            else
+            {
+                return View(p_Model);
+            }
         }
 
         [HttpPost]
@@ -506,7 +514,8 @@ namespace QolaMVC.Controllers
             TempData.Keep("ResidentID");
 
             //ResidentsDAL.update_checklist(user.ID,RR[0]);
-
+            TempData["p_Model"] = p_Model;
+            TempData.Keep("p_Model");
 
             return RedirectToAction("AddNewResident");
         }
