@@ -14,6 +14,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Web.Script;
 using System.Web.Script.Serialization;
+using System.Reflection;
+using Newtonsoft.Json;
 
 namespace QolaMVC.Controllers
 {
@@ -1211,6 +1213,172 @@ namespace QolaMVC.Controllers
             p_Model.EnteredBy = user;
             p_Model.Resident = resident;
             p_Model.DateEntered = DateTime.Now;
+
+            #region Change Null String to Empty ""
+
+            foreach (PropertyInfo prop in typeof(PlanOfCareModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_Model) == null) { prop.SetValue(p_Model, ""); }
+                }
+            }
+            foreach (PropertyInfo prop in typeof(CarePlanVitalSignsModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_Model.VitalSigns) == null) { prop.SetValue(p_Model.VitalSigns, ""); }
+                }
+            }
+            foreach (PropertyInfo prop in typeof(CarePlanPersonalHygieneModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_Model.PersonalHygiene) == null) { prop.SetValue(p_Model.PersonalHygiene, ""); }
+                }
+            }
+            foreach (PropertyInfo prop in typeof(CarePlanAssistanceWithModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_Model.AssistanceWith) == null) { prop.SetValue(p_Model.AssistanceWith, ""); }
+                }
+            }
+            foreach (PropertyInfo prop in typeof(CarePlanMobilityModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_Model.Mobility) == null) { prop.SetValue(p_Model.Mobility, ""); }
+                }
+            }
+            foreach (PropertyInfo prop in typeof(CarePlanSafetyModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_Model.Safety) == null) { prop.SetValue(p_Model.Safety, ""); }
+                }
+            }
+            foreach (PropertyInfo prop in typeof(CarePlanMealEscortModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_Model.MealEscort) == null) { prop.SetValue(p_Model.MealEscort, ""); }
+                }
+            }
+            foreach (PropertyInfo prop in typeof(CarePlanBehaviourModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_Model.Behaviour) == null) { prop.SetValue(p_Model.Behaviour, ""); }
+                }
+            }
+            foreach (PropertyInfo prop in typeof(CarePlanCognitiveFunctionModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_Model.CognitiveFunction) == null) { prop.SetValue(p_Model.CognitiveFunction, ""); }
+                }
+            }
+            foreach (PropertyInfo prop in typeof(CarePlanOrientationModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_Model.Orientation) == null) { prop.SetValue(p_Model.Orientation, ""); }
+                }
+            }
+            foreach (PropertyInfo prop in typeof(CarePlanNutritionModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_Model.Nutrition) == null) { prop.SetValue(p_Model.Nutrition, ""); }
+                }
+            }
+            foreach (PropertyInfo prop in typeof(CarePlanMealsModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_Model.Meals) == null) { prop.SetValue(p_Model.Meals, ""); }
+                }
+            }
+            foreach (PropertyInfo prop in typeof(CarePlanEliminationModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_Model.Elimination) == null) { prop.SetValue(p_Model.Elimination, ""); }
+                }
+            }
+            foreach (PropertyInfo prop in typeof(CarePlanToiletingModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_Model.Toileting) == null) { prop.SetValue(p_Model.Toileting, ""); }
+                }
+            }
+            foreach (PropertyInfo prop in typeof(CarePlanMedication).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_Model.Medication) == null) { prop.SetValue(p_Model.Medication, ""); }
+                }
+            }
+            foreach (PropertyInfo prop in typeof(CarePlanSensoryAbilitiesModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_Model.SensoryAbilities) == null) { prop.SetValue(p_Model.SensoryAbilities, ""); }
+                }
+            }
+            foreach (PropertyInfo prop in typeof(CarePlanWoundCareModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_Model.WoundCare) == null) { prop.SetValue(p_Model.WoundCare, ""); }
+                }
+            }
+            foreach (PropertyInfo prop in typeof(CarePlanSkinCareModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_Model.SkinCare) == null) { prop.SetValue(p_Model.SkinCare, ""); }
+                }
+            }
+            foreach (PropertyInfo prop in typeof(CarePlanSpecialNeedsModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_Model.SpecialNeeds) == null) { prop.SetValue(p_Model.SpecialNeeds, ""); }
+                }
+            }
+            foreach (PropertyInfo prop in typeof(CarePlanSpecialEquipmentModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_Model.SpecialEquipment) == null) { prop.SetValue(p_Model.SpecialEquipment, ""); }
+                }
+            }
+            foreach (PropertyInfo prop in typeof(CarePlanFamilySupportModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_Model.FamilySupportModel) == null) { prop.SetValue(p_Model.FamilySupportModel, ""); }
+                }
+            }
+            foreach (PropertyInfo prop in typeof(CarePlanImmunizationModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_Model.Immunization) == null) { prop.SetValue(p_Model.Immunization, ""); }
+                }
+            }
+            foreach (PropertyInfo prop in typeof(CarePlanInfectiousDiseasesModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_Model.InfectiousDiseases) == null) { prop.SetValue(p_Model.InfectiousDiseases, ""); }
+                }
+            }
+
+            #endregion
 
             CarePlanDAL.AddCarePlan(p_Model);
             return RedirectToAction("CarePlan");
