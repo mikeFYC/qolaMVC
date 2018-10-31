@@ -265,6 +265,9 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             ViewBag.User = user;
 
+            if (p_Model.DNRStatusIndex == true) p_Model.DNRStatus = 'Y';
+            if (p_Model.FullCodeStatusIndex == true)  p_Model.FullCodeStatus = 'Y'; 
+
             if (p_Model.FirstName == null) p_Model.FirstName = "";
             if (p_Model.LastName == null) p_Model.LastName = "";
             if (p_Model.ShortName == null) p_Model.ShortName = "";
@@ -493,6 +496,10 @@ namespace QolaMVC.Controllers
                     System.IO.Stream fileContent = file.InputStream;
                     file.SaveAs(Server.MapPath("~/Content/assets/Images/Home/" + home.Id + "/Resident_Image/") + RR[0].ToString() + ".png");
                     returnint2 = HomeDAL.Save_Image(home.Id, RR[0]);
+
+                    TempData["Photo"] = "TRUE";
+                    TempData.Keep("Photo");
+                    p_Model.ResidentImage= "Images/Home/" + home.Id + "/Resident_Image/" +RR[0].ToString() + ".png";
                 }
 
             }

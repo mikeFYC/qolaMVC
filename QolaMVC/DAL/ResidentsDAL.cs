@@ -2728,7 +2728,52 @@ namespace QolaMVC.DAL
                 new SelectListItem { Value = "Poor", Text = "Poor" },
                 new SelectListItem { Value = "With Cueing", Text = "With Cueing" },
                 new SelectListItem { Value = "No", Text = "No" },
-
+            };
+            AAA.Number_of_childrenList = new[]{
+                new SelectListItem { Value = "", Text = "-- Select --" },
+                new SelectListItem { Value = "1", Text = "1" },
+                new SelectListItem { Value = "2", Text = "2" },
+                new SelectListItem { Value = "3", Text = "3" },
+                new SelectListItem { Value = "4", Text = "4" },
+                new SelectListItem { Value = "5", Text = "5" },
+            };
+            AAA.Number_of_grandchildrenList = new[]{
+                new SelectListItem { Value = "", Text = "-- Select --" },
+                new SelectListItem { Value = "1", Text = "1" },
+                new SelectListItem { Value = "2", Text = "2" },
+                new SelectListItem { Value = "3", Text = "3" },
+                new SelectListItem { Value = "4", Text = "4" },
+                new SelectListItem { Value = "5", Text = "5" },
+            };
+            AAA.PhoneTypeList = new[]{
+                new SelectListItem { Value = "", Text = "-- Select --" },
+                new SelectListItem { Value = "1", Text = "Home" },
+                new SelectListItem { Value = "2", Text = "Work" },
+                new SelectListItem { Value = "3", Text = "Mobile" },
+                new SelectListItem { Value = "4", Text = "Other" },
+            };
+            AAA.HandDominanceList = new[]{
+                new SelectListItem { Value = "", Text = "-- Select --" },
+                new SelectListItem { Value = "1", Text = "Left" },
+                new SelectListItem { Value = "2", Text = "Right" },
+            };
+            AAA.AbilityToWriteList = new[]{
+                new SelectListItem { Value = "", Text = "-- Select --" },
+                new SelectListItem { Value = "Very Well", Text = "Very Well" },
+                new SelectListItem { Value = "Good", Text = "Good" },
+                new SelectListItem { Value = "Poor", Text = "Poor" },
+                new SelectListItem { Value = "With Cueing", Text = "With Cueing" },
+                new SelectListItem { Value = "No", Text = "No" },
+            };
+            AAA.EducationLevelList = new[]{
+                new SelectListItem { Value = "", Text = "-- Select --" },
+                new SelectListItem { Value = "Prefer not to say", Text = "Prefer not to say" },
+                new SelectListItem { Value = "High School Diploma", Text = "High School Diploma" },
+                new SelectListItem { Value = "Some School Diploma", Text = "Some School Diploma" },
+                new SelectListItem { Value = "Vocational/Technical Training", Text = "Vocational/Technical Training" },
+                new SelectListItem { Value = "Some College/ University", Text = "Some College/ University" },
+                new SelectListItem { Value = "College/ University Graduate", Text = "College/ University Graduate" },
+                new SelectListItem { Value = "Other", Text = "Other" },
             };
         }
 

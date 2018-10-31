@@ -1099,7 +1099,12 @@ namespace QolaMVC.Models
         public IEnumerable<SelectListItem> SuiteNoList { get; set; }
         public IEnumerable<SelectListItem> ReligiousAffiliationList { get; set; }
         public IEnumerable<SelectListItem> AbilityToReadList { get; set; }
-
+        public IEnumerable<SelectListItem> Number_of_childrenList { get; set; }
+        public IEnumerable<SelectListItem> Number_of_grandchildrenList { get; set; }
+        public IEnumerable<SelectListItem> PhoneTypeList { get; set; }
+        public IEnumerable<SelectListItem> HandDominanceList { get; set; }
+        public IEnumerable<SelectListItem> AbilityToWriteList { get; set; }
+        public IEnumerable<SelectListItem> EducationLevelList { get; set; }
 
 
         public bool callHospital_replacement { get; set; }
@@ -1139,6 +1144,9 @@ namespace QolaMVC.Models
         public int Finance_Second_phone_type { get; set; }
         public int Finance_Third_phone_type { get; set; }
 
+        public bool DNRStatusIndex { get; set; }
+        public bool FullCodeStatusIndex { get; set; }
+        public bool NoPhoneNumberIndex { get; set; }
 
 
 
