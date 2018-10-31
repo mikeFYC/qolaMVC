@@ -508,6 +508,8 @@ namespace QolaMVC.DAL
                         l_Assessment.Pulse = Convert.ToString(dataReceive.Tables[0].Rows[index]["Pulse"]);
                         l_Assessment.PulseDateCompleted = Convert.ToString(dataReceive.Tables[0].Rows[index]["Pulse_DateCompleted"]);
                         l_Assessment.PulseRegular = Convert.ToString(dataReceive.Tables[0].Rows[index]["PulseRegular"]);
+                        l_Assessment.O2_sat = Convert.ToString(dataReceive.Tables[0].Rows[index]["O2_sat(%)"]);
+                        l_Assessment.O2_sat_Date = Convert.ToString(dataReceive.Tables[0].Rows[index]["O2_sat_Date"]);
                     }
                 }
                 return l_Assessment;
