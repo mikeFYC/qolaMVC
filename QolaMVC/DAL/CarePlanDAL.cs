@@ -41,7 +41,7 @@ namespace QolaMVC.DAL
                     }
 
                     //VITAL SIGNS
-                    SqlCommand l_Cmd_VitalSigns = new SqlCommand("spAB_Add_PlanOfCare_VitalSigns", l_Conn);
+                    SqlCommand l_Cmd_VitalSigns = new SqlCommand("spAB_Add_PlanOfCare_VitalSigns_mike", l_Conn);
                     // l_Conn.Open();
                     l_Cmd_VitalSigns.CommandType = System.Data.CommandType.StoredProcedure;
                     l_Cmd_VitalSigns.Parameters.AddWithValue("@CarePlanId", l_AssessmentId);
@@ -59,6 +59,8 @@ namespace QolaMVC.DAL
                     l_Cmd_VitalSigns.Parameters.AddWithValue("@Pulse", p_Model.VitalSigns.Pulse);
                     l_Cmd_VitalSigns.Parameters.AddWithValue("@Pulse_DateCompleted", p_Model.VitalSigns.PulseDateCompleted);
                     l_Cmd_VitalSigns.Parameters.AddWithValue("@PulseRegular", p_Model.VitalSigns.PulseRegular);
+                    l_Cmd_VitalSigns.Parameters.AddWithValue("@O2_sat", p_Model.VitalSigns.O2_sat);
+                    l_Cmd_VitalSigns.Parameters.AddWithValue("@O2_sat_Date", p_Model.VitalSigns.O2_sat_Date);
                     l_Cmd_VitalSigns.ExecuteNonQuery();
 
                     //Personal Hygiene

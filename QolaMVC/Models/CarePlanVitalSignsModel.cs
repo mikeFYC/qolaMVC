@@ -23,5 +23,8 @@ namespace QolaMVC.Models
         public string Pulse { get; set; }
         public string PulseDateCompleted { get; set; }
         public string PulseRegular { get; set; }
+
+        public string O2_sat { get; set; }
+        public string O2_sat_Date { get; set; }
     }
 }
