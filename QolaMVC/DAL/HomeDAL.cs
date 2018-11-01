@@ -1829,7 +1829,7 @@ namespace QolaMVC.DAL
 
 
 
-        public static int Save_Archive(int userid, int homeid, int redidentid, string suiteno, int occupancy, DateTime returndate , string notes)
+        public static int Save_Archive(int userid, int homeid, int redidentid, string suiteno, int occupancy, DateTime returndate , string notes,int status)
         {
             try
             {
@@ -1845,6 +1845,7 @@ namespace QolaMVC.DAL
                     cmdGARead.Parameters.AddWithValue("@redidentid", redidentid);
                     cmdGARead.Parameters.AddWithValue("@suiteno", suiteno);
                     cmdGARead.Parameters.AddWithValue("@occupancy", occupancy);
+                    cmdGARead.Parameters.AddWithValue("@status", status);
                     cmdGARead.Parameters.AddWithValue("@returndate", returndate);
                     cmdGARead.Parameters.AddWithValue("@notes", notes);
                     cmdGARead.Parameters.Add("@returnint", SqlDbType.VarChar, 30);

@@ -20,6 +20,8 @@ namespace QolaMVC.Models
         public string homeid { get; set; }
         public string occuID { get; set; }
 
+        public string reason { get; set; }
+
 
     }
 }

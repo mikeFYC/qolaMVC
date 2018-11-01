@@ -31,14 +31,14 @@
             <div class="jumbotron w-100" style="position: fixed; z-index: 400">
                 <div class="container-fluid container-fixed-lg">
                     <!-- <div class="inner"> -->
-                    <div class="row align-items-center">
-                        <div class="col-md-8">
+                    <div class="align-items-center" style="width:100% !important;">
+                        <div class="col-md-9">
                             <h3>Resident Profile</h3>
                         </div>
                         @{
                             if (@TempData["archive"].ToString() == "YES")
                             {
-                                <div id="Resident_Archive_label" class="row align-items-center" style="margin-left:12vw;border:black solid;padding-left:1vw;padding-right:1vw;">
+                                <div id="Resident_Archive_label" class="align-items-center" style="float:right;border:black solid;padding-left:1vw;padding-right:1vw;">
                                     <h3>Resident Archive</h3>
                                 </div>
                             }
@@ -393,27 +393,27 @@
                                                         </tr>
                                                         <tr>
                                                             <td>Primary Contact </td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
+                                                            <td>@Model.First_phone1</td>
+                                                            <td>@Model.First_phone2</td>
+                                                            <td>@Model.First_phone3</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Secondary Contact </td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
+                                                            <td>@Model.Second_phone1</td>
+                                                            <td>@Model.Second_phone2</td>
+                                                            <td>@Model.Second_phone3</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Tertiary Contact </td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
+                                                            <td>@Model.Third_phone1</td>
+                                                            <td>@Model.Third_phone2</td>
+                                                            <td>@Model.Third_phone3</td>
                                                         </tr>
                                                         <tr>
                                                             <td>E-Mail</td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
+                                                            <td>@Model.Email1</td>
+                                                            <td>@Model.Email2</td>
+                                                            <td>@Model.Email3</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -435,17 +435,19 @@
                                                             <td class="text-center"><b>Reason</b></td>
                                                         </tr>
                                                         @{
-
-                                                        }
-                                                        <tr>
-                                                            <td>1</td>
-                                                            <td>Sample</td>
-                                                            <td>1</td>
-                                                            <td>10-26-2015</td>
-                                                            <td></td>
-                                                            <td>Single</td>
-                                                            <td>New</td>
+                                                            for (var rd = 0;rd<@ViewBag.TableSH.Count;rd++)
+                                                            {
+                                                        <tr id=@ViewBag.TableSH[rd].SHid>
+                                                            <td>@(rd + 1)</td>
+                                                            <td>@ViewBag.TableSH[rd].homename</td>
+                                                            <td>@ViewBag.TableSH[rd].suiteno</td>
+                                                            <td>@ViewBag.TableSH[rd].movein.ToString()</td>
+                                                            <td>@ViewBag.TableSH[rd].moveout.ToString()</td>
+                                                            <td>@ViewBag.TableSH[rd].occupancy</td>
+                                                            <td>@ViewBag.TableSH[rd].reason</td>
                                                         </tr>
+                                                            }
+                                                        }
 
                                                     </tbody>
                                                 </table>
@@ -814,7 +816,7 @@
                                                             @*<td class="text-center"><b>Signature</b></td>*@
                                                         </tr>
                                                         @{
-                                                            int i = 1;
+                                                                int i = 1;
                                                             var progressNotes = (IEnumerable<QolaMVC.Models.ProgressNotesModel>)ViewBag.ProgressNotes;
                                                             foreach (var p in progressNotes)
                                                             {

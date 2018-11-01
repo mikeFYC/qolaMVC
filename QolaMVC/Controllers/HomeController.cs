@@ -125,6 +125,51 @@ namespace QolaMVC.Controllers
             var resident = ResidentsDAL.GetResidentById(p_ResidentId);
             var progressNotes = ProgressNotesDAL.GetProgressNotesCollections(resident.ID, DateTime.Now, DateTime.Now, "A");
 
+            #region Change Home Work Cell back to First Second and Third Phone
+
+            if (resident.HomePhoneType1 == 1){resident.First_phone1 = resident.HomePhone1;resident.First_phone_type1 = 1;}
+            if(resident.HomePhoneType1 == 2){resident.Second_phone1 = resident.HomePhone1;resident.Second_phone_type1 = 1;}
+            if (resident.HomePhoneType1 == 3){resident.Third_phone1 = resident.HomePhone1;resident.Third_phone_type1 = 1;}
+
+            if (resident.HomePhoneType2 == 1){resident.First_phone2 = resident.HomePhone2;resident.First_phone_type2 = 1;}
+            if (resident.HomePhoneType2 == 2){resident.Second_phone2 = resident.HomePhone2;resident.Second_phone_type2 = 1;}
+            if (resident.HomePhoneType2 == 3){resident.Third_phone2 = resident.HomePhone2;resident.Third_phone_type2 = 1;}
+
+            if (resident.HomePhoneType3 == 1){resident.First_phone3 = resident.HomePhone3;resident.First_phone_type3 = 1;}
+            if (resident.HomePhoneType3 == 2){resident.Second_phone3 = resident.HomePhone3;resident.Second_phone_type3 = 1;}
+            if (resident.HomePhoneType3 == 3){resident.Third_phone3 = resident.HomePhone3;resident.Third_phone_type3 = 1;}
+
+
+
+            if (resident.BusinessPhoneType1 == 1) { resident.First_phone1 = resident.BusinessPhone1; resident.First_phone_type1 = 2; }
+            if (resident.BusinessPhoneType1 == 2) { resident.Second_phone1 = resident.BusinessPhone1; resident.Second_phone_type1 = 2; }
+            if (resident.BusinessPhoneType1 == 3) { resident.Third_phone1 = resident.BusinessPhone1; resident.Third_phone_type1 = 2; }
+
+            if (resident.BusinessPhoneType2 == 1) { resident.First_phone2 = resident.BusinessPhone2; resident.First_phone_type2 = 2; }
+            if (resident.BusinessPhoneType2 == 2) { resident.Second_phone2 = resident.BusinessPhone2; resident.Second_phone_type2 = 2; }
+            if (resident.BusinessPhoneType2 == 3) { resident.Third_phone2 = resident.BusinessPhone2; resident.Third_phone_type2 = 2; }
+
+            if (resident.BusinessPhoneType3 == 1) { resident.First_phone3 = resident.BusinessPhone3; resident.First_phone_type3 = 2; }
+            if (resident.BusinessPhoneType3 == 2) { resident.Second_phone3 = resident.BusinessPhone3; resident.Second_phone_type3 = 2; }
+            if (resident.BusinessPhoneType3 == 3) { resident.Third_phone3 = resident.BusinessPhone3; resident.Third_phone_type3 = 2; }
+
+
+
+            if (resident.CellPhoneType1 == 1) { resident.First_phone1 = resident.CellPhone1; resident.First_phone_type1 = 3; }
+            if (resident.CellPhoneType1 == 2) { resident.Second_phone1 = resident.CellPhone1; resident.Second_phone_type1 = 3; }
+            if (resident.CellPhoneType1 == 3) { resident.Third_phone1 = resident.CellPhone1; resident.Third_phone_type1 = 3; }
+
+            if (resident.CellPhoneType2 == 1) { resident.First_phone2 = resident.CellPhone2; resident.First_phone_type2 = 3; }
+            if (resident.CellPhoneType2 == 2) { resident.Second_phone2 = resident.CellPhone2; resident.Second_phone_type2 = 3; }
+            if (resident.CellPhoneType2 == 3) { resident.Third_phone2 = resident.CellPhone2; resident.Third_phone_type2 = 3; }
+
+            if (resident.CellPhoneType3 == 1) { resident.First_phone3 = resident.CellPhone3; resident.First_phone_type3 = 3; }
+            if (resident.CellPhoneType3 == 2) { resident.Second_phone3 = resident.CellPhone3; resident.Second_phone_type3 = 3; }
+            if (resident.CellPhoneType3 == 3) { resident.Third_phone3 = resident.CellPhone3; resident.Third_phone_type3 = 3; }
+
+            #endregion
+
+
             ViewBag.Message = TempData["Message"];
 
             TempData["Resident"] = resident;
@@ -142,6 +187,8 @@ namespace QolaMVC.Controllers
             TempData["NOTE"] = "NO";
             TempData["archive"] = "NO";
             TempData["pass"] = "";
+
+            ViewBag.TableSH = update_Suite_Handler_Table.get_innerHTML_temperary2(resident.ID);
 
             return View(resident);
         }
@@ -248,6 +295,8 @@ namespace QolaMVC.Controllers
             ResidentModel p_Model = (ResidentModel)TempData["p_Model"];
             if (p_Model == null)
             {
+                AA.BirthDate = DateTime.Now;
+                AA.MoveInDate = DateTime.Now;
                 return View(AA);
             }
             else
@@ -3218,6 +3267,12 @@ namespace QolaMVC.Controllers
             string reason = Request.Form["reason"].ToString();
             string notes = Request.Form["notes"].ToString();
 
+            int status;
+            if (reason == "Personal Leave") status = 12;
+            else if (reason == "Medical Leave") status = 13;
+            else if (reason == "Reason Unknown") status = 14;
+            else status = 0;
+
             notes = "Reason: " + reason + "; Notes: " + notes;
 
             if (update_Suite_Handler_Table.check_date_validation(returndate) == false && user.ID != 1338 && user.ID != 1346)
@@ -3237,7 +3292,7 @@ namespace QolaMVC.Controllers
                     System.IO.Stream fileContent = file.InputStream;
                     file.SaveAs(Server.MapPath("~/Content/assets/Images/Home/" + home.Id + "/Resident_Image/") + resident.ID.ToString() + ".png");
                     returnint2 = HomeDAL.Save_Image(home.Id, resident.ID);
-                    returnint1 = HomeDAL.Save_Archive(user.ID, home.Id, resident.ID, suiteno, occu, returndate, notes);
+                    returnint1 = HomeDAL.Save_Archive(user.ID, home.Id, resident.ID, suiteno, occu, returndate, notes,status);
 
                 }
                 if (returnint1 == 1 && returnint2 == 1)

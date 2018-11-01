@@ -444,6 +444,24 @@ namespace QolaMVC.DAL
                     AA.SHid = rd[8].ToString();
                     AA.homeid = rd[9].ToString();
                     AA.occuID = rd[10].ToString();
+                    if (AA.status == "1") AA.reason = "Single suite";
+                    else if (AA.status == "2") AA.reason = "Double suite";
+                    else if (AA.status == "3") AA.reason = "Triple suite";
+                    else if (AA.status == "4") AA.reason = "Transfer to another ASC Home";
+                    else if (AA.status == "5") AA.reason = "End of Lease";
+                    else if (AA.status == "6") AA.reason = "Palliative care";
+                    else if (AA.status == "7") AA.reason = "LTC";
+                    else if (AA.status == "8") AA.reason = "Transfer to Other Retirement home";
+                    else if (AA.status == "9") AA.reason = " Passed Away";
+                    else if (AA.status == "10") AA.reason = "Other";
+                    else if (AA.status == "11") AA.reason = "Hospitalization";
+                    else if (AA.status == "12") AA.reason = "Personal Leave";
+                    else if (AA.status == "13") AA.reason = "Medical Leave";
+                    else if (AA.status == "14") AA.reason = "Reason Unknown";
+                    else if (AA.status == "15") AA.reason = "New Resident";
+                    else  AA.reason = "";
+                   
+
                     AAlist.Add(AA);
                 }
             conn.Close();
