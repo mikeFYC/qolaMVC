@@ -58,14 +58,14 @@
                 <div class="card">
                     <div class="card-block">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-6" style="width:48% !important">
                                 <div class="row">
                                     <div class="col-md-4">
                                         <img id="image" src="~/Content/assets/@Model.ResidentImage" class="img-responsive">
                                         <button id="rotatebutton" class="btn btn-default btn-group-sm"><i class="fa fa-rotate-right"></i></button>
                                         <button id="rotatebutton2" class="btn btn-default btn-group-sm"><i class="fa fa-rotate-left"></i></button>
                                     </div>
-                                    <div class="col-md-8 pl-4">
+                                    <div class="col-md-8">
                                         <br>
                                         <div class="row">
                                             <div class="col-md-6">
@@ -89,7 +89,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6 text-right">
+                            <div class="col-md-6 text-right" style="width:48% !important">
                                 <div class="Row" style="padding: 5px;">
                                     <a href="/Reports/CarePlan" style="padding: 5px;" class="btn btn-danger">Print Emergency Resident Details</a>
                                 </div>
@@ -435,8 +435,10 @@
                                                             <td class="text-center"><b>Reason</b></td>
                                                         </tr>
                                                         @{
-                                                            for (var rd = 0;rd<@ViewBag.TableSH.Count;rd++)
+                                                            if (@ViewBag.TableSH != null)
                                                             {
+                                                                for (var rd = 0; rd < @ViewBag.TableSH.Count; rd++)
+                                                                {
                                                         <tr id=@ViewBag.TableSH[rd].SHid>
                                                             <td>@(rd + 1)</td>
                                                             <td>@ViewBag.TableSH[rd].homename</td>
@@ -446,8 +448,9 @@
                                                             <td>@ViewBag.TableSH[rd].occupancy</td>
                                                             <td>@ViewBag.TableSH[rd].reason</td>
                                                         </tr>
+                                                                    }
+                                                                }
                                                             }
-                                                        }
 
                                                     </tbody>
                                                 </table>
