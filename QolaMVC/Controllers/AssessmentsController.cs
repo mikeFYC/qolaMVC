@@ -123,25 +123,25 @@ namespace QolaMVC.Controllers
             ViewBag.Resident = resident;
 
 
-            //var l_DietaryAssessment = AssessmentDAL.GetResidentDietaryAssesments(resident.ID);
-            //if (l_DietaryAssessment.Count == 0)
-            //{
-            //    l_DietaryAssessment = new Collection<nDietaryAssessmentModel>();
-            //    nDietaryAssessmentModel l_Dietary = new nDietaryAssessmentModel();
+            var l_DietaryAssessment = AssessmentDAL.GetResidentDietaryAssesments(resident.ID);
+            if (l_DietaryAssessment.Count == 0)
+            {
+                l_DietaryAssessment = new Collection<nDietaryAssessmentModel>();
+                nDietaryAssessmentModel l_Dietary = new nDietaryAssessmentModel();
 
-            //    Collection<AllergiesModel> allergySampleCollection = new Collection<AllergiesModel>();
-            //    AllergiesModel allergySample = new AllergiesModel();
-            //    allergySampleCollection.Add(allergySample);
-            //    l_Dietary.Allergies = allergySampleCollection;
-            //    l_DietaryAssessment.Add(l_Dietary);
-            //}
-            //List<DateTime> l_AssessmentDates = new List<DateTime>();
-            //foreach (var l_A in l_DietaryAssessment)
-            //{
-            //    l_AssessmentDates.Add(l_A.DateEntered);
-            //}
-            //ViewBag.AssessmentDates = l_AssessmentDates;
-            //return View(l_DietaryAssessment.LastOrDefault());
+                Collection<AllergiesModel> allergySampleCollection = new Collection<AllergiesModel>();
+                AllergiesModel allergySample = new AllergiesModel();
+                allergySampleCollection.Add(allergySample);
+                l_Dietary.Allergies = allergySampleCollection;
+                l_DietaryAssessment.Add(l_Dietary);
+            }
+            List<DateTime> l_AssessmentDates = new List<DateTime>();
+            foreach (var l_A in l_DietaryAssessment)
+            {
+                l_AssessmentDates.Add(l_A.DateEntered);
+            }
+            ViewBag.AssessmentDates = l_AssessmentDates;
+            return View(l_DietaryAssessment.LastOrDefault());
 
             return View();
         }
