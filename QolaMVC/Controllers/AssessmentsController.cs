@@ -571,15 +571,15 @@ namespace QolaMVC.Controllers
 
             if (index == null || index == "")
             {
-                TempData["index"] = "0";
+                TempData["index2"] = "0";
                 single = familyConference[0];
             }
             else
             {
-                TempData["index"] = index;
+                TempData["index2"] = index;
                 single = familyConference[int.Parse(index)];
             }
-            TempData.Keep("index");
+            TempData.Keep("index2");
             ViewBag.AssessmentDates = l_AssessmentDates;
 
             //return View(familyConference.LastOrDefault());
@@ -596,13 +596,14 @@ namespace QolaMVC.Controllers
             TempData.Keep("Resident");
             DateTime sameTime = DateTime.Now;
             AssessmentDAL.Add_FamilyConference_mike(resident.ID, user.ID, sameTime);
-            string ind = TempData["index"].ToString();
+            string ind = TempData["index2"].ToString();
             return RedirectToAction("FamilyConference", new { index = ind });
         }
 
         [HttpPost]
         public ActionResult SaveFamilyConferenceNote(FamilyConfrenceNoteModel p_FamilyConferenceNote)
         {
+            string ind = TempData["index2"].ToString();
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
             var resident = (ResidentModel)TempData["Resident"];
@@ -632,8 +633,27 @@ namespace QolaMVC.Controllers
             if (p_FamilyConferenceNote.Presents3 == null) p_FamilyConferenceNote.Presents3 = "";
 
             AssessmentDAL.SaveFamilyConferenceNote(p_FamilyConferenceNote);
-            return RedirectToAction("FamilyConference");
+            return RedirectToAction("FamilyConference", new { index = ind });
         }
+
+        public ActionResult BACK_Click_FCN()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            var ind = TempData["index2"];
+
+            return RedirectToAction("FamilyConference", new { index = ind });
+        }
+
 
         [HttpPost]
         public ActionResult AddFamilyConferenceNote(FamilyConfrenceNoteModel p_FamilyConferenceNote)

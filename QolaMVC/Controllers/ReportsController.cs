@@ -119,19 +119,44 @@ namespace QolaMVC.Controllers
 
         public ActionResult FamilyConferenceReport()
         {
+            string index = TempData["index2"].ToString();
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
             var resident = (ResidentModel)TempData["Resident"];
+            var familyConference = AssessmentDAL.GetFamilyConferenceNotes(resident.ID);
             ViewBag.User = user;
-            ViewBag.Resident = resident;
             ViewBag.Home = home;
+            ViewBag.Resident = resident;
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
+            if (familyConference.Count == 0)
+            {
+                familyConference.Add(new FamilyConfrenceNoteModel());
+            }
 
+            List<DateTime> l_AssessmentDates = new List<DateTime>();
+            foreach (var l_Ass in familyConference)
+            {
+                l_AssessmentDates.Add(l_Ass.Date);
+            }
+            FamilyConfrenceNoteModel single = new FamilyConfrenceNoteModel();
 
-            return View();
+            if (index == null || index == "")
+            {
+                TempData["index2"] = "0";
+                single = familyConference[0];
+            }
+            else
+            {
+                TempData["index2"] = index;
+                single = familyConference[int.Parse(index)];
+            }
+            TempData.Keep("index2");
+            ViewBag.AssessmentDates = l_AssessmentDates;
+
+            return View(single);
         }
 
         public ActionResult HeadToToeAssessment()
