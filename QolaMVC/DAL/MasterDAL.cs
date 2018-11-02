@@ -360,6 +360,8 @@ namespace QolaMVC.DAL
 
                     l_Model.Id = Convert.ToInt32(l_Reader["Id"]);
                     l_Model.DateEntered = Convert.ToDateTime(l_Reader["DateEntered"]);
+                    l_Model.Comment = Convert.ToString(l_Reader["Comments"]);
+                    l_Model.SAE = Convert.ToString(l_Reader["SAE"]);
 
                     SqlCommand l_Cmd2 = new SqlCommand("spAB_Get_ActivityAssessmentByAssessmentId", l_Conn);
                     l_Cmd2.CommandType = System.Data.CommandType.StoredProcedure;
@@ -376,8 +378,7 @@ namespace QolaMVC.DAL
                         var l_AssessmentActivity = new ActivityModel();
                         l_AssessmentActivity.Id = Convert.ToInt32(l_Reader2["ActivityId"]);
                         l_AssessmentActivity.EnglishName = Convert.ToString(l_Reader2["ActivityNameEnglish"]);
-                        l_AssessmentActivity.FrenchName = Convert.ToString(l_Reader2["ActivityNameEnglish"]);
-                        l_AssessmentActivity.EnglishName = Convert.ToString(l_Reader2["ActivityNameFrench"]);
+                        l_AssessmentActivity.FrenchName = Convert.ToString(l_Reader2["ActivityNameFrench"]);
                         l_AssessmentActivity.Category = new ActivityCategoryModel();
                         l_AssessmentActivity.Category.Id = Convert.ToInt32(l_Reader2["CategoryId"]);
 
@@ -486,6 +487,8 @@ namespace QolaMVC.DAL
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 l_Cmd.Parameters.AddWithValue("@ResidentId", p_ResidentId);
                 l_Cmd.Parameters.AddWithValue("@EnteredBy", p_EnteredBy);
+                l_Cmd.Parameters.AddWithValue("@Comments", p_Model.Comment);
+                l_Cmd.Parameters.AddWithValue("@SAE", p_Model.SAE);
                 SqlDataReader l_Reader = l_Cmd.ExecuteReader();
 
                 while (l_Reader.Read())

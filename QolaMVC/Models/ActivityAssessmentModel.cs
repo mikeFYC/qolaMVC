@@ -15,5 +15,7 @@ namespace QolaMVC.Models
         public string Value { get; set; }
         public int ResidentId { get; set; }
         public DateTime DateEntered { get; set; }
+
+
     }
 }

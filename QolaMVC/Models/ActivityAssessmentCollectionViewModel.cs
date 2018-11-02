@@ -12,5 +12,8 @@ namespace QolaMVC.Models
         public Collection<ActivityCategoryModel> Category { get; set; }
         public Collection<ActivityAssessmentModel> ActivityAssessments { get; set; }
         public DateTime DateEntered { get; set; }
+
+        public string Comment { get; set; }
+        public string SAE { get; set; }
     }
 }

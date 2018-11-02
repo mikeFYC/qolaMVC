@@ -1233,15 +1233,15 @@ namespace QolaMVC.DAL
             conn.ConnectionString = Constants.ConnectionString.PROD;
             conn.Open();
             SqlCommand cmd = new SqlCommand();
-            cmd.CommandText =   " select ROW_NUMBER()over(order by AA.DateEntered) as number,SSH.fd_resident_id,SSH.fd_suite_no,R.fd_first_name,R.fd_last_name, AA.SuggestedActivity,AA.DateEntered" +
-                                " from[tbl_AB_ActivityAssessment] AA" +
+            cmd.CommandText = " select ROW_NUMBER()over(order by AA.DateEntered) as number,SSH.fd_resident_id,SSH.fd_suite_no,R.fd_first_name,R.fd_last_name, AA.SAE,AA.DateEntered" +
+                                " from [tbl_AB_ActivityAssessment_Store] AA" +
                                 " left join tbl_Resident R on AA.ResidentId = R.fd_id" +
                                 " left join(select SH.fd_home_id, SH.fd_resident_id, SH.fd_occupancy, SH.fd_move_in_date, SH.fd_move_out_date, SH.fd_status, SH.fd_notes, SH.fd_modified_by, SH.fd_modified_on, SH.fd_pass_away_date, SH.fd_hospital, SH.fd_hospital_leaving, SH.fd_hospital_return, SH.fd_hospital_expected_return, S.fd_suite_no, S.fd_no_of_rooms, S.fd_floor from tbl_Suite_Handler SH join tbl_Suite S on SH.fd_suite_id= S.fd_id where GETDATE()> SH.fd_move_in_date and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')) as SSH" +
                                 " on SSH.fd_resident_id = AA.ResidentId" +
                                 " where GETDATE()> SSH.fd_move_in_date" +
                                 " and GETDATE()< isNULL(SSH.fd_move_out_date, '2200-09-01')" +
                                 " and AA.DateEntered > DATEADD(DD, -30, GETDATE())" +
-                                " and(AA.SuggestedActivity != '' or AA.SuggestedActivity != NULL)" +
+                                " and(AA.SAE != '' or AA.SAE != NULL)" +
                                 " and SSH.fd_home_id = " + homeid;
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
@@ -1269,15 +1269,15 @@ namespace QolaMVC.DAL
             conn.ConnectionString = Constants.ConnectionString.PROD;
             conn.Open();
             SqlCommand cmd = new SqlCommand();
-            cmd.CommandText =   " select ROW_NUMBER()over(order by AA.DateEntered) as number,SSH.fd_resident_id,SSH.fd_suite_no,R.fd_first_name,R.fd_last_name, AA.SuggestedActivity,AA.DateEntered" +
-                                " from[tbl_AB_ActivityAssessment] AA" +
+            cmd.CommandText = " select ROW_NUMBER()over(order by AA.DateEntered) as number,SSH.fd_resident_id,SSH.fd_suite_no,R.fd_first_name,R.fd_last_name, AA.SAE,AA.DateEntered" +
+                                " from [tbl_AB_ActivityAssessment_Store] AA" +
                                 " left join tbl_Resident R on AA.ResidentId = R.fd_id" +
                                 " left join(select SH.fd_home_id, SH.fd_resident_id, SH.fd_occupancy, SH.fd_move_in_date, SH.fd_move_out_date, SH.fd_status, SH.fd_notes, SH.fd_modified_by, SH.fd_modified_on, SH.fd_pass_away_date, SH.fd_hospital, SH.fd_hospital_leaving, SH.fd_hospital_return, SH.fd_hospital_expected_return, S.fd_suite_no, S.fd_no_of_rooms, S.fd_floor from tbl_Suite_Handler SH join tbl_Suite S on SH.fd_suite_id= S.fd_id where GETDATE()> SH.fd_move_in_date and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')) as SSH" +
                                 " on SSH.fd_resident_id = AA.ResidentId" +
                                 " where GETDATE()> SSH.fd_move_in_date" +
                                 " and GETDATE()< isNULL(SSH.fd_move_out_date, '2200-09-01')" +
                                 " and AA.DateEntered > CAST(DATEADD(DAY,-DAY(GETDATE())+1, CAST(GETDATE() AS DATE)) AS datetime)" +
-                                " and(AA.SuggestedActivity != '' or AA.SuggestedActivity != NULL)" +
+                                " and(AA.SAE != '' or AA.SAE != NULL)" +
                                 " and SSH.fd_home_id = "+ homeid;
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();

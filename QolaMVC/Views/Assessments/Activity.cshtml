@@ -42,17 +42,16 @@
             <div style="height: 60px;"></div>
 
             <!-- START CONTAINER FLUID -->
-            <div class="container-fluid container-fixed-lg">
+            <div class="container-fluid container-fixed-lg" id="fromHTMLtestdiv">
                 <!-- BEGIN PlACE PAGE CONTENT HERE -->
               
                 <div class="card">
                     <div class="card-block">
-                        <div class="row">
+                        <div class="row" id="AA_firstrow">
                             <div class="col-md-8">
-                                <p>P = Past Interest    C = Current Interest   W = Would Like to Learn/Do</p>
-                                <input type="submit" form="AssessmentForm" class="btn btn-primary" value="Save" />
-                                <a href="#" class="btn btn-primary">Print PDF</a>
-                                <input type="reset" form="AssessmentForm" class="btn btn-primary" value="Clear" />
+                                <p style="font-size:1.1vw;font-weight:bold;color:red">P = Past Interest    C = Current Interest   W = Would Like to Learn/Do</p>
+
+                                @*<input type="reset" form="AssessmentForm" class="btn btn-primary" value="Clear" />*@
                             </div>
                             <div class="col-md-4">
                                 <div class="row">
@@ -88,16 +87,26 @@
 
                                     </div>
                                 </div>
+
+                                <div class="row">
+                                    <div class="col-md-3"></div>
+                                    <div>
+                                        <input type="submit" form="AssessmentForm" class="btn btn-primary" value="Save" />
+                                        @*<a href="#" class="btn btn-primary">Print PDF</a>*@
+                                        <button class="btn btn-danger print" id="AA_PRINT" >Print PDF</button>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                         <form action="~/Assessments/SubmitActivityAssessment" id="AssessmentForm" method="post">
                             <div class="row">
-                                <div class="col-md-4">
 
-                                    @{
-                                        int i = 0; int j = 0;
-                                        foreach (var l_Category in Model.Category)
-                                        {
+
+                                @{
+                                    foreach (var l_Category in Model.Category)
+                                    {
+                                        <div class="col-md-4">
                                             <table class="table table-bordered">
                                                 <thead class="bg-primary">
                                                     <tr>
@@ -106,46 +115,122 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <td class="text-center">P</td>
-                                                        <td class="text-center">C</td>
-                                                        <td class="text-center">W</td>
+                                                        <td class="text-center"><b>P</b></td>
+                                                        <td class="text-center"><b>C</b></td>
+                                                        <td class="text-center"><b>W</b></td>
                                                         <td class="text-center"></td>
                                                     </tr>
-                                                    @foreach (var l_Activity in Model.ActivityAssessments.Where(m => m.Activity.Category.Id == l_Category.Id))
+                                                    @for (int index = 0; index < Model.ActivityAssessments.Where(m => m.Activity.Category.Id == l_Category.Id).Count(); index = index + 2)
                                                     {
                                                         <tr>
                                                             <td>
                                                                 <div class="form-check form-check-inline pads">
-                                                                    @Html.RadioButtonFor(m => m.ActivityAssessments[j].Value, "P", new { @class = "form-check-input" })
+                                                                    @Html.RadioButtonFor(m => m.ActivityAssessments[index].Value, "P", new { @class = "form-check-input" })
                                                                 </div>
                                                             </td>
                                                             <td>
                                                                 <div class="form-check form-check-inline pads">
-                                                                    @Html.RadioButtonFor(m => m.ActivityAssessments[j].Value, "C", new { @class = "form-check-input" })
+                                                                    @Html.RadioButtonFor(m => m.ActivityAssessments[index].Value, "C", new { @class = "form-check-input" })
                                                                 </div>
                                                             </td>
                                                             <td>
                                                                 <div class="form-check form-check-inline pads">
-                                                                    @Html.RadioButtonFor(m => m.ActivityAssessments[j].Value, "W", new { @class = "form-check-input" })
+                                                                    @Html.RadioButtonFor(m => m.ActivityAssessments[index].Value, "W", new { @class = "form-check-input" })
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                @Html.HiddenFor(m => m.ActivityAssessments[j].Activity.Id)
-                                                                @l_Activity.Activity.EnglishName
+                                                                @Html.HiddenFor(m => m.ActivityAssessments[index].Activity.Id)
+                                                                @Model.ActivityAssessments.Where(m => m.Activity.Category.Id == l_Category.Id).ToList()[index].Activity.EnglishName
                                                             </td>
                                                         </tr>
-                                                        j++;
+
+
                                                     }
 
                                                 </tbody>
                                             </table>
-                                            <br><br>
-                                        }
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <table class="table table-bordered">
+                                                <thead class="bg-primary">
+                                                    <tr>
+                                                        <th class="text-white text-center" colspan="4"> <!-- Hide the name @l_Category.EnglishName --></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-center"><b>P</b></td>
+                                                        <td class="text-center"><b>C</b></td>
+                                                        <td class="text-center"><b>W</b></td>
+                                                        <td class="text-center"></td>
+                                                    </tr>
+                                                    @for (int index2 = 1; index2 < Model.ActivityAssessments.Where(m => m.Activity.Category.Id == l_Category.Id).Count(); index2 = index2 + 2)
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                <div class="form-check form-check-inline pads">
+                                                                    @Html.RadioButtonFor(m => m.ActivityAssessments[index2].Value, "P", new { @class = "form-check-input" })
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline pads">
+                                                                    @Html.RadioButtonFor(m => m.ActivityAssessments[index2].Value, "C", new { @class = "form-check-input" })
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-check form-check-inline pads">
+                                                                    @Html.RadioButtonFor(m => m.ActivityAssessments[index2].Value, "W", new { @class = "form-check-input" })
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                @Html.HiddenFor(m => m.ActivityAssessments[index2].Activity.Id)
+                                                                @Model.ActivityAssessments.Where(m => m.Activity.Category.Id == l_Category.Id).ToList()[index2].Activity.EnglishName
+                                                            </td>
+                                                        </tr>
+
+
+                                                    }
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+
+
+
+
+
+                                        <br><br>
                                     }
+                                }
 
 
+
+
+
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for="" class="col-form-label">Comments :</label>
+                                    @Html.TextAreaFor(m => m.Comment, new { @class = "textarea", name = "Comment", rows = "5", style = "max-width:100% !important" })
                                 </div>
+                                <div class="col-md-4">
+                                    <label for="" class="col-form-label">Suggest Activity Events :</label>
+                                    @Html.TextAreaFor(m => m.SAE, new { @class = "textarea", name = "SAE", rows = "5", style = "max-width:100% !important" })
+                                </div>
+                            </div>
 
+                            <div class="row">
+                                <div class="col-md-8"></div>
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col-md-3"></div>
+                                        <div><input type="submit" form="AssessmentForm" class="btn btn-primary" value="Save" /></div>
+                                        <div><input type="button" onclick="window.location='/Assessments/';"  class="btn btn-primary" value="Back" style="margin-left:6%;"/></div>
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </div>
