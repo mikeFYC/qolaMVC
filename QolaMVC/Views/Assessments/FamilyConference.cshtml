@@ -14,6 +14,21 @@
         max-width: 1000px !important;
     }
 </style>
+
+<script>
+    function formsubmit(ee) {
+        var index = $('#selectdate').val();
+        if (window.location.href.includes("?")) {
+            var question_location = window.location.href.indexOf('?');
+            window.location.href = window.location.href.substring(0, question_location) + '?index=' + index;
+        }
+        else {
+            window.location.href = window.location.href + "?index=" + index;
+        }
+
+    }
+</script>
+
 <!-- START PAGE-CONTAINER -->
 <div class="page-container">
 
@@ -44,177 +59,196 @@
             <!-- START CONTAINER FLUID -->
             <div class="container-fluid container-fixed-lg">
                 <!-- BEGIN PlACE PAGE CONTENT HERE -->
-               
-                    <div class="card">
-                        <div class="card-block">
-                            <div class="row">
 
-                                <div class="col-2">
-                                    Assessment History:
-                                </div>
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+
+                            <div class="col-2">
+                                Assessment History:
                             </div>
-                            <div class="row">
-                                <form action="~/Assessments/FamilyConference" method="post">
-                                    <div class="col-12">
-                                        <select class="form-control col-12" name="DateEntered">
-                                            @{
-                                                if (Model.Date != null)
-                                                {
-                                                    <option selected>@Model.Date</option>
-                                                }
-                                                else
-                                                {
-                                                    <option>New</option>
-                                                }
-                                            }
-
-
-                                            @{
-                                                if (ViewBag.AssessmentDates.Count > 0)
-                                                {
-                                                    foreach (var d in ViewBag.AssessmentDates)
-                                                    {
-                                                        <option>@d</option>
-                                                    }
-                                                }
-                                            }
-                                        </select>
-                                    </div>
-                                    <div class="col-2">
-                                        <button class="btn btn-danger">GO</button>
-                                    </div>
-                                </form>
-                            </div>
-                            <form action="/Assessments/AddFamilyConferenceNote" method="post">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group row">
-                                            <label for="staticEmail" class="col-md-5 col-form-label">Name</label>
-                                            <div class="col-md-7">
-                                                <label class="form-control">@ViewBag.Resident.FirstName @ViewBag.Resident.LastName </label >
-                                                <input type="hidden" value="@ViewBag.Resident.ID" name="ResidentId" class="form-control" id="staticEmail">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="staticEmail" class="col-md-5 col-form-label">Health Card Number</label>
-                                            <div class="col-md-7">
-                                                <input type="text" name="PHN" value="@Model.PHN" class="form-control" id="staticEmail">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group row">
-                                            <label for="staticEmail" class="col-md-5 col-form-label">Suite Number</label>
-                                            <div class="col-md-7">
-                                                <label class="form-control" id="staticEmail">@ViewBag.Resident.SuiteNo </label>
-                                                <input type="hidden" value="@ViewBag.Resident.SuiteNo" name="SuiteNumber" class="form-control" id="staticEmail">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="staticEmail" class="col-md-5 col-form-label">DOB</label>
-                                            <div class="col-md-7">
-                                                <label class="form-control" id="staticEmail">@ViewBag.Resident.BirthDate.ToShortDateString() </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br><br>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group row">
-                                            <label for="staticEmail" class="col-md-2 col-form-label">CARE and GCD/ACP</label>
-                                            <div class="col-md-10">
-                                                <textarea class="textarea" name="CareAndGCD" rows="5" style="width: 95% !important; margin-left: 47px">@Model.CareandGCD</textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br><br>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group row">
-                                            <label for="staticEmail" class="col-md-2 col-form-label">MEDICATION</label>
-                                            <div class="col-md-10">
-                                                <textarea class="textarea" name="Medication" rows="5" style="width: 95% !important; margin-left: 47px">@Model.Medication</textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br><br>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group row">
-                                            <label for="staticEmail" class="col-md-2 col-form-label">RECREATION</label>
-                                            <div class="col-md-10">
-                                                <textarea class="textarea" name="Recreation" rows="5" style="width: 95% !important; margin-left: 47px">@Model.Recreation</textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br><br>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group row">
-                                            <label for="staticEmail" class="col-md-2 col-form-label">DIET</label>
-                                            <div class="col-md-10">
-                                                <textarea class="textarea" name="Diet" rows="5" style="width: 95% !important; margin-left: 47px">@Model.Diet</textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br><br>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group row">
-                                            <label for="staticEmail" class="col-md-2 col-form-label">COMMENTS</label>
-                                            <div class="col-md-10">
-                                                <textarea class="textarea" name="Comments" rows="5" style="width: 95% !important; margin-left: 47px">@Model.Comments</textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br><br>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group row">
-                                            <label for="staticEmail" class="col-md-2 col-form-label">GOALS</label>
-                                            <div class="col-md-10">
-                                                <textarea class="textarea" name="Goals" rows="5" style="width: 95% !important; margin-left: 47px">@Model.Goals</textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br><br>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h5>Presents</h5>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <input type="text" name="Presents1" value="@Model.Presents1" class="form-control" id="staticEmail" placeholder="Name">
-
-                                            </div>
-                                            <div class="col-md-4">
-                                                <input type="text" name="Presents2" value="@Model.Presents2" class="form-control" id="staticEmail" placeholder="Name">
-                                            </div>
-                                            <div class="col-md-4">
-                                                <input type="text" name="Presents3" class="form-control" value="@Model.Presents3" id="staticEmail" placeholder="Name">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12 text-right">
-                                        <br>
-                                        <button type="submit" class="btn btn-danger btn-lg">SAVE</button>
-                                    </div>
-                                </div>
-                            </form>
                         </div>
-                </div>
+                        <div class="row">
 
+                            <div class="col-2">
+                                <select class="form-control col-12" name="AssessmentDate" id="selectdate" onchange="formsubmit(this)">
+                                    @*@{
+                                if (Model.Date != null)
+                                {
+                                    <option selected>@Model.Date</option>
+                                }
+                                else
+                                {
+                                    <option>New</option>
+                                }
+                            }
+
+
+                            @{
+                                if (ViewBag.AssessmentDates.Count > 0)
+                                {
+                                    foreach (var d in ViewBag.AssessmentDates)
+                                    {
+                                        <option>@d</option>
+                                    }
+                                }
+                            }*@
+
+
+                                    @if (ViewBag.AssessmentDates != null && ViewBag.AssessmentDates[0].ToShortDateString() != "1/1/0001")
+                                    {
+
+                                        for (var ind = 0; ind < ((List<DateTime>)ViewBag.AssessmentDates).Count(); ind++)
+                                        {
+                                            <option value=@ind>@(((List<DateTime>)ViewBag.AssessmentDates)[ind].ToString("yyyy-MM-dd"))</option>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <option value="0"></option>
+                                    }
+
+                                </select>
+                            </div>
+                            <div class="col-2">
+                                <button class="btn btn-danger" onclick="location.href='@Url.Action("Add_FamilyConference_mike", "Assessments")'">NEW</button>
+                            </div>
+
+                        </div>
+                        <br><br><br>
+                        <form action="/Assessments/SaveFamilyConferenceNote" method="post">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-5 col-form-label">Name</label>
+                                        <div class="col-md-7">
+                                            <label class="form-control">@ViewBag.Resident.FirstName @ViewBag.Resident.LastName </label>
+                                            <input type="hidden" value="@ViewBag.Resident.ID" name="ResidentId" class="form-control" id="">
+                                            @Html.TextBoxFor(m => m.Id, new { type = "hidden" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-5 col-form-label">Health Card Number</label>
+                                        <div class="col-md-7">
+                                            <input type="text" name="PHN" value="@Model.PHN" class="form-control" id="staticEmail">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-5 col-form-label">Suite Number</label>
+                                        <div class="col-md-7">
+                                            <label class="form-control" id="" name="SuiteNumber">@ViewBag.Resident.SuiteNo </label>
+                                            <input type="hidden" name="SuiteNumber" value="@ViewBag.Resident.SuiteNo">
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-5 col-form-label">DOB</label>
+                                        <div class="col-md-7">
+                                            <label class="form-control" id="" name="DOB">@ViewBag.Resident.BirthDate.ToShortDateString() </label>
+                                            <input type="hidden" name="DOB" value="@ViewBag.Resident.BirthDate.ToShortDateString()">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-2 col-form-label">CARE and GCD/ACP</label>
+                                        <div class="col-md-10">
+                                            <textarea class="textarea" name="CareAndGCD" rows="5" style="width: 95% !important; margin-left: 47px">@Model.CareandGCD</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-2 col-form-label">MEDICATION</label>
+                                        <div class="col-md-10">
+                                            <textarea class="textarea" name="Medication" rows="5" style="width: 95% !important; margin-left: 47px">@Model.Medication</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-2 col-form-label">RECREATION</label>
+                                        <div class="col-md-10">
+                                            <textarea class="textarea" name="Recreation" rows="5" style="width: 95% !important; margin-left: 47px">@Model.Recreation</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-2 col-form-label">DIET</label>
+                                        <div class="col-md-10">
+                                            <textarea class="textarea" name="Diet" rows="5" style="width: 95% !important; margin-left: 47px">@Model.Diet</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-2 col-form-label">COMMENTS</label>
+                                        <div class="col-md-10">
+                                            <textarea class="textarea" name="Comments" rows="5" style="width: 95% !important; margin-left: 47px">@Model.Comments</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-md-2 col-form-label">GOALS</label>
+                                        <div class="col-md-10">
+                                            <textarea class="textarea" name="Goals" rows="5" style="width: 95% !important; margin-left: 47px">@Model.Goals</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5>Presents</h5>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <input type="text" name="Presents1" value="@Model.Presents1" class="form-control" id="staticEmail" placeholder="Name">
+
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="text" name="Presents2" value="@Model.Presents2" class="form-control" id="staticEmail" placeholder="Name">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="text" name="Presents3" class="form-control" value="@Model.Presents3" id="staticEmail" placeholder="Name">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <br>
+                                    <button type="submit" class="btn btn-danger btn-lg">SAVE</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <input id="hiddeninput1" type="hidden" value="@TempData["index"]" />
                 <!-- END PLACE PAGE CONTENT HERE -->
             </div>
             <!-- END CONTAINER FLUID -->
@@ -222,3 +256,36 @@
         <!-- END PAGE CONTENT -->
 
         @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+<script>
+    var index_date = $('#hiddeninput1').val();
+    $('#selectdate').val(index_date);
+
+
+    var skillsSelect = document.getElementById("selectdate");
+    var selectedText = skillsSelect.options[skillsSelect.selectedIndex].text;
+    if (selectedText == "") {
+        var inputs_check = $('textarea');
+        for (var b = 0; b < inputs_check.length; b++) {
+            inputs_check[b].disabled = true;
+        }
+        var inputs_text = $('input[type=text]');
+        for (var b = 0; b < inputs_text.length; b++) {
+            inputs_text[b].disabled = true;
+        }
+    }
+
+    $('form').submit(function (event) {
+        var firstdate = $('#selectdate option:selected').text()
+        if (firstdate != "") {
+            $("input").removeAttr("disabled");
+            form = this;
+            //event.preventDefault();
+            form.submit();
+        }
+        else {
+            tempAlert("New a Date First", 2000);
+            return false;
+        }
+    });
+</script>

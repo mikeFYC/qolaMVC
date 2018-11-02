@@ -3241,5 +3241,74 @@ namespace QolaMVC.DAL
         }
 
 
+
+        public static void Add_FamilyConference_mike(int residentid, int userid, DateTime sameTime)
+        {
+            string exception = string.Empty;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Add_FamilyConference_mike", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@ResidentId", residentid);
+                l_Cmd.Parameters.AddWithValue("@start_time", sameTime);
+                l_Cmd.Parameters.AddWithValue("@EnteredBy", userid);
+                l_Cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                exception = "Add_FamilyConference_mike |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+        public static void SaveFamilyConferenceNote(FamilyConfrenceNoteModel p_FamilyConferenceNote)
+        {
+            string exception = string.Empty;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_save_FamilyConferenceNote", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@ID", p_FamilyConferenceNote.Id);
+                l_Cmd.Parameters.AddWithValue("@ResidentId", p_FamilyConferenceNote.Resident.ID);
+                l_Cmd.Parameters.AddWithValue("@SuiteNumber", p_FamilyConferenceNote.SuiteNumber);
+                l_Cmd.Parameters.AddWithValue("@PHN", p_FamilyConferenceNote.PHN);
+                l_Cmd.Parameters.AddWithValue("@CareAndGCD", p_FamilyConferenceNote.CareandGCD);
+                l_Cmd.Parameters.AddWithValue("@Medication", p_FamilyConferenceNote.Medication);
+                l_Cmd.Parameters.AddWithValue("@Recreation", p_FamilyConferenceNote.Recreation);
+                l_Cmd.Parameters.AddWithValue("@Diet", p_FamilyConferenceNote.Diet);
+                l_Cmd.Parameters.AddWithValue("@Comments", p_FamilyConferenceNote.Comments);
+                l_Cmd.Parameters.AddWithValue("@Goals", p_FamilyConferenceNote.Goals);
+                l_Cmd.Parameters.AddWithValue("@Present1", p_FamilyConferenceNote.Presents1);
+                l_Cmd.Parameters.AddWithValue("@Present2", p_FamilyConferenceNote.Presents2);
+                l_Cmd.Parameters.AddWithValue("@Present3", p_FamilyConferenceNote.Presents3);
+                l_Cmd.Parameters.AddWithValue("@DateEntered", DateTime.Now);
+                l_Cmd.Parameters.AddWithValue("@EnteredBy", p_FamilyConferenceNote.EnteredBy.ID);
+                l_Cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                exception = "AddFamilyConferenceNote |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
     }
 }

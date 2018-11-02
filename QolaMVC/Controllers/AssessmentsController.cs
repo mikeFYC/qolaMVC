@@ -540,7 +540,7 @@ namespace QolaMVC.Controllers
 
 
 
-        public ActionResult FamilyConference()
+        public ActionResult FamilyConference(string index)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -555,7 +555,9 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            if(familyConference.Count == 0)
+
+
+            if (familyConference.Count == 0)
             {
                 familyConference.Add(new FamilyConfrenceNoteModel());
             }
@@ -565,10 +567,72 @@ namespace QolaMVC.Controllers
             {
                 l_AssessmentDates.Add(l_Ass.Date);
             }
+            FamilyConfrenceNoteModel single = new FamilyConfrenceNoteModel();
 
+            if (index == null || index == "")
+            {
+                TempData["index"] = "0";
+                single = familyConference[0];
+            }
+            else
+            {
+                TempData["index"] = index;
+                single = familyConference[int.Parse(index)];
+            }
+            TempData.Keep("index");
             ViewBag.AssessmentDates = l_AssessmentDates;
 
-            return View(familyConference.LastOrDefault());
+            //return View(familyConference.LastOrDefault());
+            return View(single);
+        }
+
+        public ActionResult Add_FamilyConference_mike()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            DateTime sameTime = DateTime.Now;
+            AssessmentDAL.Add_FamilyConference_mike(resident.ID, user.ID, sameTime);
+            string ind = TempData["index"].ToString();
+            return RedirectToAction("FamilyConference", new { index = ind });
+        }
+
+        [HttpPost]
+        public ActionResult SaveFamilyConferenceNote(FamilyConfrenceNoteModel p_FamilyConferenceNote)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            ViewBag.Resident = resident;
+
+            p_FamilyConferenceNote.Resident = resident;
+            p_FamilyConferenceNote.EnteredBy = user;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            if (p_FamilyConferenceNote.SuiteNumber == null) p_FamilyConferenceNote.SuiteNumber = "";
+            if (p_FamilyConferenceNote.DOB == null) p_FamilyConferenceNote.DOB = "";
+            if (p_FamilyConferenceNote.PHN == null) p_FamilyConferenceNote.PHN = "";
+            if (p_FamilyConferenceNote.CareandGCD == null) p_FamilyConferenceNote.CareandGCD = "";
+            if (p_FamilyConferenceNote.Medication == null) p_FamilyConferenceNote.Medication = "";
+            if (p_FamilyConferenceNote.Recreation == null) p_FamilyConferenceNote.Recreation = "";
+            if (p_FamilyConferenceNote.Diet == null) p_FamilyConferenceNote.Diet = "";
+            if (p_FamilyConferenceNote.Comments == null) p_FamilyConferenceNote.Comments = "";
+            if (p_FamilyConferenceNote.Goals == null) p_FamilyConferenceNote.Goals = "";
+            if (p_FamilyConferenceNote.Presents1 == null) p_FamilyConferenceNote.Presents1 = "";
+            if (p_FamilyConferenceNote.Presents2 == null) p_FamilyConferenceNote.Presents2 = "";
+            if (p_FamilyConferenceNote.Presents3 == null) p_FamilyConferenceNote.Presents3 = "";
+
+            AssessmentDAL.SaveFamilyConferenceNote(p_FamilyConferenceNote);
+            return RedirectToAction("FamilyConference");
         }
 
         [HttpPost]
