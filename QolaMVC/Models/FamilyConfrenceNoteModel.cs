@@ -23,5 +23,6 @@ namespace QolaMVC.Models
         public string Presents2 { get; set; }
         public string Presents3 { get; set; }
         public UserModel EnteredBy { get; set; }
+
     }
 }
