@@ -1,0 +1,1055 @@
+﻿@model QolaMVC.Models.Dining_Attendance_simple
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='utf-8' />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Calendar Plugin</title>
+
+    @*<link rel="stylesheet" href="/Content/calendar/css/calendar-plugin.min.css" media="all" />*@
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    @*<script src="~/Content/calendar/plugins/jquery/jquery.min.js"></script>*@
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
+    @*<script src="~/Content/calendar/js/calendar-plugin.js"></script>*@
+
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="apple-touch-icon" href="~/Content/pages/ico/60.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="~/Content/pages/ico/76.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="~/Content/pages/ico/120.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="~/Content/pages/ico/152.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <link href="/Content/bootstrap.css" rel="stylesheet">
+    <link href="/Content/site.css" rel="stylesheet">
+    <link href="/Content/assets/plugins/pace/pace-theme-flash.css" rel="stylesheet">
+    <link href="/Content/assets/plugins/bootstrap/css/bootstrap.min.css" " rel="stylesheet">
+    <link href="/Content/assets/plugins/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/Content/assets/plugins/jquery-scrollbar/jquery.scrollbar.css" rel="stylesheet">
+    <link href="/Content/assets/plugins/select2/css/select2.min.css" rel="stylesheet">
+    <link href="/Content/assets/plugins/switchery/css/switchery.min.css" rel="stylesheet">
+    <link href="/Content/pages/css/pages-icons.css" rel="stylesheet">
+    <link href="/Content/assets/css/pages.css" rel="stylesheet">
+    <link href="/Content/assets/css/datatables.css" rel="stylesheet">
+    <link href="/Content/assets/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+
+
+
+
+    <link href="~/Content/fullCalendar/css/fullcalendar.css" rel="stylesheet" />
+    <link href="~/Content/fullCalendar/css/fullcalendar.print.css" rel="stylesheet" media="print" />
+    <script src="~/Content/fullCalendar/lib/jquery.min.js"></script>
+    <script src="~/Content/fullCalendar/lib/moment.min.js"></script>
+    <script src="~/Content/fullCalendar/js/fullcalendar.js"></script>
+
+
+</head>
+
+<body id="mike">
+    <!-- START PAGE-CONTAINER -->
+    <div class="page-container">
+
+        @RenderPage("~/Views/Shared/_NavBar.cshtml")
+
+        <!-- START PAGE CONTENT WRAPPER -->
+        <div class="page-content-wrapper">
+            <!-- START PAGE CONTENT -->
+            <div class="content">
+                <!-- START JUMBOTRON -->
+                <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                    <div class="container-fluid container-fixed-lg">
+                        <!-- <div class="inner"> -->
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h3>Activity Calendar</h3>
+                            </div>
+                        </div>
+                        <!-- </div> -->
+                    </div>
+                </div>
+                <!-- END JUMBOTRON -->
+                <div style="height: 60px;"></div>
+                <!-- START CONTAINER FLUID -->
+                <div class="container-fluid container-fixed-lg">
+                    <div class="card">
+                        <div class="card-block">
+                            <div class="form-tabs mt-4">
+                                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="pills-active-tab" data-toggle="pill" href="#pills-active" role="tab" aria-controls="pills-active" aria-selected="true">Calendar one</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="pills-achive-tab" data-toggle="pill" href="#pills-achive" role="tab" aria-controls="pills-achive" aria-selected="false">Calendar two</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="pills-achive-tab2" data-toggle="pill" href="#pills-C3" role="tab" aria-controls="pills-C3" aria-selected="false">Calendar three</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="pills-achive-tab3" data-toggle="pill" href="#pills-C4" role="tab" aria-controls="pills-C4" aria-selected="false">Calendar four</a>
+                                    </li>
+                                </ul>
+
+                                <div class="tab-content" id="pills-tabContent">
+
+                                    <div class="tab-pane fade show active" id="pills-active" role="tabpanel" aria-labelledby="pills-active-tab">
+                                        <div style='position: relative; float: left; width: 100%;'>
+                                            <section id='calendar'></section>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane fade" id="pills-achive" role="tabpanel" aria-labelledby="pills-achive-tab">
+                                        <div style='position: relative; float: left; width: 100%;'>
+                                            <section id='calendar2'></section>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane fade" id="pills-C3" role="tabpanel" aria-labelledby="pills-achive-tab2">
+
+                                        <div style='position: relative; float: left; width: 100%;'>
+                                            <section id='calendar3'></section>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane fade" id="pills-C4" role="tabpanel" aria-labelledby="pills-achive-tab3">
+                                        <div style='position: relative; float: left; width: 100%;'>
+                                            <section id='calendar4'></section>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div id="day_div" style="display:none;margin-top:0;z-index:1000;">
+
+                            <div class="container-fluid container-fixed-lg" id="main_page">
+                                <div class="card">
+                                    <div class="card-block">
+                                        <div class="form-tabs mt-4">
+
+                                            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top:-15vh;margin-left:20vw;padding-bottom:5vh;">
+
+                                                <li class="Prevbtn"><a href="#" onclick="previousday()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
+                                                <li class="clear_bg"><label id="lblCalendarMsg" style="font-weight:bolder;font-size:1.5em;margin-top:1.5vh;color:white">@TempData["datechoose"].ToString()</label></li>
+                                                <li class="Nextbtn"><a href="#" onclick="nextday()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
+                                            </ul>
+
+                                            <div class="tab-content" id="pills-tabContent">
+                                                <div class="tab-pane fade show active" id="pills-day" role="tabpanel" aria-labelledby="pills-home-tab">
+                                                    @*<div id="select_ActivityID_index" class="" name="" english=""></div>*@
+                                                    <table class="table table-bordered">
+                                                        <thead class="bg-primary">
+                                                            <tr>
+                                                                <th class="text-white text-center">Time</th>
+                                                                <th class="text-white text-center">Today's Activities</th>
+                                                                <th class="text-white text-center">Venue</th>
+                                                                <th class="text-white text-center">Attendance</th>
+                                                                <th class="text-white text-center" colspan="2"></th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="text-white text-center"></th>
+                                                                <th class="text-white text-center"></th>
+                                                                <th class="text-white text-center"></th>
+                                                                <th class="text-white text-center"></th>
+                                                                <th class="text-white text-center">Active</th>
+                                                                <th class="text-white text-center">Declined</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @{
+                                                                for (int a = 0; a < @ViewBag.Events.Count; a++)
+                                                                {
+                                                                    <tr name=@ViewBag.Events[a].ProgramId id=@ViewBag.Events[a].ProgramName englishname=@ViewBag.Events[a].ActivityNameEnglish>
+                                                                        <td>@ViewBag.Events[a].ProgramStartTime</td>
+                                                                        <td>@ViewBag.Events[a].ProgramName</td>
+                                                                        <td>@ViewBag.Events[a].Venue</td>
+                                                                        <td>
+                                                                            <a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#">
+                                                                                <i class="fa fa-file-text-o"></i>
+                                                                            </a>
+                                                                        </td>
+                                                                        <td>
+                                                                            @ViewBag.Events[a].Active
+                                                                        </td>
+                                                                        <td>
+                                                                            @ViewBag.Events[a].Declined
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+                        </div>
+
+                    </div>
+
+
+
+
+                    <!-- END CONTAINER FLUID -->
+                </div>
+                <!-- END PAGE CONTENT -->
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @*@RenderPage("~/Views/Shared/_Footer.cshtml")*@
+</body>
+</html>
+
+
+<script src="~/Content/assets/plugins/pace/pace.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/modernizr.custom.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/tether/js/tether.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/jquery/jquery-easy.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/jquery-unveil/jquery.unveil.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/jquery-bez/jquery.bez.min.js"></script>
+<script src="~/Content/assets/plugins/jquery-ios-list/jquery.ioslist.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/imagesloaded/imagesloaded.pkgd.min.js"></script>
+<script src="~/Content/assets/plugins/jquery-actual/jquery.actual.min.js"></script>
+<script src="~/Content/assets/plugins/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+<!-- END VENDOR JS -->
+<!-- BEGIN CORE TEMPLATE JS -->
+<script src="~/Content/pages/js/pages.js" type="text/javascript"></script>
+<!-- END CORE TEMPLATE JS -->
+<!-- BEGIN PAGE LEVEL JS -->
+<script src="~/Content/assets/js/scripts.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL JS -->
+<script src="~/Content/assets/js/FileAPI/FileAPI.js"></script>
+<script src="~/Content/assets/js/datatables.min.js"></script>
+<script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="~/Content/assets/js/html2canvas.js" crossorigin="anonymous"></script>
+
+<script>
+    $(document).ready(function () {
+
+        $.ajax({
+            type: "GET",
+            url: "/home/getEvents_mike",
+            success: function (data) {
+                $.each(data, function (i, v) {
+                    data.push({
+                        
+
+                        title: v.title,
+                        start: v.startT,
+                        //end: v.endT != null ? v.endT : null,
+                    });
+                })
+                GenerationCalendar(data);
+
+            },
+
+            error: function (error) {
+                alert('failed');
+            }
+        })
+
+
+        function GenerationCalendar(events) {
+            $('#calendar').fullCalendar('destroy');
+            $('#calendar').fullCalendar({
+                contentHeight: 800,
+                defaultDate: new Date(),
+                timeFormat: 'h(:mm)a',
+                header: {
+                    right: 'prev,next,today',
+                    center: 'title',
+                    left: 'month,basicWeek,basicDay'
+                },
+
+
+                eventLimit: true,
+                eventColor: 'lightgreen',
+                events:events
+
+            }).on('click', '.fc-day', function () {
+                //alert('day button clicked');
+                gg();
+            }).on('click', '.fc-basicDay-button', function () {
+                // alert('basicDay button clicked');
+                $('.fc-view-container').hide();
+                $('.fc-center').hide();
+                $('.fc-right').hide();
+                $('#day_div').show();
+            });
+        }
+        function gg() {
+            var event = { id: 1, title: 'New event', start: new Date() };
+            $('#calendar').fullCalendar('renderEvent', event, true);
+
+        }
+    });
+
+
+
+
+</script>
+
+
+<script>
+
+
+    function day_click_mike() {
+        //document.getElementById("mike").style.visibility = "hidden";
+        //document.getElementById("day_div").style.display = "block";
+
+        //setTimeout(function () {
+        //    $('.cp-calendar.daily').hide();
+        //    $('div[class="cp-nav-controls"]').hide();
+        //    $('div[class="cp-header-content"]').hide();
+        //    $('div[class="cp-view-list-container"]').css('z-index', 2000);
+        //    $('div[class="cp-view-list-container"]').css('width', "20%");
+        //    document.getElementById("mike").style.visibility = "visible";
+        //}, 300);
+        if (document.getElementById('pills-active-tab').className == "nav-link active") {
+            window.location.href = window.location.href;
+        }
+        else {
+            if (document.getElementById('pills-achive-tab').className == "nav-link active") {
+                document.getElementById("mike").style.visibility = "hidden";
+                document.getElementById("day_div2").style.display = "block";
+            }
+            else if (document.getElementById('pills-achive-tab2').className == "nav-link active") {
+                document.getElementById("mike").style.visibility = "hidden";
+                document.getElementById("day_div3").style.display = "block";
+            }
+            else if (document.getElementById('pills-achive-tab3').className == "nav-link active") {
+                document.getElementById("mike").style.visibility = "hidden";
+                document.getElementById("day_div4").style.display = "block";
+            }
+            setTimeout(function () {
+                $('.cp-calendar.daily').hide();
+                $('div[class="cp-nav-controls"]').hide();
+                $('div[class="cp-header-content"]').hide();
+                $('div[class="cp-view-list-container"]').css('z-index', 2000);
+                $('div[class="cp-view-list-container"]').css('width', "20%");
+                document.getElementById("mike").style.visibility = "visible";
+            }, 300);
+
+        }
+    }
+
+    function day_click() {
+        var tab = $('#hiddentab').val();
+        if (window.location.href.toString().includes("tab")) {
+            var indexequal = window.location.href.toString().indexOf("tab");
+            var newstring = window.location.href.toString().substring(0, indexequal + 4);
+
+            window.location.href = newstring + tab;
+        }
+        else {
+            if (window.location.href.toString().includes("?")) {
+                window.location.href = window.location.href + "&tab=" + tab;
+            }
+            else {
+                window.location.href = window.location.href + "?tab=" + tab;
+            }
+        }
+    }
+
+    function hide_day() {
+
+        document.getElementById("day_div").style.display = "none";
+        document.getElementById("day_div2").style.display = "none";
+        document.getElementById("day_div3").style.display = "none";
+        document.getElementById("day_div4").style.display = "none";
+        $('div[class="cp-nav-controls"]').show();
+        $('div[class="cp-header-content"]').show();
+
+    }
+
+    function calendar_one() {
+        if (window.location.href.toString().includes("tab")) {
+            var indexequal = window.location.href.toString().indexOf("tab");
+            var newstring = window.location.href.toString().substring(0, indexequal + 4);
+
+            window.location.href = newstring + "a";
+        }
+        else {
+            window.location.href = window.location.href;
+        }
+
+        //document.getElementById("mike").style.visibility = "hidden";
+        //document.getElementById("day_div2").style.display = "none";
+        //document.getElementById("day_div").style.display = "block";
+
+        //setTimeout(function () {
+        //    $('.cp-calendar.daily').hide();
+        //    $('div[class="cp-nav-controls"]').hide();
+        //    $('div[class="cp-header-content"]').hide();
+        //    $('div[class="cp-view-list-container"]').css('z-index', 2000);
+        //    $('div[class="cp-view-list-container"]').css('width', "20%");
+        //    document.getElementById("mike").style.visibility = "visible";
+        //}, 200);
+    }
+
+    function calendar_two() {
+        //$('#hiddentab').val("b");
+        //$('.cp-calendar').hide();
+        //document.getElementById("day_div").style.display = "none";
+        //document.getElementById("day_div3").style.display = "none";
+        //document.getElementById("day_div4").style.display = "none";
+        //document.getElementById("day_div2").style.display = "block";
+        //var a = $('.cp-view-button.daily');
+        //setTimeout(function () {
+        //    a[1].click(function () { });
+        //}, 200);
+
+        if (window.location.href.toString().includes("tab")) {
+            var indexequal = window.location.href.toString().indexOf("tab");
+            var newstring = window.location.href.toString().substring(0, indexequal + 4);
+
+            window.location.href = newstring + "b";
+        }
+        else {
+            if (window.location.href.toString().includes("?")) {
+                window.location.href = window.location.href + "&tab=b";
+            }
+            else {
+                window.location.href = window.location.href + "?tab=b";
+            }
+        }
+    }
+
+    function calendar_three() {
+        //$('#hiddentab').val("c");
+        //$('.cp-calendar').hide();
+        //document.getElementById("day_div").style.display = "none";
+        //document.getElementById("day_div2").style.display = "none";
+        //document.getElementById("day_div4").style.display = "none";
+        //document.getElementById("day_div3").style.display = "block";
+        //var a = $('.cp-view-button.daily');
+        //setTimeout(function () {
+        //    a[1].click(function () { });
+        //}, 200);
+        if (window.location.href.toString().includes("tab")) {
+            var indexequal = window.location.href.toString().indexOf("tab");
+            var newstring = window.location.href.toString().substring(0, indexequal + 4);
+
+            window.location.href = newstring + "c";
+        }
+        else {
+            if (window.location.href.toString().includes("?")) {
+                window.location.href = window.location.href + "&tab=c";
+            }
+            else {
+                window.location.href = window.location.href + "?tab=c";
+            }
+        }
+    }
+
+    function calendar_four() {
+        //$('#hiddentab').val("d");
+        //$('.cp-calendar').hide();
+        //document.getElementById("day_div").style.display = "none";
+        //document.getElementById("day_div2").style.display = "none";
+        //document.getElementById("day_div3").style.display = "none";
+        //document.getElementById("day_div4").style.display = "block";
+        //var a = $('.cp-view-button.daily');
+        //setTimeout(function () {
+        //    a[1].click(function () { });
+        //}, 200);
+        if (window.location.href.toString().includes("tab")) {
+            var indexequal = window.location.href.toString().indexOf("tab");
+            var newstring = window.location.href.toString().substring(0, indexequal + 4);
+
+            window.location.href = newstring + "d";
+        }
+        else {
+            if (window.location.href.toString().includes("?")) {
+                window.location.href = window.location.href + "&tab=d";
+            }
+            else {
+                window.location.href = window.location.href + "?tab=d";
+            }
+        }
+    }
+
+
+
+</script>
+<style>
+
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+
+    table.attend tbody tr td {
+        padding: 15px !important;
+    }
+
+    table.attend tbody tr {
+        border-bottom: 1px solid #000;
+    }
+
+    #attendent_form {
+        margin-left: 0;
+        z-index: 4000;
+    }
+
+    #attendent_form_second_layer {
+        margin-left: 7.5vw;
+        right: auto;
+        padding-top: 5px;
+        padding-bottom: 30px;
+        min-width: 85vw;
+    }
+
+    #attendent_form_third_layer {
+        margin-left: 0;
+    }
+
+    #contactForm {
+        display: none;
+        border: 6px solid salmon;
+        padding: 2em;
+        width: 400px;
+        text-align: center;
+        background: #fff;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        -webkit-transform: translate(-50%,-50%);
+        overflow-y: hidden;
+    }
+
+    .formBtn, .formtext {
+        margin: .8em auto;
+        font-family: inherit;
+        text-transform: inherit;
+        font-size: inherit;
+        display: block;
+        padding: .4em;
+    }
+
+    .formtext {
+        resize: none;
+    }
+
+    .formBtn {
+        display: inline-block;
+        background: teal;
+        color: #fff;
+        font-weight: 100;
+        font-size: 1.2em;
+        border: none;
+        width: 70px;
+    }
+
+    .fa-file-text-o {
+        font-size: 20px;
+        color: #015093;
+    }
+
+
+    a.active {
+        background-color: #015093 !important;
+    }
+</style>
+<script>
+
+    function list_savebutton() {
+        var tab = $('#hiddentab').val();
+        var savestring = "";
+        var mealselect = document.getElementById("select_ActivityID_index").className;
+        var eventname = document.getElementById("select_ActivityID_index").getAttribute("name");
+        var english = document.getElementById("select_ActivityID_index").getAttribute("english");
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+
+        var a = $("div[id=pills-profile1] tr td div input[class=form-check-input]");
+        for (var c = 0; c < a.length; c++) {
+            if (a[c].checked == true && a[c].disabled != true) {
+                savestring = savestring + a[c].name + "," + a[c].value + ",";
+            }
+        }
+        $.post("/Home/saveButton_Activity", { arr: savestring, whichAEID: mealselect, datesel: dateselect, eventName: eventname, englishname: english, tab: tab }, function (data) {
+            if (data == 1) {
+                tempAlert("Saved Successfully", 2000);
+                setTimeout(function () { window.location.reload(); }, 2000);
+            }
+            else
+                tempAlert("Saved failed", 2000);
+        });
+    }
+    function floor_savebutton() {
+        var tab = $('#hiddentab').val();
+        var savestring = "";
+        var mealselect = document.getElementById("select_ActivityID_index").className;
+        var eventname = document.getElementById("select_ActivityID_index").getAttribute("name");
+        var english = document.getElementById("select_ActivityID_index").getAttribute("english");
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+
+        var a = $("div[id=pills-contact1] tr td div input[class=form-check-input]");
+        for (var c = 0; c < a.length; c++) {
+            if (a[c].checked == true && a[c].disabled != true) {
+                var g = String(a[c].name);
+                var nameg = g.substring(0, g.length - 1);
+                savestring = savestring + nameg + "," + a[c].value + ",";
+            }
+        }
+        $.post("/Home/saveButton_Activity", { arr: savestring, whichAEID: mealselect, datesel: dateselect, eventName: eventname, englishname: english, tab: tab }, function (data) {
+            if (data == 1) {
+                tempAlert("Saved Successfully", 2000);
+                setTimeout(function () { window.location.reload(); }, 2000);
+            }
+            else
+                tempAlert("Saved failed", 2000);
+        });
+    }
+    function floor_clearbutton() {
+        var a = $("div[id=pills-contact1] tr td div input[class=form-check-input]");
+        for (var c = 0; c < a.length; c++) {
+            if (a[c].disabled != true) {
+                a[c].checked = false;
+            }
+        }
+    }
+    function list_clearbutton() {
+        var a = $("div[id=pills-profile1] tr td div input[class=form-check-input]");
+        for (var c = 0; c < a.length; c++) {
+            if (a[c].disabled != true) {
+                a[c].checked = false;
+            }
+        }
+    }
+
+    function open_form(ee) {
+        var tab = $('#hiddentab').val();
+        var node_tbody = document.getElementById("show_list")
+        while (node_tbody.hasChildNodes())
+            node_tbody.removeChild(node_tbody.lastChild);
+        var aa = $("div tr td div input[class=form-check-input]");
+        for (var cc = 0; cc < aa.length; cc++) {
+            if (aa[cc].checked == true) {
+                aa[cc].checked = false;
+            }
+        }
+        var a = document.getElementById("select_ActivityID_index");
+        a.className = ee.parentNode.parentNode.getAttribute("name");
+        a.setAttribute("name", ee.parentNode.parentNode.id);
+        a.setAttribute("english", ee.parentNode.parentNode.getAttribute("englishname"));
+        getdata();
+
+
+    }
+    function getdata() {
+        var AEventID = document.getElementById("select_ActivityID_index").className;
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+        $.get("/Home/Getting_Activity", { whichAEID: AEventID, datesel: dateselect, tab: tab }, function (data) {
+            var a = String(data).split(";");
+            for (var c = 0; c < a.length; c++) {
+                var cplus = c + 1;
+                for (var b = 0; b < a[c].split(",").length; b++) {
+                    if (a[c].split(",")[b] != "") {
+                        var d = $("input[name=" + a[c].split(",")[b] + "][value=option" + cplus + "]");
+                        d[0].checked = true;
+                        var e = $("input[name=\"" + a[c].split(",")[b] + "+\"][value=option" + cplus + "]");
+                        e[0].checked = true;
+                    }
+                }
+            }
+        });
+        $.get("/Home/View_List_Activity", { whichAEID: AEventID, datesel: dateselect, tab: tab }, function (data) {
+            var view = $("#show_list");
+            for (var i = 0; i < data.length; i++) {
+                view.append("<tr name='" + data[i][1].Value + "'><td>" + data[i][0].Value + "<\/td><td>" + data[i][3].Value + "<\/td><td><div class=\"form-check form-check-inline\"><input type=\"image\" style=\"width:1.7vw;height:1.7vw\" src=\"\/Content\/pages\/img\/icoedit.png\" onclick=\"progressnote(this)\"><\/div><\/td>" +
+                    "<td><div><input id=\"1\" type=\"image\"  onclick=\"SomeDeleteRowFunction(this)\" style=\"width:1.5vw;height:1.5vw\" src=\"\/Content\/pages\/img\/X.jpg\" class=\"clsButtonRemove\" style=\"float:right;\"><\/div><\/td><\/tr>");
+            }
+
+        });
+
+
+
+        $.get("/Home/disable_hospital", { datesel: dateselect }, function (data) {
+            for (var len = 0; len < data.toString().split(',').length; len++) {
+                if (data.toString().split(',')[len] != '') {
+                    var a = $('input[type="radio"][name="' + data.toString().split(',')[len] + '"]')
+                    a[3].checked = true;
+                    a.attr('disabled', true);
+                    var b = $('input[type="radio"][name="' + data.toString().split(',')[len] + '+"]')
+                    b[3].checked = true;
+                    b.attr('disabled', true);
+                }
+            }
+        });
+    }
+
+    function View_List_add() {
+        var a = $('#searchresidents3');
+        var residentid = a[0].name;
+        if (residentid == "" || residentid == undefined) {
+            tempAlert("No Resident was Choosen", 2000);
+            return;
+        }
+        var namesub = $('input[name=' + residentid + ']')
+        var name = namesub[1].parentNode.parentNode.previousElementSibling.innerHTML;
+        var selector = $('input[name="inlineRadioOptions"]')
+        for (var s = 0; s < selector.length; s++) {
+            if (selector[s].checked == true) {
+                var text = selector[s].nextElementSibling.innerHTML;
+            }
+        }
+        if (text == undefined) {
+            //alert("No Option was Choosen");
+            tempAlert("No Option was Choosen", 2000);
+
+            return;
+        }
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+        $.get("/Home/disable_hospital", { datesel: dateselect }, function (data) {
+            if (data.toString().includes(residentid)) {
+                tempAlert("Resident in the Hospital", 2000);
+            }
+            else {
+                var view = $("#show_list");
+                var viewtr = $("#show_list tr");
+                for (var viewindex = 0; viewindex < viewtr.length; viewindex++) {
+                    if (residentid == viewtr[viewindex].getAttribute('name')) {
+                        residentid = '-9';
+                    }
+                }
+                if (residentid == '-9') {
+                    tempAlert("Resident already exist in the List", 2000);
+                }
+                else {
+                    view.append("<tr name='" + residentid + "'><td>" + name + "<\/td><td>" + text +
+                        "<\/td><td><div class=\"form-check form-check-inline\"><input type=\"image\" style=\"width:1.7vw;height:1.7vw\" src=\"\/Content\/pages\/img\/icoedit.png\" onclick=\"progressnote(this)\">" +
+                        "<\/div><\/td><td><div><input id=\"1\" type=\"image\" style=\"width:1.5vw;height:1.5vw\" " +
+                        "onclick=\"SomeDeleteRowFunction(this)\" src=\"\/Content\/pages\/img\/X.jpg\" class=\"clsButtonRemove\" style=\"float:right;\"><\/div>" +
+                        "<\/td><\/tr>");
+                    var box = $('#searchresidents3');
+                    box[0].value = "";
+                    var choice = $('input[name="inlineRadioOptions"]');
+                    for (var ind = 0; ind < choice.length; ind++) {
+                        choice[ind].checked = false;
+                    }
+                }
+            }
+        });
+    }
+    function x_close() {
+        var box = $('#searchresidents3');
+        box[0].value = "";
+        var choice = $('input[name="inlineRadioOptions"]');
+        for (var ind = 0; ind < choice.length; ind++) {
+            choice[ind].checked = false;
+        }
+    }
+    function SomeDeleteRowFunction(o) {
+        var p = o.parentNode.parentNode.parentNode;
+        p.parentNode.removeChild(p);
+    }
+
+    function View_List_save() {
+        var tab = $('#hiddentab').val();
+        var savestring = "";
+        var mealselect = document.getElementById("select_ActivityID_index").className;
+        var eventname = document.getElementById("select_ActivityID_index").getAttribute("name");
+        var english = document.getElementById("select_ActivityID_index").getAttribute("english");
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+        var tr_list = $('div table[class="attend"] tbody[id="show_list"] tr');
+        for (var index = 0; index < tr_list.length; index++) {
+            var td_list = tr_list[index].childNodes
+            savestring = savestring + tr_list[index].getAttribute('name') + "," + td_list[1].innerHTML + ",";
+        }
+        $.post("/Home/saveButton_Activity", { arr: savestring, whichAEID: mealselect, datesel: dateselect, eventName: eventname, englishname: english, tab: tab }, function (data) {
+            if (data == 1) {
+                tempAlert("Saved Successfully", 2000);
+                setTimeout(function () { window.location.reload(); }, 2000);
+
+            }
+            else
+                tempAlert("Saved failed", 2000);
+        });
+
+    }
+
+    function previousday() {
+        var monthNames = [
+            "January", "February", "March",
+            "April", "May", "June", "July",
+            "August", "September", "October",
+            "November", "December"
+        ];
+        var a = document.getElementById("lblCalendarMsg").innerHTML;
+        var b = new Date(a);
+        b.setDate(b.getDate() - 1);
+        document.getElementById("lblCalendarMsg").innerHTML = monthNames[b.getMonth()] + " " + b.getDate() + ", " + b.getFullYear();
+
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+        var tab = $('#hiddentab').val();
+        if (window.location.href.toString().includes("datesel") && window.location.href.toString().includes("tab")) {
+            var indexequal = window.location.href.toString().indexOf("=");
+            var newstring = window.location.href.toString().substring(0, indexequal + 1);
+
+            window.location.href = newstring + dateselect + "&tab=" + tab;
+        }
+        else {
+            var indexequal = window.location.href.toString().indexOf("?");
+            if (indexequal != -1) {
+                var newstring = window.location.href.toString().substring(0, indexequal);
+                window.location.href = newstring + "?datesel=" + dateselect + "&tab=" + tab;
+            }
+            else {
+                window.location.href = window.location.href + "?datesel=" + dateselect + "&tab=" + tab;
+            }
+
+        }
+
+    }
+    function nextday() {
+        var monthNames = [
+            "January", "February", "March",
+            "April", "May", "June", "July",
+            "August", "September", "October",
+            "November", "December"
+        ];
+        var a = document.getElementById("lblCalendarMsg").innerHTML;
+        var b = new Date(a);
+        b.setDate(b.getDate() + 1);
+        document.getElementById("lblCalendarMsg").innerHTML = monthNames[b.getMonth()] + " " + b.getDate() + ", " + b.getFullYear();
+
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+        var tab = $('#hiddentab').val();
+        if (window.location.href.toString().includes("datesel")) {
+            var indexequal = window.location.href.toString().indexOf("=");
+            var newstring = window.location.href.toString().substring(0, indexequal + 1);
+            window.location.href = newstring + dateselect + "&tab=" + tab;
+        }
+        else {
+            var indexequal = window.location.href.toString().indexOf("?");
+            if (indexequal != -1) {
+                var newstring = window.location.href.toString().substring(0, indexequal);
+                window.location.href = newstring + "?datesel=" + dateselect + "&tab=" + tab;
+            }
+            else {
+                window.location.href = window.location.href + "?datesel=" + dateselect + "&tab=" + tab;
+            }
+        }
+
+    }
+
+    function progressnote(o) {
+        var id = o.parentNode.parentNode.parentNode.getAttribute("name");
+        document.getElementById('contactForm').style.display = "block";
+        document.getElementById('contactForm').setAttribute('uid', id);
+    }
+    function progressnoteadd(o) {
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+        var id = o.parentNode.parentNode.getAttribute("uid");
+        var idint = parseInt(id);
+        var textnote = document.getElementById("formtextarea").value;
+        $.get("/Home/click_progress_note_activity", { residentid: idint, datesel: dateselect, note: textnote }, function (data) {
+            if (data == 1) {
+                tempAlert("Saved Successfully", 2000);
+            }
+            else {
+                tempAlert("Saved failed", 2000);
+            }
+        });
+        document.getElementById('formtextarea').value = '';
+        document.getElementById('contactForm').style.display = "none";
+    }
+    function note_close_click() {
+        document.getElementById('formtextarea').value = '';
+        document.getElementById('contactForm').style.display = 'none';
+    }
+
+    function Print_list() {
+        var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+        mywindow.document.write('<html><head><title>' + document.title + '</title>');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write('<h1>' + document.title + '</h1>');
+        mywindow.document.write(document.getElementById("pills-profile1").innerHTML);
+        mywindow.document.write('</body></html>');
+
+        mywindow.document.close(); // necessary for IE >= 10
+        mywindow.focus(); // necessary for IE >= 10*/
+
+        mywindow.print();
+        mywindow.close();
+
+        return true;
+    }
+    function Print_floor() {
+        var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+        mywindow.document.write('<html><head><title>' + document.title + '</title>');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write('<h1>' + document.title + '</h1>');
+        mywindow.document.write(document.getElementById("pills-contact1").innerHTML);
+        mywindow.document.write('</body></html>');
+
+        mywindow.document.close(); // necessary for IE >= 10
+        mywindow.focus(); // necessary for IE >= 10*/
+
+        mywindow.print();
+        mywindow.close();
+
+        return true;
+    }
+
+
+</script>
+<script>
+    function tempAlert(msg, duration) {
+        var el = document.createElement("div");
+        el.setAttribute("style", "position:fixed;top:2%;left:28%;width:45vw;text-align: center;background-color:white;z-index:9999;color:black;padding:2.5vw 4vw 2.5vw 4vw;border-radius:1vw;font-size:2vw;font-weight:bold;border:black solid;");
+        el.innerHTML = "<img src=\"\/Content\/assets\/img\/qola_logo3.png\" style=\"width:120px;height:80px;margin-left:-2vw;\" \/><div style=\"margin-left:3vw;display:inline;\">" + msg + "<\/div>";
+        setTimeout(function () {
+            el.parentNode.removeChild(el);
+        }, duration);
+        document.body.appendChild(el);
+    }
+
+    $('#searchresidents3').keyup(function () {
+        val = $(this).val();
+        if (val.length > 1) {
+            $('.searchboxresult2').empty();
+            $.get("/Residents/Search/", { term: val }, function (data) {
+                console.log(data);
+                for (var i = 0; i < data.length; i++) {
+                    $('.searchboxresult2').append('<a onclick="click_searchresidents3(\'' + data[i][0].Value + '\',\'' + data[i][4].Value + '\')" class=\'list-group-item list-group-item-action\' id=\'' + data[i][4].Value + '\'">' +
+                        '<img src="/Content/assets/' + data[i][5].Value + '" class="searchimg">' +
+                        '<p class="ml-3">' + data[i][0].Value + '<br></p>' +
+                        '</a>');
+                }
+                if (data.length == 0) {
+                    $('.searchboxresult2').append('No resident found with the specified name/room number');
+                }
+            });
+            $('.searchBox').show();
+        } else {
+            $('.searchBox').hide();
+        }
+    })
+
+    function click_searchresidents3(aa, bb) {
+        document.getElementById("searchresidents3").value = aa;
+        document.getElementById("searchresidents3").name = bb;
+        $('#searchBoxfor3').hide();
+    }
+
+    function change_searchresidents3() {
+        document.getElementById("searchresidents3").name = "";
+    }
+
+    document.body.addEventListener("click", function (e) {
+        $('.searchboxresult2').empty();
+        var a = $('.searchboxresult2');
+        a[0].parentElement.style.display = "none";
+        //$('#searchresidents3').val("");
+
+    });
+</script>
+<script>
+    var tab = $('#hiddentab').val();
+    if (tab == "a" || tab == "") {
+        $('div[class="cp-nav-controls"]').hide();
+        $('div[class="cp-header-content"]').hide();
+        $('div[class="cp-view-list-container"]').css('z-index', 2000);
+        $('div[class="cp-view-list-container"]').css('width', "20%");
+        $('.cp-calendar.daily').hide();
+    }
+    else if (tab == "b") {
+        document.getElementById("pills-active-tab").className = "nav-link";
+        document.getElementById("pills-achive-tab").className = "nav-link active";
+        document.getElementById("pills-active").className = "tab-pane fade";
+        document.getElementById("pills-achive").className = "tab-pane fade show active";
+
+        document.getElementById("day_div").style.display = "none";
+        document.getElementById("day_div2").style.display = "block";
+        $('div[class="cp-nav-controls"]').hide();
+        $('div[class="cp-header-content"]').hide();
+        $('div[class="cp-view-list-container"]').css('z-index', 2000);
+        $('div[class="cp-view-list-container"]').css('width', "20%");
+        $('.cp-calendar.daily').hide();
+
+
+        //var get = $('#pills-achive-tab');
+        //get[0].click(function () { });
+
+        //document.getElementById("day_div").style.display = "none";
+        //document.getElementById("day_div2").style.display = "block";
+
+        //$('div[class="cp-nav-controls"]').hide();
+        //$('div[class="cp-header-content"]').hide();
+        //$('div[class="cp-view-list-container"]').css('z-index', 2000);
+        //$('div[class="cp-view-list-container"]').css('width', "20%");
+        //$('.cp-calendar.daily').hide();
+    }
+    else if (tab == "c") {
+        document.getElementById("pills-active-tab").className = "nav-link";
+        document.getElementById("pills-achive-tab2").className = "nav-link active";
+        document.getElementById("pills-active").className = "tab-pane fade";
+        document.getElementById("pills-C3").className = "tab-pane fade show active";
+
+        document.getElementById("day_div").style.display = "none";
+        document.getElementById("day_div3").style.display = "block";
+        $('div[class="cp-nav-controls"]').hide();
+        $('div[class="cp-header-content"]').hide();
+        $('div[class="cp-view-list-container"]').css('z-index', 2000);
+        $('div[class="cp-view-list-container"]').css('width', "20%");
+        $('.cp-calendar.daily').hide();
+    }
+    else if (tab == "d") {
+        document.getElementById("pills-active-tab").className = "nav-link";
+        document.getElementById("pills-achive-tab3").className = "nav-link active";
+        document.getElementById("pills-active").className = "tab-pane fade";
+        document.getElementById("pills-C4").className = "tab-pane fade show active";
+
+        document.getElementById("day_div").style.display = "none";
+        document.getElementById("day_div4").style.display = "block";
+        $('div[class="cp-nav-controls"]').hide();
+        $('div[class="cp-header-content"]').hide();
+        $('div[class="cp-view-list-container"]').css('z-index', 2000);
+        $('div[class="cp-view-list-container"]').css('width', "20%");
+        $('.cp-calendar.daily').hide();
+    }
+</script>

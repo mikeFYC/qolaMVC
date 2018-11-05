@@ -711,12 +711,44 @@ namespace QolaMVC.Controllers
                         { "startDate", new DateTime(d.Year, d.Month, l_Data.ProgramStartDate.Day).ToShortDateString()},
                         { "endDate", new DateTime(d.Year, d.Month, l_Data.ProgramEndDate.Day).ToShortDateString()},
                         { "startTime", l_Data.ProgramStartTime},
-                        { "endTime", l_Data.ProgramEndTime}
+                        { "endTime", l_Data.ProgramEndTime},
+
                     };
 
                     l_Events.Add(columns);
                 }
             }
+
+            return Json(l_Events, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult getEvents_mike()
+        {
+            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get();//HomeDAL.GetActivityEvents();
+
+            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
+
+            foreach (var l_Data in l_ActivityEvents)
+            {
+                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
+                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
+
+                var columns = new Dictionary<string, string>
+                {
+                    { "id", l_Data.ProgramId.ToString()},
+                    { "title", l_Data.ProgramName},
+                    { "startDate", ggstart.ToShortDateString()},
+                    { "endDate", ggend.ToShortDateString()},
+                    { "startTime", l_Data.ProgramStartTime},
+                    { "endTime", l_Data.ProgramEndTime},
+                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+
+                };
+
+                l_Events.Add(columns);
+            }
+            
 
             return Json(l_Events, JsonRequestBehavior.AllowGet);
         }
@@ -2746,6 +2778,114 @@ namespace QolaMVC.Controllers
             return View(LIST_VIEW_RESIDENT);
 
         }
+
+        public ActionResult ActivityCalendar2(string datesel, string tab)
+        {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+
+            ViewBag.Message = TempData["Message"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            Dining_Attendance_simple LIST_VIEW_RESIDENT = new Dining_Attendance_simple();
+
+            if (datesel == "" || datesel == null)
+            {
+                TempData["datechoose"] = DateTime.Now.ToString("MMMM dd, yyyy");
+                LIST_VIEW_RESIDENT = HomeDAL.get_list_resident(home.Id, DateTime.Today);
+                Collection<ActivityEventModel> l_Events = HomeDAL.GetActivityEvents_mike(DateTime.Today.Date, home.Id);
+                ViewBag.Events = l_Events;
+
+
+                Collection<ActivityEventModel_Calendar2> l_Events_2 = HomeDAL.GetActivityEvents_Calendar2_mike(DateTime.Today.Date, home.Id);
+                Collection<ActivityEventModel_Calendar3> l_Events_3 = HomeDAL.GetActivityEvents_Calendar3_mike(DateTime.Today.Date, home.Id);
+                Collection<ActivityEventModel_Calendar4> l_Events_4 = HomeDAL.GetActivityEvents_Calendar4_mike(DateTime.Today.Date, home.Id);
+                ViewBag.Events2 = l_Events_2;
+                ViewBag.Events3 = l_Events_3;
+                ViewBag.Events4 = l_Events_4;
+            }
+            else
+            {
+                TempData["datechoose"] = datesel;
+                LIST_VIEW_RESIDENT = HomeDAL.get_list_resident(home.Id, DateTime.Parse(datesel));
+                Collection<ActivityEventModel> l_Events = HomeDAL.GetActivityEvents_mike(DateTime.Parse(datesel).Date, home.Id);
+                ViewBag.Events = l_Events;
+
+
+                Collection<ActivityEventModel_Calendar2> l_Events_2 = HomeDAL.GetActivityEvents_Calendar2_mike(DateTime.Parse(datesel).Date, home.Id);
+                Collection<ActivityEventModel_Calendar3> l_Events_3 = HomeDAL.GetActivityEvents_Calendar3_mike(DateTime.Parse(datesel).Date, home.Id);
+                Collection<ActivityEventModel_Calendar4> l_Events_4 = HomeDAL.GetActivityEvents_Calendar4_mike(DateTime.Parse(datesel).Date, home.Id);
+                ViewBag.Events2 = l_Events_2;
+                ViewBag.Events3 = l_Events_3;
+                ViewBag.Events4 = l_Events_4;
+            }
+            TempData["LIST_VIEW_RESIDENT"] = LIST_VIEW_RESIDENT;
+            TempData.Keep("LIST_VIEW_RESIDENT");
+            ViewBag.LIST_VIEW_RESIDENT = LIST_VIEW_RESIDENT;
+
+            TempData["tab"] = tab;
+
+            return View(LIST_VIEW_RESIDENT);
+
+        }
+
+        public ActionResult ActivityCalendar3(string datesel, string tab)
+        {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+
+            ViewBag.Message = TempData["Message"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            Dining_Attendance_simple LIST_VIEW_RESIDENT = new Dining_Attendance_simple();
+
+            if (datesel == "" || datesel == null)
+            {
+                TempData["datechoose"] = DateTime.Now.ToString("MMMM dd, yyyy");
+                LIST_VIEW_RESIDENT = HomeDAL.get_list_resident(home.Id, DateTime.Today);
+                Collection<ActivityEventModel> l_Events = HomeDAL.GetActivityEvents_mike(DateTime.Today.Date, home.Id);
+                ViewBag.Events = l_Events;
+
+
+                Collection<ActivityEventModel_Calendar2> l_Events_2 = HomeDAL.GetActivityEvents_Calendar2_mike(DateTime.Today.Date, home.Id);
+                Collection<ActivityEventModel_Calendar3> l_Events_3 = HomeDAL.GetActivityEvents_Calendar3_mike(DateTime.Today.Date, home.Id);
+                Collection<ActivityEventModel_Calendar4> l_Events_4 = HomeDAL.GetActivityEvents_Calendar4_mike(DateTime.Today.Date, home.Id);
+                ViewBag.Events2 = l_Events_2;
+                ViewBag.Events3 = l_Events_3;
+                ViewBag.Events4 = l_Events_4;
+            }
+            else
+            {
+                TempData["datechoose"] = datesel;
+                LIST_VIEW_RESIDENT = HomeDAL.get_list_resident(home.Id, DateTime.Parse(datesel));
+                Collection<ActivityEventModel> l_Events = HomeDAL.GetActivityEvents_mike(DateTime.Parse(datesel).Date, home.Id);
+                ViewBag.Events = l_Events;
+
+
+                Collection<ActivityEventModel_Calendar2> l_Events_2 = HomeDAL.GetActivityEvents_Calendar2_mike(DateTime.Parse(datesel).Date, home.Id);
+                Collection<ActivityEventModel_Calendar3> l_Events_3 = HomeDAL.GetActivityEvents_Calendar3_mike(DateTime.Parse(datesel).Date, home.Id);
+                Collection<ActivityEventModel_Calendar4> l_Events_4 = HomeDAL.GetActivityEvents_Calendar4_mike(DateTime.Parse(datesel).Date, home.Id);
+                ViewBag.Events2 = l_Events_2;
+                ViewBag.Events3 = l_Events_3;
+                ViewBag.Events4 = l_Events_4;
+            }
+            TempData["LIST_VIEW_RESIDENT"] = LIST_VIEW_RESIDENT;
+            TempData.Keep("LIST_VIEW_RESIDENT");
+            ViewBag.LIST_VIEW_RESIDENT = LIST_VIEW_RESIDENT;
+
+            TempData["tab"] = tab;
+
+            return View(LIST_VIEW_RESIDENT);
+
+        }
+
+
 
         [HttpPost]
         public int saveButton_Activity(string arr, int whichAEID, string datesel,string eventName, string englishname, string tab)
