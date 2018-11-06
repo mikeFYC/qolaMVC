@@ -5,6 +5,25 @@
 <html lang='en'>
 
 <head>
+    <style>
+        .fc-event-container:hover {
+            cursor: pointer;
+        }
+        #AddEvent label{
+            font-size:1vw;
+            color:black;
+        }
+        #AddEvent #frequency #frequency_div label {
+            font-size: 0.8vw !important;
+            color: black;
+        }
+        .required_sign {
+            color: red;
+        }
+    </style>
+
+
+
     <meta charset='utf-8' />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Calendar Plugin</title>
@@ -204,6 +223,394 @@
 
                         </div>
 
+                        <div class="modal fade" id="AddEvent" role="dialog" style="right:0">
+                            <div class="modal-dialog" style="left:0;right:0;">
+                                <div class="modal-content" style="width:60vw;right:45%;margin-top:-3.6vw;">
+
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h2 class="modal-title" style="font-weight:bolder;color:black;">Add Event</h2>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="/Home/getEvents_mike" method="post" id="addEventForm">
+                                            <div id="ck" class="">
+
+                                                <div style="border: 2px solid gray; padding: 15px; width: 100%; display:inline-block;margin-top:2vw;">
+
+                                                    <div class="tab-pane fade show active" id="pills-InternalTransfer" role="tabpanel" aria-labelledby="pills-contact-tab">
+                                                        <br>
+                                                        <br>
+                                                        <div class="row">
+                                                            <div class="col-md-12" id="display_title">
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-md-4 col-form-label">ACTIVITY DISPLAY TITLE<span class="required_sign">&nbsp;*</span></label>
+                                                                    <div class="col-md-7">
+                                                                        <input type="text" class="form-control" id="display_title_input" name="title">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12" id="activity" style="margin-top:1vw;">
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-md-4 col-form-label">ACTIVITY<span class="required_sign">&nbsp;*</span></label>
+                                                                    <div class="col-md-7">
+                                                                        <select id="activity_select" class="form-control" name="activity" onfocus="activityonclick(this)">
+                                                                            <option value="">-- Select --</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12" id="frequency" style="margin-top:1vw;">
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-md-4 col-form-label">FREQUENCY<span class="required_sign">&nbsp;*</span></label>
+                                                                    <div class="col-md-7" id="frequency_div">
+                                                                        <input type="radio" class="radio-primary" name="frequency" value="1" checked />
+                                                                        <label for="" class="col-form-label">Date & Time</label>
+                                                                        <input type="radio" class="radio-primary" name="frequency" value="2" style="margin-left:1vw;" />
+                                                                        <label for="" class="col-form-label">Every Weekday</label>
+                                                                        <input type="radio" class="radio-primary" name="frequency" value="3" style="margin-left:1vw;" />
+                                                                        <label for="" class="col-form-label">Date Between</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="col-md-12" id="dateandtime" style="margin-top:1vw;">
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-md-4 col-form-label">DATE & TIME<span class="required_sign">&nbsp;*</span></label>
+                                                                    <div class="col-md-7">
+                                                                        <input type="datetime-local" class="form-control" id="dateandtime_input" name="startDateTime"/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-12" id="weekday" style="display:none;margin-top:1vw;">
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-md-4 col-form-label">WEEK DAY<span class="required_sign">&nbsp;*</span></label>
+                                                                    <div class="col-md-7">
+                                                                        <select id="weekday_select" class="form-control" name="weekday">
+                                                                            <option value="">-- Select --</option>
+                                                                            <option value="Monday">Monday</option>
+                                                                            <option value="Tuesday">Tuesday</option>
+                                                                            <option value="Wednesday">Wednesday</option>
+                                                                            <option value="Thursday">Thursday</option>
+                                                                            <option value="Friday">Friday</option>
+                                                                            <option value="Saturday">Saturday</option>
+                                                                            <option value="Sunday">Sunday</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-12" id="datefrom" style="display:none;margin-top:1vw;">
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-md-4 col-form-label">DATE FROM<span class="required_sign">&nbsp;*</span></label>
+                                                                    <div class="col-md-7">
+                                                                        <input type="date" class="form-control" id="datefrom_input" name="datefrom" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-12" id="dateto" style="display:none;margin-top:1vw;">
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-md-4 col-form-label">DATE TO<span class="required_sign">&nbsp;*</span></label>
+                                                                    <div class="col-md-7">
+                                                                        <input type="date" class="form-control" id="dateto_input" name="dateto"  />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-12" id="time" style="display:none;margin-top:1vw;">
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-md-4 col-form-label">TIME<span class="required_sign">&nbsp;*</span></label>
+                                                                    <div class="col-md-7">
+                                                                        <input type="time" class="form-control" id="time_input" name="time" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+
+                                                            <div class="col-md-12" id="venue" style="margin-top:1vw;">
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-md-4  col-form-label">VENUE</label>
+                                                                    <div class="col-md-7">
+                                                                        <select id="venue_select" class="form-control" name="venue">
+                                                                            <option value="">-- Select --</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="col-md-12" id="description" style="margin-top:1vw;">
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-md-4 col-form-label">DESCRIPTION</label>
+                                                                    <div class="col-md-7">
+                                                                        <textarea class="textarea" id="description_textarea" rows="5" style="width:65% !important;max-width:100%;float:left;" name="description"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-md-12 text-center">
+                                                <button class="btn btn-lg" data-dismiss="modal" onclick="cancel1()">
+                                                    CANCEL
+                                                </button>
+                                                <button class="btn btn-primary btn-lg" type="submit" form="addEventForm">
+                                                    SAVE
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="EditEvent" role="dialog" style="right:0">
+                            <div class="modal-dialog" style="left:0;right:0;">
+                                <div class="modal-content" style="width:60vw;right:45%;margin-top:-3.6vw;">
+
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h2 class="modal-title" style="font-weight:bolder;color:black;">Edit Event</h2>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <div id="ck" class="">
+
+                                            <div style="border: 2px solid gray; padding: 15px; width: 100%; display:inline-block;margin-top:2vw;">
+
+                                                <div class="tab-pane fade show active" id="pills-InternalTransfer" role="tabpanel" aria-labelledby="pills-contact-tab">
+                                                    <br>
+                                                    <br>
+                                                    <div class="row">
+                                                        <div class="col-md-12" id="display_title">
+                                                            <div class="form-group row">
+                                                                <label for="" class="col-md-4 col-form-label">ACTIVITY DISPLAY TITLE</label>
+                                                                <div class="col-md-7">
+                                                                    <input type="text" class="form-control" id="display_title_input">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12" id="activity" style="margin-top:1vw;">
+                                                            <div class="form-group row">
+                                                                <label for="" class="col-md-4 col-form-label">ACTIVITY</label>
+                                                                <div class="col-md-7">
+                                                                    <select id="activity_select" class="form-control">
+                                                                        <option value="">-- Select --</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12" id="frequency" style="margin-top:1vw;">
+                                                            <div class="form-group row">
+                                                                <label for="" class="col-md-4 col-form-label">FREQUENCY</label>
+                                                                <div class="col-md-7" id="frequency_div">
+                                                                    <input type="radio" class="radio-primary" name="frequency" value="0" checked />
+                                                                    <label for="" class="col-form-label">Date & Time</label>
+                                                                    <input type="radio" class="radio-primary" name="frequency" value="1" style="margin-left:1vw;" />
+                                                                    <label for="" class="col-form-label">Every Weekday</label>
+                                                                    <input type="radio" class="radio-primary" name="frequency" value="2" style="margin-left:1vw;" />
+                                                                    <label for="" class="col-form-label">Date Between</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="col-md-12" id="dateandtime" style="margin-top:1vw;">
+                                                            <div class="form-group row">
+                                                                <label for="" class="col-md-4 col-form-label">DATE & TIME</label>
+                                                                <div class="col-md-7">
+                                                                    <input type="datetime-local" class="form-control" id="dateandtime_input" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-12" id="weekday" style="display:none;margin-top:1vw;">
+                                                            <div class="form-group row">
+                                                                <label for="" class="col-md-4 col-form-label">WEEK DAY</label>
+                                                                <div class="col-md-7">
+                                                                    <select name="weekday_select" class="form-control">
+                                                                        <option value="">-- Select --</option>
+                                                                        <option value="Monday">Monday</option>
+                                                                        <option value="Tuesday">Tuesday</option>
+                                                                        <option value="Wednesday">Wednesday</option>
+                                                                        <option value="Thursday">Thursday</option>
+                                                                        <option value="Friday">Friday</option>
+                                                                        <option value="Saturday">Saturday</option>
+                                                                        <option value="Sunday">Sunday</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-12" id="datefrom" style="display:none;margin-top:1vw;">
+                                                            <div class="form-group row">
+                                                                <label for="" class="col-md-4 col-form-label">DATE FROM</label>
+                                                                <div class="col-md-7">
+                                                                    <input type="date" class="form-control" id="datefrom_input" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-12" id="dateto" style="display:none;margin-top:1vw;">
+                                                            <div class="form-group row">
+                                                                <label for="" class="col-md-4 col-form-label">DATE TO</label>
+                                                                <div class="col-md-7">
+                                                                    <input type="date" class="form-control" id="dateto_input" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-12" id="time" style="display:none;margin-top:1vw;">
+                                                            <div class="form-group row">
+                                                                <label for="" class="col-md-4 col-form-label">TIME</label>
+                                                                <div class="col-md-7">
+                                                                    <input type="time" class="form-control" id="time_input" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+
+                                                        <div class="col-md-12" id="venue" style="margin-top:1vw;">
+                                                            <div class="form-group row">
+                                                                <label for="" class="col-md-4  col-form-label">VENUE</label>
+                                                                <div class="col-md-7">
+                                                                    <select id="venue_select" class="form-control">
+                                                                        <option value="">-- Select --</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="col-md-12" id="description" style="margin-top:1vw;">
+                                                            <div class="form-group row">
+                                                                <label for="" class="col-md-4 col-form-label">DESCRIPTION</label>
+                                                                <div class="col-md-7">
+                                                                    <textarea class="textarea" id="description_textarea" rows="5" style="width:65% !important;max-width:100%;float:left;"></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-md-12 text-center">
+                                                <button class="btn btn-lg" data-dismiss="modal">
+                                                    CANCEL
+                                                </button>
+                                                <button class="btn btn-primary btn-lg">
+                                                    SAVE
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="modal fade" id="ADD_CANCEL" role="dialog" style="margin-top:15%;">
+                            <div class="modal-dialog" style="left:0;right:0;width:20%;">
+                                <div class="modal-content" style="background-color:lightgray">
+
+                                    <div class="text-center" id="ADD_CANCEL_title" style="font-weight:bold;font-size:1.3vw;margin-top:5%;"></div>
+
+                                    <div class="modal-body">
+                                        <div style="width: 100%; display:block;margin-top:8%;">
+                                            <div class="row">
+                                                <div class="" style="margin:0 auto;width:90%;">
+                                                    <div id="ADD">
+                                                        <a class="btn btn-primary btn-lg" href="#" data-toggle="modal" data-target="#AddEvent" style="width:100%;" onclick="add_event_small_div(this)">ADD EVENT</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-top:1.5vw;">
+                                                <div class="" style="margin:0 auto;width:90%;">
+                                                    <div id="CANCEL">
+                                                        <a class="btn btn-primary btn-lg" href="#" style="width:100%;" onclick="document.getElementById('ADD_CANCEL').className='modal fade'">CANCEL</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="EDIT_COPY_DELETE_CANCEL" role="dialog" style="margin-top:15%;">
+                            <div class="modal-dialog" style="left:0;right:0;width:20%;">
+                                <div class="modal-content" style="background-color:lightgray">
+
+                                    <div class="text-center" id="EDIT_COPY_DELETE_CANCEL_title" style="font-weight:bold;font-size:1.3vw;margin-top:5%;"></div>
+
+                                    <div class="modal-body" >
+                                        <div style="width: 100%; display:block;margin-top:8%;">
+                                            <div class="row">
+                                                <div class="" style="margin:0 auto;width:90%;">
+                                                    <div id="EDIT">
+                                                        <a class="btn btn-primary btn-lg" href="#" data-toggle="modal" data-target="#EditEvent" style="width:100%;" onclick="document.getElementById('EDIT_COPY_DELETE_CANCEL').className='modal fade'">Edit EVENT</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-top:1.1vw;">
+                                                <div class="" style="margin:0 auto;width:90%;">
+                                                    <div id="COPY">
+                                                        <a class="btn btn-primary btn-lg" href="#" data-toggle="modal" data-target="#" style="width:100%;">Copy EVENT</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-top:1.1vw;">
+                                                <div class="" style="margin:0 auto;width:90%;">
+                                                    <div id="DELETE">
+                                                        <a class="btn btn-primary btn-lg" href="#" data-toggle="modal" data-target="#" style="width:100%;">Delete EVENT</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-top:1.1vw;">
+                                                <div class="" style="margin:0 auto;width:90%;">
+                                                    <div id="CANCEL">
+                                                        <a class="btn btn-primary btn-lg" href="#" style="width:100%;" onclick="document.getElementById('EDIT_COPY_DELETE_CANCEL').className='modal fade'">CANCEL</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
 
@@ -267,15 +674,14 @@
             success: function (data) {
                 $.each(data, function (i, v) {
                     data.push({
-                        
-
+                        Id: v.id,
                         title: v.title,
                         start: v.startT,
-                        //end: v.endT != null ? v.endT : null,
+                        end: v.endT != null ? v.endT : null,
+                        startDate: v.startDate
                     });
                 })
                 GenerationCalendar(data);
-
             },
 
             error: function (error) {
@@ -295,15 +701,38 @@
                     center: 'title',
                     left: 'month,basicWeek,basicDay'
                 },
-
+                editable: true,
 
                 eventLimit: true,
                 eventColor: 'lightgreen',
-                events:events
+                events: events,
+                dayClick: function (date, jsEvent, view) {
+                    var a = $('#ADD_CANCEL');
+                    var b = $('#ADD_CANCEL_title');
+                    var c = date.format();
+                    b[0].innerHTML = c;
+                    a[0].className = "modal fade show";
+                },
+                eventClick: function (calEvent, jsEvent, view) {
+                    var a = $('#EDIT_COPY_DELETE_CANCEL');
+                    var b = $('#EDIT_COPY_DELETE_CANCEL_title');
+                    var c = calEvent.startDate;
+                    b[0].innerHTML = c;
+                    a[0].className = "modal fade show";
+                    $(this).css('border-color', 'red');
+                },
+                eventDrop: function (event, delta, revertFunc) {
 
-            }).on('click', '.fc-day', function () {
-                //alert('day button clicked');
-                gg();
+                    if (confirm(event.title + " was dropped on " + event.start.format()+ "   Are you sure about this change?")) {
+                        DragandDrop(event.Id, event.start.format());
+                    }
+                    else {
+                        revertFunc();
+                    }
+
+                }
+
+
             }).on('click', '.fc-basicDay-button', function () {
                 // alert('basicDay button clicked');
                 $('.fc-view-container').hide();
@@ -1052,4 +1481,141 @@
         $('div[class="cp-view-list-container"]').css('width', "20%");
         $('.cp-calendar.daily').hide();
     }
+</script>
+
+
+<script>
+    $("#AddEvent input[type=radio]").on("click", function () {
+        if ($("input:checked").val() == '1') {
+            //$('#datefrom_input').val('');
+            //$('#dateto_input').val('');
+            //$('#weekday_select').val('');
+            //$('#time_input').val('');
+            $('#datefrom').hide();
+            $('#dateto').hide();
+            $('#weekday').hide();
+            $('#time').hide();
+            $('#dateandtime').show();
+        }
+        else if ($("input:checked").val() == '2') {
+            //$('#dateandtime_input').val('');
+            //$('#datefrom_input').val('');
+            //$('#dateto_input').val('');
+            $('#dateandtime').hide();
+            $('#datefrom').hide();
+            $('#dateto').hide();
+            $('#weekday').show();
+            $('#time').show();
+        }
+        else if ($("input:checked").val() == '3') {
+            //$('#dateandtime_input').val('');
+            //$('#weekday_select').val('');
+            $('#dateandtime').hide();
+            $('#weekday').hide();
+            $('#datefrom').show();
+            $('#dateto').show();
+            $('#time').show();
+        }
+    });
+
+    $('form').submit(function (event) {
+        var first = $("#display_title_input").val();
+        var second = $("#activity_select").val();
+        var third = $("#dateandtime_input").val();
+        var forth = $("#weekday_select").val();
+        var fifth = $("#datefrom_input").val();
+        var sixth = $("#dateto_input").val();
+        var seventh = $("#time_input").val();
+        if (first == '' || second == '') {tempAlert("Mandatory Required", 2000);return false;}
+        else {
+            var a = $("#AddEvent input[type=radio]:checked").val();
+            if (a == '1') {
+                if (third == '') {tempAlert("Mandatory Required", 2000);return false;}
+                else {
+                    event.preventDefault();
+                    submitform(first, second, third, forth, fifth, sixth, seventh, '1');
+                }
+            }
+            else if (a == '2') {
+                if (forth == '' || seventh == '') {tempAlert("Mandatory Required", 2000);return false;}
+                else {
+                    event.preventDefault();
+                    submitform(first, second, third, forth, fifth, sixth, seventh, '2');
+                }
+            }
+            else if (a == '3') {
+                if (fifth == '' || sixth == '' || seventh == '') { tempAlert("Mandatory Required", 2000); return false; }
+                else {
+                    event.preventDefault();
+                    submitform(first, second, third, forth, fifth, sixth, seventh,'3');
+                }
+            }
+            else {tempAlert("Saved Failed", 2000);return false;}
+        }
+    });
+
+    function submitform(first, second, third, forth, fifth, sixth, seventh,a) {
+        var posting = $.post("/Home/getEvents_mike", { aa: first, bb: second, cc: third, dd: forth,ee: fifth, ff: sixth, gg: seventh, fre: a });
+        posting.done(function (data) {
+            $('#calendar').fullCalendar('removeEvents');
+            for (var ind = 0; ind < data.length; ind++) {
+                var event = {
+                    Id: data[ind].id,
+                    title: data[ind].title,
+                    start: data[ind].startT,
+                    end: data[ind].endT != null ? data[ind].endT : null,
+                    startDate: data[ind].startDate
+                };
+                $('#calendar').fullCalendar('renderEvent', event, true);
+            }
+            $('#AddEvent').modal('hide');
+            cancel1();
+        });
+    }
+
+    function DragandDrop(aa, bb) {
+        $.post("/Home/EVENT_DragandDrop", {eventID:aa,destinationDT:bb}, function () {
+
+        });
+
+
+    }
+
+
+    function cancel1() {
+        var a = $("#AddEvent input[type=radio]")
+        a[0].checked = true;
+        $("#display_title_input").val('');
+        $("#activity_select").val('');
+        $('#AddEvent #datefrom_input').val('');
+        $('#AddEvent #dateto_input').val('');
+        $('#AddEvent #weekday_select').val('');
+        $('#AddEvent #time_input').val('');
+        $('#AddEvent #datefrom_input').val('');
+        $('#AddEvent #dateto_input').val('');
+        $('#AddEvent #dateandtime_input').val('');
+        $('#AddEvent #datefrom').hide();
+        $('#AddEvent #dateto').hide();
+        $('#AddEvent #weekday').hide();
+        $('#AddEvent #time').hide();
+        $('#AddEvent #dateandtime').show();
+    }
+
+    function activityonclick(ee) {
+        $('#activity_select').children('option:not(:first)').remove();
+        $.get("/Home/getCategoriesForCalendar", { }, function (data) {
+            for (var i = 0; i < data.length; i++) {
+                $('#activity_select').append('<option value="' + data[i].Id + '">' + data[i].Name + '</option>');
+                //$('#activity_select').append($("<option></option>").attr("value", data[i].Id).text(data[i].Name)); 
+            }
+        });
+    }
+
+    function add_event_small_div(ee) {
+        var selectdate = document.getElementById('ADD_CANCEL_title').innerHTML;
+        $("#dateandtime_input").val(selectdate + 'T00:00');
+        $("#datefrom_input").val(selectdate);
+        document.getElementById('ADD_CANCEL').className = 'modal fade';
+    }
+
 </script>

@@ -1879,6 +1879,31 @@ namespace QolaMVC.DAL
             
         }
 
+        public static void EVENT_DragandDrop(int EventID, DateTime DT, int HomeID)
+        {
+            string exception = string.Empty;
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlCommand l_Cmd = new SqlCommand("spAB_Activity_Events_DragandDrop", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@eventID", EventID);
+                l_Cmd.Parameters.AddWithValue("@DT", DT);
+                l_Cmd.Parameters.AddWithValue("@homtId", HomeID);
+                l_Cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                exception = "EVENT_DragandDrop |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
 
 
     }
