@@ -890,57 +890,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static Collection<ActivityEventModel> GetActivityEvents()
-        {
-            string exception = string.Empty;
-            Collection<ActivityEventModel> l_Events = new Collection<ActivityEventModel>();
-            ActivityEventModel l_Event;
-            //UserModel l_User;
-            //ResidentModel l_Resident;
-            //SuiteModel l_Suite;
 
-            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
-            try
-            {
-                SqlDataAdapter l_DA = new SqlDataAdapter();
-                SqlCommand l_Cmd = new SqlCommand("spAB_Get_Activity_Events", l_Conn);
-                l_Conn.Open();
-                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                DataSet homeReceive = new DataSet();
-                l_DA.SelectCommand = l_Cmd;
-                l_DA.Fill(homeReceive);
-
-                if ((homeReceive != null) && (homeReceive.Tables.Count > 0) && (homeReceive.Tables[0].Rows.Count > 0))
-                {
-                    foreach (DataRow homeTypeRow in homeReceive.Tables[0].Rows)
-                    {
-                        l_Event = new ActivityEventModel();
-
-                        l_Event.ProgramId = Convert.ToInt32(homeTypeRow["Id"]);
-                        l_Event.ActivityId = Convert.ToInt32(homeTypeRow["ActivityId"]);
-                        l_Event.ProgramName = Convert.ToString(homeTypeRow["EventTitle"]);
-                        l_Event.ProgramStartDate = Convert.ToDateTime(homeTypeRow["StartDate"]);
-                        l_Event.ProgramEndDate = Convert.ToDateTime(homeTypeRow["EndDate"]);
-                        l_Event.ProgramStartTime = Convert.ToString(homeTypeRow["StartTime"]);
-                        l_Event.ProgramEndTime = Convert.ToString(homeTypeRow["EndTime"]);
-                        //l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
-
-                        l_Events.Add(l_Event);
-                    }
-                }
-                return l_Events;
-            }
-            catch (Exception ex)
-            {
-                exception = "GetActivityEvents |" + ex.ToString();
-                //Log.Write(exception);
-                throw;
-            }
-            finally
-            {
-                l_Conn.Close();
-            }
-        }
 
 
 
@@ -1169,7 +1119,7 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-        
+
         #endregion
 
 
@@ -1177,10 +1127,61 @@ namespace QolaMVC.DAL
 
 
 
-
-
-        public static void AddNewActivityEvent(ActivityEventModel p_Model,int homeid)
+        public static Collection<ActivityEventModel> GetActivityEvents()
         {
+            string exception = string.Empty;
+            Collection<ActivityEventModel> l_Events = new Collection<ActivityEventModel>();
+            ActivityEventModel l_Event;
+            //UserModel l_User;
+            //ResidentModel l_Resident;
+            //SuiteModel l_Suite;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_Activity_Events", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                DataSet homeReceive = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(homeReceive);
+
+                if ((homeReceive != null) && (homeReceive.Tables.Count > 0) && (homeReceive.Tables[0].Rows.Count > 0))
+                {
+                    foreach (DataRow homeTypeRow in homeReceive.Tables[0].Rows)
+                    {
+                        l_Event = new ActivityEventModel();
+
+                        l_Event.ProgramId = Convert.ToInt32(homeTypeRow["Id"]);
+                        l_Event.ActivityId = Convert.ToInt32(homeTypeRow["ActivityId"]);
+                        l_Event.ProgramName = Convert.ToString(homeTypeRow["EventTitle"]);
+                        l_Event.ProgramStartDate = Convert.ToDateTime(homeTypeRow["StartDate"]);
+                        l_Event.ProgramEndDate = Convert.ToDateTime(homeTypeRow["EndDate"]);
+                        l_Event.ProgramStartTime = Convert.ToString(homeTypeRow["StartTime"]);
+                        l_Event.ProgramEndTime = Convert.ToString(homeTypeRow["EndTime"]);
+                        l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
+                        l_Event.note = Convert.ToString(homeTypeRow["note"]);
+
+                        l_Events.Add(l_Event);
+                    }
+                }
+                return l_Events;
+            }
+            catch (Exception ex)
+            {
+                exception = "GetActivityEvents |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+        public static int AddNewActivityEvent(ActivityEventModel p_Model,int homeid)
+        {
+            int retunvalue = 0;
             string exception = string.Empty;
             SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
             try
@@ -1194,8 +1195,15 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@EndDate", p_Model.ProgramEndDate);
                 l_Cmd.Parameters.AddWithValue("@StartTime", p_Model.ProgramStartTime);
                 l_Cmd.Parameters.AddWithValue("@EndTime", p_Model.ProgramEndTime);
+                l_Cmd.Parameters.AddWithValue("@Venue", p_Model.Venue);
+                l_Cmd.Parameters.AddWithValue("@Note", p_Model.note);
                 l_Cmd.Parameters.AddWithValue("@homtId", homeid);
+                l_Cmd.Parameters.Add("@out", SqlDbType.VarChar, 20);
+                l_Cmd.Parameters["@out"].Direction = ParameterDirection.Output;
                 l_Cmd.ExecuteNonQuery();
+                retunvalue = int.Parse(l_Cmd.Parameters["@out"].Value.ToString());
+
+
             }
             catch (Exception ex)
             {
@@ -1206,8 +1214,43 @@ namespace QolaMVC.DAL
             finally
             {
                 l_Conn.Close();
+                
+            }
+            return retunvalue;
+        }
+        public static void EditNewActivityEvent(int EventID,ActivityEventModel p_Model, int homeid)
+        {
+            string exception = string.Empty;
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlCommand l_Cmd = new SqlCommand("spAB_EDIT_Activity_Events", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@EventID", EventID);
+                l_Cmd.Parameters.AddWithValue("@ActivityId", p_Model.ActivityId);
+                l_Cmd.Parameters.AddWithValue("@EventTitle", p_Model.ProgramName);
+                l_Cmd.Parameters.AddWithValue("@StartDate", p_Model.ProgramStartDate);
+                l_Cmd.Parameters.AddWithValue("@EndDate", p_Model.ProgramEndDate);
+                l_Cmd.Parameters.AddWithValue("@StartTime", p_Model.ProgramStartTime);
+                l_Cmd.Parameters.AddWithValue("@EndTime", p_Model.ProgramEndTime);
+                l_Cmd.Parameters.AddWithValue("@Venue", p_Model.Venue);
+                l_Cmd.Parameters.AddWithValue("@Note", p_Model.note);
+                l_Cmd.Parameters.AddWithValue("@homtId", homeid);
+                l_Cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                exception = "EditNewActivityEvent |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
             }
         }
+
 
         public static Collection<ActivityEventModel> GetActivityEvents_C2()
         {
@@ -1242,6 +1285,8 @@ namespace QolaMVC.DAL
                         l_Event.ProgramEndDate = Convert.ToDateTime(homeTypeRow["EndDate"]);
                         l_Event.ProgramStartTime = Convert.ToString(homeTypeRow["StartTime"]);
                         l_Event.ProgramEndTime = Convert.ToString(homeTypeRow["EndTime"]);
+                        l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
+                        l_Event.note = Convert.ToString(homeTypeRow["note"]);
 
                         l_Events.Add(l_Event);
                     }
@@ -1259,7 +1304,6 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-
         public static void AddNewActivityEvent_C2(ActivityEventModel p_Model, int homeid)
         {
             string exception = string.Empty;
@@ -1275,12 +1319,46 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@EndDate", p_Model.ProgramEndDate);
                 l_Cmd.Parameters.AddWithValue("@StartTime", p_Model.ProgramStartTime);
                 l_Cmd.Parameters.AddWithValue("@EndTime", p_Model.ProgramEndTime);
+                l_Cmd.Parameters.AddWithValue("@Venue", p_Model.Venue);
+                l_Cmd.Parameters.AddWithValue("@Note", p_Model.note);
                 l_Cmd.Parameters.AddWithValue("@homtId", homeid);
                 l_Cmd.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
                 exception = "AddNewActivityEvent |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+        public static void EditNewActivityEvent_C2(int EventID, ActivityEventModel p_Model, int homeid)
+        {
+            string exception = string.Empty;
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlCommand l_Cmd = new SqlCommand("spAB_EDIT_Activity_Events_C2", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@EventID", EventID);
+                l_Cmd.Parameters.AddWithValue("@ActivityId", p_Model.ActivityId);
+                l_Cmd.Parameters.AddWithValue("@EventTitle", p_Model.ProgramName);
+                l_Cmd.Parameters.AddWithValue("@StartDate", p_Model.ProgramStartDate);
+                l_Cmd.Parameters.AddWithValue("@EndDate", p_Model.ProgramEndDate);
+                l_Cmd.Parameters.AddWithValue("@StartTime", p_Model.ProgramStartTime);
+                l_Cmd.Parameters.AddWithValue("@EndTime", p_Model.ProgramEndTime);
+                l_Cmd.Parameters.AddWithValue("@Venue", p_Model.Venue);
+                l_Cmd.Parameters.AddWithValue("@Note", p_Model.note);
+                l_Cmd.Parameters.AddWithValue("@homtId", homeid);
+                l_Cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                exception = "EditNewActivityEvent_C2 |" + ex.ToString();
                 //Log.Write(exception);
                 throw;
             }
@@ -1324,6 +1402,8 @@ namespace QolaMVC.DAL
                         l_Event.ProgramEndDate = Convert.ToDateTime(homeTypeRow["EndDate"]);
                         l_Event.ProgramStartTime = Convert.ToString(homeTypeRow["StartTime"]);
                         l_Event.ProgramEndTime = Convert.ToString(homeTypeRow["EndTime"]);
+                        l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
+                        l_Event.note = Convert.ToString(homeTypeRow["note"]);
 
                         l_Events.Add(l_Event);
                     }
@@ -1341,7 +1421,6 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-
         public static void AddNewActivityEvent_C3(ActivityEventModel p_Model, int homeid)
         {
             string exception = string.Empty;
@@ -1357,12 +1436,46 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@EndDate", p_Model.ProgramEndDate);
                 l_Cmd.Parameters.AddWithValue("@StartTime", p_Model.ProgramStartTime);
                 l_Cmd.Parameters.AddWithValue("@EndTime", p_Model.ProgramEndTime);
+                l_Cmd.Parameters.AddWithValue("@Venue", p_Model.Venue);
+                l_Cmd.Parameters.AddWithValue("@Note", p_Model.note);
                 l_Cmd.Parameters.AddWithValue("@homtId", homeid);
                 l_Cmd.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
                 exception = "AddNewActivityEvent |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+        public static void EditNewActivityEvent_C3(int EventID, ActivityEventModel p_Model, int homeid)
+        {
+            string exception = string.Empty;
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlCommand l_Cmd = new SqlCommand("spAB_EDIT_Activity_Events_C3", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@EventID", EventID);
+                l_Cmd.Parameters.AddWithValue("@ActivityId", p_Model.ActivityId);
+                l_Cmd.Parameters.AddWithValue("@EventTitle", p_Model.ProgramName);
+                l_Cmd.Parameters.AddWithValue("@StartDate", p_Model.ProgramStartDate);
+                l_Cmd.Parameters.AddWithValue("@EndDate", p_Model.ProgramEndDate);
+                l_Cmd.Parameters.AddWithValue("@StartTime", p_Model.ProgramStartTime);
+                l_Cmd.Parameters.AddWithValue("@EndTime", p_Model.ProgramEndTime);
+                l_Cmd.Parameters.AddWithValue("@Venue", p_Model.Venue);
+                l_Cmd.Parameters.AddWithValue("@Note", p_Model.note);
+                l_Cmd.Parameters.AddWithValue("@homtId", homeid);
+                l_Cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                exception = "EditNewActivityEvent_C3 |" + ex.ToString();
                 //Log.Write(exception);
                 throw;
             }
@@ -1406,6 +1519,8 @@ namespace QolaMVC.DAL
                         l_Event.ProgramEndDate = Convert.ToDateTime(homeTypeRow["EndDate"]);
                         l_Event.ProgramStartTime = Convert.ToString(homeTypeRow["StartTime"]);
                         l_Event.ProgramEndTime = Convert.ToString(homeTypeRow["EndTime"]);
+                        l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
+                        l_Event.note = Convert.ToString(homeTypeRow["note"]);
 
                         l_Events.Add(l_Event);
                     }
@@ -1423,7 +1538,6 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-
         public static void AddNewActivityEvent_C4(ActivityEventModel p_Model, int homeid)
         {
             string exception = string.Empty;
@@ -1439,6 +1553,8 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@EndDate", p_Model.ProgramEndDate);
                 l_Cmd.Parameters.AddWithValue("@StartTime", p_Model.ProgramStartTime);
                 l_Cmd.Parameters.AddWithValue("@EndTime", p_Model.ProgramEndTime);
+                l_Cmd.Parameters.AddWithValue("@Venue", p_Model.Venue);
+                l_Cmd.Parameters.AddWithValue("@Note", p_Model.note);
                 l_Cmd.Parameters.AddWithValue("@homtId", homeid);
                 l_Cmd.ExecuteNonQuery();
             }
@@ -1453,6 +1569,42 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
+        public static void EditNewActivityEvent_C4(int EventID, ActivityEventModel p_Model, int homeid)
+        {
+            string exception = string.Empty;
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlCommand l_Cmd = new SqlCommand("spAB_EDIT_Activity_Events_C4", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@EventID", EventID);
+                l_Cmd.Parameters.AddWithValue("@ActivityId", p_Model.ActivityId);
+                l_Cmd.Parameters.AddWithValue("@EventTitle", p_Model.ProgramName);
+                l_Cmd.Parameters.AddWithValue("@StartDate", p_Model.ProgramStartDate);
+                l_Cmd.Parameters.AddWithValue("@EndDate", p_Model.ProgramEndDate);
+                l_Cmd.Parameters.AddWithValue("@StartTime", p_Model.ProgramStartTime);
+                l_Cmd.Parameters.AddWithValue("@EndTime", p_Model.ProgramEndTime);
+                l_Cmd.Parameters.AddWithValue("@Venue", p_Model.Venue);
+                l_Cmd.Parameters.AddWithValue("@Note", p_Model.note);
+                l_Cmd.Parameters.AddWithValue("@homtId", homeid);
+                l_Cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                exception = "EditNewActivityEvent_C4 |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+
+
+
 
         public static StringBuilder get_listview(int homeid, DateTime todaydate)
         {
@@ -1896,6 +2048,83 @@ namespace QolaMVC.DAL
             catch (Exception ex)
             {
                 exception = "EVENT_DragandDrop |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+        public static void DELETE_EVENT(int EventID, int HomeID)
+        {
+            string exception = string.Empty;
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlCommand l_Cmd = new SqlCommand("spAB_Activity_Events_Delete", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@eventID", EventID);
+                l_Cmd.Parameters.AddWithValue("@homtId", HomeID);
+                l_Cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                exception = "DELETE_EVENT |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+        public static Collection<ActivityEventModel> COPY_EVENT(int EventID, DateTime DT, int HomeID)
+        {
+            string exception = string.Empty;
+            Collection<ActivityEventModel> l_Events = new Collection<ActivityEventModel>();
+            ActivityEventModel l_Event;
+            SqlDataAdapter l_DA = new SqlDataAdapter();
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlCommand l_Cmd = new SqlCommand("spAB_Activity_Events_Copy", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@eventID", EventID);
+                l_Cmd.Parameters.AddWithValue("@NewDate", DT);
+                l_Cmd.Parameters.AddWithValue("@homtId", HomeID);
+                DataSet homeReceive = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(homeReceive);
+
+                if ((homeReceive != null) && (homeReceive.Tables.Count > 0) && (homeReceive.Tables[0].Rows.Count > 0))
+                {
+                    foreach (DataRow homeTypeRow in homeReceive.Tables[0].Rows)
+                    {
+                        l_Event = new ActivityEventModel();
+
+                        l_Event.ProgramId = Convert.ToInt32(homeTypeRow["Id"]);
+                        l_Event.ActivityId = Convert.ToInt32(homeTypeRow["ActivityId"]);
+                        l_Event.ProgramName = Convert.ToString(homeTypeRow["EventTitle"]);
+                        l_Event.ProgramStartDate = Convert.ToDateTime(homeTypeRow["StartDate"]);
+                        l_Event.ProgramEndDate = Convert.ToDateTime(homeTypeRow["EndDate"]);
+                        l_Event.ProgramStartTime = Convert.ToString(homeTypeRow["StartTime"]);
+                        l_Event.ProgramEndTime = Convert.ToString(homeTypeRow["EndTime"]);
+                        l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
+                        l_Event.note = Convert.ToString(homeTypeRow["note"]);
+
+                        l_Events.Add(l_Event);
+                    }
+                }
+                return l_Events;
+            }
+            catch (Exception ex)
+            {
+                exception = "COPY_EVENT |" + ex.ToString();
                 //Log.Write(exception);
                 throw;
             }

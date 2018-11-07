@@ -23,5 +23,7 @@ namespace QolaMVC.Models
         public int Declined { get; set; }
         public string ActivityNameEnglish { get; set; }
         public string CategoryId { get; set; }
+
+        public string note { get; set; }
     }
 }
