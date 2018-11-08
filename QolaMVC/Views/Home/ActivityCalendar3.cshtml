@@ -120,42 +120,42 @@
                             <div class="form-tabs mt-4">
                                 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link active" id="pills-active-tab" data-toggle="pill" href="#pills-active" role="tab" aria-controls="pills-active" aria-selected="true">Calendar one</a>
+                                        <a class="nav-link active" id="pills-active-tab" data-toggle="pill" href="#pills-active" role="tab" aria-controls="pills-active" aria-selected="true" onclick="calendar_one()">Calendar one</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="pills-achive-tab" data-toggle="pill" href="#pills-achive" role="tab" aria-controls="pills-achive" aria-selected="false">Calendar two</a>
+                                        <a class="nav-link" id="pills-achive-tab" data-toggle="pill" href="#pills-achive" role="tab" aria-controls="pills-achive" aria-selected="false" onclick="calendar_two()">Calendar two</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="pills-achive-tab2" data-toggle="pill" href="#pills-C3" role="tab" aria-controls="pills-C3" aria-selected="false">Calendar three</a>
+                                        <a class="nav-link" id="pills-achive-tab2" data-toggle="pill" href="#pills-C3" role="tab" aria-controls="pills-C3" aria-selected="false" onclick="calendar_three()">Calendar three</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="pills-achive-tab3" data-toggle="pill" href="#pills-C4" role="tab" aria-controls="pills-C4" aria-selected="false">Calendar four</a>
+                                        <a class="nav-link" id="pills-achive-tab3" data-toggle="pill" href="#pills-C4" role="tab" aria-controls="pills-C4" aria-selected="false" onclick="calendar_four()">Calendar four</a>
                                     </li>
                                 </ul>
 
                                 <div class="tab-content" id="pills-tabContent">
 
                                     <div class="tab-pane fade show active" id="pills-active" role="tabpanel" aria-labelledby="pills-active-tab">
-                                        <div style='position: relative; float: left; width: 100%;'>
+                                        <div id="calendar1Parent" style='position: relative; float: left; width: 100%;z-index:1000;'>
                                             <section id='calendar'></section>
                                         </div>
                                     </div>
 
                                     <div class="tab-pane fade" id="pills-achive" role="tabpanel" aria-labelledby="pills-achive-tab">
-                                        <div style='position: relative; float: left; width: 100%;'>
+                                        <div id="calendar2Parent" style='position: relative; float: left; width: 100%;z-index:1000;'>
                                             <section id='calendar2'></section>
                                         </div>
                                     </div>
 
                                     <div class="tab-pane fade" id="pills-C3" role="tabpanel" aria-labelledby="pills-achive-tab2">
 
-                                        <div style='position: relative; float: left; width: 100%;'>
+                                        <div id="calendar3Parent" style='position: relative; float: left; width: 100%;z-index:1000;'>
                                             <section id='calendar3'></section>
                                         </div>
                                     </div>
 
                                     <div class="tab-pane fade" id="pills-C4" role="tabpanel" aria-labelledby="pills-achive-tab3">
-                                        <div style='position: relative; float: left; width: 100%;'>
+                                        <div id="calendar4Parent" style='position: relative; float: left; width: 100%;z-index:1000;'>
                                             <section id='calendar4'></section>
                                         </div>
                                     </div>
@@ -164,18 +164,17 @@
                             </div>
                         </div>
 
-
-                        <div id="day_div" style="display:none;margin-top:0;z-index:1000;">
+                        <div id="day_div" style="display:block;margin-top:11.5%;margin-left:-2%; z-index:0;position:absolute;width:104%;">
 
                             <div class="container-fluid container-fixed-lg" id="main_page">
                                 <div class="card">
                                     <div class="card-block">
                                         <div class="form-tabs mt-4">
 
-                                            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top:-15vh;margin-left:20vw;padding-bottom:5vh;">
+                                            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top:-14vh;margin-left:35%;padding-bottom:5%;">
 
                                                 <li class="Prevbtn"><a href="#" onclick="previousday()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
-                                                <li class="clear_bg"><label id="lblCalendarMsg" style="font-weight:bolder;font-size:1.5em;margin-top:1.5vh;color:white">@TempData["datechoose"].ToString()</label></li>
+                                                <li class="clear_bg"><label id="lblCalendarMsg" style="font-weight:bolder;font-size:1.5em;margin-top:1.5vh;color:black">@TempData["datechoose"].ToString()</label></li>
                                                 <li class="Nextbtn"><a href="#" onclick="nextday()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
                                             </ul>
 
@@ -237,6 +236,519 @@
 
                         </div>
 
+                        <div id="day_div2" style="display:none;margin-top:11.5%;margin-left:-2%; z-index:0;position:absolute;width:104%;">
+
+                            <div class="container-fluid container-fixed-lg" id="main_page">
+                                <div class="card">
+                                    <div class="card-block">
+                                        <div class="form-tabs mt-4">
+
+                                            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top:-14vh;margin-left:35%;padding-bottom:5%;">
+
+                                                <li class="Prevbtn"><a href="#" onclick="previousday()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
+                                                <li class="clear_bg"><label id="lblCalendarMsg" style="font-weight:bolder;font-size:1.5em;margin-top:1.5vh;color:black">@TempData["datechoose"].ToString()</label></li>
+                                                <li class="Nextbtn"><a href="#" onclick="nextday()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
+                                            </ul>
+
+                                            <div class="tab-content" id="pills-tabContent">
+                                                <div class="tab-pane fade show active" id="pills-day" role="tabpanel" aria-labelledby="pills-home-tab">
+                                                    @*<div id="select_ActivityID_index" class="" name="" english=""></div>*@
+                                                    <table class="table table-bordered">
+                                                        <thead class="bg-primary">
+                                                            <tr>
+                                                                <th class="text-white text-center">Time</th>
+                                                                <th class="text-white text-center">Today's Activities</th>
+                                                                <th class="text-white text-center">Venue</th>
+                                                                <th class="text-white text-center">Attendance</th>
+                                                                <th class="text-white text-center" colspan="2"></th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="text-white text-center"></th>
+                                                                <th class="text-white text-center"></th>
+                                                                <th class="text-white text-center"></th>
+                                                                <th class="text-white text-center"></th>
+                                                                <th class="text-white text-center">Active</th>
+                                                                <th class="text-white text-center">Declined</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @{
+                                                                for (int a = 0; a < @ViewBag.Events2.Count; a++)
+                                                                {
+                                                                    <tr name=@ViewBag.Events2[a].ProgramId id=@ViewBag.Events2[a].ProgramName englishname=@ViewBag.Events2[a].ActivityNameEnglish>
+                                                                        <td>@ViewBag.Events2[a].ProgramStartTime</td>
+                                                                        <td>@ViewBag.Events2[a].ProgramName</td>
+                                                                        <td>@ViewBag.Events2[a].Venue</td>
+                                                                        <td>
+                                                                            <a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#">
+                                                                                <i class="fa fa-file-text-o"></i>
+                                                                            </a>
+                                                                        </td>
+                                                                        <td>
+                                                                            @ViewBag.Events2[a].Active
+                                                                        </td>
+                                                                        <td>
+                                                                            @ViewBag.Events2[a].Declined
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+                        </div>
+
+                        <div id="day_div3" style="display:none;margin-top:11.5%;margin-left:-2%; z-index:0;position:absolute;width:104%;">
+
+                            <div class="container-fluid container-fixed-lg" id="main_page">
+                                <div class="card">
+                                    <div class="card-block">
+                                        <div class="form-tabs mt-4">
+
+                                            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top:-14vh;margin-left:35%;padding-bottom:5%;">
+
+                                                <li class="Prevbtn"><a href="#" onclick="previousday()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
+                                                <li class="clear_bg"><label id="lblCalendarMsg" style="font-weight:bolder;font-size:1.5em;margin-top:1.5vh;color:black">@TempData["datechoose"].ToString()</label></li>
+                                                <li class="Nextbtn"><a href="#" onclick="nextday()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
+                                            </ul>
+
+                                            <div class="tab-content" id="pills-tabContent">
+                                                <div class="tab-pane fade show active" id="pills-day" role="tabpanel" aria-labelledby="pills-home-tab">
+                                                    @*<div id="select_ActivityID_index" class="" name="" english=""></div>*@
+                                                    <table class="table table-bordered">
+                                                        <thead class="bg-primary">
+                                                            <tr>
+                                                                <th class="text-white text-center">Time</th>
+                                                                <th class="text-white text-center">Today's Activities</th>
+                                                                <th class="text-white text-center">Venue</th>
+                                                                <th class="text-white text-center">Attendance</th>
+                                                                <th class="text-white text-center" colspan="2"></th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="text-white text-center"></th>
+                                                                <th class="text-white text-center"></th>
+                                                                <th class="text-white text-center"></th>
+                                                                <th class="text-white text-center"></th>
+                                                                <th class="text-white text-center">Active</th>
+                                                                <th class="text-white text-center">Declined</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @{
+                                                                for (int a = 0; a < @ViewBag.Events3.Count; a++)
+                                                                {
+                                                                    <tr name=@ViewBag.Events3[a].ProgramId id=@ViewBag.Events3[a].ProgramName englishname=@ViewBag.Events3[a].ActivityNameEnglish>
+                                                                        <td>@ViewBag.Events3[a].ProgramStartTime</td>
+                                                                        <td>@ViewBag.Events3[a].ProgramName</td>
+                                                                        <td>@ViewBag.Events3[a].Venue</td>
+                                                                        <td>
+                                                                            <a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#">
+                                                                                <i class="fa fa-file-text-o"></i>
+                                                                            </a>
+                                                                        </td>
+                                                                        <td>
+                                                                            @ViewBag.Events3[a].Active
+                                                                        </td>
+                                                                        <td>
+                                                                            @ViewBag.Events3[a].Declined
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+                        </div>
+
+                        <div id="day_div4" style="display:none;margin-top:11.5%;margin-left:-2%; z-index:0;position:absolute;width:104%;">
+
+                            <div class="container-fluid container-fixed-lg" id="main_page">
+                                <div class="card">
+                                    <div class="card-block">
+                                        <div class="form-tabs mt-4">
+
+                                            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top:-14vh;margin-left:35%;padding-bottom:5%;">
+
+                                                <li class="Prevbtn"><a href="#" onclick="previousday()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
+                                                <li class="clear_bg"><label id="lblCalendarMsg" style="font-weight:bolder;font-size:1.5em;margin-top:1.5vh;color:black">@TempData["datechoose"].ToString()</label></li>
+                                                <li class="Nextbtn"><a href="#" onclick="nextday()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
+                                            </ul>
+
+                                            <div class="tab-content" id="pills-tabContent">
+                                                <div class="tab-pane fade show active" id="pills-day" role="tabpanel" aria-labelledby="pills-home-tab">
+                                                    @*<div id="select_ActivityID_index" class="" name="" english=""></div>*@
+                                                    <table class="table table-bordered">
+                                                        <thead class="bg-primary">
+                                                            <tr>
+                                                                <th class="text-white text-center">Time</th>
+                                                                <th class="text-white text-center">Today's Activities</th>
+                                                                <th class="text-white text-center">Venue</th>
+                                                                <th class="text-white text-center">Attendance</th>
+                                                                <th class="text-white text-center" colspan="2"></th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="text-white text-center"></th>
+                                                                <th class="text-white text-center"></th>
+                                                                <th class="text-white text-center"></th>
+                                                                <th class="text-white text-center"></th>
+                                                                <th class="text-white text-center">Active</th>
+                                                                <th class="text-white text-center">Declined</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @{
+                                                                for (int a = 0; a < @ViewBag.Events4.Count; a++)
+                                                                {
+                                                                    <tr name=@ViewBag.Events4[a].ProgramId id=@ViewBag.Events4[a].ProgramName englishname=@ViewBag.Events4[a].ActivityNameEnglish>
+                                                                        <td>@ViewBag.Events4[a].ProgramStartTime</td>
+                                                                        <td>@ViewBag.Events4[a].ProgramName</td>
+                                                                        <td>@ViewBag.Events4[a].Venue</td>
+                                                                        <td>
+                                                                            <a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#">
+                                                                                <i class="fa fa-file-text-o"></i>
+                                                                            </a>
+                                                                        </td>
+                                                                        <td>
+                                                                            @ViewBag.Events4[a].Active
+                                                                        </td>
+                                                                        <td>
+                                                                            @ViewBag.Events4[a].Declined
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+                        </div>
+
+
+                        <div class="modal" id="attendent_form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div id="contactForm" class="modal" style="display:none">
+                                <h3>Add Progress Notes</h3>
+                                <br>
+                                <form action="#">
+                                    <textarea class="formtext" id="formtextarea" placeholder="Comment" style="height:170px;width:300px"></textarea>
+                                    <input class="formBtn" type="button" value="Submit" onclick="progressnoteadd(this)" />
+                                    <input class="formBtn" type="button" value="Reset" onclick="document.getElementById('formtextarea').value=''" />
+                                    <input class="formBtn" type="button" value="Close" onclick="note_close_click()" />
+                                </form>
+                            </div>
+
+                            <div class="modal-xlg" role="document" id="attendent_form_second_layer">
+                                <div class="modal-content" id="attendent_form_third_layer">
+                                    <div class="modal-header">
+                                        <h3 class="modal-title" id="exampleModalLabel" style="font-weight:bolder;">Activity Attendance</h3>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="x_close()">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-tabs mt-4">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                                        <li class="nav-item">
+                                                            <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home1" role="tab" aria-controls="pills-home" aria-selected="true" onclick="search_click()">Search View</a>
+                                                        </li>
+                                                        <li class="nav-item">
+                                                            <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile1" role="tab" aria-controls="pills-profile" aria-selected="false" onclick="list_click()">List View</a>
+                                                        </li>
+                                                        <li class="nav-item">
+                                                            <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact1" role="tab" aria-controls="pills-contact" aria-selected="false" onclick="floor_click()">Floor View</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+
+
+                                            <div class="tab-content" id="pills-tabContent">
+                                                <div class="tab-pane fade show active" id="pills-home1" role="tabpanel" aria-labelledby="pills-home-tab">
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <div class="form-group row">
+                                                                <label class="col-md-12 col-form-label" style="margin-left:5vw">Resident Name / Suite # :</label>
+                                                                <div class="col-md-12" style="margin-left:5vw">
+                                                                    <input type="text" class="form-control" id="searchresidents3" onchange="change_searchresidents3()">
+                                                                </div>
+                                                            </div>
+                                                            <div class="searchBox p-1" id="searchBoxfor3" style="margin-left:5.5vw">
+                                                                <div class="list-group searchboxresult2">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-7">
+
+                                                            <div class="form-group">
+                                                                <br><br>
+                                                                <div class="row">
+                                                                    <div class="col-md-12 pads" style="margin-left:4vw">
+                                                                        <div class="form-check form-check-inline movesp">
+                                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                                            <label class="form-check-label" name="viewlistchoose">Active</label>
+                                                                        </div>
+                                                                        <div class="form-check form-check-inline">
+                                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                                            <label class="form-check-label" name="viewlistchoose">Passive</label>
+                                                                        </div>
+                                                                        <div class="form-check form-check-inline movesp">
+                                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                                            <label class="form-check-label" name="viewlistchoose">Declined</label>
+                                                                        </div>
+                                                                        <div class="form-check form-check-inline movesp">
+                                                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                                            <label class="form-check-label" name="viewlistchoose">Away</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2" style="display:inline-block;">
+                                                            <br>
+                                                            <button class="btn btn-lg btn-danger" onclick="View_List_add()" style="margin-left:-2vw;">ADD</button>
+                                                            <button type="button" class="btn btn-lg btn-primary" data-dismiss="modal" onclick="View_List_save()">SAVE</button>
+                                                        </div>
+
+                                                        <div class="" style="border:1px solid #000;margin-left:15vw">
+                                                            <table class="attend" style="min-width:50vw">
+                                                                <tbody id="show_list"></tbody>
+                                                            </table>
+                                                        </div>
+
+
+                                                        <div class="col-md-12 text-center">
+                                                            <br><br><br><br><br><br>
+                                                            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="View_List_save()" style="margin-left:-2vw;">SAVE</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane fade" id="pills-profile1" role="tabpanel" aria-labelledby="pills-profile-tab">
+                                                    <div class="row">
+
+                                                        <div class="col-md-12 text-center">
+                                                            <br>
+                                                            <button type="button" class="btn btn-primary" style="margin-bottom:1vw;margin-left:3vw;" data-dismiss="modal" onclick="list_savebutton()">SAVE</button>
+                                                            <button type="button" class="btn btn-primary" id="PrintID1" style="margin-bottom:1vw;float:right" onclick="Print_list()">Print</button>
+                                                        </div>
+                                                        <br>
+                                                        <div class="col-md-6" style="border: 1px solid #000;">
+                                                            <table class="attend">
+                                                                <tbody>
+                                                                    @{
+                                                                        for (int i = 0; i < Model.LIST_RESIDENT.Count; i = i + 2)
+                                                                        {
+                                                                            var a = Model.LIST_RESIDENT[i];
+                                                                            <tr name=@a.ID>
+                                                                                <td style="max-width:10vw">@a.FirstName @a.LastName</td>
+                                                                                <td>
+                                                                                    <div class="form-check form-check-inline">
+                                                                                        <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option1">
+                                                                                        <label class="form-check-label">Active</label>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <div class="form-check form-check-inline">
+                                                                                        <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option2">
+                                                                                        <label class="form-check-label">Passive</label>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <div class="form-check form-check-inline">
+                                                                                        <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option3">
+                                                                                        <label class="form-check-label">Declined</label>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <div class="form-check form-check-inline">
+                                                                                        <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option4">
+                                                                                        <label class="form-check-label">Away</label>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <div class="form-check form-check-inline">
+                                                                                        <input type="image" style="width:1.7vw;height:1.7vw" src="/Content/pages/img/icoedit.png" onclick="progressnote(this)">
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+
+                                                                        }
+                                                                    }
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div class="col-md-6" style="border: 1px solid #000">
+                                                            <table class="attend">
+                                                                <tbody>
+                                                                    @for (int i = 1; i < Model.LIST_RESIDENT.Count; i = i + 2)
+                                                                    {
+                                                                        var a = Model.LIST_RESIDENT[i];
+                                                                        <tr name=@a.ID>
+                                                                            <td style="max-width:10vw">@a.FirstName @a.LastName</td>
+                                                                            <td>
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option1">
+                                                                                    <label class="form-check-label">Active</label>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td>
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option2">
+                                                                                    <label class="form-check-label">Passive</label>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td>
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option3">
+                                                                                    <label class="form-check-label">Declined</label>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td>
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input class="form-check-input" type="radio" name=@a.ID id="inlineRadio2" value="option4">
+                                                                                    <label class="form-check-label">Away</label>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td>
+                                                                                <div class="form-check form-check-inline">
+                                                                                    <input type="image" style="width:1.7vw;height:1.7vw" src="/Content/pages/img/icoedit.png" onclick="progressnote(this)">
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+
+                                                                    }
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+
+                                                        <div class="col-md-12 text-center">
+                                                            <br><br><br><br><br><br>
+                                                            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="list_savebutton()">SAVE</button>
+                                                            <button type="button" class="btn btn-secondary" onclick="list_clearbutton()">CLEAR</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane fade" id="pills-contact1" role="tabpanel" aria-labelledby="pills-contact-tab">
+                                                    <div class="row">
+                                                        <div class="col-md-12 text-center">
+                                                            <br>
+                                                            <button type="button" class="btn btn-primary" style="margin-bottom:1vw;margin-left:3vw;" data-dismiss="modal" onclick="floor_savebutton()">SAVE</button>
+
+                                                            <button type="button" class="btn btn-primary" id="PrintID2" style="margin-bottom:1vw;float:right" onclick="Print_floor()">Print</button>
+                                                        </div>
+                                                        @{
+                                                            int floor = 0;
+                                                            foreach (var a in Model.LIST_RESIDENT)
+                                                            {
+                                                                if (a.No_of_floor > floor)
+                                                                {
+                                                                    floor = a.No_of_floor;
+                                                                }
+                                                            }
+
+                                                            for (int b = 1; b <= floor; b++)
+                                                            {
+                                                                <div class="col-md-6" style="border:1px solid #000;">
+                                                                    <table class="attend">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <th colspan="7" height=50vw>@b st Floor</th>
+                                                                            </tr>
+                                                                            @foreach (var a in Model.LIST_RESIDENT)
+                                                                            {
+                                                                                if (a.No_of_floor == b)
+                                                                                {
+                                                                                    <tr name=@a.ID>
+                                                                                        <td>@a.FirstName @a.LastName</td>
+                                                                                        <td>
+                                                                                            <div class="form-check form-check-inline">
+                                                                                                <input class="form-check-input" type="radio" name=@a.ID + id="inlineRadio2" value="option1">
+                                                                                                <label class="form-check-label">Active</label>
+                                                                                            </div>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <div class="form-check form-check-inline">
+                                                                                                <input class="form-check-input" type="radio" name=@a.ID + id="inlineRadio2" value="option2">
+                                                                                                <label class="form-check-label">Passive</label>
+                                                                                            </div>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <div class="form-check form-check-inline">
+                                                                                                <input class="form-check-input" type="radio" name=@a.ID + id="inlineRadio2" value="option3">
+                                                                                                <label class="form-check-label">Declined</label>
+                                                                                            </div>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <div class="form-check form-check-inline">
+                                                                                                <input class="form-check-input" type="radio" name=@a.ID + id="inlineRadio2" value="option4">
+                                                                                                <label class="form-check-label">Away</label>
+                                                                                            </div>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <div class="form-check form-check-inline">
+                                                                                                <input type="image" style="width:1.7vw;height:1.7vw" src="/Content/pages/img/icoedit.png" onclick="progressnote(this)">
+                                                                                            </div>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                }
+                                                                            }
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            }
+                                                        }
+
+                                                        <div class="col-md-12 text-center">
+                                                            <br><br><br><br><br><br>
+                                                            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="floor_savebutton()">SAVE</button>
+                                                            <button type="button" class="btn btn-secondary" onclick="floor_clearbutton()">CLEAR</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer text-center">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div id="select_ActivityID_index" class="" name="" english=""></div>
+                        <input type="hidden" id="hiddentab" value="@TempData["tab"]" />
+
                         <div class="modal fade" id="AddEvent" role="dialog" style="right:0">
                             <div class="modal-dialog" style="left:0;right:0;">
                                 <div class="modal-content" style="width:60vw;right:45%;">
@@ -247,7 +759,7 @@
                                     </div>
                                     <hr>
                                     <div class="modal-body">
-                                        <form action="/Home/AddEvents_mike" method="post" id="addEventForm" name ="addEventForm">
+                                        <form action="/Home/AddEvents_mike" method="post" id="addEventForm" name="addEventForm">
                                             <div id="ck" class="">
 
                                                 <div style="padding: 15px; width: 100%; display:inline-block;">
@@ -292,7 +804,7 @@
                                                                 <div class="form-group row">
                                                                     <label for="" class="col-md-4 col-form-label">DATE & TIME<span class="required_sign">&nbsp;*</span></label>
                                                                     <div class="col-md-7">
-                                                                        <input type="datetime-local" class="form-control" id="dateandtime_input" name="startDateTime"/>
+                                                                        <input type="datetime-local" class="form-control" id="dateandtime_input" name="startDateTime" />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -328,7 +840,7 @@
                                                                 <div class="form-group row">
                                                                     <label for="" class="col-md-4 col-form-label">DATE TO<span class="required_sign">&nbsp;*</span></label>
                                                                     <div class="col-md-7">
-                                                                        <input type="date" class="form-control" id="dateto_input" name="dateto"  />
+                                                                        <input type="date" class="form-control" id="dateto_input" name="dateto" />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -401,7 +913,7 @@
                                     </div>
                                     <hr>
                                     <div class="modal-body">
-                                        <form action="/Home/AddEvents_mike_EDIT" method="post" id="addEventForm2" name ="addEventForm2">
+                                        <form action="/Home/AddEvents_mike_EDIT" method="post" id="addEventForm2" name="addEventForm2">
                                             <div id="ck" class="">
 
                                                 <div style="padding: 15px; width: 100%; display:inline-block;">
@@ -546,8 +1058,6 @@
                             </div>
                         </div>
 
-
-
                         <div class="modal fade" id="ADD_CANCEL" role="dialog" style="margin-top:15%;">
                             <div class="modal-dialog" style="left:0;right:0;width:20%;">
                                 <div class="modal-content" style="background-color:lightgray">
@@ -633,6 +1143,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
 
 
@@ -763,15 +1274,19 @@
     }
 
     function calendar_one() {
-        if (window.location.href.toString().includes("tab")) {
-            var indexequal = window.location.href.toString().indexOf("tab");
-            var newstring = window.location.href.toString().substring(0, indexequal + 4);
-
-            window.location.href = newstring + "a";
-        }
-        else {
-            window.location.href = window.location.href;
-        }
+        var b = $('.fc-basicWeek-button');
+        b[0].className = "fc-basicWeek-button fc-button fc-state-default";
+        var c = $('.fc-month-button');
+        c[0].className = "fc-month-button fc-button fc-state-default fc-corner-left";
+        $('#calendar1Parent').css('width', '20%');
+        $('.fc-view-container').hide();
+        $('.fc-center').hide();
+        $('.fc-right').hide();
+        $('#day_div2').hide();
+        $('#day_div3').hide();
+        $('#day_div4').hide();
+        $('#day_div').show();
+        $('#hiddentab').val("a");
 
         //document.getElementById("mike").style.visibility = "hidden";
         //document.getElementById("day_div2").style.display = "none";
@@ -788,7 +1303,21 @@
     }
 
     function calendar_two() {
-        //$('#hiddentab').val("b");
+        var b = $('.fc-basicWeek-button');
+        b[1].className = "fc-basicWeek-button fc-button fc-state-default";
+        var c = $('.fc-month-button');
+        c[1].className = "fc-month-button fc-button fc-state-default fc-corner-left";
+        $('#calendar2Parent').css('width', '20%');
+        $('.fc-view-container').hide();
+        $('.fc-center').hide();
+        $('.fc-right').hide();
+        $('#day_div').hide();
+        $('#day_div3').hide();
+        $('#day_div4').hide();
+        $('#day_div2').show();
+
+        $('#hiddentab').val("b");
+
         //$('.cp-calendar').hide();
         //document.getElementById("day_div").style.display = "none";
         //document.getElementById("day_div3").style.display = "none";
@@ -799,24 +1328,36 @@
         //    a[1].click(function () { });
         //}, 200);
 
-        if (window.location.href.toString().includes("tab")) {
-            var indexequal = window.location.href.toString().indexOf("tab");
-            var newstring = window.location.href.toString().substring(0, indexequal + 4);
+        //if (window.location.href.toString().includes("tab")) {
+        //    var indexequal = window.location.href.toString().indexOf("tab");
+        //    var newstring = window.location.href.toString().substring(0, indexequal + 4);
 
-            window.location.href = newstring + "b";
-        }
-        else {
-            if (window.location.href.toString().includes("?")) {
-                window.location.href = window.location.href + "&tab=b";
-            }
-            else {
-                window.location.href = window.location.href + "?tab=b";
-            }
-        }
+        //    window.location.href = newstring + "b";
+        //}
+        //else {
+        //    if (window.location.href.toString().includes("?")) {
+        //        window.location.href = window.location.href + "&tab=b";
+        //    }
+        //    else {
+        //        window.location.href = window.location.href + "?tab=b";
+        //    }
+        //}
     }
 
     function calendar_three() {
-        //$('#hiddentab').val("c");
+        var b = $('.fc-basicWeek-button');
+        b[2].className = "fc-basicWeek-button fc-button fc-state-default";
+        var c = $('.fc-month-button');
+        c[2].className = "fc-month-button fc-button fc-state-default fc-corner-left";
+        $('#calendar3Parent').css('width', '20%');
+        $('.fc-view-container').hide();
+        $('.fc-center').hide();
+        $('.fc-right').hide();
+        $('#day_div').hide();
+        $('#day_div2').hide();
+        $('#day_div4').hide();
+        $('#day_div3').show();
+        $('#hiddentab').val("c");
         //$('.cp-calendar').hide();
         //document.getElementById("day_div").style.display = "none";
         //document.getElementById("day_div2").style.display = "none";
@@ -826,24 +1367,36 @@
         //setTimeout(function () {
         //    a[1].click(function () { });
         //}, 200);
-        if (window.location.href.toString().includes("tab")) {
-            var indexequal = window.location.href.toString().indexOf("tab");
-            var newstring = window.location.href.toString().substring(0, indexequal + 4);
+        //if (window.location.href.toString().includes("tab")) {
+        //    var indexequal = window.location.href.toString().indexOf("tab");
+        //    var newstring = window.location.href.toString().substring(0, indexequal + 4);
 
-            window.location.href = newstring + "c";
-        }
-        else {
-            if (window.location.href.toString().includes("?")) {
-                window.location.href = window.location.href + "&tab=c";
-            }
-            else {
-                window.location.href = window.location.href + "?tab=c";
-            }
-        }
+        //    window.location.href = newstring + "c";
+        //}
+        //else {
+        //    if (window.location.href.toString().includes("?")) {
+        //        window.location.href = window.location.href + "&tab=c";
+        //    }
+        //    else {
+        //        window.location.href = window.location.href + "?tab=c";
+        //    }
+        //}
     }
 
     function calendar_four() {
-        //$('#hiddentab').val("d");
+        var b = $('.fc-basicWeek-button');
+        b[3].className = "fc-basicWeek-button fc-button fc-state-default";
+        var c = $('.fc-month-button');
+        c[3].className = "fc-month-button fc-button fc-state-default fc-corner-left";
+        $('#calendar4Parent').css('width', '20%');
+        $('.fc-view-container').hide();
+        $('.fc-center').hide();
+        $('.fc-right').hide();
+        $('#day_div').hide();
+        $('#day_div2').hide();
+        $('#day_div3').hide();
+        $('#day_div4').show();
+        $('#hiddentab').val("d");
         //$('.cp-calendar').hide();
         //document.getElementById("day_div").style.display = "none";
         //document.getElementById("day_div2").style.display = "none";
@@ -853,20 +1406,20 @@
         //setTimeout(function () {
         //    a[1].click(function () { });
         //}, 200);
-        if (window.location.href.toString().includes("tab")) {
-            var indexequal = window.location.href.toString().indexOf("tab");
-            var newstring = window.location.href.toString().substring(0, indexequal + 4);
+        //if (window.location.href.toString().includes("tab")) {
+        //    var indexequal = window.location.href.toString().indexOf("tab");
+        //    var newstring = window.location.href.toString().substring(0, indexequal + 4);
 
-            window.location.href = newstring + "d";
-        }
-        else {
-            if (window.location.href.toString().includes("?")) {
-                window.location.href = window.location.href + "&tab=d";
-            }
-            else {
-                window.location.href = window.location.href + "?tab=d";
-            }
-        }
+        //    window.location.href = newstring + "d";
+        //}
+        //else {
+        //    if (window.location.href.toString().includes("?")) {
+        //        window.location.href = window.location.href + "&tab=d";
+        //    }
+        //    else {
+        //        window.location.href = window.location.href + "?tab=d";
+        //    }
+        //}
     }
 
 
@@ -1059,6 +1612,7 @@
                 }
             }
         });
+
         $.get("/Home/View_List_Activity", { whichAEID: AEventID, datesel: dateselect, tab: tab }, function (data) {
             var view = $("#show_list");
             for (var i = 0; i < data.length; i++) {
@@ -1348,7 +1902,9 @@
     document.body.addEventListener("click", function (e) {
         $('.searchboxresult2').empty();
         var a = $('.searchboxresult2');
-        a[0].parentElement.style.display = "none";
+        if (a[0]!=null) {
+            a[0].parentElement.style.display = "none";
+        }
         //$('#searchresidents3').val("");
 
     });
@@ -1419,6 +1975,11 @@
     }
 </script>
 
+
+
+
+
+
 <script>
     $(document).ready(function () {
 
@@ -1448,6 +2009,84 @@
             }
         })
 
+        $.ajax({
+            type: "GET",
+            url: "/home/getEvents_C2_mike",
+            success: function (data) {
+                $.each(data, function (i, v) {
+                    data.push({
+                        Id: v.id,
+                        title: v.title,
+                        start: v.startT,
+                        end: v.endT != null ? v.endT : null,
+                        startDate: v.startDate,
+                        Venue: v.Venue,
+                        Note: v.note,
+                        Category: v.Category,
+                        ActivityID: v.ActivityId,
+                        startTime: v.startTime
+                    });
+                })
+                GenerationCalendar2(data);
+            },
+
+            error: function (error) {
+                alert('failed');
+            }
+        })
+
+        $.ajax({
+            type: "GET",
+            url: "/home/getEvents_C3_mike",
+            success: function (data) {
+                $.each(data, function (i, v) {
+                    data.push({
+                        Id: v.id,
+                        title: v.title,
+                        start: v.startT,
+                        end: v.endT != null ? v.endT : null,
+                        startDate: v.startDate,
+                        Venue: v.Venue,
+                        Note: v.note,
+                        Category: v.Category,
+                        ActivityID: v.ActivityId,
+                        startTime: v.startTime
+                    });
+                })
+                GenerationCalendar3(data);
+            },
+
+            error: function (error) {
+                alert('failed');
+            }
+        })
+
+        $.ajax({
+            type: "GET",
+            url: "/home/getEvents_C4_mike",
+            success: function (data) {
+                $.each(data, function (i, v) {
+                    data.push({
+                        Id: v.id,
+                        title: v.title,
+                        start: v.startT,
+                        end: v.endT != null ? v.endT : null,
+                        startDate: v.startDate,
+                        Venue: v.Venue,
+                        Note: v.note,
+                        Category: v.Category,
+                        ActivityID: v.ActivityId,
+                        startTime: v.startTime
+                    });
+                })
+                GenerationCalendar4(data);
+            },
+
+            error: function (error) {
+                alert('failed');
+            }
+        })
+
 
         function GenerationCalendar(events) {
             $('#calendar').fullCalendar('destroy');
@@ -1458,11 +2097,27 @@
                 header: {
                     right: 'prev,next,today',
                     center: 'title',
-                    left: 'month,basicWeek,basicDay'
+                    left: 'month,basicWeek,CustomView'
                 },
                 editable: true,
-
+                defaultView: '',
                 eventLimit: true,
+                customButtons: {
+                    CustomView: {
+                        text: 'Day',
+                        click: function () {
+                            var b = $('.fc-basicWeek-button');
+                            b[0].className = "fc-basicWeek-button fc-button fc-state-default";
+                            var c = $('.fc-month-button');
+                            c[0].className = "fc-month-button fc-button fc-state-default fc-corner-left";
+                            $('#calendar1Parent').css('width', '20%');
+                            $('.fc-view-container').hide();
+                            $('.fc-center').hide();
+                            $('.fc-right').hide();
+                            $('#day_div').show();
+                        }
+                    }
+                },
                 eventColor: 'lightgreen',
                 events: events,
                 dayClick: function (date, jsEvent, view) {
@@ -1476,7 +2131,7 @@
                     var a = $('#EDIT_COPY_DELETE_CANCEL');
                     var b = $('#EDIT_COPY_DELETE_CANCEL_title');
                     var c = calEvent.startDate;
-                    b[0].innerHTML = c;            
+                    b[0].innerHTML = c;
                     $(this).css('border-color', 'red');
 
                     $('#activity_select2').children('option:not(:first)').remove();
@@ -1503,19 +2158,289 @@
                     if (confirm(event.title + " was dropped on " + event.start.format() + "   Are you sure about this change?")) {
                         DragandDrop(event.Id, event.start.format());
                     }
-                    else {revertFunc();}
+                    else { revertFunc(); }
                 }
-            }).on('click', '.fc-basicDay-button', function () {
-                // alert('basicDay button clicked');
-                $('.fc-view-container').hide();
-                $('.fc-center').hide();
-                $('.fc-right').hide();
-                $('#day_div').show();
+            }).on('click', '.fc-basicWeek-button', function () {
+                $('#calendar1Parent').css('width', '100%');
+                $('#day_div').hide();
+                $('.fc-view-container').show(); 
+                $('.fc-center').show();
+                $('.fc-right').show();
+                }).on('click', '.fc-month-button', function () {
+                    $('#calendar1Parent').css('width', '100%');
+                $('#day_div').hide();
+                $('.fc-view-container').show();   
+                $('.fc-center').show();
+                $('.fc-right').show();
             });
-        }
+
+        };
+
+        function GenerationCalendar2(events) {
+            $('#calendar2').fullCalendar('destroy');
+            $('#calendar2').fullCalendar({
+                contentHeight: 800,
+                defaultDate: new Date(),
+                timeFormat: 'h(:mm)a',
+                header: {
+                    right: 'prev,next,today',
+                    center: 'title',
+                    left: 'month,basicWeek,CustomView'
+                },
+                editable: true,
+                defaultView: '',
+                eventLimit: true,
+                customButtons: {
+                    CustomView: {
+                        text: 'Day',
+                        click: function () {
+                            var b = $('.fc-basicWeek-button');
+                            b[1].className = "fc-basicWeek-button fc-button fc-state-default";
+                            var c = $('.fc-month-button');
+                            c[1].className = "fc-month-button fc-button fc-state-default fc-corner-left";
+                            $('#calendar2Parent').css('width', '20%');
+                            $('.fc-view-container').hide();
+                            $('.fc-center').hide();
+                            $('.fc-right').hide();
+                            $('#day_div2').show();
+                        }
+                    }
+                },
+                eventColor: 'lightgreen',
+                events: events,
+                dayClick: function (date, jsEvent, view) {
+                    var a = $('#ADD_CANCEL');
+                    var b = $('#ADD_CANCEL_title');
+                    var c = date.format();
+                    b[0].innerHTML = c;
+                    a[0].className = "modal fade show";
+                },
+                eventClick: function (calEvent, jsEvent, view) {
+                    var a = $('#EDIT_COPY_DELETE_CANCEL');
+                    var b = $('#EDIT_COPY_DELETE_CANCEL_title');
+                    var c = calEvent.startDate;
+                    b[0].innerHTML = c;
+                    $(this).css('border-color', 'red');
+
+                    $('#activity_select2').children('option:not(:first)').remove();
+                    $.get("/Home/getCategoriesForCalendar", {}, function (data) {
+                        for (var i = 0; i < data.length; i++) {
+                            $('#activity_select2').append('<option value="' + data[i].Id + '">' + data[i].Name + '</option>');
+                        }
+                        $('#EditEvent #activity_select2').val(calEvent.ActivityID);
+                    });
+
+                    $('#EditEvent #display_title_input').val(calEvent.title);
+                    var inputs = $("#EditEvent input[type=radio]");
+                    inputs[0].disabled = true;
+                    inputs[1].disabled = true;
+                    inputs[2].disabled = true;
+                    $('#EditEvent #dateandtime_input').val(calEvent.startDate + 'T' + calEvent.startTime);
+                    $('#EditEvent #venue_select').val(calEvent.Venue);
+                    $('#EditEvent #description_textarea').val(calEvent.Note);
+                    $('#EditEvent #EventID').val(calEvent.Id)
+                    a[0].className = "modal fade show";
+
+                },
+                eventDrop: function (event, delta, revertFunc) {
+                    if (confirm(event.title + " was dropped on " + event.start.format() + "   Are you sure about this change?")) {
+                        DragandDrop(event.Id, event.start.format());
+                    }
+                    else { revertFunc(); }
+                }
+            }).on('click', '.fc-basicWeek-button', function () {
+                $('#calendar2Parent').css('width', '100%');
+                $('#day_div2').hide();
+                $('.fc-view-container').show();
+                $('.fc-center').show();
+                $('.fc-right').show();
+            }).on('click', '.fc-month-button', function () {
+                $('#calendar2Parent').css('width', '100%');
+                $('#day_div2').hide();
+                $('.fc-view-container').show();
+                $('.fc-center').show();
+                $('.fc-right').show();
+            });
+
+        };
+
+        function GenerationCalendar3(events) {
+            $('#calendar3').fullCalendar('destroy');
+            $('#calendar3').fullCalendar({
+                contentHeight: 800,
+                defaultDate: new Date(),
+                timeFormat: 'h(:mm)a',
+                header: {
+                    right: 'prev,next,today',
+                    center: 'title',
+                    left: 'month,basicWeek,CustomView'
+                },
+                editable: true,
+                defaultView: '',
+                eventLimit: true,
+                customButtons: {
+                    CustomView: {
+                        text: 'Day',
+                        click: function () {
+                            var b = $('.fc-basicWeek-button');
+                            b[2].className = "fc-basicWeek-button fc-button fc-state-default";
+                            var c = $('.fc-month-button');
+                            c[2].className = "fc-month-button fc-button fc-state-default fc-corner-left";
+                            $('#calendar3Parent').css('width', '20%');
+                            $('.fc-view-container').hide();
+                            $('.fc-center').hide();
+                            $('.fc-right').hide();
+                            $('#day_div3').show();
+                        }
+                    }
+                },
+                eventColor: 'lightgreen',
+                events: events,
+                dayClick: function (date, jsEvent, view) {
+                    var a = $('#ADD_CANCEL');
+                    var b = $('#ADD_CANCEL_title');
+                    var c = date.format();
+                    b[0].innerHTML = c;
+                    a[0].className = "modal fade show";
+                },
+                eventClick: function (calEvent, jsEvent, view) {
+                    var a = $('#EDIT_COPY_DELETE_CANCEL');
+                    var b = $('#EDIT_COPY_DELETE_CANCEL_title');
+                    var c = calEvent.startDate;
+                    b[0].innerHTML = c;
+                    $(this).css('border-color', 'red');
+
+                    $('#activity_select2').children('option:not(:first)').remove();
+                    $.get("/Home/getCategoriesForCalendar", {}, function (data) {
+                        for (var i = 0; i < data.length; i++) {
+                            $('#activity_select2').append('<option value="' + data[i].Id + '">' + data[i].Name + '</option>');
+                        }
+                        $('#EditEvent #activity_select2').val(calEvent.ActivityID);
+                    });
+
+                    $('#EditEvent #display_title_input').val(calEvent.title);
+                    var inputs = $("#EditEvent input[type=radio]");
+                    inputs[0].disabled = true;
+                    inputs[1].disabled = true;
+                    inputs[2].disabled = true;
+                    $('#EditEvent #dateandtime_input').val(calEvent.startDate + 'T' + calEvent.startTime);
+                    $('#EditEvent #venue_select').val(calEvent.Venue);
+                    $('#EditEvent #description_textarea').val(calEvent.Note);
+                    $('#EditEvent #EventID').val(calEvent.Id)
+                    a[0].className = "modal fade show";
+
+                },
+                eventDrop: function (event, delta, revertFunc) {
+                    if (confirm(event.title + " was dropped on " + event.start.format() + "   Are you sure about this change?")) {
+                        DragandDrop(event.Id, event.start.format());
+                    }
+                    else { revertFunc(); }
+                }
+            }).on('click', '.fc-basicWeek-button', function () {
+                $('#calendar3Parent').css('width', '100%');
+                $('#day_div3').hide();
+                $('.fc-view-container').show();
+                $('.fc-center').show();
+                $('.fc-right').show();
+            }).on('click', '.fc-month-button', function () {
+                $('#calendar3Parent').css('width', '100%');
+                $('#day_div3').hide();
+                $('.fc-view-container').show();
+                $('.fc-center').show();
+                $('.fc-right').show();
+            });
+
+        };
+
+        function GenerationCalendar4(events) {
+            $('#calendar4').fullCalendar('destroy');
+            $('#calendar4').fullCalendar({
+                contentHeight: 800,
+                defaultDate: new Date(),
+                timeFormat: 'h(:mm)a',
+                header: {
+                    right: 'prev,next,today',
+                    center: 'title',
+                    left: 'month,basicWeek,CustomView'
+                },
+                editable: true,
+                defaultView: '',
+                eventLimit: true,
+                customButtons: {
+                    CustomView: {
+                        text: 'Day',
+                        click: function () {
+                            var b = $('.fc-basicWeek-button');
+                            b[3].className = "fc-basicWeek-button fc-button fc-state-default";
+                            var c = $('.fc-month-button');
+                            c[3].className = "fc-month-button fc-button fc-state-default fc-corner-left";
+                            $('#calendar4Parent').css('width', '20%');
+                            $('.fc-view-container').hide();
+                            $('.fc-center').hide();
+                            $('.fc-right').hide();
+                            $('#day_div4').show();
+                        }
+                    }
+                },
+                eventColor: 'lightgreen',
+                events: events,
+                dayClick: function (date, jsEvent, view) {
+                    var a = $('#ADD_CANCEL');
+                    var b = $('#ADD_CANCEL_title');
+                    var c = date.format();
+                    b[0].innerHTML = c;
+                    a[0].className = "modal fade show";
+                },
+                eventClick: function (calEvent, jsEvent, view) {
+                    var a = $('#EDIT_COPY_DELETE_CANCEL');
+                    var b = $('#EDIT_COPY_DELETE_CANCEL_title');
+                    var c = calEvent.startDate;
+                    b[0].innerHTML = c;
+                    $(this).css('border-color', 'red');
+
+                    $('#activity_select2').children('option:not(:first)').remove();
+                    $.get("/Home/getCategoriesForCalendar", {}, function (data) {
+                        for (var i = 0; i < data.length; i++) {
+                            $('#activity_select2').append('<option value="' + data[i].Id + '">' + data[i].Name + '</option>');
+                        }
+                        $('#EditEvent #activity_select2').val(calEvent.ActivityID);
+                    });
+
+                    $('#EditEvent #display_title_input').val(calEvent.title);
+                    var inputs = $("#EditEvent input[type=radio]");
+                    inputs[0].disabled = true;
+                    inputs[1].disabled = true;
+                    inputs[2].disabled = true;
+                    $('#EditEvent #dateandtime_input').val(calEvent.startDate + 'T' + calEvent.startTime);
+                    $('#EditEvent #venue_select').val(calEvent.Venue);
+                    $('#EditEvent #description_textarea').val(calEvent.Note);
+                    $('#EditEvent #EventID').val(calEvent.Id)
+                    a[0].className = "modal fade show";
+
+                },
+                eventDrop: function (event, delta, revertFunc) {
+                    if (confirm(event.title + " was dropped on " + event.start.format() + "   Are you sure about this change?")) {
+                        DragandDrop(event.Id, event.start.format());
+                    }
+                    else { revertFunc(); }
+                }
+            }).on('click', '.fc-basicWeek-button', function () {
+                $('#calendar4Parent').css('width', '100%');
+                $('#day_div4').hide();
+                $('.fc-view-container').show();
+                $('.fc-center').show();
+                $('.fc-right').show();
+            }).on('click', '.fc-month-button', function () {
+                $('#calendar4Parent').css('width', '100%');
+                $('#day_div4').hide();
+                $('.fc-view-container').show();
+                $('.fc-center').show();
+                $('.fc-right').show();
+            });
+
+        };
 
     });
-
 
 
 
@@ -1566,56 +2491,133 @@
         var seventh = $("#AddEvent #time_input").val();
         var eighth = $("#AddEvent #venue_select").val();
         var ninth = $("#AddEvent #description_textarea").val();
-        if (first == '' || second == '') {tempAlert("Mandatory Required", 2000);return false;}
+        if (first == '' || second == '') { tempAlert("Mandatory Required", 2000); return false; }
         else {
             var a = $("#AddEvent input[type=radio]:checked").val();
             if (a == '1') {
-                if (third == '') {tempAlert("Mandatory Required", 2000);return false;}
+                if (third == '') { tempAlert("Mandatory Required", 2000); return false; }
                 else {
                     event.preventDefault();
-                    submitform(first, second, third, forth, fifth, sixth, seventh, eighth,ninth, '1');
+                    submitform(first, second, third, forth, fifth, sixth, seventh, eighth, ninth, '1');
                 }
             }
             else if (a == '2') {
-                if (forth == '' || seventh == '') {tempAlert("Mandatory Required", 2000);return false;}
+                if (forth == '' || seventh == '') { tempAlert("Mandatory Required", 2000); return false; }
                 else {
                     event.preventDefault();
-                    submitform(first, second, third, forth, fifth, sixth, seventh, eighth,ninth, '2');
+                    submitform(first, second, third, forth, fifth, sixth, seventh, eighth, ninth, '2');
                 }
             }
             else if (a == '3') {
                 if (fifth == '' || sixth == '' || seventh == '') { tempAlert("Mandatory Required", 2000); return false; }
                 else {
                     event.preventDefault();
-                    submitform(first, second, third, forth, fifth, sixth, seventh, eighth,ninth,'3');
+                    submitform(first, second, third, forth, fifth, sixth, seventh, eighth, ninth, '3');
                 }
             }
-            else {tempAlert("Saved Failed", 2000);return false;}
+            else { tempAlert("Saved Failed", 2000); return false; }
         }
     });
 
-    function submitform(first, second, third, forth, fifth, sixth, seventh, eighth,ninth,a) {
-        var posting = $.post("/Home/AddEvents_mike", { aa: first, bb: second, cc: third, dd: forth, ee: fifth, ff: sixth, gg: seventh, hh:eighth, ii:ninth, fre: a });
-        posting.done(function (data) {
-            //$('#calendar').fullCalendar('removeEvents');
-            for (var ind = 0; ind < data.length; ind++) {
-                var event = {
-                    Id: data[ind].id,
-                    title: data[ind].title,
-                    start: data[ind].startT,
-                    end: data[ind].endT != null ? data[ind].endT : null,
-                    startDate: data[ind].startDate,
-                    Venue: data[ind].Venue,
-                    Note: data[ind].note,
-                    Category: data[ind].Category,
-                    ActivityID: data[ind].ActivityId,
-                    startTime: data[ind].startTime
-                };
-                $('#calendar').fullCalendar('renderEvent', event, true);
-            }
-            $('#AddEvent').modal('hide');
-            cancel1();
-        });
+    function submitform(first, second, third, forth, fifth, sixth, seventh, eighth, ninth, a) {
+        var tab = $('#hiddentab').val();
+
+        if (tab == "" || tab == "a") {
+            var posting = $.post("/Home/AddEvents_mike", { aa: first, bb: second, cc: third, dd: forth, ee: fifth, ff: sixth, gg: seventh, hh: eighth, ii: ninth, fre: a });
+            posting.done(function (data) {
+                //$('#calendar').fullCalendar('removeEvents');
+                for (var ind = 0; ind < data.length; ind++) {
+                    var event = {
+                        Id: data[ind].id,
+                        title: data[ind].title,
+                        start: data[ind].startT,
+                        end: data[ind].endT != null ? data[ind].endT : null,
+                        startDate: data[ind].startDate,
+                        Venue: data[ind].Venue,
+                        Note: data[ind].note,
+                        Category: data[ind].Category,
+                        ActivityID: data[ind].ActivityId,
+                        startTime: data[ind].startTime
+                    };
+                    $('#calendar').fullCalendar('renderEvent', event, true);
+                    update_day_div();
+                }
+                $('#AddEvent').modal('hide');
+                cancel1();
+            });
+        }
+        else if (tab == "b") {
+            var posting = $.post("/Home/AddEvents_mike2", { aa: first, bb: second, cc: third, dd: forth, ee: fifth, ff: sixth, gg: seventh, hh: eighth, ii: ninth, fre: a });
+            posting.done(function (data) {
+                //$('#calendar').fullCalendar('removeEvents');
+                for (var ind = 0; ind < data.length; ind++) {
+                    var event = {
+                        Id: data[ind].id,
+                        title: data[ind].title,
+                        start: data[ind].startT,
+                        end: data[ind].endT != null ? data[ind].endT : null,
+                        startDate: data[ind].startDate,
+                        Venue: data[ind].Venue,
+                        Note: data[ind].note,
+                        Category: data[ind].Category,
+                        ActivityID: data[ind].ActivityId,
+                        startTime: data[ind].startTime
+                    };
+                    $('#calendar2').fullCalendar('renderEvent', event, true);
+                    update_day_div();
+                }
+                $('#AddEvent').modal('hide');
+                cancel1();
+            });
+        }
+        else if (tab == "c") {
+            var posting = $.post("/Home/AddEvents_mike3", { aa: first, bb: second, cc: third, dd: forth, ee: fifth, ff: sixth, gg: seventh, hh: eighth, ii: ninth, fre: a });
+            posting.done(function (data) {
+                //$('#calendar').fullCalendar('removeEvents');
+                for (var ind = 0; ind < data.length; ind++) {
+                    var event = {
+                        Id: data[ind].id,
+                        title: data[ind].title,
+                        start: data[ind].startT,
+                        end: data[ind].endT != null ? data[ind].endT : null,
+                        startDate: data[ind].startDate,
+                        Venue: data[ind].Venue,
+                        Note: data[ind].note,
+                        Category: data[ind].Category,
+                        ActivityID: data[ind].ActivityId,
+                        startTime: data[ind].startTime
+                    };
+                    $('#calendar3').fullCalendar('renderEvent', event, true);
+                    update_day_div();
+                }
+                $('#AddEvent').modal('hide');
+                cancel1();
+            });
+        }
+        else if (tab == "d") {
+            var posting = $.post("/Home/AddEvents_mike4", { aa: first, bb: second, cc: third, dd: forth, ee: fifth, ff: sixth, gg: seventh, hh: eighth, ii: ninth, fre: a });
+            posting.done(function (data) {
+                //$('#calendar').fullCalendar('removeEvents');
+                for (var ind = 0; ind < data.length; ind++) {
+                    var event = {
+                        Id: data[ind].id,
+                        title: data[ind].title,
+                        start: data[ind].startT,
+                        end: data[ind].endT != null ? data[ind].endT : null,
+                        startDate: data[ind].startDate,
+                        Venue: data[ind].Venue,
+                        Note: data[ind].note,
+                        Category: data[ind].Category,
+                        ActivityID: data[ind].ActivityId,
+                        startTime: data[ind].startTime
+                    };
+                    $('#calendar4').fullCalendar('renderEvent', event, true);
+                    update_day_div();
+                }
+                $('#AddEvent').modal('hide');
+                cancel1();
+            });
+        }
     }
 
     $('form[name="addEventForm2"]').submit(function (event) {
@@ -1628,44 +2630,147 @@
         if (first == '' || second == '' || third == '') { tempAlert("Mandatory Required", 2000); return false; }
         else {
             event.preventDefault();
-            submitform2(ID,first, second, third, eighth, ninth);
+            submitform2(ID, first, second, third, eighth, ninth);
         }
     });
 
-    function submitform2(ID,first, second, third, eighth, ninth) {
-        var posting = $.post("/Home/AddEvents_mike_EDIT", {ID:ID, aa: first, bb: second, cc: third, hh: eighth, ii: ninth});
-        posting.done(function (data) {
-            //$('#calendar').fullCalendar('removeEvents');
-            for (var ind = 0; ind < data.length; ind++) {
-                $('#calendar').fullCalendar('removeEvents', function (event) {
-                    return (event.Id == data[ind].id);
-                });
-                var event = {
-                    Id: data[ind].id,
-                    title: data[ind].title,
-                    start: data[ind].startT,
-                    end: data[ind].endT != null ? data[ind].endT : null,
-                    startDate: data[ind].startDate,
-                    Venue: data[ind].Venue,
-                    Note: data[ind].note,
-                    Category: data[ind].Category,
-                    ActivityID: data[ind].ActivityId,
-                    startTime: data[ind].startTime
-                };
-                $('#calendar').fullCalendar('renderEvent', event, true);
-            }
-            $('#EditEvent').modal('hide');
+    function submitform2(ID, first, second, third, eighth, ninth) {
+        var tab = $('#hiddentab').val();
 
-        });
+        if (tab == "" || tab == "a") {
+            var posting = $.post("/Home/AddEvents_mike_EDIT", { ID: ID, aa: first, bb: second, cc: third, hh: eighth, ii: ninth });
+            posting.done(function (data) {
+                //$('#calendar').fullCalendar('removeEvents');
+                for (var ind = 0; ind < data.length; ind++) {
+                    $('#calendar').fullCalendar('removeEvents', function (event) {
+                        return (event.Id == data[ind].id);
+                    });
+                    var event = {
+                        Id: data[ind].id,
+                        title: data[ind].title,
+                        start: data[ind].startT,
+                        end: data[ind].endT != null ? data[ind].endT : null,
+                        startDate: data[ind].startDate,
+                        Venue: data[ind].Venue,
+                        Note: data[ind].note,
+                        Category: data[ind].Category,
+                        ActivityID: data[ind].ActivityId,
+                        startTime: data[ind].startTime
+                    };
+                    $('#calendar').fullCalendar('renderEvent', event, true);
+                    update_day_div();
+                }
+                $('#EditEvent').modal('hide');
+
+            });
+        }
+        else if (tab == "b") {
+            var posting = $.post("/Home/AddEvents_mike_EDIT2", { ID: ID, aa: first, bb: second, cc: third, hh: eighth, ii: ninth });
+            posting.done(function (data) {
+                //$('#calendar').fullCalendar('removeEvents');
+                for (var ind = 0; ind < data.length; ind++) {
+                    $('#calendar2').fullCalendar('removeEvents', function (event) {
+                        return (event.Id == data[ind].id);
+                    });
+                    var event = {
+                        Id: data[ind].id,
+                        title: data[ind].title,
+                        start: data[ind].startT,
+                        end: data[ind].endT != null ? data[ind].endT : null,
+                        startDate: data[ind].startDate,
+                        Venue: data[ind].Venue,
+                        Note: data[ind].note,
+                        Category: data[ind].Category,
+                        ActivityID: data[ind].ActivityId,
+                        startTime: data[ind].startTime
+                    };
+                    $('#calendar2').fullCalendar('renderEvent', event, true);
+                    update_day_div();
+                }
+                $('#EditEvent').modal('hide');
+
+            });
+        }
+        else if (tab == "c") {
+            var posting = $.post("/Home/AddEvents_mike_EDIT3", { ID: ID, aa: first, bb: second, cc: third, hh: eighth, ii: ninth });
+            posting.done(function (data) {
+                //$('#calendar').fullCalendar('removeEvents');
+                for (var ind = 0; ind < data.length; ind++) {
+                    $('#calendar3').fullCalendar('removeEvents', function (event) {
+                        return (event.Id == data[ind].id);
+                    });
+                    var event = {
+                        Id: data[ind].id,
+                        title: data[ind].title,
+                        start: data[ind].startT,
+                        end: data[ind].endT != null ? data[ind].endT : null,
+                        startDate: data[ind].startDate,
+                        Venue: data[ind].Venue,
+                        Note: data[ind].note,
+                        Category: data[ind].Category,
+                        ActivityID: data[ind].ActivityId,
+                        startTime: data[ind].startTime
+                    };
+                    $('#calendar3').fullCalendar('renderEvent', event, true);
+                    update_day_div();
+                }
+                $('#EditEvent').modal('hide');
+
+            });
+        }
+        else if (tab == "d") {
+            var posting = $.post("/Home/AddEvents_mike_EDIT4", { ID: ID, aa: first, bb: second, cc: third, hh: eighth, ii: ninth });
+            posting.done(function (data) {
+                //$('#calendar').fullCalendar('removeEvents');
+                for (var ind = 0; ind < data.length; ind++) {
+                    $('#calendar4').fullCalendar('removeEvents', function (event) {
+                        return (event.Id == data[ind].id);
+                    });
+                    var event = {
+                        Id: data[ind].id,
+                        title: data[ind].title,
+                        start: data[ind].startT,
+                        end: data[ind].endT != null ? data[ind].endT : null,
+                        startDate: data[ind].startDate,
+                        Venue: data[ind].Venue,
+                        Note: data[ind].note,
+                        Category: data[ind].Category,
+                        ActivityID: data[ind].ActivityId,
+                        startTime: data[ind].startTime
+                    };
+                    $('#calendar4').fullCalendar('renderEvent', event, true);
+                    update_day_div();
+                }
+                $('#EditEvent').modal('hide');
+
+            });
+        }
+
+
     }
 
-
     function DragandDrop(aa, bb) {
-        $.post("/Home/EVENT_DragandDrop", {eventID:aa,destinationDT:bb}, function () {
-
-        });
-
-
+        var tab = $('#hiddentab').val();
+        if (tab == "" || tab == "a") {
+            $.post("/Home/EVENT_DragandDrop", { eventID: aa, destinationDT: bb }, function () {
+                update_day_div();
+            });
+        }
+        else if (tab == "b") {
+            $.post("/Home/EVENT_DragandDrop2", { eventID: aa, destinationDT: bb }, function () {
+                update_day_div();
+            });
+        }
+        else if (tab == "c") {
+            $.post("/Home/EVENT_DragandDrop3", { eventID: aa, destinationDT: bb }, function () {
+                update_day_div();
+            });
+        }
+        else if (tab == "d") {
+            $.post("/Home/EVENT_DragandDrop4", { eventID: aa, destinationDT: bb }, function () {
+                update_day_div();
+            });
+        }
     }
 
     function cancel1() {
@@ -1690,11 +2795,11 @@
     function activityonclick(ee) {
         $('#activity_select').children('option:not(:first)').remove();
         $('#activity_select2').children('option:not(:first)').remove();
-        $.get("/Home/getCategoriesForCalendar", { }, function (data) {
+        $.get("/Home/getCategoriesForCalendar", {}, function (data) {
             for (var i = 0; i < data.length; i++) {
                 $('#activity_select').append('<option value="' + data[i].Id + '">' + data[i].Name + '</option>');
                 $('#activity_select2').append('<option value="' + data[i].Id + '">' + data[i].Name + '</option>');
-                //$('#activity_select').append($("<option></option>").attr("value", data[i].Id).text(data[i].Name)); 
+                //$('#activity_select').append($("<option></option>").attr("value", data[i].Id).text(data[i].Name));
             }
         });
     }
@@ -1716,14 +2821,52 @@
 
     function deleteEvent(ee) {
         var aa = $('#EditEvent #EventID').val()
-        if (confirm("Sure about Delete?")) {
-            document.getElementById('EDIT_COPY_DELETE_CANCEL').className = 'modal fade';
-            $.get("/Home/DELETE_EVENT", { eventID: aa }, function (data) {
-                $('#calendar').fullCalendar('removeEvents', function (event) {
-                    return (event.Id == data);
+        var tab = $('#hiddentab').val();
+        if (tab == "" || tab == "a") {
+            if (confirm("Sure about Delete?")) {
+                document.getElementById('EDIT_COPY_DELETE_CANCEL').className = 'modal fade';
+                $.get("/Home/DELETE_EVENT", { eventID: aa }, function (data) {
+                    $('#calendar').fullCalendar('removeEvents', function (event) {
+                        return (event.Id == data);
+                    });
+                    update_day_div();
                 });
-            });
-        }  
+            }
+        }
+        else if (tab == "b") {
+            if (confirm("Sure about Delete?")) {
+                document.getElementById('EDIT_COPY_DELETE_CANCEL').className = 'modal fade';
+                $.get("/Home/DELETE_EVENT2", { eventID: aa }, function (data) {
+                    $('#calendar2').fullCalendar('removeEvents', function (event) {
+                        return (event.Id == data);
+                    });
+                    update_day_div();
+                });
+            }
+        }
+        else if (tab == "c") {
+            if (confirm("Sure about Delete?")) {
+                document.getElementById('EDIT_COPY_DELETE_CANCEL').className = 'modal fade';
+                $.get("/Home/DELETE_EVENT3", { eventID: aa }, function (data) {
+                    $('#calendar3').fullCalendar('removeEvents', function (event) {
+                        return (event.Id == data);
+                    });
+                    update_day_div();
+                });
+            }
+        }
+        else if (tab == "d") {
+            if (confirm("Sure about Delete?")) {
+                document.getElementById('EDIT_COPY_DELETE_CANCEL').className = 'modal fade';
+                $.get("/Home/DELETE_EVENT4", { eventID: aa }, function (data) {
+                    $('#calendar4').fullCalendar('removeEvents', function (event) {
+                        return (event.Id == data);
+                    });
+                    update_day_div();
+                });
+            }
+        }
+
     }
 
     function copyEvent_Start(ee) {
@@ -1733,34 +2876,212 @@
         document.getElementById('EDIT_COPY_DELETE_CANCEL').className = 'modal fade';
     }
 
-
     function copyEvent_End(ee) {
         var aa = $('#ADD_CANCEL #CopyEventID').val();
         var titles = $('#ADD_CANCEL #ADD_CANCEL_title')
         var DT = titles[0].innerHTML;
-        $.get("/Home/COPY_EVENT", { eventID: aa , NewDate:DT}, function (data) {
-            for (var ind = 0; ind < data.length; ind++) {
-                $('#calendar').fullCalendar('removeEvents', function (event) {
-                    return (event.Id == data[ind].id);
-                });
-                var event = {
-                    Id: data[ind].id,
-                    title: data[ind].title,
-                    start: data[ind].startT,
-                    end: data[ind].endT != null ? data[ind].endT : null,
-                    startDate: data[ind].startDate,
-                    Venue: data[ind].Venue,
-                    Note: data[ind].note,
-                    Category: data[ind].Category,
-                    ActivityID: data[ind].ActivityId,
-                    startTime: data[ind].startTime
-                };
-                $('#calendar').fullCalendar('renderEvent', event, true);
-            }
-            document.getElementById('ADD_CANCEL').className = 'modal fade';
-        });
+        var tab = $('#hiddentab').val();
+        if (tab == "" || tab == "a") {
+            $.get("/Home/COPY_EVENT", { eventID: aa, NewDate: DT }, function (data) {
+                for (var ind = 0; ind < data.length; ind++) {
+                    $('#calendar').fullCalendar('removeEvents', function (event) {
+                        return (event.Id == data[ind].id);
+                    });
+                    var event = {
+                        Id: data[ind].id,
+                        title: data[ind].title,
+                        start: data[ind].startT,
+                        end: data[ind].endT != null ? data[ind].endT : null,
+                        startDate: data[ind].startDate,
+                        Venue: data[ind].Venue,
+                        Note: data[ind].note,
+                        Category: data[ind].Category,
+                        ActivityID: data[ind].ActivityId,
+                        startTime: data[ind].startTime
+                    };
+                    $('#calendar').fullCalendar('renderEvent', event, true);
+                }
+                update_day_div();
+                document.getElementById('ADD_CANCEL').className = 'modal fade';
+            });
+        }
+        else if (tab == "b") {
+            $.get("/Home/COPY_EVENT2", { eventID: aa, NewDate: DT }, function (data) {
+                for (var ind = 0; ind < data.length; ind++) {
+                    $('#calendar2').fullCalendar('removeEvents', function (event) {
+                        return (event.Id == data[ind].id);
+                    });
+                    var event = {
+                        Id: data[ind].id,
+                        title: data[ind].title,
+                        start: data[ind].startT,
+                        end: data[ind].endT != null ? data[ind].endT : null,
+                        startDate: data[ind].startDate,
+                        Venue: data[ind].Venue,
+                        Note: data[ind].note,
+                        Category: data[ind].Category,
+                        ActivityID: data[ind].ActivityId,
+                        startTime: data[ind].startTime
+                    };
+                    $('#calendar2').fullCalendar('renderEvent', event, true);
+                }
+                update_day_div();
+                document.getElementById('ADD_CANCEL').className = 'modal fade';
+            });
+        }
+        else if (tab == "c") {
+            $.get("/Home/COPY_EVENT3", { eventID: aa, NewDate: DT }, function (data) {
+                for (var ind = 0; ind < data.length; ind++) {
+                    $('#calendar3').fullCalendar('removeEvents', function (event) {
+                        return (event.Id == data[ind].id);
+                    });
+                    var event = {
+                        Id: data[ind].id,
+                        title: data[ind].title,
+                        start: data[ind].startT,
+                        end: data[ind].endT != null ? data[ind].endT : null,
+                        startDate: data[ind].startDate,
+                        Venue: data[ind].Venue,
+                        Note: data[ind].note,
+                        Category: data[ind].Category,
+                        ActivityID: data[ind].ActivityId,
+                        startTime: data[ind].startTime
+                    };
+                    $('#calendar3').fullCalendar('renderEvent', event, true);
+                }
+                update_day_div();
+                document.getElementById('ADD_CANCEL').className = 'modal fade';
+            });
+        }
+        else if (tab == "d") {
+            $.get("/Home/COPY_EVENT4", { eventID: aa, NewDate: DT }, function (data) {
+                for (var ind = 0; ind < data.length; ind++) {
+                    $('#calendar4').fullCalendar('removeEvents', function (event) {
+                        return (event.Id == data[ind].id);
+                    });
+                    var event = {
+                        Id: data[ind].id,
+                        title: data[ind].title,
+                        start: data[ind].startT,
+                        end: data[ind].endT != null ? data[ind].endT : null,
+                        startDate: data[ind].startDate,
+                        Venue: data[ind].Venue,
+                        Note: data[ind].note,
+                        Category: data[ind].Category,
+                        ActivityID: data[ind].ActivityId,
+                        startTime: data[ind].startTime
+                    };
+                    $('#calendar4').fullCalendar('renderEvent', event, true);
+                }
+                update_day_div();
+                document.getElementById('ADD_CANCEL').className = 'modal fade';
+            });
+        }
+
+
+
+
+
+
+        
+
+    }
+
+    function update_day_div() {
+        var tab = $('#hiddentab').val();
+        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+
+        if (tab == "a" || tab == "") {
+            $.get("/Home/update_day_div1", { datesel: dateselect }, function (data) {
+                $('#day_div #main_page #pills-day table tbody').html('');
+                for (var i = 0; i < data.length; i++) {
+                    $('#day_div #main_page #pills-day table tbody').append('' +
+
+                        '<tr name=' + data[i].ProgramId + 'id = ' + data[i].ProgramName + 'englishname = ' + data[i].ActivityNameEnglish + ' >' +
+                        '<td>' + data[i].ProgramStartTime + '</td>' +
+                        '<td>' + data[i].ProgramName + '</td>' +
+                        '<td>' + data[i].Venue + '</td>' +
+                        '<td><a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#"><i class="fa fa-file-text-o"></i></a></td>' +
+                        '<td>' + data[i].Active + '</td>' +
+                        '<td>' + data[i].Declined + '</td>' +
+                        '</tr>' +
+
+                        '');
+                }
+            });
+        }
+        else if (tab == "b") {
+            $.get("/Home/update_day_div2", { datesel: dateselect }, function (data) {
+                $('#day_div2 #main_page #pills-day table tbody').html('');
+                for (var i = 0; i < data.length; i++) {
+                    $('#day_div2 #main_page #pills-day table tbody').append('' +
+
+                        '<tr name=' + data[i].ProgramId + 'id = ' + data[i].ProgramName + 'englishname = ' + data[i].ActivityNameEnglish + ' >' +
+                        '<td>' + data[i].ProgramStartTime + '</td>' +
+                        '<td>' + data[i].ProgramName + '</td>' +
+                        '<td>' + data[i].Venue + '</td>' +
+                        '<td><a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#"><i class="fa fa-file-text-o"></i></a></td>' +
+                        '<td>' + data[i].Active + '</td>' +
+                        '<td>' + data[i].Declined + '</td>' +
+                        '</tr>' +
+
+                        '');
+                }
+            });
+        }
+        else if (tab == "c") {
+            $.get("/Home/update_day_div3", { datesel: dateselect }, function (data) {
+                $('#day_div3 #main_page #pills-day table tbody').html('');
+                for (var i = 0; i < data.length; i++) {
+                    $('#day_div3 #main_page #pills-day table tbody').append('' +
+
+                        '<tr name=' + data[i].ProgramId + 'id = ' + data[i].ProgramName + 'englishname = ' + data[i].ActivityNameEnglish + ' >' +
+                        '<td>' + data[i].ProgramStartTime + '</td>' +
+                        '<td>' + data[i].ProgramName + '</td>' +
+                        '<td>' + data[i].Venue + '</td>' +
+                        '<td><a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#"><i class="fa fa-file-text-o"></i></a></td>' +
+                        '<td>' + data[i].Active + '</td>' +
+                        '<td>' + data[i].Declined + '</td>' +
+                        '</tr>' +
+
+                        '');
+                }
+            });
+        }
+        else if (tab == "d") {
+            $.get("/Home/update_day_div4", { datesel: dateselect }, function (data) {
+                $('#day_div4 #main_page #pills-day table tbody').html('');
+                for (var i = 0; i < data.length; i++) {
+                    $('#day_div4 #main_page #pills-day table tbody').append('' +
+
+                        '<tr name=' + data[i].ProgramId + 'id = ' + data[i].ProgramName + 'englishname = ' + data[i].ActivityNameEnglish + ' >' +
+                        '<td>' + data[i].ProgramStartTime + '</td>' +
+                        '<td>' + data[i].ProgramName + '</td>' +
+                        '<td>' + data[i].Venue + '</td>' +
+                        '<td><a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#"><i class="fa fa-file-text-o"></i></a></td>' +
+                        '<td>' + data[i].Active + '</td>' +
+                        '<td>' + data[i].Declined + '</td>' +
+                        '</tr>' +
+
+                        '');
+                }
+            });
+        }
+
+        
         
     }
+
+
+
+
+    setTimeout(function () {
+        $('.fc-center').hide();
+        $('.fc-right').hide();
+        $('#calendar1Parent').css('width', '20%');
+
+    }, 500);
+
 
 
 </script>
