@@ -1242,7 +1242,7 @@ namespace QolaMVC.Controllers
             var home = (HomeModel)TempData["Home"];
             TempData.Keep("Home");
             ViewBag.Home = home;
-            HomeDAL.EVENT_DragandDrop(Int32.Parse(eventID), DateTime.Parse(destinationDT), home.Id);
+            HomeDAL.EVENT_DragandDrop4(Int32.Parse(eventID), DateTime.Parse(destinationDT), home.Id);
 
         }
 
@@ -1713,6 +1713,7 @@ namespace QolaMVC.Controllers
                 {
                     var columns = new Dictionary<string, string>
                     {
+                        { "ProgramId", l_Data.ProgramId.ToString()},
                         { "ActivityId", l_Data.ActivityId.ToString()},
                         { "ProgramName", l_Data.ProgramName},
                         { "ActivityNameEnglish", l_Data.ActivityNameEnglish},
@@ -1768,6 +1769,7 @@ namespace QolaMVC.Controllers
                 {
                     var columns = new Dictionary<string, string>
                     {
+                        { "ProgramId", l_Data.ProgramId.ToString()},
                         { "ActivityId", l_Data.ActivityId.ToString()},
                         { "ProgramName", l_Data.ProgramName},
                         { "ActivityNameEnglish", l_Data.ActivityNameEnglish},
@@ -1823,6 +1825,7 @@ namespace QolaMVC.Controllers
                 {
                     var columns = new Dictionary<string, string>
                     {
+                        { "ProgramId", l_Data.ProgramId.ToString()},
                         { "ActivityId", l_Data.ActivityId.ToString()},
                         { "ProgramName", l_Data.ProgramName},
                         { "ActivityNameEnglish", l_Data.ActivityNameEnglish},
@@ -1878,6 +1881,7 @@ namespace QolaMVC.Controllers
                 {
                     var columns = new Dictionary<string, string>
                     {
+                        { "ProgramId", l_Data.ProgramId.ToString()},
                         { "ActivityId", l_Data.ActivityId.ToString()},
                         { "ProgramName", l_Data.ProgramName},
                         { "ActivityNameEnglish", l_Data.ActivityNameEnglish},
