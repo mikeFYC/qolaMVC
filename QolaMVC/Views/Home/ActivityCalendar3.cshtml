@@ -2886,10 +2886,14 @@
     }
 
     function add_event_small_div(ee) {
+        var NOWTIME = new Date();
+        var nowT = NOWTIME.getHours() + ":" + NOWTIME.getMinutes();
+        
+
         $('#ADD_CANCEL #CopyDivID').hide();
         $('#ADD_CANCEL #CopyEventID').val('');
         var selectdate = document.getElementById('ADD_CANCEL_title').innerHTML;
-        $("#dateandtime_input").val(selectdate + 'T00:00');
+        $("#dateandtime_input").val(selectdate + 'T' +nowT);
         $("#datefrom_input").val(selectdate);
         document.getElementById('ADD_CANCEL').className = 'modal fade';
     }
@@ -3259,7 +3263,7 @@
                     doc.setTextColor('#000');
                     heightLeft -= pageHeight;
                 }
-                var filename = $('.filename').val();
+                var filename = "Activity_Calendar";
                 doc.save(filename + '.pdf');
             });
         $('.fromHTMLtestdiv').css({ 'margin-top': '11.5%' });

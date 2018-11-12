@@ -1188,7 +1188,7 @@ namespace QolaMVC.Controllers
 
         //}
 
-        public ActionResult CarePlan()
+        public ActionResult CarePlan(string index)
         {
             //care plan
             var home = (HomeModel)TempData["Home"];
@@ -1257,10 +1257,44 @@ namespace QolaMVC.Controllers
             QolaCulture.InitSpecialEquipment(ref l_SpecialEquipment);
             l_Model.SpecialEquipment = l_SpecialEquipment;
 
-            if (careplan.Count >0)
+            //if (careplan.Count >0)
+            //{
+            //    l_Model = careplan.LastOrDefault();
+            //}
+
+
+
+
+            if (careplan.Count == 0)
             {
-                l_Model = careplan.LastOrDefault();
+                careplan.Add(l_Model);
             }
+
+            List<DateTime> l_AssessmentDates = new List<DateTime>();
+            foreach (var l_Ass in careplan)
+            {
+                l_AssessmentDates.Add(l_Ass.DateEntered);
+            }
+            List<int> l_ID_list = new List<int>();
+            foreach (var l_Ass in careplan)
+            {
+                l_ID_list.Add(l_Ass.Id);
+            }
+
+            if (index == null || index == "")
+            {
+                TempData["index"] = "0";
+                l_Model = careplan[0];
+            }
+            else
+            {
+                TempData["index"] = index;
+                l_Model = careplan[int.Parse(index)];
+            }
+            TempData.Keep("index");
+            ViewBag.AssessmentDates = l_AssessmentDates;
+            ViewBag.ID_list = l_ID_list;
+
             return View(l_Model);
         }
 
@@ -1282,6 +1316,7 @@ namespace QolaMVC.Controllers
             ProgressNotesHelper.RegisterSession(resident);
             return RedirectToAction("CarePlan");
         }
+
 
 
         [HttpPost]
@@ -1470,7 +1505,15 @@ namespace QolaMVC.Controllers
 
             #endregion
 
-            CarePlanDAL.AddCarePlan(p_Model);
+            if (p_Model.Id == 0)
+            {
+                CarePlanDAL.AddCarePlan(p_Model);
+            }
+            else
+            {
+                CarePlanDAL.DELETE_RCA_ID(p_Model.Id);
+                CarePlanDAL.AddCarePlan(p_Model);
+            }
             return RedirectToAction("CarePlan");
         }
 

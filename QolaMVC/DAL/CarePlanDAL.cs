@@ -454,6 +454,38 @@ namespace QolaMVC.DAL
                         l_Assessment.InfectiousDiseases = GetCarePlanInfectiousDiseases(l_Assessment.Id);
 
                         //hold on other methods. Go and work on adding a care plan
+                        switch (l_Assessment.Assessed)
+                        {
+                            case "7PA":
+                                l_Assessment.Assessed_Full = "Pre-Admin";
+                                break;
+                            case "6AN":
+                                l_Assessment.Assessed_Full = "5 Month Assessment";
+                                break;
+                            case "2AU":
+                                l_Assessment.Assessed_Full = "Update";
+                                break;
+                            case "8AA":
+                                l_Assessment.Assessed_Full = "Admission";
+                                break;
+                        }
+                        switch (l_Assessment.LevelOfCare)
+                        {
+                            case "3LI":
+                                l_Assessment.LevelOfCare_Full = "Independent";
+                                break;
+                            case "2LP":
+                                l_Assessment.LevelOfCare_Full = "Partial Assistt";
+                                break;
+                            case "4LD":
+                                l_Assessment.LevelOfCare_Full = "Dependent";
+                                break;
+                            case "5LPT":
+                                l_Assessment.LevelOfCare_Full = "Palliative";
+                                break;
+                        }
+
+
                         l_Assessments.Add(l_Assessment);
                     }
                 }
@@ -1471,6 +1503,33 @@ namespace QolaMVC.DAL
             catch (Exception ex)
             {
                 exception = "CarePlanDAL GetCarePlanInfectiousDiseases |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+
+        public static void DELETE_RCA_ID(int ID)
+        {
+            string exception = string.Empty;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_delete_PlanOfCare_ALL", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@id", ID);   
+                l_Cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                exception = "DELETE_RCA_ID |" + ex.ToString();
+                //Log.Write(exception);
                 throw;
             }
             finally

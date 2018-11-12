@@ -69,6 +69,30 @@
                     <div class="card">
                         <div class="card-block">
                             <div class="row">
+                                <div class="col-2">
+                                    Assessment History:
+                                </div>
+                                <div class="col-2">
+                                    <select class="form-control col-12" name="AssessmentDate" id="selectdate" onchange="formsubmit(this)">
+
+                                        @if (ViewBag.AssessmentDates != null && ViewBag.AssessmentDates[0].ToShortDateString() != "1/1/0001")
+                                        {
+                                            for (var ind = 0; ind < ((List<DateTime>)ViewBag.AssessmentDates).Count(); ind++)
+                                            {
+                                                <option value=@ind name=@(ViewBag.ID_list[ind])>@(((List<DateTime>)ViewBag.AssessmentDates)[ind].ToString("yyyy-MM-dd"))</option>
+                                            }
+                                        }
+                                        else {<option value="0"></option>}
+
+                                    </select>
+                                    <input type="hidden" id="ID_ID" name="Id" value=""/>
+                                </div>
+                                <div class="col-2">
+                                    <button class="btn btn-danger" type="button" onclick="new_assessment()">NEW</button>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
                                 <div class="col-md-12 bg text-center">
                                     <h4>Assessed</h4>
                                 </div>
@@ -79,7 +103,7 @@
                                             @{
                                                 if (Model.Assessed != null && Model.Assessed != string.Empty)
                                                 {
-                                                    <option selected="selected" value=@Model.Assessed>@Model.Assessed</option>
+                                                    <option selected="selected" value=@Model.Assessed>@Model.Assessed_Full</option>
                                                 }
                                             }
                                             <option value="">Select</option>
@@ -108,7 +132,7 @@
                                             @{
                                                 if (Model.LevelOfCare != null && Model.LevelOfCare != string.Empty)
                                                 {
-                                                    <option selected="selected" value=@Model.LevelOfCare>@Model.LevelOfCare</option>
+                                                    <option selected="selected" value=@Model.LevelOfCare>@Model.LevelOfCare_Full</option>
                                                 }
                                             }
                                             <option value="">Select</option>
@@ -157,7 +181,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group form-group-default">
                                                     <label>Date Completed<span class="required_sign">&nbsp;*</span></label>
-                                                    @Html.TextBoxFor(m => m.VitalSigns.BPDateCompleted, new { @class = "form-control", id = "BPDateCompleted_Alert" })
+                                                    @Html.TextBoxFor(m => m.VitalSigns.BPDateCompleted, new { @class = "form-control", id = "BPDateCompleted_Alert",type="date" })
                                                 </div>
                                             </div>
                                         </div>
@@ -174,7 +198,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group form-group-default">
                                                     <label>Date Completed<span class="required_sign">&nbsp;*</span></label>
-                                                    @Html.TextBoxFor(m => m.VitalSigns.TempDateCompleted, new { @class = "form-control", id = "TempDateCompleted_Alert" })
+                                                    @Html.TextBoxFor(m => m.VitalSigns.TempDateCompleted, new { @class = "form-control", id = "TempDateCompleted_Alert", type = "date" })
                                                 </div>
                                             </div>
                                         </div>
@@ -191,7 +215,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group form-group-default">
                                                     <label>Date Completed<span class="required_sign">&nbsp;*</span></label>
-                                                    @Html.TextBoxFor(m => m.VitalSigns.WeightDateCompleted, new { @class = "form-control", id = "WeightDateCompleted_Alert" })
+                                                    @Html.TextBoxFor(m => m.VitalSigns.WeightDateCompleted, new { @class = "form-control", id = "WeightDateCompleted_Alert", type = "date" })
                                                 </div>
                                             </div>
                                         </div>
@@ -217,7 +241,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group form-group-default">
                                                     <label>Date Completed<span class="required_sign">&nbsp;*</span></label>
-                                                    @Html.TextBoxFor(m => m.VitalSigns.HeightDateCompleted, new { @class = "form-control", id = "HeightDateCompleted_Alert" })
+                                                    @Html.TextBoxFor(m => m.VitalSigns.HeightDateCompleted, new { @class = "form-control", id = "HeightDateCompleted_Alert", type = "date" })
                                                 </div>
                                             </div>
                                         </div>
@@ -232,7 +256,7 @@
                                     </div>
                                     <div class="form-group form-group-default">
                                         <label>Date Completed<span class="required_sign">&nbsp;*</span></label>
-                                        @Html.TextBoxFor(m => m.VitalSigns.PulseDateCompleted, new { @class = "form-control", id = "PulseDateCompleted_Alert" })
+                                        @Html.TextBoxFor(m => m.VitalSigns.PulseDateCompleted, new { @class = "form-control", id = "PulseDateCompleted_Alert", type = "date" })
                                     </div>
                                     <div class="form-check margin form-group" style="border:1px solid rgba(0,0,0,.125);border-radius:.25rem;padding:5px 5px 5px 15px;margin-left:0;">
                                         @Html.RadioButtonFor(m => m.VitalSigns.PulseRegular, "Regular", new { @class = "form-check-input", group = "PulseRegular_Alert" })
@@ -250,7 +274,7 @@
                                     </div>
                                     <div class="form-group form-group-default">
                                         <label>Date Completed<span class="required_sign">&nbsp;*</span></label>
-                                        @Html.TextBoxFor(m => m.VitalSigns.O2_sat_Date, new { @class = "form-control", id= "O2_sat_Date_Alert", name = "VitalSigns.O2_sat_Date" })
+                                        @Html.TextBoxFor(m => m.VitalSigns.O2_sat_Date, new { @class = "form-control", id= "O2_sat_Date_Alert", name = "VitalSigns.O2_sat_Date", type = "date" })
                                     </div>
 
                                 </div>
@@ -2073,7 +2097,7 @@
                                                 <input type="text" class="form-control" id="">
                                             </div>
                                             <div class="col-md-2">
-                                                <button class="btn btn-danger">Add</button>
+                                                <button type="button" class="btn btn-danger">Add</button>
                                             </div>
                                         </div>
                                         <br>
@@ -2087,7 +2111,7 @@
                                                 <input type="text" class="form-control" id="">
                                             </div>
                                             <div class="col-md-2">
-                                                <button class="btn btn-danger">Add</button>
+                                                <button type="button" class="btn btn-danger">Add</button>
                                             </div>
                                         </div>
                                     </div>
@@ -2661,7 +2685,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group form-group-default">
                                             <label>Date Completed</label>
-                                            @Html.TextBoxFor(m => m.Immunization.TetanusDate, new { @class = "Form-control", disabled = true })
+                                            @Html.TextBoxFor(m => m.Immunization.TetanusDate, new { @class = "Form-control", disabled = true, type = "date" })
                                         </div>
                                     </div>
                                 </div>
@@ -2979,7 +3003,7 @@
                                 <div class="tab-pane fade" id="pills-other" role="tabpanel" aria-labelledby="pills-contact-tab">Fourth</div>
                             </div>
                         </div>
-
+                        <input id="hiddeninput1" type="hidden" value="@TempData["index"]" />
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -2992,6 +3016,25 @@
         @RenderPage("~/Views/Shared/_Footer.cshtml")
 
 <script>
+    var index_date = $('#hiddeninput1').val();
+    $('#selectdate').val(index_date);
+    var skillsSelect = document.getElementById("selectdate");
+    var selectedText = skillsSelect.options[skillsSelect.selectedIndex].text;
+    if (selectedText == "") {
+        var inputs_check = $('textarea');
+        for (var b = 0; b < inputs_check.length; b++) {
+            inputs_check[b].disabled = true;
+        }
+        var inputs_text = $('input');
+        for (var b = 0; b < inputs_text.length; b++) {
+            inputs_text[b].disabled = true;
+        }
+        var inputs_select = $('select');
+        for (var b = 1; b < inputs_select.length; b++) {
+            inputs_select[b].disabled = true;
+        }
+    }
+
 
     function PersonalHygiene(ee) {
         var rowparent = ee.parentElement.parentElement.parentElement.parentElement;
@@ -3487,7 +3530,9 @@
     $('form').submit(function (event) {
         if (check_Alert() == true) {
             form = this;
-            form.submit();
+            var ID = $('#selectdate option:selected').attr('name');
+            $('#ID_ID').val(ID);
+            form.submit();  
         }
         else {
             check_Alert();
@@ -3495,5 +3540,31 @@
         }
     });
 
+    function formsubmit(ee) {
+        var index = $('#selectdate').val();
+        if (window.location.href.includes("?")) {
+            var question_location = window.location.href.indexOf('?');
+            window.location.href = window.location.href.substring(0, question_location) + '?index=' + index;
+        }
+        else {
+            window.location.href = window.location.href + "?index=" + index;
+        }
+
+    }
+
+
+    function new_assessment() {
+        $("input").removeAttr("disabled");
+        $("select").removeAttr("disabled");
+        $("textarea").removeAttr("disabled");
+        $("input[type='textbox']").val("");
+        $("input[type='date']").val("");
+        $("input[type='radio']").each(function () { this.checked = false });
+        $("input[type='checkbox']").each(function () { this.checked = false });
+        $("select").val("");
+        $("textarea").val("");
+        var a = $('form');
+        a[0].submit();
+    }
 
 </script>
