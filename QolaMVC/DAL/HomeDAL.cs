@@ -932,7 +932,7 @@ namespace QolaMVC.DAL
                         l_Event.ProgramName = Convert.ToString(homeTypeRow["EventTitle"]);
                         l_Event.ProgramStartDate = Convert.ToDateTime(homeTypeRow["StartDate"]);
                         l_Event.ProgramEndDate = Convert.ToDateTime(homeTypeRow["EndDate"]);
-                        l_Event.ProgramStartTime = Convert.ToString(homeTypeRow["StartTime"]);
+                        l_Event.ProgramStartTime = Convert.ToDateTime(homeTypeRow["StartTime"].ToString()).ToShortTimeString();
                         l_Event.ProgramEndTime = Convert.ToString(homeTypeRow["EndTime"]);
                         l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
                         l_Event.Active = Convert.ToInt32(homeTypeRow["Active"]);
@@ -986,7 +986,7 @@ namespace QolaMVC.DAL
                         l_Event.ProgramName = Convert.ToString(homeTypeRow["EventTitle"]);
                         l_Event.ProgramStartDate = Convert.ToDateTime(homeTypeRow["StartDate"]);
                         l_Event.ProgramEndDate = Convert.ToDateTime(homeTypeRow["EndDate"]);
-                        l_Event.ProgramStartTime = Convert.ToString(homeTypeRow["StartTime"]);
+                        l_Event.ProgramStartTime = Convert.ToDateTime(homeTypeRow["StartTime"].ToString()).ToShortTimeString();
                         l_Event.ProgramEndTime = Convert.ToString(homeTypeRow["EndTime"]);
                         l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
                         l_Event.Active = Convert.ToInt32(homeTypeRow["Active"]);
@@ -1040,7 +1040,7 @@ namespace QolaMVC.DAL
                         l_Event.ProgramName = Convert.ToString(homeTypeRow["EventTitle"]);
                         l_Event.ProgramStartDate = Convert.ToDateTime(homeTypeRow["StartDate"]);
                         l_Event.ProgramEndDate = Convert.ToDateTime(homeTypeRow["EndDate"]);
-                        l_Event.ProgramStartTime = Convert.ToString(homeTypeRow["StartTime"]);
+                        l_Event.ProgramStartTime = Convert.ToDateTime(homeTypeRow["StartTime"].ToString()).ToShortTimeString();
                         l_Event.ProgramEndTime = Convert.ToString(homeTypeRow["EndTime"]);
                         l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
                         l_Event.Active = Convert.ToInt32(homeTypeRow["Active"]);
@@ -1094,7 +1094,7 @@ namespace QolaMVC.DAL
                         l_Event.ProgramName = Convert.ToString(homeTypeRow["EventTitle"]);
                         l_Event.ProgramStartDate = Convert.ToDateTime(homeTypeRow["StartDate"]);
                         l_Event.ProgramEndDate = Convert.ToDateTime(homeTypeRow["EndDate"]);
-                        l_Event.ProgramStartTime = Convert.ToString(homeTypeRow["StartTime"]);
+                        l_Event.ProgramStartTime = Convert.ToDateTime(homeTypeRow["StartTime"].ToString()).ToShortTimeString();
                         l_Event.ProgramEndTime = Convert.ToString(homeTypeRow["EndTime"]);
                         l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
                         l_Event.Active = Convert.ToInt32(homeTypeRow["Active"]);
