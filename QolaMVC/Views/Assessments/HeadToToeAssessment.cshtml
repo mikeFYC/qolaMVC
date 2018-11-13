@@ -27,11 +27,12 @@
                 <div class="container-fluid container-fixed-lg">
                     <!-- <div class="inner"> -->
                     <div class="row align-items-center">
-                        <div class="col-md-1">
-                            <a href="~/Assessments/" class="btn btn-primary"><i class="fa fa-backward"></i> Back</a>
-                        </div>
-                        <div class="col-md-8">
+                        <div class="col-md-9">
                             <h3>Admission Head to Toe Assessment</h3>
+                        </div>
+                        <div class="col-md-2">
+                            <a href="~/Assessments/" class="btn btn-primary"><i class="fa fa-backward"></i> Back</a>
+                            <button class="btn btn-primary print" id="HTT_PRINT"><i class="fa fa-file-pdf-o"></i> Print</button>
                         </div>
                     </div>
                     <!-- </div> -->
@@ -40,57 +41,45 @@
             <!-- END JUMBOTRON -->
             <div style="height: 60px;"></div>
             <!-- START CONTAINER FLUID -->
-            <div class="container-fluid container-fixed-lg">
+            <div class="container-fluid container-fixed-lg" id="fromHTMLtestdiv">
+                <input type="hidden" value="AHTT_Assessment" name="" class="filename">
                 <!-- BEGIN PlACE PAGE CONTENT HERE -->
                 <div class="card">
                     <div class="card-block">
-                        <div class="row">
-                            <form action="~/Assessments/HeadToToeAssessment" method="post">
-                                <div class="col-2">
-                                    <select class="form-control col-12" name="DateEntered">
-                                        @{
-                                            if (Model.DateEntered != null)
-                                            {
-                                                <option selected>@Model.DateEntered</option>
-                                            }
-                                            else
-                                            {
-                                                <option>New</option>
-                                            }
-                                        }
+                        <div class="row" id="HTT_firstrow">
+                            <div class="col-2">
+                                Assessment History:
+                            </div>
+                            <div class="col-2">
+                                <select class="form-control col-12" name="AssessmentDate" id="selectdate" onchange="formsubmit(this)">
 
-                                        @{
-                                            if (ViewBag.AssessmentDates.Count > 0)
-                                            {
-                                                foreach (var d in ViewBag.AssessmentDates)
-                                                {
-                                                    <option>@d</option>
-                                                }
-                                            }
+                                    @if (ViewBag.AssessmentDates != null && ViewBag.AssessmentDates[0].ToShortDateString() != "1/1/0001")
+                                    {
+                                        for (var ind = 0; ind < ((List<DateTime>)ViewBag.AssessmentDates).Count(); ind++)
+                                        {
+                                            <option value=@ind>@(((List<DateTime>)ViewBag.AssessmentDates)[ind].ToString("yyyy-MM-dd"))</option>
                                         }
-                                    </select>
-                                </div>
-                                <div class="col-2">
-                                    <button class="btn btn-danger">GO</button>
-                                </div>
-                            </form>
+                                    }
+                                    else
+                                    {
+                                        <option value="0"></option>}
+
+                                </select>
+                            </div>
+                            <div class="col-2">
+                                <button class="btn btn-danger" type="button" onclick="location.href='@Url.Action("Add_HeadToToeAssessment_mike", "Assessments")'">NEW</button>
+                            </div>
                         </div>
+                        <hr>
+                        <br>
                         <form action="~/Assessments/AddHeadToToeAssessment" method="post">
                             <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-5 col-form-label">Date:</label>
-                                        <div class="col-md-7">
-                                            @DateTime.Now
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="col-md-8">
                                     <div class="form-group">
                                         <div class="row">
-                                            <label class="col-md-5 col-form-label text-center">Admission Status</label>
+                                            <label class="col-md-5 col-form-label">Admission Status</label>
                                             <div class="col-md-7 pads">
-                                                <div class="form-check form-check-inline movesp" ">
+                                                <div class="form-check form-check-inline movesp">
                                                     @Html.RadioButtonFor(m => m.AdmissionStatus, "New Admission", new { @class = "form-check-input" })
                                                     <label class="form-check-label" for="inlineRadio1">New Admission</label>
                                                 </div>
@@ -109,19 +98,19 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-3 col-form-label">Returned from (hospital)</label>
+                                        <label for="" class="col-md-3 col-form-label">Returned from (hospital)</label>
                                         <div class="col-md-9">
-                                            @Html.TextBoxFor(m => m.ReturnedFromHospital, new { @class = "form-control"})
+                                            @Html.TextBoxFor(m => m.ReturnedFromHospital, new { @class = "form-control" })
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-3 col-form-label">Diagnosis from hospital</label>
+                                        <label for="" class="col-md-3 col-form-label">Diagnosis from hospital</label>
                                         <div class="col-md-9">
                                             @Html.TextBoxFor(m => m.DiagnosisFromHospital, new { @class = "form-control" })
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-12 col-form-label">Medications/Major Changes: <u>(attach med list and summary from hospital as applicable)</u></label>
+                                        <label for="" class="col-md-12 col-form-label">Medications/Major Changes: <u>(attach med list and summary from hospital as applicable)</u></label>
                                         <div class="col-md-12">
                                             @Html.TextAreaFor(m => m.Medications, new { @class = "form-control textarea", rows = "5" })
                                         </div>
@@ -132,19 +121,19 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     @*<div class="form-group row">
-                                        <label for="staticEmail" class="col-md-3 col-form-label">Date</label>
-                                        <div class="col-md-5">
-                                            @Html.LabelFor(m => m.DateEntered, new { @class = "form-control" })
-                                        </div>
-                                    </div>*@
+                                <label for="" class="col-md-3 col-form-label">Date</label>
+                                <div class="col-md-5">
+                                    @Html.LabelFor(m => m.DateEntered, new { @class = "form-control" })
+                                </div>
+                            </div>*@
                                 </div>
                                 <div class="col-md-6">
                                     @*<div class="form-group row">
-                                        <label for="staticEmail" class="col-md-3 col-form-label">Time</label>
-                                        <div class="col-md-5">
-                                            <input type="text" class="form-control" id="staticEmail">
-                                        </div>
-                                    </div>*@
+                                <label for="" class="col-md-3 col-form-label">Time</label>
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control" id="">
+                                </div>
+                            </div>*@
                                 </div>
                                 <div class="col-md-12 text-center">
                                     <h5><b>If VS are abnormal or concerning</b></h5>
@@ -154,52 +143,83 @@
                                     <div class="row">
                                         <div class="col-md-12 text-center">
                                             <br><br>
-                                            <h5><u>Vital Signs</u></h5>
+                                            <h4 style="font-weight:bold;"><u>Vital Signs</u></h4>
+                                            <hr>
                                         </div>
 
                                     </div>
 
                                     <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-2 font-bold col-form-label">BP:</label>
-                                        @Html.TextBoxFor(m => m.BP, new { @class = "form-control" })
-                                        <div class="col-md-10">
-
-                                            <div class="form-check form-check-inline movesp" >
-                                                @Html.RadioButtonFor(m => m.BPLocation, "Right", new { @class = "form-check-input" })
-                                                @*<input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">*@
-                                                <label class="form-check-label" for="inlineRadio1">R</label>
+                                        <div class="row" style="width:95%;">
+                                            <div style="width:30%;">
+                                                <label for="" class="font-bold col-form-label">BP:</label>
                                             </div>
-                                            <div class="form-check form-check-inline">
-                                                @Html.RadioButtonFor(m => m.BPLocation, "Left", new { @class = "form-check-input" })
-                                                <label class="form-check-label" for="inlineRadio2">L</label>
-                                            </div><br>
-                                            <div class="form-check form-check-inline movesp" ">
-                                                @Html.RadioButtonFor(m => m.BPPosition, "Sit", new { @class = "form-check-input" })
-                                                <label class="form-check-label" for="inlineRadio1">Sit</label>
+                                            <div style="width:50%;">
+                                                @Html.TextBoxFor(m => m.BP, new { @class = "form-control" })
                                             </div>
-                                            <div class="form-check form-check-inline movesp">
-                                                @Html.RadioButtonFor(m => m.BPPosition, "Stand", new { @class = "form-check-input" })
-                                                <label class="form-check-label" for="inlineRadio2">Stand</label>
+                                        </div>
+                                        <br><br><br>
+                                        <div class="row" style="width:95%;">
+                                            <div style="width:30%;">
+                                                <label for="" class="font-bold col-form-label">BP Location:</label>
                                             </div>
-                                            <div class="form-check form-check-inline">
-                                                @Html.RadioButtonFor(m => m.BPPosition, "Lying", new { @class = "form-check-input" })
-                                                <label class="form-check-label" for="inlineRadio1">Lying</label>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label for="staticEmail" class="col-md-1 col-form-label text-right">Other</label>
-                                                <div class="col-md-6">
-                                                    <input type="text" class="form-control" id="staticEmail">
+                                            <div style="width:50%;">
+                                                <div class="form-check form-check-inline movesp">
+                                                    @Html.RadioButtonFor(m => m.BPLocation, "Right", new { @class = "form-check-input" })
+                                                    @*<input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">*@
+                                                    <label class="form-check-label" for="inlineRadio1">R</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    @Html.RadioButtonFor(m => m.BPLocation, "Left", new { @class = "form-check-input" })
+                                                    <label class="form-check-label" for="inlineRadio2">L</label>
                                                 </div>
                                             </div>
                                         </div>
+                                        <br><br>
+                                        <div class="row" style="width:95%;">
+                                            <div style="width:30%;">
+                                                <label for="" class="font-bold col-form-label">BP Position:</label>
+                                            </div>
+                                            <div style="width:50%;">
+                                                <div class="form-check form-check-inline movesp">
+                                                    @Html.RadioButtonFor(m => m.BPPosition, "Sit", new { @class = "form-check-input", group = "BPPosition" })
+                                                    <label class="form-check-label" for="BPPosition">Sit</label>
+                                                </div>
+                                                <div class="form-check form-check-inline movesp">
+                                                    @Html.RadioButtonFor(m => m.BPPosition, "Stand", new { @class = "form-check-input", group = "BPPosition" })
+                                                    <label class="form-check-label" for="BPPosition">Stand</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    @Html.RadioButtonFor(m => m.BPPosition, "Lying", new { @class = "form-check-input", group = "BPPosition" })
+                                                    <label class="form-check-label" for="BPPosition">Lying</label>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-1 col-form-label text-right">Other</label>
+                                                    <div class="col-md-6">
+                                                        @Html.TextBoxFor(m => m.BPPosition_other, new { @class = "form-control", id = "BPPosition_other" })
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
                                     </div>
                                     <br><br>
-                                        <div class="form-group row">
-                                            <label for="staticEmail" class="col-md-2 font-bold col-form-label">Redial Pulse:</label>
-                                            @Html.TextBoxFor(m => m.RedialPulse, new { @class = "form-control" })
-
-                                            <div class="col-md-10">
-
+                                    <div class="form-group row">
+                                        <div class="row" style="width:95%;">
+                                            <div style="width:30%;">
+                                                <label for="" class="font-bold col-form-label">Redial Pulse:</label>
+                                            </div>
+                                            <div style="width:50%;">
+                                                @Html.TextBoxFor(m => m.RedialPulse, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <br><br><br>
+                                        <div class="row" style="width:95%;">
+                                            <div style="width:30%;">
+                                                <label for="" class="font-bold col-form-label">Pulse Location:</label>
+                                            </div>
+                                            <div style="width:50%;">
                                                 <div class="form-check form-check-inline movesp">
                                                     @Html.RadioButtonFor(m => m.PulseLocation, "Right", new { @class = "form-check-input" })
                                                     <label class="form-check-label" for="inlineRadio1">R</label>
@@ -207,113 +227,165 @@
                                                 <div class="form-check form-check-inline">
                                                     @Html.RadioButtonFor(m => m.PulseLocation, "Right", new { @class = "form-check-input" })
                                                     <label class="form-check-label" for="inlineRadio2">L</label>
-                                                </div><br>
-                                                <div class="form-check form-check-inline movesp">
-                                                    @Html.RadioButtonFor(m => m.PulseStrength, "Strong", new { @class = "form-check-input" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br><br>
+                                        <div class="row" style="width:95%;">
+                                            <div style="width:30%;">
+                                                <label for="" class="font-bold col-form-label">Pulse Strength:</label>
+                                            </div>
+                                            <div style="width:50%;">
+                                                <div class="form-check form-check-inline  movesp">
+                                                    @Html.RadioButtonFor(m => m.PulseStrength, "Strong", new { @class = "form-check-input", group = "PulseStrength" })
                                                     <label class="form-check-label" for="inlineRadio1">Strong</label>
                                                 </div>
                                                 <div class="form-check form-check-inline movesp">
-                                                    @Html.RadioButtonFor(m => m.PulseStrength, "Weak", new { @class = "form-check-input" })
+                                                    @Html.RadioButtonFor(m => m.PulseStrength, "Weak", new { @class = "form-check-input", group = "PulseStrength" })
                                                     <label class="form-check-label" for="inlineRadio2">Weak</label>
-                                                </div><br>
+                                                </div>
                                                 <div class="form-check form-check-inline movesp">
-                                                    @Html.RadioButtonFor(m => m.PulseStrength, "Regular", new { @class = "form-check-input" })
+                                                    @Html.RadioButtonFor(m => m.PulseStrength, "Regular", new { @class = "form-check-input", group = "PulseStrength" })
                                                     <label class="form-check-label" for="inlineRadio1">Regular</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
-                                                    @Html.RadioButtonFor(m => m.PulseStrength, "Irregular", new { @class = "form-check-input" })
+                                                    @Html.RadioButtonFor(m => m.PulseStrength, "Irregular", new { @class = "form-check-input", group = "PulseStrength" })
                                                     <label class="form-check-label" for="inlineRadio1">Irregular</label>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label for="staticEmail" class="col-md-1 col-form-label">Other</label>
+                                                    <label for="" class="col-md-1 col-form-label">Other</label>
                                                     <div class="col-md-6">
-                                                        <input type="text" class="form-control" id="staticEmail">
+                                                        @Html.TextBoxFor(m => m.PulseStrength_other, new { @class = "form-control", id = "PulseStrength_other" })
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    <br><br>
-                                        <div class="form-group row">
-                                            <label for="staticEmail" class="col-md-2 font-bold col-form-label">Temp:</label>
-                                            @Html.TextBoxFor(m => m.Temp, new { @class = "form-control" })
-                                            <div class="col-md-10">
 
+
+                                    </div>
+                                    <br><br>
+                                    <div class="form-group row">
+
+                                        <div class="row" style="width:95%;">
+                                            <div style="width:30%;">
+                                                <label for="" class="font-bold col-form-label">Temp:</label>
+                                            </div>
+                                            <div style="width:50%;">
+                                                @Html.TextBoxFor(m => m.Temp, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <br><br><br>
+                                        <div class="row" style="width:95%;">
+                                            <div style="width:30%;">
+                                                <label for="" class="font-bold col-form-label">Temp Location:</label>
+                                            </div>
+                                            <div style="width:50%;">
                                                 <div class="form-check form-check-inline movesp" ">
-                                                    @Html.RadioButtonFor(m => m.TempLocation, "Tympanic", new { @class = "form-check-input" })
+                                                    @Html.RadioButtonFor(m => m.TempLocation, "Tympanic", new { @class = "form-check-input", group = "TempLocation" })
                                                     <label class="form-check-label" for="inlineRadio1">Tympanic</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
-                                                    @Html.RadioButtonFor(m => m.TempLocation, "Oral", new { @class = "form-check-input" })
+                                                    @Html.RadioButtonFor(m => m.TempLocation, "Oral", new { @class = "form-check-input", group = "TempLocation" })
                                                     <label class="form-check-label" for="inlineRadio2">Oral</label>
-                                                </div><br>
-
+                                                </div>
                                                 <div class="form-group row">
-                                                    <label for="staticEmail" class="col-md-1 col-form-label">Other</label>
+                                                    <label for="" class="col-md-1 col-form-label">Other</label>
                                                     <div class="col-md-6">
-                                                        <input type="text" class="form-control" id="staticEmail">
+                                                        @Html.TextBoxFor(m => m.TempLocation_other, new { @class = "form-control", id = "TempLocation_other" })
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    <br><br>
-                                        <div class="form-group row">
-                                            <label for="staticEmail" class="col-md-2 font-bold col-form-label">Resp:</label>
-                                            @Html.TextBoxFor(m => m.Resp, new { @class = "form-control" })
-                                            <div class="col-md-10">
 
+
+                                    </div>
+                                    <br><br>
+                                    <div class="form-group row">
+
+                                        <div class="row" style="width:95%;">
+                                            <div style="width:30%;">
+                                                <label for="" class="font-bold col-form-label">Resp:</label>
+                                            </div>
+                                            <div style="width:50%;">
+                                                @Html.TextBoxFor(m => m.Resp, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <br><br><br>
+                                        <div class="row" style="width:95%;">
+                                            <div style="width:30%;">
+                                                <label for="" class="font-bold col-form-label">Resp Location:</label>
+                                            </div>
+                                            <div style="width:50%;">
                                                 <div class="form-check form-check-inline movesp">
-                                                    @Html.RadioButtonFor(m => m.RespLocation, "Laboured", new { @class = "form-check-input" })
+                                                    @Html.RadioButtonFor(m => m.RespLocation, "Laboured", new { @class = "form-check-input", group = "RespLocation" })
                                                     <label class="form-check-label" for="inlineRadio1">Laboured</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
-                                                    @Html.RadioButtonFor(m => m.RespLocation, "Shallow", new { @class = "form-check-input" })
+                                                    @Html.RadioButtonFor(m => m.RespLocation, "Shallow", new { @class = "form-check-input", group = "RespLocation" })
                                                     <label class="form-check-label" for="inlineRadio2">Shallow</label>
                                                 </div><br>
 
                                                 <div class="form-group row">
-                                                    <label for="staticEmail" class="col-md-1 col-form-label">Other</label>
+                                                    <label for="" class="col-md-1 col-form-label">Other</label>
                                                     <div class="col-md-6">
-                                                        <input type="text" class="form-control" id="staticEmail">
+                                                        @Html.TextBoxFor(m => m.RespLocation_other, new { @class = "form-control", id = "RespLocation_other" })
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    <br><br>
-                                        <div class="form-group row">
-                                            <label for="staticEmail" class="col-md-2 font-bold col-form-label">SPO2:</label>
-                                            @Html.TextBoxFor(m => m.SP02, new { @class = "form-control" })
-                                            <div class="col-md-10">
 
+
+                                    </div>
+                                    <br><br>
+                                    <div class="form-group row">
+
+                                        <div class="row" style="width:95%;">
+                                            <div style="width:30%;">
+                                                <label for="" class="font-bold col-form-label">SPO2:</label>
+                                            </div>
+                                            <div style="width:50%;">
+                                                @Html.TextBoxFor(m => m.SP02, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <br><br><br>
+                                        <div class="row" style="width:95%;">
+                                            <div style="width:30%;">
+                                                <label for="" class="font-bold col-form-label">Resp Location:</label>
+                                            </div>
+                                            <div style="width:50%;">
                                                 <div class="form-check form-check-inline movesp">
-                                                    @Html.RadioButtonFor(m => m.SP02Location, "Room Air", new { @class = "form-check-input" })
+                                                    @Html.RadioButtonFor(m => m.SP02Location, "Room Air", new { @class = "form-check-input", group = "SP02Location" })
                                                     <label class="form-check-label" for="inlineRadio1">Room Air</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
-                                                    @Html.RadioButtonFor(m => m.SP02Location, "02", new { @class = "form-check-input" })
+                                                    @Html.RadioButtonFor(m => m.SP02Location, "02", new { @class = "form-check-input", group = "SP02Location" })
                                                     <label class="form-check-label" for="inlineRadio2">02</label>
                                                 </div><br>
 
                                                 <div class="form-group row">
-                                                    <label for="staticEmail" class="col-md-1 col-form-label">Other</label>
+                                                    <label for="" class="col-md-1 col-form-label">Other</label>
                                                     <div class="col-md-6">
-                                                        <input type="text" class="form-control" id="staticEmail">
+                                                        @Html.TextBoxFor(m => m.SP02Location_other, new { @class = "form-control", id = "SP02Location_other" })
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
+                                    </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-12 text-center">
                                             <br><br>
-                                            <h5><u>Orientation</u></h5>
+                                            <h4 style="font-weight:bold;"><u>Orientation</u></h4>
+                                            <hr>
                                         </div>
 
                                     </div>
 
                                     <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-2 font-bold col-form-label">Person:</label>
-                                        <div class="col-md-10">
+                                        <label for="" class="col-md-4 font-bold col-form-label">Person:</label>
+                                        <div class="col-md-8">
 
                                             <div class="form-check form-check-inline movesp">
                                                 @Html.RadioButtonFor(m => m.Person, "Yes", new { @class = "form-check-input" })
@@ -327,8 +399,8 @@
                                     </div>
                                     <br>
                                     <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-2 font-bold  col-form-label">Place:</label>
-                                        <div class="col-md-10">
+                                        <label for="" class="col-md-4 font-bold  col-form-label">Place:</label>
+                                        <div class="col-md-8">
 
                                             <div class="form-check form-check-inline movesp">
                                                 @Html.RadioButtonFor(m => m.Place, "Yes", new { @class = "form-check-input" })
@@ -342,8 +414,8 @@
                                     </div>
                                     <br>
                                     <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-2 font-bold col-form-label">Time:</label>
-                                        <div class="col-md-10">
+                                        <label for="" class="col-md-4 font-bold col-form-label">Time:</label>
+                                        <div class="col-md-8">
 
                                             <div class="form-check form-check-inline movesp">
                                                 @Html.RadioButtonFor(m => m.Time, "Yes", new { @class = "form-check-input" })
@@ -357,45 +429,45 @@
                                     </div>
                                     <br>
                                     <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-2 font-bold col-form-label">Speech:</label>
-                                        <div class="col-md-10">
+                                        <label for="" class="col-md-4 font-bold col-form-label">Speech:</label>
+                                        <div class="col-md-8">
 
                                             <div class="form-check form-check-inline movesp">
-                                                @Html.RadioButtonFor(m => m.Speech, "Normal", new { @class = "form-check-input" })
+                                                @Html.RadioButtonFor(m => m.Speech, "Normal", new { @class = "form-check-input", group = "Speech" })
                                                 <label class="form-check-label" for="inlineRadio1">Normal</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                @Html.RadioButtonFor(m => m.Speech, "Slurred", new { @class = "form-check-input" })
+                                                @Html.RadioButtonFor(m => m.Speech, "Slurred", new { @class = "form-check-input", group = "Speech" })
                                                 <label class="form-check-label" for="inlineRadio2">Slurred</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                @Html.RadioButtonFor(m => m.Speech, "Delayed", new { @class = "form-check-input" })
+                                                @Html.RadioButtonFor(m => m.Speech, "Delayed", new { @class = "form-check-input", group = "Speech" })
                                                 <label class="form-check-label" for="inlineRadio2">Delayed</label>
                                             </div>
                                             <br>
 
                                             <div class="form-group row">
-                                                <label for="staticEmail" class="col-md-1 col-form-label">Other</label>
+                                                <label for="" class="col-md-1 col-form-label">Other</label>
                                                 <div class="col-md-6">
-                                                    <input type="text" class="form-control" id="staticEmail">
+                                                    @Html.TextBoxFor(m => m.Speech_other, new { @class = "form-control", id = "Speech_other" })
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <br>
                                     <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-2 font-bold col-form-label">Primary Language:</label>
-                                        <div class="col-md-10">
+                                        <label for="" class="col-md-4 font-bold col-form-label">Primary Language:</label>
+                                        <div class="col-md-8">
 
                                             <div class="form-check form-check-inline movesp">
-                                                @Html.RadioButtonFor(m => m.PrimaryLanguage, "English", new { @class = "form-check-input" })
+                                                @Html.RadioButtonFor(m => m.PrimaryLanguage, "English", new { @class = "form-check-input", group = "PrimaryLanguage" })
                                                 <label class="form-check-label" for="inlineRadio1">English</label>
                                             </div><br>
 
                                             <div class="form-group row">
-                                                <label for="staticEmail" class="col-md-1 col-form-label">Other</label>
+                                                <label for="" class="col-md-1 col-form-label">Other</label>
                                                 <div class="col-md-6">
-                                                    <input type="text" class="form-control" id="staticEmail">
+                                                    @Html.TextBoxFor(m => m.PrimaryLanguage_other, new { @class = "form-control", id = "PrimaryLanguage_other" })
                                                 </div>
                                             </div>
                                         </div>
@@ -405,15 +477,17 @@
                                     <div class="row">
                                         <div class="col-md-12 text-center">
                                             <br><br>
-                                            <h5><u>Head</u></h5>
+                                            <h4 style="font-weight:bold;"><u>Head</u></h4>
+                                            <hr>
                                         </div>
+
 
                                     </div>
 
                                     <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-2 font-bold col-form-label">Pupils:</label>
-                                        <div class="col-md-10">
-                                            <label for="staticEmail" class="pad3" style="margin-right: 25px;">Equals:</label>
+                                        <label for="" class="col-md-4 font-bold col-form-label">Pupils:</label>
+                                        <div class="col-md-8">
+                                            <label for="" class="pad3" style="margin-right: 25px;">Equals:</label>
                                             <div class="form-check form-check-inline movesp">
                                                 @Html.RadioButtonFor(m => m.PulpilsEquals, "Yes", new { @class = "form-check-input" })
                                                 <label class="form-check-label" for="inlineRadio1">Yes</label>
@@ -422,7 +496,7 @@
                                                 @Html.RadioButtonFor(m => m.PulpilsEquals, "No", new { @class = "form-check-input" })
                                                 <label class="form-check-label" for="inlineRadio2">No</label>
                                             </div><br>
-                                            <label for="staticEmail" class="pad3" style="margin-right: 25px;">Reactive:</label>
+                                            <label for="" class="pad3" style="margin-right: 25px;">Reactive:</label>
                                             <div class="form-check form-check-inline movesp">
                                                 @Html.RadioButtonFor(m => m.PulpilsReactive, "Yes", new { @class = "form-check-input" })
                                                 <label class="form-check-label" for="inlineRadio1">Yes</label>
@@ -434,29 +508,29 @@
                                         </div>
                                     </div><br>
                                     <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-2 font-bold col-form-label">Eyes:</label>
-                                        <div class="col-md-10">
+                                        <label for="" class="col-md-4 font-bold col-form-label">Eyes:</label>
+                                        <div class="col-md-8">
                                             <div class="form-check form-check-inline movesp">
-                                                @Html.RadioButtonFor(m => m.Eyes, "Clear", new { @class = "form-check-input" })
+                                                @Html.RadioButtonFor(m => m.Eyes, "Clear", new { @class = "form-check-input", group = "Eyes" })
                                                 <label class="form-check-label" for="inlineRadio1">Clear</label>
                                             </div><br>
                                             <div class="form-check form-check-inline">
-                                                @Html.RadioButtonFor(m => m.Eyes, "Reddened", new { @class = "form-check-input" })
+                                                @Html.RadioButtonFor(m => m.Eyes, "Reddened", new { @class = "form-check-input", group = "Eyes" })
                                                 <label class="form-check-label" for="inlineRadio2">Reddened</label>
                                             </div><br>
                                             <div class="form-check form-check-inline">
-                                                @Html.RadioButtonFor(m => m.Eyes, "Swelling", new { @class = "form-check-input" })
+                                                @Html.RadioButtonFor(m => m.Eyes, "Swelling", new { @class = "form-check-input", group = "Eyes" })
                                                 <label class="form-check-label" for="inlineRadio2">Swelling</label>
                                             </div><br>
                                             <div class="form-check form-check-inline">
-                                                @Html.RadioButtonFor(m => m.PulpilsReactive, "Discharge", new { @class = "form-check-input" })
+                                                @Html.RadioButtonFor(m => m.Eyes, "Discharge", new { @class = "form-check-input", group = "Eyes" })
                                                 <label class="form-check-label" for="inlineRadio2">Discharge</label>
                                             </div><br>
 
                                             <div class="form-group row">
-                                                <label for="staticEmail" class="col-md-1 col-form-label">Other</label>
+                                                <label for="" class="col-md-1 col-form-label">Other</label>
                                                 <div class="col-md-6">
-                                                    <input type="text" class="form-control" id="staticEmail">
+                                                    @Html.TextBoxFor(m => m.Eyes_other, new { @class = "form-control", id = "Eyes_other" })
                                                 </div>
                                             </div>
                                         </div>
@@ -464,8 +538,8 @@
 
                                     <br>
                                     <div class="form-group row">
-                                        <label for="staticEmail" class="col-md-2 font-bold col-form-label">General Face:</label>
-                                        <div class="col-md-10">
+                                        <label for="" class="col-md-4 font-bold col-form-label">General Face:</label>
+                                        <div class="col-md-8">
 
                                             <div class="form-check form-check-inline movesp">
                                                 @Html.RadioButtonFor(m => m.GeneralFace, "Bruising", new { @class = "form-check-input" })
@@ -479,10 +553,12 @@
                                     </div>
                                 </div>
                             </div>
+                            <input id="hiddeninput1" type="hidden" value="@TempData["index"]" />
+                            <input id="hiddeninput2" type="hidden" name="Id" value=@Model.Id />
                             <div class="row">
                                 <div class="col-md-12 text-right">
                                     <br>
-                                    <button class="btn btn-danger btn-lg">SAVE</button>
+                                    <button class="btn btn-danger btn-lg" id="save_button">SAVE</button>
                                 </div>
                             </div>
                         </form>
@@ -497,3 +573,128 @@
         <!-- END PAGE CONTENT -->
 
         @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+
+<script>
+    var index_date = $('#hiddeninput1').val();
+    $('#selectdate').val(index_date);
+
+    var skillsSelect = document.getElementById("selectdate");
+    var selectedText = skillsSelect.options[skillsSelect.selectedIndex].text;
+    if (selectedText == "") {
+        $('#save_button').hide();
+        var inputs_check = $('textarea');
+        for (var b = 0; b < inputs_check.length; b++) {
+            inputs_check[b].disabled = true;
+        }
+        var inputs_text = $('input');
+        for (var b = 0; b < inputs_text.length; b++) {
+            inputs_text[b].disabled = true;
+        }
+    }
+
+
+
+    $('#PulseStrength_other').change(function () {
+        if ($('#PulseStrength_other').val() != "") {
+            $('input[group="PulseStrength"]').each(function () {
+                this.checked = false;
+            });
+        }
+    });
+    $('input[group="PulseStrength"]').change(function () {
+        $('#PulseStrength_other').val('');
+    });
+
+    $('#BPPosition_other').change(function () {
+        if ($('#BPPosition_other').val() != "") {
+            $('input[group="BPPosition"]').each(function () {
+                this.checked = false;
+            });
+        }
+    });
+    $('input[group="BPPosition"]').change(function () {
+        $('#BPPosition_other').val('');
+    });
+
+    $('#TempLocation_other').change(function () {
+        if ($('#TempLocation_other').val() != "") {
+            $('input[group="TempLocation"]').each(function () {
+                this.checked = false;
+            });
+        }
+    });
+    $('input[group="TempLocation"]').change(function () {
+        $('#TempLocation_other').val('');
+    });
+
+    $('#RespLocation_other').change(function () {
+        if ($('#RespLocation_other').val() != "") {
+            $('input[group="RespLocation"]').each(function () {
+                this.checked = false;
+            });
+        }
+    });
+    $('input[group="RespLocation"]').change(function () {
+        $('#RespLocation_other').val('');
+    });
+
+    $('#SP02Location_other').change(function () {
+        if ($('#SP02Location_other').val() != "") {
+            $('input[group="SP02Location"]').each(function () {
+                this.checked = false;
+            });
+        }
+    });
+    $('input[group="SP02Location"]').change(function () {
+        $('#SP02Location_other').val('');
+    });
+
+    $('#Speech_other').change(function () {
+        if ($('#Speech_other').val() != "") {
+            $('input[group="Speech"]').each(function () {
+                this.checked = false;
+            });
+        }
+    });
+    $('input[group="Speech"]').change(function () {
+        $('#Speech_other').val('');
+    });
+
+    $('#PrimaryLanguage_other').change(function () {
+        if ($('#PrimaryLanguage_other').val() != "") {
+            $('input[group="PrimaryLanguage"]').each(function () {
+                this.checked = false;
+            });
+        }
+    });
+    $('input[group="PrimaryLanguage"]').change(function () {
+        $('#PrimaryLanguage_other').val('');
+    });
+
+    $('#Eyes_other').change(function () {
+        if ($('#Eyes_other').val() != "") {
+            $('input[group="Eyes"]').each(function () {
+                this.checked = false;
+            });
+        }
+    });
+    $('input[group="Eyes"]').change(function () {
+        $('#Eyes_other').val('');
+    });
+
+    
+
+
+
+    function formsubmit(ee) {
+        var index = $('#selectdate').val();
+        if (window.location.href.includes("?")) {
+            var question_location = window.location.href.indexOf('?');
+            window.location.href = window.location.href.substring(0, question_location) + '?index=' + index;
+        }
+        else {
+            window.location.href = window.location.href + "?index=" + index;
+        }
+    }
+</script>

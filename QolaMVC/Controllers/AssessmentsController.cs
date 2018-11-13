@@ -678,7 +678,7 @@ namespace QolaMVC.Controllers
             return RedirectToAction("FamilyConference");
         }
 
-        public ActionResult HeadToToeAssessment()
+        public ActionResult HeadToToeAssessment(string index)
         {
             var l_Home = (HomeModel)TempData["Home"];
             var l_User = (UserModel)TempData["User"];
@@ -694,18 +694,34 @@ namespace QolaMVC.Controllers
 
             var l_Assessments = AssessmentDAL.GetAdmissionHeadToToe(l_Resident.ID);
 
-            List<DateTime> l_AssessmentDates = new List<DateTime>();
-            foreach( var l_Ass in l_Assessments)
-            {
-                l_AssessmentDates.Add(l_Ass.DateEntered);
-            }
 
-            ViewBag.AssessmentDates = l_AssessmentDates;
-            if(l_Assessments.Count == 0)
+
+
+            AdmissionHeadToToeModel single = new AdmissionHeadToToeModel();
+            List<DateTime> l_AssessmentDates = new List<DateTime>();
+            if (l_Assessments.Count == 0)
             {
                 l_Assessments.Add(new AdmissionHeadToToeModel());
             }
-            return View(l_Assessments.LastOrDefault());
+            foreach ( var l_Ass in l_Assessments)
+            {
+                l_AssessmentDates.Add(l_Ass.DateEntered);
+            }
+           
+            if (index == null || index == "")
+            {
+                TempData["index"] = "0";
+                single = l_Assessments[0];
+            }
+            else
+            {
+                TempData["index"] = index;
+                single = l_Assessments[int.Parse(index)];
+            }
+            TempData.Keep("index");
+            ViewBag.AssessmentDates = l_AssessmentDates;
+
+            return View(single);
         }
 
         [HttpPost]
@@ -737,6 +753,20 @@ namespace QolaMVC.Controllers
             return View(l_Assessments.Where(m => m.DateEntered == l_DateEntered).FirstOrDefault());
         }
 
+        public ActionResult Add_HeadToToeAssessment_mike()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            DateTime sameTime = DateTime.Now;
+            AssessmentDAL.Add_HeadToToeAssessment_mike(resident.ID, user.ID);
+            //string ind = TempData["index"].ToString();
+            return RedirectToAction("HeadToToeAssessment");
+        }
+
         [HttpPost]
         public ActionResult AddHeadToToeAssessment(AdmissionHeadToToeModel p_Model)
         {
@@ -757,8 +787,52 @@ namespace QolaMVC.Controllers
             p_Model.EnteredBy = l_User;
             p_Model.Resident = l_Resident;
 
+            if (p_Model.PulseStrength_other != "" && p_Model.PulseStrength_other != null)
+            {
+                p_Model.PulseStrength = p_Model.PulseStrength_other;
+            }
+            if (p_Model.BPPosition_other != "" && p_Model.BPPosition_other != null)
+            {
+                p_Model.BPPosition = p_Model.BPPosition_other;
+            }
+            if (p_Model.TempLocation_other != "" && p_Model.TempLocation_other != null)
+            {
+                p_Model.TempLocation = p_Model.TempLocation_other;
+            }
+            if (p_Model.RespLocation_other != "" && p_Model.RespLocation_other != null)
+            {
+                p_Model.RespLocation = p_Model.RespLocation_other;
+            }
+            if (p_Model.SP02Location_other != "" && p_Model.SP02Location_other != null)
+            {
+                p_Model.SP02Location = p_Model.SP02Location_other;
+            }
+            if (p_Model.Speech_other != "" && p_Model.Speech_other != null)
+            {
+                p_Model.Speech = p_Model.Speech_other;
+            }
+            if (p_Model.PrimaryLanguage_other != "" && p_Model.PrimaryLanguage_other != null)
+            {
+                p_Model.PrimaryLanguage = p_Model.PrimaryLanguage_other;
+            }
+            if (p_Model.Eyes_other != "" && p_Model.Eyes_other != null)
+            {
+                p_Model.Eyes = p_Model.Eyes_other;
+            }
+
+
+            foreach (PropertyInfo prop in typeof(AdmissionHeadToToeModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_Model) == null) { prop.SetValue(p_Model, ""); }
+                }
+            }
+
             AssessmentDAL.AddAdmissionHeadToToe(p_Model);
-            return RedirectToAction("HeadToToeAssessment");
+
+            var ind = TempData["index"];       
+            return RedirectToAction("HeadToToeAssessment", new { index = ind });
         }
 
         public ActionResult HSEPTracking()

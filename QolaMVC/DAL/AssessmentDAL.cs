@@ -612,6 +612,7 @@ namespace QolaMVC.DAL
                 SqlCommand l_Cmd = new SqlCommand(Constants.StoredProcedureName.USP_ADD_ADMISSION_HEADTOTOE_ASSESSMENT, l_Conn);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@oldID", p_Model.Id);
                 l_Cmd.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
                 l_Cmd.Parameters.AddWithValue("@dtmDate", DateTime.Now);
                 l_Cmd.Parameters.AddWithValue("@AdmissionStatus", p_Model.AdmissionStatus);
@@ -620,6 +621,7 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@Medications", p_Model.Medications);
                 l_Cmd.Parameters.AddWithValue("@BP", p_Model.BP);
                 l_Cmd.Parameters.AddWithValue("@BPLocation", p_Model.BPLocation);
+                l_Cmd.Parameters.AddWithValue("@BPPosition", p_Model.BPPosition);
                 l_Cmd.Parameters.AddWithValue("@RedialPulse", p_Model.RedialPulse);
                 l_Cmd.Parameters.AddWithValue("@PulseLocation", p_Model.PulseLocation);
                 l_Cmd.Parameters.AddWithValue("@Temp", p_Model.Temp);
@@ -633,18 +635,20 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@strTime", p_Model.Time);
                 l_Cmd.Parameters.AddWithValue("@Speech", p_Model.Speech);
                 l_Cmd.Parameters.AddWithValue("@PrimaryLanguage", p_Model.PrimaryLanguage);
-
+                l_Cmd.Parameters.AddWithValue("@Person", p_Model.Person);
                 l_Cmd.Parameters.AddWithValue("@PulpilsEquals", p_Model.PulpilsEquals);
                 l_Cmd.Parameters.AddWithValue("@PulpilsReactive", p_Model.PulpilsReactive);
                 l_Cmd.Parameters.AddWithValue("@Eyes", p_Model.Eyes);
-               // l_Cmd.Parameters.AddWithValue("@PulpilsEquals", p_Model.PulpilsEquals);
+                // l_Cmd.Parameters.AddWithValue("@PulpilsEquals", p_Model.PulpilsEquals);
                 l_Cmd.Parameters.AddWithValue("@GeneralFace", p_Model.GeneralFace);
                 l_Cmd.Parameters.AddWithValue("@EnteredBy", p_Model.EnteredBy.ID);
+                l_Cmd.Parameters.AddWithValue("@PulseStrength", p_Model.PulseStrength);
+                
                 l_Cmd.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
-                exception = "AddFamilyConferenceNote |" + ex.ToString();
+                exception = "AddAdmissionHeadToToe |" + ex.ToString();
                 //Log.Write(exception);
                 throw;
             }
@@ -656,6 +660,15 @@ namespace QolaMVC.DAL
 
         public static Collection<AdmissionHeadToToeModel> GetAdmissionHeadToToe(int p_ResidentId)
         {
+            string[] PulseStrengthLIST = new string[] { "Strong", "Weak", "Regular", "Irregular" };
+            string[] BPPositionLIST = new string[] { "Sit", "Stand", "Lying" };
+            string[] TempLocationLIST = new string[] { "Tympanic", "Oral" };
+            string[] RespLocationLIST = new string[] { "Laboured", "Shallow" };
+            string[] SP02LocationLIST = new string[] { "Room Air", "02" };
+            string[] SpeechLIST = new string[] { "Normal", "Slurred", "Delayed" };
+            string[] PrimaryLanguageLIST = new string[] { "English" };
+            string[] EyesLIST = new string[] { "Clear", "Reddened", "Swelling", "Discharge" };
+
             string exception = string.Empty;
             Collection<AdmissionHeadToToeModel> l_AdmissionHeadToToes = new Collection<AdmissionHeadToToeModel>();
 
@@ -689,8 +702,10 @@ namespace QolaMVC.DAL
                         l_AdmissionHeadToToe.Medications = Convert.ToString(dataReceive.Tables[0].Rows[index]["Medications"]);
                         l_AdmissionHeadToToe.BP = Convert.ToString(dataReceive.Tables[0].Rows[index]["BP"]);
                         l_AdmissionHeadToToe.BPLocation = Convert.ToString(dataReceive.Tables[0].Rows[index]["BPLocation"]);
+                        l_AdmissionHeadToToe.BPPosition = Convert.ToString(dataReceive.Tables[0].Rows[index]["BPPosition"]);
                         l_AdmissionHeadToToe.RedialPulse = Convert.ToString(dataReceive.Tables[0].Rows[index]["RedialPulse"]);
                         l_AdmissionHeadToToe.PulseLocation = Convert.ToString(dataReceive.Tables[0].Rows[index]["PulseLocation"]);
+                        l_AdmissionHeadToToe.PulseStrength = Convert.ToString(dataReceive.Tables[0].Rows[index]["PulseStrength"]);
                         l_AdmissionHeadToToe.Temp = Convert.ToString(dataReceive.Tables[0].Rows[index]["Temp"]);
                         l_AdmissionHeadToToe.TempLocation = Convert.ToString(dataReceive.Tables[0].Rows[index]["TempLocation"]);
                         l_AdmissionHeadToToe.Resp = Convert.ToString(dataReceive.Tables[0].Rows[index]["Resp"]);
@@ -714,7 +729,51 @@ namespace QolaMVC.DAL
                         l_AdmissionHeadToToe.DateEntered = Convert.ToDateTime(dataReceive.Tables[0].Rows[index]["DateEntered"]);
                         l_User.ID = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["EnteredBy"]);
                         l_User.Name = Convert.ToString(dataReceive.Tables[0].Rows[index]["EnteredByName"]);
+
                         l_AdmissionHeadToToe.EnteredBy = l_User;
+
+
+                        if (PulseStrengthLIST.Contains(l_AdmissionHeadToToe.PulseStrength) == false )
+                        {
+                            l_AdmissionHeadToToe.PulseStrength_other = l_AdmissionHeadToToe.PulseStrength;
+                            l_AdmissionHeadToToe.PulseStrength = "";
+                        }
+                        if (BPPositionLIST.Contains(l_AdmissionHeadToToe.BPPosition) ==false)
+                        {
+                            l_AdmissionHeadToToe.BPPosition_other = l_AdmissionHeadToToe.BPPosition;
+                            l_AdmissionHeadToToe.BPPosition = "";
+                        }
+                        if (TempLocationLIST.Contains(l_AdmissionHeadToToe.TempLocation)==false)
+                        {
+                            l_AdmissionHeadToToe.TempLocation_other = l_AdmissionHeadToToe.TempLocation;
+                            l_AdmissionHeadToToe.TempLocation = "";
+                        }
+                        if (RespLocationLIST.Contains(l_AdmissionHeadToToe.RespLocation) ==false)
+                        {
+                            l_AdmissionHeadToToe.RespLocation_other = l_AdmissionHeadToToe.RespLocation;
+                            l_AdmissionHeadToToe.RespLocation = "";
+                        }
+                        if (SP02LocationLIST.Contains(l_AdmissionHeadToToe.SP02Location) ==false)
+                        {
+                            l_AdmissionHeadToToe.SP02Location_other = l_AdmissionHeadToToe.SP02Location;
+                            l_AdmissionHeadToToe.SP02Location = "";
+                        }
+                        if (SpeechLIST.Contains(l_AdmissionHeadToToe.Speech) ==false)
+                        {
+                            l_AdmissionHeadToToe.Speech_other = l_AdmissionHeadToToe.Speech;
+                            l_AdmissionHeadToToe.Speech = "";
+                        }
+                        if (PrimaryLanguageLIST.Contains(l_AdmissionHeadToToe.PrimaryLanguage) ==false)
+                        {
+                            l_AdmissionHeadToToe.PrimaryLanguage_other = l_AdmissionHeadToToe.PrimaryLanguage;
+                            l_AdmissionHeadToToe.PrimaryLanguage = "";
+                        }
+                        if (EyesLIST.Contains(l_AdmissionHeadToToe.Eyes) ==false)
+                        {
+                            l_AdmissionHeadToToe.Eyes_other = l_AdmissionHeadToToe.Eyes;
+                            l_AdmissionHeadToToe.Eyes = "";
+                        }
+
                         l_AdmissionHeadToToes.Add(l_AdmissionHeadToToe);
                     }
                 }
@@ -3310,7 +3369,32 @@ namespace QolaMVC.DAL
             }
         }
 
-        
+        public static void Add_HeadToToeAssessment_mike(int residentid, int userid)
+        {
+            string exception = string.Empty;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Add_HeadToToeAssessment_mike", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@ResidentId", residentid);
+                l_Cmd.Parameters.AddWithValue("@EnteredBy", userid);
+                l_Cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                exception = "Add_HeadToToeAssessment_mike |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
 
 
     }
