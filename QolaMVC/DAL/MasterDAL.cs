@@ -426,7 +426,8 @@ namespace QolaMVC.DAL
                 ActivityAssessmentCollectionViewModel l_Model = new ActivityAssessmentCollectionViewModel();
 
                 l_Model.Id = 0;
-                l_Model.DateEntered = DateTime.Now;
+                //l_Model.DateEntered = DateTime.Now;
+                l_Model.DateEntered = DateTime.MinValue;
 
                 SqlCommand l_Cmd2 = new SqlCommand("spAB_Get_All_Activity", l_Conn);
                 l_Cmd2.CommandType = System.Data.CommandType.StoredProcedure;

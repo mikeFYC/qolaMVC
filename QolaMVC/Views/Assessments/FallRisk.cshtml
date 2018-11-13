@@ -58,9 +58,35 @@
 
                         </div>
                         <div style="width:100%;">
-                            <div class="col-md-4">
-                                <div class="row">
+                            <div class="row" id="FR_firstrow">
+                                <div class="col-2 text-center">
+                                    Assessment History:
+                                </div>
+                                <div class="col-2">
+                                    <select class="form-control col-12" name="AssessmentDate" id="selectdate" onchange="formsubmit(this)">
 
+                                        @if (ViewBag.AssessmentDates != null && ViewBag.AssessmentDates[0].ToShortDateString() != "1/1/0001")
+                                        {
+                                            for (var ind = 0; ind < ((List<DateTime>)ViewBag.AssessmentDates).Count(); ind++)
+                                            {
+                                                <option value=@ind>@(((List<DateTime>)ViewBag.AssessmentDates)[ind].ToString("yyyy-MM-dd"))</option>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <option value="0"></option>}
+
+                                    </select>
+                                </div>
+                                @*<div class="col-2">
+                                    <button class="btn btn-danger" type="button" onclick="location.href='@Url.Action("Add_FallRisk_mike", "Assessments")'">NEW</button>
+                                </div>*@
+
+
+
+                            </div>
+                            @*<div class="col-md-4">
+                                <div class="row">
                                     <div class="col-md-12 text-right">
                                         <div class="row">
                                             <form action="~/Assessments/FallRisk" method="post">
@@ -71,7 +97,7 @@
                                                     <select name="AssessmentDate" id="" onchange="this.form.submit()">
                                                         @if (ViewBag.AssessmentDates != null)
                                                         {
-                                                            @*<option value="new">New</option>*@
+                                                            
                                                             foreach (var l_Date in (List<DateTime>)ViewBag.AssessmentDates)
                                                             {
 
@@ -92,7 +118,7 @@
 
                                     </div>
                                 </div>
-                            </div>
+                            </div>*@
                         </div>
                         <div style="width:100%;">
                             <div class="" style="display:inline-block;padding:0.3vw;margin-left:1vw;border:#015093 solid 5px">
@@ -561,12 +587,11 @@
 
                                     <div class="col-md-12 text-center">
                                         <br><br>
-                                        <a href="#" class="btn btn-danger">BACK</a>
-                                        <input type="submit" class="btn btn-danger" value="SAVE" />
-                                        <input type="reset" class="btn btn-danger" value="CLEAR" />
-                                        <button class="btn btn-danger">PRINT PDF</button>
+                                        <input type="submit" class="btn btn-danger" id="save_button" value="SAVE" />
+                                        @*<input type="reset" class="btn btn-danger" value="CLEAR" />*@
                                     </div>
-
+                                    <input id="hiddeninput1" type="hidden" value="@TempData["index"]" />
+                                    <input id="hiddeninput2" type="hidden" name="Id" value=@Model.Id />
                                 </div>
                             </div>
                         </form>
@@ -582,6 +607,7 @@
     <!-- END PAGE CONTENT -->
     @RenderPage("~/Views/Shared/_Footer.cshtml")
     <script>
+
         var total = 0;
         var RiskValue = 'Low Risk';
 
@@ -632,4 +658,21 @@
         });
 
        
+    </script>
+
+    <script>
+        var index_date = $('#hiddeninput1').val();
+        $('#selectdate').val(index_date);
+
+        function formsubmit(ee) {
+            var index = $('#selectdate').val();
+            if (window.location.href.includes("?")) {
+                var question_location = window.location.href.indexOf('?');
+                window.location.href = window.location.href.substring(0, question_location) + '?index=' + index;
+            }
+            else {
+                window.location.href = window.location.href + "?index=" + index;
+            }
+        }
+
     </script>

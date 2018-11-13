@@ -1585,7 +1585,7 @@ namespace QolaMVC.Controllers
             }
             else
             {
-                CarePlanDAL.DELETE_RCA_ID(p_Model.Id);
+                //CarePlanDAL.DELETE_RCA_ID(p_Model.Id);
                 CarePlanDAL.AddCarePlan(p_Model);
             }
             return RedirectToAction("CarePlan");
@@ -1609,7 +1609,7 @@ namespace QolaMVC.Controllers
             return View();
         }
 
-        public ActionResult Activity()
+        public ActionResult Activity(string index)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -1632,8 +1632,21 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            
-            return View(l_Activity.LastOrDefault());
+
+            ActivityAssessmentCollectionViewModel single = new ActivityAssessmentCollectionViewModel();
+            if (index == null || index == "")
+            {
+                TempData["index"] = "0";
+                single = l_Activity[0];
+            }
+            else
+            {
+                TempData["index"] = index;
+                single = l_Activity[int.Parse(index)];
+            }
+            TempData.Keep("index");
+
+            return View(single);
         }
 
         public ActionResult Activity2(int p_ResidentId)
@@ -1709,6 +1722,13 @@ namespace QolaMVC.Controllers
             ViewBag.User = user;
             ViewBag.Resident = resident;
             ViewBag.Home = home;
+            
+            if (p_Model.Comment == null) { p_Model.Comment = ""; }
+            if (p_Model.SAE == null) { p_Model.SAE = ""; }
+            foreach(var a in p_Model.ActivityAssessments)
+            {
+                if (a.Value == null) { a.Value = ""; }
+            }
 
             MasterDAL.AddActivityAssessments(resident.ID, user.ID, p_Model);
 
@@ -1719,7 +1739,7 @@ namespace QolaMVC.Controllers
             return RedirectToAction("Activity");
         }
 
-        public ActionResult FallRisk()
+        public ActionResult FallRisk(string index)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -1740,6 +1760,21 @@ namespace QolaMVC.Controllers
                 l_AssessmentDates.Add(l_A.DateEntered);
             }
 
+            FallRiskAssessmentModel single = new FallRiskAssessmentModel();
+            if (index == null || index == "")
+            {
+                TempData["index"] = "0";
+                single = l_FallRisk[0];
+            }
+            else
+            {
+                TempData["index"] = index;
+                single = l_FallRisk[int.Parse(index)];
+            }
+            TempData.Keep("index");
+
+
+
             ViewBag.AssessmentDates = l_AssessmentDates;
             ViewBag.User = user;
             ViewBag.Resident = resident;
@@ -1750,7 +1785,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
-            return View(l_FallRisk.LastOrDefault());
+            return View(single);
         }
 
         public ActionResult FallRisk2(int p_ResidentId)
@@ -1772,6 +1807,18 @@ namespace QolaMVC.Controllers
             return RedirectToAction("FallRisk");
         }
 
+        public ActionResult Add_FallRisk_mike()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            AssessmentDAL.Add_FallRisk_mike(resident.ID, user.ID);
+            //string ind = TempData["index"].ToString();
+            return RedirectToAction("FallRisk");
+        }
 
         [HttpPost]
         public ActionResult FallRisk(FormCollection p_Form)

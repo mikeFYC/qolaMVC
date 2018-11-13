@@ -31,12 +31,6 @@
                             <a href="~/Assessments/" class="btn btn-primary"><i class="fa fa-backward"></i> Back</a>
                             <button class="btn btn-primary print" id="AA_PRINT"><i class="fa fa-file-pdf-o"></i> Print</button>
                         </div>
-                        <!-- <div class="col-md-2 text-right">
-        <h4 class="text-danger bold pr-3">
-            31
-            <small>Residents</small>
-        </h4>
-    </div> -->
                     </div>
                     <!-- </div> -->
                 </div>
@@ -57,40 +51,67 @@
 
                                 @*<input type="reset" form="AssessmentForm" class="btn btn-primary" value="Clear" />*@
                             </div>
-                            <div class="col-md-4">
-                                <div class="row">
-
-                                    <div class="col-md-12 text-right">
-                                        <div class="row">
-                                            <form action="~/Assessments/Activity" method="post">
-                                                <div class="col-md-6 text-right">
-                                                    <p class="text-right">Assessment History:</p>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <select name="AssessmentDate" id="" onchange="this.form.submit()">
-                                                        @if (ViewBag.AssessmentDates != null)
-                                                        {
-                                                            <option value="new">New</option>
-                                                            foreach (var l_Date in (List<DateTime>)ViewBag.AssessmentDates)
-                                                            {
-
-                                                                if (Model.DateEntered == l_Date)
-                                                                {
-                                                                    <option value="@l_Date" selected>@l_Date</option>
-                                                                }
-                                                                else
-                                                                {
-                                                                    <option value="@l_Date">@l_Date</option>
-                                                                }
-                                                            }
-                                                        }
-                                                    </select>
-                                                </div>
-                                            </form>
-                                        </div>
-
-                                    </div>
+                            <div class="col-md-3">
+                                <div>
+                                    Assessment History:
                                 </div>
+                                <div>
+                                    <select class="form-control col-12" name="AssessmentDate" id="selectdate" onchange="formsubmit(this)">
+
+                                        @if (ViewBag.AssessmentDates != null && ViewBag.AssessmentDates[0].ToShortDateString() != "1/1/0001")
+                                        {
+                                            for (var ind = 0; ind < ((List<DateTime>)ViewBag.AssessmentDates).Count(); ind++)
+                                            {
+                                                <option value=@ind>@(((List<DateTime>)ViewBag.AssessmentDates)[ind].ToString("yyyy-MM-dd"))</option>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <option value="0"></option>}
+
+                                    </select>
+                                    <input type="hidden" id="ID_ID" name="Id" value="" />
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-8"></div>
+                            <div class="col-md-3">
+                                @*<div class="row">
+
+                    <div class="col-md-12 text-right">
+                        <div class="row">
+                            <form action="~/Assessments/Activity" method="post">
+                                <div class="col-md-6 text-right">
+                                    <p class="text-right">Assessment History:</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <select name="AssessmentDate" id="" onchange="this.form.submit()">
+                                        @if (ViewBag.AssessmentDates != null)
+                                        {
+                                            <option value="new">New</option>
+                                            foreach (var l_Date in (List<DateTime>)ViewBag.AssessmentDates)
+                                            {
+
+                                                if (Model.DateEntered == l_Date)
+                                                {
+                                                    <option value="@l_Date" selected>@l_Date</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@l_Date">@l_Date</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>*@
 
                                 <div class="row">
                                     <div class="col-md-3"></div>
@@ -233,6 +254,7 @@
                                     <div class="row">
                                         <div class="col-md-3"></div>
                                         <div><input type="submit" form="AssessmentForm" class="btn btn-primary" value="Save" /></div>
+                                        <input id="hiddeninput1" type="hidden" value="@TempData["index"]" />
                                         @*<div><input type="button" onclick="window.location='/Assessments/';"  class="btn btn-primary" value="Back" style="margin-left:6%;"/></div>*@
                                     </div>
                                 </div>
@@ -252,6 +274,9 @@
         @RenderPage("~/Views/Shared/_Footer.cshtml")
 
 <script>
+    var index_date = $('#hiddeninput1').val();
+    $('#selectdate').val(index_date);
+
     $('input[type="radio"]').mousedown(function (e) {
         var $self = $(this);
         if ($self.is(':checked')) {
@@ -269,4 +294,17 @@
             $self.one('mouseout', unbind);
         }
     });
+
+
+    function formsubmit(ee) {
+        var index = $('#selectdate').val();
+        if (window.location.href.includes("?")) {
+            var question_location = window.location.href.indexOf('?');
+            window.location.href = window.location.href.substring(0, question_location) + '?index=' + index;
+        }
+        else {
+            window.location.href = window.location.href + "?index=" + index;
+        }
+
+    }
 </script>
