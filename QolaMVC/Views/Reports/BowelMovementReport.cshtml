@@ -65,54 +65,54 @@
 
                                 <div class="row">
                                     <h5 style="font-weight:bold;padding-left:20px;margin-top:18px;">Building Name:  @ViewBag.Home.Name</h5>
-                                   
+
                                     @*<div class="col-md-6 pads">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                            <label class="form-check-label checkspace" for="defaultCheck1">
-                                                Rutherford Heights
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                            <label class="form-check-label checkspace" for="defaultCheck1">
-                                                Summerwood Village
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                            <label class="form-check-label checkspace" for="defaultCheck1">
-                                                Lewis Estate
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                            <label class="form-check-label checkspace" for="defaultCheck1">
-                                                Sage Hill
-                                            </label>
-                                        </div>
-                                    </div>*@
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                            <label class="form-check-label checkspace" for="defaultCheck1">
+                                Rutherford Heights
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                            <label class="form-check-label checkspace" for="defaultCheck1">
+                                Summerwood Village
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                            <label class="form-check-label checkspace" for="defaultCheck1">
+                                Lewis Estate
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                            <label class="form-check-label checkspace" for="defaultCheck1">
+                                Sage Hill
+                            </label>
+                        </div>
+                    </div>*@
 
                                     @*<div class="col-md-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                            <label class="form-check-label checkspace" for="defaultCheck1">
-                                                Laurel Heights
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                            <label class="form-check-label checkspace" for="defaultCheck1">
-                                                Auburn Heights
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                            <label class="form-check-label checkspace" for="defaultCheck1">
-                                                St Albert
-                                            </label>
-                                        </div>
-                                    </div>*@
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                            <label class="form-check-label checkspace" for="defaultCheck1">
+                                Laurel Heights
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                            <label class="form-check-label checkspace" for="defaultCheck1">
+                                Auburn Heights
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                            <label class="form-check-label checkspace" for="defaultCheck1">
+                                St Albert
+                            </label>
+                        </div>
+                    </div>*@
 
 
                                 </div>
@@ -127,13 +127,27 @@
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-5 col-form-label">Residents's Name</label>
                                     <div class="col-md-7">
-                                        <label class="form-control" id="staticEmail" >@ViewBag.Resident.FirstName @ViewBag.Resident.LastName </label >
+                                        <label class="form-control" id="staticEmail">@ViewBag.Resident.FirstName @ViewBag.Resident.LastName </label>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="staticEmail" class="col-md-5 col-form-label">Month</label>
                                     <div class="col-md-7">
-                                        <label class="form-control" id="staticEmail">@*@DateTime.Now.Month*@ </label>
+                                        <select class="form-control" name="AssessmentDate" id="selectdate" onchange="formsubmit(this)">
+
+                                            @if (ViewBag.DatetimeList != null)
+                                            {
+                                                for (var ind = 0; ind < ViewBag.DatetimeList.Count; ind++)
+                                                {
+                                                    <option value=@(ViewBag.DatetimeList[ind])>@(ViewBag.DatetimeList[ind])</option>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <option value=""></option>
+                                            }
+
+                                        </select>
 
                                     </div>
                                 </div>
@@ -180,71 +194,58 @@
                                     <td class="align-middle"></td>
                                 </tr>
                                 @{
-        List<string> _Done = new List<string>();
+                                    List<string> _Done = new List<string>();
                                 }
                                 @foreach (var bowelMovement in Model)
-    {
-        if (_Done.Contains(bowelMovement.TimeStamp.ToShortDateString()))
-        {
-
-        }
-        else
-        {
-            _Done.Add(bowelMovement.TimeStamp.ToShortDateString());
-
-
-                            <tr>
-                                <td class="align-middle">@bowelMovement.TimeStamp.ToShortDateString()</td>
-                                @{
-        var days = Model.FirstOrDefault(m => m.TimeStamp.Date == bowelMovement.TimeStamp.Date && m.Period == "Days");
-        if (days != null)
-        {
-                            <td class="align-middle">@days.Type</td>
-                            <td class="align-middle">@days.ObservedBy</td>
-                            <td class="align-middle">@days.Initials</td>
-}
-else
-{
-                            <td class="align-middle">nan</td>
-                            <td class="align-middle">nan</td>
-                            <td class="align-middle">nan</td>
-}
+                                {
+                                    <tr>
+                                        <td class="align-middle">@bowelMovement.TimeStamp.ToString("yyyy-MM-dd") @bowelMovement.TimeStamp.ToShortTimeString()</td>
+                                        @{
+                                            if (bowelMovement.Period == "Days")
+                                            {
+                                                <td class="align-middle">@bowelMovement.Type</td>
+                                                <td class="align-middle">@bowelMovement.ObservedBy</td>
+                                                <td class="align-middle">@bowelMovement.Initials</td>
+                                            }
+                                            else
+                                            {
+                                                <td class="align-middle"></td>
+                                                <td class="align-middle"></td>
+                                                <td class="align-middle"></td>
+                                            }
+                                        }
+                                        @{
+                                            if (bowelMovement.Period == "Evening")
+                                            {
+                                                <td class="align-middle">@bowelMovement.Type</td>
+                                                <td class="align-middle">@bowelMovement.ObservedBy</td>
+                                                <td class="align-middle">@bowelMovement.Initials</td>
+                                            }
+                                            else
+                                            {
+                                                <td class="align-middle"></td>
+                                                <td class="align-middle"></td>
+                                                <td class="align-middle"></td>
+                                            }
+                                        }
+                                        @{
+                                            if (bowelMovement.Period == "Night")
+                                            {
+                                                <td class="align-middle">@bowelMovement.Type</td>
+                                                <td class="align-middle">@bowelMovement.ObservedBy</td>
+                                                <td class="align-middle">@bowelMovement.Initials</td>
+                                            }
+                                            else
+                                            {
+                                                <td class="align-middle"></td>
+                                                <td class="align-middle"></td>
+                                                <td class="align-middle"></td>
+                                            }
+                                        }
+                                        <td class="align-middle"></td>
+                                    </tr>
+                                    
                                 }
-                                @{
-        var evening = Model.FirstOrDefault(m => m.TimeStamp.Date == bowelMovement.TimeStamp.Date && m.Period == "Evening");
-
-        if (evening != null)
-        {
-                            <td class="align-middle">@evening.Type</td>
-                            <td class="align-middle">@evening.ObservedBy</td>
-                            <td class="align-middle">@evening.Initials</td>
-}
-else
-{
-                            <td class="align-middle">nan</td>
-                            <td class="align-middle">nan</td>
-                            <td class="align-middle">nan</td>
-}
-                                }
-                                @{
-        var night = Model.FirstOrDefault(m => m.TimeStamp.Date == bowelMovement.TimeStamp.Date && m.Period == "Night");
-
-        if (night != null)
-        {
-                            <td class="align-middle">@night.Type</td>
-                            <td class="align-middle">@night.ObservedBy</td>
-                            <td class="align-middle">@night.Initials</td>
-}
-else
-{
-                            <td class="align-middle">nan</td>
-                            <td class="align-middle">nan</td>
-                            <td class="align-middle">nan</td>
-}
-                                }
-                            </tr>
-}
-}
                             </tbody>
                         </table>
                         <br>
@@ -259,18 +260,19 @@ else
                             </thead>
                             <tbody>
                                 @for (int i = 0; i < 4; i++)
-                            {
-                                int j = i + 1;
+                                {
+                                    int j = i + 1;
 
-                                <tr>
-                                    <td class="align-middle"></td>
-                                    <td class="align-middle"></td>
-                                    <td class="align-middle"></td>
-                                    <td class="align-middle"></td>
-                                </tr>
-                        }
+                                    <tr>
+                                        <td class="align-middle"></td>
+                                        <td class="align-middle"></td>
+                                        <td class="align-middle"></td>
+                                        <td class="align-middle"></td>
+                                    </tr>
+                                }
                             </tbody>
                         </table>
+                        <input id="hiddeninput1" type="hidden" value="@TempData["index"]" />
                     </div>
                 </div>
 
@@ -282,3 +284,22 @@ else
         <!-- END PAGE CONTENT -->
 
         @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+
+        <script>
+            var index_date = $('#hiddeninput1').val();
+            $('#selectdate').val(index_date);
+
+            function formsubmit(ee) {
+                var index = $('#selectdate').val();
+                if (window.location.href.includes("?")) {
+                    var question_location = window.location.href.indexOf('?');
+                    window.location.href = window.location.href.substring(0, question_location) + '?index=' + index;
+                }
+                else {
+                    window.location.href = window.location.href + "?index=" + index;
+                }
+
+            }
+
+        </script>

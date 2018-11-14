@@ -1102,30 +1102,37 @@ namespace QolaMVC.DAL
                         l_AssessmentId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
                     }
 
-                    foreach(var diet in p_Model.Diet)
+                    if (p_Model.Diet != null)
                     {
-                        SqlCommand l_Cmd_Diet = new SqlCommand("spAB_Add_DietaryAssessment_Diets", l_Conn);
-                       // l_Conn.Open();
-                        l_Cmd_Diet.CommandType = System.Data.CommandType.StoredProcedure;
-                        l_Cmd_Diet.Parameters.AddWithValue("@Residentid", p_Model.Resident.ID);
-                        l_Cmd_Diet.Parameters.AddWithValue("@Diet", diet);
-                        l_Cmd_Diet.Parameters.AddWithValue("@AssessmentId", l_AssessmentId);
-                        l_Cmd_Diet.Parameters.AddWithValue("@Enteredby", p_Model.EnteredBy.ID);
-                        l_Cmd_Diet.ExecuteNonQuery();
+                        foreach (var diet in p_Model.Diet)
+                        {
+                            SqlCommand l_Cmd_Diet = new SqlCommand("spAB_Add_DietaryAssessment_Diets", l_Conn);
+                            // l_Conn.Open();
+                            l_Cmd_Diet.CommandType = System.Data.CommandType.StoredProcedure;
+                            l_Cmd_Diet.Parameters.AddWithValue("@Residentid", p_Model.Resident.ID);
+                            l_Cmd_Diet.Parameters.AddWithValue("@Diet", diet);
+                            l_Cmd_Diet.Parameters.AddWithValue("@AssessmentId", l_AssessmentId);
+                            l_Cmd_Diet.Parameters.AddWithValue("@Enteredby", p_Model.EnteredBy.ID);
+                            l_Cmd_Diet.ExecuteNonQuery();
+                        }
                     }
-
-                    foreach (var allergy in p_Model.Allergies)
+                    
+                    if(p_Model.Allergies != null)
                     {
-                        SqlCommand l_Cmd_Diet = new SqlCommand("spAB_Add_DietaryAssessment_Allergies", l_Conn);
-                      //  l_Conn.Open();
-                        l_Cmd_Diet.CommandType = System.Data.CommandType.StoredProcedure;
-                        l_Cmd_Diet.Parameters.AddWithValue("@Residentid", p_Model.Resident.ID);
-                        l_Cmd_Diet.Parameters.AddWithValue("@Allergy", allergy.Name);
-                        l_Cmd_Diet.Parameters.AddWithValue("@AllergyId", allergy.ID);
-                        l_Cmd_Diet.Parameters.AddWithValue("@AssessmentId", l_AssessmentId);
-                        l_Cmd_Diet.Parameters.AddWithValue("@Enteredby", p_Model.EnteredBy.ID);
-                        l_Cmd_Diet.ExecuteNonQuery();
+                        foreach (var allergy in p_Model.Allergies)
+                        {
+                            SqlCommand l_Cmd_Diet = new SqlCommand("spAB_Add_DietaryAssessment_Allergies", l_Conn);
+                            //  l_Conn.Open();
+                            l_Cmd_Diet.CommandType = System.Data.CommandType.StoredProcedure;
+                            l_Cmd_Diet.Parameters.AddWithValue("@Residentid", p_Model.Resident.ID);
+                            l_Cmd_Diet.Parameters.AddWithValue("@Allergy", allergy.Name);
+                            l_Cmd_Diet.Parameters.AddWithValue("@AllergyId", allergy.ID);
+                            l_Cmd_Diet.Parameters.AddWithValue("@AssessmentId", l_AssessmentId);
+                            l_Cmd_Diet.Parameters.AddWithValue("@Enteredby", p_Model.EnteredBy.ID);
+                            l_Cmd_Diet.ExecuteNonQuery();
+                        }
                     }
+                    
                 }
 
             }
@@ -1211,7 +1218,7 @@ namespace QolaMVC.DAL
                         l_Assessment.Risk = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Risk"]);
                         l_Assessment.AssistiveDevices = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["AssistiveDevices"]);
                         l_Assessment.Texture = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Texture"]);
-
+                        l_Assessment.Apetite = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Apetite"]);
                         l_Assessment.Other = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Other"]);
                         l_Assessment.Likes = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Likes"]);
                         l_Assessment.DisLikes = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["DisLikes"]);
@@ -1258,6 +1265,7 @@ namespace QolaMVC.DAL
                                 l_Assessment.Allergies.Add(l_Allergy);
                             }
                         }
+                        else { l_Assessment.noAllergy = true; }
                         l_Assessments.Add(l_Assessment);
                     }
 
@@ -3422,6 +3430,7 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
+
 
     }
 }

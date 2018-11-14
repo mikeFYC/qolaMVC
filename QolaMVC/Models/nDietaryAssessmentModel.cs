@@ -23,5 +23,7 @@ namespace QolaMVC.Models
         public ResidentModel Resident { get; set; }
         public UserModel EnteredBy { get; set; }
         public DateTime DateEntered { get; set; }
+
+        public bool noAllergy { get; set; }
     }
 }

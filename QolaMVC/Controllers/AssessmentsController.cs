@@ -110,7 +110,7 @@ namespace QolaMVC.Controllers
             return Redirect(p_ReturnUrl);
         }
 
-        public ActionResult DietaryHistory()
+        public ActionResult DietaryHistory(string index)
         {
             var user = (UserModel)TempData["User"];
             var home = (HomeModel)TempData["Home"];
@@ -141,9 +141,23 @@ namespace QolaMVC.Controllers
                 l_AssessmentDates.Add(l_A.DateEntered);
             }
             ViewBag.AssessmentDates = l_AssessmentDates;
-            return View(l_DietaryAssessment.LastOrDefault());
 
-            return View();
+            nDietaryAssessmentModel single = new nDietaryAssessmentModel();
+            if (index == null || index == "")
+            {
+                TempData["index"] = "0";
+                single = l_DietaryAssessment[0];
+            }
+            else
+            {
+                TempData["index"] = index;
+                single = l_DietaryAssessment[int.Parse(index)];
+            }
+            TempData.Keep("index");
+            ViewBag.AssessmentDates = l_AssessmentDates;
+            //return View(l_DietaryAssessment.LastOrDefault());
+
+            return View(single);
         }
 
         public ActionResult DietaryHistory2(int p_ResidentId)
@@ -166,7 +180,36 @@ namespace QolaMVC.Controllers
         }
 
 
+        public ActionResult AddDietaryAssessment(nDietaryAssessmentModel p_Model)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
 
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            p_Model.EnteredBy = user;
+            p_Model.Resident = resident;
+            p_Model.DateEntered = DateTime.Now;
+
+            foreach (PropertyInfo prop in typeof(nDietaryAssessmentModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_Model) == null) { prop.SetValue(p_Model, ""); }
+                }
+            }
+
+            AssessmentDAL.AddDietaryAssesment(p_Model);
+            
+            return RedirectToAction("DietaryHistory");
+        }
 
 
         #region EXERCISE ACTIVITY

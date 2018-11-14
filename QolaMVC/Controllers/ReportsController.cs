@@ -19,7 +19,7 @@ namespace QolaMVC.Controllers
             return View();
         }
 
-        public ActionResult BowelMovementReport()
+        public ActionResult BowelMovementReport(string index)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -35,7 +35,43 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
-            return View(bowelMovements);
+            List<string> DatetimeList = new List<string>();
+            foreach (var sample in bowelMovements)
+            {
+                string ti = sample.TimeStamp.Year.ToString() + "-" + sample.TimeStamp.Month.ToString();
+                if (DatetimeList.Contains(ti)==false)
+                {
+                    DatetimeList.Add(ti);
+                }
+            }
+            Collection<BowelMovementModel> bowelMovementSHOW = new Collection<BowelMovementModel>();
+            string MANZU="";
+            if (index==null || index == "")
+            {
+                if (DatetimeList.Count() > 0)
+                {
+                    MANZU = DatetimeList[0];
+                    index = MANZU;
+                }
+            }
+            else
+            {
+                MANZU = index;
+            }
+
+            foreach (var sample in bowelMovements)
+            {
+                string ti = sample.TimeStamp.Year.ToString() + "-" + sample.TimeStamp.Month.ToString();
+                if (MANZU==ti)
+                {
+                    bowelMovementSHOW.Add(sample);
+                }
+            }
+
+            ViewBag.DatetimeList = DatetimeList;
+            TempData["index"] = index;
+
+            return View(bowelMovementSHOW);
         }
 
         public ActionResult ExcerciseActivityReport()
