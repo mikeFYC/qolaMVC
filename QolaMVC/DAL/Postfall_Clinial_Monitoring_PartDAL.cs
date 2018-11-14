@@ -54,22 +54,23 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static string AddNewPostfall_clinial_monitoring_partA1(string storedP, string part, int linkid, DataTable dt1, DataTable dt2, DataTable dt3)
+        public static string AddNewPostfall_clinial_monitoring_partA1(string storedP, string part, int linkid, DataTable dt1, DataTable dt2, DataTable dt3,int ResidentID)
         {
             string exception = string.Empty;
 
             SqlConnection cnn = new SqlConnection(Constants.ConnectionString.PROD);
             try
             {
-           //sp_add_new_tbl_postfall_clinial_monitoring_details_a1
-           SqlCommand cmd = new SqlCommand(storedP, cnn);
-           cnn.Open();
-           cmd.CommandType = System.Data.CommandType.StoredProcedure;
-           cmd.Parameters.AddWithValue("@part", part);
-           cmd.Parameters.AddWithValue("@linkid", linkid);
-           cmd.Parameters.Add("@new_tbl_postfall_clinial_monitoring_details_a1_Type", SqlDbType.Structured).SqlValue = dt1;
-           cmd.Parameters.Add("@new_tbl_postfall_clinial_monitoring_details_a2_Type", SqlDbType.Structured).SqlValue = dt2;
-           cmd.Parameters.Add("@new_tbl_postfall_clinial_monitoring_details_a3_Type", SqlDbType.Structured).SqlValue = dt3;
+               //sp_add_new_tbl_postfall_clinial_monitoring_details_a1
+               SqlCommand cmd = new SqlCommand(storedP, cnn);
+               cnn.Open();
+               cmd.CommandType = System.Data.CommandType.StoredProcedure;
+               cmd.Parameters.AddWithValue("@part", part);
+               cmd.Parameters.AddWithValue("@linkid", linkid);
+               cmd.Parameters.AddWithValue("@ResidentID", ResidentID);
+               cmd.Parameters.Add("@new_tbl_postfall_clinial_monitoring_details_a1_Type", SqlDbType.Structured).SqlValue = dt1;
+               cmd.Parameters.Add("@new_tbl_postfall_clinial_monitoring_details_a2_Type", SqlDbType.Structured).SqlValue = dt2;
+               cmd.Parameters.Add("@new_tbl_postfall_clinial_monitoring_details_a3_Type", SqlDbType.Structured).SqlValue = dt3;
            
             SqlParameter returnVal=cmd.Parameters.Add("tempid", SqlDbType.Int);
             returnVal.Direction = ParameterDirection.ReturnValue;
@@ -122,24 +123,25 @@ namespace QolaMVC.DAL
                 cnn.Close();
             }
         }
-        public static string AddNewPostfall_clinial_monitoring_partB1(string storedP, string part, int linkid, DataTable dt1)
+        public static string AddNewPostfall_clinial_monitoring_partB1(string storedP, string part, int linkid, DataTable dt1, int ResidentID)
         {
             string exception = string.Empty;
 
             SqlConnection cnn = new SqlConnection(Constants.ConnectionString.PROD);
             try
             {
-           SqlCommand cmd = new SqlCommand(storedP, cnn);
-           cnn.Open();
-           cmd.CommandType = System.Data.CommandType.StoredProcedure;
-           cmd.Parameters.AddWithValue("@part", part);
-           cmd.Parameters.AddWithValue("@linkid", linkid);
-           cmd.Parameters.Add("@new_tbl_postfall_clinial_monitoring_details_a1_Type", SqlDbType.Structured).SqlValue = dt1;
+               SqlCommand cmd = new SqlCommand(storedP, cnn);
+               cnn.Open();
+               cmd.CommandType = System.Data.CommandType.StoredProcedure;
+               cmd.Parameters.AddWithValue("@part", part);
+               cmd.Parameters.AddWithValue("@linkid", linkid);
+                cmd.Parameters.AddWithValue("@ResidentID", ResidentID);
+                cmd.Parameters.Add("@new_tbl_postfall_clinial_monitoring_details_a1_Type", SqlDbType.Structured).SqlValue = dt1;
            
-            SqlParameter returnVal=cmd.Parameters.Add("tempid", SqlDbType.Int);
-            returnVal.Direction = ParameterDirection.ReturnValue;
-           cmd.ExecuteNonQuery();
-            return Convert.ToString(returnVal.Value);
+                SqlParameter returnVal=cmd.Parameters.Add("tempid", SqlDbType.Int);
+                returnVal.Direction = ParameterDirection.ReturnValue;
+                cmd.ExecuteNonQuery();
+                return Convert.ToString(returnVal.Value);
 
             }
             catch (Exception ex)
@@ -263,7 +265,7 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-     public  IEnumerable<MasterDetails> GetPostfall_clinial_monitoring_details_a1_by_id(int linkid, string pf_clinical_monitoring_part)
+     public  IEnumerable<MasterDetails> GetPostfall_clinial_monitoring_details_a1_by_id(int linkid, string pf_clinical_monitoring_part,int ResidentID)
         {
              SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
             try
@@ -273,7 +275,8 @@ namespace QolaMVC.DAL
                     
                 DynamicParameters param=new DynamicParameters();
                 param.Add("@pf_clinical_monitoring_part", pf_clinical_monitoring_part);   
-                param.Add("@linkid", linkid);  
+                param.Add("@linkid", linkid);
+                param.Add("@ResidentID", ResidentID);
 
                 var objDetails = SqlMapper.QueryMultiple(l_Conn, "sp_get_by_id_new_tbl_postfall_clinial_monitoring_details_a1",param,commandType: CommandType.StoredProcedure);
          

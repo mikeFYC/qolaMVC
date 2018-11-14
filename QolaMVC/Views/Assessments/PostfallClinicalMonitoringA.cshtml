@@ -49,35 +49,39 @@
                         <div class="tab-content" id="pills-tabContent">
                             <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                                 <div class="row">
-                                    <div class="col-md-2">
-                                        <h5><b>Part A</b></h5>
+                                    <div class="col-md-2 text-center">
+                                        <p style="font-weight:bold;font-size:1.5vw;">Part A</p>
                                     </div>
                                     <div class="col-md-10">
-                                        <p>Complete for any client that experiences a fall. Abnormal findings must be documented in narrative charting. Refer to Blood Glucose monitoring if client is diabetic.</p>
+                                        <p style="font-weight:bold">Complete for any client that experiences a fall. Abnormal findings must be documented in narrative charting. Refer to Blood Glucose monitoring if client is diabetic.</p>
                                     </div>
                                 </div>
+                                <br>
                                 <div class="row">
-                                    <div class="col-md-4 offset-md-4">
+                                    <div class="col-md-8 offset-md-4">
                                         <input type="hidden" name="category" value="a" />
-                                        <div class="form-group">
-                                            <label>Select date</label>
-                                            <select name="chklinkid" id="chklinkid" class="form-control">
-                                                <option value=""></option>
-                                                if (Model.SplitMonitoring.Count() > 0){
-                                                @foreach (var item in Model.SplitMonitoring)
-                                                {
-                                                    <option value="@item.id">@item.Created_at</option>
-                                                }
-                                                }
-                                                else
-                                                <option value=""></option>
-                                            </select>
+                                        <div class="form-group" style="width:100%;">
+                                            <div style="display:inline-block">
+                                                <label style="font-weight:bold;">Select date : </label>
+                                            </div>
+                                            <div style="display:inline-block">
+                                                <select name="chklinkid" id="chklinkid" class="form-control" onchange="onchange_submit()">
+
+                                                    if (Model.SplitMonitoring.Count() > 0){
+                                                    @foreach (var item in Model.SplitMonitoring)
+                                                    {
+                                                        <option value="@item.id">@item.Created_at</option>
+                                                    }
+                                                    <option value="0">-- NEW --</option>
+
+                                                </select>
+                                            </div>
                                         </div>
-                                        <button type="button" class="btn btn-primary col-md-4" id="btnGetCurData">Submit</button>
+                                        @*<button type="button" class="btn btn-primary col-md-4" id="btnGetCurData">Submit</button>*@
 
                                     </div>
-                                </div><br />
-                                <button type="button" class="btn btn-success " id="btnClear">Add New*</button>
+                                </div><hr>
+                                @*<button type="button" class="btn btn-success " id="btnClear">Add New*</button>*@
                                 <br />
                                 <div class="row">
                                     <table class="table table-bordered" id="tbldataA1">
@@ -795,11 +799,11 @@
                                             <a class="btn btn-danger" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Next</a>
                                         </div>
                                     </div>
-
+                                    <input id="hiddeninput1" type="hidden" value="@TempData["index"]" />
 
                                 </div>
                             </div>
-                            @Html.Partial("~/Views/Shared/PostClinic_monitorPage2.cshtml", Model);
+                            @Html.Partial("~/Views/Shared/PostClinic_monitorPage2.cshtml", Model)
 
 
 
@@ -816,39 +820,50 @@
         @RenderPage("~/Views/Shared/_Footer.cshtml")
         <script type="text/javascript" src="~/Content/assets/plugins/jquery/jquery-1.11.1.min.js"></script>
         <script type="text/javascript">
-                   // window.sessionStorage.setItem('linkid',"")
-                     var linkidVal="0null"
-                    var tempid = "0null";
-                    var HTMLtbl =
+            var index_date = $('#hiddeninput1').val();
+            if (index_date == "-1") {
+                $("#chklinkid").val($("#chklinkid option:first").val());
+            }
+            else {
+                $('#chklinkid').val(index_date);
+            }
+            
+
+
+            // window.sessionStorage.setItem('linkid',"")
+            var linkidVal="0null"
+            var tempid = "0null";
+            var HTMLtbl =
             {
                 getData: function (table) {
-                    var data = [];
-                    table.find('tr').not(':first').each(function (rowIndex, r) {
-                        var cols = [];
-                        $(this).find('td').each(function (colIndex, c) {
+                var data = [];
+                table.find('tr').not(':first').each(function (rowIndex, r) {
+                    var cols = [];
+                    $(this).find('td').each(function (colIndex, c) {
 
-                            if ($(this).children(':text,:hidden,textarea,select').length > 0)
-                                cols.push($(this).children('input,textarea,select').val().trim());
+                        if ($(this).children(':text,:hidden,textarea,select').length > 0)
+                            cols.push($(this).children('input,textarea,select').val().trim());
 
-                                // if dropdown text is needed then uncomment it and remove SELECT from above IF condition//
-                                // else if ($(this).children('select').length > 0)
-                                // cols.push($(this).find('option:selected').text());
+                            // if dropdown text is needed then uncomment it and remove SELECT from above IF condition//
+                            // else if ($(this).children('select').length > 0)
+                            // cols.push($(this).find('option:selected').text());
 
-                            else if ($(this).children(':checkbox').length > 0)
-                                cols.push($(this).children(':checkbox').is(':checked') ? 1 : 0);
-                            else
-                                cols.push($(this).text().trim());
-                        });
-                        data.push(cols);
+                        else if ($(this).children(':checkbox').length > 0)
+                            cols.push($(this).children(':checkbox').is(':checked') ? 1 : 0);
+                        else
+                            cols.push($(this).text().trim());
                     });
-                    return data;
+                    data.push(cols);
+                });
+                return data;
                 }
             }
-                    $(document).ready(function () {
-                       // alert(window.sessionStorage.getItem('linkid'))
-                        $(document).on('click', '#btnSave', function () {
-                            console.log(window.sessionStorage.getItem('linkid'))
-                            if (window.sessionStorage.getItem('linkid') == null || window.sessionStorage.getItem('linkid') == undefined || window.sessionStorage.getItem('linkid') == "") {
+
+            $(document).ready(function () {
+                // alert(window.sessionStorage.getItem('linkid'))
+                $(document).on('click', '#btnSave', function () {
+                    console.log(window.sessionStorage.getItem('linkid'))
+                    if (window.sessionStorage.getItem('linkid') == null || window.sessionStorage.getItem('linkid') == undefined || window.sessionStorage.getItem('linkid') == "" || window.sessionStorage.getItem('linkid') == "0") {
                                 addRecord();
                             }
                             else {
@@ -857,27 +872,40 @@
                             // console.log(parameters)
                         });
 
-                         $(document).on('click', '#btnClear', function () {
-                             window.sessionStorage.setItem('linkid', "")
-                             window.location.href = '@Url.Action("PostfallClinicalMonitoringA", "Assessments")';
-                             var inputs = document.getElementsByTagName("input");
-                             for (var i = 0; i < inputs.length; i++)
-                                 inputs[i].value = '';
-                        });
+                $(document).on('click', '#btnClear', function () {
+                    window.sessionStorage.setItem('linkid', "")
+                    window.location.href = '@Url.Action("PostfallClinicalMonitoringA", "Assessments")';
+                    var inputs = document.getElementsByTagName("input");
+                    for (var i = 0; i < inputs.length; i++)
+                        inputs[i].value = '';
+                });
 
-                        $(document).on('click', '#btnGetCurData', function () {
-                            linkidVal = $('#chklinkid').val();
+                $(document).on('click', '#btnGetCurData', function () {
+                    linkidVal = $('#chklinkid').val();
 
-                            if (linkidVal == "" || linkidVal == undefined) {
-                                alert("No record selected")
-                            }
-                            else {
-                                window.sessionStorage.setItem('linkid', linkidVal)
-                                window.location.href = '@Url.Action("PostfallClinicalMonitoringA", "Assessments")?linkid=' + linkidVal;
+                    if (linkidVal == "" || linkidVal == undefined) {
+                        alert("No record selected")
+                    }
+                    else {
+                        window.sessionStorage.setItem('linkid', linkidVal)
+                        window.location.href = '@Url.Action("PostfallClinicalMonitoringA", "Assessments")?linkid=' + linkidVal;
 
-                            }
-                        });
-                    });
+                    }
+                });
+            });
+
+            function onchange_submit() {
+                linkidVal = $('#chklinkid').val();
+                if (linkidVal == "" || linkidVal == undefined) {
+                    alert("No record selected")
+                }
+                else {
+                    window.sessionStorage.setItem('linkid', linkidVal)
+                    window.location.href = '@Url.Action("PostfallClinicalMonitoringA", "Assessments")?linkid=' + linkidVal;
+
+                }
+            }
+
                     function addRecord() {
                         var data1 = HTMLtbl.getData($('#tbldataA1'));  // passing that table's ID //
                         var data2 = HTMLtbl.getData($('#tbldataA2'));

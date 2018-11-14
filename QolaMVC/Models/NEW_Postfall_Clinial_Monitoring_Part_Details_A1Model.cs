@@ -44,7 +44,7 @@ namespace QolaMVC.Models
 
     public class NEW_Postfall_Clinial_Monitoring_SplitModel
     {
-         public int id { get; set; }
+        public int id { get; set; }
         [Required]
         public string pf_Clinical_Monitoring_Part { get; set; }
         public DateTime Created_at { get; set; }
