@@ -56,7 +56,32 @@
                 <div class="card p-3">
                     
                     <div class="card-block">
-                        <div class="row">
+                        <div class="row" id="UI_firstrow">
+                            <div class="col-2">
+                                Assessment History:
+                            </div>
+                            <div class="col-2">
+                                <select class="form-control col-12" name="AssessmentDate" id="selectdate" onchange="formsubmit(this)">
+
+                                    @if (ViewBag.AssessmentDates != null && ViewBag.AssessmentDates[0].ToShortDateString() != "1/1/0001")
+                                    {
+                                        for (var ind = 0; ind < ((List<DateTime>)ViewBag.AssessmentDates).Count(); ind++)
+                                        {
+                                    <option value=@ind>@(((List<DateTime>)ViewBag.AssessmentDates)[ind].ToString("yyyy-MM-dd")) @(((List<DateTime>)ViewBag.AssessmentDates)[ind].ToShortTimeString())</option>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <option value="0"></option>}
+
+                                </select>
+                                <input type="hidden" id="ID_ID" name="Id" value="" />
+                            </div>
+                            <div class="col-2">
+                                @*<button class="btn btn-danger" type="button" onclick="new_assessment()">NEW</button>*@
+                            </div>
+                        </div>
+                        @*<div class="row">
                             <form action="~/Assessments/FamilyConference" method="post">
                                 <div class="col-2">
                                     <select class="form-control col-12" name="DateEntered">
@@ -87,7 +112,7 @@
                                     <button class="btn btn-danger">GO</button>
                                 </div>
                             </form>
-                        </div>
+                        </div>*@
                         <form action="~/Assessments/AddUnusualIncident" method="Post">
                             <div class="row">
                                 <div class="col-md-4">
@@ -1012,6 +1037,7 @@
                                     <br>
                                     <button class="btn btn-danger btn-lg">SAVE</button>
                                 </div>
+                                <input id="hiddeninput1" type="hidden" value="@TempData["index"]" />
                             </div>
                         </form>
                     </div>
@@ -1026,3 +1052,21 @@
         </div>
         <!-- END PAGE CONTENT -->
         @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+
+        <script>
+            var index_date = $('#hiddeninput1').val();
+            $('#selectdate').val(index_date);
+
+            function formsubmit(ee) {
+                var index = $('#selectdate').val();
+                if (window.location.href.includes("?")) {
+                    var question_location = window.location.href.indexOf('?');
+                    window.location.href = window.location.href.substring(0, question_location) + '?index=' + index;
+                }
+                else {
+                    window.location.href = window.location.href + "?index=" + index;
+                }
+
+            }
+        </script>

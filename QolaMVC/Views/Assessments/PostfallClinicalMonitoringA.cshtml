@@ -87,7 +87,7 @@
                                     <table class="table table-bordered" id="tbldataA1">
                                         <thead class="bg-primary">
                                             <tr>
-                                                <th class="text-white text-center">Vital Signs</th>
+                                                <th class="text-white text-center" style="width:12%;">Vital Signs</th>
                                                 <th class="text-white text-center">1st Check</th>
                                                 <th class="text-white text-center" colspan="2">Q 30 mins * 1 hour</th>
                                                 <th class="text-white text-center" colspan="3">Q 30 hours * 3 hours</th>
@@ -124,7 +124,6 @@
                                                     }
                                                 }
                                             </tr>
-
                                             <tr>
                                                 @{
                                                     <td>Time</td>
@@ -210,7 +209,7 @@
                                                 }
                                             </tr>
                                             <tr>
-                                                <td>RESP. rate</td>
+                                                <td>Resp. rate</td>
                                                 @{ if (Model == null)
                                                     {
                                                         <td>no items found</td>
@@ -237,7 +236,7 @@
                                                 }
                                             </tr>
                                             <tr>
-                                                <td>TEMP</td>
+                                                <td>Temp</td>
                                                 @{
                                                     if (Model == null)
                                                     {
@@ -264,7 +263,7 @@
                                                 }
                                             </tr>
                                             <tr>
-                                                <td>02 SAT</td>
+                                                <td>O2 sat</td>
                                                 @{
                                                     if (Model == null)
                                                     {
@@ -280,7 +279,34 @@
                                                         {
                                                             foreach (var item in Model.A1Model)
                                                             {
-                                                                if (item.Category.ToLower() == "02 sat" && item.tableid == 1)
+                                                                if (item.Category.ToLower() == "o2 sat" && item.tableid == 1)
+                                                                {
+                                                                    @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
+                                                                    break;
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            </tr>
+                                            <tr>
+                                                <td style="color:black;font-weight:bold;">Staff Initials</td>
+                                                @{
+                                                    if (Model == null)
+                                                    {
+                                                        <td>no items found</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        if (Model.A1Model.Count() == 0)
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/New_PostFallClinicalAssessmentPartAPartial.cshtml") ;
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var item in Model.A1Model)
+                                                            {
+                                                                if (item.Category.ToLower() == "staff initials" && item.tableid == 1)
                                                                 {
                                                                     @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
                                                                     break;
@@ -296,7 +322,7 @@
                                     <table class="table table-bordered" id="tbldataA2">
                                         <thead class="bg-primary">
                                             <tr>
-                                                <th class="text-white text-center">Vital Signs</th>
+                                                <th class="text-white text-center" style="width:12%;">Pain</th>
                                                 <th class="text-white text-center">1st Check</th>
                                                 <th class="text-white text-center" colspan="4">Q 1 hour * 4 hours</th>
                                                 <th class="text-white text-center" colspan="6">Q 30 hours * 3 hours</th>
@@ -357,7 +383,7 @@
                                                 }
                                             </tr>
                                             <tr>
-                                                <td>PAIN (Y/N)</td>
+                                                <td>Pain (Y/N)</td>
                                                 @{ if (Model == null)
                                                     {
                                                         <td>no items found</td>
@@ -383,7 +409,7 @@
                                                 }
                                             </tr>
                                             <tr>
-                                                <td>PAIN SCALE(0-10)</td>
+                                                <td>Pain Scale(0-10)</td>
                                                 @{ if (Model == null)
                                                     {
                                                         <td>no items found</td>
@@ -409,7 +435,7 @@
                                                 }
                                             </tr>
                                             <tr>
-                                                <td>LOCATION</td>
+                                                <td>Location</td>
                                                 @{ if (Model == null)
                                                     {
                                                         <td>no items found</td>
@@ -434,9 +460,8 @@
                                                     }
                                                 }
                                             </tr>
-
                                             <tr>
-                                                <td>STAFF INITIALS</td>
+                                                <td style="color:black;font-weight:bold;">Staff Initials</td>
                                                 @{ if (Model == null)
                                                     {
                                                         <td>no items found</td>
@@ -467,7 +492,7 @@
                                     <table class="table table-bordered" id="tbldataA3">
                                         <thead class="bg-primary">
                                             <tr>
-                                                <th class="text-white text-center">Vital Signs</th>
+                                                <th class="text-white text-center" style="width:12%;">Behavior</th>
                                                 <th class="text-white text-center">1st Check</th>
                                                 <th class="text-white text-center" colspan="4">Q 1 hour * 4 hours</th>
                                                 <th class="text-white text-center" colspan="6">Q 30 hours * 3 hours</th>
@@ -526,34 +551,17 @@
                                                     }
                                                 }
                                             </tr>
+                                          </tbody>  
+                                        <thead>
+                                            <tr><th colspan="12" style="color:black;">Document Y or N</th></tr>
                                             <tr>
-                                                <td>ORIENTED TO:</td>
-                                                @{ if (Model == null)
-                                                    {
-                                                        <td>no items found</td>
-                                                    }
-                                                    else
-                                                    {
-                                                        if (Model.A1Model.Count() == 0)
-                                                        {
-                                                            @Html.Partial("~/Views/Shared/New_PostFallClinicalAssessmentPartAPartial.cshtml") ;
-                                                        }
-                                                        else
-                                                        {
-                                                            foreach (var item in Model.A1Model)
-                                                            {
-                                                                if (item.Category.ToLower() == "oriented to:" && item.tableid == 3)
-                                                                {
-                                                                    @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
-                                                                    break;
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
+                                                <th colspan="1" style="color:black;">Oriented To:</th>
+                                                <th colspan="11" style="background-color:black;"></th>
                                             </tr>
+                                        </thead>
+                                        <tbody>
                                             <tr>
-                                                <td>PERSON</td>
+                                                <td>Person</td>
                                                 @{ if (Model == null)
                                                     {
                                                         <td>no items found</td>
@@ -579,7 +587,7 @@
                                                 }
                                             </tr>
                                             <tr>
-                                                <td>PLACE</td>
+                                                <td>Place</td>
                                                 @{ if (Model == null)
                                                     {
                                                         <td>no items found</td>
@@ -605,7 +613,7 @@
                                                 }
                                             </tr>
                                             <tr>
-                                                <td>TIME</td>
+                                                <td>Time</td>
                                                 @{ if (Model == null)
                                                     {
                                                         <td>no items found</td>
@@ -631,7 +639,7 @@
                                                 }
                                             </tr>
                                             <tr>
-                                                <td>BEHAVIOUR CHANGE</td>
+                                                <td>Behavior Change</td>
                                                 @{ if (Model == null)
                                                     {
                                                         <td>no items found</td>
@@ -646,7 +654,7 @@
                                                         {
                                                             foreach (var item in Model.A1Model)
                                                             {
-                                                                if (item.Category.ToLower() == "behaviour change" && item.tableid == 3)
+                                                                if (item.Category.ToLower() == "behavior change" && item.tableid == 3)
                                                                 {
                                                                     @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
                                                                     break;
@@ -657,7 +665,7 @@
                                                 }
                                             </tr>
                                             <tr>
-                                                <td>CONFUSED</td>
+                                                <td>Confused</td>
                                                 @{ if (Model == null)
                                                     {
                                                         <td>no items found</td>
@@ -683,7 +691,7 @@
                                                 }
                                             </tr>
                                             <tr>
-                                                <td>DROWSY</td>
+                                                <td>Drowsy</td>
                                                 @{ if (Model == null)
                                                     {
                                                         <td>no items found</td>
@@ -709,7 +717,7 @@
                                                 }
                                             </tr>
                                             <tr>
-                                                <td>RESTLESS / AGITATED</td>
+                                                <td>Restless / Agitated</td>
                                                 @{ if (Model == null)
                                                     {
                                                         <td>no items found</td>
@@ -735,7 +743,7 @@
                                                 }
                                             </tr>
                                             <tr>
-                                                <td>OTHER BEHAVIOUR</td>
+                                                <td>Other Behavior</td>
                                                 @{ if (Model == null)
                                                     {
                                                         <td>no items found</td>
@@ -750,7 +758,7 @@
                                                         {
                                                             foreach (var item in Model.A1Model)
                                                             {
-                                                                if (item.Category.ToLower() == "other behaviour" && item.tableid == 3)
+                                                                if (item.Category.ToLower() == "other behavior" && item.tableid == 3)
                                                                 {
                                                                     @Html.Partial("~/Views/Shared/NEW_PostFallClinicalAssessmentPartAPartialModel.cshtml", item);
                                                                     break;
@@ -761,7 +769,7 @@
                                                 }
                                             </tr>
                                             <tr>
-                                                <td>STAFF INITIALS</td>
+                                                <td style="color:black;font-weight:bold;">Staff Initials</td>
                                                 @{ if (Model == null)
                                                     {
                                                         <td>no items found</td>
@@ -823,6 +831,7 @@
             var index_date = $('#hiddeninput1').val();
             if (index_date == "-1") {
                 $("#chklinkid").val($("#chklinkid option:first").val());
+                $('#hiddeninput1').val($("#chklinkid").val());
             }
             else {
                 $('#chklinkid').val(index_date);
@@ -837,7 +846,7 @@
             {
                 getData: function (table) {
                 var data = [];
-                table.find('tr').not(':first').each(function (rowIndex, r) {
+                table.find('tbody').find('tr').each(function (rowIndex, r) {
                     var cols = [];
                     $(this).find('td').each(function (colIndex, c) {
 
@@ -862,8 +871,9 @@
             $(document).ready(function () {
                 // alert(window.sessionStorage.getItem('linkid'))
                 $(document).on('click', '#btnSave', function () {
-                    console.log(window.sessionStorage.getItem('linkid'))
-                    if (window.sessionStorage.getItem('linkid') == null || window.sessionStorage.getItem('linkid') == undefined || window.sessionStorage.getItem('linkid') == "" || window.sessionStorage.getItem('linkid') == "0") {
+                    //console.log(window.sessionStorage.getItem('linkid'))
+                    var index_date = $('#hiddeninput1').val();
+                    if (index_date == "0" || index_date == "-1") {
                                 addRecord();
                             }
                             else {
@@ -884,7 +894,8 @@
                     linkidVal = $('#chklinkid').val();
 
                     if (linkidVal == "" || linkidVal == undefined) {
-                        alert("No record selected")
+                        //alert("No record selected");
+                        tempAlert("No record selected", 2000);
                     }
                     else {
                         window.sessionStorage.setItem('linkid', linkidVal)
@@ -897,7 +908,8 @@
             function onchange_submit() {
                 linkidVal = $('#chklinkid').val();
                 if (linkidVal == "" || linkidVal == undefined) {
-                    alert("No record selected")
+                    //alert("No record selected")
+                    tempAlert("No record selected", 2000);
                 }
                 else {
                     window.sessionStorage.setItem('linkid', linkidVal)
@@ -925,15 +937,20 @@
                         });
 
                         request.done(function (msg) {
-                            alert("Record saved ");
+                            //alert("Record saved ");
+                            tempAlert("Record saved", 2000);
                             tempid = msg;
                             console.log(tempid)
                             window.sessionStorage.setItem('linkid', tempid)
-                            window.location.href = '@Url.Action("PostfallClinicalMonitoringA", "Assessments")';
+                            setTimeout(function () {
+                                window.location.href = '@Url.Action("PostfallClinicalMonitoringA", "Assessments")';
+                            }, 2000)
+                            
                         });
 
                         request.fail(function (jqXHR, textStatus) {
-                            alert("Request failed: " + textStatus);
+                            //alert("Request failed: " + textStatus);
+                            tempAlert("Request failed: " + textStatus, 2000);
                             console.log(jqXHR);
                             //console.log(JSON.stringify(parameters))
                         });
@@ -947,7 +964,8 @@
                         parameters.list1 = data1;
                         parameters.list2 = data2;
                         parameters.list3 = data3;
-                        parameters.tempid = [window.sessionStorage.getItem('linkid')];
+                        //parameters.tempid = [window.sessionStorage.getItem('linkid')];
+                        parameters.tempid = $('#hiddeninput1').val();
                         //parameters.array = ["Amit", "Singh", "23", "Amit's Address", "your comments", "0", 0, "1"];
 
                         var request = $.ajax({
@@ -959,13 +977,15 @@
                         });
 
                         request.done(function (msg) {
-                            alert("Record saved ");
+                            //alert("Record saved ");
+                            tempAlert("Record saved", 2000);
                             tempid = msg;
                             console.log(msg + "okkk")
                         });
 
                         request.fail(function (jqXHR, textStatus) {
-                            alert("Request failed: " + textStatus);
+                            //alert("Request failed: " + textStatus);
+                            tempAlert("Request failed: " + textStatus, 2000);
                             console.log(jqXHR);
                             // console.log(JSON.stringify(parameters))
                         });

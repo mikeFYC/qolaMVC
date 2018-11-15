@@ -1160,28 +1160,24 @@ namespace QolaMVC.Controllers
             return Redirect("/Home/ResidentMenu/?p_ResidentId="+resident.ID);
         }
 
-        public ActionResult UnusualIncident()
+        public ActionResult UnusualIncident(string index)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
             var resident = (ResidentModel)TempData["Resident"];
-
             ViewBag.User = user;
             ViewBag.Resident = resident;
             ViewBag.Home = home;
-
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
             var l_IncidentReports = AssessmentDAL.GetUnusualIncidentReports(resident.ID);
-            List<DateTime> l_Dates = l_IncidentReports.Select(m => m.DateEntered).ToList();
-            ViewBag.AssessmentDates = l_Dates;
-
+            //List<DateTime> l_Dates = l_IncidentReports.Select(m => m.DateEntered).ToList();
+            //ViewBag.AssessmentDates = l_Dates;
             var model = new UnusualIncidentModel();
             model.SectionG = new Collection<UnusualIncidentSectionGModel>();
             var l_Array = new string[]{ "Physician", "Family", "Alberta Health Services", "On Call Manager", "Director of Care", "Maintenance", "General Service Mgr", "Senior Management", "Other" };
-
             foreach(var l_Item in l_Array)
             {
                 var l_SectionG = new UnusualIncidentSectionGModel();
@@ -1194,7 +1190,33 @@ namespace QolaMVC.Controllers
                 model.SectionG.Add(l_SectionG);
             }
 
-            return View(model);
+
+
+
+            if (l_IncidentReports.Count == 0)
+            {
+                l_IncidentReports.Add(model);
+            }
+            List<DateTime> l_AssessmentDates = new List<DateTime>();
+            foreach (var l_Ass in l_IncidentReports)
+            {
+                l_AssessmentDates.Add(l_Ass.DateEntered);
+            }
+            UnusualIncidentModel single = new UnusualIncidentModel();
+            if (index == null || index == "")
+            {
+                TempData["index"] = "0";
+                single = l_IncidentReports[0];
+            }
+            else
+            {
+                TempData["index"] = index;
+                single = l_IncidentReports[int.Parse(index)];
+            }
+            TempData.Keep("index");
+            ViewBag.AssessmentDates = l_AssessmentDates;
+
+            return View(single);
         }
 
         [HttpPost]
@@ -1263,6 +1285,14 @@ namespace QolaMVC.Controllers
             p_Model.EnteredBy = user;
             p_Model.Resident = resident;
             p_Model.DateEntered = DateTime.Now;
+
+            foreach (PropertyInfo prop in typeof(UnusualIncidentModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_Model) == null) { prop.SetValue(p_Model, ""); }
+                }
+            }
 
             AssessmentDAL.AddUnusualIncident(p_Model);
 
