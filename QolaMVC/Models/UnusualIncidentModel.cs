@@ -46,5 +46,39 @@ namespace QolaMVC.Models
         public string SectionJ { get; set; }
         public UserModel EnteredBy { get; set; }
         public DateTime DateEntered { get; set; }
+
+        public string happened_Date { get; set; }
+        public string happened_Time { get; set; }
+        public string Reportby { get; set; }
+        public string Location_Other { get; set; }
+        public string Resident_involved_Name { get; set; }
+        public string Resident_involved_RM { get; set; }
+        public bool Resident_Status_1 { get; set; }
+        public bool Resident_Status_2 { get; set; }
+        public bool Resident_Status_3 { get; set; }
+        public bool Resident_Status_4 { get; set; }
+        public bool Resident_Status_5 { get; set; }
+        public bool Resident_Status_6 { get; set; }
+        public string Resident_Status_text { get; set; }
+        public string C_Other1 { get; set; }
+        public string C_Other2 { get; set; }
+        public string C_Other3 { get; set; }
+        public string C_Other4 { get; set; }
+        public string C_Other5 { get; set; }
+        public string D_Date { get; set; }
+        public string D_Time { get; set; }
+        public string E_Date { get; set; }
+        public string E_Time { get; set; }
+        public string F_Date { get; set; }
+        public string F_Time { get; set; }
+        public string H_Date { get; set; }
+        public string H_Time { get; set; }
+        public string J_Date { get; set; }
+        public string J_Time { get; set; }
+
+
+
+
+
     }
 }

@@ -1328,6 +1328,38 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@SectionJ", p_Model.SectionJ);
                 l_Cmd.Parameters.AddWithValue("@EnteredBy", p_Model.EnteredBy.ID);
 
+
+
+
+                l_Cmd.Parameters.AddWithValue("@happened_Date", p_Model.happened_Date);
+                l_Cmd.Parameters.AddWithValue("@happened_Time", p_Model.happened_Time);
+                l_Cmd.Parameters.AddWithValue("@Reportby", p_Model.Reportby);
+                l_Cmd.Parameters.AddWithValue("@Location_Other", p_Model.Location_Other);
+                l_Cmd.Parameters.AddWithValue("@Resident_involved_Name", p_Model.Resident_involved_Name);
+                l_Cmd.Parameters.AddWithValue("@Resident_involved_RM", p_Model.Resident_involved_RM);
+                l_Cmd.Parameters.AddWithValue("@Resident_Status_1", p_Model.Resident_Status_1);
+                l_Cmd.Parameters.AddWithValue("@Resident_Status_2", p_Model.Resident_Status_2);
+                l_Cmd.Parameters.AddWithValue("@Resident_Status_3", p_Model.Resident_Status_3);
+                l_Cmd.Parameters.AddWithValue("@Resident_Status_4", p_Model.Resident_Status_4);
+                l_Cmd.Parameters.AddWithValue("@Resident_Status_5", p_Model.Resident_Status_5);
+                l_Cmd.Parameters.AddWithValue("@Resident_Status_6", p_Model.Resident_Status_6);
+                l_Cmd.Parameters.AddWithValue("@Resident_Status_text", p_Model.Resident_Status_text);
+                l_Cmd.Parameters.AddWithValue("@C_Other1", p_Model.C_Other1);
+                l_Cmd.Parameters.AddWithValue("@C_Other2", p_Model.C_Other2);
+                l_Cmd.Parameters.AddWithValue("@C_Other3", p_Model.C_Other3);
+                l_Cmd.Parameters.AddWithValue("@C_Other4", p_Model.C_Other4);
+                l_Cmd.Parameters.AddWithValue("@C_Other5", p_Model.C_Other5);
+                l_Cmd.Parameters.AddWithValue("@D_Date", p_Model.D_Date);
+                l_Cmd.Parameters.AddWithValue("@D_Time", p_Model.D_Time);
+                l_Cmd.Parameters.AddWithValue("@E_Date", p_Model.E_Date);
+                l_Cmd.Parameters.AddWithValue("@E_Time", p_Model.E_Time);
+                l_Cmd.Parameters.AddWithValue("@F_Date", p_Model.F_Date);
+                l_Cmd.Parameters.AddWithValue("@F_Time", p_Model.F_Time);
+                l_Cmd.Parameters.AddWithValue("@H_Date", p_Model.H_Date);
+                l_Cmd.Parameters.AddWithValue("@H_Time", p_Model.H_Time);
+                l_Cmd.Parameters.AddWithValue("@J_Date", p_Model.J_Date);
+                l_Cmd.Parameters.AddWithValue("@J_Time", p_Model.J_Time);
+
                 DataSet dataReceive = new DataSet();
 
                 l_DA.SelectCommand = l_Cmd;
@@ -1435,6 +1467,46 @@ namespace QolaMVC.DAL
                         l_Assessment.IncidentInformation = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["IncidentInformation"]);
                         l_Assessment.SectionJ = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["SectionJ"]);
                         l_Assessment.DateEntered = Convert.ToDateTime(AssesmentsReceive.Tables[0].Rows[index]["DateEntered"]);
+
+
+
+                        l_Assessment.happened_Date = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["happened_Date"]);
+                        l_Assessment.happened_Time = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["happened_Time"]);
+                        l_Assessment.Reportby = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Reportby"]);
+                        l_Assessment.Location_Other = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Location_Other"]);
+                        l_Assessment.Resident_involved_Name = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Resident_involved_Name"]);
+                        l_Assessment.Resident_involved_RM = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Resident_involved_RM"]);
+                        l_Assessment.Resident_Status_1 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Resident_Status_1"]);
+                        l_Assessment.Resident_Status_2 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Resident_Status_2"]);
+                        l_Assessment.Resident_Status_3 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Resident_Status_3"]);
+                        l_Assessment.Resident_Status_4 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Resident_Status_4"]);
+                        l_Assessment.Resident_Status_5 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Resident_Status_5"]);
+                        l_Assessment.Resident_Status_6 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["Resident_Status_6"]);
+                        l_Assessment.Resident_Status_text = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Resident_Status_text"]);
+                        l_Assessment.C_Other1 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["C_Other1"]);
+                        l_Assessment.C_Other2 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["C_Other2"]);
+                        l_Assessment.C_Other3 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["C_Other3"]);
+                        l_Assessment.C_Other4 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["C_Other4"]);
+                        l_Assessment.C_Other5 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["C_Other5"]);
+                        l_Assessment.D_Date = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["D_Date"]);
+                        l_Assessment.D_Time = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["D_Time"]);
+                        l_Assessment.E_Date = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["E_Date"]);
+                        l_Assessment.E_Time = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["E_Time"]);
+                        l_Assessment.F_Date = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["F_Date"]);
+                        l_Assessment.F_Time = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["F_Time"]);
+                        l_Assessment.H_Date = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["H_Date"]);
+                        l_Assessment.H_Time = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["H_Time"]);
+                        l_Assessment.J_Date = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["J_Date"]);
+                        l_Assessment.J_Time = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["J_Time"]);
+
+
+
+
+
+
+
+
+
 
                         l_User.ID = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["EnteredBy"]);
                         l_Assessment.EnteredBy = l_User;
