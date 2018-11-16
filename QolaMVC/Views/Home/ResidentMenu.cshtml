@@ -12,23 +12,23 @@
     .pointer {
         cursor: pointer;
     }
+
     .nav-link.active {
         background-color: #015093 !important;
     }
-    #options_in_profile button{
-        border-radius:0.3vw;
-    }
-    #options_in_profile a {
+
+    #options_in_profile button {
         border-radius: 0.3vw;
     }
 
-
+    #options_in_profile a {
+        border-radius: 0.3vw;
+    }
 </style>
 <!-- START PAGE-CONTAINER -->
 <div class="page-container">
 
-   @RenderPage("~/Views/Shared/_NavBar.cshtml")
-
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
 
 
     <!-- START PAGE CONTENT WRAPPER -->
@@ -69,9 +69,11 @@
                             <div class="" style="width:48% !important">
                                 <div class="row">
                                     <div class="" style="width:33% !important;">
-                                        <img id="image" src="~/Content/assets/@Model.ResidentImage" class="img-responsive">
-                                        <button id="rotatebutton" class="btn btn-default btn-group-sm"><i class="fa fa-rotate-right"></i></button>
+                                        <img id="image" src="~/Content/assets/@Model.ResidentImage" class="img-responsive" style="margin-left:10%;height:70%;width:50%;">
+                                        <button id="rotatebutton" class="btn btn-default btn-group-sm" style="margin-left:10%;"><i class="fa fa-rotate-right"></i></button>
                                         <button id="rotatebutton2" class="btn btn-default btn-group-sm"><i class="fa fa-rotate-left"></i></button>
+                                        <input  id="edit_photo" type="file" style="display:none;" onchange="EDIT_PHOTO()" />
+                                        <button class="btn btn-sm" id="upfile1" style="cursor:pointer;margin-left:10%;">EDIT PIC</button>
                                     </div>
                                     <div class="" style="width:66% !important;">
                                         <br>
@@ -264,8 +266,8 @@
                                                 <div class="row">
                                                     <div class="col-md-12 text-center">
                                                         @*<button class="btn btn-danger" data-dismiss="modal">
-                                                        BACK
-                                                    </button>*@
+                                                                BACK
+                                                            </button>*@
                                                         <button class="btn btn-danger" onclick="saveButton_archive()" style="width:6vw;">
                                                             SAVE
                                                         </button>
@@ -312,8 +314,8 @@
                                                 <a class="nav-link" id="pills-care-tab" data-toggle="pill" href="#pills-care" role="tab" aria-controls="pills-care" aria-selected="false"><b>Plan of Care</b></a>
                                             </li>
                                             @*<li class="nav-item">
-                                            <a class="nav-link" id="pills-goals-tab" data-toggle="pill" href="#pills-goals" role="tab" aria-controls="pills-goals" aria-selected="false"><b>Resident Specific Goals</b></a>
-                                        </li>*@
+                                                    <a class="nav-link" id="pills-goals-tab" data-toggle="pill" href="#pills-goals" role="tab" aria-controls="pills-goals" aria-selected="false"><b>Resident Specific Goals</b></a>
+                                                </li>*@
                                             <li class="nav-item">
                                                 <a class="nav-link" id="pills-notes-tab" data-toggle="pill" href="#pills-notes" role="tab" aria-controls="pills-notes" aria-selected="false"><b>Progress Notes</b></a>
                                             </li>
@@ -447,18 +449,18 @@
                                                             {
                                                                 for (var rd = 0; rd < @ViewBag.TableSH.Count; rd++)
                                                                 {
-                                                        <tr id=@ViewBag.TableSH[rd].SHid>
-                                                            <td>@(rd + 1)</td>
-                                                            <td>@ViewBag.TableSH[rd].homename</td>
-                                                            <td>@ViewBag.TableSH[rd].suiteno</td>
-                                                            <td>@ViewBag.TableSH[rd].movein.ToString()</td>
-                                                            <td>@ViewBag.TableSH[rd].moveout.ToString()</td>
-                                                            <td>@ViewBag.TableSH[rd].occupancy</td>
-                                                            <td>@ViewBag.TableSH[rd].reason</td>
-                                                        </tr>
-                                                                    }
+                                                                    <tr id=@ViewBag.TableSH[rd].SHid>
+                                                                        <td>@(rd + 1)</td>
+                                                                        <td>@ViewBag.TableSH[rd].homename</td>
+                                                                        <td>@ViewBag.TableSH[rd].suiteno</td>
+                                                                        <td>@ViewBag.TableSH[rd].movein.ToString()</td>
+                                                                        <td>@ViewBag.TableSH[rd].moveout.ToString()</td>
+                                                                        <td>@ViewBag.TableSH[rd].occupancy</td>
+                                                                        <td>@ViewBag.TableSH[rd].reason</td>
+                                                                    </tr>
                                                                 }
                                                             }
+                                                        }
 
                                                     </tbody>
                                                 </table>
@@ -827,7 +829,7 @@
                                                             @*<td class="text-center"><b>Signature</b></td>*@
                                                         </tr>
                                                         @{
-                                                                int i = 1;
+                                                            int i = 1;
                                                             var progressNotes = (IEnumerable<QolaMVC.Models.ProgressNotesModel>)ViewBag.ProgressNotes;
                                                             foreach (var p in progressNotes)
                                                             {
@@ -1206,6 +1208,31 @@
 
                 }
 
+                function EDIT_PHOTO() {
+                    var formdata = new FormData();
+                    var fileInput = document.getElementById('edit_photo');
+                    for (i = 0; i < fileInput.files.length; i++) {
+                        formdata.append(fileInput.files[i].name, fileInput.files[i]);
+                    }
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/Home/EDIT_PHOTO');
+                    xhr.send(formdata);
+                    xhr.onreadystatechange = function () {
+                        if (xhr.responseText == 1) {
+                            tempAlert("Photo Upload successfully", 2000);
+                            setTimeout(function () {
+                                window.location.reload(true);
+                                window.location.href = window.location.href;
+                            }, 2000);
+                        }
+                        else {
+                            tempAlert("Update Failed", 2000);
+                        }
+                    }
+
+
+                }
+
                 function form_click(ee) {
                     var b = $("#tempdata_archive").val();
                     if (b == "YES") {
@@ -1214,5 +1241,10 @@
                     else
                         ee.href = "/Assessments/";
                 }
+
+                $("#upfile1").click(function () {
+                    $("#edit_photo").trigger('click');
+                });
+
             </script>
 

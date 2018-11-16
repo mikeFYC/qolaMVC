@@ -63,36 +63,40 @@
                 <div class="card">
                     <div class="card-block">
                         <div class="row">
-
                             <div class="col-2">
-                                Assessment History:
+                                <label for="" class="col-form-label"><b>Resident: </b></label>
+                                <label>@ViewBag.Resident.FirstName @ViewBag.Resident.LastName </label>
                             </div>
-                        </div>
-                        <div class="row">
-
+                            <div class="col-2">
+                                <label for="" class="col-form-label"><b>Suite No: </b></label>
+                                <label>@ViewBag.Resident.SuiteNo</label>
+                            </div>
+                            <div class="">
+                                <label for="" class="col-form-label"><b>Assessment History:</b></label>
+                            </div>
                             <div class="col-2">
                                 <select class="form-control col-12" name="AssessmentDate" id="selectdate" onchange="formsubmit(this)">
                                     @*@{
-                                if (Model.Date != null)
-                                {
-                                    <option selected>@Model.Date</option>
-                                }
-                                else
-                                {
-                                    <option>New</option>
-                                }
+                        if (Model.Date != null)
+                        {
+                            <option selected>@Model.Date</option>
+                        }
+                        else
+                        {
+                            <option>New</option>
+                        }
+                    }
+
+
+                    @{
+                        if (ViewBag.AssessmentDates.Count > 0)
+                        {
+                            foreach (var d in ViewBag.AssessmentDates)
+                            {
+                                <option>@d</option>
                             }
-
-
-                            @{
-                                if (ViewBag.AssessmentDates.Count > 0)
-                                {
-                                    foreach (var d in ViewBag.AssessmentDates)
-                                    {
-                                        <option>@d</option>
-                                    }
-                                }
-                            }*@
+                        }
+                    }*@
 
 
                                     @if (ViewBag.AssessmentDates != null && ViewBag.AssessmentDates[0].ToShortDateString() != "1/1/0001")
@@ -115,6 +119,12 @@
                             </div>
 
                         </div>
+                        <hr>
+
+
+
+
+
                         <br><br><br>
                         <form action="/Assessments/SaveFamilyConferenceNote" method="post">
                             <div class="row">

@@ -4655,6 +4655,42 @@ namespace QolaMVC.Controllers
 
         }
 
+
+        [HttpPost]
+        public int EDIT_PHOTO()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            int returnint2 = 0;
+            for (int i = 0; i < Request.Files.Count; i++)
+            {
+                HttpPostedFileBase file = Request.Files[i];
+                int fileSize = file.ContentLength;
+                string fileName = file.FileName;
+                string mimeType = file.ContentType;
+                System.IO.Stream fileContent = file.InputStream;
+                file.SaveAs(Server.MapPath("~/Content/assets/Images/Home/" + home.Id + "/Resident_Image/") + resident.ID.ToString() + ".png");
+                returnint2 = HomeDAL.Save_Image(home.Id, resident.ID);
+
+            }
+            if (returnint2 == 1)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+            
+
+
+        }
+
         //[HttpPost]
         //public JsonResult saveButton_Image()
         //{

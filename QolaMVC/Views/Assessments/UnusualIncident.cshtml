@@ -48,17 +48,26 @@
             <!-- END JUMBOTRON -->
 
             <div style="height: 60px;"></div>
-
+            <input type="hidden" value="Unusual-Incident-Report" name="" class="filename">
             <!-- START CONTAINER FLUID -->
-            <div class="container-fluid container-fixed-lg">
+            <div class="container-fluid container-fixed-lg" id="fromHTMLtestdiv">
                 <!-- BEGIN PlACE PAGE CONTENT HERE -->
 
                 <div class="card p-3">
-                    
+
                     <div class="card-block">
                         <div class="row" id="UI_firstrow">
                             <div class="col-2">
-                                Assessment History:
+                                <label for="" class="col-form-label"><b>Resident: </b></label>
+                                <label>@ViewBag.Resident.FirstName @ViewBag.Resident.LastName </label>
+                            </div>
+                            <div class="col-2">
+                                <label for="" class="col-form-label"><b>Suite No: </b></label>
+                                <label>@ViewBag.Resident.SuiteNo</label>
+                            </div>
+                            <div class="">
+                                <label for="" class="col-form-label"><b>Assessment History:</b></label>
+                                
                             </div>
                             <div class="col-2">
                                 <select class="form-control col-12" name="AssessmentDate" id="selectdate" onchange="formsubmit(this)">
@@ -67,7 +76,7 @@
                                     {
                                         for (var ind = 0; ind < ((List<DateTime>)ViewBag.AssessmentDates).Count(); ind++)
                                         {
-                                    <option value=@ind>@(((List<DateTime>)ViewBag.AssessmentDates)[ind].ToString("yyyy-MM-dd")) @(((List<DateTime>)ViewBag.AssessmentDates)[ind].ToShortTimeString())</option>
+                                            <option value=@ind>@(((List<DateTime>)ViewBag.AssessmentDates)[ind].ToString("yyyy-MM-dd")) @(((List<DateTime>)ViewBag.AssessmentDates)[ind].ToShortTimeString())</option>
                                         }
                                     }
                                     else
@@ -77,42 +86,10 @@
                                 </select>
                                 <input type="hidden" id="ID_ID" name="Id" value="" />
                             </div>
-                            <div class="col-2">
-                                @*<button class="btn btn-danger" type="button" onclick="new_assessment()">NEW</button>*@
-                            </div>
+                            
                         </div>
-                        @*<div class="row">
-                            <form action="~/Assessments/FamilyConference" method="post">
-                                <div class="col-2">
-                                    <select class="form-control col-12" name="DateEntered">
-                                        @{
-                                            if (Model.DateEntered != null)
-                                            {
-                                                <option selected>@Model.DateEntered</option>
-                                            }
-                                            else
-                                            {
-                                                <option>New</option>
-                                            }
-                                        }
+                        <hr>
 
-
-                                        @{
-                                            if (ViewBag.AssessmentDates.Count > 0)
-                                            {
-                                                foreach (var d in ViewBag.AssessmentDates)
-                                                {
-                                                    <option>@d</option>
-                                                }
-                                            }
-                                        }
-                                    </select>
-                                </div>
-                                <div class="col-2">
-                                    <button class="btn btn-danger">GO</button>
-                                </div>
-                            </form>
-                        </div>*@
                         <form action="~/Assessments/AddUnusualIncident" method="Post">
                             <div class="row">
                                 <div class="col-md-4">
@@ -129,7 +106,7 @@
                                         <label for="" class="col-md-12 col-form-label">Time</label>
                                         <div class="col-md-12">
                                             @*<input type="time" class="form-control" id="" name="happened_Time">*@
-                                            @Html.TextBoxFor(m => m.happened_Time, new { @class = "form-control",type="time", id = "happened_Time" })
+                                            @Html.TextBoxFor(m => m.happened_Time, new { @class = "form-control", type = "time", id = "happened_Time" })
                                         </div>
                                     </div>
                                 </div>
@@ -207,7 +184,7 @@
                                             <div class="form-group form-group-default">
                                                 <label>Resident</label>
                                                 @*<input type="text" class="form-control" name="Resident_involved_Name">*@
-                                                @Html.TextBoxFor(m => m.Resident_involved_Name, new { @class = "form-control", id = "Resident_involved_Name" })
+                                                @Html.TextBoxFor(m => m.Resident_involved_Name, new { @class = "form-control", id = "Resident_involved_Name", placeholder = "Resident Name" })
                                             </div>
 
                                         </div>
@@ -215,7 +192,7 @@
                                             <div class="form-group form-group-default">
                                                 <label>RM#</label>
                                                 @*<input type="text" class="form-control" name="Resident_involved_RM">*@
-                                                @Html.TextBoxFor(m => m.Resident_involved_RM, new { @class = "form-control", id = "Resident_involved_RM" })
+                                                @Html.TextBoxFor(m => m.Resident_involved_RM, new { @class = "form-control", id = "Resident_involved_RM",placeholder = "RM#" })
                                             </div>
 
                                         </div>
@@ -270,53 +247,53 @@
                                 <div class="col-md-4">
                                     <b>Resident Status/Condition prior to incident(check all that apply)</b>
                                     <br><br>
-                                        <div class="form-check margin">
-                                            @*<input class="form-check-input" type="checkbox" value="" id="" name="Resident_Status_1">*@
-                                            @Html.CheckBoxFor(m => m.Resident_Status_1, new { @class = "form-check-input", id = "Resident_Status_1" })
-                                            <label class="form-check-label chklabel" for="">
-                                                Cognitively impaired
-                                            </label>
-                                        </div>
-                                        <div class="form-check margin">
-                                            @*<input class="form-check-input" type="checkbox" value="" id="" name="Resident_Status_2">*@
-                                            @Html.CheckBoxFor(m => m.Resident_Status_2, new { @class = "form-check-input", id = "Resident_Status_2" })
-                                            <label class="form-check-label chklabel" for="">
-                                                Alert
-                                            </label>
-                                        </div>
-                                        <div class="form-check margin">
-                                            @*<input class="form-check-input" type="checkbox" value="" id="" name="Resident_Status_3">*@
-                                            @Html.CheckBoxFor(m => m.Resident_Status_3, new { @class = "form-check-input", id = "Resident_Status_3" })
-                                            <label class="form-check-label chklabel" for="">
-                                                Self ambulated
-                                            </label>
-                                        </div>
-                                        <div class="form-check margin">
-                                            @*<input class="form-check-input" type="checkbox" value="" id=""  name="Resident_Status_4">*@
-                                            @Html.CheckBoxFor(m => m.Resident_Status_4, new { @class = "form-check-input", id = "Resident_Status_4" })
-                                            <label class="form-check-label chklabel" for="">
-                                                Sedated
-                                            </label>
-                                        </div>
-                                        <div class="form-check margin">
-                                            @*<input class="form-check-input" type="checkbox" value="" id=""  name="Resident_Status_5">*@
-                                            @Html.CheckBoxFor(m => m.Resident_Status_5, new { @class = "form-check-input", id = "Resident_Status_5" })
-                                            <label class="form-check-label chklabel" for="">
-                                                Requires assistance
-                                            </label>
-                                        </div>
-                                        <div class="form-check margin">
-                                            @*<input class="form-check-input" type="checkbox" value="" id=""  name="Resident_Status_6">*@
-                                            @Html.CheckBoxFor(m => m.Resident_Status_6, new { @class = "form-check-input", id = "Resident_Status_6" })
-                                            <label class="form-check-label chklabel" for="">
-                                                Agitated
-                                            </label>
-                                        </div>
-                                        <div class="form-group form-group-default">
-                                            <label>Mobility Aid in use: (specify)</label>
-                                            @*<input type="text" class="form-control" name="Resident_Status_text">*@
-                                            @Html.TextBoxFor(m => m.Resident_Status_text, new { @class = "form-control", id = "Resident_Status_text" })
-                                        </div>
+                                    <div class="form-check margin">
+                                        @*<input class="form-check-input" type="checkbox" value="" id="" name="Resident_Status_1">*@
+                                        @Html.CheckBoxFor(m => m.Resident_Status_1, new { @class = "form-check-input", id = "Resident_Status_1" })
+                                        <label class="form-check-label chklabel" for="">
+                                            Cognitively impaired
+                                        </label>
+                                    </div>
+                                    <div class="form-check margin">
+                                        @*<input class="form-check-input" type="checkbox" value="" id="" name="Resident_Status_2">*@
+                                        @Html.CheckBoxFor(m => m.Resident_Status_2, new { @class = "form-check-input", id = "Resident_Status_2" })
+                                        <label class="form-check-label chklabel" for="">
+                                            Alert
+                                        </label>
+                                    </div>
+                                    <div class="form-check margin">
+                                        @*<input class="form-check-input" type="checkbox" value="" id="" name="Resident_Status_3">*@
+                                        @Html.CheckBoxFor(m => m.Resident_Status_3, new { @class = "form-check-input", id = "Resident_Status_3" })
+                                        <label class="form-check-label chklabel" for="">
+                                            Self ambulated
+                                        </label>
+                                    </div>
+                                    <div class="form-check margin">
+                                        @*<input class="form-check-input" type="checkbox" value="" id=""  name="Resident_Status_4">*@
+                                        @Html.CheckBoxFor(m => m.Resident_Status_4, new { @class = "form-check-input", id = "Resident_Status_4" })
+                                        <label class="form-check-label chklabel" for="">
+                                            Sedated
+                                        </label>
+                                    </div>
+                                    <div class="form-check margin">
+                                        @*<input class="form-check-input" type="checkbox" value="" id=""  name="Resident_Status_5">*@
+                                        @Html.CheckBoxFor(m => m.Resident_Status_5, new { @class = "form-check-input", id = "Resident_Status_5" })
+                                        <label class="form-check-label chklabel" for="">
+                                            Requires assistance
+                                        </label>
+                                    </div>
+                                    <div class="form-check margin">
+                                        @*<input class="form-check-input" type="checkbox" value="" id=""  name="Resident_Status_6">*@
+                                        @Html.CheckBoxFor(m => m.Resident_Status_6, new { @class = "form-check-input", id = "Resident_Status_6" })
+                                        <label class="form-check-label chklabel" for="">
+                                            Agitated
+                                        </label>
+                                    </div>
+                                    <div class="form-group form-group-default">
+                                        <label>Mobility Aid in use: (specify)</label>
+                                        @*<input type="text" class="form-control" name="Resident_Status_text">*@
+                                        @Html.TextBoxFor(m => m.Resident_Status_text, new { @class = "form-control", id = "Resident_Status_text" })
+                                    </div>
 
                                 </div>
                             </div>
@@ -505,7 +482,7 @@
                                         </div>
                                         <br>
                                         <div class="form-check margin">
-                                            @Html.RadioButtonFor(m => m.Suspicion, "Apparent Result", new { @class = "form-check-input"})
+                                            @Html.RadioButtonFor(m => m.Suspicion, "Apparent Result", new { @class = "form-check-input" })
                                             <label class="form-check-label chklabel" for="">
                                                 apparent result
                                             </label>
@@ -517,7 +494,7 @@
                                             </label>
                                         </div>
                                         <div class="form-check margin">
-                                            @Html.RadioButtonFor(m => m.Suspicion, "Near miss", new { @class = "form-check-input"})
+                                            @Html.RadioButtonFor(m => m.Suspicion, "Near miss", new { @class = "form-check-input" })
                                             <label class="form-check-label chklabel" for="">
                                                 near miss: (must complete section D)
                                             </label>
@@ -552,7 +529,7 @@
                                                 <label for="" class="col-md-12 col-form-label">Date</label>
                                                 <div class="col-md-12">
                                                     @*<input type="date" class="form-control" id="" name="D_Date">*@
-                                                    @Html.TextBoxFor(m => m.D_Date, new { @class = "form-control",type="date", id = "D_Date" })
+                                                    @Html.TextBoxFor(m => m.D_Date, new { @class = "form-control", type = "date", id = "D_Date" })
                                                 </div>
                                             </div>
                                         </div>
@@ -1069,8 +1046,8 @@
                             </div>
                         </form>
                     </div>
-                    
-                
+
+
                 </div>
 
 

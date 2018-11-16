@@ -46,33 +46,44 @@
                 <div class="card">
                     <div class="card-block">
                         <div class="row" id="AA_firstrow">
+                            <div class="col-2">
+                                <label for="" class="col-form-label"><b>Resident: </b></label>
+                                <label>@ViewBag.Resident.FirstName @ViewBag.Resident.LastName </label>
+                            </div>
+                            <div class="col-2">
+                                <label for="" class="col-form-label"><b>Suite No: </b></label>
+                                <label>@ViewBag.Resident.SuiteNo</label>
+                            </div>                         
+                            <div class="">
+                                <label for="" class="col-form-label"><b>Assessment History:</b></label>
+                                
+                            </div>
+                            <div class="col-2">
+                                <select class="form-control" name="AssessmentDate" id="selectdate" onchange="formsubmit(this)">
+
+                                    @if (ViewBag.AssessmentDates != null && ViewBag.AssessmentDates[0].ToShortDateString() != "1/1/0001")
+                                    {
+                                        for (var ind = 0; ind < ((List<DateTime>)ViewBag.AssessmentDates).Count(); ind++)
+                                        {
+                                            <option value=@ind>@(((List<DateTime>)ViewBag.AssessmentDates)[ind].ToString("yyyy-MM-dd"))</option>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <option value="0"></option>}
+
+                                </select>
+                                <input type="hidden" id="ID_ID" name="Id" value="" />
+                                
+                            </div>
+                            <div style="width:99%"><hr></div>
                             <div class="col-md-8">
+                                
                                 <p style="font-size:1.1vw;font-weight:bold;color:red">P = Past Interest    C = Current Interest   W = Would Like to Learn/Do</p>
 
                                 @*<input type="reset" form="AssessmentForm" class="btn btn-primary" value="Clear" />*@
                             </div>
-                            <div class="col-md-3">
-                                <div>
-                                    Assessment History:
-                                </div>
-                                <div>
-                                    <select class="form-control col-12" name="AssessmentDate" id="selectdate" onchange="formsubmit(this)">
 
-                                        @if (ViewBag.AssessmentDates != null && ViewBag.AssessmentDates[0].ToShortDateString() != "1/1/0001")
-                                        {
-                                            for (var ind = 0; ind < ((List<DateTime>)ViewBag.AssessmentDates).Count(); ind++)
-                                            {
-                                                <option value=@ind>@(((List<DateTime>)ViewBag.AssessmentDates)[ind].ToString("yyyy-MM-dd"))</option>
-                                            }
-                                        }
-                                        else
-                                        {
-                                            <option value="0"></option>}
-
-                                    </select>
-                                    <input type="hidden" id="ID_ID" name="Id" value="" />
-                                </div>
-                            </div>
                             <hr>
                         </div>
                         <hr>
