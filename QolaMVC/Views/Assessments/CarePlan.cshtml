@@ -239,7 +239,7 @@
                             </div>*@
                                         <div class="col-md-6">
                                             <div class="form-group form-group-default">
-                                                <label>Centimeters<span class="required_sign">&nbsp;*</span></label>
+                                                <label>Feet<span class="required_sign">&nbsp;*</span></label>
                                                 @Html.TextBoxFor(m => m.VitalSigns.HeightFeet, new { @class = "form-control", id = "HeightFeet_Alert" })
                                             </div>
                                         </div>
@@ -646,10 +646,10 @@
                                                                 <option selected="selected" value="@Model.AssistanceWith.NailCarePreferredTime">@Model.AssistanceWith.NailCarePreferredTime</option>
                                                             }
                                                         }
-                                                        <option>Independent</option>
-                                                        <option>Partial Assist</option>
-                                                        <option>Dependent</option>
-                                                        <option>Palliative</option>
+                                                        <option value="">Select</option>
+                                                        <option value="AM">AM</option>
+                                                        <option value="PM">PM</option>
+                                                        <option value="Both AM/PM">Both AM/PM</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -1368,11 +1368,11 @@
                                             <div class="col-md-12">
                                                 <div class="form-check margin">
                                                     @Html.RadioButtonFor(m => m.Behaviour.CognitiveStatus, "Yes", new { @class = "form-check-input" })
-                                                    <label class="label" for="">Yes</label>
+                                                    <label class="label" for="">Intact</label>
                                                 </div>
                                                 <div class="form-check margin">
                                                     @Html.RadioButtonFor(m => m.Behaviour.CognitiveStatus, "No", new { @class = "form-check-input" })
-                                                    <label class="label" for="">No</label>
+                                                    <label class="label" for="">Impaired</label>
                                                 </div>
                                             </div>
 
@@ -1912,7 +1912,7 @@
                     </div>
                     <br><br>
                     <div class="card">
-                        <div class="card-block">
+                        <div class="card-block" id="">
                             <div class="row">
                                 <div class="col-md-12 bg text-center">
                                     <h4>Medication</h4>
@@ -1982,7 +1982,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="" class="col-form-label">Pharmacy</label>
-                                        <select name="Medication.Pharmacy" class="form-control">
+                                        @*<select name="Medication.Pharmacy" class="form-control">
                                             @{
                                                 if (Model.Medication != null && Model.Medication.Pharmacy != null && Model.Medication.Pharmacy != string.Empty)
                                                 {
@@ -1994,12 +1994,13 @@
                                             <option value="5 Month Assessment">5 Month Assessment</option>
                                             <option value="Update">Update</option>
                                             <option value="Admission">Admission</option>
-                                        </select>
+                                        </select>*@
+                                        @Html.TextBoxFor(m=>m.Medication.Pharmacy,new { @class = "form-control" })
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-8">
+                            <div class="row" >
+                                <div class="col-md-8" id="add_allergy_here">
                                     <br>
                                     <div class="row">
                                         <div class="col-md-12">
@@ -2013,10 +2014,10 @@
                                                     Medication Allergies
                                                 </div>
                                                 <div class="col-md-7">
-                                                    <input type="text" class="form-control" id="">
+                                                    <input type="text" class="form-control" id="get_allergy_here1">
                                                 </div>
                                                 <div class="col-md-2">
-                                                    <button type="button" class="btn btn-danger">Add</button>
+                                                    <button type="button" class="btn btn-danger" onclick="add_allergy1(this)">Add</button>
                                                 </div>
                                             </div>
                                             <br>
@@ -2027,30 +2028,31 @@
                                                     Other Allergies
                                                 </div>
                                                 <div class="col-md-7">
-                                                    <input type="text" class="form-control" id="">
+                                                    <input type="text" class="form-control" id="get_allergy_here2">
                                                 </div>
                                                 <div class="col-md-2">
-                                                    <button type="button" class="btn btn-danger">Add</button>
+                                                    <button type="button" class="btn btn-danger" onclick="add_allergy2(this)">Add</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <br>
                                 </div>
                             </div>
                             <br>
-                            <div class="row">
+                            @*<div class="row">
                                 <div class="col-md-3">
                                     tape
                                 </div>
                                 <div class="col-md-7">
-                                    <input type="text" class="form-control" id="">
+                                    <input type="text" class="form-control">
                                 </div>
                                 <div class="col-md-2">
-                                    <img src="~/Content/assets/img/user_logout.png" class="img-responsive">
+                                    <a onclick="SomeDeleteRowFunction(this)"><img src="~/Content/assets/img/user_logout.png" class="img-responsive"></a>
                                 </div>
-                            </div>
-                            <br>
-                            <div class="row">
+                            </div>*@
+                            
+                            @*<div class="row">
                                 <div class="col-md-3">
                                     Hydantoins
                                 </div>
@@ -2060,7 +2062,7 @@
                                 <div class="col-md-2">
                                     <img src="~/Content/assets/img/user_logout.png" class="img-responsive">
                                 </div>
-                            </div>
+                            </div>*@
                         </div>
                     </div>
                     <br><br>
@@ -3432,6 +3434,49 @@
 
         return true;
         
+    }
+
+    function SomeDeleteRowFunction(o) {
+        var p = o.parentNode.parentNode;
+        p.parentNode.removeChild(p);
+    }
+
+    function add_allergy1(ee) {
+        var GETA = $('#get_allergy_here1').val();
+        var DIV = $('#add_allergy_here');
+        if (GETA.trim() != "") {
+            DIV.append("<div class=\"row\">" +
+                "<div class= \"col-md-3\">" + GETA.trim() + "<\/div>" +
+                "<div class=\"col-md-7\">" +
+                "<input type=\"text\" class=\"form-control\">" +
+                "<\/div>" +
+                "<div class=\"col-md-2\">" +
+                "<a onclick=\"SomeDeleteRowFunction(this)\">" +
+                "<img src=\"\/Content\/assets\/img/user_logout.png\" class=\"img-responsive\"><\/a>" +
+                "</div>" +
+                "</div>")        
+        }
+        $('#get_allergy_here1').val("");
+
+    }
+
+    function add_allergy2(ee) {
+        var GETA = $('#get_allergy_here2').val();
+        var DIV = $('#add_allergy_here');
+        if (GETA.trim() != "") {
+            DIV.append("<div class=\"row\">" +
+                "<div class= \"col-md-3\">" + GETA.trim() + "<\/div>" +
+                "<div class=\"col-md-7\">" +
+                "<input type=\"text\" class=\"form-control\">" +
+                "<\/div>" +
+                "<div class=\"col-md-2\">" +
+                "<a onclick=\"SomeDeleteRowFunction(this)\">" +
+                "<img src=\"\/Content\/assets\/img/user_logout.png\" class=\"img-responsive\"><\/a>" +
+                "</div>" +
+                "</div>")
+        }
+        $('#get_allergy_here2').val("");
+
     }
 
 </script>
