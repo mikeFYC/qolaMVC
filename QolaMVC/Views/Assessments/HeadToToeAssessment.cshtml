@@ -32,7 +32,7 @@
                         </div>
                         <div class="col-md-2">
                             <a href="~/Assessments/" class="btn btn-primary"><i class="fa fa-backward"></i> Back</a>
-                            <button class="btn btn-primary print" id="HTT_PRINT"><i class="fa fa-file-pdf-o"></i> Print</button>
+                            <button class="btn btn-primary" id="HTT_PRINT" onclick="RC_PRINT()"><i class="fa fa-file-pdf-o"></i> Print</button>
                         </div>
                     </div>
                     <!-- </div> -->
@@ -66,9 +66,9 @@
 
                                 </select>
                             </div>
-                            <div class="col-2">
+                            @*<div class="col-2">
                                 <button class="btn btn-danger" type="button" onclick="location.href='@Url.Action("Add_HeadToToeAssessment_mike", "Assessments")'">NEW</button>
-                            </div>
+                            </div>*@
                         </div>
                         <hr>
                         <br>
@@ -121,19 +121,19 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     @*<div class="form-group row">
-                                <label for="" class="col-md-3 col-form-label">Date</label>
-                                <div class="col-md-5">
-                                    @Html.LabelFor(m => m.DateEntered, new { @class = "form-control" })
-                                </div>
-                            </div>*@
+                                        <label for="" class="col-md-3 col-form-label">Date</label>
+                                        <div class="col-md-5">
+                                            @Html.LabelFor(m => m.DateEntered, new { @class = "form-control" })
+                                        </div>
+                                    </div>*@
                                 </div>
                                 <div class="col-md-6">
                                     @*<div class="form-group row">
-                                <label for="" class="col-md-3 col-form-label">Time</label>
-                                <div class="col-md-5">
-                                    <input type="text" class="form-control" id="">
-                                </div>
-                            </div>*@
+                                        <label for="" class="col-md-3 col-form-label">Time</label>
+                                        <div class="col-md-5">
+                                            <input type="text" class="form-control" id="">
+                                        </div>
+                                    </div>*@
                                 </div>
                                 <div class="col-md-12 text-center">
                                     <h5><b>If VS are abnormal or concerning</b></h5>
@@ -225,7 +225,7 @@
                                                     <label class="form-check-label" for="inlineRadio1">R</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
-                                                    @Html.RadioButtonFor(m => m.PulseLocation, "Right", new { @class = "form-check-input" })
+                                                    @Html.RadioButtonFor(m => m.PulseLocation, "Left", new { @class = "form-check-input" })
                                                     <label class="form-check-label" for="inlineRadio2">L</label>
                                                 </div>
                                             </div>
@@ -553,6 +553,675 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="row">
+                                <div class="row">
+                                    
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-12 text-center">
+                                                        <br><br>
+                                                        <h4 style="font-weight:bold;"><u>Chest</u></h4>
+                                                        <hr>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                    
+                                                        <div style="width:30%;">
+                                                            <label for="" class="font-bold col-form-label">Long Sounds:</label>
+                                                        </div>
+                                                        <div style="width:50%;">
+                                                            <label for="" class="col-md-2 pad3">Normal:</label>
+                                                            @Html.RadioButtonFor(m => m.c_longsound_normal, "Yes", new { @class = "form-check-input" })
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                            @Html.RadioButtonFor(m => m.c_longsound_normal, "No", new { @class = "form-check-input" })
+                                                            <label class="form-check-label" for="">No</label>
+                                                            <br>
+                                                            <div class="form-group row">
+                                                                <label for="" class="col-md-2 col-form-label">Describe:</label>
+                                                                <div class="col-md-6">
+                                                                    @Html.TextBoxFor(m => m.c_longsound_describe, new { @class = "form-control", name = "c_longsound_describe", id = "c_longsound_describe" })
+                                                                </div>
+                                                            </div>
+                                                            <label for="" class="col-md-2 pad3">Equal:</label>
+                                                            @Html.RadioButtonFor(m => m.c_longsound_equal, "Yes", new { @class = "form-check-input" })
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                            @Html.RadioButtonFor(m => m.c_longsound_equal, "No", new { @class = "form-check-input" })
+                                                            <label class="form-check-label" for="">No</label>
+                                                            <br>
+                                                        </div>
+
+                                                    </div>
+                                                
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Chest:</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline" style="width:50%;">
+                                                        <div class="col-md-10">
+                                                            <div class="form-check form-check-inline">
+                                                                @Html.CheckBoxFor(m => m.c_c_check1, new {  id = "c_c", name = "c_c" })
+                                                                <label for="optionId">NORMAL</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                @Html.CheckBoxFor(m => m.c_c_check2, new {  id = "c_c", name = "c_c" })
+                                                                <label for="optionId">BRUISING</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                @Html.CheckBoxFor(m => m.c_c_check3, new {  id = "c_c", name = "c_c" })
+                                                                <label for="optionId">SWELLING</label>
+                                                            </div><br>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="col-form-label">Other</label>
+                                                    </div>
+                                                    <div class="" style="width:50%;">
+                                                        @Html.TextBoxFor(m => m.c_c_other, new { @class = "form-control", name = "c_c_other", id = "c_c_other" })
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Heart Sounds:</label>
+                                                    </div>
+                                                    <div class="" style="width:50%;">
+                                                    <div class="form-check form-check-inline ">
+                                                        @Html.RadioButtonFor(m => m.c_heartsound, "NORMAL", new { @class = "form-check-input" })
+                                                        <label class="form-check-label" for="">NORMAL?</label>
+                                                            
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        @Html.RadioButtonFor(m => m.c_heartsound, "ABNORMAL", new { @class = "form-check-input" })
+                                                        <label class="form-check-label" for="">ABNORMAL?</label>
+                                                    </div>
+                                                        <br>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="col-form-label">Describe</label>
+                                                    </div>
+                                                    <div class="" style="width:50%;">
+                                                        @Html.TextBoxFor(m => m.c_heartsound_describe, new { @class = "form-control", name = "c_heartsound_describe", id = "c_heartsound_describe" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br><br>
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-12 text-center">
+                                                        <br><br>
+                                                        <h4 style="font-weight:bold;"><u>Abdomen</u></h4>
+                                                        <hr>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Soft</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        <div class="form-check form-check-inline ">
+                                                            @Html.RadioButtonFor(m => m.a_soft, "Yes", new { @class = "form-check-input",name= "a_soft",id= "a_soft" })
+                                                                 <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.RadioButtonFor(m => m.a_soft, "No", new { @class = "form-check-input", name = "a_soft", id = "a_soft" })
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div>
+                                                        <br>
+                                                        <div class="form-group row">
+                                                            <label for="" class="col-md-2 col-form-label">Describe</label>
+                                                            <div class="col-md-6">
+                                                                @Html.TextBoxFor(m => m.a_soft_describe, new { @class = "form-control", name = "a_soft_describe", id = "a_soft_describe" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">pful</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        <div class="form-check form-check-inline ">
+                                                            @Html.RadioButtonFor(m => m.a_pful, "Yes", new { @class = "form-check-input", name = "a_pful", id = "a_pful" })
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.RadioButtonFor(m => m.a_pful, "No", new { @class = "form-check-input", name = "a_pful", id = "a_pful" })
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div><br>
+                                                        <div class="form-group row">
+                                                            <label for="" class="col-md-2 col-form-label">Describe</label>
+                                                            <div class="col-md-6">
+                                                                @Html.TextBoxFor(m => m.a_pful_describe, new { @class = "form-control", name = "a_pful_describe", id = "a_pful_describe" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Bowel Sounds heard?</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        <div class="form-check form-check-inline ">
+                                                            @Html.RadioButtonFor(m => m.a_bowelsound, "Yes", new { @class = "form-check-input", name = "a_bowelsound", id = "a_bowelsound" })
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.RadioButtonFor(m => m.a_bowelsound, "No", new { @class = "form-check-input", name = "a_bowelsound", id = "a_bowelsound" })
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div><br>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Last Bowel Movement:</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        <div class="form-group row">
+                                                            <label for="" class="col-md-2 col-form-label">Date</label>
+                                                            <div class="col-md-6">
+                                                                @Html.TextBoxFor(m => m.a_lastbowel_date, new { @class = "form-control",type="date", name = "a_lastbowel_date", id = "a_lastbowel_date" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Voiding Normal?</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        <div class="form-check form-check-inline ">
+                                                            @Html.RadioButtonFor(m => m.a_voidingnormal, "Yes", new { @class = "form-check-input", name = "a_voidingnormal", id = "a_voidingnormal" })
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.RadioButtonFor(m => m.a_voidingnormal, "No", new { @class = "form-check-input", name = "a_voidingnormal", id = "a_voidingnormal" })
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div><br>
+                                                        <div class="form-group row">
+                                                            <label for="" class="col-md-2 col-form-label">Describe</label>
+                                                            <div class="col-md-6">
+                                                                @Html.TextBoxFor(m => m.a_voidingnormal_describe, new { @class = "form-control", name = "a_voidingnormal_describe", id = "a_voidingnormal_describe" })
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <div class="form-check form-check-inline ">
+                                                            @Html.RadioButtonFor(m => m.a_voidingnormal1, "CONTINENT", new { @class = "form-check-input", name = "a_voidingnormal1", id = "a_voidingnormal1" })
+                                                            <label class="form-check-label" for="">CONTINENT</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.RadioButtonFor(m => m.a_voidingnormal1, "INCONTINENT", new { @class = "form-check-input", name = "a_voidingnormal1", id = "a_voidingnormal1" })
+                                                            <label class="form-check-label" for="">INCONTINENT</label>
+                                                        </div>
+                                                        <br>
+                                                        <div class="form-group row">
+                                                            <label for="" class="col-md-2 col-form-label">incontinent Pads Used</label>
+                                                            <div class="col-md-10">
+                                                                @Html.TextBoxFor(m => m.a_voidingnormal_pads, new { @class = "form-control", name = "a_voidingnormal_pads", id = "a_voidingnormal_pads" })
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-check form-check-inline ">
+                                                            @Html.RadioButtonFor(m => m.a_voidingnormal2, "CATHER", new { @class = "form-check-input", name = "a_voidingnormal2", id = "a_voidingnormal2" })
+                                                            <label class="form-check-label" for="">CATHER</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.RadioButtonFor(m => m.a_voidingnormal2, "OTHER", new { @class = "form-check-input", name = "a_voidingnormal2", id = "a_voidingnormal2" })
+                                                            <label class="form-check-label" for="">OTHER</label>
+                                                        </div>
+                                                        <br>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-12 text-center">
+                                                        <br><br>
+                                                        <h4 style="font-weight:bold;"><u>Edema</u></h4>
+                                                        <hr>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Feet:</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        <label for="" class="pad3" style="margin-right: 25px;">Normal:</label>
+                                                        <div class="form-check form-check-inline ">
+                                                            @Html.RadioButtonFor(m => m.edema_feet_normal, "Yes", new { @class = "form-check-input", name = "edema_feet_normal", id = "edema_feet_normal" })
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.RadioButtonFor(m => m.edema_feet_normal, "No", new { @class = "form-check-input", name = "edema_feet_normal", id = "edema_feet_normal" })
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div>
+                                                        <br>
+                                                        <div class="form-group row">
+                                                            <label for="" class="col-md-2 col-form-label">Describe</label>
+                                                            <div class="col-md-6">
+                                                                @Html.TextBoxFor(m => m.edema_feet_describe, new { @class = "form-control",  name = "edema_feet_describe", id = "edema_feet_describe" })
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.CheckBoxFor(m => m.edema_feet1_check1, new {  id = "edema_feet1", name = "edema_feet1" })
+                                                            <label for="optionId">LEFT</label>
+                                                        </div>
+                                                        
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.CheckBoxFor(m => m.edema_feet1_check2, new {  id = "edema_feet1", name = "edema_feet1" })
+                                                            <label for="optionId">RIGHT</label>
+                                                        </div>
+                                                        
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.CheckBoxFor(m => m.edema_feet1_check3, new { id = "edema_feet1", name = "edema_feet1" })
+                                                            <label for="optionId">PITTING</label>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Hands:</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        <label for="" class="pad3" style="margin-right: 25px;">Normal:</label>
+                                                        <div class="form-check form-check-inline ">
+
+                                                            @Html.RadioButtonFor(m => m.edema_hands_normal, "Yes", new { @class = "form-check-input", name = "edema_hands_normal", id = "edema_hands_normal" })
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.RadioButtonFor(m => m.edema_hands_normal, "No", new { @class = "form-check-input", name = "edema_hands_normal", id = "edema_hands_normal" })
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div>
+                                                        <br>
+                                                        <div class="form-group row">
+                                                            <label for="" class="col-md-2 col-form-label">Describe</label>
+                                                            <div class="col-md-6">
+                                                                @Html.TextBoxFor(m => m.edema_hands_describe, new { @class = "form-control", name = "edema_hands_describe", id = "edema_hands_describe" })
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.CheckBoxFor(m => m.edema_hands1_check1, new { id = "edema_hands1", name = "edema_hands1" })
+                                                            <label for="optionId">LEFT</label>
+                                                        </div>
+                                                        
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.CheckBoxFor(m => m.edema_hands1_check2, new { id = "edema_hands1", name = "edema_hands1" })
+                                                            <label for="optionId">RIGHT</label>
+                                                        </div>
+                                                        
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.CheckBoxFor(m => m.edema_hands1_check3, new { id = "edema_hands1", name = "edema_hands1" })
+                                                            <label for="optionId">PITTING</label>
+                                                        </div>
+                                                        
+
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Other:</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        <div class="form-check form-check-inline ">
+                                                            @Html.RadioButtonFor(m => m.edema_other, "Yes", new { @class = "form-check-input", name = "edema_other", id = "edema_other" })
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.RadioButtonFor(m => m.edema_other, "No", new { @class = "form-check-input", name = "edema_other", id = "edema_other" })
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div>
+                                                        <br>
+                                                        <div class="form-group row">
+                                                            <label for="" class="col-md-2 col-form-label">Describe</label>
+                                                            <div class="col-md-6">
+                                                                @Html.TextBoxFor(m => m.edema_other_describe, new { @class = "form-control", name = "edema_other_describe", id = "edema_other_describe" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-12 text-center">
+                                                        <br><br>
+                                                        <h4 style="font-weight:bold;"><u>Skin</u></h4>
+                                                        <hr>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Feet:</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        <div class="form-check form-check-inline ">
+                                                            @Html.RadioButtonFor(m => m.skin_feet, "Yes", new { @class = "form-check-input", name = "skin_feet", id = "skin_feet" })
+                                                                 <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.RadioButtonFor(m => m.skin_feet, "No", new { @class = "form-check-input", name = "skin_feet", id = "skin_feet" })
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div>
+                                                        <br>
+                                                        <div class="form-group row">
+                                                            <label for="" class="col-md-2 col-form-label">Describe</label>
+                                                            <div class="col-md-6">
+                                                                @Html.TextBoxFor(m => m.skin_feet_describe, new { @class = "form-control", name = "skin_feet_describe", id = "skin_feet_describe" })
+                                                            </div>
+                                                        </div><br>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Rashes:</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        <div class="form-check form-check-inline ">
+                                                            @Html.RadioButtonFor(m => m.skin_rashes, "Yes", new { @class = "form-check-input", name = "skin_rashes", id = "skin_rashes" })
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.RadioButtonFor(m => m.skin_rashes, "No", new { @class = "form-check-input", name = "skin_rashes", id = "skin_rashes" })
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Redness:</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        <div class="form-check form-check-inline ">
+                                                            @Html.RadioButtonFor(m => m.skin_redness, "Yes", new { @class = "form-check-input", name = "skin_redness", id = "skin_redness" })
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.RadioButtonFor(m => m.skin_redness, "No", new { @class = "form-check-input", name = "skin_redness", id = "skin_redness" })
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Bruising:</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        <div class="form-check form-check-inline ">
+                                                            @Html.RadioButtonFor(m => m.skin_bruising, "Yes", new { @class = "form-check-input", name = "skin_bruising", id = "skin_bruising" })
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.RadioButtonFor(m => m.skin_bruising, "No", new { @class = "form-check-input", name = "skin_bruising", id = "skin_bruising" })
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Open Areas:</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.RadioButtonFor(m => m.skin_openareas, "Yes", new { @class = "form-check-input", name = "skin_openareas", id = "skin_openareas" })
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.RadioButtonFor(m => m.skin_openareas, "No", new { @class = "form-check-input", name = "skin_openareas", id = "skin_openareas" })
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Describe Abnormal areas:</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        @Html.TextBoxFor(m => m.skin_desc_abnormal, new { @class = "form-control", name = "skin_desc_abnormal", id = "skin_desc_abnormal" })
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Wound / Dressing?</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.RadioButtonFor(m => m.skin_wounddressing, "Yes", new { @class = "form-check-input", name = "skin_wounddressing", id = "skin_wounddressing" })
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.RadioButtonFor(m => m.skin_wounddressing, "No", new { @class = "form-check-input", name = "skin_wounddressing", id = "skin_wounddressing" })
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div><br>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Describe</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        @Html.TextBoxFor(m => m.skin_desc, new { @class = "form-control", name = "skin_desc", id = "skin_desc" })
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-12 text-center">
+                                                        <br><br>
+                                                        <h4 style="font-weight:bold;"><u>Pain Assessment</u></h4>
+                                                        <hr>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="col-form-label">Resident having p:</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        <div class="form-check form-check-inline ">
+                                                            @Html.RadioButtonFor(m => m.p_residentp, "Yes", new { @class = "form-check-input", name = "p_residentp", id = "p_residentp" })
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.RadioButtonFor(m => m.p_residentp, "No", new { @class = "form-check-input", name = "p_residentp", id = "p_residentp" })
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div><br>
+                                                        <div class="form-group row">
+                                                            <label for="" class="col-md-2 col-form-label">Describe</label>
+                                                            <div class="col-md-6">
+                                                                @Html.TextBoxFor(m => m.p_residentp_desc, new { @class = "form-control", name = "p_residentp_desc", id = "p_residentp_desc" })
+                                                            </div>
+                                                        </div><br>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="col-form-label">p Scale 1(less)-10(worst)</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        @Html.TextBoxFor(m => m.p_pscale, new { @class = "form-control", name = "p_pscale", id = "p_pscale" })
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Pain Quality:</label>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Aching:</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        <div class="form-check form-check-inline ">
+                                                            @Html.RadioButtonFor(m => m.p_aching, "Yes", new { @class = "form-check-input", name = "p_aching", id = "p_aching" })
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.RadioButtonFor(m => m.p_aching, "No", new { @class = "form-check-input", name = "p_aching", id = "p_aching" })
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Sharp:</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        <div class="form-check form-check-inline ">
+                                                            @Html.RadioButtonFor(m => m.p_sharp, "Yes", new { @class = "form-check-input", name = "p_sharp", id = "p_sharp" })
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.RadioButtonFor(m => m.p_sharp, "No", new { @class = "form-check-input", name = "p_sharp", id = "p_sharp" })
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Dull:</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        <div class="form-check form-check-inline ">
+                                                            @Html.RadioButtonFor(m => m.p_dull, "Yes", new { @class = "form-check-input", name = "p_dull", id = "p_dull" })
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.RadioButtonFor(m => m.p_dull, "No", new { @class = "form-check-input", name = "p_dull", id = "p_dull" })
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Radiating:</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        <div class="form-check form-check-inline ">
+                                                            @Html.RadioButtonFor(m => m.p_radiating, "Yes", new { @class = "form-check-input", name = "p_radiating", id = "p_radiating" })
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.RadioButtonFor(m => m.p_radiating, "No", new { @class = "form-check-input", name = "p_radiating", id = "p_radiating" })
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Where</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        @Html.TextBoxFor(m => m.p_where, new { @class = "form-control", name = "p_where", id = "p_where" })
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">What makes it better:</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        @Html.TextBoxFor(m => m.p_whatmakes_better, new { @class = "form-control", name = "p_whatmakes_better", id = "p_whatmakes_better" })
+
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">What makes it worst:</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        @Html.TextBoxFor(m => m.p_whatmakes_worst, new { @class = "form-control", name = "p_whatmakes_worst", id = "p_whatmakes_worst" })
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Does the p interface with ADL's:</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        <div class="form-check form-check-inline ">
+                                                            @Html.RadioButtonFor(m => m.p_interface_adl, "Yes", new { @class = "form-check-input", name = "p_interface_adl", id = "p_interface_adl" })
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.RadioButtonFor(m => m.p_interface_adl, "No", new { @class = "form-check-input", name = "p_interface_adl", id = "p_interface_adl" })
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div><br>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Describe:</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        @Html.TextBoxFor(m => m.p_describe, new { @class = "form-control", name = "p_describe", id = "p_describe" })
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Other:</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        @Html.TextBoxFor(m => m.p_other, new { @class = "form-control", name = "p_other", id = "p_other" })
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                        <br><br>
+                                        <div class="col-md-12">
+
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Completed By</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        @Html.TextBoxFor(m => m.completed_by, new { @class = "form-control", name = "completed_by", id = "completed_by" })
+                                                    </div>
+                                                </div>
+                                            
+                                        </div>
+                                </div>
+                            </div>
+
+
+
+
                             <input id="hiddeninput1" type="hidden" value="@TempData["index"]" />
                             <input id="hiddeninput2" type="hidden" name="Id" value=@Model.Id />
                             <div class="row">
@@ -575,126 +1244,162 @@
         @RenderPage("~/Views/Shared/_Footer.cshtml")
 
 
-<script>
-    var index_date = $('#hiddeninput1').val();
-    $('#selectdate').val(index_date);
+        <script>
+            var index_date = $('#hiddeninput1').val();
+            $('#selectdate').val(index_date);
 
-    var skillsSelect = document.getElementById("selectdate");
-    var selectedText = skillsSelect.options[skillsSelect.selectedIndex].text;
-    if (selectedText == "") {
-        $('#save_button').hide();
-        var inputs_check = $('textarea');
-        for (var b = 0; b < inputs_check.length; b++) {
-            inputs_check[b].disabled = true;
-        }
-        var inputs_text = $('input');
-        for (var b = 0; b < inputs_text.length; b++) {
-            inputs_text[b].disabled = true;
-        }
-    }
+            //var skillsSelect = document.getElementById("selectdate");
+            //var selectedText = skillsSelect.options[skillsSelect.selectedIndex].text;
+            //if (selectedText == "") {
+            //    $('#save_button').hide();
+            //    var inputs_check = $('textarea');
+            //    for (var b = 0; b < inputs_check.length; b++) {
+            //        inputs_check[b].disabled = true;
+            //    }
+            //    var inputs_text = $('input');
+            //    for (var b = 0; b < inputs_text.length; b++) {
+            //        inputs_text[b].disabled = true;
+            //    }
+            //}
 
 
 
-    $('#PulseStrength_other').change(function () {
-        if ($('#PulseStrength_other').val() != "") {
-            $('input[group="PulseStrength"]').each(function () {
-                this.checked = false;
+            $('#PulseStrength_other').change(function () {
+                if ($('#PulseStrength_other').val() != "") {
+                    $('input[group="PulseStrength"]').each(function () {
+                        this.checked = false;
+                    });
+                }
             });
-        }
-    });
-    $('input[group="PulseStrength"]').change(function () {
-        $('#PulseStrength_other').val('');
-    });
-
-    $('#BPPosition_other').change(function () {
-        if ($('#BPPosition_other').val() != "") {
-            $('input[group="BPPosition"]').each(function () {
-                this.checked = false;
+            $('input[group="PulseStrength"]').change(function () {
+                $('#PulseStrength_other').val('');
             });
-        }
-    });
-    $('input[group="BPPosition"]').change(function () {
-        $('#BPPosition_other').val('');
-    });
 
-    $('#TempLocation_other').change(function () {
-        if ($('#TempLocation_other').val() != "") {
-            $('input[group="TempLocation"]').each(function () {
-                this.checked = false;
+            $('#BPPosition_other').change(function () {
+                if ($('#BPPosition_other').val() != "") {
+                    $('input[group="BPPosition"]').each(function () {
+                        this.checked = false;
+                    });
+                }
             });
-        }
-    });
-    $('input[group="TempLocation"]').change(function () {
-        $('#TempLocation_other').val('');
-    });
-
-    $('#RespLocation_other').change(function () {
-        if ($('#RespLocation_other').val() != "") {
-            $('input[group="RespLocation"]').each(function () {
-                this.checked = false;
+            $('input[group="BPPosition"]').change(function () {
+                $('#BPPosition_other').val('');
             });
-        }
-    });
-    $('input[group="RespLocation"]').change(function () {
-        $('#RespLocation_other').val('');
-    });
 
-    $('#SP02Location_other').change(function () {
-        if ($('#SP02Location_other').val() != "") {
-            $('input[group="SP02Location"]').each(function () {
-                this.checked = false;
+            $('#TempLocation_other').change(function () {
+                if ($('#TempLocation_other').val() != "") {
+                    $('input[group="TempLocation"]').each(function () {
+                        this.checked = false;
+                    });
+                }
             });
-        }
-    });
-    $('input[group="SP02Location"]').change(function () {
-        $('#SP02Location_other').val('');
-    });
-
-    $('#Speech_other').change(function () {
-        if ($('#Speech_other').val() != "") {
-            $('input[group="Speech"]').each(function () {
-                this.checked = false;
+            $('input[group="TempLocation"]').change(function () {
+                $('#TempLocation_other').val('');
             });
-        }
-    });
-    $('input[group="Speech"]').change(function () {
-        $('#Speech_other').val('');
-    });
 
-    $('#PrimaryLanguage_other').change(function () {
-        if ($('#PrimaryLanguage_other').val() != "") {
-            $('input[group="PrimaryLanguage"]').each(function () {
-                this.checked = false;
+            $('#RespLocation_other').change(function () {
+                if ($('#RespLocation_other').val() != "") {
+                    $('input[group="RespLocation"]').each(function () {
+                        this.checked = false;
+                    });
+                }
             });
-        }
-    });
-    $('input[group="PrimaryLanguage"]').change(function () {
-        $('#PrimaryLanguage_other').val('');
-    });
-
-    $('#Eyes_other').change(function () {
-        if ($('#Eyes_other').val() != "") {
-            $('input[group="Eyes"]').each(function () {
-                this.checked = false;
+            $('input[group="RespLocation"]').change(function () {
+                $('#RespLocation_other').val('');
             });
-        }
-    });
-    $('input[group="Eyes"]').change(function () {
-        $('#Eyes_other').val('');
-    });
 
-    
+            $('#SP02Location_other').change(function () {
+                if ($('#SP02Location_other').val() != "") {
+                    $('input[group="SP02Location"]').each(function () {
+                        this.checked = false;
+                    });
+                }
+            });
+            $('input[group="SP02Location"]').change(function () {
+                $('#SP02Location_other').val('');
+            });
+
+            $('#Speech_other').change(function () {
+                if ($('#Speech_other').val() != "") {
+                    $('input[group="Speech"]').each(function () {
+                        this.checked = false;
+                    });
+                }
+            });
+            $('input[group="Speech"]').change(function () {
+                $('#Speech_other').val('');
+            });
+
+            $('#PrimaryLanguage_other').change(function () {
+                if ($('#PrimaryLanguage_other').val() != "") {
+                    $('input[group="PrimaryLanguage"]').each(function () {
+                        this.checked = false;
+                    });
+                }
+            });
+            $('input[group="PrimaryLanguage"]').change(function () {
+                $('#PrimaryLanguage_other').val('');
+            });
+
+            $('#Eyes_other').change(function () {
+                if ($('#Eyes_other').val() != "") {
+                    $('input[group="Eyes"]').each(function () {
+                        this.checked = false;
+                    });
+                }
+            });
+            $('input[group="Eyes"]').change(function () {
+                $('#Eyes_other').val('');
+            });
 
 
 
-    function formsubmit(ee) {
-        var index = $('#selectdate').val();
-        if (window.location.href.includes("?")) {
-            var question_location = window.location.href.indexOf('?');
-            window.location.href = window.location.href.substring(0, question_location) + '?index=' + index;
-        }
-        else {
-            window.location.href = window.location.href + "?index=" + index;
-        }
-    }
-</script>
+
+
+            function formsubmit(ee) {
+                var index = $('#selectdate').val();
+                if (window.location.href.includes("?")) {
+                    var question_location = window.location.href.indexOf('?');
+                    window.location.href = window.location.href.substring(0, question_location) + '?index=' + index;
+                }
+                else {
+                    window.location.href = window.location.href + "?index=" + index;
+                }
+            }
+        </script>
+
+        <script type="text/javascript" src="~/Content/assets/plugins/jquery/jquery-1.11.1.min.js"></script>
+
+        <script>
+            function RC_PRINT() {
+
+                var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+                mywindow.document.write('<html><head><title>' + document.title + '</title>');
+                mywindow.document.write('<link rel="stylesheet" href="/Content/assets/plugins/bootstrap/css/bootstrap.min.css">');
+                mywindow.document.write('<link rel="stylesheet" href="/Content/bootstrap.css">');
+                mywindow.document.write('<link rel="stylesheet" href="/Content/site.css">');
+                mywindow.document.write('<link rel="stylesheet" href="/Content/assets/plugins/font-awesome/css/font-awesome.css">');
+                mywindow.document.write('<link rel="stylesheet" href="/Content/assets/plugins/jquery-scrollbar/jquery.scrollbar.css">');
+                mywindow.document.write('<link rel="stylesheet" href="/Content/assets/css/pages.css">');
+                mywindow.document.write('<link rel="stylesheet" href="/Content/assets/css/datatables.css">');
+                mywindow.document.write('<link rel="stylesheet" href="/Content/assets/css/style.css">');
+                mywindow.document.write('<link rel="stylesheet" href="~/Content/mike_print/HTT_print.css">');
+                mywindow.document.write('</head><body>');
+                mywindow.document.write('<h1>Admission Head to Toe Assessment</h1>');
+                mywindow.document.write(document.getElementById("fromHTMLtestdiv").innerHTML);
+                mywindow.document.write('</body></html>');
+
+                mywindow.document.close(); // necessary for IE >= 10
+                mywindow.focus(); // necessary for IE >= 10*/
+                setTimeout(function () {
+                    mywindow.print();
+                    mywindow.close();
+                }, 2000);
+
+
+
+                return true;
+
+            }
+        </script>

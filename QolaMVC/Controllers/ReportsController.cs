@@ -229,6 +229,16 @@ namespace QolaMVC.Controllers
 
         public ActionResult PostFallClinicalMonitoring_A()
         {
+            string index = TempData["index"].ToString();
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
             return View();
         }
 

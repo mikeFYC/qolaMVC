@@ -612,7 +612,6 @@ namespace QolaMVC.DAL
                 SqlCommand l_Cmd = new SqlCommand(Constants.StoredProcedureName.USP_ADD_ADMISSION_HEADTOTOE_ASSESSMENT, l_Conn);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                l_Cmd.Parameters.AddWithValue("@oldID", p_Model.Id);
                 l_Cmd.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
                 l_Cmd.Parameters.AddWithValue("@dtmDate", DateTime.Now);
                 l_Cmd.Parameters.AddWithValue("@AdmissionStatus", p_Model.AdmissionStatus);
@@ -643,8 +642,70 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@GeneralFace", p_Model.GeneralFace);
                 l_Cmd.Parameters.AddWithValue("@EnteredBy", p_Model.EnteredBy.ID);
                 l_Cmd.Parameters.AddWithValue("@PulseStrength", p_Model.PulseStrength);
-                
+
+                SqlParameter returnVal = l_Cmd.Parameters.Add("tempid", SqlDbType.Int);
+                returnVal.Direction = ParameterDirection.ReturnValue;
                 l_Cmd.ExecuteNonQuery();
+
+
+                p_Model.linkid = int.Parse(returnVal.Value.ToString());
+
+
+                SqlDataAdapter l_DA2 = new SqlDataAdapter();
+                SqlCommand l_Cmd2 = new SqlCommand("spAB_AddHeadToToeAssessment_PART2", l_Conn);
+                l_Cmd2.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd2.Parameters.AddWithValue("@linkid", p_Model.linkid);
+                l_Cmd2.Parameters.AddWithValue("@c_longsound_normal", p_Model.c_longsound_normal);
+                l_Cmd2.Parameters.AddWithValue("@c_longsound_describe", p_Model.c_longsound_describe);
+                l_Cmd2.Parameters.AddWithValue("@c_longsound_equal", p_Model.c_longsound_equal);
+                l_Cmd2.Parameters.AddWithValue("@c_c", p_Model.c_c);
+                l_Cmd2.Parameters.AddWithValue("@c_c_other", p_Model.c_c_other);
+                l_Cmd2.Parameters.AddWithValue("@c_heartsound", p_Model.c_heartsound);
+                l_Cmd2.Parameters.AddWithValue("@c_heartsound_describe", p_Model.c_heartsound_describe);
+                l_Cmd2.Parameters.AddWithValue("@a_soft", p_Model.a_soft);
+                l_Cmd2.Parameters.AddWithValue("@a_soft_describe", p_Model.a_soft_describe);
+                l_Cmd2.Parameters.AddWithValue("@a_pful", p_Model.a_pful);
+                l_Cmd2.Parameters.AddWithValue("@a_pful_describe", p_Model.a_pful_describe);
+                l_Cmd2.Parameters.AddWithValue("@a_bowelsound", p_Model.a_bowelsound);
+                l_Cmd2.Parameters.AddWithValue("@a_lastbowel_date", p_Model.a_lastbowel_date);
+                l_Cmd2.Parameters.AddWithValue("@a_voidingnormal", p_Model.a_voidingnormal);
+                l_Cmd2.Parameters.AddWithValue("@a_voidingnormal_describe", p_Model.a_voidingnormal_describe);
+                l_Cmd2.Parameters.AddWithValue("@a_voidingnormal1", p_Model.a_voidingnormal1);
+                l_Cmd2.Parameters.AddWithValue("@a_voidingnormal_pads", p_Model.a_voidingnormal_pads);
+                l_Cmd2.Parameters.AddWithValue("@a_voidingnormal2", p_Model.a_voidingnormal2);
+                l_Cmd2.Parameters.AddWithValue("@edema_feet_normal", p_Model.edema_feet_normal);
+                l_Cmd2.Parameters.AddWithValue("@edema_feet_describe", p_Model.edema_feet_describe);
+                l_Cmd2.Parameters.AddWithValue("@edema_feet1", p_Model.edema_feet1);
+                l_Cmd2.Parameters.AddWithValue("@edema_hands_normal", p_Model.edema_hands_normal);
+                l_Cmd2.Parameters.AddWithValue("@edema_hands_describe", p_Model.edema_hands_describe);
+                l_Cmd2.Parameters.AddWithValue("@edema_hands1", p_Model.edema_hands1);
+                l_Cmd2.Parameters.AddWithValue("@edema_other", p_Model.edema_other);
+                l_Cmd2.Parameters.AddWithValue("@edema_other_describe", p_Model.edema_other_describe);
+                l_Cmd2.Parameters.AddWithValue("@skin_feet", p_Model.skin_feet);
+                l_Cmd2.Parameters.AddWithValue("@skin_feet_describe", p_Model.skin_feet_describe);
+                l_Cmd2.Parameters.AddWithValue("@skin_rashes", p_Model.skin_rashes);
+                l_Cmd2.Parameters.AddWithValue("@skin_redness", p_Model.skin_redness);
+                l_Cmd2.Parameters.AddWithValue("@skin_bruising", p_Model.skin_bruising);
+                l_Cmd2.Parameters.AddWithValue("@skin_openareas", p_Model.skin_openareas);
+                l_Cmd2.Parameters.AddWithValue("@skin_desc_abnormal", p_Model.skin_desc_abnormal);
+                l_Cmd2.Parameters.AddWithValue("@skin_wounddressing", p_Model.skin_wounddressing);
+                l_Cmd2.Parameters.AddWithValue("@skin_desc", p_Model.skin_desc);
+                l_Cmd2.Parameters.AddWithValue("@p_residentp", p_Model.p_residentp);
+                l_Cmd2.Parameters.AddWithValue("@p_residentp_desc", p_Model.p_residentp_desc);
+                l_Cmd2.Parameters.AddWithValue("@p_pscale", p_Model.p_pscale);
+                l_Cmd2.Parameters.AddWithValue("@p_aching", p_Model.p_aching);
+                l_Cmd2.Parameters.AddWithValue("@p_sharp", p_Model.p_sharp);
+                l_Cmd2.Parameters.AddWithValue("@p_dull", p_Model.p_dull);
+                l_Cmd2.Parameters.AddWithValue("@p_radiating", p_Model.p_radiating);
+                l_Cmd2.Parameters.AddWithValue("@p_where", p_Model.p_where);
+                l_Cmd2.Parameters.AddWithValue("@p_whatmakes_better", p_Model.p_whatmakes_better);
+                l_Cmd2.Parameters.AddWithValue("@p_whatmakes_worst", p_Model.p_whatmakes_worst);
+                l_Cmd2.Parameters.AddWithValue("@p_interface_adl", p_Model.p_interface_adl);
+                l_Cmd2.Parameters.AddWithValue("@p_describe", p_Model.p_describe);
+                l_Cmd2.Parameters.AddWithValue("@p_other", p_Model.p_other);
+                l_Cmd2.Parameters.AddWithValue("@completed_by", p_Model.completed_by);
+                l_Cmd2.ExecuteNonQuery();
+
             }
             catch (Exception ex)
             {
@@ -773,6 +834,74 @@ namespace QolaMVC.DAL
                             l_AdmissionHeadToToe.Eyes_other = l_AdmissionHeadToToe.Eyes;
                             l_AdmissionHeadToToe.Eyes = "";
                         }
+
+
+
+                        l_AdmissionHeadToToe.PART2_id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["id"]);
+                        l_AdmissionHeadToToe.linkid = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["linkid"]);
+                        l_AdmissionHeadToToe.c_longsound_normal = Convert.ToString(dataReceive.Tables[0].Rows[index]["c_longsound_normal"]);
+                        l_AdmissionHeadToToe.c_longsound_describe = Convert.ToString(dataReceive.Tables[0].Rows[index]["c_longsound_describe"]);
+                        l_AdmissionHeadToToe.c_longsound_equal = Convert.ToString(dataReceive.Tables[0].Rows[index]["c_longsound_equal"]);
+                        l_AdmissionHeadToToe.c_c = Convert.ToString(dataReceive.Tables[0].Rows[index]["c_c"]);
+                        l_AdmissionHeadToToe.c_c_other = Convert.ToString(dataReceive.Tables[0].Rows[index]["c_c_other"]);
+                        l_AdmissionHeadToToe.c_heartsound = Convert.ToString(dataReceive.Tables[0].Rows[index]["c_heartsound"]);
+                        l_AdmissionHeadToToe.c_heartsound_describe = Convert.ToString(dataReceive.Tables[0].Rows[index]["c_heartsound_describe"]);
+                        l_AdmissionHeadToToe.a_soft = Convert.ToString(dataReceive.Tables[0].Rows[index]["a_soft"]);
+                        l_AdmissionHeadToToe.a_soft_describe = Convert.ToString(dataReceive.Tables[0].Rows[index]["a_soft_describe"]);
+                        l_AdmissionHeadToToe.a_pful = Convert.ToString(dataReceive.Tables[0].Rows[index]["a_pful"]);
+                        l_AdmissionHeadToToe.a_pful_describe = Convert.ToString(dataReceive.Tables[0].Rows[index]["a_pful_describe"]);
+                        l_AdmissionHeadToToe.a_bowelsound = Convert.ToString(dataReceive.Tables[0].Rows[index]["a_bowelsound"]);
+                        l_AdmissionHeadToToe.a_lastbowel_date = Convert.ToString(dataReceive.Tables[0].Rows[index]["a_lastbowel_date"]);
+                        l_AdmissionHeadToToe.a_voidingnormal = Convert.ToString(dataReceive.Tables[0].Rows[index]["a_voidingnormal"]);
+                        l_AdmissionHeadToToe.a_voidingnormal_describe = Convert.ToString(dataReceive.Tables[0].Rows[index]["a_voidingnormal_describe"]);
+                        l_AdmissionHeadToToe.a_voidingnormal1 = Convert.ToString(dataReceive.Tables[0].Rows[index]["a_voidingnormal1"]);
+                        l_AdmissionHeadToToe.a_voidingnormal_pads = Convert.ToString(dataReceive.Tables[0].Rows[index]["a_voidingnormal_pads"]);
+                        l_AdmissionHeadToToe.a_voidingnormal2 = Convert.ToString(dataReceive.Tables[0].Rows[index]["a_voidingnormal2"]);
+                        l_AdmissionHeadToToe.edema_feet_normal = Convert.ToString(dataReceive.Tables[0].Rows[index]["edema_feet_normal"]);
+                        l_AdmissionHeadToToe.edema_feet_describe = Convert.ToString(dataReceive.Tables[0].Rows[index]["edema_feet_describe"]);
+                        l_AdmissionHeadToToe.edema_feet1 = Convert.ToString(dataReceive.Tables[0].Rows[index]["edema_feet1"]);
+                        l_AdmissionHeadToToe.edema_hands_normal = Convert.ToString(dataReceive.Tables[0].Rows[index]["edema_hands_normal"]);
+                        l_AdmissionHeadToToe.edema_hands_describe = Convert.ToString(dataReceive.Tables[0].Rows[index]["edema_hands_describe"]);
+                        l_AdmissionHeadToToe.edema_hands1 = Convert.ToString(dataReceive.Tables[0].Rows[index]["edema_hands1"]);
+                        l_AdmissionHeadToToe.edema_other = Convert.ToString(dataReceive.Tables[0].Rows[index]["edema_other"]);
+                        l_AdmissionHeadToToe.edema_other_describe = Convert.ToString(dataReceive.Tables[0].Rows[index]["edema_other_describe"]);
+                        l_AdmissionHeadToToe.skin_feet = Convert.ToString(dataReceive.Tables[0].Rows[index]["skin_feet"]);
+                        l_AdmissionHeadToToe.skin_feet_describe = Convert.ToString(dataReceive.Tables[0].Rows[index]["skin_feet_describe"]);
+                        l_AdmissionHeadToToe.skin_rashes = Convert.ToString(dataReceive.Tables[0].Rows[index]["skin_rashes"]);
+                        l_AdmissionHeadToToe.skin_redness = Convert.ToString(dataReceive.Tables[0].Rows[index]["skin_redness"]);
+                        l_AdmissionHeadToToe.skin_bruising = Convert.ToString(dataReceive.Tables[0].Rows[index]["skin_bruising"]);
+                        l_AdmissionHeadToToe.skin_openareas = Convert.ToString(dataReceive.Tables[0].Rows[index]["skin_openareas"]);
+                        l_AdmissionHeadToToe.skin_desc_abnormal = Convert.ToString(dataReceive.Tables[0].Rows[index]["skin_desc_abnormal"]);
+                        l_AdmissionHeadToToe.skin_wounddressing = Convert.ToString(dataReceive.Tables[0].Rows[index]["skin_wounddressing"]);
+                        l_AdmissionHeadToToe.skin_desc = Convert.ToString(dataReceive.Tables[0].Rows[index]["skin_desc"]);
+                        l_AdmissionHeadToToe.p_residentp = Convert.ToString(dataReceive.Tables[0].Rows[index]["p_residentp"]);
+                        l_AdmissionHeadToToe.p_residentp_desc = Convert.ToString(dataReceive.Tables[0].Rows[index]["p_residentp_desc"]);
+                        l_AdmissionHeadToToe.p_pscale = Convert.ToString(dataReceive.Tables[0].Rows[index]["p_pscale"]);
+                        l_AdmissionHeadToToe.p_aching = Convert.ToString(dataReceive.Tables[0].Rows[index]["p_aching"]);
+                        l_AdmissionHeadToToe.p_sharp = Convert.ToString(dataReceive.Tables[0].Rows[index]["p_sharp"]);
+                        l_AdmissionHeadToToe.p_dull = Convert.ToString(dataReceive.Tables[0].Rows[index]["p_dull"]);
+                        l_AdmissionHeadToToe.p_radiating = Convert.ToString(dataReceive.Tables[0].Rows[index]["p_radiating"]);
+                        l_AdmissionHeadToToe.p_where = Convert.ToString(dataReceive.Tables[0].Rows[index]["p_where"]);
+                        l_AdmissionHeadToToe.p_whatmakes_better = Convert.ToString(dataReceive.Tables[0].Rows[index]["p_whatmakes_better"]);
+                        l_AdmissionHeadToToe.p_whatmakes_worst = Convert.ToString(dataReceive.Tables[0].Rows[index]["p_whatmakes_worst"]);
+                        l_AdmissionHeadToToe.p_interface_adl = Convert.ToString(dataReceive.Tables[0].Rows[index]["p_interface_adl"]);
+                        l_AdmissionHeadToToe.p_describe = Convert.ToString(dataReceive.Tables[0].Rows[index]["p_describe"]);
+                        l_AdmissionHeadToToe.p_other = Convert.ToString(dataReceive.Tables[0].Rows[index]["p_other"]);
+                        l_AdmissionHeadToToe.completed_by = Convert.ToString(dataReceive.Tables[0].Rows[index]["completed_by"]);
+
+
+
+                        l_AdmissionHeadToToe.c_c_check1 = Convert.ToBoolean(l_AdmissionHeadToToe.c_c.Split(',')[0]);
+                        l_AdmissionHeadToToe.c_c_check2 = Convert.ToBoolean(l_AdmissionHeadToToe.c_c.Split(',')[1]);
+                        l_AdmissionHeadToToe.c_c_check3 = Convert.ToBoolean(l_AdmissionHeadToToe.c_c.Split(',')[2]);
+
+                        l_AdmissionHeadToToe.edema_feet1_check1 = Convert.ToBoolean(l_AdmissionHeadToToe.edema_feet1.Split(',')[0]);
+                        l_AdmissionHeadToToe.edema_feet1_check2 = Convert.ToBoolean(l_AdmissionHeadToToe.edema_feet1.Split(',')[1]);
+                        l_AdmissionHeadToToe.edema_feet1_check3 = Convert.ToBoolean(l_AdmissionHeadToToe.edema_feet1.Split(',')[2]);
+
+                        l_AdmissionHeadToToe.edema_hands1_check1 = Convert.ToBoolean(l_AdmissionHeadToToe.edema_hands1.Split(',')[0]);
+                        l_AdmissionHeadToToe.edema_hands1_check2 = Convert.ToBoolean(l_AdmissionHeadToToe.edema_hands1.Split(',')[1]);
+                        l_AdmissionHeadToToe.edema_hands1_check3 = Convert.ToBoolean(l_AdmissionHeadToToe.edema_hands1.Split(',')[2]);
 
                         l_AdmissionHeadToToes.Add(l_AdmissionHeadToToe);
                     }

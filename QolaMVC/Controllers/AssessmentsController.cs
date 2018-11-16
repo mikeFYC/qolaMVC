@@ -737,7 +737,7 @@ namespace QolaMVC.Controllers
 
             var l_Assessments = AssessmentDAL.GetAdmissionHeadToToe(l_Resident.ID);
 
-
+            
 
 
             AdmissionHeadToToeModel single = new AdmissionHeadToToeModel();
@@ -830,6 +830,10 @@ namespace QolaMVC.Controllers
             p_Model.EnteredBy = l_User;
             p_Model.Resident = l_Resident;
 
+            p_Model.c_c = p_Model.c_c_check1.ToString() + "," + p_Model.c_c_check2.ToString() + "," + p_Model.c_c_check3.ToString();
+            p_Model.edema_feet1 = p_Model.edema_feet1_check1.ToString() + "," + p_Model.edema_feet1_check2.ToString() + "," + p_Model.edema_feet1_check3.ToString();
+            p_Model.edema_hands1 = p_Model.edema_hands1_check1.ToString() + "," + p_Model.edema_hands1_check2.ToString() + "," + p_Model.edema_hands1_check3.ToString();
+
             if (p_Model.PulseStrength_other != "" && p_Model.PulseStrength_other != null)
             {
                 p_Model.PulseStrength = p_Model.PulseStrength_other;
@@ -871,6 +875,9 @@ namespace QolaMVC.Controllers
                     if (prop.GetValue(p_Model) == null) { prop.SetValue(p_Model, ""); }
                 }
             }
+
+            
+
 
             AssessmentDAL.AddAdmissionHeadToToe(p_Model);
 
