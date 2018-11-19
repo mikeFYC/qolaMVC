@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 
@@ -318,7 +319,7 @@ namespace QolaMVC.Controllers
             return View();
         }
 
-        public ActionResult Users()
+        public ActionResult Users(string index)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -333,9 +334,20 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
-            Collection<UserModel> l_Users = UserDAL.GetUsersCollections(user.Home, user.UserType);
-            Collection<UserModel> l_UsersInactive = UserDAL.GetUsersCollections(user.Home, user.UserType, 'I');
+            List<UserModel> l_Users = UserDAL.GetUsersCollections(user.Home, user.UserType);
+            List<UserModel> l_UsersInactive = UserDAL.GetUsersCollections(user.Home, user.UserType, 'I');
             ViewBag.InactiveUsers = l_UsersInactive;
+            if(index==null || index == "")
+            {
+                TempData["start"] = "0";
+            }
+            else
+            {
+                TempData["start"] = index;
+            }
+            
+
+
             return View(l_Users);
         }
 
@@ -378,15 +390,22 @@ namespace QolaMVC.Controllers
             p_Model.Status = l_Status ? Constants.EnumerationTypes.AvailabilityStatus.A : Constants.EnumerationTypes.AvailabilityStatus.I;
             p_Model.Password = Helpers.QolaCulture.Sha1Hash(p_Model.Password);
 
-            if (p_Model.Address == null) p_Model.Address = "";
-            if (p_Model.City == null) p_Model.City = "";
-            if (p_Model.PostalCode == null) p_Model.PostalCode = "";
-            if (p_Model.Province == null) p_Model.Province = "";
-            if (p_Model.Country == null) p_Model.Country = "";
-            if (p_Model.Email == null) p_Model.Email = "";
-            if (p_Model.WorkPhone == null) p_Model.WorkPhone = "";
-            if (p_Model.HomePhone == null) p_Model.HomePhone = "";
-            if (p_Model.Mobile == null) p_Model.Mobile = "";
+            foreach (PropertyInfo prop in typeof(UserModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_Model) == null) { prop.SetValue(p_Model, ""); }
+                }
+            }
+            //if (p_Model.Address == null) p_Model.Address = "";
+            //if (p_Model.City == null) p_Model.City = "";
+            //if (p_Model.PostalCode == null) p_Model.PostalCode = "";
+            //if (p_Model.Province == null) p_Model.Province = "";
+            //if (p_Model.Country == null) p_Model.Country = "";
+            //if (p_Model.Email == null) p_Model.Email = "";
+            //if (p_Model.WorkPhone == null) p_Model.WorkPhone = "";
+            //if (p_Model.HomePhone == null) p_Model.HomePhone = "";
+            //if (p_Model.Mobile == null) p_Model.Mobile = "";
             p_Model.ModifiedBy = user.ID;
 
             UserDAL.AddNewUsers(p_Model);

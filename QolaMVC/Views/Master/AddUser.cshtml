@@ -12,6 +12,10 @@
         width: 900px !important;
         max-width: 1000px !important;
     }
+
+    .required_sign {
+        color: red;
+    }
 </style>
 
 <!-- START PAGE-CONTAINER -->
@@ -55,7 +59,7 @@
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="" class="col-form-label">User Type</label>
+                                                <label for="" class="col-form-label">User Type<span class="required_sign">&nbsp;*</span></label>
                                                 <select class="form-control" name="UserType">
                                                     <option value="0">-- User Type --</option>
                                                     <option value="1">Head Office</option>
@@ -85,7 +89,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="" class="col-form-label">Home</label>
+                                                <label for="" class="col-form-label">Home<span class="required_sign">&nbsp;*</span></label>
                                                 <select class="form-control" name="Home">
                                                     @{
                                                         foreach (var l_Home in (IEnumerable<QolaMVC.Models.HomeModel>)ViewBag.Homes)
@@ -98,26 +102,26 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="" class="col-form-label">First Name</label>
+                                                <label for="" class="col-form-label">First Name<span class="required_sign">&nbsp;*</span></label>
                                                 @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="" class="col-form-label">Last Name</label>                                            
+                                                <label for="" class="col-form-label">Last Name<span class="required_sign">&nbsp;*</span></label>                                            
                                                 @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="" class="col-form-label">User Name</label>
-                                                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+                                                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" ,disabled="true",style="color:black;"})
                                             </div>
                                         </div>
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="" class="col-form-label">Password</label>
+                                                <label for="" class="col-form-label">Password<span class="required_sign">&nbsp;*</span></label>
                                                 @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
                                             </div>
                                         </div>
@@ -144,7 +148,7 @@
                                             <div class="form-group">
                                                 <label for="" class="col-form-label">Province</label>
                                                 <select class="form-control" name="Province">
-                                                    <option value="0">--Select Page--</option>
+                                                    <option value="0">-- Select Province --</option>
                                                     <option value="Alberta">Alberta</option>
                                                     <option value="British Columbia">British Columbia</option>
                                                     <option value="Manitoba">Manitoba</option>
@@ -246,4 +250,44 @@
             $('#UserName').val(first.toLowerCase().substring(0, 1) + last.toLowerCase());
         }
     });
+
+
+    $('form').submit(function (event) {
+        if (check_Alert() == true) {
+            var user = $('#UserName');
+            user[0].disabled = false;
+            form = this;
+            form.submit();
+        }
+        else {
+            check_Alert();
+            return false;
+        }
+    });
+
+    function check_Alert() {
+        if ($('select[name="UserType"]').val() == "0") {
+            tempAlert("UserType Needed", 2000);
+            return false;
+        }
+        else if ($('input[name="FirstName"]').val() == "") {
+            tempAlert("FirstName Needed", 2000);
+            return false;
+        }
+        else if ($('input[name="LastName"]').val() == "") {
+            tempAlert("LastName Needed", 2000);
+            return false;
+        }
+        else if ($('input[name="Password"]').val() == "") {
+            tempAlert("Password Needed", 2000);
+            return false;
+        }
+        else if ($('input[name="Password"]').val().length < 5) {
+            tempAlert("Password Too Short", 2000);
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
 </script>

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<QolaMVC.Models.UserModel>
+﻿@model List<QolaMVC.Models.UserModel>
 
 @RenderPage("~/Views/Shared/_Header.cshtml")
 @RenderPage("~/Views/Shared/_SideBar.cshtml")
@@ -79,11 +79,25 @@
                                                 <button type="submit" class="btn btn-danger">Search</button>
                                             </form>
                                         </div>
-                                        <div class="col-md-6 py-4 text-right">
+                                        <div class="py-4"><label class="form-check-label" style="font-weight:bold;color:black;font-size:1.2vw;margin-top:10%;">Page: </label></div>
+                                        <div class="col-md-2 py-4 text-right">
+                                            
+                                            <select class="form-control" id="selectpage" onchange="formsubmit(this)">
+                                                <option value="0">-- Select Page --</option>
+                                                @{
+                                                    for (int gg = 1; gg < Math.Ceiling(Decimal.Parse((Model.Count() / 50.0).ToString())); gg++)
+                                                    {
+                                                        <option value="@gg">@gg.ToString()</option>
+                                                    }
+                                                }
+
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3 py-4 text-right">
                                             <a class="btn btn-lg btn-primary" href="~/Master/AddUser">Add New</a>
                                         </div>
                                     </div>
-
+                                    
                                     <table class="table table-bordered">
                                         <thead class="bg-primary">
                                             <tr>
@@ -100,31 +114,33 @@
                                         </thead>
                                         <tbody>
                                             @{
-                                                foreach (var l_User in Model)
+                                                var start = int.Parse(TempData["start"].ToString());
+                                                for (var ind = start*50; ind < (start+1)*50; ind++)
                                                 {
-                                                    <tr>
-                                                        <td class="align-middle">@l_User.UserTypeName</td>
-                                                        <td class="align-middle">@l_User.UserName</td>
-                                                        <td class="align-middle">@l_User.FirstName</td>
-                                                        <td class="align-middle">@l_User.LastName</td>
-                                                        <td class="align-middle">@l_User.HomeName</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td class="align-middle">
-                                                            <button class="btn btn-default btn-xs">
-                                                                <i class="fa fa-pencil"></i>
-                                                            </button>
-                                                        </td>
-                                                        <td class="align-middle">
-
-                                                            <button class="btn btn-danger btn-xs">
-                                                                <i class="fa fa-trash-o"></i>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
+                                                    if (ind < Model.Count())
+                                                    {
+                                                        <tr>
+                                                            <td class="align-middle">@Model[ind].UserTypeName</td>
+                                                            <td class="align-middle">@Model[ind].UserName</td>
+                                                            <td class="align-middle">@Model[ind].FirstName</td>
+                                                            <td class="align-middle">@Model[ind].LastName</td>
+                                                            <td class="align-middle">@Model[ind].HomeName</td>
+                                                            <td class="align-middle">@Model[ind].Mobile</td>
+                                                            <td class="align-middle">@Model[ind].Email</td>
+                                                            <td class="align-middle">
+                                                                <button class="btn btn-default btn-xs">
+                                                                    <i class="fa fa-pencil"></i>
+                                                                </button>
+                                                            </td>
+                                                            <td class="align-middle">
+                                                                <button class="btn btn-danger btn-xs">
+                                                                    <i class="fa fa-trash-o"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        }
+                                                    }
                                                 }
-                                            }
-
                                         </tbody>
                                     </table>
 
@@ -201,7 +217,7 @@
 
                                         </tbody>
                                     </table>
-
+                                    <input type="hidden" id="startID" value="@TempData["start"]"/>
 
                                 </div>
                             </div>
@@ -225,3 +241,22 @@
         </div>
         <!-- END PAGE CONTENT -->
         @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+
+<script>
+
+    $('#selectpage').val($('#startID').val());
+
+
+    function formsubmit(ee) {
+        var index = $('#selectpage').val();
+        if (window.location.href.includes("?")) {
+            var question_location = window.location.href.indexOf('?');
+            window.location.href = window.location.href.substring(0, question_location) + '?index=' + index;
+        }
+        else {
+            window.location.href = window.location.href + "?index=" + index;
+        }
+
+    }
+</script>

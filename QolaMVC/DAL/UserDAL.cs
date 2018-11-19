@@ -175,11 +175,11 @@ namespace QolaMVC.DAL
             return result;
         }
 
-        public static Collection<UserModel> GetUsersCollections(string homeIds, int userTypeId, char cStatus = 'A')
+        public static List<UserModel> GetUsersCollections(string homeIds, int userTypeId, char cStatus = 'A')
         {
             string exception = string.Empty;
             Database db;
-            Collection<UserModel> users = new Collection<UserModel>();
+            List<UserModel> users = new List<UserModel>();
             UserModel user;
             //Common.Home home;
             SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
