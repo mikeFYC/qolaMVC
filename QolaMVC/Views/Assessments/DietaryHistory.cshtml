@@ -268,34 +268,49 @@
                                     <div class="form-group row">
                                         <label for="" class="col-md-3 col-form-label">Allergies/Sensitivities</label>
                                         <div class="col-md-6">
-                                            <select class="form-control" id="SelectedAllergy">
-                                                <option>Select</option>
-                                                @{
-                                                    foreach (var allergy in @Model.Allergies)
-                                                    {
-                                                        <option value="@allergy.ID">@allergy.Name</option>
-                                                    }
-                                                }
-
-                                            </select>
+                                            <input type="text" class="form-control" id="allergies_TEXT" onchange="onchange_allergies_TEXT()"/>
                                         </div>
                                         <div class="col-md-1">
-                                            <a href="#" id="AddAllergy" class="btn btn-danger">ADD</a>
+                                            <a id="AddAllergy" class="btn btn-danger" style="color:white;">ADD</a>
                                         </div>
                                         <div class="col-md-1">
                                             @*<a href="#" id="DeleteAllergy" class="btn btn-danger">DELETE</a>*@
                                         </div>
+                                        <div class="col-md-5 offset-md-3">
+                                            <div class="searchBox_DA">
+                                                <div class="list-group searchBox_DA_result">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+                                    
                                 </div>
                             </div>
                             <div class="row">
-                                <table>
-                                    <tbody id="Allergies">
+                                <table style="width:80%;">
+                                    <thead>
                                         <tr>
                                             <th>Diet Allergy</th>
                                             <th>Notes</th>
                                             <th>Actions</th>
                                         </tr>
+                                    </thead>
+                                    <tbody id="Allergies">
+                                        @for (var a = 0; a < Model.Allergies.Count; a++)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <input type='hidden' name=Allergies[@a].ID value=@Model.Allergies[a].ID />
+                                                    <input type='hidden' name=Allergies[@a].Name value="@Model.Allergies[a].Name" />@Model.Allergies[a].Name
+                                                </td>
+                                                <td>
+                                                    <input type='text' class='form-control' name=Allergies[@a].Note value="@Model.Allergies[a].Note" />
+                                                </td>
+                                                <td>
+                                                    <input type='button' value='delete' class='btn btn-danger'>
+                                                </td>
+                                            </tr>
+                                        }
                                     </tbody>
                                 </table>
                             </div>
@@ -345,14 +360,16 @@
         @RenderPage("~/Views/Shared/_Footer.cshtml")
         <script type="text/javascript">
             $(document).ready(function () {
-                var count = 0;
-        $("#AddAllergy").click(function(){
-            var name = $("#SelectedAllergy :selected").text();
-            var id = $("#SelectedAllergy").val();
-            var markup = "<tr><td><input type='hidden' name='Allergies[" + count + "].ID' value='" + id + "'/><input type='hidden' name='Allergies[" + count + "].Name' value='" + name + "'/>"+ name + "</td> <td><input type='text' class='form-control' name='AllergyNotes[" + count +"]' /></td> <td><input type='button' value='delete' class='btn btn-danger'></td></tr > ";
-            $("#Allergies").append(markup);
-            count++;
-        });
+                
+                $("#AddAllergy").click(function () {
+                    var count = $('#Allergies tr').length;
+                    var name = $("#allergies_TEXT").val();
+                    var id = $("#allergies_TEXT")
+                    idreal = id[0].getAttribute('name');
+                    var markup = "<tr><td><input type='hidden' name='Allergies[" + count + "].ID' value='" + idreal + "'/><input type='hidden' name='Allergies[" + count + "].Name' value='" + name + "'/>" + name + "</td> <td><input type='text' class='form-control' name='Allergies[" + count + "].Note' /></td> <td><input type='button' value='delete' class='btn btn-danger'></td></tr > ";
+                    $("#Allergies").append(markup);
+                    $('#allergies_TEXT').val('');
+                });
 
         // Find and remove selected table rows
         $("#DeleteAllergy").click(function(){
@@ -366,7 +383,40 @@
         $('table').on('click', 'input[type="button"]', function (e) {
             $(this).closest('tr').remove()
         })
-    });
+            });
+
+
+            $('#allergies_TEXT').keyup(function () {
+                val = $(this).val();
+                if (val.length > 1) {
+                    $('.searchBox_DA_result').empty();
+                    $.get("/Assessments/GETALLERGIES_A/", { term: val }, function (data) {
+                        console.log(data);
+                        for (var i = 0; i < data.length; i++) {
+                            $('.searchBox_DA_result').append('<a onclick="click_DA_CHOICE(\'' + data[i][1].Value + '\',\'' + data[i][0].Value + '\')" class=\'list-group-item list-group-item-action\' id=\'' + data[i][0].Value + '\'">' +
+                                '<p class="ml-3">' + data[i][1].Value + '<br></p>' +
+                                '</a>');
+                        }
+                        if (data.length == 0) {
+                            $('.searchBox_DA_result').append('No Allergies found');
+                        }
+                    });
+                    $('.searchBox_DA').show();
+                } else {
+                    $('.searchBox_DA').hide();
+                }
+            })
+
+            function click_DA_CHOICE(aa, bb) {
+                document.getElementById("allergies_TEXT").value = aa;
+                document.getElementById("allergies_TEXT").name = bb;
+                $('.searchBox_DA').hide();
+            }
+
+            function onchange_allergies_TEXT() {
+                document.getElementById("allergies_TEXT").name = "";
+            }
+
         </script>
 
         <script>
@@ -385,3 +435,4 @@
 
             }
         </script>
+

@@ -50,6 +50,9 @@ namespace QolaMVC.Models
             get { return _modifiedOn; }
             set { _modifiedOn = value; }
         }
+
+        public string Note{ get ; set ; }
+
         #endregion
 
         #endregion

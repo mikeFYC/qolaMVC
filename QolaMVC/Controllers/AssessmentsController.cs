@@ -212,6 +212,31 @@ namespace QolaMVC.Controllers
         }
 
 
+        [HttpGet]
+        public ActionResult GETALLERGIES_A(string term)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            List<dynamic> l_Json = new List<dynamic>();
+            var Allergies = AssessmentDAL.GetAllergiesCollections_mike(term);
+
+            foreach (var r in Allergies)
+            {
+                dynamic l_J = new System.Dynamic.ExpandoObject();
+                l_J.ID = r.ID;
+                l_J.Name = r.Name;
+                l_J.Catogery = r.Catogery;
+                l_Json.Add(l_J);
+            }
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
         #region EXERCISE ACTIVITY
 
         public ActionResult ExerciseActivity(string index,string number)

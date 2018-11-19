@@ -1257,6 +1257,8 @@ namespace QolaMVC.DAL
                             l_Cmd_Diet.Parameters.AddWithValue("@Allergy", allergy.Name);
                             l_Cmd_Diet.Parameters.AddWithValue("@AllergyId", allergy.ID);
                             l_Cmd_Diet.Parameters.AddWithValue("@AssessmentId", l_AssessmentId);
+                            if (allergy.Note == null) allergy.Note = "";
+                            l_Cmd_Diet.Parameters.AddWithValue("@note", allergy.Note);
                             l_Cmd_Diet.Parameters.AddWithValue("@Enteredby", p_Model.EnteredBy.ID);
                             l_Cmd_Diet.ExecuteNonQuery();
                         }
@@ -1310,6 +1312,46 @@ namespace QolaMVC.DAL
             catch (Exception ex)
             {
                 exception = "GetAllergiesCollections |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            return allergiess;
+        }
+
+        public static Collection<AllergiesModel> GetAllergiesCollections_mike(string term)
+        {
+            string exception = string.Empty;
+
+            Collection<AllergiesModel> allergiess = new Collection<AllergiesModel>();
+            AllergiesModel allergies;
+            ResidentModel l_Resident = new ResidentModel();
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("Get_Allergies_Mike", l_Conn);
+                l_Cmd.Parameters.AddWithValue("term", term);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                DataSet AllergiesReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(AllergiesReceive);
+                if (AllergiesReceive.Tables[0].Rows.Count > 0)
+                {
+                    for (int index = 0; index <= AllergiesReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        allergies = new AllergiesModel();
+                        allergies.ID = Convert.ToInt32(AllergiesReceive.Tables[0].Rows[index]["fd_id"]);
+                        allergies.Name = Convert.ToString(AllergiesReceive.Tables[0].Rows[index]["fd_name"]);
+                        allergies.Catogery = Convert.ToInt32(AllergiesReceive.Tables[0].Rows[index]["fd_category"]);
+                        allergiess.Add(allergies);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                exception = "GetAllergiesCollections_mike |" + ex.ToString();
                 //Log.Write(exception);
                 throw;
             }
@@ -1390,6 +1432,7 @@ namespace QolaMVC.DAL
 
                                 l_Allergy.ID = Convert.ToInt32(AllergyReceive.Tables[0].Rows[index_Diets]["AllergyId"]);
                                 l_Allergy.Name = Convert.ToString(AllergyReceive.Tables[0].Rows[index_Diets]["Allergy"]);
+                                l_Allergy.Note = Convert.ToString(AllergyReceive.Tables[0].Rows[index_Diets]["note"]);
 
                                 l_Assessment.Allergies.Add(l_Allergy);
                             }
