@@ -1607,7 +1607,7 @@
                             <div class="row">
                                 <div class="col-md-8">
                                     <br>
-                                    <div class="row">
+                                    <div class="row" id="Nutrition_Allergies_Add_Here">
                                         <div class="col-md-12">
                                             <b>Allergies/Sensitivities</b>
                                         </div>
@@ -1616,11 +1616,13 @@
                                             Allergies/Sensitivities
                                         </div>
                                         <div class="col-md-7">
-                                            <input type="text" class="form-control" id="">
+                                            <input type="text" class="form-control" id="Nutrition_Allergies_TEXT">
+                                            @Html.TextBoxFor(m => m.Nutrition.Allergies, new { @class = "form-control",id= "Nutrition_Allergies",type="hidden" })
                                         </div>
                                         <div class="col-md-2">
-                                            <a href="#" class="btn btn-danger">Add</a>
+                                            <a class="btn btn-danger" style="color:white;" id="Nutrition_Allergies_Add" onclick="Nutrition_Allergies_Add(this)">Add</a>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -2035,6 +2037,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        @Html.TextBoxFor(m => m.Medication.Allergies, new { @class = "form-control", id = "Meciation_Allergies", type = "hidden" })
                                     </div>
                                     <br>
                                 </div>
@@ -2871,7 +2874,21 @@
     var index_date = $('#hiddeninput1').val();
     $('#selectdate').val(index_date);
 
+    var str = $('#Nutrition_Allergies').val();
+    for (var ind = 0; ind < str.split(" || ").length; ind++) {
+        var a = str.split(" || ")[ind];
+        if (a.trim() != "") {
+            Nutrition_Allergies_Add_TEXT(a);
+        }
+    }
 
+    var str2 = $('#Meciation_Allergies').val();
+    for (var ind2 = 0; ind2 < str.split(" || ").length; ind2++) {
+        var b = str.split(" || ")[ind2];
+        if (b.trim() != "") {
+            Medication_add_allergy_TEXT(b);
+        }
+    }
 
     function PersonalHygiene(ee) {
         var rowparent = ee.parentElement.parentElement.parentElement.parentElement;
@@ -3366,6 +3383,9 @@
 
     $('form').submit(function (event) {
         if (check_Alert() == true) {
+
+            AllergyFunction();
+
             form = this;
             var ID = $('#selectdate option:selected').attr('name');
             $('#ID_ID').val(ID);
@@ -3444,17 +3464,21 @@
     function add_allergy1(ee) {
         var GETA = $('#get_allergy_here1').val();
         var DIV = $('#add_allergy_here');
-        if (GETA.trim() != "") {
-            DIV.append("<div class=\"row\">" +
-                "<div class= \"col-md-3\">" + GETA.trim() + "<\/div>" +
-                "<div class=\"col-md-7\">" +
-                "<input type=\"text\" class=\"form-control\">" +
-                "<\/div>" +
-                "<div class=\"col-md-2\">" +
-                "<a onclick=\"SomeDeleteRowFunction(this)\">" +
-                "<img src=\"\/Content\/assets\/img/user_logout.png\" class=\"img-responsive\"><\/a>" +
-                "</div>" +
-                "</div>")        
+        if (GETA.includes(" || ")) {
+            tempAlert("Cannot Includ \" || \"", 2000);
+        }
+        else {
+            if (GETA.trim() != "") {
+                DIV.append("<div class=\"row\" style=\"margin-top:1%;\">" +
+                    "<div class= \"col-md-3\"><\/div>" +
+                    "<div class= \"col-md-5 Medication_Allergies_group\">" + GETA.trim() + "<\/div>" +
+
+                    "<div class=\"col-md-1\">" +
+                    "<a onclick=\"SomeDeleteRowFunction(this)\">" +
+                    "<img src=\"\/Content\/assets\/img/user_logout.png\" class=\"img-responsive\"><\/a>" +
+                    "</div>" +
+                    "</div>")
+            }
         }
         $('#get_allergy_here1').val("");
 
@@ -3463,20 +3487,88 @@
     function add_allergy2(ee) {
         var GETA = $('#get_allergy_here2').val();
         var DIV = $('#add_allergy_here');
-        if (GETA.trim() != "") {
-            DIV.append("<div class=\"row\">" +
-                "<div class= \"col-md-3\">" + GETA.trim() + "<\/div>" +
-                "<div class=\"col-md-7\">" +
-                "<input type=\"text\" class=\"form-control\">" +
-                "<\/div>" +
-                "<div class=\"col-md-2\">" +
-                "<a onclick=\"SomeDeleteRowFunction(this)\">" +
-                "<img src=\"\/Content\/assets\/img/user_logout.png\" class=\"img-responsive\"><\/a>" +
-                "</div>" +
-                "</div>")
+        if (GETA.includes(" || ")) {
+            tempAlert("Cannot Includ \" || \"", 2000);
+        }
+        else {
+            if (GETA.trim() != "") {
+                DIV.append("<div class=\"row\" style=\"margin-top:1%;\">" +
+                    "<div class= \"col-md-3\"><\/div>" +
+                    "<div class= \"col-md-5 Medication_Allergies_group\">" + GETA.trim() + "<\/div>" +
+
+                    "<div class=\"col-md-1\">" +
+                    "<a onclick=\"SomeDeleteRowFunction(this)\">" +
+                    "<img src=\"\/Content\/assets\/img/user_logout.png\" class=\"img-responsive\"><\/a>" +
+                    "</div>" +
+                    "</div>")
+            }
         }
         $('#get_allergy_here2').val("");
 
     }
+
+    function Medication_add_allergy_TEXT(ee) {
+        var DIV = $('#add_allergy_here');
+                DIV.append("<div class=\"row\" style=\"margin-top:1%;\">" +
+                    "<div class= \"col-md-3\"><\/div>" +
+                    "<div class= \"col-md-5 Medication_Allergies_group\">" + ee + "<\/div>" +
+                    "<div class=\"col-md-1\">" +
+                    "<a onclick=\"SomeDeleteRowFunction(this)\">" +
+                    "<img src=\"\/Content\/assets\/img/user_logout.png\" class=\"img-responsive\"><\/a>" +
+                    "</div>" +
+                    "</div>")
+    }
+
+    function Nutrition_Allergies_Add(ee) {
+        var GETA = $('#Nutrition_Allergies_TEXT').val();
+        var DIV = $('#Nutrition_Allergies_Add_Here');
+        if (GETA.includes(" || ")) {
+            tempAlert("Cannot Includ \" || \"", 2000);
+        }
+        else {
+            if (GETA.trim() != "") {
+                DIV.append("<div style=\"width:99%;margin-top:1%;\">" +
+                    "<div class=\"col-md-3\">" +
+                    "<\/div>" +
+                    "<div class= \"col-md-5 Nutrition_Allergies_group\">" + GETA.trim() + "<\/div>" +
+                    "<div class=\"col-md-1\">" +
+                    "<a onclick=\"SomeDeleteRowFunction(this)\">" +
+                    "<img src=\"\/Content\/assets\/img/user_logout.png\" class=\"img-responsive\"><\/a>" +
+                    "</div>" +
+                    "</div>")
+            }
+        }
+        $('#Nutrition_Allergies_TEXT').val("");
+    }
+
+    function Nutrition_Allergies_Add_TEXT(ee) {
+        var DIV = $('#Nutrition_Allergies_Add_Here');
+        DIV.append("<div style=\"width:99%;margin-top:1%;\">" +
+            "<div class=\"col-md-3\">" +
+            "<\/div>" +
+            "<div class= \"col-md-5 Nutrition_Allergies_group\">" + ee + "<\/div>" +
+            "<div class=\"col-md-1\">" +
+            "<a onclick=\"SomeDeleteRowFunction(this)\">" +
+            "<img src=\"\/Content\/assets\/img/user_logout.png\" class=\"img-responsive\"><\/a>" +
+            "</div>" +
+            "</div>")
+    }
+
+    function AllergyFunction() {
+        var str =""
+        $('.Nutrition_Allergies_group').each(function () {
+            str = str + this.innerHTML + " || ";
+        });
+        str = str.substring(0, str.length - 4);
+        $('#Nutrition_Allergies').val(str);
+
+        var str2 = ""
+        $('.Medication_Allergies_group').each(function () {
+            str2 = str2 + this.innerHTML + " || ";
+        });
+        str2 = str2.substring(0, str2.length - 4);
+        $('#Meciation_Allergies').val(str2);
+    }
+    
 
 </script>
