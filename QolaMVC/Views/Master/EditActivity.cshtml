@@ -48,10 +48,9 @@
 
                         <div class="row">
                             <div class="col-md-8 offset-md-2">
-                                @using (Html.BeginForm("EditActivity", "Master", new { p_ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "p-t-15", @role = "form" }))
+                                @using (Html.BeginForm("EditActivity", "Master", new { p_ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "p-t-15", @role = "form", enctype = "multipart/form-data" }))
                                 {
                                     <div class="row">
-
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="staticEmail" class="col-form-label">Category</label>
@@ -70,31 +69,6 @@
                                                         }
                                                     }
                                                 </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="staticEmail" class="col-form-label">Name (English)</label>
-                                                @Html.TextBoxFor(m => m.EnglishName, new { @class = "form-control" })
-                                                @Html.HiddenFor(m => m.Id, new { @class = "form-control" })
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="staticEmail" class="col-form-label">Name (French)</label>
-                                                @Html.TextBoxFor(m => m.FrenchName, new { @class = "form-control" })
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="staticEmail" class="col-form-label">Color</label>
-                                                <input type="color" class="form-control" id="exampleInputAmount" name="Color">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="staticEmail" class="col-form-label">Fun Picture</label>
-                                                @Html.TextBoxFor(m => m.FunPicture, new { @class = "form-control" })
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -121,6 +95,35 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
+                                                <label for="staticEmail" class="col-form-label">Name (English)</label>
+                                                @Html.TextBoxFor(m => m.EnglishName, new { @class = "form-control" })
+                                                @Html.HiddenFor(m => m.Id, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="staticEmail" class="col-form-label">Name (French)</label>
+                                                @Html.TextBoxFor(m => m.FrenchName, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="staticEmail" class="col-form-label">Fun Picture</label>
+                                                @*@Html.TextBoxFor(m => m.FunPicture, new { @class = "form-control" })*@
+                                                <input type="file" id="FileUpload" name="FileUpload"/>
+                                                <img id="image" src="/Content/assets/Images/Activity_mike/@Model.FunPicture" class="img-responsive" style="margin-left:10%;height:40%;width:25%;">
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="staticEmail" class="col-form-label">Color</label>
+                                                <input type="color" class="form-control" id="exampleInputAmount" name="Color">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
                                                 <label for="staticEmail" class="col-form-label">Show this in assessment</label>
                                                 @Html.CheckBoxFor(m => m.ShowInAssessment)
                                             </div>
@@ -139,6 +142,9 @@
                                             <input type="reset" class="btn btn-danger btn-lg" value="CLEAR">
                                         </div>
                                     </div>
+                                    <input type="hidden" id="colorid" value="@Model.Color" />
+                                    
+
                                 }
                             </div>
                         </div>
@@ -157,3 +163,24 @@
 
 
         @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+<script>
+    $('#exampleInputAmount').val($('#colorid').val());
+
+
+    $(function () {
+        $('#FileUpload').change(function () {
+            var input = this;
+            var url = $(this).val();
+            var ext = url.substring(url.lastIndexOf('.') + 1).toLowerCase();
+            if (input.files && input.files[0] && (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg")) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#image').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+    });
+</script>

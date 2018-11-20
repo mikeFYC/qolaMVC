@@ -208,7 +208,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static void AddActivity(ActivityModel p_Model)
+        public static int AddActivity(ActivityModel p_Model)
         {
             string exception = string.Empty;
 
@@ -227,7 +227,13 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@Province", p_Model.Province);
                 l_Cmd.Parameters.AddWithValue("@ShowInAssessment", p_Model.ShowInAssessment);
                 l_Cmd.Parameters.AddWithValue("@ActivityDisplayTitle", p_Model.DisplayTitle);
+
+                SqlParameter returnVal = l_Cmd.Parameters.Add("tempid", SqlDbType.Int);
+                returnVal.Direction = ParameterDirection.ReturnValue;
                 l_Cmd.ExecuteNonQuery();
+                return Convert.ToInt32(returnVal.Value);
+
+                
             }
             catch (Exception ex)
             {

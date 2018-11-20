@@ -642,7 +642,7 @@ namespace QolaMVC.Controllers
             }
             
 
-            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get();//HomeDAL.GetActivityEvents();
+            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get(home.Id);//HomeDAL.GetActivityEvents();
 
             List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
 
@@ -693,7 +693,10 @@ namespace QolaMVC.Controllers
 
         public JsonResult getEvents()
         {
-            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get();//HomeDAL.GetActivityEvents();
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("Home");
+            ViewBag.Home = home;
+            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get(home.Id);//HomeDAL.GetActivityEvents();
 
             List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
 
@@ -724,7 +727,10 @@ namespace QolaMVC.Controllers
 
         public JsonResult getEvents_mike()
         {
-            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get();//HomeDAL.GetActivityEvents();
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("Home");
+            ViewBag.Home = home;
+            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get(home.Id);//HomeDAL.GetActivityEvents();
 
             List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
 
@@ -2052,7 +2058,7 @@ namespace QolaMVC.Controllers
             }
 
 
-            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get_C2();//HomeDAL.GetActivityEvents();
+            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get_C2(home.Id);//HomeDAL.GetActivityEvents();
 
             List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
 
@@ -2088,7 +2094,10 @@ namespace QolaMVC.Controllers
 
         public JsonResult getEvents_C2()
         {
-            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get_C2();//HomeDAL.GetActivityEvents();
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("Home");
+            ViewBag.Home = home;
+            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get_C2(home.Id);//HomeDAL.GetActivityEvents();
 
             List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
 
@@ -2118,7 +2127,10 @@ namespace QolaMVC.Controllers
 
         public JsonResult getEvents_C2_mike()
         {
-            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get_C2();
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("Home");
+            ViewBag.Home = home;
+            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get_C2(home.Id);
 
             List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
 
@@ -2215,7 +2227,7 @@ namespace QolaMVC.Controllers
             }
 
 
-            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get_C3();//HomeDAL.GetActivityEvents();
+            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get_C3(home.Id);//HomeDAL.GetActivityEvents();
 
             List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
 
@@ -2251,7 +2263,10 @@ namespace QolaMVC.Controllers
 
         public JsonResult getEvents_C3()
         {
-            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get_C3();//HomeDAL.GetActivityEvents();
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("Home");
+            ViewBag.Home = home;
+            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get_C3(home.Id);//HomeDAL.GetActivityEvents();
 
             List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
 
@@ -2281,7 +2296,10 @@ namespace QolaMVC.Controllers
 
         public JsonResult getEvents_C3_mike()
         {
-            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get_C3();
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("Home");
+            ViewBag.Home = home;
+            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get_C3(home.Id);
 
             List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
 
@@ -2376,7 +2394,7 @@ namespace QolaMVC.Controllers
             }
 
 
-            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get_C4();//HomeDAL.GetActivityEvents();
+            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get_C4(home.Id);//HomeDAL.GetActivityEvents();
 
             List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
 
@@ -2412,7 +2430,10 @@ namespace QolaMVC.Controllers
 
         public JsonResult getEvents_C4()
         {
-            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get_C4();//HomeDAL.GetActivityEvents();
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("Home");
+            ViewBag.Home = home;
+            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get_C4(home.Id);//HomeDAL.GetActivityEvents();
 
             List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
 
@@ -2442,7 +2463,10 @@ namespace QolaMVC.Controllers
 
         public JsonResult getEvents_C4_mike()
         {
-            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get_C4();
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("Home");
+            ViewBag.Home = home;
+            var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get_C4(home.Id);
 
             List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
 

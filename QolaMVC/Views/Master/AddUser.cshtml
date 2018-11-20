@@ -17,6 +17,47 @@
         color: red;
     }
 </style>
+<style>
+    .multiselect {
+        width: 200px;
+    }
+
+    .selectBox {
+        position: relative;
+        height:5vh;
+    }
+
+    .selectBox select {
+        width: 100%;
+
+    }
+
+    .overSelect {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        
+    }
+
+    #checkboxes {
+        display: none;
+        border: 1px #dadada solid;
+        position: absolute;
+        background-color: white;
+        z-index: 100;
+    }
+
+    #checkboxes label {
+        display: block;
+        margin-bottom:0 !important;
+    }
+
+    #checkboxes label:hover {
+        background-color: #1e90ff;
+    }
+</style>
 
 <!-- START PAGE-CONTAINER -->
 <div class="page-container">
@@ -32,10 +73,12 @@
                 <div class="container-fluid container-fixed-lg">
                     <!-- <div class="inner"> -->
                     <div class="row align-items-center">
-                        <div class="col-md-8">
+                        <div class="col-md-10">
                             <h3>User</h3>
                         </div>
-
+                        <div class="col-md-2">
+                            <button class="btn btn-primary" onclick="location.href='@Url.Action("Users", "Master")'">Back</button>
+                        </div>
                     </div>
                     <!-- </div> -->
                 </div>
@@ -56,7 +99,6 @@
                             <div class="col-md-8 offset-md-2">
                                 <form action="~/Master/AddUser" method="post">
                                     <div class="row">
-
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="" class="col-form-label">User Type<span class="required_sign">&nbsp;*</span></label>
@@ -90,14 +132,48 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="" class="col-form-label">Home<span class="required_sign">&nbsp;*</span></label>
-                                                <select class="form-control" name="Home">
-                                                    @{
-                                                        foreach (var l_Home in (IEnumerable<QolaMVC.Models.HomeModel>)ViewBag.Homes)
-                                                        {
-                                                            <option value="@l_Home.Id">@l_Home.Name</option>
-                                                        }
-                                                    }
-                                                </select>
+                                                <div class="multiselect" style="width:99%;">
+                                                    <div class="selectBox" onclick="showCheckboxes()">
+                                                        <select style="height: 5vh;">
+                                                            <option>&nbsp;&nbsp;&nbsp;-- Select --</option>
+                                                        </select>
+                                                        <div class="overSelect"></div>
+                                                    </div>
+                                                    <div id="checkboxes">
+                                                        <label for="0"><input type="checkbox" id="0" value="0" class="ALL_check" />ALL</label>
+                                                        <label for="15"><input type="checkbox" id="15" value="15" />Auburn Heights Retirement Residence</label>
+                                                        <label for="5"><input type="checkbox" id="5" value="5" /> Laurel Heights Retirement Residence </label>
+                                                        <label for="26"><input type="checkbox" id="26" value="26" />Lewis Estates</label>
+                                                        <label for="35"><input type="checkbox" id="35" value="35" />Mactaggart Place Retirement Residence</label>
+                                                        <label for="1"><input type="checkbox" id="1" value="1" /> Rutherford Heights Retirement Residence </label>
+                                                        <label for="33"><input type="checkbox" id="33" value="33" />Sage Hill Retirement Residence</label>
+                                                        <label for="31"><input type="checkbox" id="31" value="31" />St. Albert Retirement Residence</label>
+                                                        <label for="3"><input type="checkbox" id="3" value="3" /> Summerwood Village Retirement Residence </label>
+                                                        <label for="30"><input type="checkbox" id="30" value="30" />River Ridge 2 Retirement Residence</label>
+                                                        <label for="4"><input type="checkbox" id="4" value="4" /> River Ridge Retirement Residence </label>
+                                                        <label for="17"><input type="checkbox" id="17" value="17" />Seine River Retirement Residence</label>
+                                                        <label for="6"><input type="checkbox" id="6" value="6" /> Shaftesbury Park Retirement Residence </label>
+                                                        <label for="18"><input type="checkbox" id="18" value="18" />Sturgeon Creek I Retirement Residence</label>
+                                                        <label for="13"><input type="checkbox" id="13" value="13" />Sturgeon Creek II Retirement Residence</label>
+                                                        <label for="12"><input type="checkbox" id="12" value="12" />Victoria Landing Retirement Residence</label>
+                                                        <label for="2"><input type="checkbox" id="2" value="2" /> Beacon Heights Retirement Residence </label>
+                                                        <label for="7"><input type="checkbox" id="7" value="7" /> Cedarcroft Place Retirement Residence </label>
+                                                        <label for="27"><input type="checkbox" id="27" value="27" />Chapel Hill Retirement Residence</label>
+                                                        <label for="32"><input type="checkbox" id="32" value="32" />Cit&#233; Parkway Retirement Residence</label>
+                                                        <label for="34"><input type="checkbox" id="34" value="34" />Eagleson Retirement Residence</label>
+                                                        <label for="28"><input type="checkbox" id="28" value="28" />Mccarthy Place</label>
+                                                        <label for="29"><input type="checkbox" id="29" value="29" />Sample</label>
+                                                        <label for="16"><input type="checkbox" id="16" value="16" />College Park II Retirement Residence</label>
+                                                        <label for="8"><input type="checkbox" id="8" value="8" /> College Park Retirement Residence </label>
+                                                        <label for="14"><input type="checkbox" id="14" value="14" />Preston Park II Retirement Residence</label>
+                                                        <label for="11"><input type="checkbox" id="11" value="11" />Preston Park Retirement Residence</label>
+                                                        <label for="20"><input type="checkbox" id="20" value="20" />465, Boulevard De La Gappe</label>
+                                                        <label for="21"><input type="checkbox" id="21" value="21" />475 Boulevard De La Gappe</label>
+                                                        <label for="22"><input type="checkbox" id="22" value="22" />485 Boulevard De La Gappe</label>
+                                                        <label for="23"><input type="checkbox" id="23" value="23" />495 Boulevard De La Gappe</label>
+                                                        <label for="19"><input type="checkbox" id="19" value="19" />Chateau Symmes Retirement Residence</label>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -108,24 +184,22 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="" class="col-form-label">Last Name<span class="required_sign">&nbsp;*</span></label>                                            
+                                                <label for="" class="col-form-label">Last Name<span class="required_sign">&nbsp;*</span></label>
                                                 @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="" class="col-form-label">User Name</label>
-                                                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" ,disabled="true",style="color:black;"})
+                                                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", disabled = "true", style = "color:black;" })
                                             </div>
                                         </div>
-
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="" class="col-form-label">Password<span class="required_sign">&nbsp;*</span></label>
                                                 @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
                                             </div>
                                         </div>
-
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="" class="col-form-label">Address</label>
@@ -211,15 +285,32 @@
                                                 <label class="form-check-label" for="inlineCheckbox1">Active</label>
                                             </div>
                                         </div>
-
                                     </div>
                                     <br>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <input type="submit" value="SAVE" class="btn btn-danger btn-lg" />
+                                            @{
+                                                if (TempData["EDIT"].ToString() == "true")
+                                                {
+                                                    <input type="submit" value="Update" class="btn btn-danger btn-lg" />
+                                                }
+                                                else
+                                                {
+                                                    <input type="submit" value="SAVE" class="btn btn-danger btn-lg" />
+                                                }
+                                            }
                                             <input type="reset" value="CLEAR" class="btn btn-danger btn-lg" />
+
                                         </div>
                                     </div>
+
+                                    <input type="hidden" name="Home" id="model_home" value="@Model.Home" />
+                                    <input type="hidden" id="model_status" value="@Model.Status" />
+                                    <input type="hidden" id="model_UserType" value="@Model.UserType" />
+                                    <input type="hidden" id="model_province" value="@Model.Province" />
+                                    <input type="hidden" name="ID" id="model_id" value="@Model.ID" />
+                                    <input type="hidden" id="EDIT_INDEX" value="@TempData["EDIT"]" />
+                                    <input type="hidden" id="sameuname" value="@TempData["sameuname"]" />
                                 </form>
                             </div>
                         </div>
@@ -236,6 +327,47 @@
         @RenderPage("~/Views/Shared/_Footer.cshtml")
 
 <script>
+    var home = $('#model_home').val();
+    if (home.trim().substring(0,1)=="0") {
+        var first = $('#checkboxes label input:first');
+        first[0].checked = true;
+    }
+    else {
+        var homesep = home.split(",");
+        for (var ind = 0; ind < homesep.length; ind++) {
+            if (homesep[ind].trim() != "") {
+                var qq = $('input[value=' + homesep[ind] + ']');
+                qq[0].checked = true;
+            }
+        }
+    }
+    var status = $('#model_status').val();
+    if (status == "I") {
+        var statusinput = $('input[name="Status"]');
+        statusinput[0].checked = false;
+    }
+    var usertype = $('#model_UserType').val();    
+    var choose = $('select[name="UserType"] option[value="' + usertype + '"]')
+    if (choose[0] != undefined) {
+        choose[0].selected = true;
+    }
+    var province = $('#model_province').val();
+    var choose = $('select[name="Province"] option[value="' + province + '"]')
+    if (choose[0] != undefined) {
+        choose[0].selected = true;
+    }
+    
+
+    var EDIT_INDEX = $('#EDIT_INDEX').val();
+    if (EDIT_INDEX == "true") {
+        var pass = $('input[name="Password"]');
+        pass[0].disabled = true;
+    }
+
+    if ($('#sameuname').val() == "true") {
+        tempAlert("UserName Duplicate",2000)
+    }
+
     $('#FirstName').change(function () {
         var first = $('#FirstName').val();
         var last = $('#LastName').val();
@@ -256,6 +388,16 @@
         if (check_Alert() == true) {
             var user = $('#UserName');
             user[0].disabled = false;
+            var homestring = "";
+            $('#checkboxes label input').each(function () {
+                if (this.checked == true) {
+                    homestring = homestring + this.value + ",";
+                }
+            });
+            if (homestring.substring(0, 1) == "0") {
+                homestring="0"
+            }
+            $('#model_home').val(homestring);
             form = this;
             form.submit();
         }
@@ -266,6 +408,14 @@
     });
 
     function check_Alert() {
+        var EDIT_INDEX = $('#EDIT_INDEX').val();
+        var indicator = 0;
+        var checks = $('#checkboxes label input');
+        for (var gg = 0; gg < checks.length; gg++) {
+            if (checks[gg].checked == true) {
+                indicator = 1;
+            }
+        }
         if ($('select[name="UserType"]').val() == "0") {
             tempAlert("UserType Needed", 2000);
             return false;
@@ -278,16 +428,56 @@
             tempAlert("LastName Needed", 2000);
             return false;
         }
-        else if ($('input[name="Password"]').val() == "") {
+        else if ($('input[name="Password"]').val() == "" && EDIT_INDEX != "true") {
             tempAlert("Password Needed", 2000);
             return false;
+
         }
-        else if ($('input[name="Password"]').val().length < 5) {
+        else if ($('input[name="Password"]').val().length < 5 && EDIT_INDEX != "true") {
             tempAlert("Password Too Short", 2000);
+            return false;
+        }
+        else if (indicator == 0) {
+            tempAlert("Home Needed", 2000);
             return false;
         }
         else {
             return true;
         }
     }
+
+
+    var expanded = false;
+
+    function showCheckboxes() {
+        var checkboxes = document.getElementById("checkboxes");
+        if (!expanded) {
+            checkboxes.style.display = "block";
+            expanded = true;
+        } else {
+            checkboxes.style.display = "none";
+            expanded = false;
+        }
+    }
+
+
+    $('#checkboxes label input:first').change(function () {
+        var checks = $('#checkboxes label input');
+        if (checks[0].checked == true) {
+            $('#checkboxes label input').each(function () {
+                if (this.value != "0") {
+                    this.checked = false;
+                }
+            });
+        }
+    });
+    $('#checkboxes label input').change(function () {
+        var checks = $('#checkboxes label input');
+        for (var gg = 1; gg < checks.length; gg++) {
+            if (checks[gg].checked == true) {
+                checks[0].checked = false;
+            }
+        }
+    });
+
 </script>

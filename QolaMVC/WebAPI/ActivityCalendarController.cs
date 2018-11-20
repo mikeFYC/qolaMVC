@@ -13,37 +13,37 @@ namespace QolaMVC.WebAPI
     public class ActivityCalendarController : ApiController
     {
         // GET: api/ActivityCalendar
-        public Collection<ActivityEventModel> Get()
+        public Collection<ActivityEventModel> Get(int homeid)
         {
             Collection<ActivityEventModel> l_ActivityEvents = new Collection<ActivityEventModel>();
-            l_ActivityEvents = HomeDAL.GetActivityEvents();
+            l_ActivityEvents = HomeDAL.GetActivityEvents(homeid);
 
 
             return l_ActivityEvents;
         }
 
-        public Collection<ActivityEventModel> Get_C2()
+        public Collection<ActivityEventModel> Get_C2(int homeid)
         {
             Collection<ActivityEventModel> l_ActivityEvents = new Collection<ActivityEventModel>();
-            l_ActivityEvents = HomeDAL.GetActivityEvents_C2();
+            l_ActivityEvents = HomeDAL.GetActivityEvents_C2(homeid);
             return l_ActivityEvents;
         }
 
-        public Collection<ActivityEventModel> Get_C3()
+        public Collection<ActivityEventModel> Get_C3(int homeid)
         {
             Collection<ActivityEventModel> l_ActivityEvents = new Collection<ActivityEventModel>();
-            l_ActivityEvents = HomeDAL.GetActivityEvents_C3();
+            l_ActivityEvents = HomeDAL.GetActivityEvents_C3(homeid);
             return l_ActivityEvents;
         }
 
-        public Collection<ActivityEventModel> Get_C4()
+        public Collection<ActivityEventModel> Get_C4(int homeid)
         {
             Collection<ActivityEventModel> l_ActivityEvents = new Collection<ActivityEventModel>();
-            l_ActivityEvents = HomeDAL.GetActivityEvents_C4();
+            l_ActivityEvents = HomeDAL.GetActivityEvents_C4(homeid);
             return l_ActivityEvents;
         }
         // GET: api/ActivityCalendar/5
-        public string Get(int id)
+        public string Get()
         {
             return "value";
         }

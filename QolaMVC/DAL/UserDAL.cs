@@ -8,6 +8,7 @@ using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using static QolaMVC.Constants.EnumerationTypes;
 
 namespace QolaMVC.DAL
 {
@@ -75,14 +76,16 @@ namespace QolaMVC.DAL
             SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
             try
             {
-                SqlCommand l_Cmd = new SqlCommand(Constants.StoredProcedureName.USP_UPDATE_USER, l_Conn);
-                l_Cmd.Parameters.AddWithValue("@id", updateUsers.ID);
+                SqlCommand l_Cmd = new SqlCommand("Update_User", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@ID", updateUsers.ID);
                 l_Cmd.Parameters.AddWithValue("@homeId", updateUsers.Home);
                 l_Cmd.Parameters.AddWithValue("@firstName", updateUsers.FirstName);
                 l_Cmd.Parameters.AddWithValue("@lastName", updateUsers.LastName);
                 l_Cmd.Parameters.AddWithValue("@userType", updateUsers.UserType);
                 l_Cmd.Parameters.AddWithValue("@userName", updateUsers.UserName);
-                l_Cmd.Parameters.AddWithValue("@password", updateUsers.Password);
+                //l_Cmd.Parameters.AddWithValue("@password", updateUsers.Password);
                 l_Cmd.Parameters.AddWithValue("@address", updateUsers.Address);
                 l_Cmd.Parameters.AddWithValue("@city", updateUsers.City);
                 l_Cmd.Parameters.AddWithValue("@postalCode", updateUsers.PostalCode);
@@ -92,7 +95,7 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@ext", updateUsers.Ext);
                 l_Cmd.Parameters.AddWithValue("@homePhone", updateUsers.HomePhone);
                 l_Cmd.Parameters.AddWithValue("@mobile", updateUsers.Mobile);
-                //l_Cmd.Parameters.AddWithValue("@status", updateUsers.Status);
+                l_Cmd.Parameters.AddWithValue("@status", updateUsers.Status.ToString());
                 l_Cmd.Parameters.AddWithValue("@modifiedby", updateUsers.ModifiedBy);
                 l_Cmd.Parameters.AddWithValue("@country", updateUsers.Country);
                 affected = l_Cmd.ExecuteNonQuery();
@@ -104,8 +107,10 @@ namespace QolaMVC.DAL
             catch (Exception ex)
             {
                 exception = "Users UpdateUsers |" + ex.ToString();
-                throw;
+                return false;
+
             }
+            l_Conn.Close();
             return result;
         }
 
@@ -160,6 +165,8 @@ namespace QolaMVC.DAL
             try
             {
                 SqlCommand l_Cmd = new SqlCommand(Constants.StoredProcedureName.USP_REMOVE_USER, l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 l_Cmd.Parameters.AddWithValue("@id", usersId);
                 affected = l_Cmd.ExecuteNonQuery();
                 if (affected == 1)
@@ -171,6 +178,10 @@ namespace QolaMVC.DAL
             {
                 exception = "Users RemoveUsers |" + ex.ToString();
                 throw;
+            }
+            finally
+            {
+                l_Conn.Close();
             }
             return result;
         }
@@ -640,6 +651,195 @@ namespace QolaMVC.DAL
             }
         }
         #endregion
+
+
+        public static UserModel Get_User_By_Id(int userid)
+        {
+            string exception = string.Empty;
+            Database db;
+            UserModel user;
+            //Common.Home home;
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("Get_User_By_Id", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@id", userid);
+
+                DataSet homesReceive = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(homesReceive);
+
+                if ((homesReceive != null) && homesReceive.Tables[0].Rows.Count > 0)
+                {
+                    int index = 0;
+                    user = new UserModel();
+                    //home = new Common.Home();
+                    user.ID = Convert.ToInt32(homesReceive.Tables[0].Rows[index]["fd_id"]);
+                    user.Home = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_home_id"]); ;
+                    user.FirstName = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_first_name"]);
+                    user.LastName = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_last_name"]);
+                    user.Name = user.FirstName + " " + user.LastName;
+                    user.UserType = Convert.ToInt32(homesReceive.Tables[0].Rows[index]["fd_user_type"]);
+                    user.UserName = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_user_name"]);
+                    user.Password = "";
+                    user.Address = Convert.IsDBNull(homesReceive.Tables[0].Rows[index]["fd_address"]) ? "" : Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_address"]);
+                    user.City = Convert.IsDBNull(homesReceive.Tables[0].Rows[index]["fd_city"]) ? "" : Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_city"]);
+                    user.PostalCode = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_postal_code"]);
+                    user.Province = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_province"]);
+                    user.Email = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_email"]);
+                    user.WorkPhone = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_work_phone"]);
+                    user.Ext = Convert.ToInt32(homesReceive.Tables[0].Rows[index]["fd_ext"]);
+                    user.HomePhone = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_home_phone"]);
+                    user.Mobile = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_mobile"]);
+                    if (homesReceive.Tables[0].Rows[index]["fd_status"].ToString()=="A")
+                    {
+                        user.Status = AvailabilityStatus.A;
+                    }
+                    else
+                    {
+                        user.Status = AvailabilityStatus.I;
+                    }
+                    user.Country = Convert.IsDBNull(homesReceive.Tables[0].Rows[index]["fd_country"]) ? "" : Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_country"]);
+                    return user;
+                }
+                else
+                {
+                    user = new UserModel();
+                    return user;
+                }
+                
+                
+            }
+            catch (Exception ex)
+            {
+                exception = "Get_User_By_Id |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+
+        public static int ResetPassword_mike(int id,string old,string new1)
+        {
+            string exception = string.Empty;
+            UserModel users = new UserModel();
+            int affected = 0;
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand(Constants.StoredProcedureName.USP_RESET_USER_PASSWORD, l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@id", id);
+                l_Cmd.Parameters.AddWithValue("@oldPassword", old);
+                l_Cmd.Parameters.AddWithValue("@newPassword", new1);
+                affected = l_Cmd.ExecuteNonQuery();
+                if (affected == 1)
+                {
+                    //result = Convert.ToInt32(db.GetParameterValue(cmd, "@id"));
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                exception = "Users ResetPassword |" + ex.ToString();
+                return 0;
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+        public static List<UserModel> GetUsersCollections_Filter(string homeIds, int userTypeId, char cStatus,string str)
+        {
+            string exception = string.Empty;
+            Database db;
+            List<UserModel> users = new List<UserModel>();
+            UserModel user;
+            //Common.Home home;
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("Get_User_by_search", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@homeId", homeIds);
+                l_Cmd.Parameters.AddWithValue("@userTypeId", userTypeId);
+                l_Cmd.Parameters.AddWithValue("@status", cStatus);
+                l_Cmd.Parameters.AddWithValue("@str", str);
+
+                DataSet homesReceive = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(homesReceive);
+
+                if ((homesReceive != null) && homesReceive.Tables[0].Rows.Count > 0)
+                {
+                    for (int index = 0; index <= homesReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        user = new UserModel();
+                        //home = new Common.Home();
+                        user.ID = Convert.ToInt32(homesReceive.Tables[0].Rows[index]["fd_id"]);
+                        user.Home = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_home_id"]); ;
+                        user.FirstName = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_first_name"]);
+                        user.LastName = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_last_name"]);
+                        user.Name = Convert.ToString(homesReceive.Tables[0].Rows[index]["Name"]);
+                        user.UserType = Convert.ToInt32(homesReceive.Tables[0].Rows[index]["fd_user_type"]);
+                        user.UserName = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_user_name"]);
+                        user.Password = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_user_name"]);
+                        user.Address = Convert.IsDBNull(homesReceive.Tables[0].Rows[index]["fd_address"]) ? "" : Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_address"]);
+                        user.City = Convert.IsDBNull(homesReceive.Tables[0].Rows[index]["fd_city"]) ? "" : Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_city"]);
+                        user.PostalCode = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_postal_code"]);
+                        user.Province = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_province"]);
+                        user.Email = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_email"]);
+                        user.WorkPhone = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_work_phone"]);
+                        user.Ext = Convert.ToInt32(homesReceive.Tables[0].Rows[index]["fd_ext"]);
+                        user.HomePhone = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_home_phone"]);
+                        user.Mobile = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_mobile"]);
+                        if (homesReceive.Tables[0].Rows[index].ToString() == "A")
+                        {
+                            //user.Status = AvailabilityStatus.A;
+                        }
+                        else
+                        {
+                            //user.Status = AvailabilityStatus.I;
+                        }
+                        user.UserTypeName = Convert.ToString(homesReceive.Tables[0].Rows[index]["UserTypeName"]);
+                        user.HomeName = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_home_name"]);
+                        user.Country = Convert.IsDBNull(homesReceive.Tables[0].Rows[index]["fd_country"]) ? "" : Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_country"]);
+                        users.Add(user);
+                    }
+                }
+                return users;
+            }
+            catch (Exception ex)
+            {
+                exception = "Users GetUsersCollections |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+
+
     }
     #endregion
 }

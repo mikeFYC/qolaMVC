@@ -1127,7 +1127,7 @@ namespace QolaMVC.DAL
 
 
 
-        public static Collection<ActivityEventModel> GetActivityEvents()
+        public static Collection<ActivityEventModel> GetActivityEvents(int homeid)
         {
             string exception = string.Empty;
             Collection<ActivityEventModel> l_Events = new Collection<ActivityEventModel>();
@@ -1141,6 +1141,7 @@ namespace QolaMVC.DAL
             {
                 SqlDataAdapter l_DA = new SqlDataAdapter();
                 SqlCommand l_Cmd = new SqlCommand("spAB_Get_Activity_Events", l_Conn);
+                l_Cmd.Parameters.AddWithValue("@homeid", homeid);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 DataSet homeReceive = new DataSet();
@@ -1252,7 +1253,7 @@ namespace QolaMVC.DAL
         }
 
 
-        public static Collection<ActivityEventModel> GetActivityEvents_C2()
+        public static Collection<ActivityEventModel> GetActivityEvents_C2(int homeid)
         {
             string exception = string.Empty;
             Collection<ActivityEventModel> l_Events = new Collection<ActivityEventModel>();
@@ -1266,6 +1267,7 @@ namespace QolaMVC.DAL
             {
                 SqlDataAdapter l_DA = new SqlDataAdapter();
                 SqlCommand l_Cmd = new SqlCommand("spAB_Get_Activity_Events_C2", l_Conn);
+                l_Cmd.Parameters.AddWithValue("@homeid", homeid);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 DataSet homeReceive = new DataSet();
@@ -1377,7 +1379,7 @@ namespace QolaMVC.DAL
         }
 
 
-        public static Collection<ActivityEventModel> GetActivityEvents_C3()
+        public static Collection<ActivityEventModel> GetActivityEvents_C3(int homeid)
         {
             string exception = string.Empty;
             Collection<ActivityEventModel> l_Events = new Collection<ActivityEventModel>();
@@ -1391,6 +1393,7 @@ namespace QolaMVC.DAL
             {
                 SqlDataAdapter l_DA = new SqlDataAdapter();
                 SqlCommand l_Cmd = new SqlCommand("spAB_Get_Activity_Events_C3", l_Conn);
+                l_Cmd.Parameters.AddWithValue("@homeid", homeid);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 DataSet homeReceive = new DataSet();
@@ -1502,7 +1505,7 @@ namespace QolaMVC.DAL
         }
 
 
-        public static Collection<ActivityEventModel> GetActivityEvents_C4()
+        public static Collection<ActivityEventModel> GetActivityEvents_C4(int homeid)
         {
             string exception = string.Empty;
             Collection<ActivityEventModel> l_Events = new Collection<ActivityEventModel>();
@@ -1516,6 +1519,7 @@ namespace QolaMVC.DAL
             {
                 SqlDataAdapter l_DA = new SqlDataAdapter();
                 SqlCommand l_Cmd = new SqlCommand("spAB_Get_Activity_Events_C4", l_Conn);
+                l_Cmd.Parameters.AddWithValue("@homeid", homeid);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 DataSet homeReceive = new DataSet();
