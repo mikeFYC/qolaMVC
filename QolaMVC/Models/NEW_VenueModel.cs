@@ -15,5 +15,7 @@ namespace QolaMVC.Models
         public string Code { get; set; }
         [Required]
         public string Venue { get; set; }
+
+        public string HomeName { get; set; }
     }
 }

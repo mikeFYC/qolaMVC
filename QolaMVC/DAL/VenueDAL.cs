@@ -41,6 +41,7 @@ namespace QolaMVC.DAL
                     l_Model.Home = Convert.ToString(l_Reader["home"]);
                     l_Model.Code = Convert.ToString(l_Reader["code"]);
                     l_Model.Venue = Convert.ToString(l_Reader["venue"]);
+                    l_Model.HomeName = Convert.ToString(l_Reader["fd_name"]);
 
                     l_Collection.Add(l_Model);
                 }
@@ -101,6 +102,7 @@ namespace QolaMVC.DAL
                     l_Model.Home = Convert.ToString(l_Reader["home"]);
                     l_Model.Code = Convert.ToString(l_Reader["code"]);
                     l_Model.Venue = Convert.ToString(l_Reader["venue"]);
+                    l_Model.HomeName = Convert.ToString(l_Reader["fd_name"]);
 
                 }
 
@@ -132,6 +134,7 @@ namespace QolaMVC.DAL
                     l_Model.Home = Convert.ToString(l_Reader["home"]);
                     l_Model.Code = Convert.ToString(l_Reader["code"]);
                     l_Model.Venue = Convert.ToString(l_Reader["venue"]);
+                    l_Model.HomeName = Convert.ToString(l_Reader["fd_name"]);
 
                     l_Collection.Add(l_Model);
                 }
@@ -202,6 +205,39 @@ namespace QolaMVC.DAL
         }
 
 
+
+
+        public static List<NEW_VenueModel> get_Venue_by_search(string key)
+        {
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                List<NEW_VenueModel> l_Collection = new List<NEW_VenueModel>();
+                l_Conn.Open();
+                SqlCommand l_Cmd = new SqlCommand("get_Venue_by_search", l_Conn);
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@key", key);
+                SqlDataReader l_Reader = l_Cmd.ExecuteReader();
+
+                while (l_Reader.Read())
+                {
+                    NEW_VenueModel l_Model = new NEW_VenueModel();
+                    l_Model.Id = Convert.ToInt32(l_Reader["Id"]);
+                    l_Model.Home = Convert.ToString(l_Reader["home"]);
+                    l_Model.Code = Convert.ToString(l_Reader["code"]);
+                    l_Model.Venue = Convert.ToString(l_Reader["venue"]);
+                    l_Model.HomeName = Convert.ToString(l_Reader["fd_name"]);
+
+                    l_Collection.Add(l_Model);
+                }
+
+                return l_Collection;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(".GetVenue_By_Column\n" + ex.Message);
+            }
+        }
 
 
     }

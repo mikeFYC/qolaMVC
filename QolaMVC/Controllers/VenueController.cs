@@ -12,7 +12,7 @@ namespace QolaMVC.Controllers
     public class VenueController : Controller
     {
         // GET: Suite
-        public ActionResult List(string column = "*", string value = "0")
+        public ActionResult List(string search,string column = "*", string value = "0")
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -25,9 +25,17 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            
+            List<NEW_VenueModel> l_Model;
+            if (search==null || search == "")
+            {
+                l_Model = VenueDAL.GetVenue_By_Column(column, value);
+            }
             //List<NEW_VenueModel> l_Model = VenueDAL.GetAllVenue();
-            List<NEW_VenueModel> l_Model = VenueDAL.GetVenue_By_Column(column, value);
+            
+
+            else{
+                l_Model = VenueDAL.get_Venue_by_search(search);
+            }
             return View(l_Model);
             //return View();
         }
@@ -188,5 +196,23 @@ namespace QolaMVC.Controllers
                 return View();
             }
         }
+
+
+        public void DeleteVenue_mike(int id)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            VenueDAL.DeleteVenue(id);
+        }
+
+
     }
 }

@@ -54,24 +54,18 @@
                                     <div class="row">
                                         <div class="col-md-6 py-4 text-left">
                                             <form class="form-inline">
-@using (Html.BeginForm("List", "Suite", FormMethod.Get))
-{
+                                    @using (Html.BeginForm("List", "Suite", FormMethod.Get))
+                                    {
                                                 <div class="form-group pr-1">
                                                     <div class="input-group">
-                                                        <select class="form-control" name="column" id="column">
-                                                            <option value="*">All fields</option>
-                                                            <option value="0">SUITE NO</option>
-                                                            <option value="1">FLOOR NO</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="input-group">
-                                                        @Html.TextBox("value", null, new { @class = "form-control", @placeholder = "Search for" })
+                                                        @*@Html.TextBox("value", null, new { @class = "form-control", @placeholder = "Search for" })*@
                                                         <!--
-                                                        <input type="text" class="form-control" id="exampleInputAmount" placeholder="Search for">-->
+    <input type="text" class="form-control" id="exampleInputAmount" placeholder="Search for">-->
+                                                        <input class="form-control" id="search_value" value="" />
                                                     </div>
                                                 </div>
-                                                <button type="submit" class="btn btn-danger">Search</button>
-}
+                                                <button type="button" class="btn btn-danger" onclick="search_Suite()">Search</button>
+                                    }
                                             </form>
                                         </div>
                                         <div class="col-md-6 py-4 text-right">
@@ -140,3 +134,10 @@
 
 
         @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+<script>
+    function search_Suite() {
+        var a = $('#search_value').val();
+        window.location.href = "/Suite/List?search=" + a;
+    }
+</script>

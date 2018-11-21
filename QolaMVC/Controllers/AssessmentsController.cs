@@ -110,8 +110,10 @@ namespace QolaMVC.Controllers
             return Redirect(p_ReturnUrl);
         }
 
-        public ActionResult DietaryHistory(string index)
+        public ActionResult DietaryHistory(string index, string ack= "")
         {
+            TempData["ack"] = ack;
+
             var user = (UserModel)TempData["User"];
             var home = (HomeModel)TempData["Home"];
             var resident = (ResidentModel)TempData["Resident"];
@@ -176,7 +178,10 @@ namespace QolaMVC.Controllers
             ViewBag.Resident = resident;
             ViewBag.ProgressNotes = progressNotes;
             ProgressNotesHelper.RegisterSession(resident);
-            return RedirectToAction("DietaryHistory");
+
+            
+
+            return RedirectToAction("DietaryHistory",new { ack="true"});
         }
 
 

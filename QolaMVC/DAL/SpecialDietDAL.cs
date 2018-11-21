@@ -193,7 +193,34 @@ namespace QolaMVC.DAL
         }
 
 
+        public static List<NEW_SpecialDietModel> GetSpecialDiet_By_Search(string value)
+        {
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                List<NEW_SpecialDietModel> l_Collection = new List<NEW_SpecialDietModel>();
+                l_Conn.Open();
 
+                SqlCommand l_Cmd = new SqlCommand("get_special_diet_by_search", l_Conn);
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@value", value);
+                SqlDataReader l_Reader = l_Cmd.ExecuteReader();
+
+                while (l_Reader.Read())
+                {
+                    NEW_SpecialDietModel l_Model = new NEW_SpecialDietModel();
+                    l_Model.Id = Convert.ToInt32(l_Reader["Id"]);
+                    l_Model.Name = Convert.ToString(l_Reader["name"]);
+                    l_Collection.Add(l_Model);
+                }
+
+                return l_Collection;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(".GetSpecialDiet_By_Search\n" + ex.Message);
+            }
+        }
 
     }
 }

@@ -12,22 +12,28 @@ namespace QolaMVC.Controllers
     public class SuiteController : Controller
     {
         // GET: Suite
-        public ActionResult List(string column="*", string value="0")
+        public ActionResult List(string search,string column="*", string value="0")
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
             var resident = (ResidentModel)TempData["Resident"];
-
             ViewBag.User = user;
             ViewBag.Resident = resident;
             ViewBag.Home = home;
-
             TempData.Keep("User");
             TempData.Keep("Home");
+
             TempData.Keep("Resident");
-            
+            List<NEW_SuiteModel> l_Model;
+            if (search==null || search == "")
+            {
+                l_Model = SuiteDAL.GetSuite_By_Column(column, value);
+            }
             //List<NEW_SuiteModel> l_Model = SuiteDAL.GetAllSuite();
-            List<NEW_SuiteModel> l_Model = SuiteDAL.GetSuite_By_Column(column, value);
+            else
+            {
+                l_Model = SuiteDAL.GetSuite_By_Search(search);
+            }
             return View(l_Model);
             //return View();
         }

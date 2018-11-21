@@ -58,16 +58,11 @@
 {
                                                 <div class="form-group pr-1">
                                                     <div class="input-group">
-                                                        <select class="form-control" name="column" id="column">
-                                                            <option value="*">All fields</option>
-                                                            <option value="0">Name</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="input-group">
-                                                        @Html.TextBox("value", null, new { @class = "form-control", @placeholder = "Search for" })
+                                                        @*@Html.TextBox("value", null, new { @class = "form-control", @placeholder = "Search for" })*@
+                                                        <input class="form-control" id="search_value" value="" />
                                                     </div>
                                                 </div>
-                                                <button type="submit" class="btn btn-danger">Search</button>
+                                                <button type="button" class="btn btn-danger" onclick="search_SpecialDiet()">Search</button>
 }
                                             </form>
 
@@ -94,17 +89,16 @@
                                                         <td class="align-middle">@i</td>
                                                         <td class="align-middle">@data.Name</td>
                                                         <td class="align-middle">
-                                                            <button class="btn btn-default btn-xs">
+                                                            <a class="btn btn-success btn-xs" href="~/SpecialDiet/EditSpecialDiet/@data.Id">
                                                                 <i class="fa fa-pencil"></i>
-                                                            </button>
-                                                            @Html.ActionLink("Edit Special Diet", "EditSpecialDiet", new { id = data.Id })
+                                                            </a>
+                                                            @*@Html.ActionLink("SpecialDiet", "EditSpecialDiet", new { id = data.Id })*@
                                                         </td>
                                                         <td class="align-middle">
-
-                                                            <button class="btn btn-danger btn-xs">
+                                                            <a class="btn btn-danger btn-xs" href="~/SpecialDiet/DeleteSpecialDiet/@data.Id">
                                                                 <i class="fa fa-trash-o"></i>
-                                                            </button>
-                                                            @Html.ActionLink("Delete Special Diet", "DeleteSpecialDiet", new { id = data.Id })
+                                                            </a>
+                                                            @*@Html.ActionLink("DeleteSpecialDiet", "SpecialDiet", new { id = data.Id })*@
                                                         </td>
                                                     </tr>
 
@@ -131,3 +125,10 @@
 
 
         @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+<script>
+    function search_SpecialDiet() {
+        var a = $('#search_value').val();
+        window.location.href = "/SpecialDiet/List?search=" + a;
+    }
+</script>

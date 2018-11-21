@@ -59,17 +59,11 @@
 
                                                 <div class="form-group pr-1">
                                                     <div class="input-group">
-                                                        <select class="form-control" name="column" id="column">
-                                                            <option value="*">All fields</option>
-                                                            <option value="0">Dine Time</option>
-                                                            <option value="1">Short Name</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="input-group">
-                                                        @Html.TextBox("value", null, new { @class = "form-control", @placeholder = "Search for" })
+                                                        @*@Html.TextBox("value", null, new { @class = "form-control", @placeholder = "Search for" })*@
+                                                        <input class="form-control" id="search_value" value="" />
                                                     </div>
                                                 </div>
-                                                <button type="submit" class="btn btn-danger">Search</button>
+                                                <button type="button" class="btn btn-danger" onclick="search_DineTime()">Search</button>
 }
                                             </form>
                                         </div>
@@ -97,17 +91,16 @@
                                                         <td class="align-middle">@data.DineTime</td>
                                                         <td class="align-middle">@data.ShortName</td>
                                                         <td class="align-middle">
-                                                            <button class="btn btn-default btn-xs">
+                                                            <a class="btn btn-success btn-xs" href="~/DineTime/EditDineTime/@data.Id">
                                                                 <i class="fa fa-pencil"></i>
-                                                            </button>
-                                                            @Html.ActionLink("Edit Dine Time", "EditDineTime", new { id = data.Id })
+                                                            </a>
+                                                            @*@Html.ActionLink("Edit Dine Time", "EditDineTime", new { id = data.Id })*@
                                                         </td>
                                                         <td class="align-middle">
-
-                                                            <button class="btn btn-danger btn-xs">
+                                                            <a class="btn btn-danger btn-xs" href="~/DineTime/DeleteDineTime/@data.Id">
                                                                 <i class="fa fa-trash-o"></i>
-                                                            </button>
-                                                            @Html.ActionLink("Delete Dine Time", "DeleteDineTime", new { id = data.Id })
+                                                            </a>
+                                                            @*@Html.ActionLink("Delete Dine Time", "DeleteDineTime", new { id = data.Id })*@
                                                         </td>
                                                     </tr>
 
@@ -134,3 +127,10 @@
 
 
         @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+        <script>
+            function search_DineTime() {
+                var a = $('#search_value').val();
+                window.location.href = "/DineTime/List?search=" + a;
+            }
+        </script>

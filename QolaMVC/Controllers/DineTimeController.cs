@@ -11,22 +11,30 @@ namespace QolaMVC.Controllers
     public class DineTimeController : Controller
     {
         // GET: Suite
-        public ActionResult List(string column = "*", string value = "0")
+        public ActionResult List(string search,string column = "*", string value = "0")
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
             var resident = (ResidentModel)TempData["Resident"];
-
             ViewBag.User = user;
             ViewBag.Resident = resident;
             ViewBag.Home = home;
-
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            
+
+            List<NEW_DineTimeModel> l_Model;
             // List<NEW_DineTimeModel> l_Model = DineTimeDAL.GetAllDineTime();
-            List<NEW_DineTimeModel> l_Model = DineTimeDAL.GetDineTime_By_Column(column, value);
+            if (search == null || search == "")
+            {
+                l_Model = DineTimeDAL.GetDineTime_By_Column(column, value);
+            }
+            //List<NEW_SpecialDietModel> l_Model = SpecialDietDAL.GetAllSpecialDiet();
+            else
+            {
+                l_Model = DineTimeDAL.GetDineTime_By_Search(search);
+            }
+            
             return View(l_Model);
             //return View();
         }

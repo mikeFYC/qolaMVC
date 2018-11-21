@@ -231,7 +231,38 @@ namespace QolaMVC.DAL
         }
 
 
+        public static List<NEW_SuiteModel> GetSuite_By_Search(string value)
+        {
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                List<NEW_SuiteModel> l_Collection = new List<NEW_SuiteModel>();
+                l_Conn.Open();
 
+                SqlCommand l_Cmd = new SqlCommand("get_suite_by_search", l_Conn);
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@value", value);
+                SqlDataReader l_Reader = l_Cmd.ExecuteReader();
+
+                while (l_Reader.Read())
+                {
+                    NEW_SuiteModel l_Model = new NEW_SuiteModel();
+                    l_Model.Id = Convert.ToInt32(l_Reader["Id"]);
+                    l_Model.Home = Convert.ToString(l_Reader["Home"]);
+                    l_Model.Suite_No = Convert.ToInt32(l_Reader["suite_no"]);
+                    l_Model.Floor_No = Convert.ToInt32(l_Reader["floor_no"]);
+                    l_Model.No_Of_Rooms = Convert.ToInt32(l_Reader["no_of_rooms"]);
+
+                    l_Collection.Add(l_Model);
+
+                }
+                return l_Collection;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(".GetSuite_By_Search\n" + ex.Message);
+            }
+        }
 
     }
 }

@@ -298,18 +298,21 @@
                                     <tbody id="Allergies">
                                         @for (var a = 0; a < Model.Allergies.Count; a++)
                                         {
-                                            <tr>
-                                                <td>
-                                                    <input type='hidden' name=Allergies[@a].ID value=@Model.Allergies[a].ID />
-                                                    <input type='hidden' name=Allergies[@a].Name value="@Model.Allergies[a].Name" />@Model.Allergies[a].Name
-                                                </td>
-                                                <td>
-                                                    <input type='text' class='form-control' name=Allergies[@a].Note value="@Model.Allergies[a].Note" />
-                                                </td>
-                                                <td>
-                                                    <input type='button' value='delete' class='btn btn-danger'>
-                                                </td>
-                                            </tr>
+                                            if (Model.Allergies[a].Name != null)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <input type='hidden' name=Allergies[@a].ID value=@Model.Allergies[a].ID />
+                                                        <input type='hidden' name=Allergies[@a].Name value="@Model.Allergies[a].Name" />@Model.Allergies[a].Name
+                                                    </td>
+                                                    <td>
+                                                        <input type='text' class='form-control' name=Allergies[@a].Note value="@Model.Allergies[a].Note" />
+                                                    </td>
+                                                    <td>
+                                                        <input type='button' value='delete' class='btn btn-danger'>
+                                                    </td>
+                                                </tr>
+                                            }
                                         }
                                     </tbody>
                                 </table>
@@ -343,7 +346,17 @@
                             <div class="row">
                                 <div class="col-md-12 text-right">
                                     <br>
-                                    <button class="btn btn-danger btn-lg">SAVE</button>
+                                    @{
+                                        if (TempData["ack"].ToString() == "true")
+                                        {
+                                            <button type="button" class="btn btn-danger btn-lg">Acknowledge</button>
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-danger btn-lg">SAVE</button>
+                                        }
+                                    }
+
                                 </div>
                                 <input id="hiddeninput1" type="hidden" value="@TempData["index"]" />
                             </div>
@@ -366,8 +379,11 @@
                     var name = $("#allergies_TEXT").val();
                     var id = $("#allergies_TEXT")
                     idreal = id[0].getAttribute('name');
-                    var markup = "<tr><td><input type='hidden' name='Allergies[" + count + "].ID' value='" + idreal + "'/><input type='hidden' name='Allergies[" + count + "].Name' value='" + name + "'/>" + name + "</td> <td><input type='text' class='form-control' name='Allergies[" + count + "].Note' /></td> <td><input type='button' value='delete' class='btn btn-danger'></td></tr > ";
-                    $("#Allergies").append(markup);
+                    if (name.trim() != "") {
+                        var markup = "<tr><td><input type='hidden' name='Allergies[" + count + "].ID' value='" + idreal + "'/><input type='hidden' name='Allergies[" + count + "].Name' value='" + name + "'/>" + name + "</td> <td><input type='text' class='form-control' name='Allergies[" + count + "].Note' /></td> <td><input type='button' value='delete' class='btn btn-danger'></td></tr > ";
+                        $("#Allergies").append(markup);
+                    }
+
                     $('#allergies_TEXT').val('');
                 });
 

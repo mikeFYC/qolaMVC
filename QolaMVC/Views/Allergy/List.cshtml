@@ -54,18 +54,19 @@
 @using (Html.BeginForm("List", "Allergy", FormMethod.Get))
 {
                                                 <div class="form-group pr-1">
-                                                    <div class="input-group">
+                                                    @*<div class="input-group">
                                                         <select class="form-control" name="column" id="column">
                                                             <option value="*">All fields</option>
                                                             <option value="0">Allergy Name</option>
                                                             <option value="1">Category</option>
                                                         </select>
-                                                    </div>
+                                                    </div>*@
                                                     <div class="input-group">
-                                                       @Html.TextBox("value", null, new { @class = "form-control", @placeholder = "Search for" })
+                                                        @*@Html.TextBox("value", null, new { @class = "form-control", @placeholder = "Search for" })*@
+                                                        <input class="form-control" id="search_value" value="" />
                                                     </div>
                                                 </div>
-                                                <button type="submit" class="btn btn-danger">Search</button>
+                                                <button type="button" class="btn btn-danger" onclick="search_Allergy()">Search</button>
 }
                                             </form>
                                         </div>
@@ -130,3 +131,10 @@
 
 
         @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+        <script>
+            function search_Allergy() {
+                var a = $('#search_value').val();
+                window.location.href = "/Allergy/List?search=" + a;
+            }
+        </script>
