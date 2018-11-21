@@ -106,7 +106,8 @@ namespace QolaMVC.DAL
                                 " and GETDATE()> SH.fd_move_in_date" +
                                 " and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')" +
                                 " and DA.DateEntered > @create" +
-                                " and DA.Id not in (select distinct fd_DA_id from [tbl_AB_DietaryAssessment_Acknowledge] where fd_user_id =" + userid + ")";
+                                " and DA.Id not in (select distinct fd_DA_id from [tbl_AB_DietaryAssessment_Acknowledge] where fd_user_id =" + userid + ")"+
+                                " and DA.DIFF !=''";
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
             if (rd.HasRows)
@@ -125,6 +126,26 @@ namespace QolaMVC.DAL
                 }
             conn.Close();
             return l_Json;
+        }
+
+        public static bool DU_Acknowledge(string DAid, string userid)
+        {
+            try
+            {
+                SqlConnection conn = new SqlConnection();
+                conn.ConnectionString = Constants.ConnectionString.PROD;
+                conn.Open();
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = "insert into [tbl_AB_DietaryAssessment_Acknowledge] VALUES ("+ userid +","+ DAid+",GETDATE());";
+                cmd.Connection = conn;
+                cmd.ExecuteReader();
+                conn.Close();
+                return true;
+            }
+            catch(Exception ee)
+            {
+                return false;
+            }
         }
 
         public static List<dynamic> get_IAA_list(int homeid)

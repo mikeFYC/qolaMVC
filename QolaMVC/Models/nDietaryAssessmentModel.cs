@@ -9,7 +9,7 @@ namespace QolaMVC.Models
     public class nDietaryAssessmentModel
     {
         public int Id { get; set; }
-        public string Apetite { get; set; }
+        public string Appetite { get; set; }
         public string NutritionalStatus { get; set; }
         public string Risk { get; set; }
         public string AssistiveDevices { get; set; }
@@ -23,7 +23,8 @@ namespace QolaMVC.Models
         public ResidentModel Resident { get; set; }
         public UserModel EnteredBy { get; set; }
         public DateTime DateEntered { get; set; }
-
         public bool noAllergy { get; set; }
+
+        public string DIFF { get; set; }
     }
 }

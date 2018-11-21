@@ -185,6 +185,8 @@ namespace QolaMVC.Controllers
         }
 
 
+
+
         public ActionResult AddDietaryAssessment(nDietaryAssessmentModel p_Model)
         {
             var home = (HomeModel)TempData["Home"];
@@ -210,6 +212,73 @@ namespace QolaMVC.Controllers
                     if (prop.GetValue(p_Model) == null) { prop.SetValue(p_Model, ""); }
                 }
             }
+
+
+            var l_DietaryAssessment = AssessmentDAL.GetResidentDietaryAssesments(resident.ID);
+            if (l_DietaryAssessment.Count >= 1)
+            {
+                if (l_DietaryAssessment[0].Appetite != p_Model.Appetite) p_Model.DIFF = p_Model.DIFF + "Appetite,";
+                if (l_DietaryAssessment[0].NutritionalStatus != p_Model.NutritionalStatus) p_Model.DIFF = p_Model.DIFF + "NutritionalStatus,";
+                if (l_DietaryAssessment[0].Risk != p_Model.Risk) p_Model.DIFF = p_Model.DIFF + "Risk,";
+                if (l_DietaryAssessment[0].AssistiveDevices != p_Model.AssistiveDevices) p_Model.DIFF = p_Model.DIFF + "AssistiveDevices,";
+                if (l_DietaryAssessment[0].Texture != p_Model.Texture) p_Model.DIFF = p_Model.DIFF + "Texture,";
+                if (l_DietaryAssessment[0].Other != p_Model.Other) p_Model.DIFF = p_Model.DIFF + "Other,";
+                if (l_DietaryAssessment[0].Likes != p_Model.Likes) p_Model.DIFF = p_Model.DIFF + "Likes,";
+                if (l_DietaryAssessment[0].DisLikes != p_Model.DisLikes) p_Model.DIFF = p_Model.DIFF + "DisLikes,";
+                if (l_DietaryAssessment[0].Notes != p_Model.Notes) p_Model.DIFF = p_Model.DIFF + "Notes,";
+                if (l_DietaryAssessment[0].noAllergy != p_Model.noAllergy) p_Model.DIFF = p_Model.DIFF + "noAllergy,";
+
+                if(p_Model.Allergies != null)
+                {
+                    foreach (var a in p_Model.Allergies)
+                    {
+                        bool result = false;
+                        foreach (var b in l_DietaryAssessment[0].Allergies)
+                        {
+                            if (b.Name == a.Name)
+                            {
+                                result = true;
+                                break;
+                            }
+                        }
+                        if (result == false)
+                        {
+                            p_Model.DIFF = p_Model.DIFF + "Allergy[]" + a.ID.ToString() + ",";
+                        }
+                    }
+                }
+                
+                if(p_Model.Diet != null)
+                {
+                    foreach (string a in p_Model.Diet)
+                    {
+                        bool result = false;
+                        foreach (string b in l_DietaryAssessment[0].Diet)
+                        {
+                            if (b == a)
+                            {
+                                result = true;
+                                break;
+                            }
+                        }
+                        if (result == false)
+                        {
+                            p_Model.DIFF = p_Model.DIFF + "Diet[]" + a + ",";
+                        }
+                    }
+                }
+                
+
+
+
+                if (p_Model.DIFF.Length>0) p_Model.DIFF = p_Model.DIFF.Substring(0, p_Model.DIFF.Length - 1);
+            }
+            else
+            {
+                p_Model.DIFF = "";
+            }
+
+
 
             AssessmentDAL.AddDietaryAssesment(p_Model);
             

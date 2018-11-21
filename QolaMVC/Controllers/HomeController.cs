@@ -4308,6 +4308,26 @@ namespace QolaMVC.Controllers
         }
 
         [HttpGet]
+        public int DU_Acknowledge(string id)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            bool result = to_do_list_function.DU_Acknowledge(id,user.ID.ToString());
+            if (result == true)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+            
+        }
+
+
+        [HttpGet]
         public ActionResult IAA_CLICK()
         {
             var home = (HomeModel)TempData["Home"];

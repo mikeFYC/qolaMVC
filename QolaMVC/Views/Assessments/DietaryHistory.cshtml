@@ -70,7 +70,8 @@
                                     }
                                     else
                                     {
-                                        <option value="0"></option>}
+                                        <option value="0"></option>
+                                    }
 
                                 </select>
                                 <input type="hidden" id="ID_ID" name="Id" value="" />
@@ -125,11 +126,11 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="" class="col-form-label">Appetite</label>
-                                        <select name="Apetite" class="form-control">
+                                        <select name="Appetite" class="form-control">
                                             @{
-                                                if (Model.Apetite != null && Model.Apetite != string.Empty)
+                                                if (Model.Appetite != null && Model.Appetite != string.Empty)
                                                 {
-                                                    <option selected value=@Model.Apetite>@Model.Apetite</option>
+                                                    <option selected value=@Model.Appetite>@Model.Appetite</option>
                                                 }
                                             }
                                             <option value="">Select</option>
@@ -190,7 +191,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <h5 style="font-weight:bold;color:black;">Diet</h5>
+                                    <h5 id="dietHeader" style="font-weight:bold;color:black;width:8%;">Diet</h5>
                                 </div>
 
                                 <br>
@@ -287,7 +288,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <table style="width:80%;">
+                                <table style="width:80%;" id="allergytable">
                                     <thead>
                                         <tr>
                                             <th>Diet Allergy</th>
@@ -335,7 +336,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <h5 style="font-weight:bold;color:black;">Notes</h5>
+                                    <h5 id="notesHeader" style="font-weight:bold;color:black;width:8%;">Notes</h5>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
@@ -349,7 +350,7 @@
                                     @{
                                         if (TempData["ack"].ToString() == "true")
                                         {
-                                            <button type="button" class="btn btn-danger btn-lg">Acknowledge</button>
+                                            <button type="button" class="btn btn-danger btn-lg" onclick="DU_Acknowledge()">Acknowledge</button>
                                         }
                                         else
                                         {
@@ -359,6 +360,10 @@
 
                                 </div>
                                 <input id="hiddeninput1" type="hidden" value="@TempData["index"]" />
+                                <input id="hiddeninput2" type="hidden" value="@Model.Id" />
+                                <input id="hiddeninput3" type="hidden" value="@ViewBag.Home.Id" />
+                                <input id="hiddeninput4" type="hidden" value="@Model.DIFF" />
+                                <input id="hiddeninput5" type="hidden" value="@TempData["ack"]" />
                             </div>
                         }
                     </div>
@@ -371,10 +376,10 @@
         <!-- END PAGE CONTENT -->
 
         @RenderPage("~/Views/Shared/_Footer.cshtml")
-        <script type="text/javascript">
-            $(document).ready(function () {
+<script type="text/javascript">
+   $(document).ready(function () {
                 
-                $("#AddAllergy").click(function () {
+        $("#AddAllergy").click(function () {
                     var count = $('#Allergies tr').length;
                     var name = $("#allergies_TEXT").val();
                     var id = $("#allergies_TEXT")
@@ -433,7 +438,7 @@
                 document.getElementById("allergies_TEXT").name = "";
             }
 
-        </script>
+</script>
 
         <script>
             var index_date = $('#hiddeninput1').val();
@@ -450,5 +455,55 @@
                 }
 
             }
+
+
+            function DU_Acknowledge() {
+                var id = $('#hiddeninput2').val();
+                var homeid = $('#hiddeninput3').val();
+                $.get("/Home/DU_Acknowledge", { id: id }, function (data) {
+                    if (data == 1) {
+                        window.location.href = "/Home/Menu/?p_HomeId=" + homeid; 
+                    }
+                    else {
+                        tempAlert("Error Happened", 2000);
+                    }
+                });
+            }
+
+
+            var DIFF = $('#hiddeninput4').val();
+            var ack = $('#hiddeninput5').val();
+            if (ack == "true") {
+                if (DIFF != "") {
+                    var DIFF_split = DIFF.split(",");
+                    var labels = $("label");
+                    for (var a = 0; a < DIFF_split.length; a++) {
+                        if (DIFF_split[a].includes("Allergy[]") == true) {
+                            $('#allergytable').css("background-color", "yellow");
+                        }
+                        else if (DIFF_split[a].includes("Diet[]") == true) {
+                            $('#dietHeader').css("background-color", "yellow");     
+                        }
+                        else if (DIFF_split[a].includes("Notes") == true) {
+                            $('#notesHeader').css("background-color", "yellow");
+                        }
+                        else if (DIFF_split[a].includes("noAllergy") == true) {
+                            labels[12].style.backgroundColor = "yellow";
+                        }
+                        else {
+                            for (var b = 0; b < labels.length; b++) {
+                                if (DIFF_split[a].toLowerCase().replace(" ", "") == labels[b].innerHTML.toLowerCase().replace(" ", "")) {
+                                    labels[b].style.backgroundColor = "yellow";
+                                    break;
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+
+
+
         </script>
 

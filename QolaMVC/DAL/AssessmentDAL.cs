@@ -1218,7 +1218,9 @@ namespace QolaMVC.DAL
 
                 l_Cmd.Parameters.AddWithValue("@Other", p_Model.Other);
                 l_Cmd.Parameters.AddWithValue("@NutritionalStatus", p_Model.NutritionalStatus);
-                l_Cmd.Parameters.AddWithValue("@Apetite", p_Model.Apetite);
+                l_Cmd.Parameters.AddWithValue("@Apetite", p_Model.Appetite);
+                l_Cmd.Parameters.AddWithValue("@DIFF", p_Model.DIFF);
+
                 DataSet dataReceive = new DataSet();
 
                 l_DA.SelectCommand = l_Cmd;
@@ -1389,12 +1391,13 @@ namespace QolaMVC.DAL
                         l_Assessment.Risk = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Risk"]);
                         l_Assessment.AssistiveDevices = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["AssistiveDevices"]);
                         l_Assessment.Texture = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Texture"]);
-                        l_Assessment.Apetite = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Apetite"]);
+                        l_Assessment.Appetite = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Apetite"]);
                         l_Assessment.Other = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Other"]);
                         l_Assessment.Likes = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Likes"]);
                         l_Assessment.DisLikes = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["DisLikes"]);
                         l_Assessment.Notes = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Notes"]);
                         l_Assessment.DateEntered = Convert.ToDateTime(AssesmentsReceive.Tables[0].Rows[index]["DateEntered"]);
+                        l_Assessment.DIFF = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["DIFF"]);
 
                         SqlDataAdapter l_DA_Diets = new SqlDataAdapter();
                         SqlCommand l_Cmd_Diets = new SqlCommand("spAB_Get_Resident_DietaryAssessmentDiets", l_Conn);
