@@ -791,6 +791,11 @@ namespace QolaMVC.DAL
 
                     }
                 }
+                if (resident.MaritalStatus == 1) resident.MaritalStatustext = "Married";
+                else if (resident.MaritalStatus == 2) resident.MaritalStatustext = "Widowed";
+                else if (resident.MaritalStatus == 3) resident.MaritalStatustext = "Single";
+                else if(resident.MaritalStatus == 4) resident.MaritalStatustext = "Divorced";
+                else resident.MaritalStatustext = "";
                 return resident;
             }
             catch (Exception ex)

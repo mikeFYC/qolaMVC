@@ -273,6 +273,7 @@ namespace QolaMVC.Models
             get { return _maritalStatus; }
             set { _maritalStatus = value; }
         }
+        public string MaritalStatustext{ get;set;}
 
         public string SignificatOther
         {
