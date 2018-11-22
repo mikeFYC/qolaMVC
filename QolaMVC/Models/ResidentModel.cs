@@ -352,6 +352,8 @@ namespace QolaMVC.Models
             set { _shortName = value; }
         }
 
+        public string ShortName2 { get ; set ; }
+
         public string InsuranceCompany
         {
             get { return _insuranceCompany; }

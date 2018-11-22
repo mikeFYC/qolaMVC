@@ -1597,6 +1597,9 @@ namespace QolaMVC.DAL
                             resident.LastName = Convert.ToString(residentsReceive.Tables[0].Rows[index]["fd_last_name"]);
                             resident.ResidentImage = Convert.ToString(residentsReceive.Tables[0].Rows[index]["fd_image"]);
                             resident.ShortName = Convert.ToString(residentsReceive.Tables[0].Rows[index]["searchId"]);
+
+                            resident.ShortName2 = Convert.ToString(residentsReceive.Tables[0].Rows[index]["searchId_2"]);
+
                             resident.QolaResident = (QolaResident)Convert.ToChar(residentsReceive.Tables[0].Rows[index]["fd_qola_resident"]);
                             residents.Add(resident);
                         }

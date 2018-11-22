@@ -37,12 +37,18 @@ namespace QolaMVC.Controllers
             foreach(var r in residents)
             {
                 dynamic l_J = new System.Dynamic.ExpandoObject();
-                l_J.label = r.ShortName;
+                l_J.label = r.ShortName;          
                 l_J.FirstName = r.FirstName;
                 l_J.LastName = r.LastName;
                 l_J.SuiteNo = r.SuiteNo;
                 l_J.value = r.ID;
                 l_J.image = r.ResidentImage;
+                l_J.label2 = r.ShortName2;
+                if (l_J.label2 != "")
+                {
+                    l_J.label2 = l_J.label + l_J.label2;
+                    l_J.label = "";
+                }
                 l_Json.Add(l_J);
             }
             return Json(l_Json, JsonRequestBehavior.AllowGet);
