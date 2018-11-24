@@ -333,6 +333,72 @@ namespace QolaMVC.Controllers
             return View(resident);
         }
 
+        public ActionResult ERDetails()
+        {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            #region Change Home Work Cell back to First Second and Third Phone
+
+            if (resident.HomePhoneType1 == 1) { resident.First_phone1 = resident.HomePhone1; resident.First_phone_type1 = 1; }
+            if (resident.HomePhoneType1 == 2) { resident.Second_phone1 = resident.HomePhone1; resident.Second_phone_type1 = 1; }
+            if (resident.HomePhoneType1 == 3) { resident.Third_phone1 = resident.HomePhone1; resident.Third_phone_type1 = 1; }
+
+            if (resident.HomePhoneType2 == 1) { resident.First_phone2 = resident.HomePhone2; resident.First_phone_type2 = 1; }
+            if (resident.HomePhoneType2 == 2) { resident.Second_phone2 = resident.HomePhone2; resident.Second_phone_type2 = 1; }
+            if (resident.HomePhoneType2 == 3) { resident.Third_phone2 = resident.HomePhone2; resident.Third_phone_type2 = 1; }
+
+            if (resident.HomePhoneType3 == 1) { resident.First_phone3 = resident.HomePhone3; resident.First_phone_type3 = 1; }
+            if (resident.HomePhoneType3 == 2) { resident.Second_phone3 = resident.HomePhone3; resident.Second_phone_type3 = 1; }
+            if (resident.HomePhoneType3 == 3) { resident.Third_phone3 = resident.HomePhone3; resident.Third_phone_type3 = 1; }
+
+
+
+            if (resident.BusinessPhoneType1 == 1) { resident.First_phone1 = resident.BusinessPhone1; resident.First_phone_type1 = 2; }
+            if (resident.BusinessPhoneType1 == 2) { resident.Second_phone1 = resident.BusinessPhone1; resident.Second_phone_type1 = 2; }
+            if (resident.BusinessPhoneType1 == 3) { resident.Third_phone1 = resident.BusinessPhone1; resident.Third_phone_type1 = 2; }
+
+            if (resident.BusinessPhoneType2 == 1) { resident.First_phone2 = resident.BusinessPhone2; resident.First_phone_type2 = 2; }
+            if (resident.BusinessPhoneType2 == 2) { resident.Second_phone2 = resident.BusinessPhone2; resident.Second_phone_type2 = 2; }
+            if (resident.BusinessPhoneType2 == 3) { resident.Third_phone2 = resident.BusinessPhone2; resident.Third_phone_type2 = 2; }
+
+            if (resident.BusinessPhoneType3 == 1) { resident.First_phone3 = resident.BusinessPhone3; resident.First_phone_type3 = 2; }
+            if (resident.BusinessPhoneType3 == 2) { resident.Second_phone3 = resident.BusinessPhone3; resident.Second_phone_type3 = 2; }
+            if (resident.BusinessPhoneType3 == 3) { resident.Third_phone3 = resident.BusinessPhone3; resident.Third_phone_type3 = 2; }
+
+
+
+            if (resident.CellPhoneType1 == 1) { resident.First_phone1 = resident.CellPhone1; resident.First_phone_type1 = 3; }
+            if (resident.CellPhoneType1 == 2) { resident.Second_phone1 = resident.CellPhone1; resident.Second_phone_type1 = 3; }
+            if (resident.CellPhoneType1 == 3) { resident.Third_phone1 = resident.CellPhone1; resident.Third_phone_type1 = 3; }
+
+            if (resident.CellPhoneType2 == 1) { resident.First_phone2 = resident.CellPhone2; resident.First_phone_type2 = 3; }
+            if (resident.CellPhoneType2 == 2) { resident.Second_phone2 = resident.CellPhone2; resident.Second_phone_type2 = 3; }
+            if (resident.CellPhoneType2 == 3) { resident.Third_phone2 = resident.CellPhone2; resident.Third_phone_type2 = 3; }
+
+            if (resident.CellPhoneType3 == 1) { resident.First_phone3 = resident.CellPhone3; resident.First_phone_type3 = 3; }
+            if (resident.CellPhoneType3 == 2) { resident.Second_phone3 = resident.CellPhone3; resident.Second_phone_type3 = 3; }
+            if (resident.CellPhoneType3 == 3) { resident.Third_phone3 = resident.CellPhone3; resident.Third_phone_type3 = 3; }
+
+            #endregion
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            ViewBag.Resident = resident;
+
+            PlanOfCareModel l_Model = GET_one_CarePlan();
+            ViewBag.careplan = l_Model;
+
+
+
+            return new Rotativa.ViewAsPdf("ERDetails", resident);
+            //return View(resident);
+        }
+
         public ActionResult ResidentMenu2(int p_ResidentId)
         {
             var user = (UserModel)TempData["User"];

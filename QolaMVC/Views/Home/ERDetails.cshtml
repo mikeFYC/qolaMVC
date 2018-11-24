@@ -1,0 +1,458 @@
+﻿@model QolaMVC.Models.ResidentModel
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+
+<style>
+
+
+    #pills-care .ptitle {
+        font-family: Times,serif;
+        font-size: 15px;
+        color: rgb(0,0,0);
+        font-weight: bold;
+        font-style: normal;
+        text-decoration: none;
+    }
+
+    #pills-care p {
+        margin-bottom: 5px !important;
+    }
+
+    #pills-care .ptitle_grey {
+        font-family: Times,serif;
+        font-size: 15px;
+        color: rgb(0,0,0);
+        font-weight: bold;
+        font-style: normal;
+        text-decoration: none;
+        background-color: darkgrey;
+        border-bottom: 2px solid black;
+    }
+
+    #pills-care .table_grey {
+        font-family: Times,serif;
+        font-size: 15px;
+        color: rgb(0,0,0);
+        font-weight: bold;
+        text-decoration: none;
+        background-color: darkgrey;
+    }
+
+    #pills-care .ptitle_nocolor_noborderB {
+        font-family: Times,serif;
+        font-size: 15px;
+        color: rgb(0,0,0);
+        font-weight: bold;
+        font-style: normal;
+        text-decoration: none;
+    }
+
+    #pills-care .ptitle_color_noborderB {
+        font-family: Times,serif;
+        font-size: 15px;
+        color: rgb(0,0,0);
+        font-weight: bold;
+        font-style: normal;
+        text-decoration: none;
+        background-color: darkgrey;
+    }
+
+    .borderB {
+        border-bottom: 2px solid black;
+    }
+
+    #pills-care .pcontent {
+        font-family: Times,serif;
+        font-size: 15px;
+        color: rgb(0,0,0);
+        font-weight: normal;
+        font-style: normal;
+        text-decoration: none;
+    }
+
+    .square_white {
+        height: 20px;
+        width: 20px;
+        background-color: white;
+        border: 2px solid black;
+    }
+
+    .square_grey {
+        height: 20px;
+        width: 20px;
+        background-color: darkgrey;
+        border: 2px solid black;
+        margin-top: 1%;
+    }
+</style>
+
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    @*<div class="row align-items-center">
+                        <div class="col-md-10">
+                            <h3>Emergency Resident Details Print Page</h3>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-danger" id="EA_PRINT" style="float:right;">PRINT</button>
+                            <button class="btn btn-danger" type="button" style="float:right;margin-right:10px !important;" onclick="backfunction()">BACK</button>
+
+                        </div>
+                    </div>*@
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+            <div style="height: 60px;"></div>
+            <div style="margin-left:2.2vw !important;">
+            </div>
+            <br>
+            <input type="hidden" value="exerciseactivityreport" name="" class="filename">
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg" id="fromHTMLtestdiv">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+                <div class="card">
+                    <div class="card-block">
+
+                        <div id="pills-care">
+
+
+                            <div id="page1">
+
+                                <div style="width:98%;">
+                                    <div style="width:30%;margin-left:5%;display:inline-block;border:2px solid black;height:1100px;vertical-align:top;">
+                                        <div class="text-center" style="width:100%;">
+                                            <p class="ptitle_grey">Personal Details</p>
+                                        </div>
+                                        <div class="borderB">
+                                            <p><span class="ptitle">Admission Date: </span><span class="pcontent">@Model.MoveInDate.ToShortDateString()</span></p>
+                                            <p><span class="ptitle">Date Of Birth: </span><span class="pcontent">@Model.BirthDate</span></p>
+                                            <p><span class="ptitle">Gender: </span><span class="pcontent">@Model.Gendar</span></p>
+                                            <p><span class="ptitle">Marital Status: </span><span class="pcontent">@Model.MaritalStatustext</span></p>
+                                            <p><span class="ptitle">HC #: </span><span class="pcontent">@Model.MBhealthNumber</span></p>
+                                        </div>
+                                        <div class="text-center" style="width:100%;">
+                                            <p class="ptitle_grey">Medical History</p>
+                                        </div>
+                                        <div class="borderB" style="height:240px;">
+                                            <textarea class="pcontent" style="width:98% !important;overflow:hidden;height:auto;border:none;">@Model.HealthHistory</textarea>
+                                        </div>
+                                        <div class="text-center" style="width:100%;">
+                                            <p class="ptitle_grey">Current Diagnoses</p>
+                                        </div>
+                                        <div class="borderB" style="height:240px;">
+                                            <textarea class="pcontent" style="width:98% !important;overflow:hidden;height:auto;border:none;">@Model.CurrentDiagnoses</textarea>
+                                        </div>
+                                        <div class="text-center" style="width:100%;">
+                                            <p class="ptitle_grey">Allergies</p>
+                                        </div>
+                                        <div class="borderB" style="height:140px;">
+                                            <textarea class="pcontent" style="width:98% !important;overflow:hidden;height:auto;border:none;">@Model.Alergies</textarea>
+                                        </div>
+                                        <div class="text-center" style="width:100%;">
+                                            <p class="ptitle_grey">Physician</p>
+                                        </div>
+                                        <div class="borderB">
+                                            <p><span class="ptitle">Family Physician: </span><span class="pcontent">@Model.Physician</span></p>
+                                            <p><span class="ptitle">Tel #: </span><span class="pcontent">@Model.PhysicianPhone</span></p>
+                                            <p><span class="ptitle">Fax #: </span><span class="pcontent">@Model.PhysicianFaxNo</span></p>
+                                        </div>
+                                        <div class="text-center" style="width:100%;">
+                                            <p class="ptitle_grey">Pharmacy</p>
+                                        </div>
+                                        <div class="">
+                                            <p><span class="ptitle">Name: </span><span class="pcontent">@Model.PharmacyName</span></p>
+                                            <p><span class="ptitle">Tel #: </span><span class="pcontent">@Model.PharmacePhoneNo</span></p>
+                                            <p><span class="ptitle">Fax #: </span><span class="pcontent">@Model.PharmaceFaxNumber</span></p>
+                                        </div>
+                                    </div>
+                                    <div style="width:30%;display:inline-block;border:2px solid black;height:1100px;vertical-align:top;">
+                                        <div class="text-center" style="width:100%;">
+                                            <p class="ptitle_grey">Emergency Contacts</p>
+                                        </div>
+                                        <div class="borderB">
+                                            <p><span class="ptitle">#1 Name: </span><span class="pcontent">@Model.Contract1</span></p>
+                                            <p><span class="ptitle">Relationship: </span><span class="pcontent">@Model.Relationship1</span></p>
+                                            @{
+                                                if (Model.POACareStatus == 'Y')
+                                                {
+                                                    <p><span class="ptitle">POA Care: </span><input type="checkbox" checked /><span class="pcontent">Yes</span><input type="checkbox" /><span class="pcontent">No</span></p>
+                                                }
+                                                else
+                                                {
+                                                    <p><span class="ptitle">POA Care: </span><input type="checkbox" /><span class="pcontent">Yes</span><input type="checkbox" checked /><span class="pcontent">No</span></p>
+                                                }
+
+                                                if (Model.POAFinanceStatus == 'Y')
+                                                {
+                                                    <p><span class="ptitle">POA Finance: </span><input type="checkbox" checked /><span class="pcontent">Yes</span><input type="checkbox" /><span class="pcontent">No</span></p>
+                                                }
+                                                else
+                                                {
+                                                    <p><span class="ptitle">POA Finance: </span><input type="checkbox" /><span class="pcontent">Yes</span><input type="checkbox" checked /><span class="pcontent">No</span></p>
+                                                }
+                                            }
+                                        </div>
+                                        <div class="text-center" style="width:100%;">
+                                            <p class="ptitle_grey">Telephone Number</p>
+                                        </div>
+                                        <div class="borderB">
+                                            <p><span class="ptitle">1°#: </span><span class="pcontent">@(Model.First_phone1)(@(Model.First_phone_type1))</span></p>
+                                            <p><span class="ptitle">2°#: </span><span class="pcontent">@(Model.Second_phone1)(@(Model.Second_phone_type1))</span></p>
+                                            <p><span class="ptitle">3°#: </span><span class="pcontent">@(Model.Third_phone1)(@(Model.Third_phone_type1))</span></p>
+                                        </div>
+                                        <div class="text-center" style="width:100%;">
+                                            <p class="ptitle_grey">Address</p>
+
+                                        </div>
+                                        <div class="borderB" style="height:40px;">
+                                            <p><span class="pcontent">@Model.Address1</span></p>
+                                        </div>
+                                        <div class="borderB">
+                                            <p><span class="ptitle">E-Mail: </span><span class="pcontent">@Model.Email1</span></p>
+                                        </div>
+
+                                        <div class="borderB">
+                                            <p><span class="ptitle">#2 Name: </span><span class="pcontent">@Model.Contract2</span></p>
+                                            <p><span class="ptitle">Relationship: </span><span class="pcontent">@Model.Relationship2</span></p>
+                                            @{
+                                                if (Model.POACareType2Status == 'Y')
+                                                {
+                                                    <p><span class="ptitle">POA Care: </span><input type="checkbox" checked /><span class="pcontent">Yes</span><input type="checkbox" /><span class="pcontent">No</span></p>
+                                                }
+                                                else
+                                                {
+                                                    <p><span class="ptitle">POA Care: </span><input type="checkbox" /><span class="pcontent">Yes</span><input type="checkbox" checked /><span class="pcontent">No</span></p>
+                                                }
+
+                                                if (Model.POAFinanceType2Status == 'Y')
+                                                {
+                                                    <p><span class="ptitle">POA Finance: </span><input type="checkbox" checked /><span class="pcontent">Yes</span><input type="checkbox" /><span class="pcontent">No</span></p>
+                                                }
+                                                else
+                                                {
+                                                    <p><span class="ptitle">POA Finance: </span><input type="checkbox" /><span class="pcontent">Yes</span><input type="checkbox" checked /><span class="pcontent">No</span></p>
+                                                }
+                                            }
+                                        </div>
+                                        <div class="text-center" style="width:100%;">
+                                            <p class="ptitle_grey">Telephone Number</p>
+                                        </div>
+                                        <div class="borderB">
+                                            <p><span class="ptitle">1°#: </span><span class="pcontent">@(Model.First_phone2)(@(Model.First_phone_type2))</span></p>
+                                            <p><span class="ptitle">2°#: </span><span class="pcontent">@(Model.Second_phone2)(@(Model.Second_phone_type2))</span></p>
+                                            <p><span class="ptitle">3°#: </span><span class="pcontent">@(Model.Third_phone2)(@(Model.Third_phone_type2))</span></p>
+                                        </div>
+                                        <div class="text-center" style="width:100%;">
+                                            <p class="ptitle_grey">Address</p>
+                                        </div>
+                                        <div class="borderB" style="height:40px;">
+                                            <p><span class="pcontent">@Model.Address2</span></p>
+                                        </div>
+                                        <div class="borderB">
+                                            <p><span class="ptitle">E-Mail: </span><span class="pcontent">@Model.Email2</span></p>
+                                        </div>
+
+                                        <div class="borderB">
+                                            <p><span class="ptitle">#3 Name: </span><span class="pcontent">@Model.Contract3</span></p>
+                                            <p><span class="ptitle">Relationship: </span><span class="pcontent">@Model.Relationship3</span></p>
+                                            @{
+                                                if (Model.POACareType3Status == 'Y')
+                                                {
+                                                    <p><span class="ptitle">POA Care: </span><input type="checkbox" checked /><span class="pcontent">Yes</span><input type="checkbox" /><span class="pcontent">No</span></p>
+                                                }
+                                                else
+                                                {
+                                                    <p><span class="ptitle">POA Care: </span><input type="checkbox" /><span class="pcontent">Yes</span><input type="checkbox" checked /><span class="pcontent">No</span></p>
+                                                }
+
+                                                if (Model.POAFinanceType3Status == 'Y')
+                                                {
+                                                    <p><span class="ptitle">POA Finance: </span><input type="checkbox" checked /><span class="pcontent">Yes</span><input type="checkbox" /><span class="pcontent">No</span></p>
+                                                }
+                                                else
+                                                {
+                                                    <p><span class="ptitle">POA Finance: </span><input type="checkbox" /><span class="pcontent">Yes</span><input type="checkbox" checked /><span class="pcontent">No</span></p>
+                                                }
+                                            }
+                                        </div>
+                                        <div class="text-center" style="width:100%;">
+                                            <p class="ptitle_grey">Telephone Number</p>
+                                        </div>
+                                        <div class="borderB">
+                                            <p><span class="ptitle">1°#: </span><span class="pcontent">@(Model.First_phone3)(@(Model.First_phone_type3))</span></p>
+                                            <p><span class="ptitle">2°#: </span><span class="pcontent">@(Model.Second_phone3)(@(Model.Second_phone_type3))</span></p>
+                                            <p><span class="ptitle">3°#: </span><span class="pcontent">@(Model.Third_phone3)(@(Model.Third_phone_type3))</span></p>
+                                        </div>
+                                        <div class="text-center" style="width:100%;">
+                                            <p class="ptitle_grey">Address</p>
+                                        </div>
+                                        <div class="borderB" style="height:40px;">
+                                            <p><span class="pcontent">@Model.Address3</span></p>
+                                        </div>
+                                        <div class="">
+                                            <p><span class="ptitle">E-Mail: </span><span class="pcontent">@Model.Email3</span></p>
+                                        </div>
+
+                                    </div>
+                                    <div style="width:30%;display:inline-block;border:2px solid black;height:1100px;vertical-align:top;">
+                                        <div class="text-center" style="width:100%;">
+                                            <p class="ptitle_grey" style="margin-bottom:0px !important;">Level Of Care</p>
+                                        </div>
+                                        <div class="borderB" style="height:120px;">
+                                            @{
+                                                if (ViewBag.careplan.LevelOfCare_Full != "" && ViewBag.careplan.LevelOfCare_Full != null)
+                                                {
+                                                    <div class="borderB" style="width:100%;">
+                                                        <div class="text-center" style="width:10%;display:inline-block;">&#10004;</div>
+                                                        <div style="display:inline-block;border-left:2px solid black;padding-left:5px;">
+                                                            <p style="margin-top:3px;"><span class="pcontent">@ViewBag.careplan.LevelOfCare_Full</span></p>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                        <div class="text-center" style="width:100%;">
+                                            <p class="ptitle_grey">Religion</p>
+
+                                        </div>
+                                        <div class="borderB" style="height:40px;">
+                                            <p><span class="pcontent">@Model.ReligiousAffiliation</span></p>
+                                        </div>
+                                        <div class="text-center" style="width:100%;">
+                                            <p class="ptitle_grey">Code Status</p>
+
+                                        </div>
+                                        <div class="borderB" style="height:40px;">
+                                            @{
+                                                if (Model.FullCodeStatus == 'Y')
+                                                {
+                                                    <p><span class="ptitle">Full Code: </span><span class="pcontent">Yes</span></p>
+                                                }
+                                                else
+                                                {
+                                                    <p><span class="ptitle">Full Code: </span><span class="pcontent">No</span></p>
+                                                }
+                                            }
+                                        </div>
+
+                                        <div class="text-center" style="width:100%;">
+                                            <p class="ptitle_grey" style="margin-bottom:0px !important;border-bottom:none !important;">Cultural Preferences / Customary Routines /</p>
+                                            <p class="ptitle_grey">Traditions</p>
+
+
+                                        </div>
+                                        <div class="borderB" style="height:100px;">
+                                            <p><span class="pcontent">@Model.CulturalPreferences</span></p>
+                                        </div>
+
+                                        <div class="text-center" style="width:100%;">
+                                            <p class="ptitle_grey" style="margin-bottom:0px !important;">Transfers</p>
+                                        </div>
+                                        <div class="borderB" style="min-height:30px;">
+                                            @{
+                                                if (ViewBag.careplan.Mobility.Transfers != "" && ViewBag.careplan.Mobility.Transfers != null)
+                                                {
+
+                                                    <div class="text-center" style="width:10%;display:inline-block;">&#10004;</div>
+                                                    <div style="display:inline-block;border-left:2px solid black;padding-left:5px;">
+                                                        <p style="margin-top:3px;"><span class="pcontent">@ViewBag.careplan.Mobility.Transfers</span></p>
+                                                    </div>
+
+                                                }
+                                            }
+                                        </div>
+                                        <div class="text-center" style="width:100%;">
+                                            <p class="ptitle_grey">Mechanical Lift</p>
+
+                                        </div>
+                                        <div class="borderB" style="height:50px;">
+                                            <p><span class="pcontent">@ViewBag.careplan.Mobility.Lift</span></p>
+                                        </div>
+                                        <div class="text-center" style="width:100%;">
+                                            <p class="ptitle_grey">Other</p>
+
+                                        </div>
+                                        <div class="borderB" style="height:50px;">
+                                            <p><span class="pcontent"></span></p>
+                                        </div>
+
+                                        <div class="text-center" style="width:100%;">
+                                            <p class="ptitle_grey">Infection Diseases</p>
+
+                                        </div>
+                                        <div class="borderB">
+                                            <p><span class="ptitle">M.R.S.A: </span><span class="pcontent">@ViewBag.careplan.InfectiousDiseases.MRSA</span></p>
+                                        </div>
+                                        <div class="borderB">
+                                            <p><span class="ptitle">Diagnosed: </span><span class="pcontent">@ViewBag.careplan.InfectiousDiseases.MRSADiagnosedDate</span></p>
+                                        </div>
+                                        <div class="borderB">
+                                            <p><span class="ptitle">Resolved: </span><span class="pcontent">@ViewBag.careplan.InfectiousDiseases.MRSAResolvedDate</span></p>
+                                        </div>
+                                        <div class="borderB">
+                                            <p><span class="ptitle">V.R.E: </span><span class="pcontent">@ViewBag.careplan.InfectiousDiseases.VRE</span></p>
+                                        </div>
+                                        <div class="borderB">
+                                            <p><span class="ptitle">Diagnosed: </span><span class="pcontent">@ViewBag.careplan.InfectiousDiseases.VREDiagnosedDate</span></p>
+                                        </div>
+                                        <div class="borderB">
+                                            <p><span class="ptitle">Resolved: </span><span class="pcontent">@ViewBag.careplan.InfectiousDiseases.VREResolvedDate</span></p>
+                                        </div>
+                                        <div class="borderB">
+                                            <p><span class="ptitle">C-Diff: </span><span class="pcontent">@ViewBag.careplan.InfectiousDiseases.CDiff</span></p>
+                                        </div>
+                                        <div class="borderB">
+                                            <p><span class="ptitle">Diagnosed: </span><span class="pcontent">@ViewBag.careplan.InfectiousDiseases.CDiffDiagnosedDate</span></p>
+                                        </div>
+                                        <div class="borderB">
+                                            <p><span class="ptitle">Resolved: </span><span class="pcontent">@ViewBag.careplan.InfectiousDiseases.CDiffResolvedDate</span></p>
+                                        </div>
+                                        <div class="borderB">
+                                            <p><span class="ptitle">Other: </span><span class="pcontent">@ViewBag.careplan.InfectiousDiseases.Other</span></p>
+                                        </div>
+                                        <div class="borderB">
+                                            <p><span class="ptitle">Diagnosed: </span><span class="pcontent">@ViewBag.careplan.InfectiousDiseases.OtherDiagnosedDate</span></p>
+                                        </div>
+                                        <div class="borderB">
+                                            <p><span class="ptitle">Resolved: </span><span class="pcontent">@ViewBag.careplan.InfectiousDiseases.OtherResolvedDate</span></p>
+                                        </div>
+
+
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+                <input type="hidden" id="residentid" value="@ViewBag.resident.ID" />
+                <!-- END PLACE PAGE CONTENT HERE -->
+            </div>
+            <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+
+        @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+        <script>
+            function backfunction() {
+                var id = $('#residentid').val();
+                window.location.href = "/Home/ResidentMenu/?p_ResidentId=" + id;
+            }
+        </script>
