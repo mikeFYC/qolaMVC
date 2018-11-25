@@ -698,6 +698,7 @@ namespace QolaMVC.DAL
                         l_Assessment.caneType = Convert.ToString(dataReceive.Tables[0].Rows[index]["Cane_Type"]);
                         l_Assessment.Scooter = Convert.ToString(dataReceive.Tables[0].Rows[index]["Scooter"]);
                         l_Assessment.ScooterType = Convert.ToString(dataReceive.Tables[0].Rows[index]["Scooter_Type"]);
+                        l_Assessment.PT = Convert.ToString(dataReceive.Tables[0].Rows[index]["PT"]);
                         l_Assessment.PTFrequency = Convert.ToString(dataReceive.Tables[0].Rows[index]["PT_Frequency"]);
                         l_Assessment.PTProvider = Convert.ToString(dataReceive.Tables[0].Rows[index]["PT_Provider"]);
                         l_Assessment.OT = Convert.ToString(dataReceive.Tables[0].Rows[index]["OT"]);

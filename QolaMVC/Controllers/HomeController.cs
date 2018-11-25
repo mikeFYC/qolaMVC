@@ -183,6 +183,22 @@ namespace QolaMVC.Controllers
             QolaCulture.InitSpecialEquipment(ref l_SpecialEquipment);
             l_Model.SpecialEquipment = l_SpecialEquipment;
 
+
+            var l_VitalSigns = new CarePlanVitalSignsModel();l_Model.VitalSigns = l_VitalSigns;
+            var l_Mobility = new CarePlanMobilityModel(); ; l_Model.Mobility = l_Mobility;
+            var l_Safety = new CarePlanSafetyModel(); ; l_Model.Safety = l_Safety;
+            var l_MealEscort = new CarePlanMealEscortModel(); ; l_Model.MealEscort = l_MealEscort;
+            var l_Orientation = new CarePlanOrientationModel(); ; l_Model.Orientation = l_Orientation;
+            var l_Meals = new CarePlanMealsModel(); ; l_Model.Meals = l_Meals;
+            var l_Medication = new CarePlanMedication(); ; l_Model.Medication = l_Medication;
+            var l_WoundCare = new CarePlanWoundCareModel(); ; l_Model.WoundCare = l_WoundCare;
+            var l_SkinCare = new CarePlanSkinCareModel(); ; l_Model.SkinCare = l_SkinCare;
+            var l_SpecialNeeds = new CarePlanSpecialNeedsModel(); ; l_Model.SpecialNeeds = l_SpecialNeeds;
+            var l_FamilySupportModel = new CarePlanFamilySupportModel(); ; l_Model.FamilySupportModel = l_FamilySupportModel;
+            var l_Immunization = new CarePlanImmunizationModel(); ; l_Model.Immunization = l_Immunization;
+            var l_InfectiousDiseases = new CarePlanInfectiousDiseasesModel(); ; l_Model.InfectiousDiseases = l_InfectiousDiseases;
+
+
             if (careplan.Count == 0)
             {
                 careplan.Add(l_Model);
