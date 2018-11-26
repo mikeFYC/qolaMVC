@@ -1,5 +1,5 @@
 ﻿@model QolaMVC.Models.ResidentModel
-@*@RenderPage("~/Views/Shared/_Header.cshtml")*@
+@RenderPage("~/Views/Shared/_Header.cshtml")
 @RenderPage("~/Views/Shared/_SideBar.cshtml")
 
 
@@ -43,7 +43,7 @@
             font-style: normal;
             text-decoration: none;
             background-color: darkgrey;
-            border-bottom: 2px solid black;
+            border-bottom: 1px solid black;
         }
 
         #pills-care .table_grey {
@@ -75,7 +75,7 @@
         }
 
         .borderB {
-            border-bottom: 2px solid black;
+            border-bottom: 1px solid black;
         }
 
         #pills-care .pcontent {
@@ -91,60 +91,89 @@
             height: 20px;
             width: 20px;
             background-color: white;
-            border: 2px solid black;
+            border: 1px solid black;
         }
 
         .square_grey {
             height: 20px;
             width: 20px;
             background-color: darkgrey;
-            border: 2px solid black;
+            border: 1px solid black;
             margin-top: 1%;
+        }
+        .title2 {
+            color: black !important;
+            font-size: 1.5em !important;
+            font-family: Times,serif !important;
+        }
+        .title1 {
+            font-weight: bold !important;
+            color: black !important;
+            font-size: 1.7em !important;
+            font-family: Times,serif !important;
         }
     </style>
 
     <!-- START PAGE-CONTAINER -->
     <div class="page-container">
-        @*@RenderPage("~/Views/Shared/_NavBar.cshtml")*@
+        @RenderPage("~/Views/Shared/_NavBar.cshtml")
         <div class="page-content-wrapper">
             <!-- START PAGE CONTENT -->
-            @*<div class="content">*@
+            <div class="content">
                 <!-- START JUMBOTRON -->
-                @*<div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="jumbotron w-100" style="position: fixed; z-index: 400">
                     <div class="container-fluid container-fixed-lg">
 
                         <div class="row align-items-center">
-                                <div class="col-md-10">
+                                <div class="col-md-9">
                                     <h3>Emergency Resident Details Print Page</h3>
                                 </div>
                                 <div class="col-md-2">
-                                    <button class="btn btn-danger" id="EA_PRINT" style="float:right;">PRINT</button>
-                                    <button class="btn btn-danger" type="button" style="float:right;margin-right:10px !important;" onclick="backfunction()">BACK</button>
+                                    <button class="btn btn-primary" type="button" style="margin-right:10px !important;" onclick="backfunction()">BACK</button>
+                                    <button class="btn btn-danger print" id="ERD_PRINT">PRINT</button>
+
 
                                 </div>
                             </div>
 
                     </div>
-                </div>*@
+                </div>
                 <!-- END JUMBOTRON -->
-                @*<div style="height: 60px;"></div>
-                <div style="margin-left:2.2vw !important;">*@
-                @*</div>*@
+                <div style="height: 60px;"></div>
+                <div style="margin-left:2.2vw !important;">
+                </div>
                 <br>
-                <input type="hidden" value="exerciseactivityreport" name="" class="filename">
+                <input type="hidden" value="ERDPP" name="" class="filename">
                 <!-- START CONTAINER FLUID -->
-                <div class="container-fluid container-fixed-lg" id="fromHTMLtestdiv">
+                <div class="container-fluid container-fixed-lg" >
                     <!-- BEGIN PlACE PAGE CONTENT HERE -->
                     <div class="card">
-                        <div class="card-block">
+                        <div class="card-block" id="fromHTMLtestdiv">
+
 
                             <div id="pills-care">
+
 
 
                                 <div id="page1">
 
                                     <div style="width:98%;">
-                                        <div style="width:30%;margin-left:5%;display:inline-block;border:2px solid black;height:1100px;vertical-align:top;">
+                                        <div  style="width:96%;margin-left:2%;">
+                                            <div class="row" id="">
+                                                <div class="col-md-3"><p class="title2">QOLA</p></div>
+                                                <div class="" style="margin-left:8%;"><p class="title1">Resident Profile and Assessment / Plan of Care</p></div>
+                                                
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-10"><p class="title2">Resident Name: @Model.FirstName, @Model.LastName</p></div>
+                                                <div class=""><p class="title2">Suite #: @Model.SuiteNo</p></div>
+
+                                            </div>
+
+                                        </div>
+                                        <div style="width:32%;margin-left:2%;display:inline-block;border:1px solid black;height:1100px;vertical-align:top;">
+
                                             <div class="text-center" style="width:100%;">
                                                 <p class="ptitle_grey">Personal Details</p>
                                             </div>
@@ -190,7 +219,7 @@
                                                 <p><span class="ptitle">Fax #: </span><span class="pcontent">@Model.PharmaceFaxNumber</span></p>
                                             </div>
                                         </div>
-                                        <div style="width:30%;display:inline-block;border:2px solid black;height:1100px;vertical-align:top;">
+                                        <div style="width:32%;display:inline-block;border:1px solid black;height:1100px;vertical-align:top;">
                                             <div class="text-center" style="width:100%;">
                                                 <p class="ptitle_grey">Emergency Contacts</p>
                                             </div>
@@ -200,20 +229,20 @@
                                                 @{
                                                     if (Model.POACareStatus == 'Y')
                                                     {
-                                                        <p><span class="ptitle">POA Care: </span><input type="checkbox" checked /><span class="pcontent">Yes</span><input type="checkbox" /><span class="pcontent">No</span></p>
+                                                <p><span class="ptitle">POA Care: </span>&#9745;<span class="pcontent">Yes</span>&#9744;<span class="pcontent">No</span></p>
                                                     }
                                                     else
                                                     {
-                                                        <p><span class="ptitle">POA Care: </span><input type="checkbox" /><span class="pcontent">Yes</span><input type="checkbox" checked /><span class="pcontent">No</span></p>
+                                                <p><span class="ptitle">POA Care: </span>&#9744;<span class="pcontent">Yes</span>&#9745;<span class="pcontent">No</span></p>
                                                     }
 
                                                     if (Model.POAFinanceStatus == 'Y')
                                                     {
-                                                        <p><span class="ptitle">POA Finance: </span><input type="checkbox" checked /><span class="pcontent">Yes</span><input type="checkbox" /><span class="pcontent">No</span></p>
+                                                <p><span class="ptitle">POA Finance: </span>&#9745;<span class="pcontent">Yes</span>&#9744;<span class="pcontent">No</span></p>
                                                     }
                                                     else
                                                     {
-                                                        <p><span class="ptitle">POA Finance: </span><input type="checkbox" /><span class="pcontent">Yes</span><input type="checkbox" checked /><span class="pcontent">No</span></p>
+                                                <p><span class="ptitle">POA Finance: </span>&#9744;<span class="pcontent">Yes</span>&#9745;<span class="pcontent">No</span></p>
                                                     }
                                                 }
                                             </div>
@@ -242,20 +271,20 @@
                                                 @{
                                                     if (Model.POACareType2Status == 'Y')
                                                     {
-                                                        <p><span class="ptitle">POA Care: </span><input type="checkbox" checked /><span class="pcontent">Yes</span><input type="checkbox" /><span class="pcontent">No</span></p>
+                                                <p><span class="ptitle">POA Care: </span>&#9745;<span class="pcontent">Yes</span>&#9744;<span class="pcontent">No</span></p>
                                                     }
                                                     else
                                                     {
-                                                        <p><span class="ptitle">POA Care: </span><input type="checkbox" /><span class="pcontent">Yes</span><input type="checkbox" checked /><span class="pcontent">No</span></p>
+                                                <p><span class="ptitle">POA Care: </span>&#9744;<span class="pcontent">Yes</span>&#9745;<span class="pcontent">No</span></p>
                                                     }
 
                                                     if (Model.POAFinanceType2Status == 'Y')
                                                     {
-                                                        <p><span class="ptitle">POA Finance: </span><input type="checkbox" checked /><span class="pcontent">Yes</span><input type="checkbox" /><span class="pcontent">No</span></p>
+                                                        <p><span class="ptitle">POA Finance: </span>&#9745;<span class="pcontent">Yes</span>&#9744;<span class="pcontent">No</span></p>
                                                     }
                                                     else
                                                     {
-                                                        <p><span class="ptitle">POA Finance: </span><input type="checkbox" /><span class="pcontent">Yes</span><input type="checkbox" checked /><span class="pcontent">No</span></p>
+                                                        <p><span class="ptitle">POA Finance: </span>&#9744;<span class="pcontent">Yes</span>&#9745;<span class="pcontent">No</span></p>
                                                     }
                                                 }
                                             </div>
@@ -283,20 +312,20 @@
                                                 @{
                                                     if (Model.POACareType3Status == 'Y')
                                                     {
-                                                        <p><span class="ptitle">POA Care: </span><input type="checkbox" checked /><span class="pcontent">Yes</span><input type="checkbox" /><span class="pcontent">No</span></p>
+                                                <p><span class="ptitle">POA Care: </span>&#9745;<span class="pcontent">Yes</span>&#9744;<span class="pcontent">No</span></p>
                                                     }
                                                     else
                                                     {
-                                                        <p><span class="ptitle">POA Care: </span><input type="checkbox" /><span class="pcontent">Yes</span><input type="checkbox" checked /><span class="pcontent">No</span></p>
+                                                <p><span class="ptitle">POA Care: </span>&#9744;<span class="pcontent">Yes</span>&#9745;<span class="pcontent">No</span></p>
                                                     }
 
                                                     if (Model.POAFinanceType3Status == 'Y')
                                                     {
-                                                        <p><span class="ptitle">POA Finance: </span><input type="checkbox" checked /><span class="pcontent">Yes</span><input type="checkbox" /><span class="pcontent">No</span></p>
+                                                <p><span class="ptitle">POA Finance: </span>&#9745;<span class="pcontent">Yes</span>&#9744;<span class="pcontent">No</span></p>
                                                     }
                                                     else
                                                     {
-                                                        <p><span class="ptitle">POA Finance: </span><input type="checkbox" /><span class="pcontent">Yes</span><input type="checkbox" checked /><span class="pcontent">No</span></p>
+                                                        <p><span class="ptitle">POA Finance: </span>&#9744;<span class="pcontent">Yes</span>&#9745;<span class="pcontent">No</span></p>
                                                     }
                                                 }
                                             </div>
@@ -319,7 +348,7 @@
                                             </div>
 
                                         </div>
-                                        <div style="width:30%;display:inline-block;border:2px solid black;height:1100px;vertical-align:top;">
+                                        <div style="width:32%;display:inline-block;border:1px solid black;height:1100px;vertical-align:top;">
                                             <div class="text-center" style="width:100%;">
                                                 <p class="ptitle_grey" style="margin-bottom:0px !important;">Level Of Care</p>
                                             </div>
@@ -329,7 +358,7 @@
                                                     {
                                                         <div class="borderB" style="width:100%;">
                                                             <div class="text-center" style="width:10%;display:inline-block;">&#10004;</div>
-                                                            <div style="display:inline-block;border-left:2px solid black;padding-left:5px;">
+                                                            <div style="display:inline-block;border-left:1px solid black;padding-left:5px;">
                                                                 <p style="margin-top:3px;"><span class="pcontent">@ViewBag.careplan.LevelOfCare_Full</span></p>
                                                             </div>
                                                         </div>
@@ -379,7 +408,7 @@
                                                     {
 
                                                         <div class="text-center" style="width:10%;display:inline-block;">&#10004;</div>
-                                                        <div style="display:inline-block;border-left:2px solid black;padding-left:5px;">
+                                                        <div style="display:inline-block;border-left:1px solid black;padding-left:5px;">
                                                             <p style="margin-top:3px;"><span class="pcontent">@ViewBag.careplan.Mobility.Transfers</span></p>
                                                         </div>
 
@@ -454,7 +483,7 @@
                             </div>
 
 
-
+                            <br><br><br><br><br><br><br><br><br><br>
 
                         </div>
                     </div>

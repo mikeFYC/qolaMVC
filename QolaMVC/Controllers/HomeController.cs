@@ -411,8 +411,8 @@ namespace QolaMVC.Controllers
 
 
 
-            return new Rotativa.ViewAsPdf("ERDetails", resident);
-            //return View(resident);
+            //return new Rotativa.ViewAsPdf("ERDetails", resident);
+            return View(resident);
         }
 
         public ActionResult ResidentMenu2(int p_ResidentId)
