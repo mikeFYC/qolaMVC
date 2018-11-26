@@ -127,13 +127,23 @@
                                         <button id="rotatebutton" class="btn btn-default btn-group-sm" style="margin-left:10%;"><i class="fa fa-rotate-right"></i></button>
                                         <button id="rotatebutton2" class="btn btn-default btn-group-sm"><i class="fa fa-rotate-left"></i></button>
                                         <input  id="edit_photo" type="file" style="display:none;" onchange="EDIT_PHOTO()" />
-                                        <button class="btn btn-sm" id="upfile1" style="cursor:pointer;margin-left:10%;">EDIT PIC</button>
+                                        <button class="btn btn-sm" id="upfile1" style="cursor:pointer;margin-left:10%;z-index:999;">EDIT PIC</button>
                                     </div>
                                     <div class="" style="width:66% !important;">
                                         <br>
                                         <div class="row">
                                             <div class="" style="width:48% !important;">
-                                                <p style="font-size:1.3vw !important;">@Model.FirstName  @Model.LastName</p>
+                                                @{
+                                                    if (Model.ShortName != null && Model.ShortName != "")
+                                                    {
+                                                        <p style="font-size:1.3vw !important;">@Model.FirstName "@Model.ShortName" @Model.LastName</p>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p style="font-size:1.3vw !important;">@Model.FirstName  @Model.LastName</p>
+                                                    }
+                                                }
+
                                                 <p style="font-size:1.3vw !important;">@Model.Gendar</p>
                                                 <p style="font-size:1.3vw !important;">@Model.BirthDate.ToShortDateString()</p>
                                                 @{
@@ -389,33 +399,53 @@
                                                     <tbody>
 
                                                         <tr>
-                                                            <td>Name: @Model.FirstName @Model.LastName</td>
-                                                            <td>Gender: @Model.Gendar</td>
-                                                            <td>Date Of Birth: @Model.BirthDate.ToShortDateString()</td>
+                                                            @{
+                                                                if (Model.ShortName != null && Model.ShortName != "")
+                                                                {
+                                                                    <td>Name: @Model.FirstName "@Model.ShortName" @Model.LastName</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td>Name: @Model.FirstName @Model.LastName</td>
+                                                                }
+                                                            }
+                                                            @{
+                                                                if (Model.Gendar == 'F')
+                                                                {
+                                                                    <td>Gender: Female</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td>Gender: Male</td>
+                                                                }
+                                                            }
+
+
+                                                            <td>Date Of Birth: @Model.BirthDate.ToString("yyyy-MM-dd")</td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Marital Status: @Model.MaritalStatus </td>
-                                                            <td>Birth Place: @Model.BirthPlace</td>
-                                                            <td>Phone: @Model.Phone</td>
+                                                            <td>Phone Number: @Model.Phone </td>
+                                                            <td>Health Card #: @Model.MBhealthNumber</td>
+                                                            <td>Primary Language: @Model.OtherLanguage</td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Physician: @Model.Physician</td>
-                                                            <td>Physician Phone: @Model.PhysicianPhone </td>
-                                                            <td>Fax #: @Model.PhysicianFaxNo</td>
+                                                            <td>Marital Status: @Model.MaritalStatustext </td>
+                                                            <td>Significant Other: @Model.SignificatOther </td>
+                                                            <td>Anniversity Date: @Model.AnniversaryDate.ToString("yyyy-MM-dd")</td>
                                                         </tr>
                                                         <tr>
+                                                            <td>Number of Children: @Model.Number_of_children</td>
+                                                            <td>Number of Grandchildren: @Model.Number_of_grandchildren </td>
+                                                            <td>Veteran: @Model.Vetaran</td>
+                                                        </tr>
+                                                        <tr style="display:none;">
                                                             <td>Contract Number: @Model.ContractNumber</td>
                                                             <td colspan="2">POA Care: @Model.POACare</td>
                                                         </tr>
-                                                        <tr>
-                                                            <td>Care Home Phone: @Model.CareHomePhone</td>
-                                                            <td>Care Work Phone: @Model.CareWorkPhone </td>
-                                                            <td>Care Email: @Model.CareEmail</td>
-                                                        </tr>
-                                                        <tr>
+                                                        <tr style="display:none;">
                                                             <td colspan="3">POA Finance: @Model.POAFinance</td>
                                                         </tr>
-                                                        <tr>
+                                                        <tr style="display:none;">
                                                             <td>Finance Home Phone: @Model.FinanceHomePhone</td>
                                                             <td>Finance Work Phone: @Model.FinanceWorkPhone</td>
                                                             <td>Finance Email: @Model.FinanceEmail</td>
@@ -426,7 +456,7 @@
                                                 <table class="table table-bordered">
                                                     <thead class="bg-primary">
                                                         <tr>
-                                                            <th class="text-white text-center" colspan="4">Contact Details</th>
+                                                            <th class="text-white text-center" colspan="4">Emergency Contact Details</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -462,23 +492,54 @@
                                                             <td>@Model.First_phone3</td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Secondary Contact </td>
-                                                            <td>@Model.Second_phone1</td>
-                                                            <td>@Model.Second_phone2</td>
-                                                            <td>@Model.Second_phone3</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Tertiary Contact </td>
-                                                            <td>@Model.Third_phone1</td>
-                                                            <td>@Model.Third_phone2</td>
-                                                            <td>@Model.Third_phone3</td>
-                                                        </tr>
-                                                        <tr>
                                                             <td>E-Mail</td>
                                                             <td>@Model.Email1</td>
                                                             <td>@Model.Email2</td>
                                                             <td>@Model.Email3</td>
                                                         </tr>
+                                                        <tr style="display:none;">
+                                                            <td>Secondary Contact </td>
+                                                            <td>@Model.Second_phone1</td>
+                                                            <td>@Model.Second_phone2</td>
+                                                            <td>@Model.Second_phone3</td>
+                                                        </tr>
+                                                        <tr style="display:none;">
+                                                            <td>Tertiary Contact </td>
+                                                            <td>@Model.Third_phone1</td>
+                                                            <td>@Model.Third_phone2</td>
+                                                            <td>@Model.Third_phone3</td>
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                                <br><br>
+                                                <table class="table table-bordered">
+                                                    <thead class="bg-primary">
+                                                        <tr>
+                                                            <th class="text-white text-center" colspan="3">Medical Contact Details</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>Physician: @Model.Physician</td>
+                                                            <td>Physician Phone: @Model.PhysicianPhone</td>
+                                                            <td>Fax #: @Model.PhysicianFaxNo</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Pharmacy: @Model.PharmaceSelf</td>
+                                                            <td>Pharmacy Phone: @Model.PharmacePhoneNo</td>
+                                                            <td>Fax #: @Model.PharmaceFaxNumber</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Insurance Company: @Model.InsuranceCompany</td>
+                                                            <td>Contract Number: @Model.ContractNumber</td>
+                                                            <td>Group Number: @Model.GroupNumber</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3">Funeral Arrangements: @Model.FuneralArguments</td>
+                                                        </tr>
+
+
                                                     </tbody>
                                                 </table>
                                                 <br><br>

@@ -41,6 +41,12 @@ namespace QolaMVC.Models
         public string PulpilsEquals { get; set; }
         public string PulpilsReactive { get; set; }
         public string Eyes { get; set; }
+
+        public bool Eyes_Clear { get; set; }
+        public bool Eyes_Reddened { get; set; }
+        public bool Eyes_Swelling { get; set; }
+        public bool Eyes_Discharge { get; set; }
+
         public string Eyes_other { get; set; }
         public string GeneralFace { get; set; }
         public DateTime DateEntered { get; set; }
@@ -94,7 +100,13 @@ namespace QolaMVC.Models
         public string p_pscale { get; set; }        
         public string p_aching { get; set; }        
         public string p_sharp { get; set; }        
-        public string p_dull { get; set; }        
+        public string p_dull { get; set; }
+
+        public string p_burning { get; set; }
+        public string p_ATTMFP { get; set; }
+        public string p_ATTMFP_desc { get; set; }
+        public string a_voidingnormal2_other { get; set; }
+
         public string p_radiating { get; set; }
         public string p_where { get; set; }
         public string p_whatmakes_better { get; set; }

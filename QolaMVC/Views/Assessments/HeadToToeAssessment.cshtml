@@ -108,7 +108,7 @@
                                     <div class="form-group row">
                                         <label for="" class="col-md-3 col-form-label">Returned from (hospital)</label>
                                         <div class="col-md-9">
-                                            @Html.TextBoxFor(m => m.ReturnedFromHospital, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.ReturnedFromHospital, new { @class = "form-control" ,type="date"})
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -522,19 +522,19 @@
                                         <label for="" class="col-md-4 font-bold col-form-label">Eyes:</label>
                                         <div class="col-md-8">
                                             <div class="form-check form-check-inline movesp">
-                                                @Html.RadioButtonFor(m => m.Eyes, "Clear", new { @class = "form-check-input", group = "Eyes" })
+                                                @Html.CheckBoxFor(m => m.Eyes_Clear, new { @class = "form-check-input", group = "Eyes" })
                                                 <label class="form-check-label" for="inlineRadio1">Clear</label>
                                             </div><br>
                                             <div class="form-check form-check-inline">
-                                                @Html.RadioButtonFor(m => m.Eyes, "Reddened", new { @class = "form-check-input", group = "Eyes" })
+                                                @Html.CheckBoxFor(m => m.Eyes_Reddened, new { @class = "form-check-input", group = "Eyes" })
                                                 <label class="form-check-label" for="inlineRadio2">Reddened</label>
                                             </div><br>
                                             <div class="form-check form-check-inline">
-                                                @Html.RadioButtonFor(m => m.Eyes, "Swelling", new { @class = "form-check-input", group = "Eyes" })
+                                                @Html.CheckBoxFor(m => m.Eyes_Swelling, new { @class = "form-check-input", group = "Eyes" })
                                                 <label class="form-check-label" for="inlineRadio2">Swelling</label>
                                             </div><br>
                                             <div class="form-check form-check-inline">
-                                                @Html.RadioButtonFor(m => m.Eyes, "Discharge", new { @class = "form-check-input", group = "Eyes" })
+                                                @Html.CheckBoxFor(m => m.Eyes_Discharge, new { @class = "form-check-input", group = "Eyes" })
                                                 <label class="form-check-label" for="inlineRadio2">Discharge</label>
                                             </div><br>
 
@@ -581,9 +581,10 @@
                                                 <div class="form-group row">
                     
                                                         <div style="width:30%;">
-                                                            <label for="" class="font-bold col-form-label">Long Sounds:</label>
+                                                            <label for="" class="font-bold col-form-label">Lung Sounds:</label>
                                                         </div>
                                                         <div style="width:50%;">
+                                                            
                                                             <label for="" class="col-md-2 pad3">Normal:</label>
                                                             @Html.RadioButtonFor(m => m.c_longsound_normal, "Yes", new { @class = "form-check-input" })
                                                             <label class="form-check-label" for="">Yes</label>
@@ -596,7 +597,7 @@
                                                                     @Html.TextBoxFor(m => m.c_longsound_describe, new { @class = "form-control", name = "c_longsound_describe", id = "c_longsound_describe" })
                                                                 </div>
                                                             </div>
-                                                            <label for="" class="col-md-2 pad3">Equal:</label>
+                                                            <label for="" class="col-md-2 pad3" style="padding-left:0px !important;">Equal:</label>
                                                             @Html.RadioButtonFor(m => m.c_longsound_equal, "Yes", new { @class = "form-check-input" })
                                                             <label class="form-check-label" for="">Yes</label>
                                                             @Html.RadioButtonFor(m => m.c_longsound_equal, "No", new { @class = "form-check-input" })
@@ -698,7 +699,7 @@
                                                 
                                                 <div class="form-group row">
                                                     <div style="width:30%;">
-                                                        <label for="" class="font-bold col-form-label">pful</label>
+                                                        <label for="" class="font-bold col-form-label">Painful</label>
                                                     </div>
                                                     <div style="width:50%;">
                                                         <div class="form-check form-check-inline ">
@@ -792,6 +793,12 @@
                                                             <label class="form-check-label" for="">OTHER</label>
                                                         </div>
                                                         <br>
+                                                        <div class="form-group row">
+                                                            <label for="" class="col-md-2 col-form-label">Other:</label>
+                                                            <div class="col-md-6">
+                                                                @Html.TextBoxFor(m => m.a_voidingnormal2_other, new { @class = "form-control", name = "a_voidingnormal2_other", id = "a_voidingnormal2_other" })
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 
@@ -921,7 +928,7 @@
                                                 </div>
                                                 <div class="form-group row">
                                                     <div style="width:30%;">
-                                                        <label for="" class="font-bold col-form-label">Feet:</label>
+                                                        <label for="" class="font-bold col-form-label">Normal:</label>
                                                     </div>
                                                     <div style="width:50%;">
                                                         <div class="form-check form-check-inline ">
@@ -1062,15 +1069,15 @@
                                                             @Html.RadioButtonFor(m => m.p_residentp, "No", new { @class = "form-check-input", name = "p_residentp", id = "p_residentp" })
                                                             <label class="form-check-label" for="">No</label>
                                                         </div><br>
-                                                        <div class="form-group row">
-                                                            <label for="" class="col-md-2 col-form-label">Describe</label>
-                                                            <div class="col-md-6">
-                                                                @Html.TextBoxFor(m => m.p_residentp_desc, new { @class = "form-control", name = "p_residentp_desc", id = "p_residentp_desc" })
-                                                            </div>
-                                                        </div><br>
+                                                        @*<div class="form-group row">
+                    <label for="" class="col-md-2 col-form-label">Describe</label>
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.p_residentp_desc, new { @class = "form-control", name = "p_residentp_desc", id = "p_residentp_desc" })
+                    </div>
+                </div><br>*@
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="form-group row">
                                                     <div style="width:30%;">
                                                         <label for="" class="col-form-label">p Scale 1(less)-10(worst)</label>
@@ -1079,13 +1086,13 @@
                                                         @Html.TextBoxFor(m => m.p_pscale, new { @class = "form-control", name = "p_pscale", id = "p_pscale" })
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="form-group row">
                                                     <div style="width:30%;">
                                                         <label for="" class="font-bold col-form-label">Pain Quality:</label>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="form-group row">
                                                     <div style="width:30%;">
                                                         <label for="" class="font-bold col-form-label">Aching:</label>
@@ -1101,7 +1108,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="form-group row">
                                                     <div style="width:30%;">
                                                         <label for="" class="font-bold col-form-label">Sharp:</label>
@@ -1117,7 +1124,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="form-group row">
                                                     <div style="width:30%;">
                                                         <label for="" class="font-bold col-form-label">Dull:</label>
@@ -1133,7 +1140,23 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
+
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Burning:</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        <div class="form-check form-check-inline ">
+                                                            @Html.RadioButtonFor(m => m.p_burning, "Yes", new { @class = "form-check-input", name = "p_burning", id = "p_burning" })
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.RadioButtonFor(m => m.p_burning, "No", new { @class = "form-check-input", name = "p_burning", id = "p_burning" })
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                                 <div class="form-group row">
                                                     <div style="width:30%;">
                                                         <label for="" class="font-bold col-form-label">Radiating:</label>
@@ -1149,7 +1172,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="form-group row">
                                                     <div style="width:30%;">
                                                         <label for="" class="font-bold col-form-label">Where</label>
@@ -1158,7 +1181,7 @@
                                                         @Html.TextBoxFor(m => m.p_where, new { @class = "form-control", name = "p_where", id = "p_where" })
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="form-group row">
                                                     <div style="width:30%;">
                                                         <label for="" class="font-bold col-form-label">What makes it better:</label>
@@ -1168,7 +1191,7 @@
 
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="form-group row">
                                                     <div style="width:30%;">
                                                         <label for="" class="font-bold col-form-label">What makes it worst:</label>
@@ -1177,10 +1200,10 @@
                                                         @Html.TextBoxFor(m => m.p_whatmakes_worst, new { @class = "form-control", name = "p_whatmakes_worst", id = "p_whatmakes_worst" })
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="form-group row">
                                                     <div style="width:30%;">
-                                                        <label for="" class="font-bold col-form-label">Does the p interface with ADL's:</label>
+                                                        <label for="" class="font-bold col-form-label">Does the PAIN interface with ADL's:</label>
                                                     </div>
                                                     <div style="width:50%;">
                                                         <div class="form-check form-check-inline ">
@@ -1193,7 +1216,7 @@
                                                         </div><br>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="form-group row">
                                                     <div style="width:30%;">
                                                         <label for="" class="font-bold col-form-label">Describe:</label>
@@ -1202,7 +1225,32 @@
                                                         @Html.TextBoxFor(m => m.p_describe, new { @class = "form-control", name = "p_describe", id = "p_describe" })
                                                     </div>
                                                 </div>
-                                                
+
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Are They Taking Medication For Pain ?</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        <div class="form-check form-check-inline ">
+                                                            @Html.RadioButtonFor(m => m.p_ATTMFP, "Yes", new { @class = "form-check-input", name = "p_ATTMFP", id = "p_ATTMFP" })
+                                                            <label class="form-check-label" for="">Yes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            @Html.RadioButtonFor(m => m.p_ATTMFP, "No", new { @class = "form-check-input", name = "p_ATTMFP", id = "p_ATTMFP" })
+                                                            <label class="form-check-label" for="">No</label>
+                                                        </div><br>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <div style="width:30%;">
+                                                        <label for="" class="font-bold col-form-label">Describe:</label>
+                                                    </div>
+                                                    <div style="width:50%;">
+                                                        @Html.TextBoxFor(m => m.p_ATTMFP_desc, new { @class = "form-control", name = "p_ATTMFP_desc", id = "p_ATTMFP_desc" })
+                                                    </div>
+                                                </div>
+
                                                 <div class="form-group row">
                                                     <div style="width:30%;">
                                                         <label for="" class="font-bold col-form-label">Other:</label>
@@ -1211,7 +1259,7 @@
                                                         @Html.TextBoxFor(m => m.p_other, new { @class = "form-control", name = "p_other", id = "p_other" })
                                                     </div>
                                                 </div>
-                                                
+
                                             </div>
                                         </div>
                                         <br><br>
@@ -1222,7 +1270,25 @@
                                                         <label for="" class="font-bold col-form-label">Completed By</label>
                                                     </div>
                                                     <div style="width:50%;">
-                                                        @Html.TextBoxFor(m => m.completed_by, new { @class = "form-control", name = "completed_by", id = "completed_by" })
+                                                        @{
+                                                            if (Model.EnteredBy != null)
+                                                            {
+                                                                if (Model.EnteredBy.Name != null)
+                                                                {
+                                                                    <label for="" class="font-bold col-form-label">@Model.EnteredBy.Name</label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label for="" class="font-bold col-form-label"></label>
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <label for="" class="font-bold col-form-label"></label>
+                                                            }
+                                                        }
+
+                                                        @*@Html.LabelFor(m => m.EnteredBy.Name, new { @class = "form-control", name = "completed_by", id = "completed_by" })*@
                                                     </div>
                                                 </div>
                                             
@@ -1352,16 +1418,16 @@
                 $('#PrimaryLanguage_other').val('');
             });
 
-            $('#Eyes_other').change(function () {
-                if ($('#Eyes_other').val() != "") {
-                    $('input[group="Eyes"]').each(function () {
-                        this.checked = false;
-                    });
-                }
-            });
-            $('input[group="Eyes"]').change(function () {
-                $('#Eyes_other').val('');
-            });
+            //$('#Eyes_other').change(function () {
+            //    if ($('#Eyes_other').val() != "") {
+            //        $('input[group="Eyes"]').each(function () {
+            //            this.checked = false;
+            //        });
+            //    }
+            //});
+            //$('input[group="Eyes"]').change(function () {
+            //    $('#Eyes_other').val('');
+            //});
 
 
 
@@ -1413,4 +1479,25 @@
                 return true;
 
             }
+
+
+            $('input[type="radio"]').mousedown(function (e) {
+                var $self = $(this);
+                if ($self.is(':checked')) {
+                    var uncheck = function () {
+                        setTimeout(function () { $self.removeAttr('checked'); }, 0);
+                    };
+                    var unbind = function () {
+                        $self.unbind('mouseup', up);
+                    };
+                    var up = function () {
+                        uncheck();
+                        unbind();
+                    };
+                    $self.bind('mouseup', up);
+                    $self.one('mouseout', unbind);
+                }
+            });
+
+
         </script>

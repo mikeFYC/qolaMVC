@@ -638,6 +638,12 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@PulpilsEquals", p_Model.PulpilsEquals);
                 l_Cmd.Parameters.AddWithValue("@PulpilsReactive", p_Model.PulpilsReactive);
                 l_Cmd.Parameters.AddWithValue("@Eyes", p_Model.Eyes);
+
+                l_Cmd.Parameters.AddWithValue("@Eyes_Clear", p_Model.Eyes_Clear);
+                l_Cmd.Parameters.AddWithValue("@Eyes_Reddened", p_Model.Eyes_Reddened);
+                l_Cmd.Parameters.AddWithValue("@Eyes_Swelling", p_Model.Eyes_Swelling);
+                l_Cmd.Parameters.AddWithValue("@Eyes_Discharge", p_Model.Eyes_Discharge);
+
                 // l_Cmd.Parameters.AddWithValue("@PulpilsEquals", p_Model.PulpilsEquals);
                 l_Cmd.Parameters.AddWithValue("@GeneralFace", p_Model.GeneralFace);
                 l_Cmd.Parameters.AddWithValue("@EnteredBy", p_Model.EnteredBy.ID);
@@ -696,6 +702,12 @@ namespace QolaMVC.DAL
                 l_Cmd2.Parameters.AddWithValue("@p_aching", p_Model.p_aching);
                 l_Cmd2.Parameters.AddWithValue("@p_sharp", p_Model.p_sharp);
                 l_Cmd2.Parameters.AddWithValue("@p_dull", p_Model.p_dull);
+
+                l_Cmd2.Parameters.AddWithValue("@p_burning", p_Model.p_burning);
+                l_Cmd2.Parameters.AddWithValue("@p_ATTMFP", p_Model.p_ATTMFP);
+                l_Cmd2.Parameters.AddWithValue("@p_ATTMFP_desc", p_Model.p_ATTMFP_desc);
+                l_Cmd2.Parameters.AddWithValue("@a_voidingnormal2_other", p_Model.a_voidingnormal2_other);
+
                 l_Cmd2.Parameters.AddWithValue("@p_radiating", p_Model.p_radiating);
                 l_Cmd2.Parameters.AddWithValue("@p_where", p_Model.p_where);
                 l_Cmd2.Parameters.AddWithValue("@p_whatmakes_better", p_Model.p_whatmakes_better);
@@ -781,6 +793,12 @@ namespace QolaMVC.DAL
                         l_AdmissionHeadToToe.PulpilsEquals = Convert.ToString(dataReceive.Tables[0].Rows[index]["PulpilsEquals"]);
                         l_AdmissionHeadToToe.PulpilsReactive = Convert.ToString(dataReceive.Tables[0].Rows[index]["PulpilsReactive"]);
                         l_AdmissionHeadToToe.Eyes = Convert.ToString(dataReceive.Tables[0].Rows[index]["Eyes"]);
+
+                        l_AdmissionHeadToToe.Eyes_Clear = Convert.ToBoolean(Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Eyes_Clear"]));
+                        l_AdmissionHeadToToe.Eyes_Reddened = Convert.ToBoolean(Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Eyes_Reddened"]));
+                        l_AdmissionHeadToToe.Eyes_Swelling = Convert.ToBoolean(Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Eyes_Swelling"]));
+                        l_AdmissionHeadToToe.Eyes_Discharge = Convert.ToBoolean(Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Eyes_Discharge"]));
+
                         l_AdmissionHeadToToe.GeneralFace = Convert.ToString(dataReceive.Tables[0].Rows[index]["GeneralFace"]);
                         l_Resident.ID = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
                         l_Resident.SuiteNo = Convert.ToString(dataReceive.Tables[0].Rows[index]["SuiteNumber"]);
@@ -880,6 +898,12 @@ namespace QolaMVC.DAL
                         l_AdmissionHeadToToe.p_aching = Convert.ToString(dataReceive.Tables[0].Rows[index]["p_aching"]);
                         l_AdmissionHeadToToe.p_sharp = Convert.ToString(dataReceive.Tables[0].Rows[index]["p_sharp"]);
                         l_AdmissionHeadToToe.p_dull = Convert.ToString(dataReceive.Tables[0].Rows[index]["p_dull"]);
+
+                        l_AdmissionHeadToToe.p_burning = Convert.ToString(dataReceive.Tables[0].Rows[index]["p_burning"]);
+                        l_AdmissionHeadToToe.p_ATTMFP = Convert.ToString(dataReceive.Tables[0].Rows[index]["p_ATTMFP"]);
+                        l_AdmissionHeadToToe.p_ATTMFP_desc = Convert.ToString(dataReceive.Tables[0].Rows[index]["p_ATTMFP_desc"]);
+                        l_AdmissionHeadToToe.a_voidingnormal2_other = Convert.ToString(dataReceive.Tables[0].Rows[index]["a_voidingnormal2_other"]);
+
                         l_AdmissionHeadToToe.p_radiating = Convert.ToString(dataReceive.Tables[0].Rows[index]["p_radiating"]);
                         l_AdmissionHeadToToe.p_where = Convert.ToString(dataReceive.Tables[0].Rows[index]["p_where"]);
                         l_AdmissionHeadToToe.p_whatmakes_better = Convert.ToString(dataReceive.Tables[0].Rows[index]["p_whatmakes_better"]);

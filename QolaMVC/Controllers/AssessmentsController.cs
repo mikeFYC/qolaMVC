@@ -927,6 +927,7 @@ namespace QolaMVC.Controllers
             p_Model.DateEntered = DateTime.Now;
             p_Model.Date = DateTime.Now;
             p_Model.EnteredBy = l_User;
+            p_Model.completed_by = l_User.ID.ToString();
             p_Model.Resident = l_Resident;
 
             p_Model.c_c = p_Model.c_c_check1.ToString() + "," + p_Model.c_c_check2.ToString() + "," + p_Model.c_c_check3.ToString();
