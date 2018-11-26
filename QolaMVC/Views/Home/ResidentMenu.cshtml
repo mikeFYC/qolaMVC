@@ -1513,12 +1513,15 @@
                                                                     <div class="borderB" style="height:100px;">
                                                                         @{
                                                                             var str4 = "";
-                                                                            var nutri_allergy = ViewBag.careplan.Nutrition.Allergies.Split(new string[] { " || " }, StringSplitOptions.None);
-                                                                            for (var a = 0; a < nutri_allergy.Length; a = a + 2)
+                                                                            if (ViewBag.careplan.Nutrition.Allergies != null)
                                                                             {
-                                                                                if (nutri_allergy[a] != "")
+                                                                                var nutri_allergy = ViewBag.careplan.Nutrition.Allergies.Split(new string[] { " || " }, StringSplitOptions.None);
+                                                                                for (var a = 0; a < nutri_allergy.Length; a = a + 2)
                                                                                 {
-                                                                                    str4 = str4 + nutri_allergy[a] + ": " + nutri_allergy[a + 1] + "; ";
+                                                                                    if (nutri_allergy[a] != "")
+                                                                                    {
+                                                                                        str4 = str4 + nutri_allergy[a] + ": " + nutri_allergy[a + 1] + "; ";
+                                                                                    }
                                                                                 }
                                                                             }
                                                                         }
