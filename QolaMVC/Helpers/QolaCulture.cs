@@ -457,7 +457,7 @@ namespace QolaMVC.Helpers
             {
                 string[] l_Days = new string[]{"N/A",
                                                     "Every Day",
-                                                    "Low Monday",
+                                                    "Monday",
                                                     "Tuesday",
                                                     "Wednesday",
                                                     "Thursday",
