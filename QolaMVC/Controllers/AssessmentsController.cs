@@ -158,7 +158,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("index");
             ViewBag.AssessmentDates = l_AssessmentDates;
             //return View(l_DietaryAssessment.LastOrDefault());
-
+            QolaCulture.InitDiets(ref single);
             return View(single);
         }
 

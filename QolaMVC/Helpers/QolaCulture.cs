@@ -14,6 +14,7 @@ using System.Web.Configuration;
 using System.Configuration;
 using QolaMVC.ViewModels;
 using QolaMVC.Models;
+using System.Collections.ObjectModel;
 
 namespace QolaMVC.Helpers
 {
@@ -431,8 +432,9 @@ namespace QolaMVC.Helpers
 
         public static void InitDiets(ref nDietaryAssessmentModel vm)
         {
-            if (vm.Diet.Count == 0)
+            if (vm.Diet2 == null)
             {
+                vm.Diet2 = new Collection <string>();
                 string[] Diets = new string[]{"Regular Diet",
                                                     "Diabetic",
                                                     "Low Fat",
@@ -441,12 +443,13 @@ namespace QolaMVC.Helpers
                                                     "Glutten Free",
                                                     "Vegetarian Diet",
                                                     "Low Sodium",
-                                                    "Low Vitamin K"
+                                                    "Low Vitamin K",
+                                                    "Other"
                                                 };
 
                 foreach (var a in Diets)
                 {
-                    vm.Diet.Add(a);
+                    vm.Diet2.Add(a);
                 }
             }
         }

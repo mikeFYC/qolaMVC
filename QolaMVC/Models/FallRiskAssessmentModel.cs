@@ -48,5 +48,48 @@ namespace QolaMVC.Models
         public int ResidentId { get; set; }
         public DateTime DateEntered { get; set; }
         public int EnteredBy { get; set; }
+
+
+        public string DateEntered_text { get; set; }
+
+        public string FallHistory_IsTwoOrMore_point { get; set; }
+        public string FallHistory_IsOneOrTwo_point { get; set; }
+        public string Neurological_IsCVA_point { get; set; }
+        public string Neurological_IsParkinsons_point { get; set; }
+        public string Neurological_IsAlzheimers_point { get; set; }
+        public string Neurological_IsOther_point { get; set; }
+        public string Neurological_IsSeizureDisorder_point { get; set; }
+        public string Other_IsDiabetes_point { get; set; }
+        public string Other_IsOsteoporosis_point { get; set; }
+        public string Other_IsPosturalHypotension_point { get; set; }
+        public string Other_IsSyncope_point { get; set; }
+        public string Other_IsBowel_point { get; set; }
+        public string Incontinence_IsBowel_point { get; set; }
+        public string Incontinence_IsBladder_point { get; set; }
+        public string Incontinence_IsTransfer_point { get; set; }
+        public string Incontinence_IsUnsteady_point { get; set; }
+        public string Medication_IsCardiac_point { get; set; }
+        public string Medication_IsDiuretics_point { get; set; }
+        public string Medication_IsNarcotics_point { get; set; }
+        public string Medication_IsAnalgesics_point { get; set; }
+        public string Medication_IsSedatives_point { get; set; }
+        public string Medication_IsAntiAnxiety_point { get; set; }
+        public string Medication_IsLaxatives_point { get; set; }
+        public string MentalStatus_IsConfused_point { get; set; }
+        public string MentalStatus_IsResidentNonCompliance_point { get; set; }
+        public string Orthopedic_IsRecent_point { get; set; }
+        public string Orthopedic_IsCast_point { get; set; }
+        public string Orthopedic_IsAmputation_point { get; set; }
+        public string Orthopedic_IsSevere_point { get; set; }
+        public string Sensory_IsDecreasedVision_point { get; set; }
+        public string Sensory_IsDecreasedHearing_point { get; set; }
+        public string Sensory_IsAphasia_point { get; set; }
+        public string Assistive_IsWheelChair_point { get; set; }
+        public string Assistive_IsCane_point { get; set; }
+        public string Assistive_IsWalker_point { get; set; }
+
+
+
+
     }
 }

@@ -1133,6 +1133,16 @@ namespace QolaMVC.Models
         public int Third_phone_type2 { get; set; }
         public int Third_phone_type3 { get; set; }
 
+        public string First_phone_type1_text { get; set; }
+        public string First_phone_type2_text { get; set; }
+        public string First_phone_type3_text { get; set; }
+        public string Second_phone_type1_text { get; set; }
+        public string Second_phone_type2_text { get; set; }
+        public string Second_phone_type3_text { get; set; }
+        public string Third_phone_type1_text { get; set; }
+        public string Third_phone_type2_text { get; set; }
+        public string Third_phone_type3_text { get; set; }
+
         public string Care_First_phone { get; set; }
         public string Care_Second_phone { get; set; }
         public string Care_Third_phone { get; set; }

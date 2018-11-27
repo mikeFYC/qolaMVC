@@ -208,28 +208,19 @@ namespace QolaMVC.Controllers
             return l_Model;
         }
 
-        public ActionResult ResidentMenu(int p_ResidentId)
+        public void PhoneArrangement(ResidentModel resident)
         {
-            var user = (UserModel)TempData["User"];
-            var home = (HomeModel)TempData["Home"];
-            var resident = ResidentsDAL.GetResidentById(p_ResidentId);
-            var progressNotes = ProgressNotesDAL.GetProgressNotesCollections(resident.ID, DateTime.Now, DateTime.Now, "A");
+            if (resident.HomePhoneType1 == 1) { resident.First_phone1 = resident.HomePhone1; resident.First_phone_type1 = 1; }
+            if (resident.HomePhoneType1 == 2) { resident.Second_phone1 = resident.HomePhone1; resident.Second_phone_type1 = 1; }
+            if (resident.HomePhoneType1 == 3) { resident.Third_phone1 = resident.HomePhone1; resident.Third_phone_type1 = 1; }
 
-            #region Change Home Work Cell back to First Second and Third Phone
+            if (resident.HomePhoneType2 == 1) { resident.First_phone2 = resident.HomePhone2; resident.First_phone_type2 = 1; }
+            if (resident.HomePhoneType2 == 2) { resident.Second_phone2 = resident.HomePhone2; resident.Second_phone_type2 = 1; }
+            if (resident.HomePhoneType2 == 3) { resident.Third_phone2 = resident.HomePhone2; resident.Third_phone_type2 = 1; }
 
-            if (resident.HomePhoneType1 == 1){resident.First_phone1 = resident.HomePhone1;resident.First_phone_type1 = 1;}
-            if(resident.HomePhoneType1 == 2){resident.Second_phone1 = resident.HomePhone1;resident.Second_phone_type1 = 1;}
-            if (resident.HomePhoneType1 == 3){resident.Third_phone1 = resident.HomePhone1;resident.Third_phone_type1 = 1;}
-
-            if (resident.HomePhoneType2 == 1){resident.First_phone2 = resident.HomePhone2;resident.First_phone_type2 = 1;}
-            if (resident.HomePhoneType2 == 2){resident.Second_phone2 = resident.HomePhone2;resident.Second_phone_type2 = 1;}
-            if (resident.HomePhoneType2 == 3){resident.Third_phone2 = resident.HomePhone2;resident.Third_phone_type2 = 1;}
-
-            if (resident.HomePhoneType3 == 1){resident.First_phone3 = resident.HomePhone3;resident.First_phone_type3 = 1;}
-            if (resident.HomePhoneType3 == 2){resident.Second_phone3 = resident.HomePhone3;resident.Second_phone_type3 = 1;}
-            if (resident.HomePhoneType3 == 3){resident.Third_phone3 = resident.HomePhone3;resident.Third_phone_type3 = 1;}
-
-
+            if (resident.HomePhoneType3 == 1) { resident.First_phone3 = resident.HomePhone3; resident.First_phone_type3 = 1; }
+            if (resident.HomePhoneType3 == 2) { resident.Second_phone3 = resident.HomePhone3; resident.Second_phone_type3 = 1; }
+            if (resident.HomePhoneType3 == 3) { resident.Third_phone3 = resident.HomePhone3; resident.Third_phone_type3 = 1; }
 
             if (resident.BusinessPhoneType1 == 1) { resident.First_phone1 = resident.BusinessPhone1; resident.First_phone_type1 = 2; }
             if (resident.BusinessPhoneType1 == 2) { resident.Second_phone1 = resident.BusinessPhone1; resident.Second_phone_type1 = 2; }
@@ -243,8 +234,6 @@ namespace QolaMVC.Controllers
             if (resident.BusinessPhoneType3 == 2) { resident.Second_phone3 = resident.BusinessPhone3; resident.Second_phone_type3 = 2; }
             if (resident.BusinessPhoneType3 == 3) { resident.Third_phone3 = resident.BusinessPhone3; resident.Third_phone_type3 = 2; }
 
-
-
             if (resident.CellPhoneType1 == 1) { resident.First_phone1 = resident.CellPhone1; resident.First_phone_type1 = 3; }
             if (resident.CellPhoneType1 == 2) { resident.Second_phone1 = resident.CellPhone1; resident.Second_phone_type1 = 3; }
             if (resident.CellPhoneType1 == 3) { resident.Third_phone1 = resident.CellPhone1; resident.Third_phone_type1 = 3; }
@@ -257,7 +246,46 @@ namespace QolaMVC.Controllers
             if (resident.CellPhoneType3 == 2) { resident.Second_phone3 = resident.CellPhone3; resident.Second_phone_type3 = 3; }
             if (resident.CellPhoneType3 == 3) { resident.Third_phone3 = resident.CellPhone3; resident.Third_phone_type3 = 3; }
 
-            #endregion
+            if (resident.First_phone_type1 == 1) { resident.First_phone_type1_text = "Home"; }
+            else if(resident.First_phone_type1 == 2) { resident.First_phone_type1_text = "Business"; }
+            else if (resident.First_phone_type1 == 3) { resident.First_phone_type1_text = "Mobile"; }
+            if (resident.Second_phone_type1 == 1) { resident.Second_phone_type1_text = "Home"; }
+            else if (resident.Second_phone_type1 == 2) { resident.Second_phone_type1_text = "Business"; }
+            else if (resident.Second_phone_type1 == 3) { resident.Second_phone_type1_text = "Mobile"; }
+            if (resident.Third_phone_type1 == 1) { resident.Third_phone_type1_text = "Home"; }
+            else if (resident.Third_phone_type1 == 2) { resident.Third_phone_type1_text = "Business"; }
+            else if (resident.Third_phone_type1 == 3) { resident.Third_phone_type1_text = "Mobile"; }
+
+            if (resident.First_phone_type2 == 1) { resident.First_phone_type2_text = "Home"; }
+            else if (resident.First_phone_type2 == 2) { resident.First_phone_type2_text = "Business"; }
+            else if (resident.First_phone_type2 == 3) { resident.First_phone_type2_text = "Mobile"; }
+            if (resident.Second_phone_type2 == 1) { resident.Second_phone_type2_text = "Home"; }
+            else if (resident.Second_phone_type2 == 2) { resident.Second_phone_type2_text = "Business"; }
+            else if (resident.Second_phone_type2 == 3) { resident.Second_phone_type2_text = "Mobile"; }
+            if (resident.Third_phone_type2 == 1) { resident.Third_phone_type2_text = "Home"; }
+            else if (resident.Third_phone_type2 == 2) { resident.Third_phone_type2_text = "Business"; }
+            else if (resident.Third_phone_type2 == 3) { resident.Third_phone_type2_text = "Mobile"; }
+
+            if (resident.First_phone_type3 == 1) { resident.First_phone_type3_text = "Home"; }
+            else if (resident.First_phone_type3 == 2) { resident.First_phone_type3_text = "Business"; }
+            else if (resident.First_phone_type3 == 3) { resident.First_phone_type3_text = "Mobile"; }
+            if (resident.Second_phone_type3 == 1) { resident.Second_phone_type3_text = "Home"; }
+            else if (resident.Second_phone_type3 == 2) { resident.Second_phone_type3_text = "Business"; }
+            else if (resident.Second_phone_type3 == 3) { resident.Second_phone_type3_text = "Mobile"; }
+            if (resident.Third_phone_type3 == 1) { resident.Third_phone_type3_text = "Home"; }
+            else if (resident.Third_phone_type3 == 2) { resident.Third_phone_type3_text = "Business"; }
+            else if (resident.Third_phone_type3 == 3) { resident.Third_phone_type3_text = "Mobile"; }
+
+        }
+
+        public ActionResult ResidentMenu(int p_ResidentId)
+        {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            var resident = ResidentsDAL.GetResidentById(p_ResidentId);
+            var progressNotes = ProgressNotesDAL.GetProgressNotesCollections(resident.ID, DateTime.Now, DateTime.Now, "A");
+
+            PhoneArrangement(resident);
 
             ViewBag.Message = TempData["Message"];
 
@@ -285,56 +313,50 @@ namespace QolaMVC.Controllers
             return View(resident);
         }
 
+        public void pointArrangement(FallRiskAssessmentModel model)
+        {
+            if (model.FallHistory_IsTwoOrMore == true) model.FallHistory_IsTwoOrMore_point = "2";
+            if (model.FallHistory_IsOneOrTwo == true) model.FallHistory_IsOneOrTwo_point = "1";
+            if (model.Neurological_IsCVA == true) model.Neurological_IsCVA_point = "1";
+            if (model.Neurological_IsParkinsons == true) model.Neurological_IsParkinsons_point = "1";
+            if (model.Neurological_IsAlzheimers == true) model.Neurological_IsAlzheimers_point = "1";
+            if (model.Neurological_IsOther == true) model.Neurological_IsOther_point = "1";
+            if (model.Neurological_IsSeizureDisorder == true) model.Neurological_IsSeizureDisorder_point = "1";
+            if (model.Other_IsDiabetes == true) model.Other_IsDiabetes_point = "1";
+            if (model.Other_IsOsteoporosis == true) model.Other_IsOsteoporosis_point = "1";
+            if (model.Other_IsPosturalHypotension == true) model.Other_IsPosturalHypotension_point = "1";
+            if (model.Other_IsSyncope == true) model.Other_IsSyncope_point = "1";
+            if (model.Other_IsBowel == true) model.Other_IsBowel_point = "1";
+            if (model.Incontinence_IsBowel == true) model.Incontinence_IsBowel_point = "2";
+            if (model.Incontinence_IsBladder == true) model.Incontinence_IsBladder_point = "2";
+            if (model.Incontinence_IsTransfer == true) model.Incontinence_IsTransfer_point = "1";
+            if (model.Incontinence_IsUnsteady == true) model.Incontinence_IsUnsteady_point = "1";
+            if (model.Medication_IsCardiac == true) model.Medication_IsCardiac_point = "1";
+            if (model.Medication_IsDiuretics == true) model.Medication_IsDiuretics_point = "1";
+            if (model.Medication_IsNarcotics == true) model.Medication_IsNarcotics_point = "1";
+            if (model.Medication_IsAnalgesics == true) model.Medication_IsAnalgesics_point = "1";
+            if (model.Medication_IsSedatives == true) model.Medication_IsSedatives_point = "1";
+            if (model.Medication_IsAntiAnxiety == true) model.Medication_IsAntiAnxiety_point = "1";
+            if (model.Medication_IsLaxatives == true) model.Medication_IsLaxatives_point = "1";
+            if (model.MentalStatus_IsConfused == true) model.MentalStatus_IsConfused_point = "2";
+            if (model.MentalStatus_IsResidentNonCompliance == true) model.MentalStatus_IsResidentNonCompliance_point = "2";
+            if (model.Orthopedic_IsRecent == true) model.Orthopedic_IsRecent_point = "1";
+            if (model.Orthopedic_IsCast == true) model.Orthopedic_IsCast_point = "1";
+            if (model.Orthopedic_IsAmputation == true) model.Orthopedic_IsAmputation_point = "1";
+            if (model.Orthopedic_IsSevere == true) model.Orthopedic_IsSevere_point = "1";
+            if (model.Sensory_IsDecreasedVision == true) model.Sensory_IsDecreasedVision_point = "1";
+            if (model.Sensory_IsDecreasedHearing == true) model.Sensory_IsDecreasedHearing_point = "1";
+            if (model.Sensory_IsAphasia == true) model.Sensory_IsAphasia_point = "1";
+            if (model.Assistive_IsWheelChair == true) model.Assistive_IsWheelChair_point = "1";
+            if (model.Assistive_IsCane == true) model.Assistive_IsCane_point = "1";
+            if (model.Assistive_IsWalker == true) model.Assistive_IsWalker_point = "1";
+        }
 
         public ActionResult QOLAFIED()
         {
             var user = (UserModel)TempData["User"];
             var home = (HomeModel)TempData["Home"];
             var resident = (ResidentModel)TempData["Resident"];
-
-            #region Change Home Work Cell back to First Second and Third Phone
-
-            if (resident.HomePhoneType1 == 1) { resident.First_phone1 = resident.HomePhone1; resident.First_phone_type1 = 1; }
-            if (resident.HomePhoneType1 == 2) { resident.Second_phone1 = resident.HomePhone1; resident.Second_phone_type1 = 1; }
-            if (resident.HomePhoneType1 == 3) { resident.Third_phone1 = resident.HomePhone1; resident.Third_phone_type1 = 1; }
-
-            if (resident.HomePhoneType2 == 1) { resident.First_phone2 = resident.HomePhone2; resident.First_phone_type2 = 1; }
-            if (resident.HomePhoneType2 == 2) { resident.Second_phone2 = resident.HomePhone2; resident.Second_phone_type2 = 1; }
-            if (resident.HomePhoneType2 == 3) { resident.Third_phone2 = resident.HomePhone2; resident.Third_phone_type2 = 1; }
-
-            if (resident.HomePhoneType3 == 1) { resident.First_phone3 = resident.HomePhone3; resident.First_phone_type3 = 1; }
-            if (resident.HomePhoneType3 == 2) { resident.Second_phone3 = resident.HomePhone3; resident.Second_phone_type3 = 1; }
-            if (resident.HomePhoneType3 == 3) { resident.Third_phone3 = resident.HomePhone3; resident.Third_phone_type3 = 1; }
-
-
-
-            if (resident.BusinessPhoneType1 == 1) { resident.First_phone1 = resident.BusinessPhone1; resident.First_phone_type1 = 2; }
-            if (resident.BusinessPhoneType1 == 2) { resident.Second_phone1 = resident.BusinessPhone1; resident.Second_phone_type1 = 2; }
-            if (resident.BusinessPhoneType1 == 3) { resident.Third_phone1 = resident.BusinessPhone1; resident.Third_phone_type1 = 2; }
-
-            if (resident.BusinessPhoneType2 == 1) { resident.First_phone2 = resident.BusinessPhone2; resident.First_phone_type2 = 2; }
-            if (resident.BusinessPhoneType2 == 2) { resident.Second_phone2 = resident.BusinessPhone2; resident.Second_phone_type2 = 2; }
-            if (resident.BusinessPhoneType2 == 3) { resident.Third_phone2 = resident.BusinessPhone2; resident.Third_phone_type2 = 2; }
-
-            if (resident.BusinessPhoneType3 == 1) { resident.First_phone3 = resident.BusinessPhone3; resident.First_phone_type3 = 2; }
-            if (resident.BusinessPhoneType3 == 2) { resident.Second_phone3 = resident.BusinessPhone3; resident.Second_phone_type3 = 2; }
-            if (resident.BusinessPhoneType3 == 3) { resident.Third_phone3 = resident.BusinessPhone3; resident.Third_phone_type3 = 2; }
-
-
-
-            if (resident.CellPhoneType1 == 1) { resident.First_phone1 = resident.CellPhone1; resident.First_phone_type1 = 3; }
-            if (resident.CellPhoneType1 == 2) { resident.Second_phone1 = resident.CellPhone1; resident.Second_phone_type1 = 3; }
-            if (resident.CellPhoneType1 == 3) { resident.Third_phone1 = resident.CellPhone1; resident.Third_phone_type1 = 3; }
-
-            if (resident.CellPhoneType2 == 1) { resident.First_phone2 = resident.CellPhone2; resident.First_phone_type2 = 3; }
-            if (resident.CellPhoneType2 == 2) { resident.Second_phone2 = resident.CellPhone2; resident.Second_phone_type2 = 3; }
-            if (resident.CellPhoneType2 == 3) { resident.Third_phone2 = resident.CellPhone2; resident.Third_phone_type2 = 3; }
-
-            if (resident.CellPhoneType3 == 1) { resident.First_phone3 = resident.CellPhone3; resident.First_phone_type3 = 3; }
-            if (resident.CellPhoneType3 == 2) { resident.Second_phone3 = resident.CellPhone3; resident.Second_phone_type3 = 3; }
-            if (resident.CellPhoneType3 == 3) { resident.Third_phone3 = resident.CellPhone3; resident.Third_phone_type3 = 3; }
-
-            #endregion
 
             TempData.Keep("User");
             TempData.Keep("Home");
@@ -346,58 +368,35 @@ namespace QolaMVC.Controllers
             PlanOfCareModel l_Model = GET_one_CarePlan();
             ViewBag.careplan = l_Model;
 
+            var l_FallRisk = AssessmentDAL.GetFallRiskAssessment(resident.ID);
+            FallRiskAssessmentModel single = new FallRiskAssessmentModel();
+            if (l_FallRisk.Count == 0)
+            {
+                l_FallRisk = new Collection<FallRiskAssessmentModel>();
+                l_FallRisk.Add(new FallRiskAssessmentModel());
+            }
+            foreach (PropertyInfo prop in typeof(FallRiskAssessmentModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(l_FallRisk[0]) == null) { prop.SetValue(l_FallRisk[0], ""); }
+                }
+            }
+            if (l_FallRisk[0].DateEntered != DateTime.MinValue) { l_FallRisk[0].DateEntered_text = l_FallRisk[0].DateEntered.ToString("yyyy-MM-dd"); }
+            pointArrangement(l_FallRisk[0]);
+            single = l_FallRisk[0];
+            ViewBag.fallrisk = single;
+
             return View(resident);
         }
+
+
 
         public ActionResult ERDetails()
         {
             var user = (UserModel)TempData["User"];
             var home = (HomeModel)TempData["Home"];
             var resident = (ResidentModel)TempData["Resident"];
-
-            #region Change Home Work Cell back to First Second and Third Phone
-
-            if (resident.HomePhoneType1 == 1) { resident.First_phone1 = resident.HomePhone1; resident.First_phone_type1 = 1; }
-            if (resident.HomePhoneType1 == 2) { resident.Second_phone1 = resident.HomePhone1; resident.Second_phone_type1 = 1; }
-            if (resident.HomePhoneType1 == 3) { resident.Third_phone1 = resident.HomePhone1; resident.Third_phone_type1 = 1; }
-
-            if (resident.HomePhoneType2 == 1) { resident.First_phone2 = resident.HomePhone2; resident.First_phone_type2 = 1; }
-            if (resident.HomePhoneType2 == 2) { resident.Second_phone2 = resident.HomePhone2; resident.Second_phone_type2 = 1; }
-            if (resident.HomePhoneType2 == 3) { resident.Third_phone2 = resident.HomePhone2; resident.Third_phone_type2 = 1; }
-
-            if (resident.HomePhoneType3 == 1) { resident.First_phone3 = resident.HomePhone3; resident.First_phone_type3 = 1; }
-            if (resident.HomePhoneType3 == 2) { resident.Second_phone3 = resident.HomePhone3; resident.Second_phone_type3 = 1; }
-            if (resident.HomePhoneType3 == 3) { resident.Third_phone3 = resident.HomePhone3; resident.Third_phone_type3 = 1; }
-
-
-
-            if (resident.BusinessPhoneType1 == 1) { resident.First_phone1 = resident.BusinessPhone1; resident.First_phone_type1 = 2; }
-            if (resident.BusinessPhoneType1 == 2) { resident.Second_phone1 = resident.BusinessPhone1; resident.Second_phone_type1 = 2; }
-            if (resident.BusinessPhoneType1 == 3) { resident.Third_phone1 = resident.BusinessPhone1; resident.Third_phone_type1 = 2; }
-
-            if (resident.BusinessPhoneType2 == 1) { resident.First_phone2 = resident.BusinessPhone2; resident.First_phone_type2 = 2; }
-            if (resident.BusinessPhoneType2 == 2) { resident.Second_phone2 = resident.BusinessPhone2; resident.Second_phone_type2 = 2; }
-            if (resident.BusinessPhoneType2 == 3) { resident.Third_phone2 = resident.BusinessPhone2; resident.Third_phone_type2 = 2; }
-
-            if (resident.BusinessPhoneType3 == 1) { resident.First_phone3 = resident.BusinessPhone3; resident.First_phone_type3 = 2; }
-            if (resident.BusinessPhoneType3 == 2) { resident.Second_phone3 = resident.BusinessPhone3; resident.Second_phone_type3 = 2; }
-            if (resident.BusinessPhoneType3 == 3) { resident.Third_phone3 = resident.BusinessPhone3; resident.Third_phone_type3 = 2; }
-
-
-
-            if (resident.CellPhoneType1 == 1) { resident.First_phone1 = resident.CellPhone1; resident.First_phone_type1 = 3; }
-            if (resident.CellPhoneType1 == 2) { resident.Second_phone1 = resident.CellPhone1; resident.Second_phone_type1 = 3; }
-            if (resident.CellPhoneType1 == 3) { resident.Third_phone1 = resident.CellPhone1; resident.Third_phone_type1 = 3; }
-
-            if (resident.CellPhoneType2 == 1) { resident.First_phone2 = resident.CellPhone2; resident.First_phone_type2 = 3; }
-            if (resident.CellPhoneType2 == 2) { resident.Second_phone2 = resident.CellPhone2; resident.Second_phone_type2 = 3; }
-            if (resident.CellPhoneType2 == 3) { resident.Third_phone2 = resident.CellPhone2; resident.Third_phone_type2 = 3; }
-
-            if (resident.CellPhoneType3 == 1) { resident.First_phone3 = resident.CellPhone3; resident.First_phone_type3 = 3; }
-            if (resident.CellPhoneType3 == 2) { resident.Second_phone3 = resident.CellPhone3; resident.Second_phone_type3 = 3; }
-            if (resident.CellPhoneType3 == 3) { resident.Third_phone3 = resident.CellPhone3; resident.Third_phone_type3 = 3; }
-
-            #endregion
 
             TempData.Keep("User");
             TempData.Keep("Home");
