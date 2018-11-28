@@ -1,0 +1,232 @@
+﻿@model QolaMVC.Models.ResidentEmergencyListModel
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+<style>
+
+
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+
+    .pagebreak {
+        page-break-before: always;
+    }
+
+    th, td {
+        border-right: 2px solid black !important;
+        border-bottom: 2px solid black !important;
+        border-color: darkgrey !important;
+    }
+
+    th {
+        border-top: 2px solid black !important;
+        border-color: darkgrey !important;
+    }
+    .title2 {
+        color: black !important;
+        font-size: 1.5em !important;
+        font-family: Times,serif !important;
+    }
+
+    .title1 {
+        font-weight: bold !important;
+        color: black !important;
+        font-size: 1.7em !important;
+        font-family: Times,serif !important;
+    }
+
+</style>
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+    <!-- START PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3>Emergency Resident List Report</h3>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+            <div style="height: 60px;"></div>
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+                <div class="row">
+                    <div class="col-md-8 py-4 text-left">
+                        <form class="form-inline">
+
+                            <select class="form-control" style="width:30%;">
+                                <option>-- All --</option>
+                                <option>High Risk</option>
+                                <option>Medium Risk</option>
+                                <option>Low Risk</option>
+                                <option>No Risk</option>
+                            </select>
+
+                            <button type="submit" class="btn btn-primary" style="margin-left:1%;">View</button>
+                        </form>
+                    </div>
+                    <div class="col-md-4 py-4 text-right">
+                        <a href="/Home/Menu/?p_HomeId=@ViewBag.Home.Id" class="btn btn-primary" type="button" style="margin-right:10px !important;">BACK</a>
+                        <button class="btn btn-danger" id="ERLR_PRINT" onclick="ERLR_PRINT()">PRINT</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <hr>
+                    <br>
+                    <div class="card-block" id="fromHTMLtestdiv">
+                        <div style="width:97%;margin-left:2%;">
+                            <div class="text-center" style="width:99%" id="">
+                                <p class="title1">Emergency Resident Details</p>
+                            </div>
+                            <div style="width:99%">
+                                <div class="" style="width:80%;display:inline-block;"><p class="title2">QOLA Date printed: @DateTime.Now.ToString("yyyy-MM-dd") @DateTime.Now.ToShortTimeString()</p></div>
+                                <div class="" style="display:inline-block;float:right;"><p class="title2">@ViewBag.home.Name</p></div>
+                            </div>
+                        </div>
+                        <table class="table table-bordered">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th class="text-white text-center" style="width:5%;font-weight:bold;">Risk Level</th>
+                                    <th class="text-white text-center" style="width:5%;font-weight:bold;">Suite</th>
+                                    <th class="text-white text-center" style="width:12%;font-weight:bold;">Resident Name</th>
+                                    <th class="text-white text-center" style="width:5%;font-weight:bold;">Gender</th>
+                                    <th class="text-white text-center" style="width:9%;font-weight:bold;">Phone</th>
+                                    <th class="text-white text-center" style="width:12%;font-weight:bold;">Contact Person</th>
+                                    <th class="text-white text-center" style="width:9%;font-weight:bold;">Emergency Contact</th>
+                                    <th class="text-white text-center" style="width:5%;font-weight:bold;">Risk Level</th>
+                                    <th class="text-white text-center" style="width:8%;font-weight:bold;">Mobility</th>
+                                    <th class="text-white text-center">Comments</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    var count = 0;
+                                    foreach (var single in Model.EmergencyResidentList)
+                                    {
+                                        <tr>
+                                            @{
+                                                if (single.totalScore == "")
+                                                {
+                                                    <td class="align-middle" style="background-color:white;"></td>}
+                                                else
+                                                {
+                                                    if (Int32.Parse(single.totalScore) == 0)
+                                                    {
+                                                        <td class="align-middle" style="background-color:white;"></td>}
+                                                    else if (Int32.Parse(single.totalScore) <= 5)
+                                                    {
+                                                        <td class="align-middle" style="background-color:green;"></td>}
+                                                    else if (Int32.Parse(single.totalScore) <= 9)
+                                                    {
+                                                        <td class="align-middle" style="background-color:yellow;"></td>}
+                                                    else
+                                                    {
+                                                        <td class="align-middle" style="background-color:red;"></td>}
+                                                }
+                                            }
+                                            <td class="align-middle">@single.suiteNo</td>
+                                            <td class="align-middle">@single.FullName</td>
+                                            <td class="align-middle">@single.Gendar</td>
+                                            <td class="align-middle">@single.phone</td>
+                                            <td class="align-middle">@single.contact</td>
+                                            <td class="align-middle">@single.contact_phone</td>
+                                            @{
+                                                if (single.totalScore == "")
+                                                {
+                                                    <td class="align-middle" style="background-color:white;"></td>}
+                                                else
+                                                {
+                                                    if (Int32.Parse(single.totalScore) == 0)
+                                                    {
+                                                        <td class="align-middle" style="background-color:white;"></td>}
+                                                    else if (Int32.Parse(single.totalScore) <= 5)
+                                                    {
+                                                        <td class="align-middle" style="background-color:green;"></td>}
+                                                    else if (Int32.Parse(single.totalScore) <= 9)
+                                                    {
+                                                        <td class="align-middle" style="background-color:yellow;"></td>}
+                                                    else
+                                                    {
+                                                        <td class="align-middle" style="background-color:red;"></td>}
+                                                }
+                                            }
+                                            <td class="align-middle">@single.Mobility</td>
+                                            <td class="align-middle">@single.RiskLevel_Full</td>
+                                        </tr>
+
+                                        count++;
+                                        if (count % 15 == 0)
+                                        {
+
+                                            <tr class="pagebreak"></tr>
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+                <!-- END PLACE PAGE CONTENT HERE -->
+            </div>
+            <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+
+        @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+        <script>
+
+            function ERLR_PRINT() {
+
+                var mywindow = window.open('', 'PRINT', 'height=600,width=700');
+
+                mywindow.document.write('<html><head><title>' + document.title + '</title>');
+                //mywindow.document.write('<link href="/Content/bootstrap.css" rel="stylesheet">');
+                mywindow.document.write('<link href="/Content/site.css" rel="stylesheet">');
+                mywindow.document.write('<link href="/Content/assets/plugins/pace/pace-theme-flash.css" rel="stylesheet">');
+                //mywindow.document.write('<link href="/Content/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">');
+                mywindow.document.write('<link href="/Content/assets/plugins/font-awesome/css/font-awesome.css" rel="stylesheet">');
+                mywindow.document.write('<link href="/Content/assets/plugins/jquery-scrollbar/jquery.scrollbar.css" rel="stylesheet">');
+                mywindow.document.write('<link href="/Content/assets/plugins/select2/css/select2.min.css" rel="stylesheet">');
+                mywindow.document.write('<link href="/Content/assets/plugins/switchery/css/switchery.min.css" rel="stylesheet">');
+                mywindow.document.write('<link href="/Content/pages/css/pages-icons.css" rel="stylesheet">');
+                mywindow.document.write('<link href="/Content/assets/css/pages.css" rel="stylesheet">');
+                mywindow.document.write('<link href="/Content/assets/css/datatables.css" rel="stylesheet">');
+                mywindow.document.write('<link href="/Content/assets/css/style.css" rel="stylesheet">');
+
+                mywindow.document.write('<link rel="stylesheet" href="/Content/mike_print/EmeergencyList_mike_print.css">');
+
+                mywindow.document.write('</head><body>');
+                mywindow.document.write(document.getElementById("fromHTMLtestdiv").innerHTML);
+                mywindow.document.write('</body></html>');
+
+                mywindow.document.close(); // necessary for IE >= 10
+                mywindow.focus(); // necessary for IE >= 10*/
+                setTimeout(function () {
+                    mywindow.print();
+                    mywindow.close();
+                }, 2000);
+
+
+
+                return true;
+
+            }
+        </script>

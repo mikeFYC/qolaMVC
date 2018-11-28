@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Web;
+using Newtonsoft.Json;
 using QolaMVC.Models;
 using static QolaMVC.Constants.EnumerationTypes;
 
@@ -2452,6 +2453,102 @@ namespace QolaMVC.DAL
             catch (Exception ex)
             {
                 exception = "COPY_EVENT |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+
+        public static ResidentEmergencyListModel get_EmergencyList(int homeid)
+        {
+            string exception = string.Empty;
+            ResidentEmergencyListModel l_Events = new ResidentEmergencyListModel();
+            l_Events.EmergencyResidentList = new List<ResidentEmergencyListModel_single>();
+            ResidentEmergencyListModel_single l_Event;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("GET_Emergency_Resident_Details_mike", l_Conn);
+                l_Cmd.Parameters.AddWithValue("@homeid", homeid);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                DataSet homeReceive = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(homeReceive);
+
+                if ((homeReceive != null) && (homeReceive.Tables.Count > 0) && (homeReceive.Tables[0].Rows.Count > 0))
+                {
+                    foreach (DataRow homeTypeRow in homeReceive.Tables[0].Rows)
+                    {
+                        l_Event = new ResidentEmergencyListModel_single();
+
+                        l_Event.residentID = Convert.ToInt32(homeTypeRow["fd_id"]);
+                        l_Event.suiteNo = Convert.ToString(homeTypeRow["fd_suite_no"]);
+                        l_Event.FirstName = Convert.ToString(homeTypeRow["fd_first_name"]);
+                        l_Event.LastName = Convert.ToString(homeTypeRow["fd_last_name"]);
+                        l_Event.FullName = l_Event.FirstName + " " + l_Event.LastName;
+                        l_Event.Gendar = Convert.ToString(homeTypeRow["fd_gender"]);
+                        l_Event.phone = Convert.ToString(homeTypeRow["fd_phone"]);
+                        l_Event.contact = Convert.ToString(homeTypeRow["fd_contact_1"]);
+                        l_Event.contact_phone = Convert.ToString(homeTypeRow["fd_home_phone_1"]);
+                        l_Event.RiskLevel = Convert.ToString(homeTypeRow["RiskLevel"]);
+                        l_Event.totalScore = Convert.ToString(homeTypeRow["TotalScore"]);
+                        if (l_Event.RiskLevel == "High Risk") l_Event.RiskLevel_Full = "High Falling Risk";
+                        else if (l_Event.RiskLevel == "Medium Risk") l_Event.RiskLevel_Full = "Medium Falling Risk";
+                        else if (l_Event.RiskLevel == "Low Risk") l_Event.RiskLevel_Full = "Low Falling Risk";
+                        l_Event.Vision = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(homeTypeRow["Vision"]));
+                        l_Event.Hearing = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(homeTypeRow["Vision"]));
+                        l_Event.Mobility = Convert.ToString(homeTypeRow["Mobility"]);
+                        l_Event.Walker = Convert.ToString(homeTypeRow["Walker"]);
+                        l_Event.WheelChair = Convert.ToString(homeTypeRow["WheelChair"]);
+                        l_Event.Cane = Convert.ToString(homeTypeRow["Cane"]);
+                        l_Event.CognitiveFunction = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(homeTypeRow["Vision"]));
+
+                        l_Event.Vision_text = "";
+                        if (l_Event.Vision != null)
+                        {
+                            foreach (var aa in l_Event.Vision)
+                            {
+                                if (aa.IsSelected == true) l_Event.Vision_text += aa.Name + ",";
+                            }
+                            if (l_Event.Vision_text.Length >= 1) l_Event.Vision_text = l_Event.Vision_text.Substring(0, l_Event.Vision_text.Length - 1);
+                        }
+                        
+                        l_Event.Hearing_text = "";
+                        if (l_Event.Hearing != null)
+                        {
+                            foreach (var aa in l_Event.Hearing)
+                            {
+                                if (aa.IsSelected == true) l_Event.Hearing_text += aa.Name + ",";
+                            }
+                            if (l_Event.Hearing_text.Length >= 1) l_Event.Hearing_text = l_Event.Hearing_text.Substring(0, l_Event.Vision_text.Length - 1);
+                        }
+                        
+                        l_Event.CognitiveFunction_text = "";
+                        if (l_Event.CognitiveFunction != null)
+                        {
+                            foreach (var aa in l_Event.CognitiveFunction)
+                            {
+                                if (aa.IsSelected == true) l_Event.CognitiveFunction_text += aa.Name + ",";
+                            }
+                            if (l_Event.CognitiveFunction_text.Length >= 1) l_Event.CognitiveFunction_text = l_Event.CognitiveFunction_text.Substring(0, l_Event.Vision_text.Length - 1);
+                        }
+                        
+
+                        l_Events.EmergencyResidentList.Add(l_Event);
+                    }
+                }
+                return l_Events;
+            }
+            catch (Exception ex)
+            {
+                exception = "get_EmergencyList |" + ex.ToString();
                 //Log.Write(exception);
                 throw;
             }

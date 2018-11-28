@@ -390,6 +390,21 @@ namespace QolaMVC.Controllers
             return View(resident);
         }
 
+        public ActionResult EmergencyList_mike()
+        {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            ViewBag.User = user;
+            ViewBag.Home = home;
+
+            ResidentEmergencyListModel samples = HomeDAL.get_EmergencyList(home.Id);
+
+
+            return View(samples);
+        }
+
 
 
         public ActionResult ERDetails()
