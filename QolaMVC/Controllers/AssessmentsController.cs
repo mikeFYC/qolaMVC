@@ -159,6 +159,20 @@ namespace QolaMVC.Controllers
             ViewBag.AssessmentDates = l_AssessmentDates;
             //return View(l_DietaryAssessment.LastOrDefault());
             QolaCulture.InitDiets(ref single);
+            if (single.Diet != null)
+            {
+                foreach (var str in single.Diet)
+                {
+                    for (int check = 0; check < single.Diet2.Count(); check++)
+                    {
+                        if (str == single.Diet2[check].Name)
+                        {
+                            single.Diet2[check].IsSelected = true;
+                        }
+                    }
+                }
+            }
+
             return View(single);
         }
 
@@ -212,7 +226,14 @@ namespace QolaMVC.Controllers
                     if (prop.GetValue(p_Model) == null) { prop.SetValue(p_Model, ""); }
                 }
             }
-
+            p_Model.Diet = new Collection<string>();
+            foreach(var check in p_Model.Diet2)
+            {
+                if (check.IsSelected == true)
+                {
+                    p_Model.Diet.Add(check.Name);
+                }
+            }
 
             var l_DietaryAssessment = AssessmentDAL.GetResidentDietaryAssesments(resident.ID);
             if (l_DietaryAssessment.Count >= 1)
@@ -228,42 +249,56 @@ namespace QolaMVC.Controllers
                 if (l_DietaryAssessment[0].Notes != p_Model.Notes) p_Model.DIFF = p_Model.DIFF + "Notes,";
                 if (l_DietaryAssessment[0].noAllergy != p_Model.noAllergy) p_Model.DIFF = p_Model.DIFF + "noAllergy,";
 
-                if(p_Model.Allergies != null)
+                if (p_Model.Allergies.Count() != l_DietaryAssessment[0].Allergies.Count())
                 {
-                    foreach (var a in p_Model.Allergies)
+                    p_Model.DIFF = p_Model.DIFF + "Allergy[],";
+                }
+                else
+                {
+                    if (p_Model.Allergies != null)
                     {
-                        bool result = false;
-                        foreach (var b in l_DietaryAssessment[0].Allergies)
+                        foreach (var a in p_Model.Allergies)
                         {
-                            if (b.Name == a.Name)
+                            bool result = false;
+                            foreach (var b in l_DietaryAssessment[0].Allergies)
                             {
-                                result = true;
-                                break;
+                                if (b.Name == a.Name)
+                                {
+                                    result = true;
+                                    break;
+                                }
                             }
-                        }
-                        if (result == false)
-                        {
-                            p_Model.DIFF = p_Model.DIFF + "Allergy[]" + a.ID.ToString() + ",";
+                            if (result == false)
+                            {
+                                p_Model.DIFF = p_Model.DIFF + "Allergy[]" + a.ID.ToString() + ",";
+                            }
                         }
                     }
                 }
-                
-                if(p_Model.Diet != null)
+
+                if (p_Model.Diet.Count() != l_DietaryAssessment[0].Diet.Count())
                 {
-                    foreach (string a in p_Model.Diet)
+                    p_Model.DIFF = p_Model.DIFF + "Diet[],";
+                }
+                else
+                {
+                    if (p_Model.Diet != null)
                     {
-                        bool result = false;
-                        foreach (string b in l_DietaryAssessment[0].Diet)
+                        foreach (string a in p_Model.Diet)
                         {
-                            if (b == a)
+                            bool result = false;
+                            foreach (string b in l_DietaryAssessment[0].Diet)
                             {
-                                result = true;
-                                break;
+                                if (b == a)
+                                {
+                                    result = true;
+                                    break;
+                                }
                             }
-                        }
-                        if (result == false)
-                        {
-                            p_Model.DIFF = p_Model.DIFF + "Diet[]" + a + ",";
+                            if (result == false)
+                            {
+                                p_Model.DIFF = p_Model.DIFF + "Diet[]" + a + ",";
+                            }
                         }
                     }
                 }

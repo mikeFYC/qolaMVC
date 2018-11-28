@@ -15,7 +15,7 @@ namespace QolaMVC.Models
         public string AssistiveDevices { get; set; }
         public Collection<string> Diet { get; set; }
 
-        public Collection<string> Diet2 { get; set; }
+        public Collection<QOLACheckboxModel> Diet2 { get; set; }
 
         public string Texture { get; set; }
         public string Other { get; set; }

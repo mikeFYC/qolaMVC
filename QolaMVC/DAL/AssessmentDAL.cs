@@ -1261,14 +1261,17 @@ namespace QolaMVC.DAL
                     {
                         foreach (var diet in p_Model.Diet)
                         {
-                            SqlCommand l_Cmd_Diet = new SqlCommand("spAB_Add_DietaryAssessment_Diets", l_Conn);
-                            // l_Conn.Open();
-                            l_Cmd_Diet.CommandType = System.Data.CommandType.StoredProcedure;
-                            l_Cmd_Diet.Parameters.AddWithValue("@Residentid", p_Model.Resident.ID);
-                            l_Cmd_Diet.Parameters.AddWithValue("@Diet", diet);
-                            l_Cmd_Diet.Parameters.AddWithValue("@AssessmentId", l_AssessmentId);
-                            l_Cmd_Diet.Parameters.AddWithValue("@Enteredby", p_Model.EnteredBy.ID);
-                            l_Cmd_Diet.ExecuteNonQuery();
+                            if (diet != "")
+                            {
+                                SqlCommand l_Cmd_Diet = new SqlCommand("spAB_Add_DietaryAssessment_Diets", l_Conn);
+                                // l_Conn.Open();
+                                l_Cmd_Diet.CommandType = System.Data.CommandType.StoredProcedure;
+                                l_Cmd_Diet.Parameters.AddWithValue("@Residentid", p_Model.Resident.ID);
+                                l_Cmd_Diet.Parameters.AddWithValue("@Diet", diet);
+                                l_Cmd_Diet.Parameters.AddWithValue("@AssessmentId", l_AssessmentId);
+                                l_Cmd_Diet.Parameters.AddWithValue("@Enteredby", p_Model.EnteredBy.ID);
+                                l_Cmd_Diet.ExecuteNonQuery();
+                            }
                         }
                     }
                     

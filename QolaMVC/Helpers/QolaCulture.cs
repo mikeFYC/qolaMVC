@@ -434,7 +434,8 @@ namespace QolaMVC.Helpers
         {
             if (vm.Diet2 == null)
             {
-                vm.Diet2 = new Collection <string>();
+                vm.Diet2 = new Collection <QOLACheckboxModel>();
+                QOLACheckboxModel qq;
                 string[] Diets = new string[]{"Regular Diet",
                                                     "Diabetic",
                                                     "Low Fat",
@@ -449,7 +450,11 @@ namespace QolaMVC.Helpers
 
                 foreach (var a in Diets)
                 {
-                    vm.Diet2.Add(a);
+                    qq = new QOLACheckboxModel();
+                    qq.IsSelected = false;
+                    qq.Name = a;
+                    qq.Notes = "";
+                    vm.Diet2.Add(qq);
                 }
             }
         }
