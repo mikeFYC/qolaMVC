@@ -23,21 +23,38 @@ namespace QolaMVC.Models
         public string Gendar { get; set; }
         public string phone { get; set; }
         public string contact { get; set; }
-        public string contact_phone { get; set; }
+        public string contact_phone1 { get; set; }
+        public string contact_phone_type1 { get; set; }
+        public string contact_phone2 { get; set; }
+        public string contact_phone_type2 { get; set; }
+        public string contact_phone3 { get; set; }
+        public string contact_phone_type3 { get; set; }
+        public string contact_phone_final { get; set; }
         public string RiskLevel { get; set; }
         public string RiskLevel_Full { get; set; }
         public string totalScore { get; set; }
 
-        public Collection<QOLACheckboxModel> Vision { get; set; }
-        public string Vision_text { get; set; }
-        public Collection<QOLACheckboxModel> Hearing { get; set; }
-        public string Hearing_text { get; set; }
+
         public string Mobility { get; set; }
         public string Walker { get; set; }
         public string WheelChair { get; set; }
         public string Cane { get; set; }
+        public string CPAP { get; set; }
+        public string Oxygen { get; set; }
+        public string Scooter { get; set; }
+        public string Lift { get; set; }
+        public string Transfer { get; set; }
         public Collection<QOLACheckboxModel> CognitiveFunction { get; set; }
         public string CognitiveFunction_text { get; set; }
+        public Collection<QOLACheckboxModel> Vision { get; set; }
+        public string Vision_text { get; set; }
+        public Collection<QOLACheckboxModel> Hearing { get; set; }
+        public string Hearing_text { get; set; }
+        public Collection<QOLACheckboxModel> Communication { get; set; }
+        public string Communication_text { get; set; }
+        public Collection<QOLACheckboxModel> SpecialEquip { get; set; }
+        public string SpecialEquip_text { get; set; }
+
 
         public string Comments { get; set; }
     }

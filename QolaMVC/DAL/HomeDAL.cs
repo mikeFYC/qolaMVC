@@ -2496,7 +2496,12 @@ namespace QolaMVC.DAL
                         l_Event.Gendar = Convert.ToString(homeTypeRow["fd_gender"]);
                         l_Event.phone = Convert.ToString(homeTypeRow["fd_phone"]);
                         l_Event.contact = Convert.ToString(homeTypeRow["fd_contact_1"]);
-                        l_Event.contact_phone = Convert.ToString(homeTypeRow["fd_home_phone_1"]);
+                        l_Event.contact_phone1 = Convert.ToString(homeTypeRow["fd_home_phone_1"]);
+                        l_Event.contact_phone_type1 = Convert.ToString(homeTypeRow["fd_home_phone_type_1"]);
+                        l_Event.contact_phone2 = Convert.ToString(homeTypeRow["fd_cell_phone_1"]);
+                        l_Event.contact_phone_type2 = Convert.ToString(homeTypeRow["fd_cell_phone_type_1"]);
+                        l_Event.contact_phone3 = Convert.ToString(homeTypeRow["fd_business_phone_1"]);
+                        l_Event.contact_phone_type3 = Convert.ToString(homeTypeRow["fd_business_phone_type_1"]);
                         l_Event.RiskLevel = Convert.ToString(homeTypeRow["RiskLevel"]);
                         l_Event.totalScore = Convert.ToString(homeTypeRow["TotalScore"]);
                         if (l_Event.RiskLevel == "High Risk") l_Event.RiskLevel_Full = "High Falling Risk";
@@ -2504,13 +2509,20 @@ namespace QolaMVC.DAL
                         else if (l_Event.RiskLevel == "Low Risk") l_Event.RiskLevel_Full = "Low Falling Risk";
                         else if (l_Event.RiskLevel == "No Risk") l_Event.RiskLevel_Full = "No Falling Risk";
                         else  l_Event.RiskLevel_Full = "";
-                        l_Event.Vision = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(homeTypeRow["Vision"]));
-                        l_Event.Hearing = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(homeTypeRow["Vision"]));
                         l_Event.Mobility = Convert.ToString(homeTypeRow["Mobility"]);
                         l_Event.Walker = Convert.ToString(homeTypeRow["Walker"]);
                         l_Event.WheelChair = Convert.ToString(homeTypeRow["WheelChair"]);
                         l_Event.Cane = Convert.ToString(homeTypeRow["Cane"]);
+                        l_Event.Transfer = Convert.ToString(homeTypeRow["Transfers"]);
+                        l_Event.Lift = Convert.ToString(homeTypeRow["Lift"]);
+                        l_Event.Scooter = Convert.ToString(homeTypeRow["Scooter"]);
+                        l_Event.Oxygen = Convert.ToString(homeTypeRow["Oxygen"]);
+                        l_Event.CPAP = Convert.ToString(homeTypeRow["CPAP"]);
                         l_Event.CognitiveFunction = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(homeTypeRow["Vision"]));
+                        l_Event.Vision = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(homeTypeRow["Vision"]));
+                        l_Event.Hearing = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(homeTypeRow["Vision"]));
+                        l_Event.Communication = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(homeTypeRow["Communication"]));
+                        l_Event.SpecialEquip = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(homeTypeRow["SpecialEquipment"]));
 
                         l_Event.Vision_text = "";
                         if (l_Event.Vision != null)
@@ -2541,7 +2553,50 @@ namespace QolaMVC.DAL
                             }
                             if (l_Event.CognitiveFunction_text.Length >= 1) l_Event.CognitiveFunction_text = l_Event.CognitiveFunction_text.Substring(0, l_Event.Vision_text.Length - 1);
                         }
-                        
+
+                        l_Event.Communication_text = "";
+                        if (l_Event.Communication != null)
+                        {
+                            foreach (var aa in l_Event.Communication)
+                            {
+                                if (aa.IsSelected == true) l_Event.Communication_text += aa.Name + ",";
+                            }
+                            if (l_Event.Communication_text.Length >= 1) l_Event.Communication_text = l_Event.CognitiveFunction_text.Substring(0, l_Event.Vision_text.Length - 1);
+                        }
+
+                        l_Event.SpecialEquip_text = "";
+                        if (l_Event.SpecialEquip != null)
+                        {
+                            foreach (var aa in l_Event.SpecialEquip)
+                            {
+                                if (aa.IsSelected == true) l_Event.SpecialEquip_text += aa.Name + ",";
+                            }
+                            if (l_Event.SpecialEquip_text.Length >= 1) l_Event.SpecialEquip_text = l_Event.CognitiveFunction_text.Substring(0, l_Event.Vision_text.Length - 1);
+                        }
+
+                        l_Event.Comments = "<b>"+l_Event.RiskLevel_Full+"</b>, ";
+
+                        if (l_Event.Vision_text != "") l_Event.Comments += "<b>Vision</b>(" + l_Event.Vision_text + "), ";
+                        if (l_Event.Hearing_text != "") l_Event.Comments += "<b>Hearing</b>(" + l_Event.Hearing_text + "), ";
+                        if (l_Event.Communication_text != "") l_Event.Comments += "<b>Communication</b>(" + l_Event.Communication_text + "), ";
+                        if (l_Event.Mobility != "") l_Event.Comments += "<b>Mobility</b>(" + l_Event.Mobility + "), ";
+                        if (l_Event.Walker != "") l_Event.Comments += "<b>Walker</b>(" + l_Event.Walker + "), ";
+                        if (l_Event.Transfer != "") l_Event.Comments += "<b>Transfers</b>(" + l_Event.Transfer + "), ";
+                        if (l_Event.Lift != "") l_Event.Comments += "<b>Lift</b>(" + l_Event.Lift + "), ";
+                        if (l_Event.WheelChair != "") l_Event.Comments += "<b>WheelChair</b>(" + l_Event.WheelChair + "), ";
+                        if (l_Event.Scooter != "") l_Event.Comments += "<b>Scooter</b>(" + l_Event.Scooter + "), ";
+                        if (l_Event.Cane != "") l_Event.Comments += "<b>Cane</b>(" + l_Event.Cane + "), ";
+                        if (l_Event.CognitiveFunction_text != "") l_Event.Comments += "<b>CognitiveFunction</b>(" + l_Event.CognitiveFunction_text + "), ";
+                        if (l_Event.Oxygen != "") l_Event.Comments += "<b>Oxygen</b>(" + l_Event.Oxygen + "), ";
+                        if (l_Event.CPAP != "") l_Event.Comments += "<b>CPAP</b>(" + l_Event.CPAP + "), ";
+                        if (l_Event.SpecialEquip_text != "") l_Event.Comments += "<b>SpecialEquipment</b>(" + l_Event.SpecialEquip_text + "), ";
+
+                        l_Event.Comments = l_Event.Comments.Substring(0, l_Event.Comments.Length - 2);
+                        l_Event.contact_phone_final = "";
+                        if (l_Event.contact_phone_type1 == "1") l_Event.contact_phone_final = l_Event.contact_phone1;
+                        else if (l_Event.contact_phone_type2 == "1") l_Event.contact_phone_final = l_Event.contact_phone2;
+                        else if (l_Event.contact_phone_type3 == "1") l_Event.contact_phone_final = l_Event.contact_phone3;
+
 
                         l_Events.EmergencyResidentList.Add(l_Event);
                     }
