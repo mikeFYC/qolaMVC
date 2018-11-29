@@ -2502,6 +2502,8 @@ namespace QolaMVC.DAL
                         if (l_Event.RiskLevel == "High Risk") l_Event.RiskLevel_Full = "High Falling Risk";
                         else if (l_Event.RiskLevel == "Medium Risk") l_Event.RiskLevel_Full = "Medium Falling Risk";
                         else if (l_Event.RiskLevel == "Low Risk") l_Event.RiskLevel_Full = "Low Falling Risk";
+                        else if (l_Event.RiskLevel == "No Risk") l_Event.RiskLevel_Full = "No Falling Risk";
+                        else  l_Event.RiskLevel_Full = "";
                         l_Event.Vision = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(homeTypeRow["Vision"]));
                         l_Event.Hearing = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(homeTypeRow["Vision"]));
                         l_Event.Mobility = Convert.ToString(homeTypeRow["Mobility"]);

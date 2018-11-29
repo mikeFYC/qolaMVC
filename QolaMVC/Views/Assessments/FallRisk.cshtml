@@ -129,7 +129,7 @@
                                 <p class="TotalScore" style="display:inline-block;font-weight:bold;font-size:1.8vw;margin-bottom:8px !important;">0</p>
                                 <p class="RiskLevel" style="display:inline-block;font-weight:bold;font-size:1.2vw;margin-bottom:8px !important;">Low Risk</p>
                             </div>
-                            <p style="color:red;display:inline-block;float:right;font-weight:bold;font-size:0.9vw;padding:0.3vw;margin-right:1vw;margin-top:0.5vw;">Score of 0-5 pts = Low risk; 6-9 pts = Medium risk; >= 10 pts = High risk.</p>
+                            <p style="color:red;display:inline-block;float:right;font-weight:bold;font-size:0.9vw;padding:0.3vw;margin-right:1vw;margin-top:0.5vw;">Score of 1-5 pts = Low risk; 6-9 pts = Medium risk; >= 10 pts = High risk.</p>
                         </div>
 
                         <form action="~/Assessments/AddFallRiskAssessment" method="post">
@@ -587,7 +587,8 @@
 
                                     <div class="col-md-12 text-center">
                                         <br><br>
-                                        <input type="submit" class="btn btn-danger" id="save_button" value="SAVE" />
+                                        @*<input type="submit" class="btn btn-danger" id="save_button" value="SAVE" />*@
+                                        <button type="button" id="save_button" class="btn btn-danger btn-lg">SAVE</button>
                                         @*<input type="reset" class="btn btn-danger" value="CLEAR" />*@
                                     </div>
                                     <input id="hiddeninput1" type="hidden" value="@TempData["index"]" />
@@ -630,7 +631,7 @@
         $(".TotalScore").text(total);
         $(".RiskLevel").text(RiskValue);
 
-        $("#fallRiskTotalScore").val(total);
+        $("#fallRiskTotalScore").val(total.toString());
         $("#fallRiskLevel").val(RiskValue);
 
         $(".fallRisk").click(function () {
@@ -655,6 +656,10 @@
             }
             $(".RiskLevel").text(RiskValue);
 
+
+            $("#fallRiskTotalScore").val(total.toString());
+            $("#fallRiskLevel").val(RiskValue);
+
         });
 
        
@@ -674,5 +679,20 @@
                 window.location.href = window.location.href + "?index=" + index;
             }
         }
+
+        $('#save_button').click(function (){
+            var ind = 0;
+            $('input[type="checkbox"]').each(function () {
+                if (this.checked == true) {
+                    ind = 1;
+                }
+            });
+            if (ind == 1) {
+                $('form').submit();
+            }
+            else {
+                tempAlert("Cannot Submit Blank Form", 2000);
+            }
+        });
 
     </script>

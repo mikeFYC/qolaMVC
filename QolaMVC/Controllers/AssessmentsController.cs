@@ -2090,6 +2090,10 @@ namespace QolaMVC.Controllers
             ViewBag.Resident = resident;
             ViewBag.Home = home;
 
+            if (p_Model.TotalScore == 0)
+            {
+                p_Model.RiskLevel = "No Risk";
+            }
 
             TempData.Keep("User");
             TempData.Keep("Home");
