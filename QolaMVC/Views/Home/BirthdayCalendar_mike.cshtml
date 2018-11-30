@@ -1,0 +1,315 @@
+﻿@model QolaMVC.Models.Dining_Attendance_simple
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <style>
+        /*.fc-event-container:hover {
+            cursor: pointer;
+        }*/
+
+        hr {
+            display: block;
+            height: 1px;
+            border: 0;
+            border-top: 2px solid #ccc !important;
+            margin: 1em 0;
+            padding: 0;
+            border-color: black !important;
+        }
+
+        .fc-event {
+            min-height: 2.8vh !important;
+            font-size: 1vw !important;
+        }
+
+        .fc-month-view span.fc-title {
+            white-space: normal !important;
+            color:black;
+        }
+
+        .fc-center h2 {
+            font-weight: bold !important;
+        }
+
+        .fc-more-cell {
+            font-weight: bold;
+            color: black;
+        }
+
+        .form-tabs .nav-link {
+            font-size: 1rem;
+        }
+
+        a.active {
+            background-color: #015093 !important;
+        }
+    </style>
+
+
+    <meta charset='utf-8' />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Calendar Plugin</title>
+
+    @*<link rel="stylesheet" href="/Content/calendar/css/calendar-plugin.min.css" media="all" />*@
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    @*<script src="~/Content/calendar/plugins/jquery/jquery.min.js"></script>*@
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
+    @*<script src="~/Content/calendar/js/calendar-plugin.js"></script>*@
+
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="apple-touch-icon" href="~/Content/pages/ico/60.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="~/Content/pages/ico/76.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="~/Content/pages/ico/120.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="~/Content/pages/ico/152.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <link href="/Content/bootstrap.css" rel="stylesheet">
+    <link href="/Content/site.css" rel="stylesheet">
+    <link href="/Content/assets/plugins/pace/pace-theme-flash.css" rel="stylesheet">
+    <link href="/Content/assets/plugins/bootstrap/css/bootstrap.min.css" " rel="stylesheet">
+    <link href="/Content/assets/plugins/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/Content/assets/plugins/jquery-scrollbar/jquery.scrollbar.css" rel="stylesheet">
+    <link href="/Content/assets/plugins/select2/css/select2.min.css" rel="stylesheet">
+    <link href="/Content/assets/plugins/switchery/css/switchery.min.css" rel="stylesheet">
+    <link href="/Content/pages/css/pages-icons.css" rel="stylesheet">
+    <link href="/Content/assets/css/pages.css" rel="stylesheet">
+    <link href="/Content/assets/css/datatables.css" rel="stylesheet">
+    <link href="/Content/assets/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+
+
+
+
+    <link href="~/Content/fullCalendar/css/fullcalendar.css" rel="stylesheet" />
+    <link href="~/Content/fullCalendar/css/fullcalendar.print.css" rel="stylesheet" media="print" />
+    <script src="~/Content/fullCalendar/lib/jquery.min.js"></script>
+    <script src="~/Content/fullCalendar/lib/moment.min.js"></script>
+    <script src="~/Content/fullCalendar/js/fullcalendar.js"></script>
+
+
+</head>
+
+<body id="mike">
+    <!-- START PAGE-CONTAINER -->
+    <div class="page-container">
+
+        @RenderPage("~/Views/Shared/_NavBar.cshtml")
+
+        <!-- START PAGE CONTENT WRAPPER -->
+        <div class="page-content-wrapper">
+            <!-- START PAGE CONTENT -->
+            <div class="content">
+                <!-- START JUMBOTRON -->
+                <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                    <div class="container-fluid container-fixed-lg">
+                        <!-- <div class="inner"> -->
+                        <div class="row align-items-center">
+                            <div id="ACtivityCalendarTitle" style="width:89%;">
+                                <h3>Birthday Calendar</h3>
+                            </div>
+                            <div style="width:9%;display:inline-block;">
+                                @*<button class="btn btn-danger print" id="PrintDAY" style="">Print</button>*@
+                                <button class="btn btn-danger printBtn hidden-print " id="PrintWAM">Print</button>
+                            </div>
+                        </div>
+                        <!-- </div> -->
+                    </div>
+                </div>
+                <!-- END JUMBOTRON -->
+                <div style="height: 60px;"></div>
+                <!-- START CONTAINER FLUID -->
+                <div class="container-fluid container-fixed-lg">
+                    <div class="card">
+                        <div class="card-block">
+                            <div class="form-tabs mt-4" id="AC_FirstRow">
+                                
+                                <br>
+                                <div class="tab-content" id="pills-tabContent">
+
+                                    <div class="tab-pane fade show active" id="pills-active" role="tabpanel" aria-labelledby="pills-active-tab">
+                                        <div id="calendar1Parent" style='position:relative;float:left;width:100%;z-index:100;'>
+                                            <div>
+                                                @*<button class="btn btn-primary" id="month1" style="border-radius:.25rem">Month</button>*@
+                                                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top:-5vh;margin-bottom:0px !important;margin-left:35%;">
+                                                    <li class="Prevbtn"><a id="imgPrevbtn_a" href="#" onclick="previousday_mike()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
+                                                    <li class="clear_bg"><label id="lblCalendarMsg" style="font-weight:bolder;font-size:1.5em;margin-top:1.5vh;color:black;">@TempData["datechoose"].ToString()</label></li>
+                                                    <li class="Nextbtn"><a id="imgNextbtn_a" href="#" onclick="nextday_mike()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
+                                                </ul>
+                                            </div>
+
+                                            <section id='calendar'></section>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+
+                    <!-- END CONTAINER FLUID -->
+                </div>
+                <!-- END PAGE CONTENT -->
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @*@RenderPage("~/Views/Shared/_Footer.cshtml")*@
+</body>
+</html>
+
+
+<script src="~/Content/assets/plugins/pace/pace.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/modernizr.custom.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/tether/js/tether.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/jquery/jquery-easy.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/jquery-unveil/jquery.unveil.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/jquery-bez/jquery.bez.min.js"></script>
+<script src="~/Content/assets/plugins/jquery-ios-list/jquery.ioslist.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/imagesloaded/imagesloaded.pkgd.min.js"></script>
+<script src="~/Content/assets/plugins/jquery-actual/jquery.actual.min.js"></script>
+<script src="~/Content/assets/plugins/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+<!-- END VENDOR JS -->
+<!-- BEGIN CORE TEMPLATE JS -->
+<script src="~/Content/pages/js/pages.js" type="text/javascript"></script>
+<!-- END CORE TEMPLATE JS -->
+<!-- BEGIN PAGE LEVEL JS -->
+<script src="~/Content/assets/js/scripts.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL JS -->
+<script src="~/Content/assets/js/FileAPI/FileAPI.js"></script>
+<script src="~/Content/assets/js/datatables.min.js"></script>
+<script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="~/Content/assets/js/html2canvas.js" crossorigin="anonymous"></script>
+
+
+
+
+
+
+<script>
+
+    function previousday_mike() {
+
+        $('#calendar').fullCalendar('prev');
+        var view = $('#calendar').fullCalendar('getView');
+        $('#lblCalendarMsg').html(view.title);
+
+    }
+    function nextday_mike() {
+
+        $('#calendar').fullCalendar('next');
+        var view = $('#calendar').fullCalendar('getView');
+        $('#lblCalendarMsg').html(view.title);
+
+    }
+
+    function tempAlert(msg, duration) {
+        var el = document.createElement("div");
+        el.setAttribute("style", "position:fixed;top:2%;left:28%;width:45vw;text-align: center;background-color:white;z-index:9999;color:black;padding:2.5vw 4vw 2.5vw 4vw;border-radius:1vw;font-size:2vw;font-weight:bold;border:black solid;");
+        el.innerHTML = "<img src=\"\/Content\/assets\/img\/qola_logo3.png\" style=\"width:120px;height:80px;margin-left:-2vw;\" \/><div style=\"margin-left:3vw;display:inline;\">" + msg + "<\/div>";
+        setTimeout(function () {
+            el.parentNode.removeChild(el);
+        }, duration);
+        document.body.appendChild(el);
+    }
+
+</script>
+
+
+
+<script>
+    $(document).ready(function () {
+
+        $.ajax({
+            type: "GET",
+            url: "/home/GetBirthdayCalendar",
+            success: function (data) {
+                $.each(data, function (i, v) {
+                    data.push({
+                        Id: v.id,
+                        title: v.title,
+                        start: v.startT,
+                        end: v.endT != null ? v.endT : null,
+                        startDate: v.startDate,
+                        Venue: v.Venue,
+                        Note: v.note,
+                        Category: v.Category,
+                        ActivityID: v.ActivityId,
+                        startTime: v.startTime,
+                        suite: v.suite
+                    });
+                })
+                GenerationCalendar(data);
+            },
+
+            error: function (error) {
+                alert('Failed');
+            }
+        })
+
+
+        function GenerationCalendar(events) {
+            $('#calendar').fullCalendar('destroy');
+            $('#calendar').fullCalendar({
+                contentHeight: 800,
+                defaultDate: new Date(),
+                timeFormat: 'h(:mm)a',
+                header: {
+                    right: '',
+                    center: '',
+                    left: ''
+                },
+                defaultView: 'month',
+                eventLimit: true,
+                dayNamesShort: ['Sunday', 'Monday', 'Tuesday', 'Wednesday','Thursday', 'Friday', 'Saturday'],
+                eventColor: 'lightgreen',
+                events: events,
+                displayEventTime: false,
+                eventRender: function (event, element) {
+                    element.find('.fc-title').prepend("<b>" + event.suite + "</b>"); 
+                },
+                eventOrder: 'suite'
+            })
+        };
+    });
+
+    $('.printBtn').on('click', function () {
+        $('#ACtivityCalendarTitle').css({ 'margin-left': '5vw' });
+        window.print();
+        $('#ACtivityCalendarTitle').css({ 'margin-left': '0' });
+    });
+
+
+
+</script>
+

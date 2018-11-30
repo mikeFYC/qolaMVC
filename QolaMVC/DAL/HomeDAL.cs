@@ -1933,6 +1933,8 @@ namespace QolaMVC.DAL
                             l_Event.ProgramEndDate = Convert.ToDateTime(homeTypeRow["EndDate"]);
                             l_Event.ProgramStartTime = Convert.ToString(homeTypeRow["StartTime"]);
                             l_Event.ProgramEndTime = Convert.ToString(homeTypeRow["EndTime"]);
+                            l_Event.note = Convert.ToString(homeTypeRow["EventTitle_title"]);
+                            l_Event.Venue = Convert.ToString(homeTypeRow["EventTitle_suite"]);
                             l_Events.Add(l_Event);
 
                         }
@@ -2606,6 +2608,71 @@ namespace QolaMVC.DAL
             catch (Exception ex)
             {
                 exception = "get_EmergencyList |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+
+        public static void Change_Calendar_Name(int homeId,int number, string newName,int userId)
+        {
+            string exception = string.Empty;
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlCommand l_Cmd = new SqlCommand("spAB_Change_Calendar_Name", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@number", number);
+                l_Cmd.Parameters.AddWithValue("@homtId", homeId);
+                l_Cmd.Parameters.AddWithValue("@newName", newName);
+                l_Cmd.Parameters.AddWithValue("@userId", userId);
+                l_Cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                exception = "Change_Calendar_Name |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+        public static string[] get_Activity_Calendar_Name(int homeId)
+        {
+            string[] attayStr = new string[4] {"","","",""};
+            string exception = string.Empty;
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlCommand l_Cmd = new SqlCommand("spAB_get_Activity_Calendar_Name", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@homtId", homeId);
+
+                SqlDataReader rd = l_Cmd.ExecuteReader();
+                if (rd.HasRows)
+                {
+                    while (rd.Read())
+                    {
+                        if (int.Parse(rd[0].ToString()) == 1) attayStr[0] = rd[1].ToString();
+                        else if (int.Parse(rd[0].ToString()) == 2) attayStr[1] = rd[1].ToString();
+                        else if (int.Parse(rd[0].ToString()) == 3) attayStr[2] = rd[1].ToString();
+                        else if (int.Parse(rd[0].ToString()) == 4) attayStr[3] = rd[1].ToString();
+                    }
+                }
+                return attayStr;
+            }
+            catch (Exception ex)
+            {
+                exception = "get_Activity_Calendar_Name |" + ex.ToString();
                 //Log.Write(exception);
                 throw;
             }

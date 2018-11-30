@@ -1,0 +1,1440 @@
+﻿@model QolaMVC.Models.Dining_Attendance_simple
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <style>
+        .fc-event-container:hover {
+            cursor: pointer;
+        }
+
+        #AddEvent label {
+            font-size: 1vw;
+            color: black;
+        }
+
+        #AddEvent #frequency #frequency_div label {
+            font-size: 0.8vw !important;
+            color: black;
+        }
+
+        .required_sign {
+            color: red;
+        }
+
+        hr {
+            display: block;
+            height: 1px;
+            border: 0;
+            border-top: 2px solid #ccc !important;
+            margin: 1em 0;
+            padding: 0;
+            border-color: black !important;
+        }
+
+        .fc-event {
+            min-height: 2.8vh !important;
+            font-size: 1vw !important;
+        }
+
+        .fc-month-view span.fc-title {
+            white-space: normal !important;
+        }
+
+        .fc-center h2 {
+            font-weight: bold !important;
+        }
+
+        .P_and_N_white {
+            background-color: white;
+        }
+
+        .fc-more-cell {
+            font-weight: bold;
+            color: black;
+        }
+
+        #calendar1_name, #calendar2_name, #calendar3_name, #calendar4_name {
+            margin-bottom: 0px !important;
+            font-weight: bold;
+            font-size: 1.2em !important;
+        }
+    </style>
+
+
+    <meta charset='utf-8' />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="apple-touch-icon" href="~/Content/pages/ico/60.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="~/Content/pages/ico/76.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="~/Content/pages/ico/120.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="~/Content/pages/ico/152.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <link href="/Content/bootstrap.css" rel="stylesheet">
+    <link href="/Content/site.css" rel="stylesheet">
+    <link href="/Content/assets/plugins/pace/pace-theme-flash.css" rel="stylesheet">
+    <link href="/Content/assets/plugins/bootstrap/css/bootstrap.min.css" " rel="stylesheet">
+    <link href="/Content/assets/plugins/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/Content/assets/plugins/jquery-scrollbar/jquery.scrollbar.css" rel="stylesheet">
+    <link href="/Content/assets/plugins/select2/css/select2.min.css" rel="stylesheet">
+    <link href="/Content/assets/plugins/switchery/css/switchery.min.css" rel="stylesheet">
+    <link href="/Content/pages/css/pages-icons.css" rel="stylesheet">
+    <link href="/Content/assets/css/pages.css" rel="stylesheet">
+    <link href="/Content/assets/css/datatables.css" rel="stylesheet">
+    <link href="/Content/assets/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+
+
+
+
+    <link href="~/Content/fullCalendar/css/fullcalendar.css" rel="stylesheet" />
+    <link href="~/Content/fullCalendar/css/fullcalendar.print.css" rel="stylesheet" media="print" />
+    <script src="~/Content/fullCalendar/lib/jquery.min.js"></script>
+    <script src="~/Content/fullCalendar/lib/moment.min.js"></script>
+    <script src="~/Content/fullCalendar/js/fullcalendar.js"></script>
+
+
+</head>
+
+<body id="mike">
+    <!-- START PAGE-CONTAINER -->
+    <div class="page-container">
+
+        @RenderPage("~/Views/Shared/_NavBar.cshtml")
+
+        <!-- START PAGE CONTENT WRAPPER -->
+        <div class="page-content-wrapper">
+            <!-- START PAGE CONTENT -->
+            <div class="content">
+                <!-- START JUMBOTRON -->
+                <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                    <div class="container-fluid container-fixed-lg">
+                        <!-- <div class="inner"> -->
+                        <div class="row align-items-center">
+                            <div id="ACtivityCalendarTitle" style="width:79%;">
+                                <h3>Suggested Activity Calendar</h3>
+                            </div>
+                            <div style="width:19%;display:inline-block;">
+                                <button class="btn btn-primary" type="button" onclick="backfunction()">BACK</button>
+                                <button class="btn btn-danger print" id="PrintDAY">Print</button>
+                                <button class="btn btn-danger printBtn hidden-print " id="PrintWAM" style="display:none;">Print</button>
+                            </div>
+                        </div>
+                        <!-- </div> -->
+                    </div>
+                </div>
+                <!-- END JUMBOTRON -->
+                <div style="height: 60px;"></div>
+                <!-- START CONTAINER FLUID -->
+                <div class="container-fluid container-fixed-lg">
+                    <div class="card">
+                        <div class="card-block">
+                            <div class="form-tabs mt-4" id="AC_FirstRow">
+                                @{
+                                    var name1 = "Calendar One";
+                                    var name2 = "Calendar Two";
+                                    var name3 = "Calendar Three";
+                                    var name4 = "Calendar Four";
+                                    if (ViewBag.CalendarName[0] != "") { name1 = ViewBag.CalendarName[0]; }
+                                    if (ViewBag.CalendarName[1] != "") { name2 = ViewBag.CalendarName[1]; }
+                                    if (ViewBag.CalendarName[2] != "") { name3 = ViewBag.CalendarName[2]; }
+                                    if (ViewBag.CalendarName[3] != "") { name4 = ViewBag.CalendarName[3]; }
+                                }
+                                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="pills-active-tab" data-toggle="pill" href="#pills-active" role="tab" aria-controls="pills-active" aria-selected="true" onclick="calendar_one()"><p id="calendar1_name" style="min-width:5vw;">@name1</p></a>
+                                        <input type="image" style="width:1.1vw;height:1.5vh;position:absolute;margin-top:-5.3vh;margin-left:92%;background-color:white;border-radius:20%;opacity:0.90;" src="/Content/pages/img/icoedit.png" data-toggle="modal" data-target="#Calendar_Name_Change" onclick="calendar_change_name_click(this)">
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="pills-achive-tab" data-toggle="pill" href="#pills-achive" role="tab" aria-controls="pills-achive" aria-selected="false" onclick="calendar_two()"><p id="calendar2_name" style="min-width:5vw;">@name2</p></a>
+                                        <input type="image" style="width:1.1vw;height:1.5vh;position:absolute;margin-top:-5.3vh;margin-left:92%;background-color:white;border-radius:20%;opacity:0.90;" src="/Content/pages/img/icoedit.png" data-toggle="modal" data-target="#Calendar_Name_Change" onclick="calendar_change_name_click(this)">
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="pills-achive-tab2" data-toggle="pill" href="#pills-C3" role="tab" aria-controls="pills-C3" aria-selected="false" onclick="calendar_three()"><p id="calendar3_name" style="min-width:5vw;">@name3</p></a>
+                                        <input type="image" style="width:1.1vw;height:1.5vh;position:absolute;margin-top:-5.3vh;margin-left:92%;background-color:white;border-radius:20%;opacity:0.90;" src="/Content/pages/img/icoedit.png" data-toggle="modal" data-target="#Calendar_Name_Change" onclick="calendar_change_name_click(this)">
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="pills-achive-tab3" data-toggle="pill" href="#pills-C4" role="tab" aria-controls="pills-C4" aria-selected="false" onclick="calendar_four()"><p id="calendar4_name" style="min-width:5vw;">@name4</p></a>
+                                        <input type="image" style="width:1.1vw;height:1.5vh;position:absolute;margin-top:-5.3vh;margin-left:92%;background-color:white;border-radius:20%;opacity:0.90;" src="/Content/pages/img/icoedit.png" data-toggle="modal" data-target="#Calendar_Name_Change" onclick="calendar_change_name_click(this)">
+                                    </li>
+                                </ul>
+                                <br>
+                                <div class="tab-content" id="pills-tabContent">
+
+                                    <div class="tab-pane fade show active" id="pills-active" role="tabpanel" aria-labelledby="pills-active-tab">
+                                        <div id="calendar1Parent" style='position: relative; float: left; width: 100%;z-index:100;'>
+                                            <div>
+                                                <button class="btn btn-primary" id="month1" style="border-radius:.25rem">Month</button>
+                                                <button class="btn btn-primary" id="week1" style="border-radius:.25rem">Week</button>
+                                                <button class="btn btn-primary" id="day1" style="border-radius:.25rem">Day</button>
+                                                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top:-5vh;margin-left:30%;">
+                                                    <li class="Prevbtn"><a id="imgPrevbtn_a" href="#" onclick="previousday_mike()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
+                                                    <li class="clear_bg"><label id="lblCalendarMsg" style="font-weight:bolder;font-size:1.5em;margin-top:1.5vh;color:black;">@TempData["datechoose"].ToString()</label></li>
+                                                    <li class="Nextbtn"><a id="imgNextbtn_a" href="#" onclick="nextday_mike()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
+                                                    @*<li class="Goto_Today"><button class="btn btn-primary text-white" onclick="Goto_Today()" style="border-radius:1vw;margin-top:2%;margin-left:30vw;">Today</button></li>*@
+                                                </ul>
+                                                <input type="hidden" id="tempdate" value="@TempData["datechoose"].ToString()" />
+                                            </div>
+
+                                            <section id='calendar'></section>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane fade" id="pills-achive" role="tabpanel" aria-labelledby="pills-achive-tab">
+                                        <div id="calendar2Parent" style='position: relative; float: left; width: 100%;z-index:100;'>
+                                            <div>
+                                                <button class="btn btn-primary" id="month2" style="border-radius:.25rem">Month</button>
+                                                <button class="btn btn-primary" id="week2" style="border-radius:.25rem">Week</button>
+                                                <button class="btn btn-primary" id="day2" style="border-radius:.25rem">Day</button>
+                                                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top:-5vh;margin-left:30%;">
+
+                                                    <li class="Prevbtn"><a href="#" onclick="previousday_mike()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
+                                                    <li class="clear_bg"><label id="lblCalendarMsg2" style="font-weight:bolder;font-size:1.5em;margin-top:1.5vh;color:black">@TempData["datechoose"].ToString()</label></li>
+                                                    <li class="Nextbtn"><a href="#" onclick="nextday_mike()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
+                                                    @*<li class="Goto_Today"><button class="btn btn-primary text-white" onclick="Goto_Today()" style="border-radius:1vw;margin-top:2%;margin-left:30vw;">Today</button></li>*@
+                                                </ul>
+                                            </div>
+                                            <section id='calendar2'></section>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane fade" id="pills-C3" role="tabpanel" aria-labelledby="pills-achive-tab2">
+
+                                        <div id="calendar3Parent" style='position: relative; float: left; width: 100%;z-index:100;'>
+                                            <div>
+                                                <button class="btn btn-primary" id="month3" style="border-radius:.25rem">Month</button>
+                                                <button class="btn btn-primary" id="week3" style="border-radius:.25rem">Week</button>
+                                                <button class="btn btn-primary" id="day3" style="border-radius:.25rem">Day</button>
+                                                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top:-5vh;margin-left:30%;">
+
+                                                    <li class="Prevbtn"><a href="#" onclick="previousday_mike()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
+                                                    <li class="clear_bg"><label id="lblCalendarMsg3" style="font-weight:bolder;font-size:1.5em;margin-top:1.5vh;color:black">@TempData["datechoose"].ToString()</label></li>
+                                                    <li class="Nextbtn"><a href="#" onclick="nextday_mike()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
+                                                    @*<li class="Goto_Today"><button class="btn btn-primary text-white" onclick="Goto_Today()" style="border-radius:1vw;margin-top:2%;margin-left:30vw;">Today</button></li>*@
+                                                </ul>
+                                            </div>
+                                            <section id='calendar3'></section>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane fade" id="pills-C4" role="tabpanel" aria-labelledby="pills-achive-tab3">
+                                        <div id="calendar4Parent" style='position: relative; float: left; width: 100%;z-index:100;'>
+                                            <div>
+                                                <button class="btn btn-primary" id="month4" style="border-radius:.25rem">Month</button>
+                                                <button class="btn btn-primary" id="week4" style="border-radius:.25rem">Week</button>
+                                                <button class="btn btn-primary" id="day4" style="border-radius:.25rem">Day</button>
+                                                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top:-5vh;margin-left:30%;">
+
+                                                    <li class="Prevbtn"><a href="#" onclick="previousday_mike()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
+                                                    <li class="clear_bg"><label id="lblCalendarMsg4" style="font-weight:bolder;font-size:1.5em;margin-top:1.5vh;color:black">@TempData["datechoose"].ToString()</label></li>
+                                                    <li class="Nextbtn"><a href="#" onclick="nextday_mike()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
+                                                    @*<li class="Goto_Today"><button class="btn btn-primary text-white" onclick="Goto_Today()" style="border-radius:1vw;margin-top:2%;margin-left:30vw;">Today</button></li>*@
+                                                </ul>
+                                            </div>
+                                            <section id='calendar4'></section>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="day_div" class="fromHTMLtestdiv" style="display:block;margin-top:11.5%;margin-left:-2%; z-index:0;position:absolute;width:104%;">
+
+                            <div class="container-fluid container-fixed-lg" id="main_page">
+                                <div class="card">
+                                    <div class="card-block">
+                                        <div class="form-tabs mt-4">
+
+                                            @*<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top:-12vh;margin-left:38%;padding-bottom:5%;">
+
+                                <li class="Prevbtn"><a id="imgPrevbtn_a" href="#" onclick="previousday_mike()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
+                                <li class="clear_bg"><label id="lblCalendarMsg" style="font-weight:bolder;font-size:1.5em;margin-top:1.5vh;color:black;">@TempData["datechoose"].ToString()</label></li>
+                                <li class="Nextbtn"><a id="imgNextbtn_a" href="#" onclick="nextday_mike()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
+                                <li class="Goto_Today"><button class="btn btn-primary text-white" onclick="Goto_Today()" style="border-radius:1vw;margin-top:2%;margin-left:30vw;">Today</button></li>
+                            </ul>*@
+
+
+                                            <div class="tab-content" id="pills-tabContent">
+                                                <div class="tab-pane fade show active" id="pills-day" role="tabpanel" aria-labelledby="pills-home-tab">
+                                                    @*<div id="select_ActivityID_index" class="" name="" english=""></div>*@
+                                                    <table class="table table-bordered">
+                                                        <thead class="bg-primary">
+                                                            <tr>
+                                                                <th class="text-white text-center">Time</th>
+                                                                <th class="text-white text-center">Today's Activities</th>
+                                                                <th class="text-white text-center">Venue</th>
+
+                                                                <th class="text-white text-center" colspan="2"></th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="text-white text-center"></th>
+                                                                <th class="text-white text-center"></th>
+                                                                <th class="text-white text-center"></th>
+
+                                                                <th class="text-white text-center">Active</th>
+                                                                <th class="text-white text-center">Declined</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @{
+                                                                for (int a = 0; a < @ViewBag.Events.Count; a++)
+                                                                {
+                                                                    <tr name=@ViewBag.Events[a].ProgramId id=@ViewBag.Events[a].ProgramName englishname=@ViewBag.Events[a].ActivityNameEnglish>
+                                                                        <td>@ViewBag.Events[a].ProgramStartTime</td>
+                                                                        <td>@ViewBag.Events[a].ProgramName</td>
+                                                                        <td>@ViewBag.Events[a].Venue</td>
+
+                                                                        <td>
+                                                                            @ViewBag.Events[a].Active
+                                                                        </td>
+                                                                        <td>
+                                                                            @ViewBag.Events[a].Declined
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+                        </div>
+
+                        <div id="day_div2" class="fromHTMLtestdiv" style="display:none;margin-top:11.5%;margin-left:-2%; z-index:0;position:absolute;width:104%;">
+
+                            <div class="container-fluid container-fixed-lg" id="main_page">
+                                <div class="card">
+                                    <div class="card-block">
+                                        <div class="form-tabs mt-4">
+
+                                            @*<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top:-12vh;margin-left:38%;padding-bottom:5%;">
+
+                                <li class="Prevbtn"><a href="#" onclick="previousday_mike()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
+                                <li class="clear_bg"><label id="lblCalendarMsg2" style="font-weight:bolder;font-size:1.5em;margin-top:1.5vh;color:black">@TempData["datechoose"].ToString()</label></li>
+                                <li class="Nextbtn"><a href="#" onclick="nextday_mike()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
+                                <li class="Goto_Today"><button class="btn btn-primary text-white" onclick="Goto_Today()" style="border-radius:1vw;margin-top:2%;margin-left:30vw;">Today</button></li>
+                            </ul>*@
+
+                                            <div class="tab-content" id="pills-tabContent">
+                                                <div class="tab-pane fade show active" id="pills-day" role="tabpanel" aria-labelledby="pills-home-tab">
+                                                    @*<div id="select_ActivityID_index" class="" name="" english=""></div>*@
+                                                    <table class="table table-bordered">
+                                                        <thead class="bg-primary">
+                                                            <tr>
+                                                                <th class="text-white text-center">Time</th>
+                                                                <th class="text-white text-center">Today's Activities</th>
+                                                                <th class="text-white text-center">Venue</th>
+
+                                                                <th class="text-white text-center" colspan="2"></th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="text-white text-center"></th>
+                                                                <th class="text-white text-center"></th>
+                                                                <th class="text-white text-center"></th>
+
+                                                                <th class="text-white text-center">Active</th>
+                                                                <th class="text-white text-center">Declined</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @{
+                                                                for (int a = 0; a < @ViewBag.Events2.Count; a++)
+                                                                {
+                                                                    <tr name=@ViewBag.Events2[a].ProgramId id=@ViewBag.Events2[a].ProgramName englishname=@ViewBag.Events2[a].ActivityNameEnglish>
+                                                                        <td>@ViewBag.Events2[a].ProgramStartTime</td>
+                                                                        <td>@ViewBag.Events2[a].ProgramName</td>
+                                                                        <td>@ViewBag.Events2[a].Venue</td>
+
+                                                                        <td>
+                                                                            @ViewBag.Events2[a].Active
+                                                                        </td>
+                                                                        <td>
+                                                                            @ViewBag.Events2[a].Declined
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+                        </div>
+
+                        <div id="day_div3" class="fromHTMLtestdiv" style="display:none;margin-top:11.5%;margin-left:-2%; z-index:0;position:absolute;width:104%;">
+
+                            <div class="container-fluid container-fixed-lg" id="main_page">
+                                <div class="card">
+                                    <div class="card-block">
+                                        <div class="form-tabs mt-4">
+
+                                            @*<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top:-12vh;margin-left:38%;padding-bottom:5%;">
+
+                                <li class="Prevbtn"><a href="#" onclick="previousday_mike()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
+                                <li class="clear_bg"><label id="lblCalendarMsg3" style="font-weight:bolder;font-size:1.5em;margin-top:1.5vh;color:black">@TempData["datechoose"].ToString()</label></li>
+                                <li class="Nextbtn"><a href="#" onclick="nextday_mike()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
+                                <li class="Goto_Today"><button class="btn btn-primary text-white" onclick="Goto_Today()" style="border-radius:1vw;margin-top:2%;margin-left:30vw;">Today</button></li>
+                            </ul>*@
+
+                                            <div class="tab-content" id="pills-tabContent">
+                                                <div class="tab-pane fade show active" id="pills-day" role="tabpanel" aria-labelledby="pills-home-tab">
+                                                    @*<div id="select_ActivityID_index" class="" name="" english=""></div>*@
+                                                    <table class="table table-bordered">
+                                                        <thead class="bg-primary">
+                                                            <tr>
+                                                                <th class="text-white text-center">Time</th>
+                                                                <th class="text-white text-center">Today's Activities</th>
+                                                                <th class="text-white text-center">Venue</th>
+
+                                                                <th class="text-white text-center" colspan="2"></th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="text-white text-center"></th>
+                                                                <th class="text-white text-center"></th>
+                                                                <th class="text-white text-center"></th>
+
+                                                                <th class="text-white text-center">Active</th>
+                                                                <th class="text-white text-center">Declined</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @{
+                                                                for (int a = 0; a < @ViewBag.Events3.Count; a++)
+                                                                {
+                                                                    <tr name=@ViewBag.Events3[a].ProgramId id=@ViewBag.Events3[a].ProgramName englishname=@ViewBag.Events3[a].ActivityNameEnglish>
+                                                                        <td>@ViewBag.Events3[a].ProgramStartTime</td>
+                                                                        <td>@ViewBag.Events3[a].ProgramName</td>
+                                                                        <td>@ViewBag.Events3[a].Venue</td>
+                                                                        <td>
+                                                                            @ViewBag.Events3[a].Active
+                                                                        </td>
+                                                                        <td>
+                                                                            @ViewBag.Events3[a].Declined
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+                        </div>
+
+                        <div id="day_div4" class="fromHTMLtestdiv" style="display:none;margin-top:11.5%;margin-left:-2%; z-index:0;position:absolute;width:104%;">
+
+                            <div class="container-fluid container-fixed-lg" id="main_page">
+                                <div class="card">
+                                    <div class="card-block">
+                                        <div class="form-tabs mt-4">
+
+                                            @*<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top:-12vh;margin-left:38%;padding-bottom:5%;">
+
+                                <li class="Prevbtn"><a href="#" onclick="previousday_mike()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
+                                <li class="clear_bg"><label id="lblCalendarMsg4" style="font-weight:bolder;font-size:1.5em;margin-top:1.5vh;color:black">@TempData["datechoose"].ToString()</label></li>
+                                <li class="Nextbtn"><a href="#" onclick="nextday_mike()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
+                                <li class="Goto_Today"><button class="btn btn-primary text-white" onclick="Goto_Today()" style="border-radius:1vw;margin-top:2%;margin-left:30vw;">Today</button></li>
+                            </ul>*@
+
+                                            <div class="tab-content" id="pills-tabContent">
+                                                <div class="tab-pane fade show active" id="pills-day" role="tabpanel" aria-labelledby="pills-home-tab">
+                                                    @*<div id="select_ActivityID_index" class="" name="" english=""></div>*@
+                                                    <table class="table table-bordered">
+                                                        <thead class="bg-primary">
+                                                            <tr>
+                                                                <th class="text-white text-center">Time</th>
+                                                                <th class="text-white text-center">Today's Activities</th>
+                                                                <th class="text-white text-center">Venue</th>
+
+                                                                <th class="text-white text-center" colspan="2"></th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="text-white text-center"></th>
+                                                                <th class="text-white text-center"></th>
+                                                                <th class="text-white text-center"></th>
+
+                                                                <th class="text-white text-center">Active</th>
+                                                                <th class="text-white text-center">Declined</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @{
+                                                                for (int a = 0; a < @ViewBag.Events4.Count; a++)
+                                                                {
+                                                                    <tr name=@ViewBag.Events4[a].ProgramId id=@ViewBag.Events4[a].ProgramName englishname=@ViewBag.Events4[a].ActivityNameEnglish>
+                                                                        <td>@ViewBag.Events4[a].ProgramStartTime</td>
+                                                                        <td>@ViewBag.Events4[a].ProgramName</td>
+                                                                        <td>@ViewBag.Events4[a].Venue</td>
+
+                                                                        <td>
+                                                                            @ViewBag.Events4[a].Active
+                                                                        </td>
+                                                                        <td>
+                                                                            @ViewBag.Events4[a].Declined
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+                        </div>
+
+
+
+                        <div class="modal fade" id="Calendar_Name_Change" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="vertical-alignment-helper" style="display:table;height:100%;width: 100%;pointer-events:none;">
+                                <div class="modal-dialog vertical-align-center" style="display:table-cell;vertical-align:middle;pointer-events:none;">
+                                    <div class="modal-content" style="width:inherit;max-width:inherit;height:inherit;margin-left:-20% !important;pointer-events: all;">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">
+                                                <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+
+                                            </button>
+                                            <h4 class="modal-title" id="myModalLabel" style="font-weight:bold;">Calendar Name Change</h4>
+                                        </div>
+                                        <hr><br>
+                                        <div class="modal-body">
+                                            <label style="font-weight:bold;font-size:1em;width:40%;">Calendar Number:</label>
+                                            <label class="text-center" id="calendarnumber" style="width:20%;"></label>
+                                            <br><br>
+                                            <label style="font-weight:bold;font-size:1em;width:40%;">Old Calendar Name:</label>
+                                            <label id="oldName" style="width:30%;"></label>
+                                            <br><br>
+                                            <label style="font-weight:bold;font-size:1em;width:40%;">New Calendar Name:</label>
+                                            <input type="text" id="newName" style="width:40%;" />
+                                            <input id="hiddenID" type="hidden" value="" />
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary" onclick="Save_Change_Name()">Save changes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="select_ActivityID_index" class="" name="" english=""></div>
+                        <input type="hidden" id="hiddentab" value="@TempData["tab"]" />
+                        <input type="hidden" id="residentid" value="@ViewBag.resident.ID" />
+                    </div>
+
+
+
+
+                    <!-- END CONTAINER FLUID -->
+                </div>
+                <!-- END PAGE CONTENT -->
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @*@RenderPage("~/Views/Shared/_Footer.cshtml")*@
+</body>
+</html>
+
+
+<script src="~/Content/assets/plugins/pace/pace.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/modernizr.custom.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/tether/js/tether.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/jquery/jquery-easy.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/jquery-unveil/jquery.unveil.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/jquery-bez/jquery.bez.min.js"></script>
+<script src="~/Content/assets/plugins/jquery-ios-list/jquery.ioslist.min.js" type="text/javascript"></script>
+<script src="~/Content/assets/plugins/imagesloaded/imagesloaded.pkgd.min.js"></script>
+<script src="~/Content/assets/plugins/jquery-actual/jquery.actual.min.js"></script>
+<script src="~/Content/assets/plugins/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+<!-- END VENDOR JS -->
+<!-- BEGIN CORE TEMPLATE JS -->
+<script src="~/Content/pages/js/pages.js" type="text/javascript"></script>
+<!-- END CORE TEMPLATE JS -->
+<!-- BEGIN PAGE LEVEL JS -->
+<script src="~/Content/assets/js/scripts.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL JS -->
+<script src="~/Content/assets/js/FileAPI/FileAPI.js"></script>
+<script src="~/Content/assets/js/datatables.min.js"></script>
+<script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="~/Content/assets/js/html2canvas.js" crossorigin="anonymous"></script>
+
+
+
+
+<script>
+
+
+    function calendar_one() {
+        $('.fc-view-container').hide();
+        $('#day_div2').hide();
+        $('#day_div3').hide();
+        $('#day_div4').hide();
+        $('#day_div').show();
+        $('#hiddentab').val("a");
+
+        var temp = $('#tempdate').val();
+        $('#lblCalendarMsg').html(temp);
+
+        $('#PrintWAM').hide();
+        $('#PrintDAY').show();
+    }
+
+    function calendar_two() {
+        $('.fc-view-container').hide();
+        $('#day_div').hide();
+        $('#day_div3').hide();
+        $('#day_div4').hide();
+        $('#day_div2').show();
+
+        $('#hiddentab').val("b");
+
+        var temp = $('#tempdate').val();
+        $('#lblCalendarMsg2').html(temp);
+
+        $('#PrintWAM').hide();
+        $('#PrintDAY').show();
+    }
+
+    function calendar_three() {
+        $('.fc-view-container').hide();
+        $('#day_div').hide();
+        $('#day_div2').hide();
+        $('#day_div4').hide();
+        $('#day_div3').show();
+        $('#hiddentab').val("c");
+
+        var temp = $('#tempdate').val();
+        $('#lblCalendarMsg3').html(temp);
+
+        $('#PrintWAM').hide();
+        $('#PrintDAY').show();
+    }
+
+    function calendar_four() {
+        $('.fc-view-container').hide();
+        $('#day_div').hide();
+        $('#day_div2').hide();
+        $('#day_div3').hide();
+        $('#day_div4').show();
+        $('#hiddentab').val("d");
+
+        var temp = $('#tempdate').val();
+        $('#lblCalendarMsg4').html(temp);
+
+        $('#PrintWAM').hide();
+        $('#PrintDAY').show();
+    }
+
+    function calendar_change_name_click(ee) {
+        var a = ee.previousElementSibling.getElementsByTagName("p");
+        var b = ee.previousElementSibling.id;
+        if (b == "pills-active-tab") { $('#calendarnumber').html("1");}
+        else if (b == "pills-achive-tab") { $('#calendarnumber').html("2");}
+        else if (b == "pills-achive-tab2") { $('#calendarnumber').html("3");}
+        else if (b == "pills-achive-tab3") { $('#calendarnumber').html("4"); }
+        $('#hiddenID').val(b);
+        $('#oldName').html(a[0].innerHTML);
+    }
+
+    function Save_Change_Name() {
+        var number = $('#calendarnumber').html();
+        var newName = $('#newName').val().trim();
+        var hiddenVal = $('#hiddenID').val();
+        if (newName == "") {
+            tempAlert("New Name Empty", 2000);
+        }
+        else {
+            $.ajax({
+                url: "/Home/Change_Calendar_Name",
+                type: "POST",
+                data: { number: number, newName: newName },
+                dataType: "html",
+                success: function () {
+                    $('#' + hiddenVal).find('p:first-child').html(newName);
+                    $('#newName').val("");
+                    $('#Calendar_Name_Change').modal('hide');
+
+                }
+            });
+        }
+    }
+
+</script>
+
+<style>
+
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+
+    table.attend tbody tr td {
+        padding: 15px !important;
+    }
+
+    table.attend tbody tr {
+        border-bottom: 1px solid #000;
+    }
+
+    #attendent_form {
+        margin-left: 0;
+        z-index: 2000;
+    }
+
+    #attendent_form_second_layer {
+        margin-left: 7.5vw;
+        right: auto;
+        padding-top: 5px;
+        padding-bottom: 30px;
+        min-width: 85vw;
+    }
+
+    #attendent_form_third_layer {
+        margin-left: 0;
+    }
+
+    #contactForm {
+        display: none;
+        border: 6px solid salmon;
+        padding: 2em;
+        width: 400px;
+        text-align: center;
+        background: #fff;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        -webkit-transform: translate(-50%,-50%);
+        overflow-y: hidden;
+    }
+
+    .formBtn, .formtext {
+        margin: .8em auto;
+        font-family: inherit;
+        text-transform: inherit;
+        font-size: inherit;
+        display: block;
+        padding: .4em;
+    }
+
+    .formtext {
+        resize: none;
+    }
+
+    .formBtn {
+        display: inline-block;
+        background: teal;
+        color: #fff;
+        font-weight: 100;
+        font-size: 1.2em;
+        border: none;
+        width: 70px;
+    }
+
+    .fa-file-text-o {
+        font-size: 20px;
+        color: #015093;
+    }
+
+
+    a.active {
+        background-color: #015093 !important;
+    }
+</style>
+
+<script>
+
+
+    function previousday_mike() {
+
+        if ($('#day_div').css('display') == 'none' && $('#day_div2').css('display') == 'none' && $('#day_div3').css('display') == 'none' && $('#day_div4').css('display') == 'none') {
+            var tab = $('#hiddentab').val();
+            if (tab == "a" || tab == "") {
+                $('#calendar').fullCalendar('prev');
+                var view = $('#calendar').fullCalendar('getView');
+                $('#lblCalendarMsg').html(view.title);
+            }
+            else if (tab == "b") {
+                $('#calendar2').fullCalendar('prev');
+                var view = $('#calendar2').fullCalendar('getView');
+                $('#lblCalendarMsg2').html(view.title);
+            }
+            else if (tab == "c") {
+                $('#calendar3').fullCalendar('prev');
+                var view = $('#calendar3').fullCalendar('getView');
+                $('#lblCalendarMsg3').html(view.title);
+            }
+            else if (tab == "d") {
+                $('#calendar4').fullCalendar('prev');
+                var view = $('#calendar4').fullCalendar('getView');
+                $('#lblCalendarMsg4').html(view.title);
+            }
+
+        }
+        else {
+
+
+
+            var monthNames = [
+                "January", "February", "March",
+                "April", "May", "June", "July",
+                "August", "September", "October",
+                "November", "December"
+            ];
+            var a = document.getElementById("lblCalendarMsg").innerHTML;
+            var b = new Date(a);
+            b.setDate(b.getDate() - 1);
+            var dd = b.getDate();
+            if (dd < 10) {
+                dd = '0' + dd
+            }
+            document.getElementById("lblCalendarMsg").innerHTML = monthNames[b.getMonth()] + " " + dd + ", " + b.getFullYear();
+            document.getElementById("lblCalendarMsg2").innerHTML = monthNames[b.getMonth()] + " " + dd + ", " + b.getFullYear();
+            document.getElementById("lblCalendarMsg3").innerHTML = monthNames[b.getMonth()] + " " + dd + ", " + b.getFullYear();
+            document.getElementById("lblCalendarMsg4").innerHTML = monthNames[b.getMonth()] + " " + dd + ", " + b.getFullYear();
+            var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+
+            $('#tempdate').val(dateselect);
+
+            Update_When_Change_Date(dateselect);
+        }
+
+    }
+
+    function nextday_mike() {
+        if ($('#day_div').css('display') == 'none' && $('#day_div2').css('display') == 'none' && $('#day_div3').css('display') == 'none' && $('#day_div4').css('display') == 'none') {
+
+            var tab = $('#hiddentab').val();
+            if (tab == "a" || tab == "") {
+                $('#calendar').fullCalendar('next');
+                var view = $('#calendar').fullCalendar('getView');
+                $('#lblCalendarMsg').html(view.title);
+            }
+            else if (tab == "b") {
+                $('#calendar2').fullCalendar('next');
+                var view = $('#calendar2').fullCalendar('getView');
+                $('#lblCalendarMsg2').html(view.title);
+            }
+            else if (tab == "c") {
+                $('#calendar3').fullCalendar('next');
+                var view = $('#calendar3').fullCalendar('getView');
+                $('#lblCalendarMsg3').html(view.title);
+            }
+            else if (tab == "d") {
+                $('#calendar4').fullCalendar('next');
+                var view = $('#calendar4').fullCalendar('getView');
+                $('#lblCalendarMsg4').html(view.title);
+            }
+
+        }
+        else {
+            var monthNames = [
+                "January", "February", "March",
+                "April", "May", "June", "July",
+                "August", "September", "October",
+                "November", "December"
+            ];
+            var a = document.getElementById("lblCalendarMsg").innerHTML;
+            var b = new Date(a);
+            b.setDate(b.getDate() + 1);
+            var dd = b.getDate();
+            if (dd < 10) {
+                dd = '0' + dd
+            }
+            document.getElementById("lblCalendarMsg").innerHTML = monthNames[b.getMonth()] + " " + dd + ", " + b.getFullYear();
+            document.getElementById("lblCalendarMsg2").innerHTML = monthNames[b.getMonth()] + " " + dd + ", " + b.getFullYear();
+            document.getElementById("lblCalendarMsg3").innerHTML = monthNames[b.getMonth()] + " " + dd + ", " + b.getFullYear();
+            document.getElementById("lblCalendarMsg4").innerHTML = monthNames[b.getMonth()] + " " + dd + ", " + b.getFullYear();
+            var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+
+            $('#tempdate').val(dateselect);
+
+            Update_When_Change_Date(dateselect);
+        }
+    }
+
+    function Update_When_Change_Date(dateselect) {
+
+        $.get("/Home/update_day_div1", { datesel: dateselect }, function (data) {
+            $('#day_div #main_page #pills-day table tbody').html('');
+            for (var i = 0; i < data.length; i++) {
+                $('#day_div #main_page #pills-day table tbody').append('' +
+
+                    '<tr name=' + data[i].ProgramId + ' id = ' + data[i].ProgramName + ' englishname = ' + data[i].ActivityNameEnglish + ' >' +
+                    '<td>' + data[i].ProgramStartTime + '</td>' +
+                    '<td>' + data[i].ProgramName + '</td>' +
+                    '<td>' + data[i].Venue + '</td>' +
+                    '<td>' + data[i].Active + '</td>' +
+                    '<td>' + data[i].Declined + '</td>' +
+                    '</tr>' +
+
+                    '');
+            }
+        });
+
+        $.get("/Home/update_day_div2", { datesel: dateselect }, function (data) {
+            $('#day_div2 #main_page #pills-day table tbody').html('');
+            for (var i = 0; i < data.length; i++) {
+                $('#day_div2 #main_page #pills-day table tbody').append('' +
+
+                    '<tr name=' + data[i].ProgramId + ' id = ' + data[i].ProgramName + ' englishname = ' + data[i].ActivityNameEnglish + ' >' +
+                    '<td>' + data[i].ProgramStartTime + '</td>' +
+                    '<td>' + data[i].ProgramName + '</td>' +
+                    '<td>' + data[i].Venue + '</td>' +
+                    '<td>' + data[i].Active + '</td>' +
+                    '<td>' + data[i].Declined + '</td>' +
+                    '</tr>' +
+
+                    '');
+            }
+        });
+
+        $.get("/Home/update_day_div3", { datesel: dateselect }, function (data) {
+            $('#day_div3 #main_page #pills-day table tbody').html('');
+            for (var i = 0; i < data.length; i++) {
+                $('#day_div3 #main_page #pills-day table tbody').append('' +
+
+                    '<tr name=' + data[i].ProgramId + ' id = ' + data[i].ProgramName + ' englishname = ' + data[i].ActivityNameEnglish + ' >' +
+                    '<td>' + data[i].ProgramStartTime + '</td>' +
+                    '<td>' + data[i].ProgramName + '</td>' +
+                    '<td>' + data[i].Venue + '</td>' +
+                    '<td>' + data[i].Active + '</td>' +
+                    '<td>' + data[i].Declined + '</td>' +
+                    '</tr>' +
+
+                    '');
+            }
+        });
+
+        $.get("/Home/update_day_div4", { datesel: dateselect }, function (data) {
+            $('#day_div4 #main_page #pills-day table tbody').html('');
+            for (var i = 0; i < data.length; i++) {
+                $('#day_div4 #main_page #pills-day table tbody').append('' +
+
+                    '<tr name=' + data[i].ProgramId + ' id = ' + data[i].ProgramName + ' englishname = ' + data[i].ActivityNameEnglish + ' >' +
+                    '<td>' + data[i].ProgramStartTime + '</td>' +
+                    '<td>' + data[i].ProgramName + '</td>' +
+                    '<td>' + data[i].Venue + '</td>' +
+                    '<td>' + data[i].Active + '</td>' +
+                    '<td>' + data[i].Declined + '</td>' +
+                    '</tr>' +
+
+                    '');
+            }
+        });
+    }
+
+    function tempAlert(msg, duration) {
+        var el = document.createElement("div");
+        el.setAttribute("style", "position:fixed;top:2%;left:28%;width:45vw;text-align: center;background-color:white;z-index:9999;color:black;padding:2.5vw 4vw 2.5vw 4vw;border-radius:1vw;font-size:2vw;font-weight:bold;border:black solid;");
+        el.innerHTML = "<img src=\"\/Content\/assets\/img\/qola_logo3.png\" style=\"width:120px;height:80px;margin-left:-2vw;\" \/><div style=\"margin-left:3vw;display:inline;\">" + msg + "<\/div>";
+        setTimeout(function () {
+            el.parentNode.removeChild(el);
+        }, duration);
+        document.body.appendChild(el);
+    }
+
+    function backfunction() {
+        var id = $('#residentid').val();
+        window.location.href = "/Home/ResidentMenu/?p_ResidentId=" + id;
+    }
+
+</script>
+
+<script>
+    var tab = $('#hiddentab').val();
+    if (tab == "a" || tab == "") {
+    }
+    else if (tab == "b") {
+        document.getElementById("pills-active-tab").className = "nav-link";
+        document.getElementById("pills-achive-tab").className = "nav-link active";
+        document.getElementById("pills-active").className = "tab-pane fade";
+        document.getElementById("pills-achive").className = "tab-pane fade show active";
+
+        document.getElementById("day_div").style.display = "none";
+        document.getElementById("day_div2").style.display = "block";
+    }
+    else if (tab == "c") {
+        document.getElementById("pills-active-tab").className = "nav-link";
+        document.getElementById("pills-achive-tab2").className = "nav-link active";
+        document.getElementById("pills-active").className = "tab-pane fade";
+        document.getElementById("pills-C3").className = "tab-pane fade show active";
+        document.getElementById("day_div").style.display = "none";
+        document.getElementById("day_div3").style.display = "block";
+    }
+    else if (tab == "d") {
+        document.getElementById("pills-active-tab").className = "nav-link";
+        document.getElementById("pills-achive-tab3").className = "nav-link active";
+        document.getElementById("pills-active").className = "tab-pane fade";
+        document.getElementById("pills-C4").className = "tab-pane fade show active";
+        document.getElementById("day_div").style.display = "none";
+        document.getElementById("day_div4").style.display = "block";
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        $.ajax({
+            type: "GET",
+            url: "/home/getEvents_mike",
+            success: function (data) {
+                $.each(data, function (i, v) {
+                    data.push({
+                        Id: v.id,
+                        title: v.title,
+                        start: v.startT,
+                        end: v.endT != null ? v.endT : null,
+                        startDate: v.startDate,
+                        Venue: v.Venue,
+                        Note: v.note,
+                        Category: v.Category,
+                        ActivityID: v.ActivityId,
+                        startTime: v.startTime
+                    });
+                })
+                GenerationCalendar(data);
+            },
+
+            error: function (error) {
+                alert('failed');
+            }
+        })
+
+        $.ajax({
+            type: "GET",
+            url: "/home/getEvents_C2_mike",
+            success: function (data) {
+                $.each(data, function (i, v) {
+                    data.push({
+                        Id: v.id,
+                        title: v.title,
+                        start: v.startT,
+                        end: v.endT != null ? v.endT : null,
+                        startDate: v.startDate,
+                        Venue: v.Venue,
+                        Note: v.note,
+                        Category: v.Category,
+                        ActivityID: v.ActivityId,
+                        startTime: v.startTime
+                    });
+                })
+                GenerationCalendar2(data);
+            },
+
+            error: function (error) {
+                alert('failed');
+            }
+        })
+
+        $.ajax({
+            type: "GET",
+            url: "/home/getEvents_C3_mike",
+            success: function (data) {
+                $.each(data, function (i, v) {
+                    data.push({
+                        Id: v.id,
+                        title: v.title,
+                        start: v.startT,
+                        end: v.endT != null ? v.endT : null,
+                        startDate: v.startDate,
+                        Venue: v.Venue,
+                        Note: v.note,
+                        Category: v.Category,
+                        ActivityID: v.ActivityId,
+                        startTime: v.startTime
+                    });
+                })
+                GenerationCalendar3(data);
+            },
+
+            error: function (error) {
+                alert('failed');
+            }
+        })
+
+        $.ajax({
+            type: "GET",
+            url: "/home/getEvents_C4_mike",
+            success: function (data) {
+                $.each(data, function (i, v) {
+                    data.push({
+                        Id: v.id,
+                        title: v.title,
+                        start: v.startT,
+                        end: v.endT != null ? v.endT : null,
+                        startDate: v.startDate,
+                        Venue: v.Venue,
+                        Note: v.note,
+                        Category: v.Category,
+                        ActivityID: v.ActivityId,
+                        startTime: v.startTime
+                    });
+                })
+                GenerationCalendar4(data);
+            },
+
+            error: function (error) {
+                alert('failed');
+            }
+        })
+
+
+        function GenerationCalendar(events) {
+            $('#calendar').fullCalendar('destroy');
+            $('#calendar').fullCalendar({
+                contentHeight: 800,
+                defaultDate: new Date(),
+                timeFormat: 'h(:mm)a',
+                header: {
+                    right: '',
+                    center: '',
+                    left: ''
+                },
+                editable: false,
+                defaultView: '',
+                eventLimit: true,
+                dayNamesShort: ['Sunday', 'Monday', 'Tuesday', 'Wednesday','Thursday', 'Friday', 'Saturday'],
+                eventColor: 'lightgreen',
+                events: events,
+            })
+
+        };
+
+        function GenerationCalendar2(events) {
+            $('#calendar2').fullCalendar('destroy');
+            $('#calendar2').fullCalendar({
+                contentHeight: 800,
+                defaultDate: new Date(),
+                timeFormat: 'h(:mm)a',
+                header: {
+                    right: '',
+                    center: '',
+                    left: ''
+                },
+                editable: false,
+                defaultView: '',
+                eventLimit: true,
+                dayNamesShort: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+                eventColor: 'lightgreen',
+                events: events,
+            })
+
+        };
+
+        function GenerationCalendar3(events) {
+
+            $('#calendar3').fullCalendar('destroy');
+            $('#calendar3').fullCalendar({
+                contentHeight: 800,
+                defaultDate: new Date(),
+                timeFormat: 'h(:mm)a',
+                header: {
+                    right: '',
+                    center: '',
+                    left: ''
+                },
+                editable: false,
+                defaultView: '',
+                eventLimit: true,
+                dayNamesShort: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+                eventColor: 'lightgreen',
+                events: events,
+            })
+
+        };
+
+        function GenerationCalendar4(events) {
+            $('#calendar4').fullCalendar('destroy');
+            $('#calendar4').fullCalendar({
+                contentHeight: 800,
+                defaultDate: new Date(),
+                timeFormat: 'h(:mm)a',
+                header: {
+                    right: '',
+                    center: '',
+                    left: ''
+                },
+                editable: false,
+                defaultView: '',
+                eventLimit: true,
+                dayNamesShort: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+                eventColor: 'lightgreen',
+                events: events,
+            })
+
+        };
+
+    });
+
+
+
+</script>
+
+<script>
+
+
+
+    $('.printBtn').on('click', function () {
+        $('#ACtivityCalendarTitle').css({ 'margin-left': '5vw' });
+        window.print();
+        $('#ACtivityCalendarTitle').css({ 'margin-left': '0' });
+    });
+
+    $('.print').click(function () {
+
+        $('.fromHTMLtestdiv').css({ 'margin-top': '0' });
+        $('.fromHTMLtestdiv').css({ 'height': '95vh' });
+
+        var srcEl_sub = document.getElementsByClassName("fromHTMLtestdiv");
+        var tab = $('#hiddentab').val();
+        if (tab == "" || tab == "a") {
+            var srcEl = srcEl_sub[0];
+        }
+        else if (tab == "b") {
+            var srcEl = srcEl_sub[1];
+        }
+        else if (tab == "c") {
+            var srcEl = srcEl_sub[2];
+        }
+        else if (tab == "d") {
+            var srcEl = srcEl_sub[3];
+        }
+
+        var scaleFactor = 2;
+
+        var originalWidth = srcEl.offsetWidth;
+        var originalHeight = srcEl.offsetHeight;
+        // Force px size (no %, EMs, etc)
+        srcEl.style.width = originalWidth + "px";
+        srcEl.style.height = originalHeight + "px";
+
+        // Position the element at the top left of the document because of bugs in html2canvas. The bug exists when supplying a custom canvas, and   //the rendering on the custom canvas based on the offset of the source element on the page; thus the source element MUST be at 0, 0.
+        // See html2canvas issues #790, #820, #893, #922
+        srcEl.style.position = "absolute";
+        srcEl.style.top = "0";
+        srcEl.style.left = "0";
+
+        // Create scaled canvas
+        var scaledCanvas = document.createElement("canvas");
+        scaledCanvas.width = originalWidth * scaleFactor;
+        scaledCanvas.height = originalHeight * scaleFactor;
+        scaledCanvas.style.width = originalWidth + "px";
+        scaledCanvas.style.height = originalHeight + "px";
+        var scaledContext = scaledCanvas.getContext("2d");
+        scaledContext.scale(scaleFactor, scaleFactor);
+
+        html2canvas(srcEl, { canvas: scaledCanvas })
+            .then(function (canvas) {
+                var imgData = canvas.toDataURL('image/png');
+                var imgWidth = 210;
+                var pageHeight = 295;
+                var imgHeight = canvas.height * imgWidth / canvas.width;
+                var heightLeft = imgHeight;
+
+                var doc = new jsPDF('p', 'mm');
+                var position = 0;
+
+                doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                doc.setTextColor('#000');
+                var context = canvas.getContext('2d');
+                context.scale(2, 2);
+                heightLeft -= pageHeight;
+
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    doc.addPage();
+                    doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                    var context = canvas.getContext('2d');
+                    context.scale(2, 2);
+                    doc.setTextColor('#000');
+                    heightLeft -= pageHeight;
+                }
+                var filename = "Activity_Calendar";
+                doc.save(filename + '.pdf');
+            });
+        $('.fromHTMLtestdiv').css({ 'margin-top': '11.5%' });
+        $('.fromHTMLtestdiv').css({ 'height': '' });
+
+    })
+
+
+
+    $("#month1").click(function () {
+        $('#day_div').hide();
+        $('.fc-view-container').show();
+        $('#PrintDAY').hide();
+        $('#PrintWAM').show();
+        $("#calendar").fullCalendar("changeView", "month");
+        var view = $('#calendar').fullCalendar('getView');
+        $('#lblCalendarMsg').html(view.title);
+    });
+    $("#week1").click(function () {
+        $('#day_div').hide();
+        $('.fc-view-container').show();
+        $('#PrintDAY').hide();
+        $('#PrintWAM').show();
+        $("#calendar").fullCalendar("changeView", "basicWeek");
+        var view = $('#calendar').fullCalendar('getView');
+        $('#lblCalendarMsg').html(view.title);
+    });
+    $("#day1").click(function () {
+        $('.fc-view-container').hide();
+        $('#day_div').show();
+        $('#PrintWAM').hide()
+        $('#PrintDAY').show();
+        var temp = $('#tempdate').val();
+        $('#lblCalendarMsg').html(temp);
+    });
+
+    $("#month2").click(function () {
+        $('#day_div2').hide();
+        $('.fc-view-container').show();
+        $('#PrintDAY').hide();
+        $('#PrintWAM').show();
+        $("#calendar2").fullCalendar("changeView", "month");
+        var view = $('#calendar2').fullCalendar('getView');
+        $('#lblCalendarMsg2').html(view.title);
+    });
+    $("#week2").click(function () {
+        $('#day_div2').hide();
+        $('.fc-view-container').show();
+        $('#PrintDAY').hide();
+        $('#PrintWAM').show();
+        $("#calendar2").fullCalendar("changeView", "basicWeek");
+        var view = $('#calendar2').fullCalendar('getView');
+        $('#lblCalendarMsg2').html(view.title);
+    });
+    $("#day2").click(function () {
+        $('.fc-view-container').hide();
+        $('#day_div2').show();
+        $('#PrintWAM').hide();
+        $('#PrintDAY').show();
+        var temp = $('#tempdate').val();
+        $('#lblCalendarMsg2').html(temp);
+    });
+
+    $("#month3").click(function () {
+        $('#day_div3').hide();
+        $('.fc-view-container').show();
+        $('#PrintDAY').hide();
+        $('#PrintWAM').show();
+        $("#calendar3").fullCalendar("changeView", "month");
+
+        var view = $('#calendar3').fullCalendar('getView');
+        $('#lblCalendarMsg3').html(view.title);
+    });
+    $("#week3").click(function () {
+        $('#day_div3').hide();
+        $('.fc-view-container').show();
+        $('#PrintDAY').hide();
+        $('#PrintWAM').show();
+        $("#calendar3").fullCalendar("changeView", "basicWeek");
+        var view = $('#calendar3').fullCalendar('getView');
+        $('#lblCalendarMsg3').html(view.title);
+    });
+    $("#day3").click(function () {
+        $('.fc-view-container').hide();
+        $('#day_div3').show();
+        $('#PrintWAM').hide();
+        $('#PrintDAY').show();
+        var temp = $('#tempdate').val();
+        $('#lblCalendarMsg3').html(temp);
+    });
+
+    $("#month4").click(function () {
+        $('#day_div4').hide();
+        $('.fc-view-container').show();
+        $('#PrintDAY').hide();
+        $('#PrintWAM').show();
+        $("#calendar4").fullCalendar("changeView", "month");
+        var view = $('#calendar4').fullCalendar('getView');
+        $('#lblCalendarMsg4').html(view.title);
+    });
+    $("#week4").click(function () {
+        $('#day_div4').hide();
+        $('.fc-view-container').show();
+        $('#PrintDAY').hide();
+        $('#PrintWAM').show();
+        $("#calendar4").fullCalendar("changeView", "basicWeek");
+        var view = $('#calendar4').fullCalendar('getView');
+        $('#lblCalendarMsg4').html(view.title);
+    });
+    $("#day4").click(function () {
+        $('.fc-view-container').hide();
+        $('#day_div4').show();
+        $('#PrintWAM').hide();
+        $('#PrintDAY').show();
+        var temp = $('#tempdate').val();
+        $('#lblCalendarMsg4').html(temp);
+    });
+
+
+
+
+</script>
