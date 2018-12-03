@@ -486,6 +486,48 @@ namespace QolaMVC.DAL
                         l_Resident.SuiteNo = Convert.ToString(dataReceive.Tables[0].Rows[index]["SuiteNumber"]);
                         l_Resident.FirstName = Convert.ToString(dataReceive.Tables[0].Rows[index]["ResidentFirstName"]);
                         l_Resident.LastName = Convert.ToString(dataReceive.Tables[0].Rows[index]["ResidentLastName"]);
+
+                        l_FamilyConferenceNote.onlyCare = Convert.ToString(dataReceive.Tables[0].Rows[index]["onlyCare"]);
+                        l_FamilyConferenceNote.Goalsmet = Convert.ToString(dataReceive.Tables[0].Rows[index]["Goalsmet"]);
+                        l_FamilyConferenceNote.row1 = Convert.ToString(dataReceive.Tables[0].Rows[index]["row1"]);
+                        l_FamilyConferenceNote.row2 = Convert.ToString(dataReceive.Tables[0].Rows[index]["row2"]);
+                        l_FamilyConferenceNote.row3 = Convert.ToString(dataReceive.Tables[0].Rows[index]["row3"]);
+                        l_FamilyConferenceNote.row4 = Convert.ToString(dataReceive.Tables[0].Rows[index]["row4"]);
+                        l_FamilyConferenceNote.row5 = Convert.ToString(dataReceive.Tables[0].Rows[index]["row5"]);
+                        l_FamilyConferenceNote.row6 = Convert.ToString(dataReceive.Tables[0].Rows[index]["row6"]);
+                        l_FamilyConferenceNote.row7 = Convert.ToString(dataReceive.Tables[0].Rows[index]["row7"]);
+                        l_FamilyConferenceNote.row8 = Convert.ToString(dataReceive.Tables[0].Rows[index]["row8"]);
+                        l_FamilyConferenceNote.row9 = Convert.ToString(dataReceive.Tables[0].Rows[index]["row9"]);
+                        l_FamilyConferenceNote.row10 = Convert.ToString(dataReceive.Tables[0].Rows[index]["row10"]);
+                        l_FamilyConferenceNote.row11 = Convert.ToString(dataReceive.Tables[0].Rows[index]["row11"]);
+                        l_FamilyConferenceNote.droprow1 = Convert.ToString(dataReceive.Tables[0].Rows[index]["droprow1"]);
+                        l_FamilyConferenceNote.droprow2 = Convert.ToString(dataReceive.Tables[0].Rows[index]["droprow2"]);
+                        l_FamilyConferenceNote.droprow3 = Convert.ToString(dataReceive.Tables[0].Rows[index]["droprow3"]);
+                        l_FamilyConferenceNote.droprow4 = Convert.ToString(dataReceive.Tables[0].Rows[index]["droprow4"]);
+                        l_FamilyConferenceNote.droprow5 = Convert.ToString(dataReceive.Tables[0].Rows[index]["droprow5"]);
+                        l_FamilyConferenceNote.droprow6 = Convert.ToString(dataReceive.Tables[0].Rows[index]["droprow6"]);
+                        l_FamilyConferenceNote.droprow7 = Convert.ToString(dataReceive.Tables[0].Rows[index]["droprow7"]);
+                        l_FamilyConferenceNote.droprow8 = Convert.ToString(dataReceive.Tables[0].Rows[index]["droprow8"]);
+                        l_FamilyConferenceNote.droprow9 = Convert.ToString(dataReceive.Tables[0].Rows[index]["droprow9"]);
+                        l_FamilyConferenceNote.droprow10 = Convert.ToString(dataReceive.Tables[0].Rows[index]["droprow10"]);
+                        l_FamilyConferenceNote.droprow11 = Convert.ToString(dataReceive.Tables[0].Rows[index]["droprow11"]);
+                        l_FamilyConferenceNote.Attendees1 = Convert.ToString(dataReceive.Tables[0].Rows[index]["Attendees1"]);
+                        l_FamilyConferenceNote.Attendees2 = Convert.ToString(dataReceive.Tables[0].Rows[index]["Attendees2"]);
+                        l_FamilyConferenceNote.Attendees3 = Convert.ToString(dataReceive.Tables[0].Rows[index]["Attendees3"]);
+                        l_FamilyConferenceNote.Attendees4 = Convert.ToString(dataReceive.Tables[0].Rows[index]["Attendees4"]);
+                        l_FamilyConferenceNote.Attendees5 = Convert.ToString(dataReceive.Tables[0].Rows[index]["Attendees5"]);
+                        l_FamilyConferenceNote.Attendees6 = Convert.ToString(dataReceive.Tables[0].Rows[index]["Attendees6"]);
+                        l_FamilyConferenceNote.Attendees7 = Convert.ToString(dataReceive.Tables[0].Rows[index]["Attendees7"]);
+                        l_FamilyConferenceNote.Attendees1rela = Convert.ToString(dataReceive.Tables[0].Rows[index]["Attendees1rela"]);
+                        l_FamilyConferenceNote.Attendees2rela = Convert.ToString(dataReceive.Tables[0].Rows[index]["Attendees2rela"]);
+                        l_FamilyConferenceNote.Attendees3rela = Convert.ToString(dataReceive.Tables[0].Rows[index]["Attendees3rela"]);
+                        l_FamilyConferenceNote.Attendees4rela = Convert.ToString(dataReceive.Tables[0].Rows[index]["Attendees4rela"]);
+                        l_FamilyConferenceNote.Attendees5rela = Convert.ToString(dataReceive.Tables[0].Rows[index]["Attendees5rela"]);
+                        l_FamilyConferenceNote.Attendees6rela = Convert.ToString(dataReceive.Tables[0].Rows[index]["Attendees6rela"]);
+                        l_FamilyConferenceNote.Attendees7rela = Convert.ToString(dataReceive.Tables[0].Rows[index]["Attendees7rela"]);
+                        l_FamilyConferenceNote.completeName = Convert.ToString(dataReceive.Tables[0].Rows[index]["completeName"]);
+                        l_FamilyConferenceNote.completeSign = Convert.ToString(dataReceive.Tables[0].Rows[index]["completeSign"]);
+
                         l_FamilyConferenceNote.Resident = l_Resident;
                         l_FamilyConferenceNotes.Add(l_FamilyConferenceNote);
                     }
@@ -3583,34 +3625,6 @@ namespace QolaMVC.DAL
 
 
 
-        public static void Add_FamilyConference_mike(int residentid, int userid, DateTime sameTime)
-        {
-            string exception = string.Empty;
-
-            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
-            try
-            {
-                SqlDataAdapter l_DA = new SqlDataAdapter();
-                SqlCommand l_Cmd = new SqlCommand("spAB_Add_FamilyConference_mike", l_Conn);
-                l_Conn.Open();
-                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                l_Cmd.Parameters.AddWithValue("@ResidentId", residentid);
-                l_Cmd.Parameters.AddWithValue("@start_time", sameTime);
-                l_Cmd.Parameters.AddWithValue("@EnteredBy", userid);
-                l_Cmd.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                exception = "Add_FamilyConference_mike |" + ex.ToString();
-                //Log.Write(exception);
-                throw;
-            }
-            finally
-            {
-                l_Conn.Close();
-            }
-        }
-
         public static void SaveFamilyConferenceNote(FamilyConfrenceNoteModel p_FamilyConferenceNote)
         {
             string exception = string.Empty;
@@ -3622,7 +3636,6 @@ namespace QolaMVC.DAL
                 SqlCommand l_Cmd = new SqlCommand("spAB_save_FamilyConferenceNote", l_Conn);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                l_Cmd.Parameters.AddWithValue("@ID", p_FamilyConferenceNote.Id);
                 l_Cmd.Parameters.AddWithValue("@ResidentId", p_FamilyConferenceNote.Resident.ID);
                 l_Cmd.Parameters.AddWithValue("@SuiteNumber", p_FamilyConferenceNote.SuiteNumber);
                 l_Cmd.Parameters.AddWithValue("@PHN", p_FamilyConferenceNote.PHN);
@@ -3635,8 +3648,49 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@Present1", p_FamilyConferenceNote.Presents1);
                 l_Cmd.Parameters.AddWithValue("@Present2", p_FamilyConferenceNote.Presents2);
                 l_Cmd.Parameters.AddWithValue("@Present3", p_FamilyConferenceNote.Presents3);
-                l_Cmd.Parameters.AddWithValue("@DateEntered", DateTime.Now);
                 l_Cmd.Parameters.AddWithValue("@EnteredBy", p_FamilyConferenceNote.EnteredBy.ID);
+
+                l_Cmd.Parameters.AddWithValue("@onlyCare", p_FamilyConferenceNote.onlyCare);
+                l_Cmd.Parameters.AddWithValue("@Goalsmet", p_FamilyConferenceNote.Goalsmet);
+                l_Cmd.Parameters.AddWithValue("@row1", p_FamilyConferenceNote.row1);
+                l_Cmd.Parameters.AddWithValue("@row2", p_FamilyConferenceNote.row2);
+                l_Cmd.Parameters.AddWithValue("@row3", p_FamilyConferenceNote.row3);
+                l_Cmd.Parameters.AddWithValue("@row4", p_FamilyConferenceNote.row4);
+                l_Cmd.Parameters.AddWithValue("@row5", p_FamilyConferenceNote.row5);
+                l_Cmd.Parameters.AddWithValue("@row6", p_FamilyConferenceNote.row6);
+                l_Cmd.Parameters.AddWithValue("@row7", p_FamilyConferenceNote.row7);
+                l_Cmd.Parameters.AddWithValue("@row8", p_FamilyConferenceNote.row8);
+                l_Cmd.Parameters.AddWithValue("@row9", p_FamilyConferenceNote.row9);
+                l_Cmd.Parameters.AddWithValue("@row10", p_FamilyConferenceNote.row10);
+                l_Cmd.Parameters.AddWithValue("@row11", p_FamilyConferenceNote.row11);
+                l_Cmd.Parameters.AddWithValue("@droprow1", p_FamilyConferenceNote.droprow1);
+                l_Cmd.Parameters.AddWithValue("@droprow2", p_FamilyConferenceNote.droprow2);
+                l_Cmd.Parameters.AddWithValue("@droprow3", p_FamilyConferenceNote.droprow3);
+                l_Cmd.Parameters.AddWithValue("@droprow4", p_FamilyConferenceNote.droprow4);
+                l_Cmd.Parameters.AddWithValue("@droprow5", p_FamilyConferenceNote.droprow5);
+                l_Cmd.Parameters.AddWithValue("@droprow6", p_FamilyConferenceNote.droprow6);
+                l_Cmd.Parameters.AddWithValue("@droprow7", p_FamilyConferenceNote.droprow7);
+                l_Cmd.Parameters.AddWithValue("@droprow8", p_FamilyConferenceNote.droprow8);
+                l_Cmd.Parameters.AddWithValue("@droprow9", p_FamilyConferenceNote.droprow9);
+                l_Cmd.Parameters.AddWithValue("@droprow10", p_FamilyConferenceNote.droprow10);
+                l_Cmd.Parameters.AddWithValue("@droprow11", p_FamilyConferenceNote.droprow11);
+                l_Cmd.Parameters.AddWithValue("@Attendees1", p_FamilyConferenceNote.Attendees1);
+                l_Cmd.Parameters.AddWithValue("@Attendees2", p_FamilyConferenceNote.Attendees2);
+                l_Cmd.Parameters.AddWithValue("@Attendees3", p_FamilyConferenceNote.Attendees3);
+                l_Cmd.Parameters.AddWithValue("@Attendees4", p_FamilyConferenceNote.Attendees4);
+                l_Cmd.Parameters.AddWithValue("@Attendees5", p_FamilyConferenceNote.Attendees5);
+                l_Cmd.Parameters.AddWithValue("@Attendees6", p_FamilyConferenceNote.Attendees6);
+                l_Cmd.Parameters.AddWithValue("@Attendees7", p_FamilyConferenceNote.Attendees7);
+                l_Cmd.Parameters.AddWithValue("@Attendees1rela", p_FamilyConferenceNote.Attendees1rela);
+                l_Cmd.Parameters.AddWithValue("@Attendees2rela", p_FamilyConferenceNote.Attendees2rela);
+                l_Cmd.Parameters.AddWithValue("@Attendees3rela", p_FamilyConferenceNote.Attendees3rela);
+                l_Cmd.Parameters.AddWithValue("@Attendees4rela", p_FamilyConferenceNote.Attendees4rela);
+                l_Cmd.Parameters.AddWithValue("@Attendees5rela", p_FamilyConferenceNote.Attendees5rela);
+                l_Cmd.Parameters.AddWithValue("@Attendees6rela", p_FamilyConferenceNote.Attendees6rela);
+                l_Cmd.Parameters.AddWithValue("@Attendees7rela", p_FamilyConferenceNote.Attendees7rela);
+                l_Cmd.Parameters.AddWithValue("@completeName", p_FamilyConferenceNote.completeName);
+                l_Cmd.Parameters.AddWithValue("@completeSign", p_FamilyConferenceNote.completeSign);
+
                 l_Cmd.ExecuteNonQuery();
             }
             catch (Exception ex)

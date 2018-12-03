@@ -192,6 +192,12 @@ namespace QolaMVC.Controllers
             TempData.Keep("index2");
             ViewBag.AssessmentDates = l_AssessmentDates;
 
+            single.dropYesorNo = new[]{
+                new SelectListItem { Value = "", Text = "" },
+                new SelectListItem { Value = "Yes", Text = "Yes" },
+                new SelectListItem { Value = "No", Text = "No" },
+            };
+
             return View(single);
         }
 

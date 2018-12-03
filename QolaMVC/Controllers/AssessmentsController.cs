@@ -759,23 +759,16 @@ namespace QolaMVC.Controllers
             TempData.Keep("index2");
             ViewBag.AssessmentDates = l_AssessmentDates;
 
+            single.dropYesorNo = new[]{
+                new SelectListItem { Value = "", Text = "" },
+                new SelectListItem { Value = "Yes", Text = "Yes" },
+                new SelectListItem { Value = "No", Text = "No" },
+            };
+
             //return View(familyConference.LastOrDefault());
             return View(single);
         }
 
-        public ActionResult Add_FamilyConference_mike()
-        {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
-            var resident = (ResidentModel)TempData["Resident"];
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
-            DateTime sameTime = DateTime.Now;
-            AssessmentDAL.Add_FamilyConference_mike(resident.ID, user.ID, sameTime);
-            string ind = TempData["index2"].ToString();
-            return RedirectToAction("FamilyConference", new { index = ind });
-        }
 
         [HttpPost]
         public ActionResult SaveFamilyConferenceNote(FamilyConfrenceNoteModel p_FamilyConferenceNote)
@@ -796,21 +789,16 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
-            if (p_FamilyConferenceNote.SuiteNumber == null) p_FamilyConferenceNote.SuiteNumber = "";
-            if (p_FamilyConferenceNote.DOB == null) p_FamilyConferenceNote.DOB = "";
-            if (p_FamilyConferenceNote.PHN == null) p_FamilyConferenceNote.PHN = "";
-            if (p_FamilyConferenceNote.CareandGCD == null) p_FamilyConferenceNote.CareandGCD = "";
-            if (p_FamilyConferenceNote.Medication == null) p_FamilyConferenceNote.Medication = "";
-            if (p_FamilyConferenceNote.Recreation == null) p_FamilyConferenceNote.Recreation = "";
-            if (p_FamilyConferenceNote.Diet == null) p_FamilyConferenceNote.Diet = "";
-            if (p_FamilyConferenceNote.Comments == null) p_FamilyConferenceNote.Comments = "";
-            if (p_FamilyConferenceNote.Goals == null) p_FamilyConferenceNote.Goals = "";
-            if (p_FamilyConferenceNote.Presents1 == null) p_FamilyConferenceNote.Presents1 = "";
-            if (p_FamilyConferenceNote.Presents2 == null) p_FamilyConferenceNote.Presents2 = "";
-            if (p_FamilyConferenceNote.Presents3 == null) p_FamilyConferenceNote.Presents3 = "";
+            foreach (PropertyInfo prop in typeof(FamilyConfrenceNoteModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_FamilyConferenceNote) == null) { prop.SetValue(p_FamilyConferenceNote, ""); }
+                }
+            }
 
             AssessmentDAL.SaveFamilyConferenceNote(p_FamilyConferenceNote);
-            return RedirectToAction("FamilyConference", new { index = ind });
+            return RedirectToAction("FamilyConference");
         }
 
         public ActionResult BACK_Click_FCN()
