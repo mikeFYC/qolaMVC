@@ -25,5 +25,7 @@ namespace QolaMVC.Models
         public string CategoryId { get; set; }
 
         public string note { get; set; }
+
+        public string Color { get; set; }
     }
 }

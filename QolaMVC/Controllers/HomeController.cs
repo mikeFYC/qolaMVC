@@ -819,7 +819,544 @@ namespace QolaMVC.Controllers
         }
 
 
+        #region SAC
 
+        public JsonResult getEvents_mike_SACnotColor()
+        {
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("Home");
+            ViewBag.Home = home;
+            var l_ActivityEvents = HomeDAL.GetActivityEvents_SACnotColor(home.Id);
+
+            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
+
+            foreach (var l_Data in l_ActivityEvents)
+            {
+                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
+                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
+
+                var columns = new Dictionary<string, string>
+                {
+                    { "id", l_Data.ProgramId.ToString()},
+                    { "title", l_Data.ProgramName},
+                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
+                    { "endDate", ggend.ToString("yyyy-MM-dd")},
+                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "Venue", l_Data.Venue},
+                    { "note", l_Data.note},
+                    { "Category", "1"},
+                    { "ActivityId", l_Data.ActivityId.ToString()}
+
+                };
+
+                l_Events.Add(columns);
+            }
+
+
+            return Json(l_Events, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult getEvents_mike_SACColor()
+        {
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("Home");
+            ViewBag.Home = home;
+            var l_ActivityEvents = HomeDAL.GetActivityEvents_SACColor(home.Id);
+
+            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
+
+            foreach (var l_Data in l_ActivityEvents)
+            {
+                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
+                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
+
+                var columns = new Dictionary<string, string>
+                {
+                    { "id", l_Data.ProgramId.ToString()},
+                    { "title", l_Data.ProgramName},
+                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
+                    { "endDate", ggend.ToString("yyyy-MM-dd")},
+                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "Venue", l_Data.Venue},
+                    { "note", l_Data.note},
+                    { "Category", "1"},
+                    { "ActivityId", l_Data.ActivityId.ToString()}
+
+                };
+
+                l_Events.Add(columns);
+            }
+
+
+            return Json(l_Events, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult getEvents_C2_mike_SACnotColor()
+        {
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("Home");
+            ViewBag.Home = home;
+            var l_ActivityEvents = HomeDAL.GetActivityEvents_C2_SACnotColor(home.Id);
+
+            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
+
+            foreach (var l_Data in l_ActivityEvents)
+            {
+                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
+                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
+
+                var columns = new Dictionary<string, string>
+                {
+                    { "id", l_Data.ProgramId.ToString()},
+                    { "title", l_Data.ProgramName},
+                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
+                    { "endDate", ggend.ToString("yyyy-MM-dd")},
+                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "Venue", l_Data.Venue},
+                    { "note", l_Data.note},
+                    { "Category", "1"},
+                    { "ActivityId", l_Data.ActivityId.ToString()}
+
+                };
+
+                l_Events.Add(columns);
+            }
+
+
+            return Json(l_Events, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult getEvents_C2_mike_SACColor()
+        {
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("Home");
+            ViewBag.Home = home;
+            var l_ActivityEvents = HomeDAL.GetActivityEvents_C2_SACColor(home.Id);
+
+            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
+
+            foreach (var l_Data in l_ActivityEvents)
+            {
+                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
+                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
+
+                var columns = new Dictionary<string, string>
+                {
+                    { "id", l_Data.ProgramId.ToString()},
+                    { "title", l_Data.ProgramName},
+                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
+                    { "endDate", ggend.ToString("yyyy-MM-dd")},
+                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "Venue", l_Data.Venue},
+                    { "note", l_Data.note},
+                    { "Category", "1"},
+                    { "ActivityId", l_Data.ActivityId.ToString()}
+
+                };
+
+                l_Events.Add(columns);
+            }
+
+
+            return Json(l_Events, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult getEvents_C3_mike_SACnotColor()
+        {
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("Home");
+            ViewBag.Home = home;
+            var l_ActivityEvents = HomeDAL.GetActivityEvents_C3_SACnotColor(home.Id);
+
+            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
+
+            foreach (var l_Data in l_ActivityEvents)
+            {
+                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
+                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
+
+                var columns = new Dictionary<string, string>
+                {
+                    { "id", l_Data.ProgramId.ToString()},
+                    { "title", l_Data.ProgramName},
+                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
+                    { "endDate", ggend.ToString("yyyy-MM-dd")},
+                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "Venue", l_Data.Venue},
+                    { "note", l_Data.note},
+                    { "Category", "1"},
+                    { "ActivityId", l_Data.ActivityId.ToString()}
+
+                };
+
+                l_Events.Add(columns);
+            }
+
+
+            return Json(l_Events, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult getEvents_C3_mike_SACColor()
+        {
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("Home");
+            ViewBag.Home = home;
+            var l_ActivityEvents = HomeDAL.GetActivityEvents_C3_SACColor(home.Id);
+
+            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
+
+            foreach (var l_Data in l_ActivityEvents)
+            {
+                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
+                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
+
+                var columns = new Dictionary<string, string>
+                {
+                    { "id", l_Data.ProgramId.ToString()},
+                    { "title", l_Data.ProgramName},
+                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
+                    { "endDate", ggend.ToString("yyyy-MM-dd")},
+                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "Venue", l_Data.Venue},
+                    { "note", l_Data.note},
+                    { "Category", "1"},
+                    { "ActivityId", l_Data.ActivityId.ToString()}
+
+                };
+
+                l_Events.Add(columns);
+            }
+
+
+            return Json(l_Events, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult getEvents_C4_mike_SACnotColor()
+        {
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("Home");
+            ViewBag.Home = home;
+            var l_ActivityEvents = HomeDAL.GetActivityEvents_C4_SACnotColor(home.Id);
+
+            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
+
+            foreach (var l_Data in l_ActivityEvents)
+            {
+                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
+                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
+
+                var columns = new Dictionary<string, string>
+                {
+                    { "id", l_Data.ProgramId.ToString()},
+                    { "title", l_Data.ProgramName},
+                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
+                    { "endDate", ggend.ToString("yyyy-MM-dd")},
+                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "Venue", l_Data.Venue},
+                    { "note", l_Data.note},
+                    { "Category", "1"},
+                    { "ActivityId", l_Data.ActivityId.ToString()}
+
+                };
+
+                l_Events.Add(columns);
+            }
+
+
+            return Json(l_Events, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult getEvents_C4_mike_SACColor()
+        {
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("Home");
+            ViewBag.Home = home;
+            var l_ActivityEvents = HomeDAL.GetActivityEvents_C4_SACColor(home.Id);
+
+            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
+
+            foreach (var l_Data in l_ActivityEvents)
+            {
+                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
+                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
+
+                var columns = new Dictionary<string, string>
+                {
+                    { "id", l_Data.ProgramId.ToString()},
+                    { "title", l_Data.ProgramName},
+                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
+                    { "endDate", ggend.ToString("yyyy-MM-dd")},
+                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "Venue", l_Data.Venue},
+                    { "note", l_Data.note},
+                    { "Category", "1"},
+                    { "ActivityId", l_Data.ActivityId.ToString()}
+
+                };
+
+                l_Events.Add(columns);
+            }
+
+
+            return Json(l_Events, JsonRequestBehavior.AllowGet);
+        }
+
+
+        [HttpGet]
+        public ActionResult update_day_div1_SAC(string datesel)
+        {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+
+            ViewBag.Message = TempData["Message"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            ViewBag.User = user;
+            ViewBag.Home = home;
+
+            Collection<ActivityEventModel> l_Events;
+
+            if (datesel == "" || datesel == null)
+            {
+                TempData["datechoose"] = DateTime.Now.ToString("MMMM dd, yyyy");
+                l_Events = HomeDAL.GetActivityEvents_mike_SAC(DateTime.Today.Date, home.Id);
+                ViewBag.Events = l_Events;
+            }
+            else
+            {
+                TempData["datechoose"] = datesel;
+                l_Events = HomeDAL.GetActivityEvents_mike_SAC(DateTime.Parse(datesel).Date, home.Id);
+                ViewBag.Events = l_Events;
+            }
+
+            List<Dictionary<string, string>> JsonEVENTs = new List<Dictionary<string, string>>();
+
+            foreach (var l_Data in l_Events)
+            {
+                try
+                {
+                    var columns = new Dictionary<string, string>
+                    {
+                        { "ProgramId", l_Data.ProgramId.ToString()},
+                        { "ActivityId", l_Data.ActivityId.ToString()},
+                        { "ProgramName", l_Data.ProgramName},
+                        { "ActivityNameEnglish", l_Data.ActivityNameEnglish},
+                        { "ProgramStartTime", DateTime.Parse(l_Data.ProgramStartTime).ToShortTimeString()},
+                        { "Venue", l_Data.Venue},
+                        { "Active", l_Data.Active.ToString()},
+                        { "Declined", l_Data.Declined.ToString()},
+                        { "Color", l_Data.Color.ToString()}
+
+                    };
+                    JsonEVENTs.Add(columns);
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+
+            return Json(JsonEVENTs, JsonRequestBehavior.AllowGet);
+
+        }
+        [HttpGet]
+        public ActionResult update_day_div2_SAC(string datesel)
+        {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+
+            ViewBag.Message = TempData["Message"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            ViewBag.User = user;
+            ViewBag.Home = home;
+
+            Collection<ActivityEventModel_Calendar2> l_Events;
+
+            if (datesel == "" || datesel == null)
+            {
+                TempData["datechoose"] = DateTime.Now.ToString("MMMM dd, yyyy");
+                l_Events = HomeDAL.GetActivityEvents_Calendar2_mike_SAC(DateTime.Today.Date, home.Id);
+                ViewBag.Events = l_Events;
+            }
+            else
+            {
+                TempData["datechoose"] = datesel;
+                l_Events = HomeDAL.GetActivityEvents_Calendar2_mike_SAC(DateTime.Parse(datesel).Date, home.Id);
+                ViewBag.Events = l_Events;
+            }
+
+            List<Dictionary<string, string>> JsonEVENTs = new List<Dictionary<string, string>>();
+
+            foreach (var l_Data in l_Events)
+            {
+                try
+                {
+                    var columns = new Dictionary<string, string>
+                    {
+                        { "ProgramId", l_Data.ProgramId.ToString()},
+                        { "ActivityId", l_Data.ActivityId.ToString()},
+                        { "ProgramName", l_Data.ProgramName},
+                        { "ActivityNameEnglish", l_Data.ActivityNameEnglish},
+                        { "ProgramStartTime", DateTime.Parse(l_Data.ProgramStartTime).ToShortTimeString()},
+                        { "Venue", l_Data.Venue},
+                        { "Active", l_Data.Active.ToString()},
+                        { "Declined", l_Data.Declined.ToString()},
+                        { "Color", l_Data.Color.ToString()}
+                    };
+                    JsonEVENTs.Add(columns);
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+
+            return Json(JsonEVENTs, JsonRequestBehavior.AllowGet);
+
+        }
+        [HttpGet]
+        public ActionResult update_day_div3_SAC(string datesel)
+        {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+
+            ViewBag.Message = TempData["Message"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            ViewBag.User = user;
+            ViewBag.Home = home;
+
+            Collection<ActivityEventModel_Calendar3> l_Events;
+
+            if (datesel == "" || datesel == null)
+            {
+                TempData["datechoose"] = DateTime.Now.ToString("MMMM dd, yyyy");
+                l_Events = HomeDAL.GetActivityEvents_Calendar3_mike_SAC(DateTime.Today.Date, home.Id);
+                ViewBag.Events = l_Events;
+            }
+            else
+            {
+                TempData["datechoose"] = datesel;
+                l_Events = HomeDAL.GetActivityEvents_Calendar3_mike_SAC(DateTime.Parse(datesel).Date, home.Id);
+                ViewBag.Events = l_Events;
+            }
+
+            List<Dictionary<string, string>> JsonEVENTs = new List<Dictionary<string, string>>();
+
+            foreach (var l_Data in l_Events)
+            {
+                try
+                {
+                    var columns = new Dictionary<string, string>
+                    {
+                        { "ProgramId", l_Data.ProgramId.ToString()},
+                        { "ActivityId", l_Data.ActivityId.ToString()},
+                        { "ProgramName", l_Data.ProgramName},
+                        { "ActivityNameEnglish", l_Data.ActivityNameEnglish},
+                        { "ProgramStartTime", DateTime.Parse(l_Data.ProgramStartTime).ToShortTimeString()},
+                        { "Venue", l_Data.Venue},
+                        { "Active", l_Data.Active.ToString()},
+                        { "Declined", l_Data.Declined.ToString()},
+                        { "Color", l_Data.Color.ToString()}
+                    };
+                    JsonEVENTs.Add(columns);
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+
+            return Json(JsonEVENTs, JsonRequestBehavior.AllowGet);
+
+        }
+        [HttpGet]
+        public ActionResult update_day_div4_SAC(string datesel)
+        {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+
+            ViewBag.Message = TempData["Message"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            ViewBag.User = user;
+            ViewBag.Home = home;
+
+            Collection<ActivityEventModel_Calendar4> l_Events;
+
+            if (datesel == "" || datesel == null)
+            {
+                TempData["datechoose"] = DateTime.Now.ToString("MMMM dd, yyyy");
+                l_Events = HomeDAL.GetActivityEvents_Calendar4_mike_SAC(DateTime.Today.Date, home.Id);
+                ViewBag.Events = l_Events;
+            }
+            else
+            {
+                TempData["datechoose"] = datesel;
+                l_Events = HomeDAL.GetActivityEvents_Calendar4_mike_SAC(DateTime.Parse(datesel).Date, home.Id);
+                ViewBag.Events = l_Events;
+            }
+
+            List<Dictionary<string, string>> JsonEVENTs = new List<Dictionary<string, string>>();
+
+            foreach (var l_Data in l_Events)
+            {
+                try
+                {
+                    var columns = new Dictionary<string, string>
+                    {
+                        { "ProgramId", l_Data.ProgramId.ToString()},
+                        { "ActivityId", l_Data.ActivityId.ToString()},
+                        { "ProgramName", l_Data.ProgramName},
+                        { "ActivityNameEnglish", l_Data.ActivityNameEnglish},
+                        { "ProgramStartTime", DateTime.Parse(l_Data.ProgramStartTime).ToShortTimeString()},
+                        { "Venue", l_Data.Venue},
+                        { "Active", l_Data.Active.ToString()},
+                        { "Declined", l_Data.Declined.ToString()},
+                        { "Color", l_Data.Color.ToString()}
+                    };
+                    JsonEVENTs.Add(columns);
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+
+            return Json(JsonEVENTs, JsonRequestBehavior.AllowGet);
+
+        }
+
+        #endregion
 
 
 
@@ -4885,7 +5422,7 @@ namespace QolaMVC.Controllers
             return View();
         }
 
-        public ActionResult SuggestedActivityCalendar_mike(string datesel, string tab)
+        public ActionResult SuggestedActivityCalendar_mike()
         {
             var user = (UserModel)TempData["User"];
             var home = (HomeModel)TempData["Home"];
@@ -4896,48 +5433,23 @@ namespace QolaMVC.Controllers
             ViewBag.User = user;
             ViewBag.Home = home;
             ViewBag.Resident = resident;
-            Dining_Attendance_simple LIST_VIEW_RESIDENT = new Dining_Attendance_simple();
 
-            if (datesel == "" || datesel == null)
-            {
-                TempData["datechoose"] = DateTime.Now.ToString("MMMM dd, yyyy");
-                LIST_VIEW_RESIDENT = HomeDAL.get_list_resident(home.Id, DateTime.Today);
-                Collection<ActivityEventModel> l_Events = HomeDAL.GetActivityEvents_mike(DateTime.Today.Date, home.Id);
-                ViewBag.Events = l_Events;
+            TempData["datechoose"] = DateTime.Now.ToString("MMMM dd, yyyy");
+            Collection<ActivityEventModel> l_Events = HomeDAL.GetActivityEvents_mike_SAC(DateTime.Today.Date, home.Id);
+            ViewBag.Events = l_Events;
 
-
-                Collection<ActivityEventModel_Calendar2> l_Events_2 = HomeDAL.GetActivityEvents_Calendar2_mike(DateTime.Today.Date, home.Id);
-                Collection<ActivityEventModel_Calendar3> l_Events_3 = HomeDAL.GetActivityEvents_Calendar3_mike(DateTime.Today.Date, home.Id);
-                Collection<ActivityEventModel_Calendar4> l_Events_4 = HomeDAL.GetActivityEvents_Calendar4_mike(DateTime.Today.Date, home.Id);
-                ViewBag.Events2 = l_Events_2;
-                ViewBag.Events3 = l_Events_3;
-                ViewBag.Events4 = l_Events_4;
-            }
-            else
-            {
-                TempData["datechoose"] = datesel;
-                LIST_VIEW_RESIDENT = HomeDAL.get_list_resident(home.Id, DateTime.Parse(datesel));
-                Collection<ActivityEventModel> l_Events = HomeDAL.GetActivityEvents_mike(DateTime.Parse(datesel).Date, home.Id);
-                ViewBag.Events = l_Events;
-
-
-                Collection<ActivityEventModel_Calendar2> l_Events_2 = HomeDAL.GetActivityEvents_Calendar2_mike(DateTime.Parse(datesel).Date, home.Id);
-                Collection<ActivityEventModel_Calendar3> l_Events_3 = HomeDAL.GetActivityEvents_Calendar3_mike(DateTime.Parse(datesel).Date, home.Id);
-                Collection<ActivityEventModel_Calendar4> l_Events_4 = HomeDAL.GetActivityEvents_Calendar4_mike(DateTime.Parse(datesel).Date, home.Id);
-                ViewBag.Events2 = l_Events_2;
-                ViewBag.Events3 = l_Events_3;
-                ViewBag.Events4 = l_Events_4;
-            }
-            TempData["LIST_VIEW_RESIDENT"] = LIST_VIEW_RESIDENT;
-            TempData.Keep("LIST_VIEW_RESIDENT");
-            ViewBag.LIST_VIEW_RESIDENT = LIST_VIEW_RESIDENT;
+            Collection<ActivityEventModel_Calendar2> l_Events_2 = HomeDAL.GetActivityEvents_Calendar2_mike_SAC(DateTime.Today.Date, home.Id);
+            Collection<ActivityEventModel_Calendar3> l_Events_3 = HomeDAL.GetActivityEvents_Calendar3_mike_SAC(DateTime.Today.Date, home.Id);
+            Collection<ActivityEventModel_Calendar4> l_Events_4 = HomeDAL.GetActivityEvents_Calendar4_mike_SAC(DateTime.Today.Date, home.Id);
+            ViewBag.Events2 = l_Events_2;
+            ViewBag.Events3 = l_Events_3;
+            ViewBag.Events4 = l_Events_4;
 
             string[] returnStr = HomeDAL.get_Activity_Calendar_Name(home.Id);
             ViewBag.CalendarName = returnStr;
 
-            TempData["tab"] = tab;
 
-            return View(LIST_VIEW_RESIDENT);
+            return View();
 
         }
 
