@@ -1125,7 +1125,7 @@ namespace QolaMVC.DAL
 
         #region SAC
 
-        public static Collection<ActivityEventModel> GetActivityEvents_SACnotColor(int homeid)
+        public static Collection<ActivityEventModel> GetActivityEvents_SACnotColor(int homeid,int residentID)
         {
             string exception = string.Empty;
             Collection<ActivityEventModel> l_Events = new Collection<ActivityEventModel>();
@@ -1140,6 +1140,7 @@ namespace QolaMVC.DAL
                 SqlDataAdapter l_DA = new SqlDataAdapter();
                 SqlCommand l_Cmd = new SqlCommand("spAB_Get_Activity_Events_SACnotColor", l_Conn);
                 l_Cmd.Parameters.AddWithValue("@homeid", homeid);
+                l_Cmd.Parameters.AddWithValue("@residentID", residentID);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 DataSet homeReceive = new DataSet();
@@ -1179,7 +1180,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static Collection<ActivityEventModel> GetActivityEvents_SACColor(int homeid)
+        public static Collection<ActivityEventModel> GetActivityEvents_SACColor(int homeid, int residentID)
         {
             string exception = string.Empty;
             Collection<ActivityEventModel> l_Events = new Collection<ActivityEventModel>();
@@ -1194,6 +1195,7 @@ namespace QolaMVC.DAL
                 SqlDataAdapter l_DA = new SqlDataAdapter();
                 SqlCommand l_Cmd = new SqlCommand("spAB_Get_Activity_Events_SACColor", l_Conn);
                 l_Cmd.Parameters.AddWithValue("@homeid", homeid);
+                l_Cmd.Parameters.AddWithValue("@residentID", residentID);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 DataSet homeReceive = new DataSet();
@@ -1233,7 +1235,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static Collection<ActivityEventModel> GetActivityEvents_C2_SACnotColor(int homeid)
+        public static Collection<ActivityEventModel> GetActivityEvents_C2_SACnotColor(int homeid, int residentID)
         {
             string exception = string.Empty;
             Collection<ActivityEventModel> l_Events = new Collection<ActivityEventModel>();
@@ -1248,6 +1250,7 @@ namespace QolaMVC.DAL
                 SqlDataAdapter l_DA = new SqlDataAdapter();
                 SqlCommand l_Cmd = new SqlCommand("spAB_Get_Activity_Events_C2_SACnotColor", l_Conn);
                 l_Cmd.Parameters.AddWithValue("@homeid", homeid);
+                l_Cmd.Parameters.AddWithValue("@residentID", residentID);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 DataSet homeReceive = new DataSet();
@@ -1287,7 +1290,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static Collection<ActivityEventModel> GetActivityEvents_C2_SACColor(int homeid)
+        public static Collection<ActivityEventModel> GetActivityEvents_C2_SACColor(int homeid, int residentID)
         {
             string exception = string.Empty;
             Collection<ActivityEventModel> l_Events = new Collection<ActivityEventModel>();
@@ -1302,6 +1305,7 @@ namespace QolaMVC.DAL
                 SqlDataAdapter l_DA = new SqlDataAdapter();
                 SqlCommand l_Cmd = new SqlCommand("spAB_Get_Activity_Events_C2_SACColor", l_Conn);
                 l_Cmd.Parameters.AddWithValue("@homeid", homeid);
+                l_Cmd.Parameters.AddWithValue("@residentID", residentID);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 DataSet homeReceive = new DataSet();
@@ -1341,7 +1345,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static Collection<ActivityEventModel> GetActivityEvents_C3_SACnotColor(int homeid)
+        public static Collection<ActivityEventModel> GetActivityEvents_C3_SACnotColor(int homeid, int residentID)
         {
             string exception = string.Empty;
             Collection<ActivityEventModel> l_Events = new Collection<ActivityEventModel>();
@@ -1356,6 +1360,7 @@ namespace QolaMVC.DAL
                 SqlDataAdapter l_DA = new SqlDataAdapter();
                 SqlCommand l_Cmd = new SqlCommand("spAB_Get_Activity_Events_C3_SACnotColor", l_Conn);
                 l_Cmd.Parameters.AddWithValue("@homeid", homeid);
+                l_Cmd.Parameters.AddWithValue("@residentID", residentID);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 DataSet homeReceive = new DataSet();
@@ -1395,7 +1400,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static Collection<ActivityEventModel> GetActivityEvents_C3_SACColor(int homeid)
+        public static Collection<ActivityEventModel> GetActivityEvents_C3_SACColor(int homeid, int residentID)
         {
             string exception = string.Empty;
             Collection<ActivityEventModel> l_Events = new Collection<ActivityEventModel>();
@@ -1410,6 +1415,7 @@ namespace QolaMVC.DAL
                 SqlDataAdapter l_DA = new SqlDataAdapter();
                 SqlCommand l_Cmd = new SqlCommand("spAB_Get_Activity_Events_C3_SACColor", l_Conn);
                 l_Cmd.Parameters.AddWithValue("@homeid", homeid);
+                l_Cmd.Parameters.AddWithValue("@residentID", residentID);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 DataSet homeReceive = new DataSet();
@@ -1449,7 +1455,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static Collection<ActivityEventModel> GetActivityEvents_C4_SACnotColor(int homeid)
+        public static Collection<ActivityEventModel> GetActivityEvents_C4_SACnotColor(int homeid, int residentID)
         {
             string exception = string.Empty;
             Collection<ActivityEventModel> l_Events = new Collection<ActivityEventModel>();
@@ -1464,6 +1470,7 @@ namespace QolaMVC.DAL
                 SqlDataAdapter l_DA = new SqlDataAdapter();
                 SqlCommand l_Cmd = new SqlCommand("spAB_Get_Activity_Events_C4_SACnotColor", l_Conn);
                 l_Cmd.Parameters.AddWithValue("@homeid", homeid);
+                l_Cmd.Parameters.AddWithValue("@residentID", residentID);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 DataSet homeReceive = new DataSet();
@@ -1503,7 +1510,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static Collection<ActivityEventModel> GetActivityEvents_C4_SACColor(int homeid)
+        public static Collection<ActivityEventModel> GetActivityEvents_C4_SACColor(int homeid, int residentID)
         {
             string exception = string.Empty;
             Collection<ActivityEventModel> l_Events = new Collection<ActivityEventModel>();
@@ -1518,6 +1525,7 @@ namespace QolaMVC.DAL
                 SqlDataAdapter l_DA = new SqlDataAdapter();
                 SqlCommand l_Cmd = new SqlCommand("spAB_Get_Activity_Events_C4_SACColor", l_Conn);
                 l_Cmd.Parameters.AddWithValue("@homeid", homeid);
+                l_Cmd.Parameters.AddWithValue("@residentID", residentID);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 DataSet homeReceive = new DataSet();
@@ -1558,7 +1566,7 @@ namespace QolaMVC.DAL
         }
 
 
-        public static Collection<ActivityEventModel> GetActivityEvents_mike_SAC(DateTime datemike, int homeid)
+        public static Collection<ActivityEventModel> GetActivityEvents_mike_SAC(DateTime datemike, int homeid, int residentID)
         {
             string exception = string.Empty;
             Collection<ActivityEventModel> l_Events = new Collection<ActivityEventModel>();
@@ -1570,6 +1578,7 @@ namespace QolaMVC.DAL
                 SqlCommand l_Cmd = new SqlCommand("[spAB_Get_Activity_Events_mike_SAC]", l_Conn);
                 l_Cmd.Parameters.AddWithValue("@date", datemike.ToShortDateString());
                 l_Cmd.Parameters.AddWithValue("@homeid", homeid);
+                l_Cmd.Parameters.AddWithValue("@residentID", residentID);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 DataSet homeReceive = new DataSet();
@@ -1614,7 +1623,7 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-        public static Collection<ActivityEventModel_Calendar2> GetActivityEvents_Calendar2_mike_SAC(DateTime datemike, int homeid)
+        public static Collection<ActivityEventModel_Calendar2> GetActivityEvents_Calendar2_mike_SAC(DateTime datemike, int homeid, int residentID)
         {
             string exception = string.Empty;
             Collection<ActivityEventModel_Calendar2> l_Events = new Collection<ActivityEventModel_Calendar2>();
@@ -1626,6 +1635,7 @@ namespace QolaMVC.DAL
                 SqlCommand l_Cmd = new SqlCommand("spAB_Get_Activity_Events_mike_2_SAC", l_Conn);
                 l_Cmd.Parameters.AddWithValue("@date", datemike.ToShortDateString());
                 l_Cmd.Parameters.AddWithValue("@homeid", homeid);
+                l_Cmd.Parameters.AddWithValue("@residentID", residentID);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 DataSet homeReceive = new DataSet();
@@ -1670,7 +1680,7 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-        public static Collection<ActivityEventModel_Calendar3> GetActivityEvents_Calendar3_mike_SAC(DateTime datemike, int homeid)
+        public static Collection<ActivityEventModel_Calendar3> GetActivityEvents_Calendar3_mike_SAC(DateTime datemike, int homeid, int residentID)
         {
             string exception = string.Empty;
             Collection<ActivityEventModel_Calendar3> l_Events = new Collection<ActivityEventModel_Calendar3>();
@@ -1682,6 +1692,7 @@ namespace QolaMVC.DAL
                 SqlCommand l_Cmd = new SqlCommand("spAB_Get_Activity_Events_mike_3_SAC", l_Conn);
                 l_Cmd.Parameters.AddWithValue("@date", datemike.ToShortDateString());
                 l_Cmd.Parameters.AddWithValue("@homeid", homeid);
+                l_Cmd.Parameters.AddWithValue("@residentID", residentID);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 DataSet homeReceive = new DataSet();
@@ -1726,7 +1737,7 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-        public static Collection<ActivityEventModel_Calendar4> GetActivityEvents_Calendar4_mike_SAC(DateTime datemike, int homeid)
+        public static Collection<ActivityEventModel_Calendar4> GetActivityEvents_Calendar4_mike_SAC(DateTime datemike, int homeid, int residentID)
         {
             string exception = string.Empty;
             Collection<ActivityEventModel_Calendar4> l_Events = new Collection<ActivityEventModel_Calendar4>();
@@ -1738,6 +1749,7 @@ namespace QolaMVC.DAL
                 SqlCommand l_Cmd = new SqlCommand("spAB_Get_Activity_Events_mike_4_SAC", l_Conn);
                 l_Cmd.Parameters.AddWithValue("@date", datemike.ToShortDateString());
                 l_Cmd.Parameters.AddWithValue("@homeid", homeid);
+                l_Cmd.Parameters.AddWithValue("@residentID", residentID);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 DataSet homeReceive = new DataSet();
@@ -3348,6 +3360,103 @@ namespace QolaMVC.DAL
             }
         }
 
+
+        public static Collection<ActivityEventModel_PC> GetPersonalCalendar(int p_HomeId,int residentID)
+        {
+            string exception = string.Empty;
+            Collection<ActivityEventModel_PC> l_Events = new Collection<ActivityEventModel_PC>();
+            ActivityEventModel_PC l_Event;
+            //UserModel l_User;
+            //ResidentModel l_Resident;
+            //SuiteModel l_Suite;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_Personal_Calendar", l_Conn);
+                l_Cmd.Parameters.AddWithValue("@HomeId", p_HomeId);
+                l_Cmd.Parameters.AddWithValue("@residentID", residentID);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                DataSet homeReceive = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(homeReceive);
+
+                if ((homeReceive != null) && (homeReceive.Tables.Count > 0) && (homeReceive.Tables[0].Rows.Count > 0))
+                {
+                    foreach (DataRow homeTypeRow in homeReceive.Tables[0].Rows)
+                    {
+                        l_Event = new ActivityEventModel_PC();
+
+                        try
+                        {
+                            l_Event.ProgramId = Convert.ToInt32(homeTypeRow["Id"]);
+                            l_Event.HomeId = Convert.ToInt32(homeTypeRow["homeId"]);
+                            l_Event.ResidentId = Convert.ToInt32(homeTypeRow["residentID"]);
+                            l_Event.ProgramName = Convert.ToString(homeTypeRow["EventTitle"]);
+                            l_Event.ProgramStartDate = Convert.ToDateTime(homeTypeRow["StartDate"]);
+                            l_Event.ProgramEndDate = Convert.ToDateTime(homeTypeRow["EndDate"]);
+                            l_Event.ProgramStartTime = Convert.ToString(homeTypeRow["StartTime"]);
+                            l_Event.ProgramEndTime = Convert.ToString(homeTypeRow["EndTime"]);
+                            l_Event.note = Convert.ToString(homeTypeRow["note"]);
+                            l_Events.Add(l_Event);
+
+                        }
+                        catch (Exception)
+                        {
+
+                        }
+                    }
+                }
+                return l_Events;
+            }
+            catch (Exception ex)
+            {
+                exception = "GetBirthdayCalendar |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+
+
+
+        public static void AddPersonalCalendar(int p_HomeId, int residentID,string title,int userid)
+        {
+            string exception = string.Empty;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_add_Personal_Calendar", l_Conn);
+                l_Conn.Open();
+                l_Cmd.Parameters.AddWithValue("@HomeId", p_HomeId);
+                l_Cmd.Parameters.AddWithValue("@residentID", residentID);
+                l_Cmd.Parameters.AddWithValue("@title", title);
+                l_Cmd.Parameters.AddWithValue("@startDate", DateTime.Now.Date);
+                l_Cmd.Parameters.AddWithValue("@startTime", DateTime.Now.ToLongTimeString());
+                l_Cmd.Parameters.AddWithValue("@userid", userid);  
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.ExecuteNonQuery();
+
+            }
+            catch (Exception ex)
+            {
+                exception = "AddPersonalCalendar |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
 
     }
 }

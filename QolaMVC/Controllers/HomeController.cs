@@ -824,9 +824,18 @@ namespace QolaMVC.Controllers
         public JsonResult getEvents_mike_SACnotColor()
         {
             var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;           
+
+            TempData.Keep("User");
             TempData.Keep("Home");
-            ViewBag.Home = home;
-            var l_ActivityEvents = HomeDAL.GetActivityEvents_SACnotColor(home.Id);
+            TempData.Keep("Resident");
+
+            var l_ActivityEvents = HomeDAL.GetActivityEvents_SACnotColor(home.Id, resident.ID);
 
             List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
 
@@ -862,9 +871,17 @@ namespace QolaMVC.Controllers
         public JsonResult getEvents_mike_SACColor()
         {
             var home = (HomeModel)TempData["Home"];
-            TempData.Keep("Home");
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
             ViewBag.Home = home;
-            var l_ActivityEvents = HomeDAL.GetActivityEvents_SACColor(home.Id);
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            var l_ActivityEvents = HomeDAL.GetActivityEvents_SACColor(home.Id, resident.ID);
 
             List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
 
@@ -900,9 +917,17 @@ namespace QolaMVC.Controllers
         public JsonResult getEvents_C2_mike_SACnotColor()
         {
             var home = (HomeModel)TempData["Home"];
-            TempData.Keep("Home");
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
             ViewBag.Home = home;
-            var l_ActivityEvents = HomeDAL.GetActivityEvents_C2_SACnotColor(home.Id);
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            var l_ActivityEvents = HomeDAL.GetActivityEvents_C2_SACnotColor(home.Id, resident.ID);
 
             List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
 
@@ -938,9 +963,17 @@ namespace QolaMVC.Controllers
         public JsonResult getEvents_C2_mike_SACColor()
         {
             var home = (HomeModel)TempData["Home"];
-            TempData.Keep("Home");
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
             ViewBag.Home = home;
-            var l_ActivityEvents = HomeDAL.GetActivityEvents_C2_SACColor(home.Id);
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            var l_ActivityEvents = HomeDAL.GetActivityEvents_C2_SACColor(home.Id, resident.ID);
 
             List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
 
@@ -976,9 +1009,17 @@ namespace QolaMVC.Controllers
         public JsonResult getEvents_C3_mike_SACnotColor()
         {
             var home = (HomeModel)TempData["Home"];
-            TempData.Keep("Home");
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
             ViewBag.Home = home;
-            var l_ActivityEvents = HomeDAL.GetActivityEvents_C3_SACnotColor(home.Id);
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            var l_ActivityEvents = HomeDAL.GetActivityEvents_C3_SACnotColor(home.Id, resident.ID);
 
             List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
 
@@ -1014,9 +1055,17 @@ namespace QolaMVC.Controllers
         public JsonResult getEvents_C3_mike_SACColor()
         {
             var home = (HomeModel)TempData["Home"];
-            TempData.Keep("Home");
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
             ViewBag.Home = home;
-            var l_ActivityEvents = HomeDAL.GetActivityEvents_C3_SACColor(home.Id);
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            var l_ActivityEvents = HomeDAL.GetActivityEvents_C3_SACColor(home.Id, resident.ID);
 
             List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
 
@@ -1052,9 +1101,17 @@ namespace QolaMVC.Controllers
         public JsonResult getEvents_C4_mike_SACnotColor()
         {
             var home = (HomeModel)TempData["Home"];
-            TempData.Keep("Home");
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
             ViewBag.Home = home;
-            var l_ActivityEvents = HomeDAL.GetActivityEvents_C4_SACnotColor(home.Id);
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            var l_ActivityEvents = HomeDAL.GetActivityEvents_C4_SACnotColor(home.Id, resident.ID);
 
             List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
 
@@ -1090,9 +1147,17 @@ namespace QolaMVC.Controllers
         public JsonResult getEvents_C4_mike_SACColor()
         {
             var home = (HomeModel)TempData["Home"];
-            TempData.Keep("Home");
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
             ViewBag.Home = home;
-            var l_ActivityEvents = HomeDAL.GetActivityEvents_C4_SACColor(home.Id);
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            var l_ActivityEvents = HomeDAL.GetActivityEvents_C4_SACColor(home.Id, resident.ID);
 
             List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
 
@@ -1129,28 +1194,30 @@ namespace QolaMVC.Controllers
         [HttpGet]
         public ActionResult update_day_div1_SAC(string datesel)
         {
-            var user = (UserModel)TempData["User"];
             var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
 
-            ViewBag.Message = TempData["Message"];
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            ViewBag.User = user;
-            ViewBag.Home = home;
 
             Collection<ActivityEventModel> l_Events;
 
             if (datesel == "" || datesel == null)
             {
                 TempData["datechoose"] = DateTime.Now.ToString("MMMM dd, yyyy");
-                l_Events = HomeDAL.GetActivityEvents_mike_SAC(DateTime.Today.Date, home.Id);
+                l_Events = HomeDAL.GetActivityEvents_mike_SAC(DateTime.Today.Date, home.Id, resident.ID);
                 ViewBag.Events = l_Events;
             }
             else
             {
                 TempData["datechoose"] = datesel;
-                l_Events = HomeDAL.GetActivityEvents_mike_SAC(DateTime.Parse(datesel).Date, home.Id);
+                l_Events = HomeDAL.GetActivityEvents_mike_SAC(DateTime.Parse(datesel).Date, home.Id, resident.ID);
                 ViewBag.Events = l_Events;
             }
 
@@ -1187,28 +1254,30 @@ namespace QolaMVC.Controllers
         [HttpGet]
         public ActionResult update_day_div2_SAC(string datesel)
         {
-            var user = (UserModel)TempData["User"];
             var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
 
-            ViewBag.Message = TempData["Message"];
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            ViewBag.User = user;
-            ViewBag.Home = home;
 
             Collection<ActivityEventModel_Calendar2> l_Events;
 
             if (datesel == "" || datesel == null)
             {
                 TempData["datechoose"] = DateTime.Now.ToString("MMMM dd, yyyy");
-                l_Events = HomeDAL.GetActivityEvents_Calendar2_mike_SAC(DateTime.Today.Date, home.Id);
+                l_Events = HomeDAL.GetActivityEvents_Calendar2_mike_SAC(DateTime.Today.Date, home.Id, resident.ID);
                 ViewBag.Events = l_Events;
             }
             else
             {
                 TempData["datechoose"] = datesel;
-                l_Events = HomeDAL.GetActivityEvents_Calendar2_mike_SAC(DateTime.Parse(datesel).Date, home.Id);
+                l_Events = HomeDAL.GetActivityEvents_Calendar2_mike_SAC(DateTime.Parse(datesel).Date, home.Id, resident.ID);
                 ViewBag.Events = l_Events;
             }
 
@@ -1244,28 +1313,30 @@ namespace QolaMVC.Controllers
         [HttpGet]
         public ActionResult update_day_div3_SAC(string datesel)
         {
-            var user = (UserModel)TempData["User"];
             var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
 
-            ViewBag.Message = TempData["Message"];
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            ViewBag.User = user;
-            ViewBag.Home = home;
 
             Collection<ActivityEventModel_Calendar3> l_Events;
 
             if (datesel == "" || datesel == null)
             {
                 TempData["datechoose"] = DateTime.Now.ToString("MMMM dd, yyyy");
-                l_Events = HomeDAL.GetActivityEvents_Calendar3_mike_SAC(DateTime.Today.Date, home.Id);
+                l_Events = HomeDAL.GetActivityEvents_Calendar3_mike_SAC(DateTime.Today.Date, home.Id, resident.ID);
                 ViewBag.Events = l_Events;
             }
             else
             {
                 TempData["datechoose"] = datesel;
-                l_Events = HomeDAL.GetActivityEvents_Calendar3_mike_SAC(DateTime.Parse(datesel).Date, home.Id);
+                l_Events = HomeDAL.GetActivityEvents_Calendar3_mike_SAC(DateTime.Parse(datesel).Date, home.Id, resident.ID);
                 ViewBag.Events = l_Events;
             }
 
@@ -1301,28 +1372,30 @@ namespace QolaMVC.Controllers
         [HttpGet]
         public ActionResult update_day_div4_SAC(string datesel)
         {
-            var user = (UserModel)TempData["User"];
             var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
 
-            ViewBag.Message = TempData["Message"];
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            ViewBag.User = user;
-            ViewBag.Home = home;
 
             Collection<ActivityEventModel_Calendar4> l_Events;
 
             if (datesel == "" || datesel == null)
             {
                 TempData["datechoose"] = DateTime.Now.ToString("MMMM dd, yyyy");
-                l_Events = HomeDAL.GetActivityEvents_Calendar4_mike_SAC(DateTime.Today.Date, home.Id);
+                l_Events = HomeDAL.GetActivityEvents_Calendar4_mike_SAC(DateTime.Today.Date, home.Id, resident.ID);
                 ViewBag.Events = l_Events;
             }
             else
             {
                 TempData["datechoose"] = datesel;
-                l_Events = HomeDAL.GetActivityEvents_Calendar4_mike_SAC(DateTime.Parse(datesel).Date, home.Id);
+                l_Events = HomeDAL.GetActivityEvents_Calendar4_mike_SAC(DateTime.Parse(datesel).Date, home.Id, resident.ID);
                 ViewBag.Events = l_Events;
             }
 
@@ -4688,6 +4761,9 @@ namespace QolaMVC.Controllers
                 {
                     Dining_Attendance_functions.add_progress_note(int.Parse(Save_sum_array_original[a]), DateTime.Now, "Resident "+ Save_sum_array_original[a+1]+" "+meal, user.ID, DateTime.Now);
 
+                    HomeDAL.AddPersonalCalendar(home.Id,int.Parse(Save_sum_array_original[a]), meal + " - <b>" + Save_sum_array_original[a + 1] + "</b> by Resident", user.ID);
+
+
                     if (Save_summary.ContainsKey(Save_sum_array[a + 1]) == false)
                     {
                         Save_summary.Add(Save_sum_array[a + 1], Save_sum_array[a]);
@@ -4936,6 +5012,8 @@ namespace QolaMVC.Controllers
                 for (int a = 0; a < Save_sum_array.Count(); a = a + 2)
                 {
                     Activity_Attendance_functions.add_progress_note(int.Parse(Save_sum_array_original[a]), DateTime.Now, "Resident " + Save_sum_array_original[a + 1] + " participating in " + englishname, user.ID, DateTime.Now);
+
+                    HomeDAL.AddPersonalCalendar(home.Id, int.Parse(Save_sum_array_original[a]), "<b>" + Save_sum_array_original[a + 1] + "</b> participation in <b>"+ englishname + "</br>", user.ID);
 
                     if (Save_summary.ContainsKey(Save_sum_array[a + 1]) == false)
                     {
@@ -5435,12 +5513,12 @@ namespace QolaMVC.Controllers
             ViewBag.Resident = resident;
 
             TempData["datechoose"] = DateTime.Now.ToString("MMMM dd, yyyy");
-            Collection<ActivityEventModel> l_Events = HomeDAL.GetActivityEvents_mike_SAC(DateTime.Today.Date, home.Id);
+            Collection<ActivityEventModel> l_Events = HomeDAL.GetActivityEvents_mike_SAC(DateTime.Today.Date, home.Id, resident.ID);
             ViewBag.Events = l_Events;
 
-            Collection<ActivityEventModel_Calendar2> l_Events_2 = HomeDAL.GetActivityEvents_Calendar2_mike_SAC(DateTime.Today.Date, home.Id);
-            Collection<ActivityEventModel_Calendar3> l_Events_3 = HomeDAL.GetActivityEvents_Calendar3_mike_SAC(DateTime.Today.Date, home.Id);
-            Collection<ActivityEventModel_Calendar4> l_Events_4 = HomeDAL.GetActivityEvents_Calendar4_mike_SAC(DateTime.Today.Date, home.Id);
+            Collection<ActivityEventModel_Calendar2> l_Events_2 = HomeDAL.GetActivityEvents_Calendar2_mike_SAC(DateTime.Today.Date, home.Id, resident.ID);
+            Collection<ActivityEventModel_Calendar3> l_Events_3 = HomeDAL.GetActivityEvents_Calendar3_mike_SAC(DateTime.Today.Date, home.Id, resident.ID);
+            Collection<ActivityEventModel_Calendar4> l_Events_4 = HomeDAL.GetActivityEvents_Calendar4_mike_SAC(DateTime.Today.Date, home.Id, resident.ID);
             ViewBag.Events2 = l_Events_2;
             ViewBag.Events3 = l_Events_3;
             ViewBag.Events4 = l_Events_4;
@@ -5487,6 +5565,46 @@ namespace QolaMVC.Controllers
             return View();
 
         }
+
+        public JsonResult GetPersonalCalendar()
+        {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            var resident = (ResidentModel)TempData["Resident"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            ViewBag.Resident = resident;
+
+            var l_ActivityEvents = HomeDAL.GetPersonalCalendar(home.Id,resident.ID);
+
+            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
+
+            foreach (var l_Data in l_ActivityEvents)
+            {
+                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
+                var ggend = new DateTime(l_Data.ProgramEndDate.Year, l_Data.ProgramEndDate.Month, l_Data.ProgramEndDate.Day);
+                var columns = new Dictionary<string, string>
+                {
+                    { "id", l_Data.ProgramId.ToString()},
+                    { "title", l_Data.ProgramName},
+                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
+                    { "endDate", ggend.ToString("yyyy-MM-dd")},
+                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+
+                };
+
+                l_Events.Add(columns);
+            }
+
+            return Json(l_Events, JsonRequestBehavior.AllowGet);
+        }
+
 
         #endregion
 

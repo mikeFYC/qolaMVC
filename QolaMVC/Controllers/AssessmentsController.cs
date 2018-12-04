@@ -316,7 +316,17 @@ namespace QolaMVC.Controllers
 
 
             AssessmentDAL.AddDietaryAssesment(p_Model);
-            
+
+            if (l_DietaryAssessment.Count == 0)
+            {
+                HomeDAL.AddPersonalCalendar(home.Id, resident.ID, "Dietary Initial Assessment Completed", user.ID);
+            }
+            else
+            {
+                HomeDAL.AddPersonalCalendar(home.Id, resident.ID, "Dietary Reassessment Completed", user.ID);
+            }
+
+
             return RedirectToAction("DietaryHistory");
         }
 
@@ -1782,6 +1792,8 @@ namespace QolaMVC.Controllers
 
             #endregion
 
+            var careplan = CarePlanDAL.GetResidentsPlanOfCare(resident.ID);
+
             if (p_Model.Id == 0)
             {
                 CarePlanDAL.AddCarePlan(p_Model);
@@ -1791,6 +1803,17 @@ namespace QolaMVC.Controllers
                 //CarePlanDAL.DELETE_RCA_ID(p_Model.Id);
                 CarePlanDAL.AddCarePlan(p_Model);
             }
+
+            
+            if (careplan.Count == 0)
+            {
+                HomeDAL.AddPersonalCalendar(home.Id, resident.ID, "Care Plan Initial Assessment Completed", user.ID);
+            }
+            else
+            {
+                HomeDAL.AddPersonalCalendar(home.Id, resident.ID, "Care Plan Reassessment Completed", user.ID);
+            }
+
             return RedirectToAction("CarePlan");
         }
 
@@ -1933,7 +1956,19 @@ namespace QolaMVC.Controllers
                 if (a.Value == null) { a.Value = ""; }
             }
 
+            var l_Activity = MasterDAL.GetActivityAssessments(resident.ID);
+
             MasterDAL.AddActivityAssessments(resident.ID, user.ID, p_Model);
+    
+            if (l_Activity.Count == 0)
+            {
+                HomeDAL.AddPersonalCalendar(home.Id, resident.ID, "Activity Initial Assessment Completed", user.ID);
+            }
+            else
+            {
+                HomeDAL.AddPersonalCalendar(home.Id, resident.ID, "Activity Reassessment Completed", user.ID);
+            }
+
 
             TempData.Keep("User");
             TempData.Keep("Home");
@@ -2091,7 +2126,20 @@ namespace QolaMVC.Controllers
             p_Model.ResidentId = resident.ID;
             p_Model.DateEntered = DateTime.Now;
 
+            var l_FallRisk = AssessmentDAL.GetFallRiskAssessment(resident.ID);
+
             AssessmentDAL.AddFallRiskAssessment(p_Model);
+    
+            if (l_FallRisk.Count == 0)
+            {
+                HomeDAL.AddPersonalCalendar(home.Id, resident.ID, "Fall Risk Initial Assessment Completed", user.ID);
+            }
+            else
+            {
+                HomeDAL.AddPersonalCalendar(home.Id, resident.ID, "Fall Risk Reassessment Completed", user.ID);
+            }
+
+
             return RedirectToAction("FallRisk");
         }
 

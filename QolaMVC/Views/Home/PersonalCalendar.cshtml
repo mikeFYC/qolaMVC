@@ -21,9 +21,10 @@
         }
 
         .fc-event {
-            min-height: 2.8vh !important;
-            font-size: 1vw !important;
+            /*min-height: 2.8vh !important;*/
+            font-size: 0.8em !important;
         }
+
 
         .fc-month-view span.fc-title {
             white-space: normal !important;
@@ -116,7 +117,7 @@
                         <!-- <div class="inner"> -->
                         <div class="row align-items-center">
                             <div id="ACtivityCalendarTitle" style="width:79%;">
-                                <h3>Birthday Calendar</h3>
+                                <h3>Personal Calendar</h3>
                             </div>
                             <div style="width:19%;display:inline-block;">
                                 @*<button class="btn btn-danger print" id="PrintDAY" style="">Print</button>*@
@@ -175,17 +176,17 @@
                                                     <div class="row">
                                                         <div class="col-md-12" id="display_title">
                                                             <div class="form-group row">
-                                                                <label for="" class="col-md-4 col-form-label">ACTIVITY DISPLAY TITLE<span class="required_sign">&nbsp;*</span></label>
+                                                                <label for="" class="col-md-3 col-form-label">TITLE</label>
                                                                 <div class="col-md-7">
-                                                                    <input type="text" class="form-control" id="display_title_input" name="title">
+                                                                    <label id="title_label" class="form-control"></label>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12" id="description" style="margin-top:1vw;">
                                                             <div class="form-group row">
-                                                                <label for="" class="col-md-4 col-form-label">DESCRIPTION</label>
+                                                                <label for="" class="col-md-3 col-form-label">Time</label>
                                                                 <div class="col-md-7">
-                                                                    <textarea class="textarea" id="description_textarea" rows="5" style="width:65% !important;max-width:100%;float:left;" name="description"></textarea>
+                                                                    <label id="time_label" class="form-control"></label>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -316,7 +317,7 @@
 
         $.ajax({
             type: "GET",
-            url: "/home/GetBirthdayCalendar",
+            url: "/home/GetPersonalCalendar",
             success: function (data) {
                 $.each(data, function (i, v) {
                     data.push({
@@ -325,12 +326,7 @@
                         start: v.startT,
                         end: v.endT != null ? v.endT : null,
                         startDate: v.startDate,
-                        Venue: v.Venue,
-                        Note: v.note,
-                        Category: v.Category,
-                        ActivityID: v.ActivityId,
                         startTime: v.startTime,
-                        suite: v.suite
                     });
                 })
                 GenerationCalendar(data);
@@ -347,7 +343,7 @@
             $('#calendar').fullCalendar({
                 contentHeight: 800,
                 defaultDate: new Date(),
-                timeFormat: 'h(:mm)a',
+                timeFormat: 'h:mma',
                 header: {
                     right: '',
                     center: '',
@@ -359,14 +355,16 @@
                 eventColor: 'lightgreen',
                 events: events,
                 eventRender: function (event, element) {
-                    element.find('.fc-title').prepend("<b>" + event.suite + "</b>");
+                    //element.find('.fc-title').prepend("<b>" + event.suite + "</b>");
+                    element.find('.fc-title').html(event.title);
                 },
                 eventOrder: 'suite',
                 eventClick: function (calEvent, jsEvent, view) {
                     var a = $('#AddEvent');
                     $(this).css('border-color', 'red');
                     a[0].className = "modal fade show";
-
+                    $('#title_label').html(calEvent.title);
+                    $('#time_label').html(calEvent.start.format('h:mm a'));
                 }
             })
         };
