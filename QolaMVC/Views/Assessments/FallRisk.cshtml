@@ -122,12 +122,23 @@
                         </div>
                         <div style="width:100%;">
                             <div class="" style="display:inline-block;padding:0.3vw;margin-left:1vw;border:#015093 solid 5px">
-                                <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                @{
+                                    if (Model.RiskLevel == "No Risk")
+                                    {
+                                        <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio2" value="option2" checked>
+                                    }
+                                    else
+                                    {
+                                        <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                    }
+                                }
+
+
                                 <label class="form-check-label" for="inlineRadio2" style="font-weight:bold;font-size:1.2vw;margin-top:-0.3vw;">No Risk</label>
                             </div>
                             <div class="" style="display:inline-block;margin-left:37%;padding:0.5vw 0.3vw 0 0.5vw;border:#015093 solid 5px;">
                                 <p class="TotalScore" style="display:inline-block;font-weight:bold;font-size:1.8vw;margin-bottom:8px !important;">0</p>
-                                <p class="RiskLevel" style="display:inline-block;font-weight:bold;font-size:1.2vw;margin-bottom:8px !important;">Low Risk</p>
+                                <p class="RiskLevel" style="display:inline-block;font-weight:bold;font-size:1.2vw;margin-bottom:8px !important;"></p>
                             </div>
                             <p style="color:red;display:inline-block;float:right;font-weight:bold;font-size:0.9vw;padding:0.3vw;margin-right:1vw;margin-top:0.5vw;">Score of 1-5 pts = Low risk; 6-9 pts = Medium risk; >= 10 pts = High risk.</p>
                         </div>
@@ -610,7 +621,7 @@
     <script>
 
         var total = 0;
-        var RiskValue = 'Low Risk';
+        var RiskValue = '';
 
         /* look for all checkboes that have a class 'fallRisk' attached to it and check if it was checked */
         $(".fallRisk:checked").each(function () {
@@ -642,9 +653,12 @@
             });
             $(".TotalScore").text(total);
             //Score of 0 - 5 pts = Low risk 6 - 9 pts = Medium risk >= 10 pts = High risk.
-            if (total >= 0 && total <= 5)
+            if (total > 0 && total <= 5)
             {
                 RiskValue = "Low Risk";
+            }
+            if (total == 0) {
+                RiskValue = "";
             }
             if (total >= 6 && total <= 9)
             {
