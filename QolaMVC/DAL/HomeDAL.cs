@@ -239,7 +239,7 @@ namespace QolaMVC.DAL
             SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
             try
             {
-                SqlCommand l_Cmd = new SqlCommand(Constants.StoredProcedureName.USP_REMOVE_HOME, l_Conn);
+                SqlCommand l_Cmd = new SqlCommand("Inactive_Home", l_Conn);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 l_Cmd.Parameters.AddWithValue("@id", homeId);
