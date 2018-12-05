@@ -381,6 +381,46 @@ namespace QolaMVC.Controllers
             return View(l_Users);
         }
 
+        public ActionResult Buildings(string index, string str)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            List<UserModel> l_Users;
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            if (str == null || str == "")
+            {
+                l_Users = UserDAL.GetUsersCollections(user.Home, user.UserType);
+                List<UserModel> l_UsersInactive = UserDAL.GetUsersCollections(user.Home, user.UserType, 'I');
+                ViewBag.InactiveUsers = l_UsersInactive;
+            }
+            else
+            {
+                l_Users = UserDAL.GetUsersCollections_Filter(user.Home, user.UserType, 'A', str);
+                List<UserModel> l_UsersInactive = UserDAL.GetUsersCollections_Filter(user.Home, user.UserType, 'I', str);
+                ViewBag.InactiveUsers = l_UsersInactive;
+            }
+            if (index == null || index == "")
+            {
+                TempData["start"] = "1";
+            }
+            else
+            {
+                TempData["start"] = index;
+            }
+
+
+
+            return View(l_Users);
+        }
 
 
         public ActionResult AddUser()
