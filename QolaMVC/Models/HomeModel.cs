@@ -34,6 +34,8 @@ namespace QolaMVC.Models
         public Guid GUID { get; set; }
         public string PassTimeIds { get; set; }
 
+        public string status_mike { get; set; }
+
         public HomeModel( 
                 int p_Id,
                 string p_Name,

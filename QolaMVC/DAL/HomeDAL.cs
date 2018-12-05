@@ -154,12 +154,19 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@noOfFloor", addHome.NumberOfFloors);
                 l_Cmd.Parameters.AddWithValue("@noOfSuites", addHome.NumberOfSuites);
                 l_Cmd.Parameters.AddWithValue("@iconImage", addHome.IconImage);
-                l_Cmd.Parameters.AddWithValue("@status", addHome.Status);
+                l_Cmd.Parameters.AddWithValue("@status", addHome.status_mike);
+                
+
                 l_Cmd.Parameters.AddWithValue("@createdby", addHome.ModifiedBy.ID);
                 l_Cmd.Parameters.AddWithValue("@dineTimeIds", addHome.DineTimeIds);
                 l_Cmd.Parameters.AddWithValue("@phone", addHome.Phone);
                 l_Cmd.Parameters.AddWithValue("@passTimeIds", addHome.PassTimeIds);
-                homeId = l_Cmd.ExecuteNonQuery();
+
+                l_Cmd.Parameters.Add("@id", SqlDbType.Int);
+                l_Cmd.Parameters["@id"].Direction = ParameterDirection.Output;
+                l_Cmd.ExecuteNonQuery();
+                homeId = int.Parse(l_Cmd.Parameters["@id"].Value.ToString());
+                //homeId = l_Cmd.ExecuteNonQuery();
                 if (homeId > 0)
                 {
                     //homeId = Convert.ToInt32(db.GetParameterValue(cmd, "@id"));
@@ -200,7 +207,7 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@noOfFloor", updateHome.NumberOfFloors);
                 l_Cmd.Parameters.AddWithValue("@noOfSuites", updateHome.NumberOfSuites);
                 l_Cmd.Parameters.AddWithValue("@iconImage", updateHome.IconImage);
-                l_Cmd.Parameters.AddWithValue("@status", updateHome.Status);
+                l_Cmd.Parameters.AddWithValue("@status", updateHome.status_mike);
                 l_Cmd.Parameters.AddWithValue("@createdby", updateHome.ModifiedBy.ID);
                 l_Cmd.Parameters.AddWithValue("@dineTimeIds", updateHome.DineTimeIds);
                 l_Cmd.Parameters.AddWithValue("@phone", updateHome.Phone);
@@ -254,7 +261,6 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-
 
         public static Collection<HomeModel> GetHomeCollections()
         {
@@ -311,6 +317,116 @@ namespace QolaMVC.DAL
             }
         }
 
+        public static List<HomeModel> GetHomeCollections_mike()
+        {
+            string exception = string.Empty;
+            List<HomeModel> homes = new List<HomeModel>();
+            HomeModel home;
+            ProvinceModel province;
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("Get_Home_mike", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                DataSet homesReceive = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(homesReceive);
+
+                if (homesReceive.Tables[0].Rows.Count > 0)
+                {
+                    for (int index = 0; index <= homesReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+
+                        home = new HomeModel();
+                        province = new ProvinceModel();
+                        home.Id = Convert.ToInt32(homesReceive.Tables[0].Rows[index]["fd_id"]);
+                        home.Name = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_name"]);
+                        home.Code = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_code"]);
+                        home.Address = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_address"]);
+                        home.City = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_city"]);
+                        home.NumberOfSuites = Convert.ToInt32(homesReceive.Tables[0].Rows[index]["fd_no_of_suites"]);
+                        home.Country = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_country"]);
+                        home.NumberOfFloors = Convert.ToInt32(homesReceive.Tables[0].Rows[index]["fd_no_of_floor"]);
+                        province.ID = Convert.ToInt32(homesReceive.Tables[0].Rows[index]["fd_province"]);
+                        province.Name = Convert.ToString(homesReceive.Tables[0].Rows[index]["ProvinceName"]);
+                        home.Province = province;
+                        home.PostalCode = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_postal_code"]);
+                        home.Phone = homesReceive.Tables[0].Rows[index]["fd_phone"] == DBNull.Value ? string.Empty : Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_phone"]);
+                        homes.Add(home);
+                    }
+                }
+                return homes;
+            }
+            catch (Exception ex)
+            {
+                exception = "GetHomeCollections_mike |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+        public static List<HomeModel> GetHomeCollections_mike_Filter(string str)
+        {
+            string exception = string.Empty;
+            List<HomeModel> homes = new List<HomeModel>();
+            HomeModel home;
+            ProvinceModel province;
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("Get_Home_mike_Filter", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@str", str);
+                DataSet homesReceive = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(homesReceive);
+
+                if (homesReceive.Tables[0].Rows.Count > 0)
+                {
+                    for (int index = 0; index <= homesReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+
+                        home = new HomeModel();
+                        province = new ProvinceModel();
+                        home.Id = Convert.ToInt32(homesReceive.Tables[0].Rows[index]["fd_id"]);
+                        home.Name = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_name"]);
+                        home.Code = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_code"]);
+                        home.Address = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_address"]);
+                        home.City = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_city"]);
+                        home.NumberOfSuites = Convert.ToInt32(homesReceive.Tables[0].Rows[index]["fd_no_of_suites"]);
+                        home.Country = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_country"]);
+                        home.NumberOfFloors = Convert.ToInt32(homesReceive.Tables[0].Rows[index]["fd_no_of_floor"]);
+                        province.ID = Convert.ToInt32(homesReceive.Tables[0].Rows[index]["fd_province"]);
+                        province.Name = Convert.ToString(homesReceive.Tables[0].Rows[index]["ProvinceName"]);
+                        home.Province = province;
+                        home.PostalCode = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_postal_code"]);
+                        home.Phone = homesReceive.Tables[0].Rows[index]["fd_phone"] == DBNull.Value ? string.Empty : Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_phone"]);
+                        homes.Add(home);
+                    }
+                }
+                return homes;
+            }
+            catch (Exception ex)
+            {
+                exception = "GetHomeCollections_mike_Filter |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
         public static Collection<HomeModel> GetHomeFill(int userId, int userTypeId, string flag = null)
         {
             string exception = string.Empty;
@@ -352,6 +468,7 @@ namespace QolaMVC.DAL
                         home.NumberOfSuites = Convert.ToInt32(homesReceive.Tables[0].Rows[index]["fd_Alert_Count"]);
                         home.OccupiedSuites = Convert.ToInt32(homesReceive.Tables[0].Rows[index]["fd_occupied"]);
                         home.TotalSuites = Convert.ToInt32(homesReceive.Tables[0].Rows[index]["fd_total_suite"]);
+                        home.NumberOfSuites = Convert.ToInt32(homesReceive.Tables[0].Rows[index]["fd_no_of_suites"]);
                         home.PostalCode = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_qola_resident_count"]);
                         homes.Add(home);
                     }
@@ -455,8 +572,6 @@ namespace QolaMVC.DAL
 
             return occu;
         }
-
-
 
         public static Collection<HomeModel> GetUsersHomeActive()
         {
@@ -614,7 +729,6 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-
 
         public static HomeModel ValidateHomeByUserId(int homeId, int iUserId)
         {

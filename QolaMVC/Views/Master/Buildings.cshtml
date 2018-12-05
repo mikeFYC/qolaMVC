@@ -1,4 +1,4 @@
-﻿@model List<QolaMVC.Models.UserModel>
+﻿@model List<QolaMVC.Models.HomeModel>
 
 @RenderPage("~/Views/Shared/_Header.cshtml")
 @RenderPage("~/Views/Shared/_SideBar.cshtml")
@@ -28,7 +28,7 @@
                     <!-- <div class="inner"> -->
                     <div class="row align-items-center">
                         <div class="col-md-8">
-                            <h3>User</h3>
+                            <h3>Buildings</h3>
                         </div>
                     </div>
                     <!-- </div> -->
@@ -46,32 +46,13 @@
                     <div class="card-block">
 
                         <div class="form-tabs mt-4">
-                            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" id="pills-active-tab" data-toggle="pill" href="#pills-active" role="tab" aria-controls="pills-active" aria-selected="true">Active User</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="pills-achive-tab" data-toggle="pill" href="#pills-achive" role="tab" aria-controls="pills-achive" aria-selected="false">Achive User</a>
-                                </li>
-
-                            </ul>
                             <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade show active" id="pills-active" role="tabpanel" aria-labelledby="pills-active-tab">
 
                                     <div class="row">
-                                        <div class="col-md-6 py-4 text-left">
+                                        <div class="col-md-10 py-4 text-left">
                                             <form class="form-inline">
                                                 <div class="form-group pr-1">
-                                                    @*<div class="input-group">
-                                                            <select class="form-control">
-                                                                <option>All fields</option>
-                                                                <option>First Name</option>
-                                                                <option>Last Name</option>
-                                                                <option>Suite No</option>
-                                                                <option>Emergency Contact</option>
-                                                                <option>Physician</option>
-                                                            </select>
-                                                        </div>*@
                                                     <div class="input-group">
                                                         <input type="text" class="form-control" id="exampleInputAmount1" placeholder="Search for">
                                                     </div>
@@ -79,143 +60,53 @@
                                                 <button type="button" class="btn btn-danger" onclick="search_func()">Search</button>
                                             </form>
                                         </div>
-                                        <div class="py-4"><label class="form-check-label" style="font-weight:bold;color:black;font-size:1.2vw;margin-top:10%;">Page: </label></div>
                                         <div class="col-md-2 py-4 text-right">
-
-                                            <select class="form-control" id="selectpage" onchange="formsubmit(this)">
-                                                <option value="1">1</option>
-                                                @{
-                                                    for (int gg = 2; gg <= Math.Ceiling(Decimal.Parse((Model.Count() / 50.0).ToString())); gg++)
-                                                    {
-                                                        <option value="@(gg)">@((gg).ToString())</option>
-                                                    }
-                                                }
-
-                                            </select>
-                                        </div>
-                                        <div class="col-md-3 py-4 text-right">
-                                            <a class="btn btn-lg btn-primary" href="~/Master/AddUser">Add New</a>
+                                            <a class="btn btn-lg btn-primary" href="~/Master/AddBuildings">Add New</a>
                                         </div>
                                     </div>
 
                                     <table class="table table-bordered">
                                         <thead class="bg-primary">
                                             <tr>
-                                                <th class="text-white">USER TYPE</th>
-                                                <th class="text-white">User Name</th>
-                                                <th class="text-white">First Name</th>
-                                                <th class="text-white">Last Name</th>
-                                                <th class="text-white">Home</th>
-                                                <th class="text-white">Mobile</th>
-                                                <th class="text-white">E-mail</th>
+                                                <th class="text-white">Province</th>
+                                                <th class="text-white">Name</th>
+                                                <th class="text-white">Code</th>
+                                                <th class="text-white">Address</th>
+                                                <th class="text-white">City</th>
+                                                <th class="text-white"># of Suites</th>
                                                 <th class="text-white">Edit</th>
                                                 <th class="text-white">Delete</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @{
-                                                var start = int.Parse(TempData["start"].ToString());
-                                                for (var ind = (start - 1) * 50; ind < (start) * 50; ind++)
-                                                {
-                                                    if (ind < Model.Count())
-                                                    {
-                                                        <tr>
-                                                            <td class="align-middle">@Model[ind].UserTypeName</td>
-                                                            <td class="align-middle">@Model[ind].UserName</td>
-                                                            <td class="align-middle">@Model[ind].FirstName</td>
-                                                            <td class="align-middle">@Model[ind].LastName</td>
-                                                            <td class="align-middle">@Model[ind].HomeName</td>
-                                                            <td class="align-middle">@Model[ind].Mobile</td>
-                                                            <td class="align-middle">@Model[ind].Email</td>
-                                                            <td class="align-middle">
-                                                                <button class="btn btn-default btn-xs" onclick="location.href='@Url.Action("EditUser", "Master",new { userid = Model[ind].ID  })'">
-                                                                    <i class="fa fa-pencil"></i>
-                                                                </button>
-                                                            </td>
-                                                            <td class="align-middle">
-                                                                <button class="btn btn-danger btn-xs" onclick="delete_user(@Model[ind].ID,'@Model[ind].FirstName'+' '+'@Model[ind].LastName')">
-                                                                    <i class="fa fa-trash-o"></i>
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                    }
-                                                }
-                                            }
-                                        </tbody>
-                                    </table>
-
-                                </div>
-                                <div class="tab-pane fade" id="pills-achive" role="tabpanel" aria-labelledby="pills-achive-tab">
-
-                                    <div class="row">
-                                        <div class="col-md-6 py-4 text-left">
-                                            <form class="form-inline">
-                                                <div class="form-group pr-1">
-                                                    @*<div class="input-group">
-                                                            <select class="form-control">
-                                                                <option>All fields</option>
-                                                                <option>First Name</option>
-                                                                <option>Last Name</option>
-                                                                <option>Suite No</option>
-                                                                <option>Emergency Contact</option>
-                                                                <option>Physician</option>
-                                                            </select>
-                                                        </div>*@
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" id="exampleInputAmount2" placeholder="Search for">
-                                                    </div>
-                                                </div>
-                                                <button type="button" class="btn btn-danger" onclick="search_func2()">Search</button>
-                                            </form>
-                                        </div>
-                                        <div class="col-md-6 py-4 text-right">
-                                            @*<a class="btn btn-lg btn-primary" href="#">Add New</a>*@
-                                        </div>
-                                    </div>
-                                    <table class="table table-bordered">
-                                        <thead class="bg-primary">
-                                            <tr>
-                                                <th class="text-white">USER TYPE</th>
-                                                <th class="text-white">User Name</th>
-                                                <th class="text-white">First Name</th>
-                                                <th class="text-white">Last Name</th>
-                                                <th class="text-white">Home</th>
-                                                <th class="text-white">Mobile</th>
-                                                <th class="text-white">E-mail</th>
-                                                <th class="text-white">Edit</th>
-                                                <th class="text-white">Delete</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @{
-                                                foreach (var l_User in (IEnumerable<QolaMVC.Models.UserModel>)ViewBag.InactiveUsers)
-                                                {
+                                                for (var ind = 0; ind < Model.Count(); ind++)
+                                                {     
                                                     <tr>
-                                                        <td class="align-middle">@l_User.UserTypeName</td>
-                                                        <td class="align-middle">@l_User.UserName</td>
-                                                        <td class="align-middle">@l_User.FirstName</td>
-                                                        <td class="align-middle">@l_User.LastName</td>
-                                                        <td class="align-middle">@l_User.HomeName</td>
-                                                        <td></td>
-                                                        <td></td>
+                                                        <td class="align-middle">@Model[ind].Province.Name</td>
+                                                        <td class="align-middle">@Model[ind].Name</td>
+                                                        <td class="align-middle">@Model[ind].Code</td>
+                                                        <td class="align-middle">@Model[ind].Address</td>
+                                                        <td class="align-middle">@Model[ind].City</td>
+                                                        <td class="align-middle">@Model[ind].NumberOfSuites</td>
                                                         <td class="align-middle">
-                                                            <button class="btn btn-default btn-xs" onclick="location.href='@Url.Action("EditUser", "Master",new { userid = l_User.ID  })'">
+                                                            <button class="btn btn-default btn-xs" onclick="location.href='@Url.Action("EditBuildings", "Master",new { homeid = Model[ind].Id  })'">
                                                                 <i class="fa fa-pencil"></i>
                                                             </button>
                                                         </td>
                                                         <td class="align-middle">
-                                                            <button class="btn btn-danger btn-xs" onclick="delete_user(@l_User.ID,'@l_User.FirstName'+' '+'@l_User.LastName')">
+                                                            <button class="btn btn-danger btn-xs" onclick="delete_home(@Model[ind].Id,'@Model[ind].Name')">
                                                                 <i class="fa fa-trash-o"></i>
                                                             </button>
                                                         </td>
-                                                    </tr>
+                                                    </tr>       
                                                 }
                                             }
                                         </tbody>
                                     </table>
-                                    <input type="hidden" id="startID" value="@TempData["start"]" />
 
                                 </div>
+                                
                             </div>
                         </div>
 
@@ -241,41 +132,25 @@
 
         <script>
 
-    $('#selectpage').val($('#startID').val());
+            function delete_home(ee,qq) {
+                if (confirm("Are You Sure About Delete Home: \n\n" + qq) == true) {
+                    $.get("/Master/DeleteBuildings", { homeid: ee }, function (data) {
+                        if (data == 1) {
+                            tempAlert("Home Delete", 2000);
+                            setTimeout(function () { location.reload(); }, 2000);
+                        }
+                        else {
+                            tempAlert("Home Delete Failed", 2000);
+                        }
 
+                    });
+                }
+            }
 
-    function formsubmit(ee) {
-        var index = $('#selectpage').val();
-        if (window.location.href.includes("?")) {
-            var question_location = window.location.href.indexOf('?');
-            window.location.href = window.location.href.substring(0, question_location) + '?index=' + index;
-        }
-        else {
-            window.location.href = window.location.href + "?index=" + index;
-        }
-
-    }
-
-    function delete_user(ee,qq) {
-
-        if (confirm("Are You Sure About Delete User: " + qq) == true) {
-            $.get("/Master/DeleteUser/", { userid: ee }, function () {
-                tempAlert("User Delete", 2000);
-                setTimeout(function () { location.reload(); }, 2000);
-            });
-        }
-
-
-    }
-
-    function search_func() {
-        var str = $('#exampleInputAmount1').val();
-        window.location.href = "/Master/Users?str=" + str;
-    }
-    function search_func2() {
-        var str = $('#exampleInputAmount2').val();
-        window.location.href = "/Master/Users?str=" + str;
-    }
+            function search_func() {
+                var str = $('#exampleInputAmount1').val();
+                window.location.href = "/Master/Buildings?str=" + str;
+            }
 
         </script>
 

@@ -340,6 +340,8 @@ namespace QolaMVC.Controllers
             return View();
         }
 
+        #region Users
+
         public ActionResult Users(string index,string str)
         {
             var home = (HomeModel)TempData["Home"];
@@ -381,48 +383,6 @@ namespace QolaMVC.Controllers
             return View(l_Users);
         }
 
-        public ActionResult Buildings(string index, string str)
-        {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
-            var resident = (ResidentModel)TempData["Resident"];
-            List<UserModel> l_Users;
-            ViewBag.User = user;
-            ViewBag.Resident = resident;
-            ViewBag.Home = home;
-
-
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
-
-            if (str == null || str == "")
-            {
-                l_Users = UserDAL.GetUsersCollections(user.Home, user.UserType);
-                List<UserModel> l_UsersInactive = UserDAL.GetUsersCollections(user.Home, user.UserType, 'I');
-                ViewBag.InactiveUsers = l_UsersInactive;
-            }
-            else
-            {
-                l_Users = UserDAL.GetUsersCollections_Filter(user.Home, user.UserType, 'A', str);
-                List<UserModel> l_UsersInactive = UserDAL.GetUsersCollections_Filter(user.Home, user.UserType, 'I', str);
-                ViewBag.InactiveUsers = l_UsersInactive;
-            }
-            if (index == null || index == "")
-            {
-                TempData["start"] = "1";
-            }
-            else
-            {
-                TempData["start"] = index;
-            }
-
-
-
-            return View(l_Users);
-        }
-
-
         public ActionResult AddUser()
         {
             var home = (HomeModel)TempData["Home"];
@@ -447,7 +407,6 @@ namespace QolaMVC.Controllers
 
             return View(usersample);
         }
-
 
         [HttpPost]
         public ActionResult AddUser(UserModel p_Model)
@@ -536,6 +495,173 @@ namespace QolaMVC.Controllers
             UserDAL.RemoveUsers(userid);
         }
 
+        #endregion
+
+        #region Buildings
+
+        public ActionResult Buildings(string str)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            List<HomeModel> l_Homes;
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            if (str == null || str == "")
+            {
+                l_Homes = HomeDAL.GetHomeCollections_mike();
+            }
+            else
+            {
+                l_Homes = HomeDAL.GetHomeCollections_mike_Filter(str);
+            }
+
+
+
+            return View(l_Homes);
+        }
+
+        public ActionResult AddBuildings()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            HomeModel homesample = new HomeModel();
+            homesample.Province = new ProvinceModel();
+
+            TempData["EDIT"] = "";
+
+            return View(homesample);
+        }
+
+        [HttpPost]
+        public ActionResult AddBuildings(HomeModel p_Model)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            foreach (PropertyInfo prop in typeof(HomeModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_Model) == null) { prop.SetValue(p_Model, ""); }
+                }
+            }
+
+
+
+            if (p_Model.Id == 0)
+            {
+                p_Model.status_mike = "A";
+                p_Model.ModifiedBy = user;
+                int identity = HomeDAL.AddNewHome(p_Model);
+
+
+                HttpPostedFileBase file = Request.Files[0];
+                int fileSize = file.ContentLength;
+                string fileName = file.FileName;
+                string mimeType = file.ContentType;
+                System.IO.Stream fileContent = file.InputStream;
+                file.SaveAs(Server.MapPath("~/Content/assets/Images/home_ico/") + identity.ToString() + ".png");
+                p_Model.IconImage = "images/home_ico/" + identity.ToString() + ".PNG";
+                p_Model.Id = identity;
+                HomeDAL.UpdateHome(p_Model);
+
+            }
+            else if (p_Model.Id > 0)
+            {
+                if (Request.Files.Count >= 1)
+                {
+                    HttpPostedFileBase file = Request.Files[0];
+                    if (file.ContentLength>0)
+                    {
+                        int fileSize = file.ContentLength;
+                        string fileName = file.FileName;
+                        string mimeType = file.ContentType;
+                        System.IO.Stream fileContent = file.InputStream;
+                        file.SaveAs(Server.MapPath("~/Content/assets/Images/home_ico/") + p_Model.Id.ToString() + ".png");
+                    }            
+                }
+                p_Model.status_mike = "A";
+                p_Model.ModifiedBy = user;
+                if (HomeDAL.UpdateHome(p_Model) == false)
+                {
+                    TempData["EDIT"] = "true";
+                    return View("AddBuildings", p_Model);
+                }
+            }
+
+            return RedirectToAction("Buildings");
+        }
+
+        public ActionResult EditBuildings(int homeid)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            TempData["EDIT"] = "true";
+            HomeModel usersample = HomeDAL.GetHomeById(homeid);
+            return View("AddBuildings", usersample);
+        }
+
+        [HttpGet]
+        public int DeleteBuildings(int homeid)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            if (HomeDAL.RemoveHome(homeid) == true)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+
+        #endregion
+
+
 
         public ActionResult ChangePassword()
         {
@@ -551,7 +677,6 @@ namespace QolaMVC.Controllers
             //UserDAL.ResetPassword();
             return View();
         }
-
 
         public int ChangePassword_Save(string userid,string old,string new1,string new2)
         {

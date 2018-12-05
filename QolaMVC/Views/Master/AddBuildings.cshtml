@@ -1,0 +1,330 @@
+﻿@model QolaMVC.Models.HomeModel
+
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+
+<style>
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+
+    .required_sign {
+        color: red;
+    }
+</style>
+
+
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+
+    <!-- START PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+                        <div class="col-md-10">
+                            @{
+                                if (@TempData["EDIT"].ToString() == "true")
+                                {
+                                    <h3>Edit Building</h3>
+                                }
+                                else
+                                {
+                                    <h3>Add Building</h3>
+                                }
+                            }
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-primary" onclick="location.href='@Url.Action("Buildings", "Master")'">Back</button>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+
+            <div style="height: 60px;"></div>
+
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+
+
+                <div class="card">
+                    <div class="card-block">
+
+                        <div class="row">
+                            <div class="col-md-8 offset-md-2">
+                                <form action="~/Master/AddBuildings" method="post" enctype="multipart/form-data">
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="" class="col-form-label">Name<span class="required_sign">&nbsp;*</span></label>
+                                                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="" class="col-form-label">Code<span class="required_sign">&nbsp;*</span></label>
+                                                @Html.TextBoxFor(m => m.Code, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="" class="col-form-label">Address<span class="required_sign">&nbsp;*</span></label>
+                                                @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="" class="col-form-label">City<span class="required_sign">&nbsp;*</span></label>
+                                                @Html.TextBoxFor(m => m.City, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="" class="col-form-label">Province<span class="required_sign">&nbsp;*</span></label>
+                                                <select class="form-control" name="Province.ID">
+                                                    <option value="0">-- Select Province --</option>
+                                                    <option value="1">Alberta</option>
+                                                    <option value="2">British Columbia</option>
+                                                    <option value="3">Manitoba</option>
+                                                    <option value="4">New Brunswick</option>
+                                                    <option value="5">Newfoundland and Labrador</option>
+                                                    <option value="6">Northwest Territories</option>
+                                                    <option value="7">Nova Scotia</option>
+                                                    <option value="8">Nunavut</option>
+                                                    <option value="9">Ontario</option>
+                                                    <option value="10">Prince Edward Island</option>
+                                                    <option value="11">Saskatchewan</option>
+                                                    <option value="12">Yukon</option>
+                                                    <option value="13">Quebec</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="" class="col-form-label">Postal Code<span class="required_sign">&nbsp;*</span></label>
+                                                @Html.TextBoxFor(m => m.PostalCode, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="" class="col-form-label">Country<span class="required_sign">&nbsp;*</span></label>
+                                                @Html.TextBoxFor(m => m.Country, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="" class="col-form-label">Phone<span class="required_sign">&nbsp;*</span></label>
+                                                @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="" class="col-form-label">No. of Suites<span class="required_sign">&nbsp;*</span></label>
+                                                @Html.TextBoxFor(m => m.NumberOfSuites, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="" class="col-form-label">No. of Floor<span class="required_sign">&nbsp;*</span></label>
+                                                @Html.TextBoxFor(m => m.NumberOfFloors, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="" class="col-form-label">Home Image<span class="required_sign">&nbsp;*</span></label>
+                                                <input type="file" id="FileUpload" name="FileUpload" />
+                                                <br>
+                                                <img id="image" src="/Content/assets/@Model.IconImage" class="img-responsive" style="height:7em;width:10em;">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="" class="col-form-label">Dine Time</label>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" id="Breakfast" type="checkbox">
+                                                    <label class="form-check-label">Breakfast</label>
+                                                    <input class="form-check-input" id="Lunch" type="checkbox">
+                                                    <label class="form-check-label">Lunch</label>
+                                                    <input class="form-check-input" id="Dinner" type="checkbox">
+                                                    <label class="form-check-label">Dinner</label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-8"></div>
+                                        <div class="col-md-2">
+                                            @{
+                                                if (TempData["EDIT"].ToString() == "true")
+                                                {
+                                                    <input type="submit" value="Update" class="btn btn-danger btn-lg" />
+                                                }
+                                                else
+                                                {
+                                                    <input type="submit" value="SAVE" class="btn btn-danger btn-lg" />
+                                                }
+                                            }
+                                            @*<input type="reset" value="CLEAR" class="btn btn-danger btn-lg" />*@
+
+                                        </div>
+                                    </div>
+                                    <input type="hidden" id="model_province" value="@Model.Province.ID" />
+                                    <input type="hidden" name="ID" id="model_id" value="@Model.Id" />
+                                    <input type="hidden" name="ID" id="model_dineTime" value="@Model.DineTimeIds" />
+                                    <input type="hidden" id="EDIT_INDEX" value="@TempData["EDIT"]" />
+                                    <input type="hidden" id="imag" value="@Model.IconImage" name="IconImage" />
+                                    <input type="hidden" id="DineTimeIds" value="@Model.DineTimeIds" name="DineTimeIds" />
+                                    
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!-- END PLACE PAGE CONTENT HERE -->
+            </div>
+            <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+        @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+        <script>
+
+            var province = $('#model_province').val();
+            var choose = $('select[name="Province.ID"] option[value="' + province + '"]')
+            if (choose[0] != undefined) {
+                choose[0].selected = true;
+            }
+            var DineTimeIds = $('#DineTimeIds').val().split(',');
+            for (var a = 0; a < DineTimeIds.length; a++) {
+                if (DineTimeIds[a].trim() != "") {
+                    var b = $('input[type="checkbox"]');
+                    b[parseInt(DineTimeIds[a])-1].checked = true;
+                }
+            }
+
+
+            $('form').submit(function (event) {
+                if (check_Alert() == true) {
+                    var str = "";
+                    var b = $('input[type="checkbox"]');
+                    for (var a = 0; a < b.length; a++) {
+                        if (b[a].checked == true) {
+                            str = str + (a + 1).toString() + ",";
+                        }
+                    }
+                    $('#DineTimeIds').val(str);
+
+
+                    form = this;
+                    form.submit();
+                }
+                else {
+                    check_Alert();
+                    return false;
+                }
+            });
+
+            $(function () {
+                $('#FileUpload').change(function () {
+                    var input = this;
+                    var url = $(this).val();
+                    var ext = url.substring(url.lastIndexOf('.') + 1).toLowerCase();
+                    if (input.files && input.files[0] && (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg")) {
+                        var reader = new FileReader();
+
+                        reader.onload = function (e) {
+                            $('#image').attr('src', e.target.result);
+                        }
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                });
+            });
+
+
+            function check_Alert() {
+
+                var index = $('#EDIT_INDEX').val();
+
+                if ($('input[name="Name"]').val().trim() == "") {
+                    tempAlert("Mandatory Needed", 2000);
+                    return false;
+                }
+                else if ($('input[name="Code"]').val().trim() == "") {
+                    tempAlert("Mandatory Needed", 2000);
+                    return false;
+                }
+                else if ($('input[name="Address"]').val().trim() == "") {
+                    tempAlert("Mandatory Needed", 2000);
+                    return false;
+                }
+                else if ($('input[name="City"]').val().trim() == "") {
+                    tempAlert("Mandatory Needed", 2000);
+                    return false;
+                }
+                else if ($('select[name="Province.ID"]').val() == "0") {
+                    tempAlert("Mandatory Needed", 2000);
+                    return false;
+                }
+                else if ($('input[name="PostalCode"]').val().trim() == "") {
+                    tempAlert("Mandatory Needed", 2000);
+                    return false;
+                }
+                else if ($('input[name="Country"]').val().trim() == "") {
+                    tempAlert("Mandatory Needed", 2000);
+                    return false;
+                }
+                else if ($('input[name="Phone"]').val().trim() == "") {
+                    tempAlert("Mandatory Needed", 2000);
+                    return false;
+                }
+                else if ($('input[name="NumberOfSuites"]').val().trim() == "0" || $.isNumeric($('input[name="NumberOfSuites"]').val())==false) {
+                    tempAlert("NumberOfSuites Error", 2000);
+                    return false;
+                }
+                else if ($('input[name="NumberOfFloors"]').val().trim() == "0" || $.isNumeric($('input[name="NumberOfFloors"]').val()) == false) {
+                    tempAlert("NumberOfFloors Error", 2000);
+                    return false;
+                }
+                else if ($('input[type="file"]').val() == "" && index!="true") {
+                    tempAlert("Image Needed", 2000);
+                    return false;
+                }
+
+
+                else {
+                    return true;
+                }
+            }
+
+
+
+
+
+        </script>

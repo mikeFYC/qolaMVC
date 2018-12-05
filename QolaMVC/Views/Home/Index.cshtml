@@ -216,9 +216,16 @@
                                                         <strong style="font-size:1.2vw;">
                                                             @{
                                                                 var home_Syllables = home.Name.Split(' ');
-
+                                                                if (home_Syllables.Count() == 1)
+                                                                {
+                                                                    @home_Syllables[0]
+                                                                }
+                                                                else
+                                                                {
+                                                                    @home_Syllables[0] @home_Syllables[1]
+                                                                }
                                                             }
-                                                            @home_Syllables[0] @home_Syllables[1]
+
                                                         </strong>
                                                     </p>
                                                     <p class="no-margin hint-text">
@@ -240,13 +247,33 @@
 
                                             </div>
                                             <div class="list-inline pull-right no-margin" style="position:relative;width:4vw;height:4vw;">
-                                                <div class="badge badge-danger fs-10" style="position:absolute;top:0.3vh;left:1.7vw;opacity:0.8;">@home.OccupiedSuites/@home.TotalSuites</div>
+                                                @{
+                                                    if (home.TotalSuites == 0)
+                                                    {
+                                                    <div class="badge badge-danger fs-10" style="position:absolute;top:0.3vh;left:1.7vw;opacity:0.8;">@home.OccupiedSuites/@home.NumberOfSuites</div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="badge badge-danger fs-10" style="position:absolute;top:0.3vh;left:1.7vw;opacity:0.8;">@home.OccupiedSuites/@home.TotalSuites</div>
+                                                    }
+                                                }
+                                                
                                                 @*<div class="label label-default label-arrow label-arrow-left banner-right">left arrow</div>
-                                                    <div class="label label-danger label-arrow label-arrow-left">left arrow</div>*@
+        <div class="label label-danger label-arrow label-arrow-left">left arrow</div>*@
                                                 <div class="before">
                                                     <img class="colour_arrow_class" style="width:100%;height:100%;" />
                                                     <div style="position:absolute;top:30%;left:30%;">
-                                                        <p class="occupy_percentage">@(home.OccupiedSuites * 100 / home.TotalSuites)%</p>
+                                                        @{
+                                                            if (home.TotalSuites == 0)
+                                                            {
+                                                                <p class="occupy_percentage">@(home.OccupiedSuites * 100 / home.NumberOfSuites)%</p>
+                                                            }
+                                                            else
+                                                            {
+                                                                <p class="occupy_percentage">@(home.OccupiedSuites * 100 / home.TotalSuites)%</p>
+                                                            }
+                                                        }
+
                                                     </div>
                                                 </div>
                                             </div>
