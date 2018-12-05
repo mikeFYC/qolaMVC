@@ -161,7 +161,7 @@ namespace QolaMVC.Controllers
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
             var resident = (ResidentModel)TempData["Resident"];
-
+             
             ViewBag.User = user;
             ViewBag.Resident = resident;
             ViewBag.Home = home;
