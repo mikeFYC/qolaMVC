@@ -320,7 +320,7 @@ namespace QolaMVC.Controllers
                 throw;
             }
         }
-
+         
         public ActionResult AddActivity()
         {
             var home = (HomeModel)TempData["Home"];
