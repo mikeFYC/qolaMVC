@@ -18,6 +18,9 @@ using System.Data;
 using System.Collections;
 using System.Text;
 using System.Reflection;
+using SamDoc = Xceed.Words.NET;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace QolaMVC.Controllers
 {
@@ -26,6 +29,385 @@ namespace QolaMVC.Controllers
         private string _colorCode = "W";
         private string _mobiltySelectedValue = string.Empty;
         private string _previousValue = string.Empty;
+
+        public void CreateDocMonth()
+        {
+            int homeId = 0;
+            try
+            {
+                if (Int32.TryParse(Session["HomeID"].ToString(), out homeId) == true)
+                {
+                    DateTime CurDate = stringToDateFormat("hdnDateVal.Value");
+                    DateTime fromDate = new DateTime(CurDate.Year, CurDate.Month, 01);
+                    DateTime toDate = new DateTime(CurDate.Year, CurDate.Month, DateTime.DaysInMonth(CurDate.Year, CurDate.Month));
+                    //int intCategoryId = Convert.ToInt32("ddl_m_Category.SelectedValue");
+                    //int intActivityId = Convert.ToInt32("ddl_m_Activity.SelectedValue");
+                    //int iCalendarType = Convert.ToInt32("hdnCalendarType.Value");
+                    DateTime tmpDate;
+                    int[,] MonthCalendar = new int[6, 7];
+                    int Week = 0;
+                    int maxCellheight;
+                    int[] cellHeight = new int[3] { 119, 143, 179 };
+                    string days = string.Empty;
+                    int date = 0;
+                    for (date = 1; date <= DateTime.DaysInMonth(CurDate.Year, CurDate.Month); date++)
+                    {
+                        tmpDate = new DateTime(CurDate.Year, CurDate.Month, date);
+
+                        if (days == "Saturday")
+                            Week += 1;
+
+                        days = tmpDate.DayOfWeek.ToString();
+
+                        if (days == "Sunday")
+                            MonthCalendar[Week, 0] = date;
+                        else if (days == "Monday")
+                            MonthCalendar[Week, 1] = date;
+                        else if (days == "Tuesday")
+                            MonthCalendar[Week, 2] = date;
+                        else if (days == "Wednesday")
+                            MonthCalendar[Week, 3] = date;
+                        else if (days == "Thursday")
+                            MonthCalendar[Week, 4] = date;
+                        else if (days == "Friday")
+                            MonthCalendar[Week, 5] = date;
+                        else if (days == "Saturday")
+                            MonthCalendar[Week, 6] = date;
+                    }
+
+                    if (MonthCalendar[5, 0] > 0)
+                    {
+                        maxCellheight = cellHeight[0];
+                    }
+                    else if (MonthCalendar[4, 0] > 0)
+                    {
+                        maxCellheight = cellHeight[1];
+                    }
+                    else if (MonthCalendar[3, 0] > 0)
+                    {
+                        maxCellheight = cellHeight[2];
+                    }
+                    else
+                    {
+                        maxCellheight = cellHeight[0];
+                    }
+                    
+                    //DataTable dtActivityCalendar = HomeDAL.GetActivityCalendar(homeId, intCategoryId, intActivityId, fromDate, toDate, iCalendarType);
+                    DataTable dtActivityCalendar = new DataTable();
+                    DataRow[] drEachDate;
+                    string strActivityEventDate = string.Empty, strDynamTime = string.Empty, strVenue = string.Empty, clsName = string.Empty;
+                    DateTime dtActivityEventDate;
+                    int intDynamicColsPan = 0, intDynamicColsPanTop = 0;
+
+                    using (SamDoc.DocX document = SamDoc.DocX.Load(Server.MapPath("/CalendarTheme/Html/ActivityCalendarMonth.docx")))
+                    {
+
+                        //Table
+                        var table = document.Tables.FirstOrDefault();
+                        if (table != null)
+                        {
+                            table.Rows[0].Cells[0].ReplaceText("[%Day1%]", "Sunday");
+                            table.Rows[0].Cells[1].ReplaceText("[%Day2%]", "Monday");
+                            table.Rows[0].Cells[2].ReplaceText("[%Day3%]", "Tuesday");
+                            table.Rows[0].Cells[3].ReplaceText("[%Day4%]", "Wednesday");
+                            table.Rows[0].Cells[4].ReplaceText("[%Day5%]", "Thursday");
+                            table.Rows[0].Cells[5].ReplaceText("[%Day6%]", "Friday");
+                            table.Rows[0].Cells[6].ReplaceText("[%Day7%]", "Saturday");
+
+                            if (table.RowCount > 1)
+                            {
+                                for (int i = 0; i < 6; i++)
+                                {
+                                    for (int j = 0; j < 7; j++)
+                                    {
+                                        if (MonthCalendar[i, j] > 0)
+                                        {
+                                            table.Rows[(i + 1)].MinHeight = maxCellheight;
+                                            table.Rows[(i + 1)].Cells[j].Paragraphs[0].Append(MonthCalendar[i, j].ToString()).FontSize(9).Bold().Alignment = SamDoc.Alignment.right;
+                                            table.Rows[(i + 1)].Cells[j].Paragraphs[0].LineSpacingAfter = 0.5f;
+                                            //table.Rows[(i + 1)].Cells[j].Paragraphs.LastOrDefault().Alignment = SamDoc.Alignment.left;
+
+                                            strActivityEventDate = ProperDateFormat(MonthCalendar[i, j], CurDate.Month, CurDate.Year);
+                                            dtActivityEventDate = stringToDateFormat(strActivityEventDate);
+                                            strActivityEventDate = dateToUSDateStringFormat(dtActivityEventDate);
+                                            if (dtActivityCalendar != null && dtActivityCalendar.Rows.Count > 0)
+                                            {
+                                                drEachDate = dtActivityCalendar.Select("fd_activity_event_date ='" + strActivityEventDate + "' ");
+                                                if (drEachDate.Length > 0)
+                                                {
+                                                    for (int index = 0; index <= drEachDate.Length - 1; index++)
+                                                    {
+                                                        string temSignUPVal = drEachDate[index]["fd_sign_up"].ToString();
+                                                        if (temSignUPVal == "A")
+                                                        {
+                                                            clsName = "activitySignUP";
+                                                        }
+                                                        else
+                                                        {
+                                                            clsName = "";
+                                                        }
+                                                        if (drEachDate[index]["fd_activity_category_id"].ToString() == "1" && drEachDate[index]["fd_activity_event_time"].ToString() == "12:00AM")
+                                                        {
+                                                            strDynamTime = "ALL DAY";
+                                                        }
+                                                        else
+                                                        {
+                                                            strDynamTime = (CultureInfo.CurrentCulture.Name == "fr-BE" ? drEachDate[index]["fd_activity_event_time_fr"] : Regex.Replace(drEachDate[index]["fd_activity_event_time"].ToString(), "[^0-9:]", "").TrimStart('0')).ToString();
+                                                        }
+
+                                                        if (drEachDate[index]["fd_venue_short_name"].ToString() == "")
+                                                        {
+                                                            strVenue = "";
+                                                        }
+                                                        else
+                                                        {
+                                                            strVenue = "- " + drEachDate[index]["fd_venue_short_name"];
+                                                        }
+                                                        string phrActAndNotes = strDynamTime + "- " + (CultureInfo.CurrentCulture.Name == "fr-BE" ? drEachDate[index]["fd_activity_name_fr"].ToString() : drEachDate[index]["fd_activity_name"].ToString()) + " " + drEachDate[index]["fd_note"].ToString() + strVenue;
+                                                        table.Rows[(i + 1)].Cells[j].InsertParagraph(phrActAndNotes).FontSize(9);
+                                                        table.Rows[(i + 1)].Cells[j].Paragraphs.LastOrDefault().LineSpacingAfter = 0.5f;
+                                                        table.Rows[(i + 1)].Cells[j].Paragraphs.LastOrDefault().Alignment = SamDoc.Alignment.left;
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                }
+
+                                if (MonthCalendar[5, 0] == 0)
+                                    table.Rows[6].Remove();
+
+                                for (int i = 0; i < 6; i++)
+                                {
+                                    for (int j = 0; j < 7; j++)
+                                    {
+                                        if (MonthCalendar[i, j] > 0)
+                                        {
+                                            if (intDynamicColsPan != 0)
+                                            {
+                                                string sTopImg = string.Empty;
+
+                                                if (CultureInfo.CurrentCulture.Name == "fr-BE")
+                                                {
+                                                    sTopImg = Server.MapPath(".") + "/CalendarTheme/Images/MonthlyActivity/" + "hdnThemeValue.Value.ToString()" + "_" + intDynamicColsPan + "_Fr" + ".jpg";
+                                                }
+                                                else
+                                                {
+                                                    sTopImg = Server.MapPath(".") + "/CalendarTheme/Images/MonthlyActivity/" + "hdnThemeValue.Value.ToString()" + "_" + intDynamicColsPan + ".jpg";
+                                                }
+                                                if (System.IO.File.Exists(sTopImg))
+                                                {
+                                                    table.Rows[(i + 1)].Cells[0].RemoveParagraphAt(0);
+                                                    if (intDynamicColsPan > 1)
+                                                        table.Rows[(i + 1)].MergeCells(0, (intDynamicColsPan - 1));
+                                                    int width = (Convert.ToInt32(table.Rows[(i + 1)].Cells[0].Width) + 54) * intDynamicColsPan;
+
+                                                    var image = document.AddImage(sTopImg);
+                                                    var picture = image.CreatePicture(maxCellheight, width);
+                                                    table.Rows[(i + 1)].Cells[0].MarginLeft = 0;
+                                                    if (table.Rows[(i + 1)].Cells[0].Paragraphs.Count == 0)
+                                                        table.Rows[(i + 1)].Cells[0].InsertParagraph("");
+                                                    table.Rows[(i + 1)].Cells[0].Paragraphs[0].AppendPicture(picture);
+                                                    intDynamicColsPanTop = intDynamicColsPan;
+                                                }
+                                            }
+                                            intDynamicColsPan = 0;
+                                        }
+                                        else
+                                        {
+                                            intDynamicColsPan++;
+                                        }
+                                    }
+
+                                    if (intDynamicColsPan != 0 && intDynamicColsPan < 7)
+                                    {
+                                        string sBtmImg = string.Empty;
+                                        sBtmImg = Server.MapPath(".") + "/CalendarTheme/Images/MonthlyActivity/";
+
+                                        if (CultureInfo.CurrentCulture.Name == "fr-BE")
+                                        {
+                                            sBtmImg = intDynamicColsPan != intDynamicColsPanTop ? sBtmImg + "hdnThemeValue.Value.ToString()" + "_" + intDynamicColsPan + "_Fr" + ".jpg" : sBtmImg + "default_" + intDynamicColsPan + ".jpg";
+                                        }
+                                        else
+                                        {
+                                            sBtmImg = intDynamicColsPan != intDynamicColsPanTop ? sBtmImg + "hdnThemeValue.Value.ToString()" + "_" + intDynamicColsPan + ".jpg" : sBtmImg + "default_" + intDynamicColsPan + ".jpg";
+                                        }
+
+                                        if (System.IO.File.Exists(sBtmImg))
+                                        {
+                                            int CellStartPoint = table.Rows[table.RowCount - 1].Cells.Count - intDynamicColsPan;
+                                            table.Rows[table.RowCount - 1].Cells[CellStartPoint].RemoveParagraphAt(0);
+
+
+                                            table.Rows[table.RowCount - 1].MergeCells(CellStartPoint, CellStartPoint + (intDynamicColsPan - 1));
+                                            int width = (Convert.ToInt32(table.Rows[table.RowCount - 1].Cells[CellStartPoint].Width) + 54) * intDynamicColsPan;
+
+                                            var image = document.AddImage(sBtmImg);
+                                            var picture = image.CreatePicture(maxCellheight, width);
+                                            table.Rows[table.RowCount - 1].Cells[CellStartPoint].MarginLeft = 0;
+
+                                            table.Rows[table.RowCount - 1].Cells[CellStartPoint].Paragraphs[0].AppendPicture(picture);
+                                            intDynamicColsPanTop = intDynamicColsPan;
+                                        }
+                                    }
+                                }
+
+                                HomeModel home = new HomeModel();
+                                home = HomeDAL.GetHomeById(homeId);
+
+                                SamDoc.Footer footer = document.Footers.Odd;
+                                footer.ReplaceText("[#CalendarName#]", "HeaderName.Value.Trim().ToString()");
+                                footer.ReplaceText("[#HomeDescription#]",
+                                  home.Name + (home.Phone != "" ? "  Ph. " + String.Format("{0:(###) ###-####}", Convert.ToInt64(home.Phone)) : "  Ph. " + "")
+                                  );
+
+                                string reportName = RemoveSpecialCharacter(home.Name) + RemoveSpecialCharacter("HeaderName.Value.ToString()") + fromDate.ToString("MMM") + ".docx";
+                                document.SaveAs(Server.MapPath("/CalendarTheme/Html/") + reportName);
+
+                                Response.ContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+                                Response.AppendHeader("Content-Disposition", "attachment; filename=" + reportName);
+                                Response.WriteFile(Server.MapPath("/CalendarTheme/Html/") + reportName);
+                                Response.Flush();
+
+                                if (System.IO.File.Exists(Server.MapPath("/CalendarTheme/Html/") + reportName))
+                                {
+                                    System.IO.File.Delete(Server.MapPath("/CalendarTheme/Html/") + reportName);
+                                }
+
+
+                                //MemoryStream ms = new MemoryStream();
+                                //document.SaveAs(ms);
+                                //Response.Clear();
+                                //Response.AddHeader("Content-disposition", "attachment; filename=\"" + reportName + ".docx");
+                                //Response.ContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+                                //Response.BinaryWrite(ms.ToArray());
+                                //Response.Flush();
+                                //Response.Close();
+                                System.Web.HttpContext.Current.ApplicationInstance.CompleteRequest();
+
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                string exception = "ActivityCalendar CreateDocMonth |" + Ex.Message.ToString();
+                //Log.Write(exception);
+                Response.Redirect("ErrorPage.aspx", false);
+            }
+        }
+        public string ProperDateFormat(int d, int m, int y)
+        {
+            string strDay = string.Empty, strMonth = string.Empty;
+            string[] months = new string[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+            if (d < 10)
+                strDay = "0" + d;
+            else
+                strDay = d.ToString();
+
+            if (m < 10)
+                strMonth = "0" + m;
+            else
+                strMonth = m.ToString();
+
+            return strMonth + "/" + strDay + "/" + y.ToString();
+
+        }
+        public DateTime stringToDateFormat(string sDate)
+        {
+            DateTime convertedDate = new DateTime();
+            string exception = string.Empty;
+            try
+            {
+                convertedDate = DateTime.ParseExact(sDate, dateFormats, new CultureInfo("en-US"), DateTimeStyles.None);
+            }
+            catch (Exception ex)
+            {
+                exception = "QolaCulture | stringToDateFormat " + ex.ToString();
+                //Log.Write(exception);
+                Response.Redirect("ErrorPage.aspx", true);
+            }
+            return convertedDate;
+        }
+        public DateTime stringToDateFormat(string sDate, string sDateFormat)
+        {
+            DateTime convertedDate = new DateTime();
+            string exception = string.Empty;
+            try
+            {
+                convertedDate = DateTime.ParseExact(sDate, sDateFormat, new CultureInfo("en-US"), DateTimeStyles.None);
+            }
+            catch (Exception ex)
+            {
+                exception = "QolaCulture | stringToDateFormat " + ex.ToString();
+                //Log.Write(exception);
+                Response.Redirect("ErrorPage.aspx", true);
+            }
+            return convertedDate;
+        }
+        public static string[] dateFormats = { "MM/dd/yyyy hh:mm:ss", "MM/dd/yyyy hh:mm", "MM/dd/yyyy hh:mm:ss tt", "MM/dd/yyyy HH:mm:ss tt", "MM/dd/yyyy HH:mm:ss", "MM/dd/yyyy", "MM-dd-yyyy", "MM/dd/yyyy H:mm:ss tt", "MM/dd/yyyy h:mm:ss tt" };
+        public static string[] timeFormats = { "hh:mm:ss", "hh:mm tt", "hh tt", "hh:mm", "HH:mm:ss tt", "HH:mm:ss", "HH:mm" };
+        public string dateToUSDateStringFormat(DateTime dtDays)
+        {
+            string result = string.Empty;
+            string exception = string.Empty;
+            try
+            {
+                DateTimeFormatInfo usDTFI = new CultureInfo("en-US", false).DateTimeFormat;
+                result = dtDays.ToString("MM/dd/yyyy", usDTFI);
+            }
+            catch (Exception ex)
+            {
+                exception = "QolaCulture | dateToUSDateStringFormate" + ex.ToString();
+                //Log.Write(exception);
+                Response.Redirect("ErrorPage.aspx", true);
+            }
+            return result;
+        }
+        public string dateToUSDateStringFormat(DateTime dtDays, string sDateFormat)
+        {
+            string result = string.Empty;
+            string exception = string.Empty;
+            try
+            {
+                DateTimeFormatInfo usDTFI = new CultureInfo("en-US", false).DateTimeFormat;
+                result = dtDays.ToString(sDateFormat, usDTFI);
+            }
+            catch (Exception ex)
+            {
+                exception = "QolaCulture | dateToUSDateStringFormate" + ex.ToString();
+                //Log.Write(exception);
+                Response.Redirect("ErrorPage.aspx", true);
+            }
+            return result;
+        }
+        public string dateToUSTimeStringFormat(DateTime dtDate, string stimeFormat)
+        {
+            string result = string.Empty;
+            string exception = string.Empty;
+            try
+            {
+                DateTimeFormatInfo usDTFI = new CultureInfo("en-US", false).DateTimeFormat;
+                result = dtDate.ToString(stimeFormat, usDTFI);
+            }
+            catch (Exception ex)
+            {
+                exception = "QolaCulture | dateToUSTimeStringFormate" + ex.ToString();
+                //Log.Write(exception);
+                Response.Redirect("ErrorPage.aspx", true);
+            }
+            return result;
+        }
+        private string RemoveSpecialCharacter(string residentName)
+        {
+            Regex rgx = new Regex("[^a-zA-Z]");
+            residentName = rgx.Replace(residentName, "");
+            return residentName;
+        }
+
+
 
         public ActionResult Index()
         {

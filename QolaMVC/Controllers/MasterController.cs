@@ -648,7 +648,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            if (HomeDAL.RemoveHome(homeid) == true)
+            if (HomeDAL.RemoveHome_InactiveforNow(homeid) == true)
             {
                 return 1;
             }

@@ -6,6 +6,10 @@
 
 <head>
     <style>
+        body {
+            -webkit-print-color-adjust: exact;
+        }
+
         .fc-event-container:hover {
             cursor: pointer;
         }
@@ -56,16 +60,90 @@
             color: black;
         }
 
-        #calendar1_name, #calendar2_name, #calendar3_name, #calendar4_name{
-            margin-bottom:0px !important;
-            font-weight:bold;
+        #calendar1_name, #calendar2_name, #calendar3_name, #calendar4_name {
+            margin-bottom: 0px !important;
+            font-weight: bold;
             font-size: 1.2em !important;
         }
 
-
-
     </style>
+    <script>
+        function exportWord() {
+            var data = JSON.stringify({
+                "input": [
+                    {
+                        "type": "remote",
+                        "source": "https://static.online-convert.com/example-file/raster%20image/jpg/example_small.jpg"
+                    }
+                ],
+                "conversion": [
+                    {
+                        "target": "pdf"
+                    }
+                ]
+            });
 
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+
+            xhr.addEventListener("readystatechange", function () {
+                if (this.readyState === 4) {
+                    var jsondata = JSON.parse(this.responseText.toString());
+                    //console.log(this.responseText);
+
+
+                    setTimeout(function () {
+                        var settings = {
+                            "async": true,
+                            "crossDomain": true,
+                            "url": "https://api2.online-convert.com/jobs/" + jsondata.id,
+                            "method": "GET",
+                            "headers": {
+                                "x-oc-api-key": "f743149df723d0981b2e0fc6a949603f",
+                                "cache-control": "no-cache",
+                                "Postman-Token": "176fe5f2-1c8b-4edb-b9ff-3c95e3351f33"
+                            }
+                        }
+
+                        $.ajax(settings).done(function (response) {
+                            console.log(response);
+                            alert(response.output[0].uri)
+                        });
+                    }, 5000);
+
+                }
+            });
+
+            xhr.open("POST", "https://api2.online-convert.com/jobs");
+            xhr.setRequestHeader("x-oc-api-key", "f743149df723d0981b2e0fc6a949603f");
+            xhr.setRequestHeader("content-type", "application/json");
+            xhr.setRequestHeader("cache-control", "no-cache");
+
+            xhr.send(data);
+
+
+
+
+
+        }
+
+        function exportWord2() {
+
+            $.ajax({
+                type: 'post',
+                url: "/Home/CreateDocMonth",
+                dataType: 'json',
+                success: function (data) {
+                    alert("YY");
+
+                },
+                error: function (ex) {
+                    alert("GG");
+                }
+            });
+
+        }
+    </script>
 
     <meta charset='utf-8' />
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -95,7 +173,7 @@
     <link href="/Content/bootstrap.css" rel="stylesheet">
     <link href="/Content/site.css" rel="stylesheet">
     <link href="/Content/assets/plugins/pace/pace-theme-flash.css" rel="stylesheet">
-    <link href="/Content/assets/plugins/bootstrap/css/bootstrap.min.css" " rel="stylesheet">
+    <link href="/Content/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/Content/assets/plugins/font-awesome/css/font-awesome.css" rel="stylesheet">
     <link href="/Content/assets/plugins/jquery-scrollbar/jquery.scrollbar.css" rel="stylesheet">
     <link href="/Content/assets/plugins/select2/css/select2.min.css" rel="stylesheet">
@@ -133,13 +211,14 @@
                     <div class="container-fluid container-fixed-lg">
                         <!-- <div class="inner"> -->
                         <div class="row align-items-center">
-                            <div id="ACtivityCalendarTitle" style="width:79%;">
+                            <div id="ACtivityCalendarTitle" style="width:79%;display:inline-block;">
                                 <h3>Activity Calendar</h3>
                             </div>
                             <div style="width:19%;display:inline-block;">
-                                <a href="/Home/Menu/?p_HomeId=@ViewBag.Home.Id" class="btn btn-primary" type="button">BACK</a>
+                                <input id="backbutton" onclick="location.href='/Home/Menu/?p_HomeId=@ViewBag.Home.Id';" class="btn btn-primary" type="button" value="BACK"/>
                                 <button class="btn btn-danger print" id="PrintDAY" style="">Print</button>
                                 <button class="btn btn-danger printBtn hidden-print " id="PrintWAM" style="display:none;">Print</button>
+                                <button onclick="exportWord2()">Export</button>
                             </div>
                         </div>
                         <!-- </div> -->
@@ -3426,8 +3505,10 @@
 
     $('.printBtn').on('click', function () {
         $('#ACtivityCalendarTitle').css({ 'margin-left': '5vw' });
+        $('#backbutton').hide();
         window.print();
         $('#ACtivityCalendarTitle').css({ 'margin-left': '0' });
+        $('#backbutton').show();
     });
 
     $('.print').click(function () {
@@ -3450,7 +3531,7 @@
             var srcEl = srcEl_sub[3];
         }
 
-        var scaleFactor = 2;
+        var scaleFactor = 1;
 
         var originalWidth = srcEl.offsetWidth;
         var originalHeight = srcEl.offsetHeight;

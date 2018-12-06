@@ -249,7 +249,15 @@ namespace QolaMVC.Controllers
                 if (l_DietaryAssessment[0].Notes != p_Model.Notes) p_Model.DIFF = p_Model.DIFF + "Notes,";
                 if (l_DietaryAssessment[0].noAllergy != p_Model.noAllergy) p_Model.DIFF = p_Model.DIFF + "noAllergy,";
 
-                if (p_Model.Allergies.Count() != l_DietaryAssessment[0].Allergies.Count())
+                if (p_Model.Allergies==null && l_DietaryAssessment[0].Allergies.Count()>0)
+                {
+                    p_Model.DIFF = p_Model.DIFF + "Allergy[],";
+                }
+                else if (p_Model.Allergies != null && l_DietaryAssessment[0].Allergies.Count() == 0)
+                {
+                    p_Model.DIFF = p_Model.DIFF + "Allergy[],";
+                }
+                else if(p_Model.Allergies != null && p_Model.Allergies.Count()!= l_DietaryAssessment[0].Allergies.Count())
                 {
                     p_Model.DIFF = p_Model.DIFF + "Allergy[],";
                 }

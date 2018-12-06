@@ -231,7 +231,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static bool RemoveHome(int homeId)
+        public static bool RemoveHome_InactiveforNow(int homeId)
         {
             string exception = string.Empty;
             bool result = false;
