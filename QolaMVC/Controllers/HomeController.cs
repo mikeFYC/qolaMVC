@@ -21,6 +21,7 @@ using System.Reflection;
 using SamDoc = Xceed.Words.NET;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace QolaMVC.Controllers
 {
@@ -30,270 +31,553 @@ namespace QolaMVC.Controllers
         private string _mobiltySelectedValue = string.Empty;
         private string _previousValue = string.Empty;
 
-        public void CreateDocMonth()
+        public void exportToWord(string titleDate,string DWM,string CaName)
         {
-            int homeId = 0;
+            if (DWM == "month")
+            {
+                CreateDocMonth(titleDate,CaName);
+            }
+        }
+
+
+
+        public void CreateDocMonth(string titleDate,string CaName)
+        {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            int homeId = home.Id;
             try
             {
-                if (Int32.TryParse(Session["HomeID"].ToString(), out homeId) == true)
+
+                DateTime CurDate = DateTime.Parse(titleDate);
+                DateTime fromDate = new DateTime(CurDate.Year, CurDate.Month, 01);
+                DateTime toDate = new DateTime(CurDate.Year, CurDate.Month, DateTime.DaysInMonth(CurDate.Year, CurDate.Month));
+                //int intCategoryId = Convert.ToInt32("ddl_m_Category.SelectedValue");
+                //int intActivityId = Convert.ToInt32("ddl_m_Activity.SelectedValue");
+                //int iCalendarType = Convert.ToInt32("hdnCalendarType.Value");
+                DateTime tmpDate;
+                int[,] MonthCalendar = new int[6, 7];
+                int Week = 0;
+                int maxCellheight;
+                int[] cellHeight = new int[3] { 119, 143, 179 };
+                string days = string.Empty;
+                int date = 0;
+                for (date = 1; date <= DateTime.DaysInMonth(CurDate.Year, CurDate.Month); date++)
                 {
-                    DateTime CurDate = stringToDateFormat("hdnDateVal.Value");
-                    DateTime fromDate = new DateTime(CurDate.Year, CurDate.Month, 01);
-                    DateTime toDate = new DateTime(CurDate.Year, CurDate.Month, DateTime.DaysInMonth(CurDate.Year, CurDate.Month));
-                    //int intCategoryId = Convert.ToInt32("ddl_m_Category.SelectedValue");
-                    //int intActivityId = Convert.ToInt32("ddl_m_Activity.SelectedValue");
-                    //int iCalendarType = Convert.ToInt32("hdnCalendarType.Value");
-                    DateTime tmpDate;
-                    int[,] MonthCalendar = new int[6, 7];
-                    int Week = 0;
-                    int maxCellheight;
-                    int[] cellHeight = new int[3] { 119, 143, 179 };
-                    string days = string.Empty;
-                    int date = 0;
-                    for (date = 1; date <= DateTime.DaysInMonth(CurDate.Year, CurDate.Month); date++)
-                    {
-                        tmpDate = new DateTime(CurDate.Year, CurDate.Month, date);
+                    tmpDate = new DateTime(CurDate.Year, CurDate.Month, date);
+                    if (days == "Saturday")
+                        Week += 1;
 
-                        if (days == "Saturday")
-                            Week += 1;
+                    days = tmpDate.DayOfWeek.ToString();
 
-                        days = tmpDate.DayOfWeek.ToString();
+                    if (days == "Sunday")
+                        MonthCalendar[Week, 0] = date;
+                    else if (days == "Monday")
+                        MonthCalendar[Week, 1] = date;
+                    else if (days == "Tuesday")
+                        MonthCalendar[Week, 2] = date;
+                    else if (days == "Wednesday")
+                        MonthCalendar[Week, 3] = date;
+                    else if (days == "Thursday")
+                        MonthCalendar[Week, 4] = date;
+                    else if (days == "Friday")
+                        MonthCalendar[Week, 5] = date;
+                    else if (days == "Saturday")
+                        MonthCalendar[Week, 6] = date;
+                }
 
-                        if (days == "Sunday")
-                            MonthCalendar[Week, 0] = date;
-                        else if (days == "Monday")
-                            MonthCalendar[Week, 1] = date;
-                        else if (days == "Tuesday")
-                            MonthCalendar[Week, 2] = date;
-                        else if (days == "Wednesday")
-                            MonthCalendar[Week, 3] = date;
-                        else if (days == "Thursday")
-                            MonthCalendar[Week, 4] = date;
-                        else if (days == "Friday")
-                            MonthCalendar[Week, 5] = date;
-                        else if (days == "Saturday")
-                            MonthCalendar[Week, 6] = date;
-                    }
-
-                    if (MonthCalendar[5, 0] > 0)
-                    {
-                        maxCellheight = cellHeight[0];
-                    }
-                    else if (MonthCalendar[4, 0] > 0)
-                    {
-                        maxCellheight = cellHeight[1];
-                    }
-                    else if (MonthCalendar[3, 0] > 0)
-                    {
-                        maxCellheight = cellHeight[2];
-                    }
-                    else
-                    {
-                        maxCellheight = cellHeight[0];
-                    }
+                if (MonthCalendar[5, 0] > 0)
+                {
+                    maxCellheight = cellHeight[0];
+                }
+                else if (MonthCalendar[4, 0] > 0)
+                {
+                    maxCellheight = cellHeight[1];
+                }
+                else if (MonthCalendar[3, 0] > 0)
+                {
+                    maxCellheight = cellHeight[2];
+                }
+                else
+                {
+                    maxCellheight = cellHeight[0];
+                }
                     
-                    //DataTable dtActivityCalendar = HomeDAL.GetActivityCalendar(homeId, intCategoryId, intActivityId, fromDate, toDate, iCalendarType);
-                    DataTable dtActivityCalendar = new DataTable();
-                    DataRow[] drEachDate;
-                    string strActivityEventDate = string.Empty, strDynamTime = string.Empty, strVenue = string.Empty, clsName = string.Empty;
-                    DateTime dtActivityEventDate;
-                    int intDynamicColsPan = 0, intDynamicColsPanTop = 0;
+                DataTable dtActivityCalendar = HomeDAL.Get_Activity_Calendar1_ExporttoWord(homeId, fromDate, toDate);
+                //DataTable dtActivityCalendar = new DataTable();
+                DataRow[] drEachDate;
+                string strActivityEventDate = string.Empty, strDynamTime = string.Empty, strVenue = string.Empty, clsName = string.Empty;
+                DateTime dtActivityEventDate;
+                int intDynamicColsPan = 0, intDynamicColsPanTop = 0;
 
-                    using (SamDoc.DocX document = SamDoc.DocX.Load(Server.MapPath("/CalendarTheme/Html/ActivityCalendarMonth.docx")))
+                using (SamDoc.DocX document = SamDoc.DocX.Load(Server.MapPath("/Content/CalendarTheme/Html/ActivityCalendarMonth.docx")))
+                {
+
+                    //Table
+                    var table = document.Tables.FirstOrDefault();
+                    if (table != null)
                     {
+                        table.Rows[0].Cells[0].ReplaceText("[%Day1%]", "Sunday");
+                        table.Rows[0].Cells[1].ReplaceText("[%Day2%]", "Monday");
+                        table.Rows[0].Cells[2].ReplaceText("[%Day3%]", "Tuesday");
+                        table.Rows[0].Cells[3].ReplaceText("[%Day4%]", "Wednesday");
+                        table.Rows[0].Cells[4].ReplaceText("[%Day5%]", "Thursday");
+                        table.Rows[0].Cells[5].ReplaceText("[%Day6%]", "Friday");
+                        table.Rows[0].Cells[6].ReplaceText("[%Day7%]", "Saturday");
 
-                        //Table
-                        var table = document.Tables.FirstOrDefault();
-                        if (table != null)
+                        if (table.RowCount > 1)
                         {
-                            table.Rows[0].Cells[0].ReplaceText("[%Day1%]", "Sunday");
-                            table.Rows[0].Cells[1].ReplaceText("[%Day2%]", "Monday");
-                            table.Rows[0].Cells[2].ReplaceText("[%Day3%]", "Tuesday");
-                            table.Rows[0].Cells[3].ReplaceText("[%Day4%]", "Wednesday");
-                            table.Rows[0].Cells[4].ReplaceText("[%Day5%]", "Thursday");
-                            table.Rows[0].Cells[5].ReplaceText("[%Day6%]", "Friday");
-                            table.Rows[0].Cells[6].ReplaceText("[%Day7%]", "Saturday");
-
-                            if (table.RowCount > 1)
+                            for (int i = 0; i < 6; i++)
                             {
-                                for (int i = 0; i < 6; i++)
+                                for (int j = 0; j < 7; j++)
                                 {
-                                    for (int j = 0; j < 7; j++)
+                                    table.Rows[(i + 1)].Cells[j].Width = 90;
+                                    if (MonthCalendar[i, j] > 0)
                                     {
-                                        if (MonthCalendar[i, j] > 0)
-                                        {
-                                            table.Rows[(i + 1)].MinHeight = maxCellheight;
-                                            table.Rows[(i + 1)].Cells[j].Paragraphs[0].Append(MonthCalendar[i, j].ToString()).FontSize(9).Bold().Alignment = SamDoc.Alignment.right;
-                                            table.Rows[(i + 1)].Cells[j].Paragraphs[0].LineSpacingAfter = 0.5f;
-                                            //table.Rows[(i + 1)].Cells[j].Paragraphs.LastOrDefault().Alignment = SamDoc.Alignment.left;
+                                        table.Rows[(i + 1)].MinHeight = maxCellheight;
+                                        table.Rows[(i + 1)].Cells[j].Paragraphs[0].Append(MonthCalendar[i, j].ToString()).FontSize(9).Bold().Alignment = SamDoc.Alignment.right;
+                                        table.Rows[(i + 1)].Cells[j].Paragraphs[0].LineSpacingAfter = 0.5f;
+                                        //table.Rows[(i + 1)].Cells[j].Paragraphs.LastOrDefault().Alignment = SamDoc.Alignment.left;
 
-                                            strActivityEventDate = ProperDateFormat(MonthCalendar[i, j], CurDate.Month, CurDate.Year);
-                                            dtActivityEventDate = stringToDateFormat(strActivityEventDate);
-                                            strActivityEventDate = dateToUSDateStringFormat(dtActivityEventDate);
-                                            if (dtActivityCalendar != null && dtActivityCalendar.Rows.Count > 0)
+                                        strActivityEventDate = ProperDateFormat(MonthCalendar[i, j], CurDate.Month, CurDate.Year);
+                                        dtActivityEventDate = stringToDateFormat(strActivityEventDate);
+                                        strActivityEventDate = dateToUSDateStringFormat(dtActivityEventDate);
+                                        if (dtActivityCalendar != null && dtActivityCalendar.Rows.Count > 0)
+                                        {
+                                            drEachDate = dtActivityCalendar.Select("StartDate ='" + strActivityEventDate + "' ");
+                                            if (drEachDate.Length > 0)
                                             {
-                                                drEachDate = dtActivityCalendar.Select("fd_activity_event_date ='" + strActivityEventDate + "' ");
-                                                if (drEachDate.Length > 0)
+                                                for (int index = 0; index <= drEachDate.Length - 1; index++)
                                                 {
-                                                    for (int index = 0; index <= drEachDate.Length - 1; index++)
+                                                    string temSignUPVal = drEachDate[index]["EventTitle"].ToString();
+                                                    clsName = temSignUPVal;
+
+                                                    strDynamTime = drEachDate[index]["StartTime"].ToString();
+
+
+                                                if (drEachDate[index]["Venue"].ToString() == "")
                                                     {
-                                                        string temSignUPVal = drEachDate[index]["fd_sign_up"].ToString();
-                                                        if (temSignUPVal == "A")
-                                                        {
-                                                            clsName = "activitySignUP";
-                                                        }
-                                                        else
-                                                        {
-                                                            clsName = "";
-                                                        }
-                                                        if (drEachDate[index]["fd_activity_category_id"].ToString() == "1" && drEachDate[index]["fd_activity_event_time"].ToString() == "12:00AM")
-                                                        {
-                                                            strDynamTime = "ALL DAY";
-                                                        }
-                                                        else
-                                                        {
-                                                            strDynamTime = (CultureInfo.CurrentCulture.Name == "fr-BE" ? drEachDate[index]["fd_activity_event_time_fr"] : Regex.Replace(drEachDate[index]["fd_activity_event_time"].ToString(), "[^0-9:]", "").TrimStart('0')).ToString();
-                                                        }
-
-                                                        if (drEachDate[index]["fd_venue_short_name"].ToString() == "")
-                                                        {
-                                                            strVenue = "";
-                                                        }
-                                                        else
-                                                        {
-                                                            strVenue = "- " + drEachDate[index]["fd_venue_short_name"];
-                                                        }
-                                                        string phrActAndNotes = strDynamTime + "- " + (CultureInfo.CurrentCulture.Name == "fr-BE" ? drEachDate[index]["fd_activity_name_fr"].ToString() : drEachDate[index]["fd_activity_name"].ToString()) + " " + drEachDate[index]["fd_note"].ToString() + strVenue;
-                                                        table.Rows[(i + 1)].Cells[j].InsertParagraph(phrActAndNotes).FontSize(9);
-                                                        table.Rows[(i + 1)].Cells[j].Paragraphs.LastOrDefault().LineSpacingAfter = 0.5f;
-                                                        table.Rows[(i + 1)].Cells[j].Paragraphs.LastOrDefault().Alignment = SamDoc.Alignment.left;
+                                                        strVenue = "";
                                                     }
+                                                    else
+                                                    {
+                                                        strVenue = "- " + drEachDate[index]["Venue"];
+                                                    }
+                                                    string phrActAndNotes = strDynamTime + "- " + (CultureInfo.CurrentCulture.Name == "fr-BE" ? drEachDate[index]["EventTitle"].ToString() : drEachDate[index]["EventTitle"].ToString()) + " " + drEachDate[index]["note"].ToString() + strVenue;
+                                                    table.Rows[(i + 1)].Cells[j].InsertParagraph(phrActAndNotes).FontSize(9);
+                                                    table.Rows[(i + 1)].Cells[j].Paragraphs.LastOrDefault().LineSpacingAfter = 0.5f;
+                                                    table.Rows[(i + 1)].Cells[j].Paragraphs.LastOrDefault().Alignment = SamDoc.Alignment.left;
                                                 }
                                             }
                                         }
-
-                                    }
-                                }
-
-                                if (MonthCalendar[5, 0] == 0)
-                                    table.Rows[6].Remove();
-
-                                for (int i = 0; i < 6; i++)
-                                {
-                                    for (int j = 0; j < 7; j++)
-                                    {
-                                        if (MonthCalendar[i, j] > 0)
-                                        {
-                                            if (intDynamicColsPan != 0)
-                                            {
-                                                string sTopImg = string.Empty;
-
-                                                if (CultureInfo.CurrentCulture.Name == "fr-BE")
-                                                {
-                                                    sTopImg = Server.MapPath(".") + "/CalendarTheme/Images/MonthlyActivity/" + "hdnThemeValue.Value.ToString()" + "_" + intDynamicColsPan + "_Fr" + ".jpg";
-                                                }
-                                                else
-                                                {
-                                                    sTopImg = Server.MapPath(".") + "/CalendarTheme/Images/MonthlyActivity/" + "hdnThemeValue.Value.ToString()" + "_" + intDynamicColsPan + ".jpg";
-                                                }
-                                                if (System.IO.File.Exists(sTopImg))
-                                                {
-                                                    table.Rows[(i + 1)].Cells[0].RemoveParagraphAt(0);
-                                                    if (intDynamicColsPan > 1)
-                                                        table.Rows[(i + 1)].MergeCells(0, (intDynamicColsPan - 1));
-                                                    int width = (Convert.ToInt32(table.Rows[(i + 1)].Cells[0].Width) + 54) * intDynamicColsPan;
-
-                                                    var image = document.AddImage(sTopImg);
-                                                    var picture = image.CreatePicture(maxCellheight, width);
-                                                    table.Rows[(i + 1)].Cells[0].MarginLeft = 0;
-                                                    if (table.Rows[(i + 1)].Cells[0].Paragraphs.Count == 0)
-                                                        table.Rows[(i + 1)].Cells[0].InsertParagraph("");
-                                                    table.Rows[(i + 1)].Cells[0].Paragraphs[0].AppendPicture(picture);
-                                                    intDynamicColsPanTop = intDynamicColsPan;
-                                                }
-                                            }
-                                            intDynamicColsPan = 0;
-                                        }
-                                        else
-                                        {
-                                            intDynamicColsPan++;
-                                        }
                                     }
 
-                                    if (intDynamicColsPan != 0 && intDynamicColsPan < 7)
-                                    {
-                                        string sBtmImg = string.Empty;
-                                        sBtmImg = Server.MapPath(".") + "/CalendarTheme/Images/MonthlyActivity/";
-
-                                        if (CultureInfo.CurrentCulture.Name == "fr-BE")
-                                        {
-                                            sBtmImg = intDynamicColsPan != intDynamicColsPanTop ? sBtmImg + "hdnThemeValue.Value.ToString()" + "_" + intDynamicColsPan + "_Fr" + ".jpg" : sBtmImg + "default_" + intDynamicColsPan + ".jpg";
-                                        }
-                                        else
-                                        {
-                                            sBtmImg = intDynamicColsPan != intDynamicColsPanTop ? sBtmImg + "hdnThemeValue.Value.ToString()" + "_" + intDynamicColsPan + ".jpg" : sBtmImg + "default_" + intDynamicColsPan + ".jpg";
-                                        }
-
-                                        if (System.IO.File.Exists(sBtmImg))
-                                        {
-                                            int CellStartPoint = table.Rows[table.RowCount - 1].Cells.Count - intDynamicColsPan;
-                                            table.Rows[table.RowCount - 1].Cells[CellStartPoint].RemoveParagraphAt(0);
-
-
-                                            table.Rows[table.RowCount - 1].MergeCells(CellStartPoint, CellStartPoint + (intDynamicColsPan - 1));
-                                            int width = (Convert.ToInt32(table.Rows[table.RowCount - 1].Cells[CellStartPoint].Width) + 54) * intDynamicColsPan;
-
-                                            var image = document.AddImage(sBtmImg);
-                                            var picture = image.CreatePicture(maxCellheight, width);
-                                            table.Rows[table.RowCount - 1].Cells[CellStartPoint].MarginLeft = 0;
-
-                                            table.Rows[table.RowCount - 1].Cells[CellStartPoint].Paragraphs[0].AppendPicture(picture);
-                                            intDynamicColsPanTop = intDynamicColsPan;
-                                        }
-                                    }
                                 }
-
-                                HomeModel home = new HomeModel();
-                                home = HomeDAL.GetHomeById(homeId);
-
-                                SamDoc.Footer footer = document.Footers.Odd;
-                                footer.ReplaceText("[#CalendarName#]", "HeaderName.Value.Trim().ToString()");
-                                footer.ReplaceText("[#HomeDescription#]",
-                                  home.Name + (home.Phone != "" ? "  Ph. " + String.Format("{0:(###) ###-####}", Convert.ToInt64(home.Phone)) : "  Ph. " + "")
-                                  );
-
-                                string reportName = RemoveSpecialCharacter(home.Name) + RemoveSpecialCharacter("HeaderName.Value.ToString()") + fromDate.ToString("MMM") + ".docx";
-                                document.SaveAs(Server.MapPath("/CalendarTheme/Html/") + reportName);
-
-                                Response.ContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-                                Response.AppendHeader("Content-Disposition", "attachment; filename=" + reportName);
-                                Response.WriteFile(Server.MapPath("/CalendarTheme/Html/") + reportName);
-                                Response.Flush();
-
-                                if (System.IO.File.Exists(Server.MapPath("/CalendarTheme/Html/") + reportName))
-                                {
-                                    System.IO.File.Delete(Server.MapPath("/CalendarTheme/Html/") + reportName);
-                                }
-
-
-                                //MemoryStream ms = new MemoryStream();
-                                //document.SaveAs(ms);
-                                //Response.Clear();
-                                //Response.AddHeader("Content-disposition", "attachment; filename=\"" + reportName + ".docx");
-                                //Response.ContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-                                //Response.BinaryWrite(ms.ToArray());
-                                //Response.Flush();
-                                //Response.Close();
-                                System.Web.HttpContext.Current.ApplicationInstance.CompleteRequest();
-
                             }
+
+                            if (MonthCalendar[5, 0] == 0)
+                                table.Rows[6].Remove();
+
+                            for (int i = 0; i < 6; i++)
+                            {
+                                for (int j = 0; j < 7; j++)
+                                {
+                                    if (MonthCalendar[i, j] > 0)
+                                    {
+                                        if (intDynamicColsPan != 0)
+                                        {
+                                            string sTopImg = string.Empty;
+
+                                            if (CultureInfo.CurrentCulture.Name == "fr-BE")
+                                            {
+                                                
+                                                sTopImg = Server.MapPath("/Content/CalendarTheme/Images/MonthlyActivity/dec2018Theme1_6.JPG");
+                                            }
+                                            else
+                                            {
+                                                sTopImg = Server.MapPath("/Content/CalendarTheme/Images/MonthlyActivity/dec2018Theme1_6.JPG");
+                                            }
+                                            if (System.IO.File.Exists(sTopImg))
+                                            {
+                                                table.Rows[(i + 1)].Cells[0].RemoveParagraphAt(0);
+                                                if (intDynamicColsPan > 1)
+                                                    table.Rows[(i + 1)].MergeCells(0, (intDynamicColsPan - 1));
+                                                int width = (Convert.ToInt32(table.Rows[(i + 1)].Cells[0].Width) + 54) * intDynamicColsPan;
+
+                                                var image = document.AddImage(sTopImg);
+                                                var picture = image.CreatePicture(maxCellheight, width);
+                                                table.Rows[(i + 1)].Cells[0].MarginLeft = 0;
+                                                if (table.Rows[(i + 1)].Cells[0].Paragraphs.Count == 0)
+                                                    table.Rows[(i + 1)].Cells[0].InsertParagraph("");
+                                                table.Rows[(i + 1)].Cells[0].Paragraphs[0].AppendPicture(picture);
+                                                intDynamicColsPanTop = intDynamicColsPan;
+                                            }
+                                        }
+                                        intDynamicColsPan = 0;
+                                    }
+                                    else
+                                    {
+                                        intDynamicColsPan++;
+                                    }
+                                }
+
+                                if (intDynamicColsPan != 0 && intDynamicColsPan < 7)
+                                {
+                                    string sBtmImg = string.Empty;
+                                    sBtmImg = "";
+
+                                    if (CultureInfo.CurrentCulture.Name == "fr-BE")
+                                    {
+                                        sBtmImg = Server.MapPath("/Content/CalendarTheme/Images/MonthlyActivity/dec2018Theme1_5.JPG");
+                                    }
+                                    else
+                                    {
+                                        sBtmImg = Server.MapPath("/Content/CalendarTheme/Images/MonthlyActivity/dec2018Theme1_5.JPG");
+                                    }
+
+                                    if (System.IO.File.Exists(sBtmImg))
+                                    {
+                                        int CellStartPoint = table.Rows[table.RowCount - 1].Cells.Count - intDynamicColsPan;
+                                        //table.Rows[table.RowCount - 1].Cells[CellStartPoint].RemoveParagraphAt(0);
+
+                                        if (intDynamicColsPan > 1)
+                                        {
+                                            table.Rows[table.RowCount - 1].MergeCells(CellStartPoint, CellStartPoint + (intDynamicColsPan - 1));
+                                        }
+                                        
+                                        int width = (Convert.ToInt32(table.Rows[table.RowCount - 1].Cells[CellStartPoint].Width) + 54) * intDynamicColsPan;
+
+                                        var image = document.AddImage(sBtmImg);
+                                        var picture = image.CreatePicture(maxCellheight, width);
+                                        table.Rows[table.RowCount - 1].Cells[CellStartPoint].MarginLeft = 0;
+
+                                        table.Rows[table.RowCount - 1].Cells[CellStartPoint].Paragraphs[0].AppendPicture(picture);
+                                        intDynamicColsPanTop = intDynamicColsPan;
+                                    }
+                                }
+                            }
+
+                            //HomeModel newhome = new HomeModel();
+                            //home = HomeDAL.GetHomeById(homeId);
+
+                            SamDoc.Footer footer = document.Footers.Odd;
+                            footer.ReplaceText("[#CalendarName#]", CaName);
+                            footer.ReplaceText("[#HomeDescription#]",
+                                home.Name + (home.Phone != "" ? "  Ph. " + String.Format("{0:(###) ###-####}", Convert.ToInt64(home.Phone)) : "  Ph. " + "")
+                                );
+
+                            string reportName = RemoveSpecialCharacter(home.Name) + RemoveSpecialCharacter(CaName) + fromDate.ToString("MMM") + ".docx";
+                            if (System.IO.File.Exists(Server.MapPath("/Content/CalendarTheme/Html/") + reportName))
+                            {
+                                System.IO.File.Delete(Server.MapPath("/Content/CalendarTheme/Html/") + reportName);
+                            }
+                            document.SaveAs(Server.MapPath("/Content/CalendarTheme/Html/") + reportName);
+
+                            Response.ContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+                            Response.AppendHeader("Content-Disposition", "attachment; filename=" + reportName);
+                            Response.WriteFile(Server.MapPath("/Content/CalendarTheme/Html/") + reportName);
+                            Response.Flush();
+
+
+
+
+                            //MemoryStream ms = new MemoryStream();
+                            //document.SaveAs(ms);
+                            //Response.Clear();
+                            //Response.AddHeader("Content-disposition", "attachment; filename=\"" + reportName + ".docx");
+                            //Response.ContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+                            //Response.BinaryWrite(ms.ToArray());
+                            //Response.Flush();
+                            //Response.Close();
+                            System.Web.HttpContext.Current.ApplicationInstance.CompleteRequest();
+
+
+                            string fileName = Server.MapPath("/Content/CalendarTheme/Html/") + reportName;
+                            Process.Start("WINWORD.EXE", fileName);
                         }
                     }
                 }
+                
             }
             catch (Exception Ex)
             {
                 string exception = "ActivityCalendar CreateDocMonth |" + Ex.Message.ToString();
+                //Log.Write(exception);
+                Response.Redirect("ErrorPage.aspx", false);
+            }
+        }
+        private void CreateDocWeek(string titleDate, string CaName)
+        {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            string exception = string.Empty;
+            try
+            {
+                int homeId = home.Id;
+                DateTime CurDate = stringToDateFormat(titleDate);
+                DateTime fromDate = CurDate;
+                fromDate = CurDate.AddDays(-(int)CurDate.DayOfWeek);
+                DateTime toDate = fromDate.AddDays(7).AddSeconds(-1);
+                //int intCategoryId = Convert.ToInt32(ddl_m_Category.SelectedValue);
+                //int intActivityId = Convert.ToInt32(ddl_m_Activity.SelectedValue);
+                //int iCalendarType = Convert.ToInt32(hdnCalendarType.Value);
+                string s_MonthName = "Weekly Calendar " + fromDate.ToString("MMMM dd, yyyy") + " - " + toDate.AddDays(6).ToString("MMMM dd, yyyy");
+
+
+                DateTime fDt = fromDate;
+                DateTime tDt = toDate;
+
+                //DataTable dtActivityCalendar = DAL.ActivityCalendar.GetActivityCalendar(homeId, intCategoryId, intActivityId, fromDate, toDate, iCalendarType);
+                DataTable dtActivityCalendar = new DataTable();
+
+                using (SamDoc.DocX document = SamDoc.DocX.Load(Server.MapPath("/CalendarTheme/Html/ActivityCalendarWeek.docx")))
+                {
+                    //Table
+                    string sTopImg = string.Empty;
+
+                    if (CultureInfo.CurrentCulture.Name == "fr-BE")
+                    {
+                        sTopImg = Server.MapPath("/Content/CalendarTheme/Images/WeeklyActivity/apr2018WTheme1.jpg");
+                    }
+                    else
+                    {
+                        sTopImg = Server.MapPath("/Content/CalendarTheme/Images/WeeklyActivity/apr2018WTheme1.jpg");
+                    }
+
+                    var table = document.Tables.FirstOrDefault();
+                    if (table != null)
+                    {
+                        if (table.RowCount > 1)
+                        {
+                            if (System.IO.File.Exists(sTopImg))
+                            {
+                                var images = document.AddImage(sTopImg);
+                                var picture = images.CreatePicture(100, 1590);
+                                table.Rows[0].Cells[0].MarginLeft = 0;
+                                table.Rows[0].Cells[0].Paragraphs[0].AppendPicture(picture);
+                            }
+
+                            for (int i = 1; i <= 7; i++)
+                            {
+                                table.Rows[1].Cells[(i - 1)].ReplaceText("[%Day" + i + "%]", fromDate.AddDays(i - 1).ToString("dddd") + "  " + fromDate.AddDays(i - 1).ToString("MMM dd, yyyy"));
+                            }
+                            if (dtActivityCalendar != null && dtActivityCalendar.Rows.Count > 0)
+                            {
+                                string strEventDate = string.Empty;
+                                DataRow[] drEachDate;
+                                string clsName = string.Empty;
+                                string strVenue = string.Empty;
+                                //string strActivityNameAndNotes = string.Empty;
+                                string strDynamTime = string.Empty;
+
+                                for (int j = 1; j <= 7; j++)
+                                {
+                                    strEventDate = dateToUSDateStringFormat(fromDate);
+
+                                    drEachDate = dtActivityCalendar.Select("fd_activity_event_date ='" + strEventDate + "' ");
+                                    table.Rows[2].Cells[(j - 1)].RemoveParagraphAt(0);
+                                    if (drEachDate.Length > 0)
+                                    {
+                                        for (int index1 = 0; index1 <= drEachDate.Length - 1; index1++)
+                                        {
+                                            string temSignUPVal = drEachDate[index1]["fd_sign_up"].ToString();
+                                            string sActivityImage = string.Empty;
+                                            string root = Server.MapPath(".");
+                                            string imagename = root + "\\" + drEachDate[index1]["fd_icon_path"].ToString();
+                                            FileInfo file = new FileInfo(imagename);
+
+                                            if (temSignUPVal == "A")
+                                            {
+                                                clsName = "activitySignUP";
+                                            }
+                                            else
+                                            {
+                                                clsName = "";
+                                            }
+                                            if (drEachDate[index1]["fd_venue_name"] == "")
+                                            {
+                                                strVenue = "";
+                                            }
+                                            else
+                                            {
+                                                strVenue = " - " + drEachDate[index1]["fd_venue_name"];
+                                            }
+
+                                            string ActivityDetails = string.Empty;
+                                            if (drEachDate[index1]["fd_activity_category_id"].ToString() == "1" && drEachDate[index1]["fd_activity_event_time"].ToString() == "12:00AM")
+                                            {
+                                                strDynamTime = "ALL DAY";
+                                            }
+                                            else
+                                            {
+                                                strDynamTime = (CultureInfo.CurrentCulture.Name == "fr-BE" ? drEachDate[index1]["fd_activity_event_time_fr"] : drEachDate[index1]["fd_activity_event_time"]).ToString();
+                                            }
+
+                                            ActivityDetails = (CultureInfo.CurrentCulture.Name == "fr-BE" ? drEachDate[index1]["fd_activity_name_fr"].ToString() : drEachDate[index1]["fd_activity_name"].ToString());
+                                            if (clsName != "")
+                                            {
+                                                ActivityDetails = (CultureInfo.CurrentCulture.Name == "fr-BE" ? drEachDate[index1]["fd_activity_name_fr"].ToString() : drEachDate[index1]["fd_activity_name"].ToString());
+                                            }
+                                            ActivityDetails = strDynamTime + " " + ActivityDetails.Trim() + " " + drEachDate[index1]["fd_note"].ToString() + strVenue;
+                                            table.Rows[2].Cells[(j - 1)].InsertParagraph(ActivityDetails).FontSize(9);
+                                            table.Rows[2].Cells[(j - 1)].MarginLeft = 0;
+                                            if (file.Exists)
+                                            {
+                                                var image = document.AddImage(imagename);
+                                                var picture = image.CreatePicture(30, 30);
+                                                table.Rows[2].Cells[(j - 1)].InsertParagraph("").AppendPicture(picture).Alignment = SamDoc.Alignment.center;
+                                            }
+                                        }
+                                    }
+                                    fromDate = fromDate.AddDays(1);
+                                }
+                            }
+
+
+                            //Header and Footer
+                            SamDoc.Header header = document.Headers.Odd;
+                            header.ReplaceText("[#CalendarName#]", CaName);
+                            header.ReplaceText("[#DateTime#]", s_MonthName);
+
+                            SamDoc.Footer footer = document.Footers.Odd;
+                            footer.ReplaceText("[#HomeDescription#]",
+                                home.Name + (home.Phone != "" ? "  Ph. " + String.Format("{0:(###) ###-####}", Convert.ToInt64(home.Phone)) : "  Ph. " + "")
+                                );
+
+                            string reportName = RemoveSpecialCharacter(home.Name) + RemoveSpecialCharacter(CaName) + fDt.ToString("MMM-dd") + tDt.ToString("-dd") + ".docx";
+                            document.SaveAs(Server.MapPath("/CalendarTheme/Html/") + reportName);
+
+                            Response.ContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+                            Response.AppendHeader("Content-Disposition", "attachment; filename=" + reportName);
+                            Response.WriteFile(Server.MapPath("/CalendarTheme/Html/") + reportName);
+                            Response.Flush();
+
+                            if (System.IO.File.Exists(Server.MapPath("/CalendarTheme/Html/") + reportName))
+                            {
+                                System.IO.File.Delete(Server.MapPath("/CalendarTheme/Html/") + reportName);
+                            }
+
+                            //MemoryStream ms = new MemoryStream();
+                            //document.SaveAs(ms);
+                            //Response.Clear();
+                            //Response.AddHeader("Content-disposition", "attachment; filename=\"" + reportName + ".docx");
+                            //Response.ContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+                            //Response.BinaryWrite(ms.ToArray());
+                            //Response.Flush();
+                            //Response.Close();
+                            System.Web.HttpContext.Current.ApplicationInstance.CompleteRequest();
+                        }
+                    }
+                }
+                
+            }
+            catch (Exception Ex)
+            {
+                exception = "ActivityCalendar CreateDocWeek |" + Ex.Message.ToString();
+                //Log.Write(exception);
+                Response.Redirect("ErrorPage.aspx", false);
+            }
+        }
+        private void CretaeDocDay(string titleDate, string CaName)
+        {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            int homeId = home.Id;
+            try
+            {
+
+                DateTime CurDate = stringToDateFormat(titleDate);
+                DateTime fromDate = CurDate;
+                DateTime toDate = CurDate;
+
+                //int intCategoryId = Convert.ToInt32(ddl_m_Category.SelectedValue);
+                //int intActivityId = Convert.ToInt32(ddl_m_Activity.SelectedValue);
+                //int iCalendarType = Convert.ToInt32(hdnCalendarType.Value);
+
+                using (SamDoc.DocX document = SamDoc.DocX.Load(
+                    Server.MapPath("/CalendarTheme/Html/DayCalendar.docx"))
+                    )
+                {
+                    //Table
+                    var table = document.Tables.FirstOrDefault();
+                    if (table != null)
+                    {
+                        if (table.RowCount > 1)
+                        {
+                            var rowPattern = table.Rows[1];
+                            //DataTable dtDayCalendar = DAL.ActivityCalendar.GetActivityCalendar(homeId, intCategoryId, intActivityId, fromDate, toDate, iCalendarType);
+                            DataTable dtDayCalendar = new DataTable();
+
+
+                            table.Rows[0].Cells[0].ReplaceText("[%th1%]", "Time");
+                            table.Rows[0].Cells[1].ReplaceText("[%th2%]", "TodayActivity");
+                            table.Rows[0].Cells[2].ReplaceText("[%th3%]", "Venue");
+
+                            for (int i = 0; i < dtDayCalendar.Rows.Count; i++)
+                            {
+                                var NewRow = table.InsertRow(rowPattern, table.RowCount - 1);
+                                //NewRow.ReplaceText("[#Time#]", dtDayCalendar.Rows[i]["fd_activity_event_time"].ToString());
+                                NewRow.ReplaceText("[#Time#]", CultureInfo.CurrentCulture.Name == "fr-BE" ? dtDayCalendar.Rows[i]["fd_activity_event_time_fr"].ToString() : dtDayCalendar.Rows[i]["fd_activity_event_time"].ToString());
+                                NewRow.ReplaceText("[#Activity#]", CultureInfo.CurrentCulture.Name == "fr-BE" ? dtDayCalendar.Rows[i]["fd_activity_name_fr"].ToString() : dtDayCalendar.Rows[i]["fd_activity_name"].ToString());
+                                NewRow.ReplaceText("[#Venue#]", dtDayCalendar.Rows[i]["fd_venue_name"].ToString());
+                            }
+                            rowPattern.Remove();
+                        }
+                    }
+
+                    //Header and Footer
+                    SamDoc.Header header = document.Headers.Odd;
+                    header.ReplaceText("[#CalendarName#]", CaName);
+                    header.ReplaceText("[#DateTime#]", CurDate.ToString("MMMM dd, yyyy"));
+
+
+                    SamDoc.Footer footer = document.Footers.Odd;
+                    footer.ReplaceText("[#HomeDescription#]",
+                        home.Name + (home.Phone != "" ? "  Ph. " + String.Format("{0:(###) ###-####}", Convert.ToInt64(home.Phone)) : "  Ph. " + "")
+                        );
+
+                    string reportName = RemoveSpecialCharacter(home.Name) + RemoveSpecialCharacter(CaName) + fromDate.ToString("MMM-dd") + ".docx";
+                    document.SaveAs(Server.MapPath("/CalendarTheme/Html/") + reportName);
+
+                    Response.ContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+                    Response.AppendHeader("Content-Disposition", "attachment; filename=" + reportName);
+                    Response.WriteFile(Server.MapPath("/CalendarTheme/Html/") + reportName);
+                    Response.Flush();
+
+                    if (System.IO.File.Exists(Server.MapPath("/CalendarTheme/Html/") + reportName))
+                    {
+                        System.IO.File.Delete(Server.MapPath("/CalendarTheme/Html/") + reportName);
+                    }
+
+                    //MemoryStream ms = new MemoryStream();
+                    //document.SaveAs(ms);
+                    //Response.Clear();
+                    //Response.ClearContent();
+                    //Response.AddHeader("Content-disposition", "attachment; filename=\"" + reportName + ".docx");
+                    //Response.ContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+                    //Response.BinaryWrite(ms.ToArray());
+                    //Response.Flush();
+                    //Response.Close();
+
+                    System.Web.HttpContext.Current.ApplicationInstance.CompleteRequest();
+                }
+                
+            }
+            catch (Exception Ex)
+            {
+                string exception = "ActivityCalendar CreateDocWeek |" + Ex.Message.ToString();
                 //Log.Write(exception);
                 Response.Redirect("ErrorPage.aspx", false);
             }
@@ -408,6 +692,24 @@ namespace QolaMVC.Controllers
         }
 
 
+        public void CreateSampleDocument()
+        {
+            // Modify to suit your machine:
+            string fileName = @"C:\Users\Mike.Feng\Desktop\DocXExample.docx";
+
+            // Create a document in memory:
+            var doc = SamDoc.DocX.Create(fileName);
+
+            // Insert a paragrpah:
+            doc.InsertParagraph("This is my first paragraph");
+
+            // Save to the output directory:
+            doc.Save();
+
+            // Open in Word:
+            Process.Start("WINWORD.EXE", fileName);
+        }
+        
 
         public ActionResult Index()
         {

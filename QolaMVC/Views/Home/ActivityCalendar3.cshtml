@@ -128,11 +128,20 @@
         }
 
         function exportWord2() {
-
+            var date = $('#lblCalendarMsg').html();
+            var DWM = $('#DWM').val();
+            var caname = "";
+            $('.caname li a').each(function () {
+                if (this.className == "nav-link active") {
+                    caname = this.firstElementChild.innerHTML;
+                }
+            });
+            
             $.ajax({
                 type: 'post',
-                url: "/Home/CreateDocMonth",
+                url: "/Home/exportToWord",
                 dataType: 'json',
+                data: { titleDate: date, DWM: DWM , CaName:caname },
                 success: function (data) {
                     alert("YY");
 
@@ -232,8 +241,8 @@
                         <div class="card-block">
                             <div class="form-tabs mt-4" id="AC_FirstRow">
                                 @{ 
-                                    var name1 = "Calendar One";
-                                    var name2 = "Calendar Two";
+                                    var name1 = "Independent Calendar";
+                                    var name2 = "Memory Care Calendar";
                                     var name3 = "Calendar Three";
                                     var name4 = "Calendar Four";
                                     if (ViewBag.CalendarName[0] != "") { name1 = ViewBag.CalendarName[0]; }
@@ -241,7 +250,7 @@
                                     if (ViewBag.CalendarName[2] != "") { name3 = ViewBag.CalendarName[2]; }
                                     if (ViewBag.CalendarName[3] != "") { name4 = ViewBag.CalendarName[3]; }
                                 }
-                                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                <ul class="nav nav-pills mb-3 caname" id="pills-tab" role="tablist">
                                     <li class="nav-item">
                                         <a class="nav-link active" id="pills-active-tab" data-toggle="pill" href="#pills-active" role="tab" aria-controls="pills-active" aria-selected="true" onclick="calendar_one()"><p id="calendar1_name" style="min-width:5vw;">@name1</p></a>
                                         <input type="image" style="width:1.1vw;height:1.5vh;position:absolute;margin-top:-5.3vh;margin-left:92%;background-color:white;border-radius:20%;opacity:0.90;" src="/Content/pages/img/icoedit.png" data-toggle="modal" data-target="#Calendar_Name_Change" onclick="calendar_change_name_click(this)">
@@ -276,7 +285,7 @@
                                                 </ul>
                                                 <input type="hidden" id="tempdate" value="@TempData["datechoose"].ToString()" />
                                             </div>
-
+                                            @*<img  id="imgTop" src="~/Content/CalendarTheme/Images/MonthlyActivity/dec2018Theme1_6.JPG" style="position:fixed;width:10px;height:10px;display:none;z-index:10;" />*@
                                             <section id='calendar'></section>
                                         </div>
                                     </div>
@@ -1369,8 +1378,7 @@
 
                                         </div>
                                     </div>
-
-
+                                    <input type="hidden" id="DWM" value=""/>
 
                                 </div>
                             </div>
@@ -2114,6 +2122,12 @@
             Update_When_Change_Date(dateselect);
         }
 
+
+        var DWM = $('#DWM').val();
+        if (DWM == "month") {
+            getImage();
+        }
+
     }
     function nextday_mike() {
         if ($('#day_div').css('display') == 'none' && $('#day_div2').css('display') == 'none' && $('#day_div3').css('display') == 'none' && $('#day_div4').css('display') == 'none') {
@@ -2164,6 +2178,11 @@
             $('#tempdate').val(dateselect);
 
             Update_When_Change_Date(dateselect);
+        }
+
+        var DWM = $('#DWM').val();
+        if (DWM == "month") {
+            getImage();
         }
     }
 
@@ -2450,6 +2469,7 @@
                 },
                 editable: true,
                 defaultView: '',
+                showNonCurrentDates:false,
                 eventLimit: true,
                 dayNamesShort: ['Sunday', 'Monday', 'Tuesday', 'Wednesday','Thursday', 'Friday', 'Saturday'],
                 customButtons: {
@@ -2549,6 +2569,7 @@
                 },
                 editable: true,
                 defaultView: '',
+                showNonCurrentDates: false,
                 eventLimit: true,
                 dayNamesShort: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
                 customButtons: {
@@ -2648,6 +2669,7 @@
                 },
                 editable: true,
                 defaultView: '',
+                showNonCurrentDates: false,
                 eventLimit: true,
                 dayNamesShort: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
                 customButtons: {
@@ -2748,6 +2770,7 @@
                 },
                 editable: true,
                 defaultView: '',
+                showNonCurrentDates: false,
                 eventLimit: true,
                 dayNamesShort: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
                 customButtons: {
@@ -3591,6 +3614,8 @@
 
 
     $("#month1").click(function () {
+
+
         //$('#calendar1Parent').css('width', '100%');
         $('#day_div').hide();
         $('.fc-view-container').show();
@@ -3599,9 +3624,17 @@
         $('#PrintDAY').css({ "display": "none" });
         $('#PrintWAM').css({ "display": "inline-block" });
         $("#calendar").fullCalendar("changeView", "month");
+        
+
+        
 
         var view = $('#calendar').fullCalendar('getView');
         $('#lblCalendarMsg').html(view.title);
+        getImage();
+
+        $('#DWM').val('month');
+
+
     });
     $("#week1").click(function () {
         //$('#calendar1Parent').css('width', '100%');
@@ -3615,6 +3648,8 @@
 
         var view = $('#calendar').fullCalendar('getView');
         $('#lblCalendarMsg').html(view.title);
+
+        $('#DWM').val('week');
     });
     $("#day1").click(function () {
         //$('#calendar1Parent').css('width', '60%');
@@ -3627,6 +3662,8 @@
         //$("#calendar").fullCalendar("changeView", "CustomView");
         var temp = $('#tempdate').val();
         $('#lblCalendarMsg').html(temp);
+
+        $('#DWM').val('day');
     });
 
     $("#month2").click(function () {
@@ -3641,6 +3678,8 @@
 
         var view = $('#calendar2').fullCalendar('getView');
         $('#lblCalendarMsg2').html(view.title);
+        getImage();
+        $('#DWM').val('month');
     });
     $("#week2").click(function () {
         //$('#calendar2Parent').css('width', '100%');
@@ -3654,6 +3693,8 @@
 
         var view = $('#calendar2').fullCalendar('getView');
         $('#lblCalendarMsg2').html(view.title);
+
+        $('#DWM').val('week');
     });
     $("#day2").click(function () {
         //$('#calendar2Parent').css('width', '60%');
@@ -3666,6 +3707,8 @@
         //$("#calendar2").fullCalendar("changeView", "CustomView");
         var temp = $('#tempdate').val();
         $('#lblCalendarMsg2').html(temp);
+
+        $('#DWM').val('day');
     });
 
     $("#month3").click(function () {
@@ -3680,6 +3723,8 @@
 
         var view = $('#calendar3').fullCalendar('getView');
         $('#lblCalendarMsg3').html(view.title);
+        getImage();
+        $('#DWM').val('month');
     });
     $("#week3").click(function () {
         //$('#calendar3Parent').css('width', '100%');
@@ -3693,6 +3738,8 @@
 
         var view = $('#calendar3').fullCalendar('getView');
         $('#lblCalendarMsg3').html(view.title);
+
+        $('#DWM').val('week');
     });
     $("#day3").click(function () {
         //$('#calendar3Parent').css('width', '60%');
@@ -3705,6 +3752,8 @@
         //$("#calendar3").fullCalendar("changeView", "CustomView");
         var temp = $('#tempdate').val();
         $('#lblCalendarMsg3').html(temp);
+
+        $('#DWM').val('day');
     });
 
     $("#month4").click(function () {
@@ -3719,6 +3768,8 @@
 
         var view = $('#calendar4').fullCalendar('getView');
         $('#lblCalendarMsg4').html(view.title);
+        getImage();
+        $('#DWM').val('month');
     });
     $("#week4").click(function () {
         //$('#calendar4Parent').css('width', '100%');
@@ -3732,6 +3783,8 @@
 
         var view = $('#calendar4').fullCalendar('getView');
         $('#lblCalendarMsg4').html(view.title);
+
+        $('#DWM').val('week');
     });
     $("#day4").click(function () {
         //$('#calendar4Parent').css('width', '60%');
@@ -3744,9 +3797,55 @@
         //$("#calendar4").fullCalendar("changeView", "CustomView");
         var temp = $('#tempdate').val();
         $('#lblCalendarMsg4').html(temp);
+
+        $('#DWM').val('day');
     });
 
 
+    function getImage() {
+        var tab = $('#hiddentab').val();
+        var whichcalendar = "";
+        var calendarDate = "";
+        if (tab == "a" || tab == "") {
+            whichcalendar = "#calendar";
+            calendarDate = "#lblCalendarMsg";
+        }
+        else if (tab == "b") {
+            whichcalendar = "#calendar2";
+            calendarDate = "#lblCalendarMsg2";
+        }
+        else if (tab == "c") {
+            whichcalendar = "#calendar3";
+            calendarDate = "#lblCalendarMsg3";
+        }
+        else if (tab == "d") {
+            whichcalendar = "#calendar4";
+            calendarDate = "#lblCalendarMsg4";
+        }
 
+
+        var b = new Date($(calendarDate).html());
+        var firstThreeLetters = $(calendarDate).html().substring(0, 3).toLowerCase();
+        var year = b.getFullYear().toString();
+        var timeindex = b.getDay();
+
+        var filename = firstThreeLetters + year + 'Theme1_' + timeindex.toString()+'.JPG';
+
+        $(whichcalendar + ' .fc-month-view .fc-body .fc-widget-content .fc-day-grid .fc-row .fc-bg:first').prepend("<img id=\"imgTop\" src=\"\/Content\/CalendarTheme\/Images\/MonthlyActivity\/" + filename + "\" style=\"position:absolute;width:2px;height:2px;z-index:10;\" />");
+
+        var finalwidth = (parseInt($(whichcalendar + ' .fc-day').css("width").replace('px', '')) * timeindex).toString() + 'px';      
+        $(whichcalendar+' #imgTop').width(finalwidth);
+        $(whichcalendar + ' #imgTop').height($(whichcalendar + ' .fc-day').css("height"));
+        $(whichcalendar+' #imgTop').show();
+    }
+
+    window.onresize = function (event) {
+        var b = new Date($('#lblCalendarMsg').html());
+        var timeindex = b.getDay();
+        var finalwidth = (parseInt($('.fc-day').css("width").replace('px', '')) * timeindex).toString() + 'px';
+        $('#imgTop').width(finalwidth);
+        $('#imgTop').height($('.fc-day').css("height"));
+        $('#imgTop').show();
+    };
 
 </script>

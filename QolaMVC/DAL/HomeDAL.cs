@@ -3335,7 +3335,7 @@ namespace QolaMVC.DAL
                             {
                                 if (aa.IsSelected == true) l_Event.Hearing_text += aa.Name + ",";
                             }
-                            if (l_Event.Hearing_text.Length >= 1) l_Event.Hearing_text = l_Event.Hearing_text.Substring(0, l_Event.Vision_text.Length - 1);
+                            if (l_Event.Hearing_text.Length >= 1) l_Event.Hearing_text = l_Event.Hearing_text.Substring(0, l_Event.Hearing_text.Length - 1);
                         }
                         
                         l_Event.CognitiveFunction_text = "";
@@ -3345,7 +3345,7 @@ namespace QolaMVC.DAL
                             {
                                 if (aa.IsSelected == true) l_Event.CognitiveFunction_text += aa.Name + ",";
                             }
-                            if (l_Event.CognitiveFunction_text.Length >= 1) l_Event.CognitiveFunction_text = l_Event.CognitiveFunction_text.Substring(0, l_Event.Vision_text.Length - 1);
+                            if (l_Event.CognitiveFunction_text.Length >= 1) l_Event.CognitiveFunction_text = l_Event.CognitiveFunction_text.Substring(0, l_Event.CognitiveFunction_text.Length - 1);
                         }
 
                         l_Event.Communication_text = "";
@@ -3355,7 +3355,7 @@ namespace QolaMVC.DAL
                             {
                                 if (aa.IsSelected == true) l_Event.Communication_text += aa.Name + ",";
                             }
-                            if (l_Event.Communication_text.Length >= 1) l_Event.Communication_text = l_Event.CognitiveFunction_text.Substring(0, l_Event.Vision_text.Length - 1);
+                            if (l_Event.Communication_text.Length >= 1) l_Event.Communication_text = l_Event.Communication_text.Substring(0, l_Event.Communication_text.Length - 1);
                         }
 
                         l_Event.SpecialEquip_text = "";
@@ -3365,10 +3365,10 @@ namespace QolaMVC.DAL
                             {
                                 if (aa.IsSelected == true) l_Event.SpecialEquip_text += aa.Name + ",";
                             }
-                            if (l_Event.SpecialEquip_text.Length >= 1) l_Event.SpecialEquip_text = l_Event.CognitiveFunction_text.Substring(0, l_Event.Vision_text.Length - 1);
+                            if (l_Event.SpecialEquip_text.Length >= 1) l_Event.SpecialEquip_text = l_Event.SpecialEquip_text.Substring(0, l_Event.SpecialEquip_text.Length - 1);
                         }
 
-                        l_Event.Comments = "<b>"+l_Event.RiskLevel_Full+"</b>, ";
+                        l_Event.Comments = "<b>"+l_Event.RiskLevel+"</b>, ";
 
                         if (l_Event.Vision_text != "") l_Event.Comments += "<b>Vision</b>(" + l_Event.Vision_text + "), ";
                         if (l_Event.Hearing_text != "") l_Event.Comments += "<b>Hearing</b>(" + l_Event.Hearing_text + "), ";
@@ -3563,6 +3563,47 @@ namespace QolaMVC.DAL
             catch (Exception ex)
             {
                 exception = "AddPersonalCalendar |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+
+        public static DataTable Get_Activity_Calendar1_ExporttoWord(int homeId, DateTime eventFromDate, DateTime eventToDate)
+        {
+            string exception = string.Empty;
+            DataSet dtPersonalCalendar = null;
+            DataTable dtResident = null;
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("Get_Activity_Calendar1_ExporttoWord", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@homeId", 15);
+                l_Cmd.Parameters.AddWithValue("@fromDate", eventFromDate);
+                l_Cmd.Parameters.AddWithValue("@toDate", eventToDate);
+                dtPersonalCalendar = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(dtPersonalCalendar);
+
+                
+
+                if (dtPersonalCalendar.Tables[0].Rows.Count > 0)
+                {
+                    dtResident = new DataTable();
+                    dtResident = dtPersonalCalendar.Tables[0];
+                }
+                return dtResident;
+            }
+            catch (Exception ex)
+            {
+                exception = "Get_Activity_Calendar1_ExporttoWord |" + ex.ToString();
                 //Log.Write(exception);
                 throw;
             }
