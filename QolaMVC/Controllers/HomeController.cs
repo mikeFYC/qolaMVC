@@ -271,10 +271,6 @@ namespace QolaMVC.Controllers
                                 );
 
                             string reportName = RemoveSpecialCharacter(home.Name) + RemoveSpecialCharacter(CaName) + fromDate.ToString("MMM") + ".docx";
-                            if (System.IO.File.Exists(Server.MapPath("/Content/CalendarTheme/Html/") + reportName))
-                            {
-                                System.IO.File.Delete(Server.MapPath("/Content/CalendarTheme/Html/") + reportName);
-                            }
                             document.SaveAs(Server.MapPath("/Content/CalendarTheme/Html/") + reportName);
 
                             Response.ContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
@@ -282,22 +278,25 @@ namespace QolaMVC.Controllers
                             Response.WriteFile(Server.MapPath("/Content/CalendarTheme/Html/") + reportName);
                             Response.Flush();
 
-
+                            if (System.IO.File.Exists(Server.MapPath("/Content/CalendarTheme/Html/") + reportName))
+                            {
+                                System.IO.File.Delete(Server.MapPath("/Content/CalendarTheme/Html/") + reportName);
+                            }
+                            System.Web.HttpContext.Current.ApplicationInstance.CompleteRequest();
 
 
                             //MemoryStream ms = new MemoryStream();
                             //document.SaveAs(ms);
                             //Response.Clear();
-                            //Response.AddHeader("Content-disposition", "attachment; filename=\"" + reportName + ".docx");
-                            //Response.ContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-                            //Response.BinaryWrite(ms.ToArray());
-                            //Response.Flush();
-                            //Response.Close();
-                            System.Web.HttpContext.Current.ApplicationInstance.CompleteRequest();
+                            //Response.AddHeader("content-disposition", "attachment; filename=" + reportName);
+                            //Response.ContentType = "application/msword";
+                            //ms.WriteTo(Response.OutputStream);
+                            //Response.End();
 
 
-                            string fileName = Server.MapPath("/Content/CalendarTheme/Html/") + reportName;
-                            Process.Start("WINWORD.EXE", fileName);
+
+                            //string fileName = Server.MapPath("/Content/CalendarTheme/Html/") + reportName;
+                            //Process.Start("WINWORD.EXE", fileName);
                         }
                     }
                 }
