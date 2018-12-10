@@ -22,6 +22,7 @@ using SamDoc = Xceed.Words.NET;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using System.Net;
 
 namespace QolaMVC.Controllers
 {
@@ -273,30 +274,20 @@ namespace QolaMVC.Controllers
                             string reportName = RemoveSpecialCharacter(home.Name) + RemoveSpecialCharacter(CaName) + fromDate.ToString("MMM") + ".docx";
                             document.SaveAs(Server.MapPath("/Content/CalendarTheme/Html/") + reportName);
 
-                            Response.ContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-                            Response.AppendHeader("Content-Disposition", "attachment; filename=" + reportName);
-                            Response.WriteFile(Server.MapPath("/Content/CalendarTheme/Html/") + reportName);
-                            Response.Flush();
+                            System.IO.MemoryStream mStream = new System.IO.MemoryStream();
+                            FileStream file = new FileStream(Server.MapPath("/Content/CalendarTheme/Html/") + reportName, FileMode.Open, FileAccess.Read);
+                            file.CopyTo(mStream);
+                            Response.ContentType = "application/octet-stream";
+                            Response.AddHeader("Content-Disposition", "attachment; filename="+ reportName);
+                            Response.Clear();
+                            Response.BinaryWrite(mStream.ToArray());
 
-                            if (System.IO.File.Exists(Server.MapPath("/Content/CalendarTheme/Html/") + reportName))
-                            {
-                                System.IO.File.Delete(Server.MapPath("/Content/CalendarTheme/Html/") + reportName);
-                            }
-                            System.Web.HttpContext.Current.ApplicationInstance.CompleteRequest();
+                            //if (System.IO.File.Exists(Server.MapPath("/Content/CalendarTheme/Html/") + reportName))
+                            //{
+                            //    System.IO.File.Delete(Server.MapPath("/Content/CalendarTheme/Html/") + reportName);
+                            //}
+                            //System.Web.HttpContext.Current.ApplicationInstance.CompleteRequest();
 
-
-                            //MemoryStream ms = new MemoryStream();
-                            //document.SaveAs(ms);
-                            //Response.Clear();
-                            //Response.AddHeader("content-disposition", "attachment; filename=" + reportName);
-                            //Response.ContentType = "application/msword";
-                            //ms.WriteTo(Response.OutputStream);
-                            //Response.End();
-
-
-
-                            //string fileName = Server.MapPath("/Content/CalendarTheme/Html/") + reportName;
-                            //Process.Start("WINWORD.EXE", fileName);
                         }
                     }
                 }
@@ -458,6 +449,8 @@ namespace QolaMVC.Controllers
                             Response.AppendHeader("Content-Disposition", "attachment; filename=" + reportName);
                             Response.WriteFile(Server.MapPath("/CalendarTheme/Html/") + reportName);
                             Response.Flush();
+
+
 
                             if (System.IO.File.Exists(Server.MapPath("/CalendarTheme/Html/") + reportName))
                             {
@@ -690,7 +683,6 @@ namespace QolaMVC.Controllers
             return residentName;
         }
 
-
         public void CreateSampleDocument()
         {
             // Modify to suit your machine:
@@ -708,7 +700,62 @@ namespace QolaMVC.Controllers
             // Open in Word:
             Process.Start("WINWORD.EXE", fileName);
         }
-        
+        public void downloadSampleDocument_test()
+        {
+            string remoteUri = Server.MapPath("/Content/CalendarTheme/Html/");
+            string fileName = "AuburnHeightsRetirementResidenceIndependentCalendarDec.docx", myStringWebResource = null;
+            WebClient myWebClient = new WebClient();
+            myStringWebResource = remoteUri + fileName;
+            myWebClient.DownloadFile(myStringWebResource, Environment.GetFolderPath(Environment.SpecialFolder.Desktop)+ "\\" +fileName);
+        }
+        public void downloadSampleDocument_test2()
+        {
+            try
+            {
+                string reportName = "AuburnHeightsRetirementResidenceIndependentCalendarDec.docx";
+                string savePath = Server.MapPath("/Content/CalendarTheme/Html/AAA.docx")//保存路劲
+                , downFileUrl = Server.MapPath("/Content/CalendarTheme/Html/" + reportName);//下载文件链接地址
+                WebClient wcClient = new WebClient();
+                WebRequest webReq = WebRequest.Create(downFileUrl);
+                WebResponse webRes = webReq.GetResponse();
+                long fileLength = webRes.ContentLength;
+                Stream srm = webRes.GetResponseStream();
+                StreamReader srmReader = new StreamReader(srm);
+                byte[] bufferbyte = new byte[fileLength];
+                int allByte = (int)bufferbyte.Length;
+                int startByte = 0;
+                while (fileLength > 0)
+                {
+                    //Application.DoEvents();
+                    int downByte = srm.Read(bufferbyte, startByte, allByte);
+                    if (downByte == 0) { break; };
+                    startByte += downByte;
+                    allByte -= downByte;
+                }
+                if (!System.IO.File.Exists(savePath))
+                {
+                    string[] dirArray = savePath.Split('\\');
+                    string temp = string.Empty;
+                    for (int i = 0; i < dirArray.Length - 1; i++)
+                    {
+                        temp += dirArray[i].Trim() + "\\";
+                        if (!Directory.Exists(temp))
+                            Directory.CreateDirectory(temp);
+                    }
+                }
+                FileStream fs = new FileStream(savePath, FileMode.OpenOrCreate, FileAccess.Write);
+                fs.Write(bufferbyte, 0, bufferbyte.Length);
+                srm.Close();
+                srmReader.Close();
+                fs.Close();
+            }
+            catch (WebException ex)
+            {
+                throw ex;
+            }
+        }
+
+
 
         public ActionResult Index()
         {

@@ -137,19 +137,13 @@
                 }
             });
             
-            $.ajax({
-                type: 'post',
-                url: "/Home/exportToWord",
-                dataType: 'json',
-                data: { titleDate: date, DWM: DWM , CaName:caname },
-                success: function (data) {
-                    alert("YY");
-
-                },
-                error: function (ex) {
-                    alert("GG");
-                }
-            });
+            //$.ajax({
+            //    type: 'get',
+            //    url: "/Home/exportToWord",
+            //    dataType: 'json',
+            //    data: { titleDate: date, DWM: DWM , CaName:caname }
+            //});
+            location.href = '/Home/exportToWord?titleDate=' + date + '&DWM=' + DWM + '&CaName=' + caname;
 
         }
     </script>
@@ -224,10 +218,11 @@
                                 <h3>Activity Calendar</h3>
                             </div>
                             <div style="width:19%;display:inline-block;">
-                                <input id="backbutton" onclick="location.href='/Home/Menu/?p_HomeId=@ViewBag.Home.Id';" class="btn btn-primary" type="button" value="BACK"/>
+                                <input id="backbutton" onclick="location.href='/Home/Menu/?p_HomeId=@ViewBag.Home.Id';" class="btn btn-primary" type="button" value="BACK" />
                                 <button class="btn btn-danger print" id="PrintDAY" style="">Print</button>
                                 <button class="btn btn-danger printBtn hidden-print " id="PrintWAM" style="display:none;">Print</button>
                                 <button onclick="exportWord2()">Export</button>
+                                @*<button onclick="location.href='/Home/btnPdf_Click_EmergencyList?'">Export</button>*@
                             </div>
                         </div>
                         <!-- </div> -->
