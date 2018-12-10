@@ -3573,19 +3573,35 @@ namespace QolaMVC.DAL
         }
 
 
-        public static DataTable Get_Activity_Calendar1_ExporttoWord(int homeId, DateTime eventFromDate, DateTime eventToDate)
+        public static DataTable Get_Activity_Calendar1234_ExporttoWord(int homeId, DateTime eventFromDate, DateTime eventToDate,string CaNumber)
         {
             string exception = string.Empty;
             DataSet dtPersonalCalendar = null;
             DataTable dtResident = null;
+            string storeProString = "";
+            switch (CaNumber)
+            {
+                case "a":
+                    storeProString = "Get_Activity_Calendar1_ExporttoWord";
+                    break;
+                case "b":
+                    storeProString = "Get_Activity_Calendar2_ExporttoWord";
+                    break;
+                case "c":
+                    storeProString = "Get_Activity_Calendar3_ExporttoWord";
+                    break;
+                case "d":
+                    storeProString = "Get_Activity_Calendar4_ExporttoWord";
+                    break;
+            }
             SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
             try
             {
                 SqlDataAdapter l_DA = new SqlDataAdapter();
-                SqlCommand l_Cmd = new SqlCommand("Get_Activity_Calendar1_ExporttoWord", l_Conn);
+                SqlCommand l_Cmd = new SqlCommand(storeProString, l_Conn);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                l_Cmd.Parameters.AddWithValue("@homeId", 15);
+                l_Cmd.Parameters.AddWithValue("@homeId", homeId);
                 l_Cmd.Parameters.AddWithValue("@fromDate", eventFromDate);
                 l_Cmd.Parameters.AddWithValue("@toDate", eventToDate);
                 dtPersonalCalendar = new DataSet();
@@ -3612,6 +3628,9 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
+       
+
+
 
     }
 }

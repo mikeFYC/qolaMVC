@@ -129,6 +129,24 @@
 
         function exportWord2() {
             var date = $('#lblCalendarMsg').html();
+            var tab = $('#hiddentab').val();
+            if (tab == "a" || tab == "") {
+                var date = $('#lblCalendarMsg').html();
+            }
+            else if (tab == "b") {
+                var date = $('#lblCalendarMsg2').html();
+            }
+            else if (tab == "c") {
+                var date = $('#lblCalendarMsg3').html();
+            }
+            else if (tab == "d") {
+                var date = $('#lblCalendarMsg4').html();
+            }
+            
+            var calendarNumber = $('#hiddentab').val();
+            if (calendarNumber == "") {
+                calendarNumber = "a";
+            }
             var DWM = $('#DWM').val();
             var caname = "";
             $('.caname li a').each(function () {
@@ -143,7 +161,7 @@
             //    dataType: 'json',
             //    data: { titleDate: date, DWM: DWM , CaName:caname }
             //});
-            location.href = '/Home/exportToWord?titleDate=' + date + '&DWM=' + DWM + '&CaName=' + caname;
+            location.href = '/Home/exportToWord?titleDate=' + date + '&DWM=' + DWM + '&CaName=' + caname + '&CaNumber=' + calendarNumber;
 
         }
     </script>
@@ -214,15 +232,14 @@
                     <div class="container-fluid container-fixed-lg">
                         <!-- <div class="inner"> -->
                         <div class="row align-items-center">
-                            <div id="ACtivityCalendarTitle" style="width:79%;display:inline-block;">
+                            <div id="ACtivityCalendarTitle" style="width:75%;display:inline-block;">
                                 <h3>Activity Calendar</h3>
                             </div>
-                            <div style="width:19%;display:inline-block;">
+                            <div style="width:24%;display:inline-block;">
                                 <input id="backbutton" onclick="location.href='/Home/Menu/?p_HomeId=@ViewBag.Home.Id';" class="btn btn-primary" type="button" value="BACK" />
                                 <button class="btn btn-danger print" id="PrintDAY" style="">Print</button>
                                 <button class="btn btn-danger printBtn hidden-print " id="PrintWAM" style="display:none;">Print</button>
-                                <button onclick="exportWord2()">Export</button>
-                                @*<button onclick="location.href='/Home/btnPdf_Click_EmergencyList?'">Export</button>*@
+                                <button class="btn btn-danger" onclick="exportWord2()">DOC</button>
                             </div>
                         </div>
                         <!-- </div> -->
@@ -269,9 +286,9 @@
                                     <div class="tab-pane fade show active" id="pills-active" role="tabpanel" aria-labelledby="pills-active-tab">
                                         <div id="calendar1Parent" style='position: relative; float: left; width: 100%;z-index:100;'>
                                             <div>
-                                                <button class="btn btn-primary" id="month1" style="border-radius:.25rem">Month</button>
-                                                <button class="btn btn-primary" id="week1" style="border-radius:.25rem">Week</button>
-                                                <button class="btn btn-primary" id="day1" style="border-radius:.25rem">Day</button>
+                                                <button class="btn text-white" id="day1" style="border-radius:.25rem;background-color:#015093;">Day</button>
+                                                <button class="btn text-white" id="week1" style="border-radius:.25rem;background-color:cornflowerblue;">Week</button>
+                                                <button class="btn text-white" id="month1" style="border-radius:.25rem;background-color:cornflowerblue;">Month</button>
                                                 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top:-5vh;margin-left:30%;">
                                                     <li class="Prevbtn"><a id="imgPrevbtn_a" href="#" onclick="previousday_mike()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
                                                     <li class="clear_bg"><label id="lblCalendarMsg" style="font-weight:bolder;font-size:1.5em;margin-top:1.5vh;color:black;">@TempData["datechoose"].ToString()</label></li>
@@ -288,9 +305,9 @@
                                     <div class="tab-pane fade" id="pills-achive" role="tabpanel" aria-labelledby="pills-achive-tab">
                                         <div id="calendar2Parent" style='position: relative; float: left; width: 100%;z-index:100;'>
                                             <div>
-                                                <button class="btn btn-primary" id="month2" style="border-radius:.25rem">Month</button>
-                                                <button class="btn btn-primary" id="week2" style="border-radius:.25rem">Week</button>
-                                                <button class="btn btn-primary" id="day2" style="border-radius:.25rem">Day</button>
+                                                <button class="btn text-white" id="day2" style="border-radius:.25rem;background-color:#015093;">Day</button>
+                                                <button class="btn text-white" id="week2" style="border-radius:.25rem;background-color:cornflowerblue;">Week</button>
+                                                <button class="btn text-white" id="month2" style="border-radius:.25rem;background-color:cornflowerblue;">Month</button>
                                                 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top:-5vh;margin-left:30%;">
 
                                                     <li class="Prevbtn"><a href="#" onclick="previousday_mike()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
@@ -307,9 +324,9 @@
 
                                         <div id="calendar3Parent" style='position: relative; float: left; width: 100%;z-index:100;'>
                                             <div>
-                                                <button class="btn btn-primary" id="month3" style="border-radius:.25rem">Month</button>
-                                                <button class="btn btn-primary" id="week3" style="border-radius:.25rem">Week</button>
-                                                <button class="btn btn-primary" id="day3" style="border-radius:.25rem">Day</button>
+                                                <button class="btn text-white" id="day3" style="border-radius:.25rem;background-color:#015093;">Day</button>
+                                                <button class="btn text-white" id="week3" style="border-radius:.25rem;background-color:cornflowerblue;">Week</button>
+                                                <button class="btn text-white" id="month3" style="border-radius:.25rem;background-color:cornflowerblue;">Month</button>
                                                 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top:-5vh;margin-left:30%;">
 
                                                     <li class="Prevbtn"><a href="#" onclick="previousday_mike()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
@@ -325,9 +342,10 @@
                                     <div class="tab-pane fade" id="pills-C4" role="tabpanel" aria-labelledby="pills-achive-tab3">
                                         <div id="calendar4Parent" style='position: relative; float: left; width: 100%;z-index:100;'>
                                             <div>
-                                                <button class="btn btn-primary" id="month4" style="border-radius:.25rem">Month</button>
-                                                <button class="btn btn-primary" id="week4" style="border-radius:.25rem">Week</button>
-                                                <button class="btn btn-primary" id="day4" style="border-radius:.25rem">Day</button>
+                                                <button class="btn text-white" id="day4" style="border-radius:.25rem;background-color:#015093;">Day</button>
+                                                <button class="btn text-white" id="week4" style="border-radius:.25rem;background-color:cornflowerblue;">Week</button>
+                                                <button class="btn text-white" id="month4" style="border-radius:.25rem;background-color:cornflowerblue;">Month</button>
+
                                                 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top:-5vh;margin-left:30%;">
 
                                                     <li class="Prevbtn"><a href="#" onclick="previousday_mike()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
@@ -967,7 +985,7 @@
                                             <label class="text-center" id="calendarnumber" style="width:20%;"></label>
                                             <br><br>
                                             <label style="font-weight:bold;font-size:1em;width:40%;">Old Calendar Name:</label>
-                                            <label id="oldName" style="width:30%;"></label>
+                                            <label id="oldName" style="width:40%;"></label>
                                             <br><br>
                                             <label style="font-weight:bold;font-size:1em;width:40%;">New Calendar Name:</label>
                                             <input type="text" id="newName" style="width:40%;"/>
@@ -1438,76 +1456,6 @@
 
 <script>
 
-
-    function day_click_mike() {
-        //document.getElementById("mike").style.visibility = "hidden";
-        //document.getElementById("day_div").style.display = "block";
-
-        //setTimeout(function () {
-        //    $('.cp-calendar.daily').hide();
-        //    $('div[class="cp-nav-controls"]').hide();
-        //    $('div[class="cp-header-content"]').hide();
-        //    $('div[class="cp-view-list-container"]').css('z-index', 200);
-        //    $('div[class="cp-view-list-container"]').css('width', "20%");
-        //    document.getElementById("mike").style.visibility = "visible";
-        //}, 300);
-        if (document.getElementById('pills-active-tab').className == "nav-link active") {
-            window.location.href = window.location.href;
-        }
-        else {
-            if (document.getElementById('pills-achive-tab').className == "nav-link active") {
-                document.getElementById("mike").style.visibility = "hidden";
-                document.getElementById("day_div2").style.display = "block";
-            }
-            else if (document.getElementById('pills-achive-tab2').className == "nav-link active") {
-                document.getElementById("mike").style.visibility = "hidden";
-                document.getElementById("day_div3").style.display = "block";
-            }
-            else if (document.getElementById('pills-achive-tab3').className == "nav-link active") {
-                document.getElementById("mike").style.visibility = "hidden";
-                document.getElementById("day_div4").style.display = "block";
-            }
-            setTimeout(function () {
-                $('.cp-calendar.daily').hide();
-                $('div[class="cp-nav-controls"]').hide();
-                $('div[class="cp-header-content"]').hide();
-                $('div[class="cp-view-list-container"]').css('z-index', 200);
-                $('div[class="cp-view-list-container"]').css('width', "20%");
-                document.getElementById("mike").style.visibility = "visible";
-            }, 300);
-
-        }
-    }
-
-    function day_click() {
-        var tab = $('#hiddentab').val();
-        if (window.location.href.toString().includes("tab")) {
-            var indexequal = window.location.href.toString().indexOf("tab");
-            var newstring = window.location.href.toString().substring(0, indexequal + 4);
-
-            window.location.href = newstring + tab;
-        }
-        else {
-            if (window.location.href.toString().includes("?")) {
-                window.location.href = window.location.href + "&tab=" + tab;
-            }
-            else {
-                window.location.href = window.location.href + "?tab=" + tab;
-            }
-        }
-    }
-
-    function hide_day() {
-
-        document.getElementById("day_div").style.display = "none";
-        document.getElementById("day_div2").style.display = "none";
-        document.getElementById("day_div3").style.display = "none";
-        document.getElementById("day_div4").style.display = "none";
-        $('div[class="cp-nav-controls"]').show();
-        $('div[class="cp-header-content"]').show();
-
-    }
-
     function calendar_one() {
         //var b = $('.fc-basicWeek-button');
         //b[0].className = "fc-basicWeek-button fc-button fc-state-default";
@@ -1528,6 +1476,7 @@
 
         $('#PrintWAM').css({ "display": "none" });
         $('#PrintDAY').css({ "display": "inline-block" });
+        resetbuttoncolor();
     }
 
     function calendar_two() {
@@ -1551,6 +1500,7 @@
 
         $('#PrintWAM').css({ "display": "none" });
         $('#PrintDAY').css({ "display": "inline-block" });
+        resetbuttoncolor();
     }
 
     function calendar_three() {
@@ -1573,6 +1523,7 @@
 
         $('#PrintWAM').css({ "display": "none" });
         $('#PrintDAY').css({ "display": "inline-block" });
+        resetbuttoncolor();
     }
 
     function calendar_four() {
@@ -1595,6 +1546,7 @@
 
         $('#PrintWAM').css({ "display": "none" });
         $('#PrintDAY').css({ "display": "inline-block" });
+        resetbuttoncolor();
     }
     
     function calendar_change_name_click(ee) {
@@ -1934,71 +1886,6 @@
             else
                 tempAlert("Saved failed", 2000);
         });
-
-    }
-
-    function previousday() {
-        var monthNames = [
-            "January", "February", "March",
-            "April", "May", "June", "July",
-            "August", "September", "October",
-            "November", "December"
-        ];
-        var a = document.getElementById("lblCalendarMsg").innerHTML;
-        var b = new Date(a);
-        b.setDate(b.getDate() - 1);
-        document.getElementById("lblCalendarMsg").innerHTML = monthNames[b.getMonth()] + " " + b.getDate() + ", " + b.getFullYear();
-
-        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
-        var tab = $('#hiddentab').val();
-        if (window.location.href.toString().includes("datesel") && window.location.href.toString().includes("tab")) {
-            var indexequal = window.location.href.toString().indexOf("=");
-            var newstring = window.location.href.toString().substring(0, indexequal + 1);
-
-            window.location.href = newstring + dateselect + "&tab=" + tab;
-        }
-        else {
-            var indexequal = window.location.href.toString().indexOf("?");
-            if (indexequal != -1) {
-                var newstring = window.location.href.toString().substring(0, indexequal);
-                window.location.href = newstring + "?datesel=" + dateselect + "&tab=" + tab;
-            }
-            else {
-                window.location.href = window.location.href + "?datesel=" + dateselect + "&tab=" + tab;
-            }
-
-        }
-
-    }
-    function nextday() {
-        var monthNames = [
-            "January", "February", "March",
-            "April", "May", "June", "July",
-            "August", "September", "October",
-            "November", "December"
-        ];
-        var a = document.getElementById("lblCalendarMsg").innerHTML;
-        var b = new Date(a);
-        b.setDate(b.getDate() + 1);
-        document.getElementById("lblCalendarMsg").innerHTML = monthNames[b.getMonth()] + " " + b.getDate() + ", " + b.getFullYear();
-
-        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
-        var tab = $('#hiddentab').val();
-        if (window.location.href.toString().includes("datesel")) {
-            var indexequal = window.location.href.toString().indexOf("=");
-            var newstring = window.location.href.toString().substring(0, indexequal + 1);
-            window.location.href = newstring + dateselect + "&tab=" + tab;
-        }
-        else {
-            var indexequal = window.location.href.toString().indexOf("?");
-            if (indexequal != -1) {
-                var newstring = window.location.href.toString().substring(0, indexequal);
-                window.location.href = newstring + "?datesel=" + dateselect + "&tab=" + tab;
-            }
-            else {
-                window.location.href = window.location.href + "?datesel=" + dateselect + "&tab=" + tab;
-            }
-        }
 
     }
 
@@ -3407,7 +3294,8 @@
 
     function update_day_div() {
         var tab = $('#hiddentab').val();
-        var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+        //var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
+        var dateselect = $('#tempdate').val();
 
         if (tab == "a" || tab == "") {
             $.get("/Home/update_day_div1", { datesel: dateselect }, function (data) {
@@ -3513,14 +3401,6 @@
     }
 
 
-    //setTimeout(function () {
-    //    $('.fc-center').hide();
-    //    $('.fc-right').hide();
-    //    $('#calendar1Parent').css('width', '60%');
-
-    //}, 1000);
-
-
     $('.printBtn').on('click', function () {
         $('#ACtivityCalendarTitle').css({ 'margin-left': '5vw' });
         $('#backbutton').hide();
@@ -3619,9 +3499,6 @@
         $('#PrintDAY').css({ "display": "none" });
         $('#PrintWAM').css({ "display": "inline-block" });
         $("#calendar").fullCalendar("changeView", "month");
-        
-
-        
 
         var view = $('#calendar').fullCalendar('getView');
         $('#lblCalendarMsg').html(view.title);
@@ -3629,6 +3506,9 @@
 
         $('#DWM').val('month');
 
+        $('#month1').css("background-color", "#015093");
+        $('#day1').css("background-color", "cornflowerblue");
+        $('#week1').css("background-color", "cornflowerblue");
 
     });
     $("#week1").click(function () {
@@ -3645,6 +3525,10 @@
         $('#lblCalendarMsg').html(view.title);
 
         $('#DWM').val('week');
+
+        $('#week1').css("background-color", "#015093");
+        $('#day1').css("background-color", "cornflowerblue");
+        $('#month1').css("background-color", "cornflowerblue");
     });
     $("#day1").click(function () {
         //$('#calendar1Parent').css('width', '60%');
@@ -3659,6 +3543,10 @@
         $('#lblCalendarMsg').html(temp);
 
         $('#DWM').val('day');
+
+        $('#day1').css("background-color", "#015093");
+        $('#month1').css("background-color", "cornflowerblue");
+        $('#week1').css("background-color", "cornflowerblue");
     });
 
     $("#month2").click(function () {
@@ -3675,6 +3563,10 @@
         $('#lblCalendarMsg2').html(view.title);
         getImage();
         $('#DWM').val('month');
+
+        $('#month2').css("background-color", "#015093");
+        $('#day2').css("background-color", "cornflowerblue");
+        $('#week2').css("background-color", "cornflowerblue");
     });
     $("#week2").click(function () {
         //$('#calendar2Parent').css('width', '100%');
@@ -3690,6 +3582,10 @@
         $('#lblCalendarMsg2').html(view.title);
 
         $('#DWM').val('week');
+
+        $('#week2').css("background-color", "#015093");
+        $('#day2').css("background-color", "cornflowerblue");
+        $('#month2').css("background-color", "cornflowerblue");
     });
     $("#day2").click(function () {
         //$('#calendar2Parent').css('width', '60%');
@@ -3704,6 +3600,10 @@
         $('#lblCalendarMsg2').html(temp);
 
         $('#DWM').val('day');
+
+        $('#day2').css("background-color", "#015093");
+        $('#week2').css("background-color", "cornflowerblue");
+        $('#month2').css("background-color", "cornflowerblue");
     });
 
     $("#month3").click(function () {
@@ -3720,6 +3620,10 @@
         $('#lblCalendarMsg3').html(view.title);
         getImage();
         $('#DWM').val('month');
+
+        $('#month3').css("background-color", "#015093");
+        $('#day3').css("background-color", "cornflowerblue");
+        $('#week3').css("background-color", "cornflowerblue");
     });
     $("#week3").click(function () {
         //$('#calendar3Parent').css('width', '100%');
@@ -3735,6 +3639,10 @@
         $('#lblCalendarMsg3').html(view.title);
 
         $('#DWM').val('week');
+
+        $('#week3').css("background-color", "#015093");
+        $('#day3').css("background-color", "cornflowerblue");
+        $('#month3').css("background-color", "cornflowerblue");
     });
     $("#day3").click(function () {
         //$('#calendar3Parent').css('width', '60%');
@@ -3749,6 +3657,10 @@
         $('#lblCalendarMsg3').html(temp);
 
         $('#DWM').val('day');
+
+        $('#day3').css("background-color", "#015093");
+        $('#week3').css("background-color", "cornflowerblue");
+        $('#month3').css("background-color", "cornflowerblue");
     });
 
     $("#month4").click(function () {
@@ -3765,6 +3677,10 @@
         $('#lblCalendarMsg4').html(view.title);
         getImage();
         $('#DWM').val('month');
+
+        $('#month4').css("background-color", "#015093");
+        $('#day4').css("background-color", "cornflowerblue");
+        $('#week4').css("background-color", "cornflowerblue");
     });
     $("#week4").click(function () {
         //$('#calendar4Parent').css('width', '100%');
@@ -3780,6 +3696,10 @@
         $('#lblCalendarMsg4').html(view.title);
 
         $('#DWM').val('week');
+
+        $('#week4').css("background-color", "#015093");
+        $('#day4').css("background-color", "cornflowerblue");
+        $('#month4').css("background-color", "cornflowerblue");
     });
     $("#day4").click(function () {
         //$('#calendar4Parent').css('width', '60%');
@@ -3794,6 +3714,10 @@
         $('#lblCalendarMsg4').html(temp);
 
         $('#DWM').val('day');
+
+        $('#day4').css("background-color", "#015093");
+        $('#week4').css("background-color", "cornflowerblue");
+        $('#month4').css("background-color", "cornflowerblue");
     });
 
 
@@ -3823,24 +3747,79 @@
         var firstThreeLetters = $(calendarDate).html().substring(0, 3).toLowerCase();
         var year = b.getFullYear().toString();
         var timeindex = b.getDay();
-
         var filename = firstThreeLetters + year + 'Theme1_' + timeindex.toString()+'.JPG';
-
         $(whichcalendar + ' .fc-month-view .fc-body .fc-widget-content .fc-day-grid .fc-row .fc-bg:first').prepend("<img id=\"imgTop\" src=\"\/Content\/CalendarTheme\/Images\/MonthlyActivity\/" + filename + "\" style=\"position:absolute;width:2px;height:2px;z-index:10;\" />");
-
         var finalwidth = (parseInt($(whichcalendar + ' .fc-day').css("width").replace('px', '')) * timeindex).toString() + 'px';      
         $(whichcalendar+' #imgTop').width(finalwidth);
         $(whichcalendar + ' #imgTop').height($(whichcalendar + ' .fc-day').css("height"));
-        $(whichcalendar+' #imgTop').show();
+        $(whichcalendar + ' #imgTop').show();
+
+        var nextmonth = new Date(b.getFullYear(), b.getMonth() + 1, b.getDate())
+        var lastday = new Date(nextmonth - 1);
+        var timeindex2;
+        if (lastday.getDay() == 7) {timeindex2 = 6;}
+        else {timeindex2 = 6 - lastday.getDay();}
+        var finalwidth2 = (parseInt($(whichcalendar + ' .fc-day').css("width").replace('px', '')) * timeindex2).toString() + 'px';   
+        var filename2 = firstThreeLetters + year + 'Theme1_' + timeindex2.toString() + '.JPG';
+        $(whichcalendar + ' .fc-disabled-day:eq(' + timeindex + ')').prepend("<img id=\"imgBot\" src=\"\/Content\/CalendarTheme\/Images\/MonthlyActivity\/" + filename2 + "\" style=\"width:2px;height:2px;z-index:50;\" />");
+        $(whichcalendar + ' .fc-disabled-day:eq(' + timeindex + ')').css("opacity", "1");
+        $(whichcalendar + ' .fc-disabled-day').css("background", "none");
+        $(whichcalendar + ' #imgBot').width(finalwidth2);
+        $(whichcalendar + ' #imgBot').height($(whichcalendar + ' .fc-day').css("height"));
+        $(whichcalendar + ' #imgBot').show();
     }
 
     window.onresize = function (event) {
-        var b = new Date($('#lblCalendarMsg').html());
+        var tab = $('#hiddentab').val();
+        var whichcalendar = "";
+        var calendarDate = "";
+        if (tab == "a" || tab == "") {
+            whichcalendar = "#calendar";
+            calendarDate = "#lblCalendarMsg";
+        }
+        else if (tab == "b") {
+            whichcalendar = "#calendar2";
+            calendarDate = "#lblCalendarMsg2";
+        }
+        else if (tab == "c") {
+            whichcalendar = "#calendar3";
+            calendarDate = "#lblCalendarMsg3";
+        }
+        else if (tab == "d") {
+            whichcalendar = "#calendar4";
+            calendarDate = "#lblCalendarMsg4";
+        }
+        var b = new Date($(calendarDate).html());
         var timeindex = b.getDay();
-        var finalwidth = (parseInt($('.fc-day').css("width").replace('px', '')) * timeindex).toString() + 'px';
-        $('#imgTop').width(finalwidth);
-        $('#imgTop').height($('.fc-day').css("height"));
-        $('#imgTop').show();
+        var finalwidth = (parseInt($(whichcalendar + ' .fc-day').css("width").replace('px', '')) * timeindex).toString() + 'px';
+        $(whichcalendar + ' #imgTop').width(finalwidth);
+        $(whichcalendar + ' #imgTop').height($(whichcalendar + ' .fc-day').css("height"));
+        $(whichcalendar + ' #imgTop').show();
+
+        var nextmonth = new Date(b.getFullYear(), b.getMonth() + 1, b.getDate())
+        var lastday = new Date(nextmonth - 1);
+        var timeindex2;
+        if (lastday.getDay() == 7) { timeindex2 = 6; }
+        else { timeindex2 = 6 - lastday.getDay(); }
+        var finalwidth2 = (parseInt($(whichcalendar + ' .fc-day').css("width").replace('px', '')) * timeindex2).toString() + 'px';
+        $(whichcalendar + ' #imgBot').width(finalwidth2);
+        $(whichcalendar + ' #imgBot').height($(whichcalendar + ' .fc-day').css("height"));
+        $(whichcalendar + ' #imgBot').show();
     };
+
+    function resetbuttoncolor() {
+        $('#day1').css("background-color", "#015093");
+        $('#week1').css("background-color", "cornflowerblue");
+        $('#month1').css("background-color", "cornflowerblue");
+        $('#day2').css("background-color", "#015093");
+        $('#week2').css("background-color", "cornflowerblue");
+        $('#month2').css("background-color", "cornflowerblue");
+        $('#day3').css("background-color", "#015093");
+        $('#week3').css("background-color", "cornflowerblue");
+        $('#month3').css("background-color", "cornflowerblue");
+        $('#day4').css("background-color", "#015093");
+        $('#week4').css("background-color", "cornflowerblue");
+        $('#month4').css("background-color", "cornflowerblue");
+    }
 
 </script>

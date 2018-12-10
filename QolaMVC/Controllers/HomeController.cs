@@ -32,17 +32,25 @@ namespace QolaMVC.Controllers
         private string _mobiltySelectedValue = string.Empty;
         private string _previousValue = string.Empty;
 
-        public void exportToWord(string titleDate,string DWM,string CaName)
+        public void exportToWord(string titleDate,string DWM,string CaName,string CaNumber)
         {
             if (DWM == "month")
             {
-                CreateDocMonth(titleDate,CaName);
+                CreateDocMonth(titleDate,CaName, CaNumber);
+            }
+            else if (DWM == "week")
+            {
+                CreateDocWeek(titleDate, CaName, CaNumber);
+            }
+            else if (DWM == "day" || DWM == "")
+            {
+                CretaeDocDay(titleDate, CaName, CaNumber);
             }
         }
 
 
 
-        public void CreateDocMonth(string titleDate,string CaName)
+        public void CreateDocMonth(string titleDate,string CaName,string CaNumber)
         {
             var user = (UserModel)TempData["User"];
             var home = (HomeModel)TempData["Home"];
@@ -108,7 +116,7 @@ namespace QolaMVC.Controllers
                     maxCellheight = cellHeight[0];
                 }
                     
-                DataTable dtActivityCalendar = HomeDAL.Get_Activity_Calendar1_ExporttoWord(homeId, fromDate, toDate);
+                DataTable dtActivityCalendar = HomeDAL.Get_Activity_Calendar1234_ExporttoWord(homeId, fromDate, toDate,CaNumber);
                 //DataTable dtActivityCalendar = new DataTable();
                 DataRow[] drEachDate;
                 string strActivityEventDate = string.Empty, strDynamTime = string.Empty, strVenue = string.Empty, clsName = string.Empty;
@@ -157,7 +165,7 @@ namespace QolaMVC.Controllers
                                                     string temSignUPVal = drEachDate[index]["EventTitle"].ToString();
                                                     clsName = temSignUPVal;
 
-                                                    strDynamTime = drEachDate[index]["StartTime"].ToString();
+                                                    strDynamTime =DateTime.Parse(drEachDate[index]["StartTime"].ToString()).ToShortTimeString();
 
 
                                                 if (drEachDate[index]["Venue"].ToString() == "")
@@ -196,11 +204,11 @@ namespace QolaMVC.Controllers
                                             if (CultureInfo.CurrentCulture.Name == "fr-BE")
                                             {
                                                 
-                                                sTopImg = Server.MapPath("/Content/CalendarTheme/Images/MonthlyActivity/dec2018Theme1_6.JPG");
+                                                sTopImg = Server.MapPath("/Content/CalendarTheme/Images/MonthlyActivity/"+ titleDate.Substring(0, 3).ToLower() + CurDate.Year.ToString() + "Theme1_"+ intDynamicColsPan.ToString() + ".JPG");
                                             }
                                             else
                                             {
-                                                sTopImg = Server.MapPath("/Content/CalendarTheme/Images/MonthlyActivity/dec2018Theme1_6.JPG");
+                                                sTopImg = Server.MapPath("/Content/CalendarTheme/Images/MonthlyActivity/" + titleDate.Substring(0, 3).ToLower() + CurDate.Year.ToString() + "Theme1_" + intDynamicColsPan.ToString() + ".JPG");
                                             }
                                             if (System.IO.File.Exists(sTopImg))
                                             {
@@ -233,11 +241,11 @@ namespace QolaMVC.Controllers
 
                                     if (CultureInfo.CurrentCulture.Name == "fr-BE")
                                     {
-                                        sBtmImg = Server.MapPath("/Content/CalendarTheme/Images/MonthlyActivity/dec2018Theme1_5.JPG");
+                                        sBtmImg = Server.MapPath("/Content/CalendarTheme/Images/MonthlyActivity/" + titleDate.Substring(0, 3).ToLower() + CurDate.Year.ToString() + "Theme1_" + intDynamicColsPan.ToString() + ".JPG");
                                     }
                                     else
                                     {
-                                        sBtmImg = Server.MapPath("/Content/CalendarTheme/Images/MonthlyActivity/dec2018Theme1_5.JPG");
+                                        sBtmImg = Server.MapPath("/Content/CalendarTheme/Images/MonthlyActivity/" + titleDate.Substring(0, 3).ToLower() + CurDate.Year.ToString() + "Theme1_" + intDynamicColsPan.ToString() + ".JPG");
                                     }
 
                                     if (System.IO.File.Exists(sBtmImg))
@@ -272,15 +280,24 @@ namespace QolaMVC.Controllers
                                 );
 
                             string reportName = RemoveSpecialCharacter(home.Name) + RemoveSpecialCharacter(CaName) + fromDate.ToString("MMM") + ".docx";
-                            document.SaveAs(Server.MapPath("/Content/CalendarTheme/Html/") + reportName);
+
+                            //document.SaveAs(Server.MapPath("/Content/CalendarTheme/Html/") + reportName);
 
                             System.IO.MemoryStream mStream = new System.IO.MemoryStream();
-                            FileStream file = new FileStream(Server.MapPath("/Content/CalendarTheme/Html/") + reportName, FileMode.Open, FileAccess.Read);
-                            file.CopyTo(mStream);
-                            Response.ContentType = "application/octet-stream";
-                            Response.AddHeader("Content-Disposition", "attachment; filename="+ reportName);
+                            document.SaveAs(mStream);
                             Response.Clear();
-                            Response.BinaryWrite(mStream.ToArray());
+                            Response.AddHeader("content-disposition", "attachment; filename=" + reportName);
+                            Response.ContentType = "application/msword";
+                            mStream.WriteTo(Response.OutputStream);
+                            Response.End();
+
+
+                            //FileStream file = new FileStream(Server.MapPath("/Content/CalendarTheme/Html/") + reportName, FileMode.Open, FileAccess.Read);
+                            //file.CopyTo(mStream);
+                            //Response.ContentType = "application/octet-stream";
+                            //Response.AddHeader("Content-Disposition", "attachment; filename="+ reportName);
+                            //Response.Clear();
+                            //Response.BinaryWrite(mStream.ToArray());
 
                             //if (System.IO.File.Exists(Server.MapPath("/Content/CalendarTheme/Html/") + reportName))
                             //{
@@ -300,7 +317,7 @@ namespace QolaMVC.Controllers
                 Response.Redirect("ErrorPage.aspx", false);
             }
         }
-        private void CreateDocWeek(string titleDate, string CaName)
+        private void CreateDocWeek(string titleDate, string CaName, string CaNumber)
         {
             var user = (UserModel)TempData["User"];
             var home = (HomeModel)TempData["Home"];
@@ -312,48 +329,148 @@ namespace QolaMVC.Controllers
             try
             {
                 int homeId = home.Id;
-                DateTime CurDate = stringToDateFormat(titleDate);
-                DateTime fromDate = CurDate;
-                fromDate = CurDate.AddDays(-(int)CurDate.DayOfWeek);
+
+                int dashindex = titleDate.IndexOf("–");
+
+                DateTime fromDate = DateTime.Parse(titleDate.Substring(0, dashindex-1) + ", "+ titleDate.Substring(titleDate.Length-4, 4));
                 DateTime toDate = fromDate.AddDays(7).AddSeconds(-1);
-                //int intCategoryId = Convert.ToInt32(ddl_m_Category.SelectedValue);
-                //int intActivityId = Convert.ToInt32(ddl_m_Activity.SelectedValue);
-                //int iCalendarType = Convert.ToInt32(hdnCalendarType.Value);
-                string s_MonthName = "Weekly Calendar " + fromDate.ToString("MMMM dd, yyyy") + " - " + toDate.AddDays(6).ToString("MMMM dd, yyyy");
+                string s_MonthName = "Weekly Calendar " + fromDate.ToString("MMMM dd, yyyy") + " - " + toDate.ToString("MMMM dd, yyyy");
 
 
                 DateTime fDt = fromDate;
                 DateTime tDt = toDate;
 
-                //DataTable dtActivityCalendar = DAL.ActivityCalendar.GetActivityCalendar(homeId, intCategoryId, intActivityId, fromDate, toDate, iCalendarType);
-                DataTable dtActivityCalendar = new DataTable();
+                DataTable dtActivityCalendar = HomeDAL.Get_Activity_Calendar1234_ExporttoWord(homeId, fromDate, toDate,CaNumber);
 
-                using (SamDoc.DocX document = SamDoc.DocX.Load(Server.MapPath("/CalendarTheme/Html/ActivityCalendarWeek.docx")))
+                using (SamDoc.DocX document = SamDoc.DocX.Load(Server.MapPath("/Content/CalendarTheme/Html/ActivityCalendarWeek.docx")))
                 {
-                    //Table
-                    string sTopImg = string.Empty;
-
-                    if (CultureInfo.CurrentCulture.Name == "fr-BE")
-                    {
-                        sTopImg = Server.MapPath("/Content/CalendarTheme/Images/WeeklyActivity/apr2018WTheme1.jpg");
-                    }
-                    else
-                    {
-                        sTopImg = Server.MapPath("/Content/CalendarTheme/Images/WeeklyActivity/apr2018WTheme1.jpg");
-                    }
 
                     var table = document.Tables.FirstOrDefault();
                     if (table != null)
                     {
                         if (table.RowCount > 1)
                         {
-                            if (System.IO.File.Exists(sTopImg))
+                            for (int i = 1; i <= 7; i++)
                             {
-                                var images = document.AddImage(sTopImg);
-                                var picture = images.CreatePicture(100, 1590);
-                                table.Rows[0].Cells[0].MarginLeft = 0;
-                                table.Rows[0].Cells[0].Paragraphs[0].AppendPicture(picture);
+                                table.Rows[1].Cells[(i - 1)].ReplaceText("[%Day" + i + "%]", fromDate.AddDays(i - 1).ToString("dddd") + "  " + fromDate.AddDays(i - 1).ToString("MMM dd, yyyy"));
                             }
+                            if (dtActivityCalendar != null && dtActivityCalendar.Rows.Count > 0)
+                            {
+                                string strEventDate = string.Empty;
+                                DataRow[] drEachDate;
+                                string clsName = string.Empty;
+                                string strVenue = string.Empty;
+                                string strDynamTime = string.Empty;
+
+                                for (int j = 1; j <= 7; j++)
+                                {
+                                    strEventDate = dateToUSDateStringFormat(fromDate);
+                                    drEachDate = dtActivityCalendar.Select("StartDate ='" + strEventDate + "' ");
+                                    //table.Rows[2].Cells[(j - 1)].RemoveParagraphAt(0);
+                                    if (drEachDate.Length > 0)
+                                    {
+                                        for (int index1 = 0; index1 <= drEachDate.Length - 1; index1++)
+                                        {
+                                            string ActivityDetails = string.Empty;
+                                            strDynamTime = DateTime.Parse(drEachDate[index1]["StartTime"].ToString()).ToShortTimeString();
+                                            ActivityDetails = drEachDate[index1]["EventTitle"].ToString();
+                                            ActivityDetails = strDynamTime + " " + ActivityDetails.Trim() + " " + drEachDate[index1]["note"].ToString() + strVenue;
+                                            table.Rows[2].Cells[(j - 1)].InsertParagraph(ActivityDetails).FontSize(9);
+                                            table.Rows[2].Cells[(j - 1)].MarginLeft = 0;
+                                        }
+                                    }
+                                    fromDate = fromDate.AddDays(1);
+                                }
+                            }
+
+                            SamDoc.Header header = document.Headers.Odd;
+                            header.ReplaceText("[#CalendarName#]", CaName);
+                            header.ReplaceText("[#DateTime#]", s_MonthName);
+
+                            SamDoc.Footer footer = document.Footers.Odd;
+                            footer.ReplaceText("[#HomeDescription#]",
+                                home.Name + (home.Phone != "" ? "  Ph. " + String.Format("{0:(###) ###-####}", Convert.ToInt64(home.Phone)) : "  Ph. " + "")
+                                );
+
+                            string reportName = RemoveSpecialCharacter(home.Name) + RemoveSpecialCharacter(CaName) + fDt.ToString("MMM-dd") + tDt.ToString("-dd") + ".docx";
+
+                            System.IO.MemoryStream mStream = new System.IO.MemoryStream();
+                            document.SaveAs(mStream);
+                            Response.Clear();
+                            Response.AddHeader("content-disposition", "attachment; filename=" + reportName);
+                            Response.ContentType = "application/msword";
+                            mStream.WriteTo(Response.OutputStream);
+                            Response.End();
+                        }
+                    }
+                }
+                
+            }
+            catch (Exception Ex)
+            {
+                exception = "ActivityCalendar CreateDocWeek |" + Ex.Message.ToString();
+                //Log.Write(exception);
+                Response.Redirect("ErrorPage.aspx", false);
+            }
+        }
+        private void CreateDocWeek_backup(string titleDate, string CaName, string CaNumber)
+        {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            string exception = string.Empty;
+            try
+            {
+                int homeId = home.Id;
+
+                int dashindex = titleDate.IndexOf("–");
+
+                //DateTime CurDate = stringToDateFormat(titleDate);
+
+                DateTime fromDate = DateTime.Parse(titleDate.Substring(0, dashindex - 1) + ", " + titleDate.Substring(titleDate.Length - 4, 4));
+                //fromDate = CurDate.AddDays(-(int)CurDate.DayOfWeek);
+                DateTime toDate = fromDate.AddDays(7).AddSeconds(-1);
+                //int intCategoryId = Convert.ToInt32(ddl_m_Category.SelectedValue);
+                //int intActivityId = Convert.ToInt32(ddl_m_Activity.SelectedValue);
+                //int iCalendarType = Convert.ToInt32(hdnCalendarType.Value);
+                string s_MonthName = "Weekly Calendar " + fromDate.ToString("MMMM dd, yyyy") + " - " + toDate.ToString("MMMM dd, yyyy");
+
+
+                DateTime fDt = fromDate;
+                DateTime tDt = toDate;
+
+                DataTable dtActivityCalendar = HomeDAL.Get_Activity_Calendar1234_ExporttoWord(homeId, fromDate, toDate,CaNumber);
+                //DataTable dtActivityCalendar = new DataTable();
+
+                using (SamDoc.DocX document = SamDoc.DocX.Load(Server.MapPath("/Content/CalendarTheme/Html/ActivityCalendarWeek.docx")))
+                {
+                    //Table
+                    //string sTopImg = string.Empty;
+
+                    //if (CultureInfo.CurrentCulture.Name == "fr-BE")
+                    //{
+                    //    sTopImg = Server.MapPath("/Content/CalendarTheme/Images/WeeklyActivity/apr2018WTheme1.jpg");
+                    //}
+                    //else
+                    //{
+                    //    sTopImg = Server.MapPath("/Content/CalendarTheme/Images/WeeklyActivity/apr2018WTheme1.jpg");
+                    //}
+
+                    var table = document.Tables.FirstOrDefault();
+                    if (table != null)
+                    {
+                        if (table.RowCount > 1)
+                        {
+                            //if (System.IO.File.Exists(sTopImg))
+                            //{
+                            //    var images = document.AddImage(sTopImg);
+                            //    var picture = images.CreatePicture(100, 1590);
+                            //    table.Rows[0].Cells[0].MarginLeft = 0;
+                            //    table.Rows[0].Cells[0].Paragraphs[0].AppendPicture(picture);
+                            //}
 
                             for (int i = 1; i <= 7; i++)
                             {
@@ -371,60 +488,59 @@ namespace QolaMVC.Controllers
                                 for (int j = 1; j <= 7; j++)
                                 {
                                     strEventDate = dateToUSDateStringFormat(fromDate);
-
-                                    drEachDate = dtActivityCalendar.Select("fd_activity_event_date ='" + strEventDate + "' ");
+                                    drEachDate = dtActivityCalendar.Select("StartDate ='" + strEventDate + "' ");
                                     table.Rows[2].Cells[(j - 1)].RemoveParagraphAt(0);
                                     if (drEachDate.Length > 0)
                                     {
                                         for (int index1 = 0; index1 <= drEachDate.Length - 1; index1++)
                                         {
-                                            string temSignUPVal = drEachDate[index1]["fd_sign_up"].ToString();
-                                            string sActivityImage = string.Empty;
-                                            string root = Server.MapPath(".");
-                                            string imagename = root + "\\" + drEachDate[index1]["fd_icon_path"].ToString();
-                                            FileInfo file = new FileInfo(imagename);
+                                            //string temSignUPVal = drEachDate[index1]["StartDate"].ToString();
+                                            //string sActivityImage = string.Empty;
+                                            //string root = Server.MapPath(".");
+                                            //string imagename = root + "\\" + drEachDate[index1]["fd_icon_path"].ToString();
+                                            //FileInfo file = new FileInfo(imagename);
 
-                                            if (temSignUPVal == "A")
-                                            {
-                                                clsName = "activitySignUP";
-                                            }
-                                            else
-                                            {
-                                                clsName = "";
-                                            }
-                                            if (drEachDate[index1]["fd_venue_name"] == "")
+                                            //if (temSignUPVal == "A")
+                                            //{
+                                            //    clsName = "activitySignUP";
+                                            //}
+                                            //else
+                                            //{
+                                            //    clsName = "";
+                                            //}
+                                            if (drEachDate[index1]["Venue"].ToString() == "")
                                             {
                                                 strVenue = "";
                                             }
                                             else
                                             {
-                                                strVenue = " - " + drEachDate[index1]["fd_venue_name"];
+                                                strVenue = " - " + drEachDate[index1]["Venue"];
                                             }
 
                                             string ActivityDetails = string.Empty;
-                                            if (drEachDate[index1]["fd_activity_category_id"].ToString() == "1" && drEachDate[index1]["fd_activity_event_time"].ToString() == "12:00AM")
-                                            {
-                                                strDynamTime = "ALL DAY";
-                                            }
-                                            else
-                                            {
-                                                strDynamTime = (CultureInfo.CurrentCulture.Name == "fr-BE" ? drEachDate[index1]["fd_activity_event_time_fr"] : drEachDate[index1]["fd_activity_event_time"]).ToString();
-                                            }
+                                            //if (drEachDate[index1]["ActivityId"].ToString() == "1" && drEachDate[index1]["fd_activity_event_time"].ToString() == "12:00AM")
+                                            //{
+                                            //    strDynamTime = "ALL DAY";
+                                            //}
+                                            //else
+                                            //{
+                                            strDynamTime = (CultureInfo.CurrentCulture.Name == "fr-BE" ? DateTime.Parse(drEachDate[index1]["StartTime"].ToString()).ToShortTimeString() : DateTime.Parse(drEachDate[index1]["StartTime"].ToString()).ToShortTimeString());
+                                            //}
 
-                                            ActivityDetails = (CultureInfo.CurrentCulture.Name == "fr-BE" ? drEachDate[index1]["fd_activity_name_fr"].ToString() : drEachDate[index1]["fd_activity_name"].ToString());
+                                            ActivityDetails = (CultureInfo.CurrentCulture.Name == "fr-BE" ? drEachDate[index1]["EventTitle"].ToString() : drEachDate[index1]["EventTitle"].ToString());
                                             if (clsName != "")
                                             {
-                                                ActivityDetails = (CultureInfo.CurrentCulture.Name == "fr-BE" ? drEachDate[index1]["fd_activity_name_fr"].ToString() : drEachDate[index1]["fd_activity_name"].ToString());
+                                                ActivityDetails = (CultureInfo.CurrentCulture.Name == "fr-BE" ? drEachDate[index1]["EventTitle"].ToString() : drEachDate[index1]["EventTitle"].ToString());
                                             }
-                                            ActivityDetails = strDynamTime + " " + ActivityDetails.Trim() + " " + drEachDate[index1]["fd_note"].ToString() + strVenue;
+                                            ActivityDetails = strDynamTime + " " + ActivityDetails.Trim() + " " + drEachDate[index1]["note"].ToString() + strVenue;
                                             table.Rows[2].Cells[(j - 1)].InsertParagraph(ActivityDetails).FontSize(9);
                                             table.Rows[2].Cells[(j - 1)].MarginLeft = 0;
-                                            if (file.Exists)
-                                            {
-                                                var image = document.AddImage(imagename);
-                                                var picture = image.CreatePicture(30, 30);
-                                                table.Rows[2].Cells[(j - 1)].InsertParagraph("").AppendPicture(picture).Alignment = SamDoc.Alignment.center;
-                                            }
+                                            //if (file.Exists)
+                                            //{
+                                            //    var image = document.AddImage(imagename);
+                                            //    var picture = image.CreatePicture(30, 30);
+                                            //    table.Rows[2].Cells[(j - 1)].InsertParagraph("").AppendPicture(picture).Alignment = SamDoc.Alignment.center;
+                                            //}
                                         }
                                     }
                                     fromDate = fromDate.AddDays(1);
@@ -443,33 +559,29 @@ namespace QolaMVC.Controllers
                                 );
 
                             string reportName = RemoveSpecialCharacter(home.Name) + RemoveSpecialCharacter(CaName) + fDt.ToString("MMM-dd") + tDt.ToString("-dd") + ".docx";
-                            document.SaveAs(Server.MapPath("/CalendarTheme/Html/") + reportName);
 
-                            Response.ContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-                            Response.AppendHeader("Content-Disposition", "attachment; filename=" + reportName);
-                            Response.WriteFile(Server.MapPath("/CalendarTheme/Html/") + reportName);
-                            Response.Flush();
+                            System.IO.MemoryStream mStream = new System.IO.MemoryStream();
+                            document.SaveAs(mStream);
+                            Response.Clear();
+                            Response.AddHeader("content-disposition", "attachment; filename=" + reportName);
+                            Response.ContentType = "application/msword";
+                            mStream.WriteTo(Response.OutputStream);
+                            Response.End();
 
-
-
-                            if (System.IO.File.Exists(Server.MapPath("/CalendarTheme/Html/") + reportName))
-                            {
-                                System.IO.File.Delete(Server.MapPath("/CalendarTheme/Html/") + reportName);
-                            }
-
-                            //MemoryStream ms = new MemoryStream();
-                            //document.SaveAs(ms);
-                            //Response.Clear();
-                            //Response.AddHeader("Content-disposition", "attachment; filename=\"" + reportName + ".docx");
+                            //document.SaveAs(Server.MapPath("/Content/CalendarTheme/Html/") + reportName);
                             //Response.ContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-                            //Response.BinaryWrite(ms.ToArray());
+                            //Response.AppendHeader("Content-Disposition", "attachment; filename=" + reportName);
+                            //Response.WriteFile(Server.MapPath("/Content/CalendarTheme/Html/") + reportName);
                             //Response.Flush();
-                            //Response.Close();
-                            System.Web.HttpContext.Current.ApplicationInstance.CompleteRequest();
+                            //if (System.IO.File.Exists(Server.MapPath("/Content/CalendarTheme/Html/") + reportName))
+                            //{
+                            //    System.IO.File.Delete(Server.MapPath("/Content/CalendarTheme/Html/") + reportName);
+                            //}
+                            //System.Web.HttpContext.Current.ApplicationInstance.CompleteRequest();
                         }
                     }
                 }
-                
+
             }
             catch (Exception Ex)
             {
@@ -478,7 +590,7 @@ namespace QolaMVC.Controllers
                 Response.Redirect("ErrorPage.aspx", false);
             }
         }
-        private void CretaeDocDay(string titleDate, string CaName)
+        private void CretaeDocDay(string titleDate, string CaName, string CaNumber)
         {
             var user = (UserModel)TempData["User"];
             var home = (HomeModel)TempData["Home"];
@@ -490,7 +602,7 @@ namespace QolaMVC.Controllers
             try
             {
 
-                DateTime CurDate = stringToDateFormat(titleDate);
+                DateTime CurDate = DateTime.Parse(titleDate);
                 DateTime fromDate = CurDate;
                 DateTime toDate = CurDate;
 
@@ -499,7 +611,7 @@ namespace QolaMVC.Controllers
                 //int iCalendarType = Convert.ToInt32(hdnCalendarType.Value);
 
                 using (SamDoc.DocX document = SamDoc.DocX.Load(
-                    Server.MapPath("/CalendarTheme/Html/DayCalendar.docx"))
+                    Server.MapPath("/Content/CalendarTheme/Html/DayCalendar.docx"))
                     )
                 {
                     //Table
@@ -509,21 +621,23 @@ namespace QolaMVC.Controllers
                         if (table.RowCount > 1)
                         {
                             var rowPattern = table.Rows[1];
-                            //DataTable dtDayCalendar = DAL.ActivityCalendar.GetActivityCalendar(homeId, intCategoryId, intActivityId, fromDate, toDate, iCalendarType);
-                            DataTable dtDayCalendar = new DataTable();
+                            DataTable dtDayCalendar = HomeDAL.Get_Activity_Calendar1234_ExporttoWord(homeId, fromDate, toDate,CaNumber);
+                            //DataTable dtDayCalendar = new DataTable();
 
 
                             table.Rows[0].Cells[0].ReplaceText("[%th1%]", "Time");
                             table.Rows[0].Cells[1].ReplaceText("[%th2%]", "TodayActivity");
                             table.Rows[0].Cells[2].ReplaceText("[%th3%]", "Venue");
-
-                            for (int i = 0; i < dtDayCalendar.Rows.Count; i++)
+                            if (dtDayCalendar != null)
                             {
-                                var NewRow = table.InsertRow(rowPattern, table.RowCount - 1);
-                                //NewRow.ReplaceText("[#Time#]", dtDayCalendar.Rows[i]["fd_activity_event_time"].ToString());
-                                NewRow.ReplaceText("[#Time#]", CultureInfo.CurrentCulture.Name == "fr-BE" ? dtDayCalendar.Rows[i]["fd_activity_event_time_fr"].ToString() : dtDayCalendar.Rows[i]["fd_activity_event_time"].ToString());
-                                NewRow.ReplaceText("[#Activity#]", CultureInfo.CurrentCulture.Name == "fr-BE" ? dtDayCalendar.Rows[i]["fd_activity_name_fr"].ToString() : dtDayCalendar.Rows[i]["fd_activity_name"].ToString());
-                                NewRow.ReplaceText("[#Venue#]", dtDayCalendar.Rows[i]["fd_venue_name"].ToString());
+                                for (int i = 0; i < dtDayCalendar.Rows.Count; i++)
+                                {
+                                    var NewRow = table.InsertRow(rowPattern, table.RowCount - 1);
+                                    //NewRow.ReplaceText("[#Time#]", dtDayCalendar.Rows[i]["fd_activity_event_time"].ToString());
+                                    NewRow.ReplaceText("[#Time#]", CultureInfo.CurrentCulture.Name == "fr-BE" ? DateTime.Parse(dtDayCalendar.Rows[i]["StartTime"].ToString()).ToShortTimeString() : DateTime.Parse(dtDayCalendar.Rows[i]["StartTime"].ToString()).ToShortTimeString());
+                                    NewRow.ReplaceText("[#Activity#]", CultureInfo.CurrentCulture.Name == "fr-BE" ? dtDayCalendar.Rows[i]["EventTitle"].ToString() : dtDayCalendar.Rows[i]["EventTitle"].ToString());
+                                    NewRow.ReplaceText("[#Venue#]", dtDayCalendar.Rows[i]["Venue"].ToString());
+                                }
                             }
                             rowPattern.Remove();
                         }
@@ -541,29 +655,25 @@ namespace QolaMVC.Controllers
                         );
 
                     string reportName = RemoveSpecialCharacter(home.Name) + RemoveSpecialCharacter(CaName) + fromDate.ToString("MMM-dd") + ".docx";
-                    document.SaveAs(Server.MapPath("/CalendarTheme/Html/") + reportName);
 
-                    Response.ContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-                    Response.AppendHeader("Content-Disposition", "attachment; filename=" + reportName);
-                    Response.WriteFile(Server.MapPath("/CalendarTheme/Html/") + reportName);
-                    Response.Flush();
+                    System.IO.MemoryStream mStream = new System.IO.MemoryStream();
+                    document.SaveAs(mStream);
+                    Response.Clear();
+                    Response.AddHeader("content-disposition", "attachment; filename=" + reportName);
+                    Response.ContentType = "application/msword";
+                    mStream.WriteTo(Response.OutputStream);
+                    Response.End();
 
-                    if (System.IO.File.Exists(Server.MapPath("/CalendarTheme/Html/") + reportName))
-                    {
-                        System.IO.File.Delete(Server.MapPath("/CalendarTheme/Html/") + reportName);
-                    }
-
-                    //MemoryStream ms = new MemoryStream();
-                    //document.SaveAs(ms);
-                    //Response.Clear();
-                    //Response.ClearContent();
-                    //Response.AddHeader("Content-disposition", "attachment; filename=\"" + reportName + ".docx");
+                    //document.SaveAs(Server.MapPath("/Content/CalendarTheme/Html/") + reportName);
                     //Response.ContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-                    //Response.BinaryWrite(ms.ToArray());
+                    //Response.AppendHeader("Content-Disposition", "attachment; filename=" + reportName);
+                    //Response.WriteFile(Server.MapPath("/Content/CalendarTheme/Html/") + reportName);
                     //Response.Flush();
-                    //Response.Close();
-
-                    System.Web.HttpContext.Current.ApplicationInstance.CompleteRequest();
+                    //if (System.IO.File.Exists(Server.MapPath("/CalendarTheme/Html/") + reportName))
+                    //{
+                    //    System.IO.File.Delete(Server.MapPath("/CalendarTheme/Html/") + reportName);
+                    //}
+                    //System.Web.HttpContext.Current.ApplicationInstance.CompleteRequest();
                 }
                 
             }
