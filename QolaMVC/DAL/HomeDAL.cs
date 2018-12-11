@@ -3257,18 +3257,21 @@ namespace QolaMVC.DAL
         }
 
 
-        public static ResidentEmergencyListModel get_EmergencyList(int homeid)
+        public static ResidentEmergencyListModel get_EmergencyList(int homeid,int orderType)
         {
             string exception = string.Empty;
             ResidentEmergencyListModel l_Events = new ResidentEmergencyListModel();
             l_Events.EmergencyResidentList = new List<ResidentEmergencyListModel_single>();
             ResidentEmergencyListModel_single l_Event;
-
+            string storeProcedure = "";
+            if (orderType == 1) storeProcedure = "GET_Emergency_Resident_Details_mike";
+            else if (orderType == 2) storeProcedure = "GET_Emergency_Resident_Details_mike_LowHigh";
+            else if (orderType == 3) storeProcedure = "GET_Emergency_Resident_Details_mike_HighLow";
             SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
             try
             {
                 SqlDataAdapter l_DA = new SqlDataAdapter();
-                SqlCommand l_Cmd = new SqlCommand("GET_Emergency_Resident_Details_mike", l_Conn);
+                SqlCommand l_Cmd = new SqlCommand(storeProcedure, l_Conn);
                 l_Cmd.Parameters.AddWithValue("@homeid", homeid);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;

@@ -66,7 +66,7 @@
                         </div>
                         <div class="col-md-2">
                             <input id="backbutton" onclick="location.href='/Home/Menu/?p_HomeId=@ViewBag.Home.Id';" class="btn btn-primary" type="button" value="BACK" />
-                            <button class="btn btn-danger" id="ERLR_PRINT" onclick="ERLR_PRINT()">PRINT</button>
+                            <button class="btn btn-danger" id="ERLR_PRINT" onclick="ERLR_PRINT_PDF()">PRINT</button>
                         </div>
                     </div>
                     <!-- </div> -->
@@ -82,11 +82,9 @@
                         <form class="form-inline">
 
                             <select id="typeselect" class="form-control" style="width:30%;">
-                                <option>-- All --</option>
-                                <option>High Risk</option>
-                                <option>Medium Risk</option>
-                                <option>Low Risk</option>
-                                <option>No Risk</option>
+                                <option value="1">Default Order (Suite No)</option>
+                                <option value="2">Low to High Risk</option>
+                                <option value="3">High to Low Risk</option>
                             </select>
 
                             <button type="button" class="btn btn-primary" style="margin-left:1%;" onclick="ViewType()">View</button>
@@ -149,7 +147,7 @@
                                                         <td class="align-middle" style="background-color:green;"></td>}
                                                     else if (Int32.Parse(single.totalScore) <= 9)
                                                     {
-                                                        <td class="align-middle"></td>}
+                                                        <td class="align-middle" style="background-color:yellow;"></td>}
                                                     else
                                                     {
                                                         <td class="align-middle" style="background-color:red;"></td>}
@@ -194,6 +192,7 @@
                                 }
                             </tbody>
                         </table>
+                        <input type="hidden" id="orderType" value="@TempData["orderType"]"/>
                     </div>
 
                 </div>
@@ -207,6 +206,9 @@
         @RenderPage("~/Views/Shared/_Footer.cshtml")
 
         <script>
+
+            var orderType = $('#orderType').val();
+            $('#typeselect').val(orderType);
 
             function ERLR_PRINT() {
 
@@ -247,29 +249,14 @@
             }
 
             function ViewType() {
-                var a = $('#typeselect').val();
-                if (a == "-- All --") {
-                    $('tbody tr').show();
-                }
-                else if (a == "No Risk") {
-                    $('tbody tr').hide();
-                    $('.NoRisk').show();
-                }
-                else if (a == "Low Risk") {
-                    $('tbody tr').hide();
-                    $('.LowRisk').show();
-                }
-                else if (a == "Medium Risk") {
-                    $('tbody tr').hide();
-                    $('.MediumRisk').show();
-                }
-                else if (a == "High Risk") {
-                    $('tbody tr').hide();
-                    $('.HighRisk').show();
-                }
+                var order = $('#typeselect').val();
+                location.href = '/Home/EmergencyList_mike?orderType=' + order;
             }
 
-
+            function ERLR_PRINT_PDF() {
+                var order = $('#typeselect').val();
+                location.href = '/Home/btnPdf_Click_EmergencyList_mike?orderType=' + order;
+            }
 
 
 

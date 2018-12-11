@@ -450,7 +450,12 @@ namespace QolaMVC.Controllers
             TempData["sameuname"] = "";
             if (p_Model.ID == 0)
             {
-                UserDAL.AddNewUsers(p_Model);
+                if (UserDAL.AddNewUsers(p_Model) == -1)
+                {
+                    TempData["sameuname"] = "true";
+                    TempData["EDIT"] = "";
+                    return View("AddUser", p_Model);
+                }
             }
             else if (p_Model.ID > 0)
             {
@@ -481,7 +486,7 @@ namespace QolaMVC.Controllers
             return View("AddUser", usersample);
         }
 
-        public void DeleteUser(int userid)
+        public int DeleteUser(int userid)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -492,7 +497,8 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            UserDAL.RemoveUsers(userid);
+            return UserDAL.RemoveUsers(userid);
+
         }
 
         #endregion

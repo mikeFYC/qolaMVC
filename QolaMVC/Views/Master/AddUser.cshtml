@@ -74,7 +74,17 @@
                     <!-- <div class="inner"> -->
                     <div class="row align-items-center">
                         <div class="col-md-10">
-                            <h3>User</h3>
+                            @{
+                                if (TempData["EDIT"].ToString() == "true")
+                                {
+                                    <h3>Edit User</h3>
+                                }
+                                else
+                                {
+                                    <h3>Add User</h3>
+                                }
+                            }
+
                         </div>
                         <div class="col-md-2">
                             <button class="btn btn-primary" onclick="location.href='@Url.Action("Users", "Master")'">Back</button>
@@ -191,12 +201,14 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="" class="col-form-label">User Name</label>
-                                                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", disabled = "true", style = "color:black;" })
+                                                <input class="form-control" id="username_fake" name="UserName" style="color:black;display:none;" type="text" value="">
+                                                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", style = "color:black;" })
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="" class="col-form-label">Password<span class="required_sign">&nbsp;*</span></label>
+                                                <input class="form-control" id="password_fake" name="Password" type="password" style="display:none;">
                                                 @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
                                             </div>
                                         </div>
@@ -311,6 +323,7 @@
                                     <input type="hidden" name="ID" id="model_id" value="@Model.ID" />
                                     <input type="hidden" id="EDIT_INDEX" value="@TempData["EDIT"]" />
                                     <input type="hidden" id="sameuname" value="@TempData["sameuname"]" />
+                                    <input type="hidden" id="userhome" value="@ViewBag.User.Home" />
                                 </form>
                             </div>
                         </div>
@@ -327,6 +340,7 @@
         @RenderPage("~/Views/Shared/_Footer.cshtml")
 
 <script>
+
     var home = $('#model_home').val();
     if (home.trim().substring(0,1)=="0") {
         var first = $('#checkboxes label input:first');
@@ -383,11 +397,22 @@
         }
     });
 
+    var homesplit = $('#userhome').val().split(',');
+    if (homesplit[0] != "0") {
+        $('#checkboxes label').hide();
+        for (var li = 0; li < homesplit.length; li++) {
+            if (homesplit[li].trim() != "") {
+                $('#checkboxes label[for="' + homesplit[li].trim()+'"]').show();
+            }
+        }
+    }
+
 
     $('form').submit(function (event) {
         if (check_Alert() == true) {
-            var user = $('#UserName');
-            user[0].disabled = false;
+            $('#username_fake').attr("name", "username2");
+            $('#password_fake').attr("name", "password2");
+
             var homestring = "";
             $('#checkboxes label input').each(function () {
                 if (this.checked == true) {
@@ -428,12 +453,16 @@
             tempAlert("LastName Needed", 2000);
             return false;
         }
-        else if ($('input[name="Password"]').val() == "" && EDIT_INDEX != "true") {
+        else if ($('#UserName').val() == "") {
+            tempAlert("UserName Needed", 2000);
+            return false;
+        }
+        else if ($('input[name="Password"]:eq(1)').val() == "" && EDIT_INDEX != "true") {
             tempAlert("Password Needed", 2000);
             return false;
 
         }
-        else if ($('input[name="Password"]').val().length < 5 && EDIT_INDEX != "true") {
+        else if ($('input[name="Password"]:eq(1)').val().length < 5 && EDIT_INDEX != "true") {
             tempAlert("Password Too Short", 2000);
             return false;
         }

@@ -59,7 +59,10 @@ namespace QolaMVC.DAL
             {
                 exception = "Users AddNewUsers |" + ex.ToString();
                 //Log.Write(exception);
-                throw;
+                if (ex.Message == "50004")
+                {
+                    return -1;
+                }
             }
             finally
             {
@@ -156,7 +159,7 @@ namespace QolaMVC.DAL
             return result;
         }
 
-        public static bool RemoveUsers(int usersId)
+        public static int RemoveUsers(int usersId)
         {
             string exception = string.Empty;
             bool result = false;
@@ -164,14 +167,14 @@ namespace QolaMVC.DAL
             SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
             try
             {
-                SqlCommand l_Cmd = new SqlCommand(Constants.StoredProcedureName.USP_REMOVE_USER, l_Conn);
+                SqlCommand l_Cmd = new SqlCommand("Remove_User_mike", l_Conn);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 l_Cmd.Parameters.AddWithValue("@id", usersId);
                 affected = l_Cmd.ExecuteNonQuery();
-                if (affected == 1)
+                if (affected != 0)
                 {
-                    return true;
+                    return affected;
                 }
             }
             catch (Exception ex)
@@ -183,7 +186,7 @@ namespace QolaMVC.DAL
             {
                 l_Conn.Close();
             }
-            return result;
+            return affected;
         }
 
         public static List<UserModel> GetUsersCollections(string homeIds, int userTypeId, char cStatus = 'A')

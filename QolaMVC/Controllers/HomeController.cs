@@ -1230,7 +1230,7 @@ namespace QolaMVC.Controllers
             return View(resident);
         }
 
-        public ActionResult EmergencyList_mike()
+        public ActionResult EmergencyList_mike(int orderType=1)
         {
             var user = (UserModel)TempData["User"];
             var home = (HomeModel)TempData["Home"];
@@ -1238,14 +1238,218 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             ViewBag.User = user;
             ViewBag.Home = home;
+            ResidentEmergencyListModel samples = HomeDAL.get_EmergencyList(home.Id,orderType);
 
-            ResidentEmergencyListModel samples = HomeDAL.get_EmergencyList(home.Id);
-
+            TempData["orderType"] = orderType.ToString();
 
             return View(samples);
         }
 
+        public void btnPdf_Click_EmergencyList_mike(int orderType = 1)
+        {
+            string sException = string.Empty;
+            int iHomeId = 0;
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
 
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            //Int32.TryParse(Session["HomeId"].ToString(), out iHomeId
+            try
+            {
+                
+                if (home != null)
+                {
+                    iHomeId = home.Id;
+                    ResidentEmergencyListModel ds = new ResidentEmergencyListModel();
+                    //ds = ResidentsDAL.GetEmergencyResidentDetails(iHomeId, "0");
+                    ds = HomeDAL.get_EmergencyList(iHomeId, orderType);
+                    if (ds != null)
+                    {
+                        Document doc = new Document(PageSize.A4, 30f, 30f, 40f, 20f);
+                        doc.SetPageSize(iTextSharp.text.PageSize.A4.Rotate());
+                        System.IO.MemoryStream mStream = new System.IO.MemoryStream();
+                        PdfWriter writer = PdfWriter.GetInstance(doc, mStream);
+
+
+                        writer.PageEvent = new pdfHeaderFooter();
+
+                        doc.Open();
+
+                        iTextSharp.text.Font fontCellSize12 = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 12, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize12B = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 12, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize11 = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 11, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize11B = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 12, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize10 = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 10, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize10B = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 10, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize9 = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 9, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize9B = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 9, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize8 = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 12, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize8B = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 12, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize7 = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 7, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize7B = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 7, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+
+                        Paragraph paragraph = new Paragraph("Resident Emergency Evacuation Details", fontCellSize11B);
+                        paragraph.Alignment = Element.TITLE;
+
+
+
+                        if (ds.EmergencyResidentList.Count > 0)
+                        {
+                            string sReason = string.Empty;
+                            string sReasonValue = string.Empty;
+
+                            PdfPTable PdfTable1;
+
+                            PdfTable1 = new PdfPTable(10);
+                            float[] wthtbl1 = new float[] { .8f, 3f, 10f, 5f, 8f, 10f, 8f, .8f, 7.9f, 10f };
+                            PdfTable1.SetWidths(wthtbl1);
+                            PdfTable1.WidthPercentage = 100f;
+                            PdfTable1.HorizontalAlignment = Element.ALIGN_LEFT;
+                            PdfTable1.SpacingAfter = 5f;
+                            PdfTable1.SpacingBefore = 5f;
+
+                            PdfPCell cell = new PdfPCell(new Phrase("Resident Emergency Evacuation Details", fontCellSize11B));
+                            cell.Border = 0;
+                            cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                            cell.Colspan = 10;
+                            cell.PaddingBottom = 10f;
+                            PdfTable1.AddCell(cell);
+
+                            PdfPCell PdfTable1HeaderSuitNo = new PdfPCell(new Phrase("SuiteNo", fontCellSize9B));
+                            PdfTable1HeaderSuitNo.Colspan = 2;
+                            PdfTable1HeaderSuitNo.HorizontalAlignment = Element.ALIGN_CENTER;
+                            PdfTable1.AddCell(PdfTable1HeaderSuitNo);
+
+                            PdfPCell PdfTable1HeaderName = new PdfPCell(new Phrase("Name", fontCellSize9B));
+                            PdfTable1HeaderName.HorizontalAlignment = Element.ALIGN_CENTER;
+                            PdfTable1.AddCell(PdfTable1HeaderName);
+
+                            PdfPCell PdfTable1HeaderGender = new PdfPCell(new Phrase("Gender", fontCellSize9B));
+                            PdfTable1HeaderGender.HorizontalAlignment = Element.ALIGN_CENTER;
+                            PdfTable1.AddCell(PdfTable1HeaderGender);
+
+                            PdfPCell PdfTable1HeaderPhone = new PdfPCell(new Phrase("Phone", fontCellSize9B));
+                            PdfTable1HeaderPhone.HorizontalAlignment = Element.ALIGN_CENTER;
+                            PdfTable1.AddCell(PdfTable1HeaderPhone);
+
+                            PdfPCell PdfTable1HeaderContactPerson = new PdfPCell(new Phrase("ContactPerson", fontCellSize9B));
+                            PdfTable1HeaderContactPerson.HorizontalAlignment = Element.ALIGN_CENTER;
+                            PdfTable1.AddCell(PdfTable1HeaderContactPerson);
+
+                            PdfPCell PdfTable1HeaderEmergencyContact = new PdfPCell(new Phrase("EmergencyContact", fontCellSize9B));
+                            PdfTable1HeaderEmergencyContact.HorizontalAlignment = Element.ALIGN_CENTER;
+                            PdfTable1.AddCell(PdfTable1HeaderEmergencyContact);
+
+                            PdfPCell PdfTable1HeaderMobilty = new PdfPCell(new Phrase("Mobility", fontCellSize9B));
+                            PdfTable1HeaderMobilty.Colspan = 2;
+                            PdfTable1HeaderMobilty.HorizontalAlignment = Element.ALIGN_CENTER;
+                            PdfTable1.AddCell(PdfTable1HeaderMobilty);
+
+                            PdfPCell PdfTable1HeaderComment = new PdfPCell(new Phrase("Comments", fontCellSize9B));
+                            PdfTable1HeaderComment.HorizontalAlignment = Element.ALIGN_CENTER;
+                            PdfTable1.AddCell(PdfTable1HeaderComment);
+
+                            //if (Convert.ToInt32(Session["CarePlanP2HomeId"]) == Convert.ToInt32(Session["HomeId"]))
+                            
+    
+                            for (int iRow = 0; iRow < ds.EmergencyResidentList.Count; iRow++)
+                            {
+
+                                sReasonValue = string.Empty;
+                                sReason = string.Empty;
+                                sReason = ds.EmergencyResidentList[iRow].Comments;
+
+                                PdfPCell suiteColorCell = new PdfPCell();
+
+                                if (ds.EmergencyResidentList[iRow].RiskLevel== "High Risk")
+                                {
+                                    suiteColorCell.BackgroundColor = BaseColor.RED;
+                                }
+                                else if (ds.EmergencyResidentList[iRow].RiskLevel == "Medium Risk")
+                                {
+                                    suiteColorCell.BackgroundColor = BaseColor.YELLOW;
+                                }
+                                else if (ds.EmergencyResidentList[iRow].RiskLevel == "Low Risk")
+                                {
+                                    suiteColorCell.BackgroundColor = BaseColor.GREEN;
+                                }
+                                else if (ds.EmergencyResidentList[iRow].RiskLevel == "No Risk")
+                                {
+
+                                }
+                                PdfTable1.AddCell(suiteColorCell);
+                                PdfPCell PdfTable1SuitNoValue = new PdfPCell(new Phrase(ds.EmergencyResidentList[iRow].suiteNo, fontCellSize9));
+                                PdfTable1SuitNoValue.HorizontalAlignment = Element.ALIGN_LEFT;
+                                PdfTable1.AddCell(PdfTable1SuitNoValue);
+
+                                PdfPCell PdfTable1NameValue = new PdfPCell(new Phrase(ds.EmergencyResidentList[iRow].FullName, fontCellSize9));
+                                PdfTable1NameValue.HorizontalAlignment = Element.ALIGN_LEFT;
+                                PdfTable1.AddCell(PdfTable1NameValue);
+
+                                PdfPCell PdfTable1GenderValue = new PdfPCell(new Phrase(ds.EmergencyResidentList[iRow].Gendar, fontCellSize9));
+                                PdfTable1GenderValue.HorizontalAlignment = Element.ALIGN_CENTER;
+                                PdfTable1.AddCell(PdfTable1GenderValue);
+
+                                //string phone = ds.EmergencyResidentList[iRow].phone.Trim().Length > 0 ? ds.EmergencyResidentList[iRow].phone : "NoPhone";
+                                PdfPCell PdfTable1AttendeesValue = new PdfPCell(new Phrase(ds.EmergencyResidentList[iRow].phone, fontCellSize9));
+                                PdfTable1AttendeesValue.HorizontalAlignment = Element.ALIGN_LEFT;
+                                PdfTable1.AddCell(PdfTable1AttendeesValue);
+
+                                PdfPCell PdfTable1PhoneValue = new PdfPCell(new Phrase(ds.EmergencyResidentList[iRow].contact, fontCellSize9));
+                                PdfTable1PhoneValue.HorizontalAlignment = Element.ALIGN_LEFT;
+                                PdfTable1.AddCell(PdfTable1PhoneValue);
+
+                                PdfPCell PdfTable1EmergencyContact = new PdfPCell(new Phrase(ds.EmergencyResidentList[iRow].contact_phone_final, fontCellSize9));
+                                PdfTable1EmergencyContact.HorizontalAlignment = Element.ALIGN_LEFT;
+                                PdfTable1.AddCell(PdfTable1EmergencyContact);
+
+                                PdfTable1.AddCell(suiteColorCell);
+
+
+
+                                PdfPCell PdfTable1Mobility = new PdfPCell(new Phrase(ds.EmergencyResidentList[iRow].Mobility, fontCellSize9B));
+                                PdfTable1Mobility.HorizontalAlignment = Element.ALIGN_LEFT;
+                                PdfTable1.AddCell(PdfTable1Mobility);
+
+                                PdfPCell PdfTable1Comment = new PdfPCell(new Phrase(sReason.Replace("<b>", string.Empty).Replace("</b>", string.Empty), fontCellSize9));
+                                PdfTable1Comment.HorizontalAlignment = Element.ALIGN_LEFT;
+                                PdfTable1.AddCell(PdfTable1Comment);
+                            }
+                            
+                            
+                            doc.Add(PdfTable1);
+                        }
+
+                        doc.Close();
+                        string reportName = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+                        Response.ContentType = "application/octet-stream";
+                        Response.AddHeader("Content-Disposition", "attachment; filename=Emergency_Resident_Details_" + reportName + ".pdf");
+                        Response.Clear();
+                        Response.BinaryWrite(mStream.ToArray());
+                        //HttpContext.Current.ApplicationInstance.CompleteRequest();
+                    }
+                    else
+                    {
+                        //AlertMessage.ShowErrorMsg(this.Page, Resources.Qola.CustomMessages.NoRecord, Resources.Qola.UIverbiage.EmergencyResidentDetails);
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                sException = "frmEmergencyResidentDetails btnPdf_Click |" + Ex.Message.ToString();
+                //Log.Write(sException);
+
+            }
+        }
 
         public ActionResult ERDetails()
         {
@@ -4654,6 +4858,8 @@ namespace QolaMVC.Controllers
                
             }
         }
+
+
 
         private string Get_bindResidentCareAssessment(string sCareAssessment, string colorCode)
         {
