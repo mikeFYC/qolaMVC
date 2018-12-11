@@ -43,6 +43,50 @@ namespace QolaMVC.DAL
             }
         }
 
+        public static void AddNewBowelMovement_mike(BowelMovementModel p_BowelMovement,int residentid,int userid)
+        {
+            string exception = string.Empty;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                //SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("check_BowelMovement_mike", l_Conn);
+                l_Conn.Open();
+                DateTime date = DateTime.Now;
+                var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
+                var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@datestr", date);
+                l_Cmd.Parameters.AddWithValue("@firstday", firstDayOfMonth);
+                l_Cmd.Parameters.AddWithValue("@lastday", lastDayOfMonth);
+                l_Cmd.Parameters.AddWithValue("@ResidentId", residentid);
+                l_Cmd.Parameters.AddWithValue("@userid", userid);
+                l_Cmd.ExecuteNonQuery();
+
+                string storePorcedure = "spAB_AddBowelMovement_mike" + p_BowelMovement.Period;
+                SqlCommand l_Cmd2 = new SqlCommand(storePorcedure, l_Conn);
+                l_Cmd2.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd2.Parameters.AddWithValue("@datestr", date);
+                l_Cmd.Parameters.AddWithValue("@strType", p_BowelMovement.Type);
+                l_Cmd.Parameters.AddWithValue("@ObservedBy", p_BowelMovement.ObservedBy);
+                l_Cmd.Parameters.AddWithValue("@Initials", p_BowelMovement.Initials);
+                l_Cmd.Parameters.AddWithValue("@ResidentId", residentid);
+                l_Cmd.Parameters.AddWithValue("@EnteredBy", userid);
+                l_Cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                exception = "AddNewBowelMovement_mike |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
         public static Collection<BowelMovementModel> GetResidentsBowelAssessments(int p_ResidentId)
         {
             string exception = string.Empty;
