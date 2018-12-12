@@ -31,7 +31,7 @@
     }
 
     #assessment_table tbody tr td {
-        padding: 15px 10px 15px 10px !important;
+        padding: 5px 5px 5px 5px !important;
     }
 
     #assessment_table thead tr th {
@@ -78,12 +78,15 @@
         font-weight: bold;
     }
 
-        #summary_table tbody tr td input:hover {
-            background-color: grey;
-        }
+    #summary_table tbody tr td input:hover {
+        background-color: grey;
+    }
 
     #summary_table tbody tr td {
         padding: 10px;
+    }
+    #assessment_table label {
+        margin-bottom: 0px !important;
     }
 </style>
 
@@ -133,7 +136,7 @@
                             <h3>Exercise Activity</h3>
                         </div>
                         <div class="col-md-1">
-                            <a href="~/Reports/ExcerciseActivityReport" class="btn btn-primary"><i class="fa fa-file-pdf-o"></i> Print</a>
+                            <a href="~/Reports/" class="btn btn-primary"><i class="fa fa-file-pdf-o"></i> Print</a>
                         </div>
                     </div>
                     <!-- </div> -->
@@ -145,7 +148,7 @@
             <div class="container-fluid container-fixed-lg">
                 <!-- BEGIN PlACE PAGE CONTENT HERE -->
                 <div class="card">
-                    @using (Html.BeginForm("", "Assessments"))
+                    @using (Html.BeginForm("Update_SBSWTL", "Assessments"))
                     {
 
                         <div class="card-block" id="details">
@@ -166,7 +169,7 @@
                                             <option value="0"></option>
                                         }
                                     </select>
-                                    <button class="btn btn-primary" type="button" style="display:inline-block;margin-top:-6px" onclick="location.href='@Url.Action("", "Assessments")'">New</button>
+                                    <button class="btn btn-primary" type="button" style="display:inline-block;margin-top:-6px" onclick="location.href='@Url.Action("Add_SBSWTL", "Assessments")'">New</button>
                                 </div>
                             </div>
                         </div>
@@ -189,7 +192,7 @@
                                     </div>
                                     <br><br><br><br><br><br>
                                     <div class="col-md-12 text-center">
-                                        <h2 style="font-weight:bold;">SAFE BATH/SHOWER WATER TEMPERATURE LOG</h2>
+                                        <h2 style="font-weight:bold;">BATH/SHOWER TEMPERATURE LOG</h2>
                                     </div>
                                     <br><br><br><br>
                                     <div class="col-md-12">
@@ -211,7 +214,8 @@
                                     <br><br><br>
                                     <div class="col-md-12 text-center">
                                         <p style="font-size:16px">Staff Will ensure that water temperature is taken before it comes in contact with resident during a bath/shower</p>
-                                        <p style="font-size:16px">assist. Temperature for a therapeutic tub must be taken prior to the first bath of each day</p>
+                                        <p style="font-size:16px">assist. Temperature for a therapeutic tub must be taken prior to the first bath of each day. If water temperature is</p>
+                                        <p style="font-size:16px">out of range notify you Supervisor and Maintenance man.  Follow the Lock Out/Tag Out Procedure.</p>
                                     </div>
                                     <br><br><br><br>
                                     <div class="col-md-12 text-center">
@@ -223,19 +227,19 @@
                                     <table class="table table-bordered" id="assessment_table">
                                         <thead class="bg-primary">
                                             <tr>
-                                                <th class="text-white text-center">Date & Time</th>
-                                                <th class="text-white text-center" colspan="3">Bath</th>
-                                                <th class="text-white text-center" colspan="3">Shower</th>
-                                                <th class="text-white text-center" style="width:10vw;">Assisted by (Staff signature)</th>
+                                                <th class="text-white text-center" style="width:15%;">Date & Time</th>
+                                                <th class="text-white text-center" colspan="3" style="width:24%;">Bath</th>
+                                                <th class="text-white text-center" colspan="3" style="width:24%;">Shower</th>
+                                                <th class="text-white text-center" style="width:15%;">Assisted by (Staff signature)</th>
                                             </tr>
                                             <tr>
                                                 <th class="text-white text-center"></th>
-                                                <th class="text-white text-center"><p>Check 1</p> Temp while filling tub Using hand held thermometer</th>
-                                                <th class="text-white text-center"><p>Check 2</p> Temp once tub is filled using hand held thermometer</th>
-                                                <th class="text-white text-center"><p>Check 3</p> Temp prior to resident going into the tub using staff forearm</th>
-                                                <th class="text-white text-center"><p>Check 1</p> Temp while shower is going using Card thermometer</th>
-                                                <th class="text-white text-center"><p>Check 2</p> Temp while shower is going using staff forearm</th>
-                                                <th class="text-white text-center"><p>Check 3</p> Temp prior to resident going into the shower (if not contraindicated) or staff forearm</th>
+                                                <th class="text-white text-center" style="width:8%;"><p>Check 1</p> Temp while filling tub Using hand held thermometer</th>
+                                                <th class="text-white text-center" style="width:8%;"><p>Check 2</p> Temp once tub is filled using hand held thermometer</th>
+                                                <th class="text-white text-center" style="width:8%;"><p>Check 3</p> Temp prior to resident going into the tub using staff forearm</th>
+                                                <th class="text-white text-center" style="width:8%;"><p>Check 1</p> Temp while shower is going using Card thermometer</th>
+                                                <th class="text-white text-center" style="width:8%;"><p>Check 2</p> Temp while shower is going using staff forearm</th>
+                                                <th class="text-white text-center" style="width:8%;"><p>Check 3</p> Temp prior to resident going into the shower (if not contraindicated) or staff forearm</th>
                                                 <th class="text-white text-center"></th>
                                             </tr>
                                         </thead>
@@ -247,15 +251,17 @@
                                             @{
                                                 for (var a = 0; a < Model.SBSWTL_List.Count(); a++)
                                                 {
+                                                    
                                                     <tr>
-                                                        <td>@Html.TextBoxFor(m => Model.SBSWTL_List[a].DateEntered, new { @class = "form-control" })</td>
+
+                                                        <td>@Html.TextBoxFor(m => Model.SBSWTL_List[a].DateEntered, new { @class = "form-control", disabled = "true" })<input type="hidden" name="SBSWTL_List[@a].row_index" value="@(a+1)" /></td>
                                                         <td>@Html.TextBoxFor(m => Model.SBSWTL_List[a].Bath1, new { @class = "form-control" })</td>
                                                         <td>@Html.TextBoxFor(m => Model.SBSWTL_List[a].Bath2, new { @class = "form-control" })</td>
                                                         <td>@Html.TextBoxFor(m => Model.SBSWTL_List[a].Bath3, new { @class = "form-control" })</td>
                                                         <td>@Html.TextBoxFor(m => Model.SBSWTL_List[a].Shower1, new { @class = "form-control" })</td>
                                                         <td>@Html.TextBoxFor(m => Model.SBSWTL_List[a].Shower2, new { @class = "form-control" })</td>
                                                         <td>@Html.TextBoxFor(m => Model.SBSWTL_List[a].Shower3, new { @class = "form-control" })</td>
-                                                        <td>@Html.TextBoxFor(m => Model.SBSWTL_List[a].userName, new { @class = "form-control" }) @Html.TextBoxFor(m => Model.SBSWTL_List[a].userNameType, new { @class = "form-control" })</td>
+                                                        <td><label class="form-control-label text-center" style="width:100%;">@Model.SBSWTL_List[a].userName<br>@Model.SBSWTL_List[a].userNameType</label>@*@Html.TextBoxFor(m => Model.SBSWTL_List[a].userNameAndType, new { @class = "form-control", disabled = "true" })*@</td>
                                                     </tr>
                                                 }
                                             }
@@ -280,6 +286,7 @@
                         </div>
 
                         <input id="hiddeninput1" type="hidden" value="@TempData["index"]" />
+                        <input id="hiddeninput2" type="hidden" name="ID" value="@Model.ID" />
 
                     }
 

@@ -680,6 +680,8 @@ namespace QolaMVC.Controllers
 
         #endregion
 
+        #region SBSWTL
+
         public ActionResult SBSWTL(string index)
         {
             var home = (HomeModel)TempData["Home"];
@@ -694,22 +696,32 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
-            vm = AssessmentDAL.getSBSWTL(resident.ID);
+            vm = AssessmentDAL.getSBSWTL(resident.ID, home.Id);
             if (vm.Count() == 0)
             {
                 vm.Add(new SBSWTL());
             }
-            for(int ind=0;ind< vm.Count(); ind++)
+            for (int ind = 0; ind < vm.Count(); ind++)
             {
-                if (vm[ind].SBSWTL_List == null)
+                List<SBSWTL_row> l_Assessments = new List<SBSWTL_row>();
+                for (int g = 0; g < 16; g++)
                 {
-                    List<SBSWTL_row> l_Assessments = new List<SBSWTL_row>();
-                    for (int g = 0; g < 16; g++)
+                    SBSWTL_row l_Assessment = new SBSWTL_row();
+                    l_Assessment.row_index = g + 1;
+                    l_Assessments.Add(l_Assessment);
+                }
+                if (vm[ind].SBSWTL_List == null || vm[ind].SBSWTL_List.Count() == 0)
+                {
+                    vm[ind].SBSWTL_List = l_Assessments;
+                }
+                else
+                {                  
+                    foreach (var aaa in vm[ind].SBSWTL_List)
                     {
-                        SBSWTL_row l_Assessment = new SBSWTL_row();
-                        l_Assessments.Add(l_Assessment);
+                        l_Assessments[aaa.row_index - 1] = aaa;
                     }
                     vm[ind].SBSWTL_List = l_Assessments;
+
                 }
             }
 
@@ -733,7 +745,69 @@ namespace QolaMVC.Controllers
             return View(vm_single);
         }
 
+        public ActionResult Add_SBSWTL()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            AssessmentDAL.Add_SBSWTL(resident.ID, user.ID,home.Id);
+            string ind = TempData["index"].ToString();
+            return RedirectToAction("SBSWTL", new { index = ind});
+        }
 
+        public ActionResult Update_SBSWTL(SBSWTL p_Model)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            SBSWTL vm = AssessmentDAL.getSBSWTLbyID(resident.ID, home.Id, p_Model.ID);
+
+            foreach (var sam in p_Model.SBSWTL_List)
+            {
+                if (sam.Bath1 == null) sam.Bath1 = "";
+                if (sam.Bath2 == null) sam.Bath2 = "";
+                if (sam.Bath3 == null) sam.Bath3 = "";
+                if (sam.Shower1 == null) sam.Shower1 = "";
+                if (sam.Shower2 == null) sam.Shower2 = "";
+                if (sam.Shower3 == null) sam.Shower3 = "";
+                if (sam.Bath1!="" || sam.Bath2 != "" || sam.Bath3 != "" || sam.Shower1 != "" || sam.Shower2 != "" || sam.Shower3 != "" )
+                {
+                    sam.EnteredBy = user.ID;
+                    sam.DateEntered = DateTime.Now.ToString("yyyy-MM-dd")+" "+ DateTime.Now.ToShortTimeString();
+                    sam.SBSWTL_Table_ID = p_Model.ID;
+                    sam.Residentid = resident.ID;
+                }
+            }
+            if (vm.SBSWTL_List.Count() != 0)
+            {
+                foreach (var ggg in vm.SBSWTL_List)
+                {
+                    var sample = p_Model.SBSWTL_List[ggg.row_index - 1];
+                    if (sample.Bath1== ggg.Bath1 && sample.Bath2 == ggg.Bath2 && sample.Bath3 == ggg.Bath3 && sample.Shower1 == ggg.Shower1 && sample.Shower2 == ggg.Shower2 && sample.Shower3 == ggg.Shower3)
+                    {
+                        p_Model.SBSWTL_List[ggg.row_index - 1].EnteredBy = ggg.EnteredBy;
+                        p_Model.SBSWTL_List[ggg.row_index - 1].DateEntered = ggg.DateEntered;
+                    }
+                    if (sample.Bath1 != ggg.Bath1 || sample.Bath2 != ggg.Bath2 || sample.Bath3 != ggg.Bath3 || sample.Shower1 != ggg.Shower1 || sample.Shower2 != ggg.Shower2 || sample.Shower3 != ggg.Shower3)
+                    {
+                        p_Model.SBSWTL_List[ggg.row_index - 1].EnteredBy = ggg.EnteredBy;
+                    }
+                }
+            }
+
+            AssessmentDAL.Update_SBSWTL_row(p_Model);
+            string ind = TempData["index"].ToString();
+            return RedirectToAction("SBSWTL", new { index = ind });
+        }
+
+        #endregion
 
         public ActionResult FamilyConference(string index)
         {

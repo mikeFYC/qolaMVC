@@ -3559,7 +3559,7 @@ namespace QolaMVC.DAL
 
 
 
-        public static Collection<SBSWTL> getSBSWTL(int p_ResidentId)
+        public static Collection<SBSWTL> getSBSWTL(int p_ResidentId,int homeID)
         {
             string exception = string.Empty;
 
@@ -3574,6 +3574,7 @@ namespace QolaMVC.DAL
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 l_Cmd.Parameters.AddWithValue("@residentID", p_ResidentId);
+                l_Cmd.Parameters.AddWithValue("@homeID", homeID);
                 DataSet AssesmentsReceive = new DataSet();
 
                 l_DA.SelectCommand = l_Cmd;
@@ -3611,6 +3612,51 @@ namespace QolaMVC.DAL
             return l_Assessments;
         }
 
+        public static SBSWTL getSBSWTLbyID(int p_ResidentId, int homeID,int ID)
+        {
+            string exception = string.Empty;
+            SBSWTL l_Assessment = new SBSWTL();
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_SBSWTL_by_ID_mike", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@residentID", p_ResidentId);
+                l_Cmd.Parameters.AddWithValue("@homeID", homeID);
+                l_Cmd.Parameters.AddWithValue("@ID", ID);
+                DataSet AssesmentsReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(AssesmentsReceive);
+                if (AssesmentsReceive.Tables[0].Rows.Count > 0)
+                {
+                    l_Assessment = new SBSWTL();
+                    l_Assessment.ID = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[0]["ID"]);
+                    l_Assessment.residentID = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[0]["residentID"]);
+                    l_Assessment.start_time = Convert.ToDateTime(AssesmentsReceive.Tables[0].Rows[0]["start_time"]);
+                    l_Assessment.modified_by = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[0]["modified_by"]);
+                    l_Assessment.modified_on = Convert.ToDateTime(AssesmentsReceive.Tables[0].Rows[0]["modified_on"]);
+                }
+            }
+            catch (Exception ex)
+            {
+                exception = "getSBSWTLbyID |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+            l_Assessment.SBSWTL_List = getSBSWTL_row(l_Assessment.ID);
+
+
+
+            return l_Assessment;
+        }
+
         public static List<SBSWTL_row> getSBSWTL_row(int SBSWTL_Table_ID)
         {
             string exception = string.Empty;
@@ -3643,13 +3689,14 @@ namespace QolaMVC.DAL
                         l_Assessment.EnteredBy = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["EnteredBy"]);
                         l_Assessment.userName = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["userName"]);
                         l_Assessment.userNameType = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["userNameType"]);
-                        l_Assessment.DateEntered = Convert.ToDateTime(AssesmentsReceive.Tables[0].Rows[index]["DateEntered"]);
+                        l_Assessment.DateEntered = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["DateEntered"]);
                         l_Assessment.Bath1 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Bath1"]);
                         l_Assessment.Bath2 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Bath2"]);
                         l_Assessment.Bath3 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Bath3"]);
                         l_Assessment.Shower1 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Shower1"]);
                         l_Assessment.Shower2 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Shower2"]);
                         l_Assessment.Shower3 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Shower3"]);
+                        l_Assessment.userNameAndType = l_Assessment.userName +" "+ l_Assessment.userNameType;
                         l_Assessments.Add(l_Assessment);
                     }
                 }
@@ -3665,6 +3712,81 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
             return l_Assessments;
+        }
+
+        public static void Add_SBSWTL(int residentid, int userid,int homeID)
+        {
+            string exception = string.Empty;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Add_SBSWTL", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@ResidentId", residentid);
+                l_Cmd.Parameters.AddWithValue("@EnteredBy", userid);
+                l_Cmd.Parameters.AddWithValue("@homeID", homeID);
+                l_Cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                exception = "Add_SBSWTL |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+        public static void Update_SBSWTL_row(SBSWTL p_Model)
+        {
+            string exception = string.Empty;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_delete_SBSWTL_row", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@ID", p_Model.ID);
+                l_Cmd.ExecuteNonQuery();
+
+                foreach (var sample in p_Model.SBSWTL_List)
+                {
+                    if (sample.EnteredBy != 0)
+                    {
+                        SqlCommand l_Cmd2 = new SqlCommand("spAB_insert_SBSWTL_row", l_Conn);
+                        l_Cmd2.CommandType = System.Data.CommandType.StoredProcedure;
+                        l_Cmd2.Parameters.AddWithValue("@ID", sample.SBSWTL_Table_ID);
+                        l_Cmd2.Parameters.AddWithValue("@residentID", sample.Residentid);
+                        l_Cmd2.Parameters.AddWithValue("@row_index", sample.row_index);
+                        l_Cmd2.Parameters.AddWithValue("@enterby", sample.EnteredBy);
+                        l_Cmd2.Parameters.AddWithValue("@dateentered", sample.DateEntered);
+                        l_Cmd2.Parameters.AddWithValue("@barh1", sample.Bath1);
+                        l_Cmd2.Parameters.AddWithValue("@barh2", sample.Bath2);
+                        l_Cmd2.Parameters.AddWithValue("@barh3", sample.Bath3);
+                        l_Cmd2.Parameters.AddWithValue("@shower1", sample.Shower1);
+                        l_Cmd2.Parameters.AddWithValue("@shower2", sample.Shower2);
+                        l_Cmd2.Parameters.AddWithValue("@shower3", sample.Shower3);
+                        l_Cmd2.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                exception = "Add_SBSWTL |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
         }
 
 

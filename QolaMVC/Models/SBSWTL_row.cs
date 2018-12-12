@@ -14,7 +14,8 @@ namespace QolaMVC.Models
         public int EnteredBy { get; set; }
         public string userName { get; set; }
         public string userNameType { get; set; }
-        public DateTime DateEntered { get; set; }
+        public string userNameAndType { get; set; }
+        public string DateEntered { get; set; }
         public string Bath1 { get; set; }
         public string Bath2 { get; set; }
         public string Bath3 { get; set; }

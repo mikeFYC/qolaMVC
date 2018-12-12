@@ -2229,6 +2229,15 @@
         document.getElementById("day_div").style.display = "none";
         document.getElementById("day_div4").style.display = "block";
     }
+
+    $('#activity_select').children('option:not(:first)').remove();
+    $('#activity_select2').children('option:not(:first)').remove();
+    $.get("/Home/getCategoriesForCalendar", {}, function (data) {
+        for (var i = 0; i < data.length; i++) {
+            $('#activity_select').append('<option value="' + data[i].Id + '">' + data[i].Name + '</option>');
+            $('#activity_select2').append('<option value="' + data[i].Id + '">' + data[i].Name + '</option>');
+        }
+    });
 </script>
 
 <script>
@@ -3114,15 +3123,6 @@
     //        }
     //    });
     //});
-
-    $('#activity_select').children('option:not(:first)').remove();
-    $('#activity_select2').children('option:not(:first)').remove();
-    $.get("/Home/getCategoriesForCalendar", {}, function (data) {
-        for (var i = 0; i < data.length; i++) {
-            $('#activity_select').append('<option value="' + data[i].Id + '">' + data[i].Name + '</option>');
-            $('#activity_select2').append('<option value="' + data[i].Id + '">' + data[i].Name + '</option>');
-        }
-    });
 
     function add_event_small_div(ee) {
         var NOWTIME = new Date();
