@@ -3096,25 +3096,33 @@
 
     }
 
-    $('#activity_select').hover(function () {
-        $('#activity_select').children('option:not(:selected)').remove();
-        $.get("/Home/getCategoriesForCalendar", {}, function (data) {
-            for (var i = 0; i < data.length; i++) {
-                $('#activity_select').append('<option value="' + data[i].Id + '">' + data[i].Name + '</option>');
-                //$('#activity_select').append($("<option></option>").attr("value", data[i].Id).text(data[i].Name));
-            }
-        });
-    });
-    $('#activity_select2').hover(function () {
-        $('#activity_select2').children('option:not(:selected)').remove();
-        $.get("/Home/getCategoriesForCalendar", {}, function (data) {
-            for (var i = 0; i < data.length; i++) {
-                $('#activity_select2').append('<option value="' + data[i].Id + '">' + data[i].Name + '</option>');
-                //$('#activity_select').append($("<option></option>").attr("value", data[i].Id).text(data[i].Name));
-            }
-        });
-    });
+    //$('#activity_select').hover(function () {
+    //    $('#activity_select').children('option:not(:selected)').remove();
+    //    $.get("/Home/getCategoriesForCalendar", {}, function (data) {
+    //        for (var i = 0; i < data.length; i++) {
+    //            $('#activity_select').append('<option value="' + data[i].Id + '">' + data[i].Name + '</option>');
+    //            //$('#activity_select').append($("<option></option>").attr("value", data[i].Id).text(data[i].Name));
+    //        }
+    //    });
+    //});
+    //$('#activity_select2').hover(function () {
+    //    $('#activity_select2').children('option:not(:selected)').remove();
+    //    $.get("/Home/getCategoriesForCalendar", {}, function (data) {
+    //        for (var i = 0; i < data.length; i++) {
+    //            $('#activity_select2').append('<option value="' + data[i].Id + '">' + data[i].Name + '</option>');
+    //            //$('#activity_select').append($("<option></option>").attr("value", data[i].Id).text(data[i].Name));
+    //        }
+    //    });
+    //});
 
+    $('#activity_select').children('option:not(:first)').remove();
+    $('#activity_select2').children('option:not(:first)').remove();
+    $.get("/Home/getCategoriesForCalendar", {}, function (data) {
+        for (var i = 0; i < data.length; i++) {
+            $('#activity_select').append('<option value="' + data[i].Id + '">' + data[i].Name + '</option>');
+            $('#activity_select2').append('<option value="' + data[i].Id + '">' + data[i].Name + '</option>');
+        }
+    });
 
     function add_event_small_div(ee) {
         var NOWTIME = new Date();
@@ -3126,8 +3134,9 @@
         var selectdate = document.getElementById('ADD_CANCEL_title').innerHTML;
         $("#dateandtime_input").val(selectdate + 'T' +nowT);
         $("#datefrom_input").val(selectdate);
-        $('#activity_select').children().remove();
-        $('#activity_select').append('<option value="">-- Select --</option>');
+        //$('#activity_select').children().remove();
+        //$('#activity_select').append('<option value="">-- Select --</option>');
+        $('#activity_select').val("");
         document.getElementById('ADD_CANCEL').className = 'modal fade';
     }
 
