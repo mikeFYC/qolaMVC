@@ -105,7 +105,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
-            AssessmentDAL.AddNewBowelMovement_mike(p_BowelMovement,resident.ID,user.ID);
+            AssessmentDAL.AddNewBowelMovement(p_BowelMovement);
             TempData["Message"] = "Added Bowel Assessment";
             return Redirect(p_ReturnUrl);
         }

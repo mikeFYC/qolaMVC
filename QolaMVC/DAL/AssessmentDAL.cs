@@ -43,7 +43,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static void AddNewBowelMovement_mike(BowelMovementModel p_BowelMovement,int residentid,int userid)
+        public static void AddNewBowelMovement_mike_not_in_use(BowelMovementModel p_BowelMovement,int residentid,int userid)
         {
             string exception = string.Empty;
 
