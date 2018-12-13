@@ -1,0 +1,109 @@
+﻿
+
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+<style>
+
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+</style>
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+    <!-- START PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+                        <div class="col-md-10">
+                            <h3>Catheter Urine Output Log</h3>
+                        </div>
+                        <div class="col-md-1">
+                            <a href="~/Assessments/" class="btn btn-primary"><i class="fa fa-backward"></i>Back</a>
+
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+            <div style="height: 60px;"></div>
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+                @{
+                    if (ViewBag.Message != null && ViewBag.Message != string.Empty)
+                    {
+                        <div class="alert alert-success" role="alert">
+                            <button class="close" data-dismiss="alert"></button>
+                            <strong>Success: </strong> @ViewBag.Message
+                        </div>
+                    }
+                }
+
+                @using (Html.BeginForm("AddCUOL", "Assessments", FormMethod.Post, new { @class = "p-t-15", @role = "form" }))
+                {
+                    <div class="card">
+                        <div class="card-block">
+                            <div class="row">
+                                <div class="col-2">
+                                    <label for="" class="col-form-label"><b>Resident: </b></label>
+                                    <label>@ViewBag.Resident.FirstName @ViewBag.Resident.LastName </label>
+                                </div>
+                                <div class="col-2">
+                                    <label for="" class="col-form-label"><b>Suite No: </b></label>
+                                    <label>@ViewBag.Resident.SuiteNo</label>
+                                </div>
+
+                                <div style="width:99%;"><hr></div>
+                                
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="" class="col-form-label">Amount</label>
+                                        <input class="form-control" name="Amount"/>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="" class="col-form-label">Color</label>
+                                        <input class="form-control" name="Color" type="color" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="" class="col-form-label">Comments</label>
+                                        <textarea class="form-control" name="Comments" rows="3"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>
+
+                            <div class="row">
+                                <div class="col-md-4 text-left">                            
+                                </div>
+                                <div class="col-md-7 text-right">
+                                    <a href="~/Reports/CUOLReport" class="btn btn-success btn-lg">PREVIEW REPORT</a>
+                                    <button class="btn btn-danger btn-lg">SAVE</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <!-- END PLACE PAGE CONTENT HERE -->
+            </div>
+            <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+        @RenderPage("~/Views/Shared/_Footer.cshtml")

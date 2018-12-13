@@ -1,4 +1,4 @@
-﻿@model QolaMVC.Models.SBSWTL
+﻿@model QolaMVC.Models.OCCC
 
 @RenderPage("~/Views/Shared/_Header.cshtml")
 @RenderPage("~/Views/Shared/_SideBar.cshtml")
@@ -14,16 +14,22 @@
         max-width: 1000px !important;
     }
 
-    #assessment_table tbody tr td {
-        padding: 5px 5px 5px 5px !important;
+    input[type=checkbox] {
+        /* Double-sized Checkboxes */
+        -ms-transform: scale(2); /* IE */
+        -moz-transform: scale(2); /* FF */
+        -webkit-transform: scale(2); /* Safari and Chrome */
+        -o-transform: scale(2); /* Opera */
+        padding: 10px;
     }
 
-    #assessment_table thead tr th {
-        padding: 5px 10px 5px 10px !important;
-    }
-
-    #assessment_table label {
+    #checklist_table label {
         margin-bottom: 0px !important;
+    }
+    #checklist_table td{
+        font-size:1.5em;
+        color:black;
+        padding:15px 20px 15px 20px;
     }
 </style>
 
@@ -43,9 +49,8 @@
 
         scrollTo(0, 0);
         $('#historySpan').hide();
-        $('#newButton').hide(); 
-        $('#btnFinalSave').hide(); 
-        
+        $('#btnFinalSave').hide();
+
         $('.content').height($('.content').height());
         var srcEl = document.getElementById("fromHTMLtestdiv");
         var scaleFactor = 1.5;
@@ -100,13 +105,12 @@
                 var filename = $('.filename').val();
                 doc.save(filename + '.pdf');
             });
-        $('#SBSWTL_PRINT').hide();
-        $('#historySpan').show(); 
-        $('#newButton').show(); 
-        $('#btnFinalSave').show(); 
+        $('#OCCC_PRINT').hide();
+        $('#historySpan').show();
+        $('#btnFinalSave').show();
         $('#fromHTMLtestdiv').css("margin-left", "20px");
 
-        
+
     }
 
 </script>
@@ -127,11 +131,11 @@
                     <div class="row align-items-center">
 
                         <div class="col-md-10">
-                            <h3>BATH / SHOWER TEMPERATURE LOG</h3>
+                            <h3>ORAL CARE COMPETENCY CHECKLIST</h3>
                         </div>
                         <div class="col-md-2">
                             <a href="~/Assessments/" class="btn btn-primary"><i class="fa fa-backward"></i>Back</a>
-                            <a class="btn btn-primary text-white" id="SBSWTL_PRINT" onclick="PRINTPDF()"><i class="fa fa-file-pdf-o"></i>Print</a>
+                            <a class="btn btn-primary text-white" id="OCCC_PRINT" onclick="PRINTPDF()"><i class="fa fa-file-pdf-o"></i>Print</a>
                         </div>
                     </div>
                     <!-- </div> -->
@@ -143,10 +147,10 @@
             <div class="container-fluid container-fixed-lg">
                 <!-- BEGIN PlACE PAGE CONTENT HERE -->
                 <div class="card" id="fromHTMLtestdiv">
-                    @using (Html.BeginForm("Update_SBSWTL", "Assessments"))
+                    @using (Html.BeginForm("Add_OCCC", "Assessments"))
                     {
-                        <input type="hidden" class="filename" value="SBSWTL"/>
-                        <div class="card-block" id="SBSWTL_firstrow">
+                        <input type="hidden" class="filename" value="OCCC" />
+                        <div class="card-block" id="OCCC_firstrow">
                             <div class="">
                                 <div style="max-width:50%;">
                                     <label style="font-size:1.3vw;display:inline-block;">Assessment <span id="historySpan">History</span>:</label>
@@ -164,7 +168,6 @@
                                             <option value="0"></option>
                                         }
                                     </select>
-                                    <button class="btn btn-primary" id="newButton" type="button" style="display:inline-block;margin-top:-6px" onclick="location.href='@Url.Action("Add_SBSWTL", "Assessments")'">New</button>
                                 </div>
                             </div>
                         </div>
@@ -185,9 +188,9 @@
                                             <h2 style="font-weight:bold;">@ViewBag.Home.Name</h2>
                                         </div>
                                     </div>
-                                    <br><br><br><br><br><br>
+                                    <br><br><br>
                                     <div class="col-md-12 text-center">
-                                        <h2 style="font-weight:bold;">BATH / SHOWER TEMPERATURE LOG</h2>
+                                        <h2 style="font-weight:bold;">ORAL CARE COMPETENCY CHECKLIST</h2>
                                     </div>
                                     <br><br><br><br>
                                     <div class="col-md-12">
@@ -195,7 +198,7 @@
                                         <div class="col-md-2">
                                             <p class="" style="font-size:20px;margin-bottom:0;">Resident's Name:</p>
                                         </div>
-                                        <div class="col-md-5" style="border-bottom-style:solid;margin-left:-2vw;">
+                                        <div class="col-md-2" style="border-bottom-style:solid;margin-left:-2vw;">
                                             <p class="text-center" style="font-size:20px;margin-bottom:0;">@ViewBag.Resident.FirstName @ViewBag.Resident.LastName </p>
                                         </div>
                                         <div class="col-md-1">
@@ -204,62 +207,53 @@
                                         <div class="col-md-2" style="border-bottom-style:solid;">
                                             <p class="text-center" style="font-size:20px;margin-bottom:0;">@ViewBag.Resident.SuiteNo</p>
                                         </div>
+                                        <div class="col-md-1">
+                                            <p class="text-center" style="font-size:20px;margin-bottom:0;">Date:</p>
+                                        </div>
+                                        <div class="col-md-2" style="border-bottom-style:solid;">
+                                            <p class="text-center" style="font-size:20px;margin-bottom:0;">@(((List<DateTime>)ViewBag.AssessmentDates)[0].ToString("yyyy-MM-dd"))</p>
+                                        </div>
 
                                     </div>
                                     <br><br><br>
-                                    <div class="col-md-12 text-center">
-                                        <p style="font-size:16px">Staff Will ensure that water temperature is taken before it comes in contact with resident during a bath/shower</p>
-                                        <p style="font-size:16px">assist. Temperature for a therapeutic tub must be taken prior to the first bath of each day. If water temperature is</p>
-                                        <p style="font-size:16px">out of range notify you Supervisor and Maintenance man.  Follow the Lock Out/Tag Out Procedure.</p>
+                                    <div class="col-md-12">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-3">
+                                            <p class="" style="font-size:20px;margin-bottom:0;">Signature of Observer:</p>
+                                        </div>
+                                        <div class="col-md-2" style="border-bottom-style:solid;margin-left:-2vw;">
+                                            <p class="text-center" style="font-size:20px;margin-bottom:0;height:20px;"></p>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <p class="text-center" style="font-size:20px;margin-bottom:0;">Location:</p>
+                                        </div>
+                                        <div class="col-md-2" style="border-bottom-style:solid;">
+                                            <p class="text-center" style="font-size:20px;margin-bottom:0;height:20px;"></p>
+                                        </div>
+                                                
                                     </div>
-                                    <br><br><br><br>
-                                    <div class="col-md-12 text-center">
-                                        <p style="font-size:25px;font-weight:bold;color:black;">SAFE WATER TEMPERATURE is minimun 38C to maximum 43C</p>
-                                    </div>
-                                    <br><br><br>
+                                    <div class="col-md-12"><hr></div>
 
-
-                                    <table class="table table-bordered" id="assessment_table">
+                                    <table class="table table-bordered" id="checklist_table" style="width:80%;margin-left:10%;">
                                         <thead class="bg-primary">
                                             <tr>
-                                                <th class="text-white text-center" style="width:15%;">Date & Time</th>
-                                                <th class="text-white text-center" colspan="3" style="width:24%;">Bath</th>
-                                                <th class="text-white text-center" colspan="3" style="width:24%;">Shower</th>
-                                                <th class="text-white text-center" style="width:15%;">Assisted by (Staff signature)</th>
-                                            </tr>
-                                            <tr>
-                                                <th class="text-white text-center"></th>
-                                                <th class="text-white text-center" style="width:8%;"><p>Check 1</p> Temp while filling tub Using hand held thermometer</th>
-                                                <th class="text-white text-center" style="width:8%;"><p>Check 2</p> Temp once tub is filled using hand held thermometer</th>
-                                                <th class="text-white text-center" style="width:8%;"><p>Check 3</p> Temp prior to resident going into the tub using staff forearm</th>
-                                                <th class="text-white text-center" style="width:8%;"><p>Check 1</p> Temp while shower is going using Card thermometer</th>
-                                                <th class="text-white text-center" style="width:8%;"><p>Check 2</p> Temp while shower is going using staff forearm</th>
-                                                <th class="text-white text-center" style="width:8%;"><p>Check 3</p> Temp prior to resident going into the shower (if not contraindicated) or staff forearm</th>
-                                                <th class="text-white text-center"></th>
+                                                <th class="text-white text-center" style="width:60%;">The employee is deemed competent in performing  Oral Care </th>
+                                                <th class="text-white text-center" style="width:10%;">Yes</th>
+                                                <th class="text-white text-center" style="width:10%;">No</th>
                                             </tr>
                                         </thead>
-                                        <tbody style="font-size:1.5vw;">
-                                            @{
-                                                var index = int.Parse(TempData["index"].ToString());
-                                            }
-                                            @Html.HiddenFor(m => Model.ID)
-                                            @{
-                                                for (var a = 0; a < Model.SBSWTL_List.Count(); a++)
-                                                {
-                                                    
-                                                    <tr>
-
-                                                        <td>@Html.TextBoxFor(m => Model.SBSWTL_List[a].DateEntered, new { @class = "form-control", disabled = "true" })<input type="hidden" name="SBSWTL_List[@a].row_index" value="@(a+1)" /></td>
-                                                        <td>@Html.TextBoxFor(m => Model.SBSWTL_List[a].Bath1, new { @class = "form-control" })</td>
-                                                        <td>@Html.TextBoxFor(m => Model.SBSWTL_List[a].Bath2, new { @class = "form-control" })</td>
-                                                        <td>@Html.TextBoxFor(m => Model.SBSWTL_List[a].Bath3, new { @class = "form-control" })</td>
-                                                        <td>@Html.TextBoxFor(m => Model.SBSWTL_List[a].Shower1, new { @class = "form-control" })</td>
-                                                        <td>@Html.TextBoxFor(m => Model.SBSWTL_List[a].Shower2, new { @class = "form-control" })</td>
-                                                        <td>@Html.TextBoxFor(m => Model.SBSWTL_List[a].Shower3, new { @class = "form-control" })</td>
-                                                        <td><label class="form-control-label text-center" style="width:100%;">@Model.SBSWTL_List[a].userName<br>@Model.SBSWTL_List[a].userNameType</label>@*@Html.TextBoxFor(m => Model.SBSWTL_List[a].userNameAndType, new { @class = "form-control", disabled = "true" })*@</td>
-                                                    </tr>
-                                                }
-                                            }
+                                        <tbody>
+                                            <tr><td>Has read the Oral Care procedure and performed the following :</td><td></td><td></td></tr>
+                                            <tr><td>1.	Check the Care Plan indicating resident’s level of assistance for oral care</td><td>@Html.CheckBoxFor(modelItem => Model.checkYes1, new { @class = "form-check-input" })</td><td>@Html.CheckBoxFor(modelItem => Model.checkNo1, new { @class = "form-check-input" })</td></tr>
+                                            <tr><td>2.	Hand hygiene prior to performing oral care</td><td>@Html.CheckBoxFor(modelItem => Model.checkYes1, new { @class = "form-check-input" })</td><td>@Html.CheckBoxFor(modelItem => Model.checkNo1, new { @class = "form-check-input" })</td></tr>
+                                            <tr><td>3.	Perform Oral Care for resident who is able to brush teeth.</td><td>@Html.CheckBoxFor(modelItem => Model.checkYes1, new { @class = "form-check-input" })</td><td>@Html.CheckBoxFor(modelItem => Model.checkNo1, new { @class = "form-check-input" })</td></tr>
+                                            <tr><td>4.	Perform Oral Care for Resident who is unable to brush teeth</td><td>@Html.CheckBoxFor(modelItem => Model.checkYes1, new { @class = "form-check-input" })</td><td>@Html.CheckBoxFor(modelItem => Model.checkNo1, new { @class = "form-check-input" })</td></tr>
+                                            <tr><td>5.	Perform Oral care  for resident with dentures</td><td>@Html.CheckBoxFor(modelItem => Model.checkYes1, new { @class = "form-check-input" })</td><td>@Html.CheckBoxFor(modelItem => Model.checkNo1, new { @class = "form-check-input" })</td></tr>
+                                            <tr><td>6.	Perform Oral checks. (Staff is able to identify oral health concerns and how to report)</td><td>@Html.CheckBoxFor(modelItem => Model.checkYes1, new { @class = "form-check-input" })</td><td>@Html.CheckBoxFor(modelItem => Model.checkNo1, new { @class = "form-check-input" })</td></tr>
+                                            <tr><td>7.	Hand hygiene after oral care</td><td>@Html.CheckBoxFor(modelItem => Model.checkYes1, new { @class = "form-check-input" })</td><td>@Html.CheckBoxFor(modelItem => Model.checkNo1, new { @class = "form-check-input" })</td></tr>
+                                            <tr><td>8.	Complete Oral Tracking Form properly</td><td>@Html.CheckBoxFor(modelItem => Model.checkYes1, new { @class = "form-check-input" })</td><td>@Html.CheckBoxFor(modelItem => Model.checkNo1, new { @class = "form-check-input" })</td></tr>
+                                            <tr><td>9.	Document identified oral health concerns</td><td>@Html.CheckBoxFor(modelItem => Model.checkYes1, new { @class = "form-check-input" })</td><td>@Html.CheckBoxFor(modelItem => Model.checkNo1, new { @class = "form-check-input" })</td></tr>
+                                            <tr><td colspan="3">Comment/s: @Html.TextAreaFor(modelItem => Model.comments,new { style = "max-width:80%;", rows = "3" })</td></tr>
 
 
 
@@ -273,13 +267,13 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-md-12 text-right">
+                                <div class="col-md-11 text-right">
                                     <br>
                                     <input type="submit" id="btnFinalSave" class="btn btn-danger btn-lg" name="FORM" value="SAVE" />
                                 </div>
                             </div>
                         </div>
-                    <br><br><br><br><br>
+                        <br><br><br><br><br>
                         <input id="hiddeninput1" type="hidden" value="@TempData["index"]" />
                         <input id="hiddeninput2" type="hidden" name="ID" value="@Model.ID" />
 
@@ -298,40 +292,16 @@
 
         <script>
 
-
-    $('form').submit(function (event) {
-        var firstdate = $('#selectdate option:selected').text()
-        if (firstdate != "") {
-            $("input").removeAttr("disabled");
-            form = this;
-            //event.preventDefault();
-            form.submit();
-        }
-        else {
-            tempAlert("New a Date First", 2000);
-            return false;
-        }
-    });
-
     var index_date = $('#hiddeninput1').val();
     $('#selectdate').val(index_date);
 
 
-    var inputs_text = $('input[type=text]');
-    for (var b = 0; b < inputs_text.length; b++) {
-        if (inputs_text[b].value != "") {
-            inputs_text[b].disabled = true;
-            inputs_text[b].style.color = "black";
-        }
-    }
 
     var firstdate = $('#selectdate option:selected').text()
-    if (firstdate == "") {
+    if (firstdate != "") {
         $('input[type=text]').attr('disabled', 'true');
 
     }
-
-
 
 
 

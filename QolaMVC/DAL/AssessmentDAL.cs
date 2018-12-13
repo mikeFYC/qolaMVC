@@ -3789,7 +3789,89 @@ namespace QolaMVC.DAL
             }
         }
 
+        public static void AddNewCUOL(CUOL p_Model)
+        {
+            string exception = string.Empty;
 
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_AddCUOL", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@homeID", p_Model.HomeID);
+                l_Cmd.Parameters.AddWithValue("@ResidentId", p_Model.Resident.ID);
+                l_Cmd.Parameters.AddWithValue("@EnteredBy", p_Model.EnteredBy.ID);
+                l_Cmd.Parameters.AddWithValue("@Amount", p_Model.Amount);
+                l_Cmd.Parameters.AddWithValue("@Color", p_Model.Color);
+                l_Cmd.Parameters.AddWithValue("@Comments", p_Model.Comments);
+                l_Cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                exception = "AddNewCUOL |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+        public static Collection<CUOL> GetCUOLbyID(int p_ResidentId,int homeid)
+        {
+            string exception = string.Empty;
+            Collection<CUOL> l_CUOLs = new Collection<CUOL>();
+
+            ResidentModel l_Resident = new ResidentModel();
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_GetCUOLbyID", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@homeID", homeid);
+                l_Cmd.Parameters.AddWithValue("@ResidentId", p_ResidentId);
+                DataSet dataReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(dataReceive);
+
+                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
+                {
+                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        CUOL l_CUOL = new CUOL();
+                        l_CUOL.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
+                        l_CUOL.Amount = Convert.ToString(dataReceive.Tables[0].Rows[index]["Amount"]);
+                        l_CUOL.Color = Convert.ToString(dataReceive.Tables[0].Rows[index]["Color"]);
+                        l_CUOL.Comments = Convert.ToString(dataReceive.Tables[0].Rows[index]["Comments"]);
+                        l_Resident.ID = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_Resident.SuiteNo = Convert.ToString(dataReceive.Tables[0].Rows[index]["ResidentSuiteNo"]);
+                        l_Resident.FirstName = Convert.ToString(dataReceive.Tables[0].Rows[index]["ResidentFirstName"]);
+                        l_Resident.LastName = Convert.ToString(dataReceive.Tables[0].Rows[index]["ResidentLastName"]);
+                        l_CUOL.Resident = l_Resident;
+                        l_CUOL.TimeStamp = Convert.ToDateTime(dataReceive.Tables[0].Rows[index]["dtmTimeStamp"]);
+                        l_CUOL.userName = Convert.ToString(dataReceive.Tables[0].Rows[index]["userName"]);
+                        l_CUOL.userNameType = Convert.ToString(dataReceive.Tables[0].Rows[index]["userNameType"]);
+                        l_CUOLs.Add(l_CUOL);
+                    }
+                }
+                return l_CUOLs;
+            }
+            catch (Exception ex)
+            {
+                exception = "AssessmentDAL GetCUOLbyID |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
 
         public static void SaveFamilyConferenceNote(FamilyConfrenceNoteModel p_FamilyConferenceNote)
         {

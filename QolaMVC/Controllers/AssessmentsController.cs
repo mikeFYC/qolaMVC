@@ -809,6 +809,181 @@ namespace QolaMVC.Controllers
 
         #endregion
 
+
+        #region CUOL
+
+        public ActionResult CUOL()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            return View();
+        }
+
+        public ActionResult AddCUOL(CUOL p_Model)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            p_Model.Resident = resident;
+            p_Model.EnteredBy = user;
+            p_Model.HomeID = home.Id;
+            DataErrorInfoModelValidatorProvider dataErrorInfoModelValidatorProvider = new DataErrorInfoModelValidatorProvider();
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            AssessmentDAL.AddNewCUOL(p_Model);
+            TempData["Message"] = "Added CUOL";
+            ViewBag.Message = "Added CUOL";
+            return View("CUOL");
+        }
+
+
+        #endregion
+
+
+        #region OCTF
+
+        public ActionResult OCTF()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            return View();
+        }
+
+        public ActionResult AddOCTF(CUOL p_Model)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            p_Model.Resident = resident;
+            p_Model.EnteredBy = user;
+            p_Model.HomeID = home.Id;
+            DataErrorInfoModelValidatorProvider dataErrorInfoModelValidatorProvider = new DataErrorInfoModelValidatorProvider();
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            AssessmentDAL.AddNewCUOL(p_Model);
+            TempData["Message"] = "Added CUOL";
+            ViewBag.Message = "Added CUOL";
+            return View("CUOL");
+        }
+
+
+        #endregion
+
+
+        #region OCCC
+
+        public ActionResult OCCC(string index)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+            var vm = new Collection<SBSWTL>();
+            var vm_single = new SBSWTL();
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            vm = AssessmentDAL.getSBSWTL(resident.ID, home.Id);
+            if (vm.Count() == 0)
+            {
+                vm.Add(new SBSWTL());
+            }
+            for (int ind = 0; ind < vm.Count(); ind++)
+            {
+                List<SBSWTL_row> l_Assessments = new List<SBSWTL_row>();
+                for (int g = 0; g < 16; g++)
+                {
+                    SBSWTL_row l_Assessment = new SBSWTL_row();
+                    l_Assessment.row_index = g + 1;
+                    l_Assessments.Add(l_Assessment);
+                }
+                if (vm[ind].SBSWTL_List == null || vm[ind].SBSWTL_List.Count() == 0)
+                {
+                    vm[ind].SBSWTL_List = l_Assessments;
+                }
+                else
+                {
+                    foreach (var aaa in vm[ind].SBSWTL_List)
+                    {
+                        l_Assessments[aaa.row_index - 1] = aaa;
+                    }
+                    vm[ind].SBSWTL_List = l_Assessments;
+
+                }
+            }
+
+            List<DateTime> l_AssessmentDates = new List<DateTime>();
+            foreach (var l_A in vm)
+            {
+                l_AssessmentDates.Add(l_A.start_time);
+            }
+            ViewBag.AssessmentDates = l_AssessmentDates;
+            if (index == null || index == "")
+            {
+                TempData["index"] = "0";
+                vm_single = vm[0];
+            }
+            else
+            {
+                TempData["index"] = index;
+                vm_single = vm[int.Parse(index)];
+            }
+            TempData.Keep("index");
+            return View(vm_single);
+        }
+
+        public ActionResult Add_OCCC()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            AssessmentDAL.Add_SBSWTL(resident.ID, user.ID, home.Id);
+            string ind = TempData["index"].ToString();
+            return RedirectToAction("SBSWTL", new { index = ind });
+        }
+
+
+        #endregion
+
+
         public ActionResult FamilyConference(string index)
         {
             var home = (HomeModel)TempData["Home"];

@@ -1,0 +1,324 @@
+﻿@model IEnumerable<QolaMVC.Models.CUOL>
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+
+<style>
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+
+    #bigtable tbody tr td {
+        padding: 3px 15px 3px 15px !important;
+    }
+    #bigtable label {
+        margin-bottom: 0px !important;
+    }
+    #smalltable tr{
+        height:10px !important;
+    }
+    #smalltable tbody tr td {
+        padding: 15px 15px 15px 15px !important;
+    }
+</style>
+
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+
+    <!-- START PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+                        <div class="col-md-9">
+                            <h3>Catheter Urine Output Log Report</h3>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-primary" onclick="location.href='/Assessments/CUOL'">BACK</button>
+                            <button class="btn btn-danger" id="CUOL_PRINT" onclick="PRINTPDF()">PRINT</button>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+
+            <div style="height: 60px;"></div>
+
+
+            <br>
+            <input type="hidden" value="CUOL" name="" class="filename">
+
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg" id="fromHTMLtestdiv">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+
+                <div class="card">
+                    <div class="card-block">
+
+                        <br>
+                        <div class="row" id="CUOL_firstrow">
+                            <div class="col-md-12">
+                                <div class="col-md-1">
+                                </div>
+                                <div class="col-md-6">
+                                    <img src="~/Content/assets/img/logo (2).png" />
+                                </div>
+                                <div class="col-md-5">
+                                    <h4 style="font-weight:bold;">@ViewBag.Home.Name</h4>   
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-12 text-center">
+                                <h2 style="font-weight:bold;margin-top:-1%;padding-bottom:1%;">Catheter Urine Output Log</h2>
+                            </div>
+                            
+                            <div class="col-md-12">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-2">
+                                    <p class="" style="font-size:20px;margin-bottom:0;">Resident's Name:</p>
+                                </div>
+                                <div class="col-md-5" style="border-bottom-style:solid;margin-left:-2vw;">
+                                    <p class="text-center" style="font-size:20px;margin-bottom:0;">@ViewBag.Resident.FirstName @ViewBag.Resident.LastName </p>
+                                </div>
+                                <div class="col-md-1">
+                                    <p class="text-center" style="font-size:20px;margin-bottom:0;">Suite #:</p>
+                                </div>
+                                <div class="col-md-2" style="border-bottom-style:solid;">
+                                    <p class="text-center" style="font-size:20px;margin-bottom:0;">@ViewBag.Resident.SuiteNo</p>
+                                </div>
+
+                            </div>
+                            <br><br>
+                        </div>
+
+                        
+
+                        <div class="row">
+                            <div class="col-md-6 offset-md-1">
+
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-md-4 col-form-label">Month <span id="toselect">to Select</span></label>
+                                    <div class="col-md-7">
+                                        <select class="form-control" name="AssessmentDate" id="selectdate" onchange="formsubmit(this)">
+
+                                            @if (ViewBag.DatetimeList != null)
+                                            {
+                                                for (var ind = 0; ind < ViewBag.DatetimeList.Count; ind++)
+                                                {
+                                                    <option value=@(ViewBag.DatetimeList[ind])>@(ViewBag.DatetimeList[ind])</option>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <option value=""></option>
+                                            }
+
+                                        </select>
+
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <table class="table table-bordered" id="bigtable">
+                            <thead class="">
+                                <tr>
+                                    <th class="text-center colorBlack" style="width:15%;">Date</th>
+                                    <th class="text-center colorBlack" style="width:15%;">Time</th>
+                                    <th class="text-center colorBlack" style="width:15%;">Amount</th>
+                                    <th class="text-center colorBlack" style="width:15%;">Color</th>
+                                    <th class="text-center colorBlack" style="width:15%;">Comments</th>
+                                    <th class="text-center colorBlack" style="width:15%;">Signature & Designation</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+
+                                @{
+                                    if (TempData["index"] != null && TempData["index"].ToString() != "")
+                                    {
+                                        var a = TempData["index"].ToString();
+                                        DateTime YearMonth = DateTime.Parse(a);
+                                        var firstDayOfMonth = new DateTime(YearMonth.Year, YearMonth.Month, 1);
+                                        var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+                                        for (var li = firstDayOfMonth; firstDayOfMonth <= lastDayOfMonth; firstDayOfMonth = firstDayOfMonth.AddDays(1))
+                                        {
+                                <tr>
+                                    <td class="align-middle">@firstDayOfMonth.ToString("yyyy-MM-dd")</td>
+                                    @{
+                                        var yearstr = firstDayOfMonth.Year.ToString();
+                                        var monthstr = firstDayOfMonth.Month.ToString();
+                                        var daystr = firstDayOfMonth.Day.ToString();
+                                        if (@Model.Where(c => c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).Count() >= 1)
+                                        {
+                                            var color = @Model.Where(c => c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().Color;
+                                            var userName = @Model.Where(c => c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().userName;
+                                            var userNameType = @Model.Where(c => c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().userNameType;
+                                            <td class="align-middle colorBlack">@Model.Where(c => c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().TimeStamp.ToShortTimeString()</td>
+                                            <td class="align-middle colorBlack">@Model.Where(c => c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().Amount</td>
+                                            <td class="align-middle colorBlack" style="padding:5px 30px 5px 30px !important"><div style="background-color:@color;width:100%;height:10px;"></div></td>
+                                            <td class="align-middle colorBlack">@Model.Where(c => c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().Comments</td>
+                                            <td><label class="form-control-label text-center" style="width:100%;font-size:1em;">@userName<br>@userNameType</label></td>
+                                        }
+
+                                        else
+                                        {
+                                            <td class="align-middle"></td>
+                                            <td class="align-middle"></td>
+                                            <td class="align-middle"></td>
+                                            <td class="align-middle"></td>
+                                            <td class="align-middle"></td>
+                                        }
+                                    }
+                                    
+                                </tr>
+                                        }
+                                    }
+
+
+
+                                }
+                            </tbody>
+                        </table>
+                        <br>
+                        <table class="table table-bordered" id="smalltable">
+                            <thead class="">
+                                <tr>
+                                    <th class="text-center colorBlack">NAME</th>
+                                    <th class="text-center colorBlack">Signature</th>
+                                    <th class="text-center colorBlack">Initials</th>
+                                    <th class="text-center colorBlack">Designation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < 4; i++)
+                                {
+                                    int j = i + 1;
+
+                                    <tr>
+                                        <td class="align-middle"></td>
+                                        <td class="align-middle"></td>
+                                        <td class="align-middle"></td>
+                                        <td class="align-middle"></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        @{
+                            if (TempData["index"] != null)
+                            {
+                                <input id="hiddeninput1" type="hidden" value="@TempData["index"]" />
+                            }
+                            else
+                            {
+                                <input id="hiddeninput1" type="hidden" value="" />
+                            }
+                        }
+
+                    </div>
+                </div>
+                <br><br><br>
+
+                <!-- END PLACE PAGE CONTENT HERE -->
+            </div>
+            <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+
+        @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+
+        <script>
+            var index_date = $('#hiddeninput1').val();
+            $('#selectdate').val(index_date);
+
+            function formsubmit(ee) {
+                var index = $('#selectdate').val();
+                if (window.location.href.includes("?")) {
+                    var question_location = window.location.href.indexOf('?');
+                    window.location.href = window.location.href.substring(0, question_location) + '?index=' + index;
+                }
+                else {
+                    window.location.href = window.location.href + "?index=" + index;
+                }
+
+            }
+
+            function PRINTPDF() {
+
+                document.getElementById('CUOL_firstrow').style.marginTop = "100px";
+                scrollTo(0, 0);
+                $('#toselect').hide();
+
+                $('.content').height($('.content').height());
+                var srcEl = document.getElementById("fromHTMLtestdiv");
+                var scaleFactor = 1.5;
+
+                var originalWidth = srcEl.offsetWidth;
+                var originalHeight = srcEl.offsetHeight;
+                // Force px size (no %, EMs, etc)
+                srcEl.style.width = originalWidth + "px";
+                srcEl.style.height = originalHeight + "px";
+
+                // Position the element at the top left of the document because of bugs in html2canvas. The bug exists when supplying a custom canvas, and   //the rendering on the custom canvas based on the offset of the source element on the page; thus the source element MUST be at 0, 0.
+                // See html2canvas issues #790, #820, #893, #922
+                srcEl.style.position = "absolute";
+                srcEl.style.top = "0";
+                srcEl.style.left = "0";
+
+                // Create scaled canvas
+                var scaledCanvas = document.createElement("canvas");
+                scaledCanvas.width = originalWidth * scaleFactor;
+                scaledCanvas.height = originalHeight * scaleFactor;
+                scaledCanvas.style.width = originalWidth + "px";
+                scaledCanvas.style.height = originalHeight + "px";
+                var scaledContext = scaledCanvas.getContext("2d");
+                scaledContext.scale(scaleFactor, scaleFactor);
+
+                html2canvas(srcEl, { canvas: scaledCanvas })
+                    .then(function (canvas) {
+                        var imgData = canvas.toDataURL('image/png');
+                        var imgWidth = 210;
+                        var pageHeight = 295;
+                        var imgHeight = canvas.height * imgWidth / canvas.width;
+                        var heightLeft = imgHeight;
+
+                        var doc = new jsPDF('p', 'mm');
+                        var position = 0;
+
+                        doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                        doc.setTextColor('#000');
+                        var context = canvas.getContext('2d');
+                        context.scale(2, 2);
+                        heightLeft -= pageHeight;
+
+                        while (heightLeft >= 0) {
+                            position = heightLeft - imgHeight;
+                            doc.addPage();
+                            doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                            var context = canvas.getContext('2d');
+                            context.scale(2, 2);
+                            doc.setTextColor('#000');
+                            heightLeft -= pageHeight;
+                        }
+                        var filename = $('.filename').val();
+                        doc.save(filename + '.pdf');
+                    });
+                $('#CUOL_PRINT').hide();
+                $('#toselect').show();
+
+
+            }
+
+        </script>
