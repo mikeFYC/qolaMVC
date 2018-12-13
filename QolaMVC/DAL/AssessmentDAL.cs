@@ -3884,7 +3884,7 @@ namespace QolaMVC.DAL
             try
             {
                 SqlDataAdapter l_DA = new SqlDataAdapter();
-                SqlCommand l_Cmd = new SqlCommand("spAB_Get_OCCU_by_ResidentID", l_Conn);
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_OCCC_by_ResidentID", l_Conn);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 l_Cmd.Parameters.AddWithValue("@residentID", p_ResidentId);
