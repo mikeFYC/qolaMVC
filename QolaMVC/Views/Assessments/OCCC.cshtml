@@ -49,7 +49,6 @@
 
         scrollTo(0, 0);
         $('#historySpan').hide();
-        $('#btnFinalSave').hide();
 
         $('.content').height($('.content').height());
         var srcEl = document.getElementById("fromHTMLtestdiv");
@@ -107,7 +106,6 @@
             });
         $('#OCCC_PRINT').hide();
         $('#historySpan').show();
-        $('#btnFinalSave').show();
         $('#fromHTMLtestdiv').css("margin-left", "20px");
 
 
@@ -211,7 +209,17 @@
                                             <p class="text-center" style="font-size:20px;margin-bottom:0;">Date:</p>
                                         </div>
                                         <div class="col-md-2" style="border-bottom-style:solid;">
-                                            <p class="text-center" style="font-size:20px;margin-bottom:0;">@(((List<DateTime>)ViewBag.AssessmentDates)[0].ToString("yyyy-MM-dd"))</p>
+                                            @{
+                                                if (((List<DateTime>)ViewBag.AssessmentDates)[0].ToString("yyyy-MM-dd") == "0001-01-01")
+                                                {
+                                                    <p class="text-center" style="font-size:20px;margin-bottom:0;height:20px;"></p>
+                                                }
+                                                else
+                                                {
+                                                    <p class="text-center" style="font-size:20px;margin-bottom:0;">@(((List<DateTime>)ViewBag.AssessmentDates)[0].ToString("yyyy-MM-dd"))</p>
+                                                }
+                                            }
+
                                         </div>
 
                                     </div>
@@ -221,14 +229,15 @@
                                         <div class="col-md-3">
                                             <p class="" style="font-size:20px;margin-bottom:0;">Signature of Observer:</p>
                                         </div>
-                                        <div class="col-md-2" style="border-bottom-style:solid;margin-left:-2vw;">
-                                            <p class="text-center" style="font-size:20px;margin-bottom:0;height:20px;"></p>
+                                        <div class="col-md-3" style="border-bottom-style:solid;margin-left:-2vw;">
+                                            <p class="text-center" style="font-size:20px;margin-bottom:0;height:25px;">@(Model.userName+" "+Model.userNameType)</p>
                                         </div>
                                         <div class="col-md-2">
                                             <p class="text-center" style="font-size:20px;margin-bottom:0;">Location:</p>
                                         </div>
                                         <div class="col-md-2" style="border-bottom-style:solid;">
-                                            <p class="text-center" style="font-size:20px;margin-bottom:0;height:20px;"></p>
+                                            @Html.TextBoxFor(m=>m.Location,new {@class="form-control", style = "margin-top:-5%;" })
+                                            <p class="text-center" style="font-size:20px;margin-bottom:0;"></p>
                                         </div>
                                                 
                                     </div>
@@ -245,14 +254,14 @@
                                         <tbody>
                                             <tr><td>Has read the Oral Care procedure and performed the following :</td><td></td><td></td></tr>
                                             <tr><td>1.	Check the Care Plan indicating resident’s level of assistance for oral care</td><td>@Html.CheckBoxFor(modelItem => Model.checkYes1, new { @class = "form-check-input" })</td><td>@Html.CheckBoxFor(modelItem => Model.checkNo1, new { @class = "form-check-input" })</td></tr>
-                                            <tr><td>2.	Hand hygiene prior to performing oral care</td><td>@Html.CheckBoxFor(modelItem => Model.checkYes1, new { @class = "form-check-input" })</td><td>@Html.CheckBoxFor(modelItem => Model.checkNo1, new { @class = "form-check-input" })</td></tr>
-                                            <tr><td>3.	Perform Oral Care for resident who is able to brush teeth.</td><td>@Html.CheckBoxFor(modelItem => Model.checkYes1, new { @class = "form-check-input" })</td><td>@Html.CheckBoxFor(modelItem => Model.checkNo1, new { @class = "form-check-input" })</td></tr>
-                                            <tr><td>4.	Perform Oral Care for Resident who is unable to brush teeth</td><td>@Html.CheckBoxFor(modelItem => Model.checkYes1, new { @class = "form-check-input" })</td><td>@Html.CheckBoxFor(modelItem => Model.checkNo1, new { @class = "form-check-input" })</td></tr>
-                                            <tr><td>5.	Perform Oral care  for resident with dentures</td><td>@Html.CheckBoxFor(modelItem => Model.checkYes1, new { @class = "form-check-input" })</td><td>@Html.CheckBoxFor(modelItem => Model.checkNo1, new { @class = "form-check-input" })</td></tr>
-                                            <tr><td>6.	Perform Oral checks. (Staff is able to identify oral health concerns and how to report)</td><td>@Html.CheckBoxFor(modelItem => Model.checkYes1, new { @class = "form-check-input" })</td><td>@Html.CheckBoxFor(modelItem => Model.checkNo1, new { @class = "form-check-input" })</td></tr>
-                                            <tr><td>7.	Hand hygiene after oral care</td><td>@Html.CheckBoxFor(modelItem => Model.checkYes1, new { @class = "form-check-input" })</td><td>@Html.CheckBoxFor(modelItem => Model.checkNo1, new { @class = "form-check-input" })</td></tr>
-                                            <tr><td>8.	Complete Oral Tracking Form properly</td><td>@Html.CheckBoxFor(modelItem => Model.checkYes1, new { @class = "form-check-input" })</td><td>@Html.CheckBoxFor(modelItem => Model.checkNo1, new { @class = "form-check-input" })</td></tr>
-                                            <tr><td>9.	Document identified oral health concerns</td><td>@Html.CheckBoxFor(modelItem => Model.checkYes1, new { @class = "form-check-input" })</td><td>@Html.CheckBoxFor(modelItem => Model.checkNo1, new { @class = "form-check-input" })</td></tr>
+                                            <tr><td>2.	Hand hygiene prior to performing oral care</td><td>@Html.CheckBoxFor(modelItem => Model.checkYes2, new { @class = "form-check-input" })</td><td>@Html.CheckBoxFor(modelItem => Model.checkNo2, new { @class = "form-check-input" })</td></tr>
+                                            <tr><td>3.	Perform Oral Care for resident who is able to brush teeth.</td><td>@Html.CheckBoxFor(modelItem => Model.checkYes3, new { @class = "form-check-input" })</td><td>@Html.CheckBoxFor(modelItem => Model.checkNo3, new { @class = "form-check-input" })</td></tr>
+                                            <tr><td>4.	Perform Oral Care for Resident who is unable to brush teeth</td><td>@Html.CheckBoxFor(modelItem => Model.checkYes4, new { @class = "form-check-input" })</td><td>@Html.CheckBoxFor(modelItem => Model.checkNo4, new { @class = "form-check-input" })</td></tr>
+                                            <tr><td>5.	Perform Oral care  for resident with dentures</td><td>@Html.CheckBoxFor(modelItem => Model.checkYes5, new { @class = "form-check-input" })</td><td>@Html.CheckBoxFor(modelItem => Model.checkNo5, new { @class = "form-check-input" })</td></tr>
+                                            <tr><td>6.	Perform Oral checks. (Staff is able to identify oral health concerns and how to report)</td><td>@Html.CheckBoxFor(modelItem => Model.checkYes6, new { @class = "form-check-input" })</td><td>@Html.CheckBoxFor(modelItem => Model.checkNo6, new { @class = "form-check-input" })</td></tr>
+                                            <tr><td>7.	Hand hygiene after oral care</td><td>@Html.CheckBoxFor(modelItem => Model.checkYes7, new { @class = "form-check-input" })</td><td>@Html.CheckBoxFor(modelItem => Model.checkNo7, new { @class = "form-check-input" })</td></tr>
+                                            <tr><td>8.	Complete Oral Tracking Form properly</td><td>@Html.CheckBoxFor(modelItem => Model.checkYes8, new { @class = "form-check-input" })</td><td>@Html.CheckBoxFor(modelItem => Model.checkNo8, new { @class = "form-check-input" })</td></tr>
+                                            <tr><td>9.	Document identified oral health concerns</td><td>@Html.CheckBoxFor(modelItem => Model.checkYes9, new { @class = "form-check-input" })</td><td>@Html.CheckBoxFor(modelItem => Model.checkNo9, new { @class = "form-check-input" })</td></tr>
                                             <tr><td colspan="3">Comment/s: @Html.TextAreaFor(modelItem => Model.comments,new { style = "max-width:80%;", rows = "3" })</td></tr>
 
 
@@ -269,7 +278,7 @@
                             <div class="row">
                                 <div class="col-md-11 text-right">
                                     <br>
-                                    <input type="submit" id="btnFinalSave" class="btn btn-danger btn-lg" name="FORM" value="SAVE" />
+                                    <input type="submit" id="btnFinalSave" class="btn btn-danger btn-lg" name="FORM" value="SAVE" style="display:none;"/>
                                 </div>
                             </div>
                         </div>
@@ -297,12 +306,19 @@
 
 
 
-    var firstdate = $('#selectdate option:selected').text()
-    if (firstdate != "") {
-        $('input[type=text]').attr('disabled', 'true');
+            var firstdate = $('#selectdate option:selected').text()
+            if (firstdate != "") {
+                $('input[type=text]').attr('disabled', 'true');
+                $('input[type=checkbox]').attr('disabled', 'true');
+                $('textarea').attr('disabled', 'true');
+                $('input[type=text]').css('color', 'black');
+                $('input[type=checkbox]').css('color', 'black');
+                $('textarea').css('color', 'black');
+                
 
-    }
-
-
+            }
+            else {
+                $('#btnFinalSave').show();
+            }
 
         </script>

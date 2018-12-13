@@ -3873,6 +3873,206 @@ namespace QolaMVC.DAL
             }
         }
 
+        public static Collection<OCCC> getOCCCbyResidentID(int p_ResidentId, int homeID)
+        {
+            string exception = string.Empty;
+
+            Collection<OCCC> l_Assessments = new Collection<OCCC>();
+            OCCC l_Assessment = new OCCC();
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_OCCU_by_ResidentID", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@residentID", p_ResidentId);
+                l_Cmd.Parameters.AddWithValue("@homeID", homeID);
+                DataSet AssesmentsReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(AssesmentsReceive);
+                if (AssesmentsReceive.Tables[0].Rows.Count > 0)
+                {
+                    for (int index = 0; index <= AssesmentsReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_Assessment = new OCCC();
+                        l_Assessment.ID = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["ID"]);
+                        l_Assessment.residentID = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["residentID"]);
+                        l_Assessment.Location = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["LocationOCCC"]);
+                        l_Assessment.comments = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["comments"]);
+                        l_Assessment.modified_by = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["EnteredBy"]);
+                        l_Assessment.dtmTimeStamp = Convert.ToDateTime(AssesmentsReceive.Tables[0].Rows[index]["dtmTimeStamp"]);
+                        l_Assessment.checkYes1 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["checkYes1"]);
+                        l_Assessment.checkNo1 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["checkNo1"]);
+                        l_Assessment.checkYes2 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["checkYes2"]);
+                        l_Assessment.checkNo2 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["checkNo2"]);
+                        l_Assessment.checkYes3 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["checkYes3"]);
+                        l_Assessment.checkNo3 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["checkNo3"]);
+                        l_Assessment.checkYes4 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["checkYes4"]);
+                        l_Assessment.checkNo4 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["checkNo4"]);
+                        l_Assessment.checkYes5 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["checkYes5"]);
+                        l_Assessment.checkNo5 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["checkNo5"]);
+                        l_Assessment.checkYes6 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["checkYes6"]);
+                        l_Assessment.checkNo6 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["checkNo6"]);
+                        l_Assessment.checkYes7 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["checkYes7"]);
+                        l_Assessment.checkNo7 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["checkNo7"]);
+                        l_Assessment.checkYes8 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["checkYes8"]);
+                        l_Assessment.checkNo8 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["checkNo8"]);
+                        l_Assessment.checkYes9 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["checkYes9"]);
+                        l_Assessment.checkNo9 = Convert.ToBoolean(AssesmentsReceive.Tables[0].Rows[index]["checkNo9"]);
+                        l_Assessment.userName = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["userName"]);
+                        l_Assessment.userNameType = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["userNameType"]);
+                        l_Assessments.Add(l_Assessment);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                exception = "getOCCCbyResidentID |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+
+            return l_Assessments;
+        }
+
+        public static void Add_OCCC(OCCC p_Model)
+        {
+            string exception = string.Empty;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Add_OCCC", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@ResidentId", p_Model.residentID);
+                l_Cmd.Parameters.AddWithValue("@EnteredBy", p_Model.modified_by);
+                l_Cmd.Parameters.AddWithValue("@homeID", p_Model.homeID);
+                l_Cmd.Parameters.AddWithValue("@checkYes1", p_Model.checkYes1);
+                l_Cmd.Parameters.AddWithValue("@checkNo1", p_Model.checkNo1);
+                l_Cmd.Parameters.AddWithValue("@checkYes2", p_Model.checkYes2);
+                l_Cmd.Parameters.AddWithValue("@checkNo2", p_Model.checkNo2);
+                l_Cmd.Parameters.AddWithValue("@checkYes3", p_Model.checkYes3);
+                l_Cmd.Parameters.AddWithValue("@checkNo3", p_Model.checkNo3);
+                l_Cmd.Parameters.AddWithValue("@checkYes4", p_Model.checkYes4);
+                l_Cmd.Parameters.AddWithValue("@checkNo4", p_Model.checkNo4);
+                l_Cmd.Parameters.AddWithValue("@checkYes5", p_Model.checkYes5);
+                l_Cmd.Parameters.AddWithValue("@checkNo5", p_Model.checkNo5);
+                l_Cmd.Parameters.AddWithValue("@checkYes6", p_Model.checkYes6);
+                l_Cmd.Parameters.AddWithValue("@checkNo6", p_Model.checkNo6);
+                l_Cmd.Parameters.AddWithValue("@checkYes7", p_Model.checkYes7);
+                l_Cmd.Parameters.AddWithValue("@checkNo7", p_Model.checkNo7);
+                l_Cmd.Parameters.AddWithValue("@checkYes8", p_Model.checkYes8);
+                l_Cmd.Parameters.AddWithValue("@checkNo8", p_Model.checkNo8);
+                l_Cmd.Parameters.AddWithValue("@checkYes9", p_Model.checkYes9);
+                l_Cmd.Parameters.AddWithValue("@checkNo9", p_Model.checkNo9);
+                l_Cmd.Parameters.AddWithValue("@Location", p_Model.Location);
+                l_Cmd.Parameters.AddWithValue("@comments", p_Model.comments);
+                l_Cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                exception = "Add_OCCC |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+        public static Collection<OCTF> GetOCTFbyID(int p_ResidentId, int homeid)
+        {
+            string exception = string.Empty;
+            Collection<OCTF> l_OCTFs = new Collection<OCTF>();
+
+            ResidentModel l_Resident = new ResidentModel();
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_OCTF_by_ResidentID", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@homeID", homeid);
+                l_Cmd.Parameters.AddWithValue("@ResidentId", p_ResidentId);
+                DataSet dataReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(dataReceive);
+
+                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
+                {
+                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        OCTF l_OCTF = new OCTF();
+                        l_OCTF.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
+                        l_OCTF.Type = Convert.ToString(dataReceive.Tables[0].Rows[index]["TypeStr"]);
+                        l_OCTF.AssessmentResult = Convert.ToString(dataReceive.Tables[0].Rows[index]["AssessmentResult"]);
+                        l_OCTF.LevelProtocol = Convert.ToString(dataReceive.Tables[0].Rows[index]["LevelProtocol"]);
+                        l_OCTF.LevelOfAssistance = Convert.ToString(dataReceive.Tables[0].Rows[index]["LevelOfAssistance"]);
+                        l_OCTF.Initials = Convert.ToString(dataReceive.Tables[0].Rows[index]["Initials"]);
+                        l_OCTF.Comments = Convert.ToString(dataReceive.Tables[0].Rows[index]["Comments"]);
+                        l_OCTF.ResidentID = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_OCTF.TimeStamp = Convert.ToDateTime(dataReceive.Tables[0].Rows[index]["dtmTimeStamp"]);
+                        l_OCTFs.Add(l_OCTF);
+                    }
+                }
+                return l_OCTFs;
+            }
+            catch (Exception ex)
+            {
+                exception = "AssessmentDAL GetOCTFbyID |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+        public static void AddNewOCTF(OCTF p_Model)
+        {
+            string exception = string.Empty;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Add_OCTF", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@homeID", p_Model.homeID);
+                l_Cmd.Parameters.AddWithValue("@ResidentId", p_Model.ResidentID);
+                l_Cmd.Parameters.AddWithValue("@EnteredBy", p_Model.EnteredBy);
+                l_Cmd.Parameters.AddWithValue("@TypeStr", p_Model.Type);
+                l_Cmd.Parameters.AddWithValue("@AssessmentResult", p_Model.AssessmentResult);
+                l_Cmd.Parameters.AddWithValue("@LevelProtocol", p_Model.LevelProtocol);
+                l_Cmd.Parameters.AddWithValue("@LevelOfAssistance", p_Model.LevelOfAssistance);
+                l_Cmd.Parameters.AddWithValue("@Initials", p_Model.Initials);
+                l_Cmd.Parameters.AddWithValue("@Comments", p_Model.Comments);
+                l_Cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                exception = "AddNewOCTF |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
         public static void SaveFamilyConferenceNote(FamilyConfrenceNoteModel p_FamilyConferenceNote)
         {
             string exception = string.Empty;

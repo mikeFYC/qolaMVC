@@ -1127,7 +1127,8 @@ namespace QolaMVC.Controllers
 
             PhoneArrangement(resident);
 
-            ViewBag.Message = TempData["Message"];
+            //ViewBag.Message = TempData["Message"];
+            ViewBag.Message = "";
 
             TempData["Resident"] = resident;
 
@@ -1480,7 +1481,8 @@ namespace QolaMVC.Controllers
             var resident = ResidentsDAL.GetResidentById(p_ResidentId);
             var progressNotes = ProgressNotesDAL.GetProgressNotesCollections(resident.ID, DateTime.Now, DateTime.Now, "A");
 
-            ViewBag.Message = TempData["Message"];
+            //ViewBag.Message = TempData["Message"];
+            ViewBag.Message = "";
 
             TempData["Resident"] = resident;
 
@@ -1512,7 +1514,8 @@ namespace QolaMVC.Controllers
             var resident = ResidentsDAL.GetResidentById(p_ResidentId);
             var progressNotes = ProgressNotesDAL.GetProgressNotesCollections(resident.ID, DateTime.Now, DateTime.Now, "A");
 
-            ViewBag.Message = TempData["Message"];
+            //ViewBag.Message = TempData["Message"];
+            ViewBag.Message = "";
 
             TempData["Resident"] = resident;
 

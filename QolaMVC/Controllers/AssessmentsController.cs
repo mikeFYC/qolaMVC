@@ -873,7 +873,7 @@ namespace QolaMVC.Controllers
             return View();
         }
 
-        public ActionResult AddOCTF(CUOL p_Model)
+        public ActionResult AddOCTF(OCTF p_Model)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -883,19 +883,19 @@ namespace QolaMVC.Controllers
             ViewBag.Resident = resident;
             ViewBag.Home = home;
 
-            p_Model.Resident = resident;
-            p_Model.EnteredBy = user;
-            p_Model.HomeID = home.Id;
+            p_Model.ResidentID = resident.ID;
+            p_Model.EnteredBy = user.ID;
+            p_Model.homeID = home.Id;
             DataErrorInfoModelValidatorProvider dataErrorInfoModelValidatorProvider = new DataErrorInfoModelValidatorProvider();
 
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
-            AssessmentDAL.AddNewCUOL(p_Model);
-            TempData["Message"] = "Added CUOL";
-            ViewBag.Message = "Added CUOL";
-            return View("CUOL");
+            AssessmentDAL.AddNewOCTF(p_Model);
+            TempData["Message"] = "Added OCTF";
+            ViewBag.Message = "Added OCTF";
+            return View("OCTF");
         }
 
 
@@ -912,45 +912,22 @@ namespace QolaMVC.Controllers
             ViewBag.User = user;
             ViewBag.Resident = resident;
             ViewBag.Home = home;
-            var vm = new Collection<SBSWTL>();
-            var vm_single = new SBSWTL();
+            var vm = new Collection<OCCC>();
+            var vm_single = new OCCC();
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
-            vm = AssessmentDAL.getSBSWTL(resident.ID, home.Id);
+            vm = AssessmentDAL.getOCCCbyResidentID(resident.ID, home.Id);
             if (vm.Count() == 0)
             {
-                vm.Add(new SBSWTL());
-            }
-            for (int ind = 0; ind < vm.Count(); ind++)
-            {
-                List<SBSWTL_row> l_Assessments = new List<SBSWTL_row>();
-                for (int g = 0; g < 16; g++)
-                {
-                    SBSWTL_row l_Assessment = new SBSWTL_row();
-                    l_Assessment.row_index = g + 1;
-                    l_Assessments.Add(l_Assessment);
-                }
-                if (vm[ind].SBSWTL_List == null || vm[ind].SBSWTL_List.Count() == 0)
-                {
-                    vm[ind].SBSWTL_List = l_Assessments;
-                }
-                else
-                {
-                    foreach (var aaa in vm[ind].SBSWTL_List)
-                    {
-                        l_Assessments[aaa.row_index - 1] = aaa;
-                    }
-                    vm[ind].SBSWTL_List = l_Assessments;
-
-                }
+                vm.Add(new OCCC());
             }
 
             List<DateTime> l_AssessmentDates = new List<DateTime>();
             foreach (var l_A in vm)
             {
-                l_AssessmentDates.Add(l_A.start_time);
+                l_AssessmentDates.Add(l_A.dtmTimeStamp);
             }
             ViewBag.AssessmentDates = l_AssessmentDates;
             if (index == null || index == "")
@@ -967,7 +944,7 @@ namespace QolaMVC.Controllers
             return View(vm_single);
         }
 
-        public ActionResult Add_OCCC()
+        public ActionResult Add_OCCC(OCCC p_Model)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -975,9 +952,12 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            AssessmentDAL.Add_SBSWTL(resident.ID, user.ID, home.Id);
+            p_Model.homeID = home.Id;
+            p_Model.modified_by = user.ID;
+            p_Model.residentID = resident.ID;
+            AssessmentDAL.Add_OCCC(p_Model);
             string ind = TempData["index"].ToString();
-            return RedirectToAction("SBSWTL", new { index = ind });
+            return RedirectToAction("OCCC", new { index = ind });
         }
 
 

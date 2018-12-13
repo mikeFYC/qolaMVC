@@ -8,6 +8,7 @@ namespace QolaMVC.Models
     public class OCCC
     {
         public int ID { get; set; }
+        public int homeID { get; set; }
         public int residentID { get; set; }
         public bool checkYes1 { get; set; }
         public bool checkNo1 { get; set; }
@@ -27,8 +28,11 @@ namespace QolaMVC.Models
         public bool checkNo8 { get; set; }
         public bool checkYes9 { get; set; }
         public bool checkNo9 { get; set; }
+        public string Location { get; set; }
         public string comments { get; set; }
+        public string userName { get; set; }
+        public string userNameType { get; set; }
         public int modified_by { get; set; }
-        public DateTime modified_on { get; set; }
+        public DateTime dtmTimeStamp { get; set; }
     }
 }

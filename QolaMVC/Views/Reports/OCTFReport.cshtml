@@ -1,4 +1,4 @@
-﻿@model IEnumerable<QolaMVC.Models.CUOL>
+﻿@model IEnumerable<QolaMVC.Models.OCTF>
 @RenderPage("~/Views/Shared/_Header.cshtml")
 @RenderPage("~/Views/Shared/_SideBar.cshtml")
 
@@ -81,12 +81,9 @@
                                     <h4 style="font-weight:bold;">@ViewBag.Home.Name</h4>
                                 </div>
                             </div>
-
-                            <div class="col-md-12 text-center">
-                                <h2 style="font-weight:bold;margin-top:-1%;padding-bottom:1%;">Catheter Urine Output Log</h2>
-                            </div>
-
+                            
                             <div class="col-md-12">
+                                <br>
                                 <div class="col-md-1"></div>
                                 <div class="col-md-2">
                                     <p class="" style="font-size:20px;margin-bottom:0;">Resident's Name:</p>
@@ -100,50 +97,71 @@
                                 <div class="col-md-2" style="border-bottom-style:solid;">
                                     <p class="text-center" style="font-size:20px;margin-bottom:0;">@ViewBag.Resident.SuiteNo</p>
                                 </div>
-
                             </div>
+
+                            <div class="col-md-12">
+                                <br><br>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5"><h2 style="font-weight:bold;margin-top:-1%;padding-bottom:1%;">Oral Care Tracking Form</h2></div>
+                                <div class="col-md-5">
+                                    <div class="row">
+                                        <div class="col-md-12">
+
+                                            <div class="form-group row">
+                                                <label for="staticEmail" class="col-md-4 col-form-label">Month <span id="toselect">to Select</span></label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control" name="AssessmentDate" id="selectdate" onchange="formsubmit(this)">
+
+                                                        @if (ViewBag.DatetimeList != null)
+                                                        {
+                                                            for (var ind = 0; ind < ViewBag.DatetimeList.Count; ind++)
+                                                            {
+                                                                <option value=@(ViewBag.DatetimeList[ind])>@(ViewBag.DatetimeList[ind])</option>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value=""></option>
+                                                        }
+
+                                                    </select>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <br><br>
                         </div>
 
 
 
-                        <div class="row">
-                            <div class="col-md-6 offset-md-1">
-
-                                <div class="form-group row">
-                                    <label for="staticEmail" class="col-md-4 col-form-label">Month <span id="toselect">to Select</span></label>
-                                    <div class="col-md-7">
-                                        <select class="form-control" name="AssessmentDate" id="selectdate" onchange="formsubmit(this)">
-
-                                            @if (ViewBag.DatetimeList != null)
-                                            {
-                                                for (var ind = 0; ind < ViewBag.DatetimeList.Count; ind++)
-                                                {
-                                                    <option value=@(ViewBag.DatetimeList[ind])>@(ViewBag.DatetimeList[ind])</option>
-                                                }
-                                            }
-                                            else
-                                            {
-                                                <option value=""></option>
-                                            }
-
-                                        </select>
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
+                        
                         <hr>
                         <table class="table table-bordered" id="bigtable">
-                            <thead class="">
+                            <thead class="bg-primary">
                                 <tr>
-                                    <th class="text-center colorBlack" style="width:15%;">Date</th>
-                                    <th class="text-center colorBlack" style="width:15%;">Time</th>
-                                    <th class="text-center colorBlack" style="width:15%;">Amount</th>
-                                    <th class="text-center colorBlack" style="width:15%;">Color</th>
-                                    <th class="text-center colorBlack" style="width:15%;">Comments</th>
-                                    <th class="text-center colorBlack" style="width:15%;">Signature & Designation</th>
+                                    <th class="text-center text-white" style="width:8%;">Date</th>
+                                    <th class="text-center text-white" style="width:24%;" colspan="3">DAY</th>
+                                    <th class="text-center text-white" style="width:8%;"></th>
+                                    <th class="text-center text-white" style="width:24%;" colspan="3">EVE</th>
+                                    <th class="text-center text-white" style="width:8%;"></th>
+                                    <th class="text-center text-white" style="width:20%;">Comments</th>
+                                </tr>
+                                <tr>
+                                    <th class="text-center text-white" style="width:8%;"></th>
+                                    <th class="text-center text-white" style="width:8%;">Assessment result</th>
+                                    <th class="text-center text-white" style="width:8%;">Level Protocol</th>
+                                    <th class="text-center text-white" style="width:8%;">Level of Assistance</th>
+                                    <th class="text-center text-white" style="width:8%;">Initials</th>
+                                    <th class="text-center text-white" style="width:8%;">Assessment result</th>
+                                    <th class="text-center text-white" style="width:8%;">Level Protocol</th>
+                                    <th class="text-center text-white" style="width:8%;">Level of Assistance</th>
+                                    <th class="text-center text-white" style="width:8%;">Initials</th>
+                                    <th class="text-center text-white" style="width:20%;"></th>
                                 </tr>
                             </thead>
                             <tbody class="text-center">
@@ -157,22 +175,20 @@
                                         var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
                                         for (var li = firstDayOfMonth; firstDayOfMonth <= lastDayOfMonth; firstDayOfMonth = firstDayOfMonth.AddDays(1))
                                         {
+                                            var commentStr = "";
                                             <tr>
                                                 <td class="align-middle">@firstDayOfMonth.ToString("yyyy-MM-dd")</td>
                                                 @{
                                                     var yearstr = firstDayOfMonth.Year.ToString();
                                                     var monthstr = firstDayOfMonth.Month.ToString();
                                                     var daystr = firstDayOfMonth.Day.ToString();
-                                                    if (@Model.Where(c => c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).Count() >= 1)
+                                                    if (@Model.Where(c => c.Type == "DAY" && c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).Count() >= 1)
                                                     {
-                                                        var color = @Model.Where(c => c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().Color;
-                                                        var userName = @Model.Where(c => c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().userName;
-                                                        var userNameType = @Model.Where(c => c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().userNameType;
-                                                        <td class="align-middle colorBlack">@Model.Where(c => c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().TimeStamp.ToShortTimeString()</td>
-                                                        <td class="align-middle colorBlack">@Model.Where(c => c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().Amount</td>
-                                                        <td class="align-middle colorBlack" style="padding:5px 30px 5px 30px !important"><div style="background-color:@color;width:100%;height:10px;"></div></td>
-                                                        <td class="align-middle colorBlack">@Model.Where(c => c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().Comments</td>
-                                                        <td><label class="form-control-label text-center" style="width:100%;font-size:1em;">@userName<br>@userNameType</label></td>
+                                                        commentStr = @Model.Where(c => c.Type == "DAY" && c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().Comments;
+                                                        <td class="align-middle colorBlack">@Model.Where(c => c.Type == "DAY" && c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().AssessmentResult</td>
+                                                        <td class="align-middle colorBlack">@Model.Where(c => c.Type == "DAY" && c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().LevelProtocol</td>
+                                                        <td class="align-middle colorBlack">@Model.Where(c => c.Type == "DAY" && c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().LevelOfAssistance</td>
+                                                        <td class="align-middle colorBlack">@Model.Where(c => c.Type == "DAY" && c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().Initials</td>
                                                     }
 
                                                     else
@@ -181,8 +197,30 @@
                                                         <td class="align-middle"></td>
                                                         <td class="align-middle"></td>
                                                         <td class="align-middle"></td>
+                                                    }
+
+                                                    if (@Model.Where(c => c.Type == "EVE" && c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).Count() >= 1)
+                                                    {
+                                                        commentStr = commentStr + ", " + @Model.Where(c => c.Type == "EVE" && c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().Comments;
+                                                        <td class="align-middle colorBlack">@Model.Where(c => c.Type == "EVE" && c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().AssessmentResult</td>
+                                                        <td class="align-middle colorBlack">@Model.Where(c => c.Type == "EVE" && c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().LevelProtocol</td>
+                                                        <td class="align-middle colorBlack">@Model.Where(c => c.Type == "EVE" && c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().LevelOfAssistance</td>
+                                                        <td class="align-middle colorBlack">@Model.Where(c => c.Type == "EVE" && c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().Initials</td>
+                                                    }
+
+                                                    else
+                                                    {
+                                                        <td class="align-middle"></td>
+                                                        <td class="align-middle"></td>
+                                                        <td class="align-middle"></td>
                                                         <td class="align-middle"></td>
                                                     }
+
+
+                                                        <td class="align-middle colorBlack">@commentStr</td>
+                                        
+
+
                                                 }
 
                                             </tr>

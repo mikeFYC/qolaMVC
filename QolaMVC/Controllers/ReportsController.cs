@@ -139,14 +139,14 @@ namespace QolaMVC.Controllers
             ViewBag.Home = home;
             ViewBag.Resident = resident;
 
-            var l_CUOLs = AssessmentDAL.GetCUOLbyID(resident.ID, home.Id);
+            var l_OCTFs = AssessmentDAL.GetOCTFbyID(resident.ID, home.Id);
 
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
             List<string> DatetimeList = new List<string>();
-            foreach (var sample in l_CUOLs)
+            foreach (var sample in l_OCTFs)
             {
                 string ti = sample.TimeStamp.Year.ToString() + "-" + sample.TimeStamp.Month.ToString();
                 if (DatetimeList.Contains(ti) == false)
@@ -154,7 +154,7 @@ namespace QolaMVC.Controllers
                     DatetimeList.Add(ti);
                 }
             }
-            Collection<CUOL> CUOL_samples = new Collection<CUOL>();
+            Collection<OCTF> OCTF_samples = new Collection<OCTF>();
             string MANZU = "";
             if (index == null || index == "")
             {
@@ -169,19 +169,19 @@ namespace QolaMVC.Controllers
                 MANZU = index;
             }
 
-            foreach (var sample in l_CUOLs)
+            foreach (var sample in l_OCTFs)
             {
                 string ti = sample.TimeStamp.Year.ToString() + "-" + sample.TimeStamp.Month.ToString();
                 if (MANZU == ti)
                 {
-                    CUOL_samples.Add(sample);
+                    OCTF_samples.Add(sample);
                 }
             }
 
             ViewBag.DatetimeList = DatetimeList;
             TempData["index"] = index;
 
-            return View(CUOL_samples);
+            return View(OCTF_samples);
         }
 
         public ActionResult ExcerciseActivityReport()
