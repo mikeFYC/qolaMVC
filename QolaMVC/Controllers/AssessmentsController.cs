@@ -964,6 +964,65 @@ namespace QolaMVC.Controllers
         #endregion
 
 
+        #region MRAF
+
+        public ActionResult MRAF(string index)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+            var vm = new Collection<MRAF>();
+            var vm_single = new MRAF();
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            //vm = AssessmentDAL.getSBSWTL(resident.ID, home.Id);
+            if (vm.Count() == 0)
+            {
+                vm.Add(new MRAF());
+            }
+
+            List<DateTime> l_AssessmentDates = new List<DateTime>();
+            foreach (var l_A in vm)
+            {
+                l_AssessmentDates.Add(l_A.DateEntered);
+            }
+            ViewBag.AssessmentDates = l_AssessmentDates;
+            if (index == null || index == "")
+            {
+                TempData["index"] = "0";
+                //vm_single = vm[0];
+            }
+            else
+            {
+                TempData["index"] = index;
+                vm_single = vm[int.Parse(index)];
+            }
+            TempData.Keep("index");
+            return View(vm_single);
+        }
+
+        public ActionResult Add_MRAF(MRAF l_Model)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            //AssessmentDAL.Add_SBSWTL(resident.ID, user.ID, home.Id);
+            string ind = TempData["index"].ToString();
+            return RedirectToAction("MRAF", new { index = ind });
+        }
+
+
+        #endregion
+
+
         public ActionResult FamilyConference(string index)
         {
             var home = (HomeModel)TempData["Home"];

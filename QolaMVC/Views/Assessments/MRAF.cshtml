@@ -1,0 +1,335 @@
+﻿@model QolaMVC.Models.MRAF
+
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+
+
+<script>
+    function formsubmit(ee) {
+        var index = $('#selectdate').val();
+        if (window.location.href.includes("?")) {
+            var question_location = window.location.href.indexOf('?');
+            window.location.href = window.location.href.substring(0, question_location) + '?index='+index;
+        }
+        else {
+            window.location.href = window.location.href + "?index=" + index;
+        }
+    }
+
+    function PRINTPDF() {
+
+        scrollTo(0, 0);
+        $('#historySpan').hide();
+        $('#btnFinalSave').hide();
+
+        $('.content').height($('.content').height());
+        var srcEl = document.getElementById("fromHTMLtestdiv");
+        var scaleFactor = 1.5;
+
+        var originalWidth = srcEl.offsetWidth;
+        var originalHeight = srcEl.offsetHeight;
+        // Force px size (no %, EMs, etc)
+        srcEl.style.width = originalWidth + "px";
+        srcEl.style.height = originalHeight + "px";
+
+        // Position the element at the top left of the document because of bugs in html2canvas. The bug exists when supplying a custom canvas, and   //the rendering on the custom canvas based on the offset of the source element on the page; thus the source element MUST be at 0, 0.
+        // See html2canvas issues #790, #820, #893, #922
+        srcEl.style.position = "absolute";
+        srcEl.style.top = "0";
+        srcEl.style.left = "0";
+
+        // Create scaled canvas
+        var scaledCanvas = document.createElement("canvas");
+        scaledCanvas.width = originalWidth * scaleFactor;
+        scaledCanvas.height = originalHeight * scaleFactor;
+        scaledCanvas.style.width = originalWidth + "px";
+        scaledCanvas.style.height = originalHeight + "px";
+        var scaledContext = scaledCanvas.getContext("2d");
+        scaledContext.scale(scaleFactor, scaleFactor);
+
+        html2canvas(srcEl, { canvas: scaledCanvas })
+            .then(function (canvas) {
+                var imgData = canvas.toDataURL('image/png');
+                var imgWidth = 210;
+                var pageHeight = 295;
+                var imgHeight = canvas.height * imgWidth / canvas.width;
+                var heightLeft = imgHeight;
+
+                var doc = new jsPDF('p', 'mm');
+                var position = 0;
+
+                doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                doc.setTextColor('#000');
+                var context = canvas.getContext('2d');
+                context.scale(2, 2);
+                heightLeft -= pageHeight;
+
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    doc.addPage();
+                    doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                    var context = canvas.getContext('2d');
+                    context.scale(2, 2);
+                    doc.setTextColor('#000');
+                    heightLeft -= pageHeight;
+                }
+                var filename = $('.filename').val();
+                doc.save(filename + '.pdf');
+            });
+        $('#MRAF_PRINT').hide();
+        $('#historySpan').show();
+        $('#btnFinalSave').show();
+        $('#fromHTMLtestdiv').css("margin-left", "20px");
+
+
+    }
+
+</script>
+
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+
+    <!-- START PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+
+                        <div class="col-md-10">
+                            <h3>Managed Risk Agreement Form</h3>
+                        </div>
+                        <div class="col-md-2">
+                            <a href="~/Assessments/" class="btn btn-primary"><i class="fa fa-backward"></i>Back</a>
+                            <a class="btn btn-primary text-white" id="MRAF_PRINT" onclick="PRINTPDF()"><i class="fa fa-file-pdf-o"></i>Print</a>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+            <div style="height: 60px;"></div>
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+                <div class="card" id="fromHTMLtestdiv">
+                    @using (Html.BeginForm("Add_MRAF", "Assessments"))
+                    {
+                        <input type="hidden" class="filename" value="MRAF" />
+                        <div class="card-block" id="MRAF_firstrow">
+                            <div class="">
+                                <div style="max-width:50%;">
+                                    <label style="font-size:1.3vw;display:inline-block;">Assessment <span id="historySpan">History</span>:</label>
+                                    <select name="AssessmentDate" id="selectdate" onchange="formsubmit(this)" style="width:12vw;height:30px;font-size:1.3vw;display:inline-block;">
+                                        @if (ViewBag.AssessmentDates != null && ViewBag.AssessmentDates[0].ToShortDateString() != "1/1/0001")
+                                        {
+
+                                            for (var ind = 0; ind < ((List<DateTime>)ViewBag.AssessmentDates).Count(); ind++)
+                                            {
+                                                <option value=@ind>@(((List<DateTime>)ViewBag.AssessmentDates)[ind].ToString("yyyy-MM-dd"))</option>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <option value="0"></option>
+                                        }
+                                    </select>
+                                    <button class="btn btn-primary" id="newButton" type="button" style="display:inline-block;margin-top:-6px" onclick="location.href='@Url.Action("Add_SBSWTL", "Assessments")'">New</button>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="card-block" id="assessment">
+                            <div class="row">
+                                <div class="row">
+
+                                    <div class="col-md-12">
+                                        <div class="col-md-1">
+                                        </div>
+                                        <div class="col-md-5">
+                                            <img src="~/Content/assets/img/logo (2).png" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h2 style="font-weight:bold;">@ViewBag.Home.Name</h2>
+                                        </div>
+                                    </div>
+                                    <br><br><br><br><br><br>
+                                    <div class="col-md-12 text-center">
+                                        <h2 style="font-weight:bold;">Negotiated Risk Agreement</h2>
+                                    </div>
+                                    <br><br><br><br>
+                                    <div class="col-md-12">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-2">
+                                            <p class="" style="font-size:20px;margin-bottom:0;">Resident's Name:</p>
+                                        </div>
+                                        <div class="col-md-5" style="border-bottom-style:solid;margin-left:-2vw;">
+                                            <p class="text-center" style="font-size:20px;margin-bottom:0;">@ViewBag.Resident.FirstName @ViewBag.Resident.LastName </p>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <p class="text-center" style="font-size:20px;margin-bottom:0;">Suite #:</p>
+                                        </div>
+                                        <div class="col-md-2" style="border-bottom-style:solid;">
+                                            <p class="text-center" style="font-size:20px;margin-bottom:0;">@ViewBag.Resident.SuiteNo</p>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="col-md-1"></div>
+                                        <div class="" style="width:20%;display:inline-block;">
+                                            <p class="" style="font-size:20px;margin-bottom:0;">Implementation Date:</p>
+                                        </div>
+                                        <div class="" style="border-bottom-style:solid;width:25%;display:inline-block;">
+                                            <p class="text-center" style="font-size:20px;margin-bottom:0;height:25px;"></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="col-md-1"></div>
+                                        <div class="" style="width:20%;display:inline-block;">
+                                            <p class="" style="font-size:20px;margin-bottom:0;">Scheduled Review Date: </p>
+                                        </div>
+                                        <div class="" style="border-bottom-style:solid;width:25%;display:inline-block;">
+                                            <p class="text-center" style="font-size:20px;margin-bottom:0;height:25px;"></p>
+                                        </div>
+                                        <div class="" style="width:35%;display:inline-block;">
+                                            <p style="font-size:20px;margin-bottom:0;">(must be updated when review is completed)</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="col-md-1"></div>
+                                        <div class="" style="display:inline-block;">
+                                            <p class="" style="font-size:20px;margin-bottom:0;">Guardian:</p>
+                                        </div>
+                                        <div class="" style="border-bottom-style:solid;width:15%;display:inline-block;">
+                                            <p class="text-center" style="font-size:20px;margin-bottom:0;height:25px;"></p>
+                                        </div>
+                                        <div class="" style="width:5%;display:inline-block;"></div>
+                                        <div class="" style="display:inline-block;">
+                                            <p class="" style="font-size:20px;margin-bottom:0;">name:</p>
+                                        </div>
+                                        <div class="" style="border-bottom-style:solid;width:15%;display:inline-block;">
+                                            <p class="text-center" style="font-size:20px;margin-bottom:0;height:25px;"></p>
+                                        </div>
+                                        <div class="" style="width:5%;display:inline-block;"></div>
+                                        <div class="" style="display:inline-block;">
+                                            <p class="" style="font-size:20px;margin-bottom:0;">signature:</p>
+                                        </div>
+                                        <div class="" style="border-bottom-style:solid;width:15%;display:inline-block;">
+                                            <p class="text-center" style="font-size:20px;margin-bottom:0;height:25px;"></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="col-md-1"></div>
+                                        <div class="" style="display:inline-block;">
+                                            <p class="" style="font-size:20px;margin-bottom:0;">Trustee:</p>
+                                        </div>
+                                        <div class="" style="border-bottom-style:solid;width:15%;display:inline-block;">
+                                            <p class="text-center" style="font-size:20px;margin-bottom:0;height:25px;"></p>
+                                        </div>
+                                        <div class="" style="width:5%;display:inline-block;"></div>
+                                        <div class="" style="display:inline-block;">
+                                            <p class="" style="font-size:20px;margin-bottom:0;">name:</p>
+                                        </div>
+                                        <div class="" style="border-bottom-style:solid;width:15%;display:inline-block;">
+                                            <p class="text-center" style="font-size:20px;margin-bottom:0;height:25px;"></p>
+                                        </div>
+                                        <div class="" style="width:5%;display:inline-block;"></div>
+                                        <div class="" style="display:inline-block;">
+                                            <p class="" style="font-size:20px;margin-bottom:0;">signature:</p>
+                                        </div>
+                                        <div class="" style="border-bottom-style:solid;width:15%;display:inline-block;">
+                                            <p class="text-center" style="font-size:20px;margin-bottom:0;height:25px;"></p>
+                                        </div>
+                                    </div>
+
+
+
+                                    <br><br><br>
+
+
+
+
+
+
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <br>
+                                    <input type="submit" id="btnFinalSave" class="btn btn-danger btn-lg" name="FORM" value="SAVE" />
+                                </div>
+                            </div>
+                        </div>
+                        <br><br><br><br><br>
+                        <input id="hiddeninput1" type="hidden" value="@TempData["index"]" />
+                        <input id="hiddeninput2" type="hidden" name="ID" value="@Model.Id" />
+
+                    }
+
+
+                </div>
+
+                <!-- END PLACE PAGE CONTENT HERE -->
+            </div>
+            <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+        @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+
+        <script>
+
+
+    $('form').submit(function (event) {
+        var firstdate = $('#selectdate option:selected').text()
+        if (firstdate != "") {
+            $("input").removeAttr("disabled");
+            form = this;
+            //event.preventDefault();
+            form.submit();
+        }
+        else {
+            tempAlert("New a Date First", 2000);
+            return false;
+        }
+    });
+
+    var index_date = $('#hiddeninput1').val();
+    $('#selectdate').val(index_date);
+
+
+    var inputs_text = $('input[type=text]');
+    for (var b = 0; b < inputs_text.length; b++) {
+        if (inputs_text[b].value != "") {
+            inputs_text[b].disabled = true;
+            inputs_text[b].style.color = "black";
+        }
+    }
+
+    var firstdate = $('#selectdate option:selected').text()
+    if (firstdate == "") {
+        $('input[type=text]').attr('disabled', 'true');
+
+    }
+
+
+
+
+
+        </script>
