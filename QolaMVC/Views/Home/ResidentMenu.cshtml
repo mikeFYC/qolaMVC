@@ -187,17 +187,21 @@
                                     @*<a href="/Reports/" style="padding: 5px;" class="btn btn-primary">Assessment Forms (Left here for demo only)</a>*@
 
                                 </div>
-                                <div class="Row" style="padding: 5px;">
-                                    <a href="#" style="padding: 5px;" class="btn btn-primary" onclick="form_click(this)">Forms</a>
-                                    <a href="~/Home/PersonalCalendar" style="padding: 5px;" class="btn btn-primary">Personal Calendar</a>
-                                    @{
-                                        if (@TempData["archive"].ToString() == "NO")
-                                        {
-                                            <a href="~/Home/SuggestedActivityCalendar_mike" id="SAC_a_tag" style="padding: 5px;" class="btn btn-primary">Suggested Activity Calendar</a>
+                                @if (ViewBag.User.UserType != 8 && ViewBag.User.UserType != 22 && ViewBag.User.UserType != 19)
+                                {
+                                    <div class="Row" style="padding: 5px;">
+                                        <a href="#" style="padding: 5px;" class="btn btn-primary" onclick="form_click(this)">Forms</a>
+                                        <a href="~/Home/PersonalCalendar" style="padding: 5px;" class="btn btn-primary">Personal Calendar</a>
+                                        @{
+                                            if (@TempData["archive"].ToString() == "NO")
+                                            {
+                                                <a href="~/Home/SuggestedActivityCalendar_mike" id="SAC_a_tag" style="padding: 5px;" class="btn btn-primary">Suggested Activity Calendar</a>
+                                            }
                                         }
-                                    }
 
-                                </div>
+                                    </div>
+                                }
+
                                 @{
                                     if (@TempData["pass"].ToString() == "" && @TempData["archive"].ToString() == "YES")
                                     {
@@ -345,8 +349,8 @@
                                                 <div class="row">
                                                     <div class="col-md-12 text-center">
                                                         @*<button class="btn btn-danger" data-dismiss="modal">
-                                                                BACK
-                                                            </button>*@
+                                    BACK
+                                </button>*@
                                                         <button class="btn btn-danger" onclick="saveButton_archive()" style="width:6vw;">
                                                             SAVE
                                                         </button>

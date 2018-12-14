@@ -213,90 +213,47 @@
                         <div class="full-height placeholder">
                             <!-- START JUMBOTRON -->
                             @*<div class="jumbotron w-100" style="position: fixed; z-index: 400">
-                    <div class="container-fluid container-fixed-lg">
-                        <!-- <div class="inner"> -->
-                        <div class="row align-items-center">
-                            <div class="col-md-9">
-                                <h3 style="font-size:2vw !important;">@Model.Name</h3>
-                            </div>
-                            <div class="col-md-3 text-right" style="float:right;">
-                                <h4 class="text-danger bold pr-3" style="font-size:2vw !important;">
-                                    @TempData["occupy"]
-                                    <small style="font-size:2vw !important;">Residents</small>
-                                </h4>
-                            </div>
-                        </div>
-                        <!-- </div> -->
-                    </div>
-                </div>*@
+                                <div class="container-fluid container-fixed-lg">
+                                    <!-- <div class="inner"> -->
+                                    <div class="row align-items-center">
+                                        <div class="col-md-9">
+                                            <h3 style="font-size:2vw !important;">@Model.Name</h3>
+                                        </div>
+                                        <div class="col-md-3 text-right" style="float:right;">
+                                            <h4 class="text-danger bold pr-3" style="font-size:2vw !important;">
+                                                @TempData["occupy"]
+                                                <small style="font-size:2vw !important;">Residents</small>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    <!-- </div> -->
+                                </div>
+                            </div>*@
                             <!-- END JUMBOTRON -->
                             @*<div style="height: 12vh;"></div>*@
                             <div class="container-fluid container-fixed-lg">
-                                <div class="row" style="margin-left:10vw;">
-                                    <div class="col-md-6 offset-md-2 my-3 pointer">
-                                        <div class="search">
-                                            <div class="search-input-wrap">
-                                                <div class="input-box">
-                                                    <input autocomplete="off" class="searchresidents" required="" id="txtReferenceNumber" name="txtReferenceNumber" placeholder="Search Residents" type="text" value="" style="width:100%;max-width:1000px;">
+
+
+                                @if (ViewBag.User.UserType != 8 && ViewBag.User.UserType != 22)
+                                {
+                                    <div class="row" style="margin-left:10vw;">
+                                        <div class="col-md-6 offset-md-2 my-3 pointer">
+                                            <div class="search">
+                                                <div class="search-input-wrap">
+                                                    <div class="input-box">
+                                                        <input autocomplete="off" class="searchresidents" required="" id="txtReferenceNumber" name="txtReferenceNumber" placeholder="Search Residents" type="text" value="" style="width:100%;max-width:1000px;">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="searchBox p-1">
+                                                <div class="list-group searchboxresult">
+
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="searchBox p-1">
-                                            <div class="list-group searchboxresult">
-
-                                            </div>
-                                            <!-- <a href="">
-
-                                <div class="row">
-                                    <div class="col-md-1">
-
                                     </div>
-                                    <div class="col-md-11 text-left">
+                                }
 
-                                    </div>
-                                </div>
-
-                            </a>
-                            <a href="reports/searchresult.php">
-
-                                <div class="row">
-                                    <div class="col-md-1">
-                                        <img src="~/Content/assets/img/icons/customer-service.png" class="searchimg">
-                                    </div>
-                                    <div class="col-md-11 text-left">
-                                        <p class="ml-3">John<br> 1</p>
-                                    </div>
-                                </div>
-
-                            </a>
-                            <a href="reports/searchresult.php">
-
-                                <div class="row">
-                                    <div class="col-md-1">
-                                        <img src="~/Content/assets/img/icons/customer-service.png" class="searchimg">
-                                    </div>
-                                    <div class="col-md-11 text-left">
-                                        <p class="ml-3">John<br> 1</p>
-                                    </div>
-                                </div>
-
-                            </a>
-                            <a href="reports/searchresult.php">
-
-                                <div class="row">
-                                    <div class="col-md-1">
-                                        <img src="~/Content/assets/img/icons/customer-service.png" class="searchimg">
-                                    </div>
-                                    <div class="col-md-11 text-left">
-                                        <p class="ml-3">John<br> 1</p>
-                                    </div>
-                                </div>
-
-                            </a> -->
-
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="row">
                                     @if (ViewBag.User.UserType != 22 && ViewBag.User.UserType != 19 && ViewBag.User.UserType != 8 && ViewBag.User.UserType != 7)
                                     {
@@ -328,8 +285,9 @@
                                                 <h5 class="menu">Activity/Attendance Calendar</h5>
                                             </a>
                                         </div>
-
-
+                                    }
+                                    @if (ViewBag.User.UserType != 19 && ViewBag.User.UserType != 10 && ViewBag.User.UserType != 8)
+                                    {
                                         <div class="col-md-4 text-center my-4 pointer">
                                             <a href="/Home/DiningAttendance/" class="menu-box">
                                                 <img class="w-50 menu" src="~/Content/pages/img/dining2.png" />
@@ -338,23 +296,31 @@
                                         </div>
                                     }
 
+
+
                                     @if (ViewBag.User.UserType != 22 && ViewBag.User.UserType != 19 && ViewBag.User.UserType != 8 && ViewBag.User.UserType != 7)
                                     {
                                         if (ViewBag.User.UserType != 10)
                                         {
-                                            <div class="col-md-4 text-center my-4 pointer">
-                                                <a href="/Residents/SearchResident" class="menu-box">
-                                                    <img class="w-50 menu" src="~/Content/pages/img/suitehandler_2.png" />
-                                                    <h5 class="menu">Suite Handler</h5>
-                                                </a>
-                                            </div>
+                                            if (ViewBag.User.UserType != 14 && ViewBag.User.UserType != 5 && ViewBag.User.UserType != 12 && ViewBag.User.UserType != 20)
+                                            {
+                                                <div class="col-md-4 text-center my-4 pointer">
+                                                    <a href="/Residents/SearchResident" class="menu-box">
+                                                        <img class="w-50 menu" src="~/Content/pages/img/suitehandler_2.png" />
+                                                        <h5 class="menu">Suite Handler</h5>
+                                                    </a>
+                                                </div>
+                                            }
+                                            if (ViewBag.User.UserType != 5)
+                                            {
+                                                <div class="col-md-4 text-center my-4 pointer">
+                                                    <a href="/HomeReports/" class="menu-box">
+                                                        <img class="w-50 menu" src="~/Content/assets/img/icons/search4.png" />
+                                                        <h5 class="menu">Reports</h5>
+                                                    </a>
+                                                </div>
+                                            }
 
-                                            <div class="col-md-4 text-center my-4 pointer">
-                                                <a href="/HomeReports/" class="menu-box">
-                                                    <img class="w-50 menu" src="~/Content/assets/img/icons/search4.png" />
-                                                    <h5 class="menu">Reports</h5>
-                                                </a>
-                                            </div>
                                         }
                                         <div class="col-md-4 text-center my-4 pointer">
                                             <a href="/Home/BirthdayCalendar_mike/" class="menu-box">
@@ -363,12 +329,16 @@
                                             </a>
                                         </div>
                                     }
-                                    <div class="col-md-4 text-center my-4 pointer">
-                                        <a href="/Home/Search_Archive/" class="menu-box">
-                                            <img class="w-50 menu" src="~/Content/pages/img/archive.png" />
-                                            <h5 class="menu">Resident Archive</h5>
-                                        </a>
-                                    </div>
+                                    @if (ViewBag.User.UserType == 1 || ViewBag.User.UserType == 2 || ViewBag.User.UserType == 3 || ViewBag.User.UserType == 13 || ViewBag.User.UserType == 9 || ViewBag.User.UserType == 6 || ViewBag.User.UserType == 21)
+                                    {
+                                        <div class="col-md-4 text-center my-4 pointer">
+                                            <a href="/Home/Search_Archive/" class="menu-box">
+                                                <img class="w-50 menu" src="~/Content/pages/img/archive.png" />
+                                                <h5 class="menu">Resident Archive</h5>
+                                            </a>
+                                        </div>
+                                    }
+
 
 
 
@@ -383,7 +353,7 @@
 
 
 
-                        <div class="AlertBox" style="display:inline-block;margin-top:6vw;width:100%">
+                        <div class="AlertBox" style="display:inline-block;margin-top:20%;width:100%">
                             <div class="ShowAlert" show='N' id="dvShowAlert">
                                 <button type="button" class="btn btn-primary" style="width:80%;left:10%;font-size:1vw;border-radius:0.3vw;">To Do List</button>
                                 <div style="margin-top:0.8vw;width:100%;display:inline-block;">
@@ -475,7 +445,7 @@
 
 
                         @*}
-            }*@
+                        }*@
 
 
                         <!-- Modal -->
@@ -884,30 +854,9 @@
 
 
 
-                        @*  <div style="height: 55px;"></div>
-                            <div class="full-height">
-                                <h2 class="px-3">To Do List</h2>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-action pointer" data-toggle="modal" data-target="#todoModal">
-                    Dietary Updates
-                    <span class="badge badge-primary badge-pill pull-right">14</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-action pointer" data-toggle="modal" data-target="#todoModal">
-                    Hospitalization
-                    <span class="badge badge-primary badge-pill pull-right">3</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-action pointer" data-toggle="modal" data-target="#todoModal">
-                    Initial Assessment
-                    <span class="badge badge-primary badge-pill pull-right">68</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-action pointer" data-toggle="modal" data-target="#todoModal">
-                    Progress Notes
-                    <span class="badge badge-primary badge-pill pull-right">30</span>
-                </li>
-            </ul>
-                        </div>*@
 
 
+                        <input type="hidden" id="UserTypeNum" value="@ViewBag.User.UserType" />
                     </div>
                 </div>
             </div>
@@ -918,6 +867,289 @@
 
 
         @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+
+
+        <style>
+            div[class="float_box"] ul[class="list-group"] li:hover {
+                background-color: grey;
+            }
+
+            div[id="Resident_Away"] div div div[class="modal-body"] table tbody tr {
+                cursor: pointer;
+            }
+
+                div[id="Resident_Away"] div div div[class="modal-body"] table tbody tr:hover {
+                    background-color: grey;
+                }
+
+            div[id="Dietary_Update"] div div div[class="modal-body"] table tbody tr {
+                cursor: pointer;
+            }
+
+                div[id="Dietary_Update"] div div div[class="modal-body"] table tbody tr:hover {
+                    background-color: grey;
+                }
+
+            div[id="Initial_Assessment"] div div div[class="modal-body"] table tbody tr {
+                cursor: pointer;
+            }
+
+                div[id="Initial_Assessment"] div div div[class="modal-body"] table tbody tr:hover {
+                    background-color: grey;
+                }
+
+            div[id="Progress_Note"] div div div[class="modal-body"] table tbody tr {
+                cursor: pointer;
+            }
+
+                div[id="Progress_Note"] div div div[class="modal-body"] table tbody tr:hover {
+                    background-color: grey;
+                }
+
+            div[id="Acknowledge_Notes"] div div div[class="modal-body"] table tbody tr {
+                cursor: pointer;
+            }
+
+                div[id="Acknowledge_Notes"] div div div[class="modal-body"] table tbody tr:hover {
+                    background-color: grey;
+                }
+
+            div[id="Reassessments"] div div div[class="modal-body"] table tbody tr {
+                cursor: pointer;
+            }
+
+                div[id="Reassessments"] div div div[class="modal-body"] table tbody tr:hover {
+                    background-color: grey;
+                }
+
+            div[id="Resident_Birthday"] div div div[class="modal-body"] table tbody tr {
+                cursor: pointer;
+            }
+
+                div[id="Resident_Birthday"] div div div[class="modal-body"] table tbody tr:hover {
+                    background-color: grey;
+                }
+
+            div[id="Resident_Profile"] div div div[class="modal-body"] table tbody tr {
+                cursor: pointer;
+            }
+
+                div[id="Resident_Profile"] div div div[class="modal-body"] table tbody tr:hover {
+                    background-color: grey;
+                }
+
+            div[id="Suggested_Activity_Event"] div div div[class="modal-body"] table tbody tr {
+                cursor: pointer;
+            }
+
+                div[id="Suggested_Activity_Event"] div div div[class="modal-body"] table tbody tr:hover {
+                    background-color: grey;
+                }
+
+            div[id="New_Resident"] div div div[class="modal-body"] table tbody tr {
+                cursor: pointer;
+            }
+
+                div[id="New_Resident"] div div div[class="modal-body"] table tbody tr:hover {
+                    background-color: grey;
+                }
+
+
+            div div div div[class="modal-body"] {
+                overflow: auto;
+                overflow-x: hidden;
+                max-height: 30vw;
+            }
+
+            .miketable {
+                width: 100%;
+                color: black;
+            }
+
+                .miketable thead th {
+                    padding: 1vw;
+                }
+
+                .miketable tbody tr {
+                    height: 3vw;
+                }
+
+                    .miketable tbody tr td {
+                        padding: 1vw;
+                    }
+        </style>
+
+        <style>
+            #contactForm {
+                display: none;
+                border: 6px solid salmon;
+                padding: 2em;
+                width: 30vw;
+                height: 40vw;
+                text-align: center;
+                background: #fff;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+                -webkit-transform: translate(-50%,-50%)
+            }
+
+            .formBtn, .formtext {
+                margin: .8em auto;
+                font-family: inherit;
+                text-transform: inherit;
+                font-size: inherit;
+                display: block;
+                padding: .4em;
+            }
+
+            .formtext {
+                resize: none;
+            }
+
+            .formBtn {
+                display: block;
+                background: teal;
+                color: #fff;
+                font-weight: 100;
+                font-size: 1.2em;
+                border: none;
+                width: 15vw
+            }
+
+            .formtext2 {
+                min-height: 10vw;
+                min-width: 10vw;
+            }
+        </style>
+
+        <script>
+
+            var someValue = $('#UserTypeNum').val();
+            if (someValue == 8) {
+                $('li[class="list-group-item"]').hide();
+                $('li[id="HO"]').show();
+                $('li[id="HO_nextmonth"]').show();
+            }
+            else if (someValue == 10 || someValue == 22) {
+                $('li[class="list-group-item"]').hide();
+                $('li[id="RB"]').show();
+            }
+            else if (someValue == 19) {
+                $('li[class="list-group-item"]').hide();
+                $('li[id="HO"]').show();
+                $('li[id="HO_nextmonth"]').show();
+                $('li[id="RB"]').show();
+                $('li[id="RP"]').show();
+            }
+            else if (someValue == 5) {
+                $('li[class="list-group-item"]').hide();
+                $('li[id="HO"]').show();
+                $('li[id="HO_nextmonth"]').show();
+                $('li[id="RB"]').show();
+            }
+            else if (someValue == 11 || someValue == 12 || someValue == 20) {
+                $('li[class="list-group-item"]').hide();
+                $('li[id="HO"]').show();
+                $('li[id="HO_nextmonth"]').show();
+                $('li[id="PN"]').show();
+                $('li[id="RI"]').show();
+                $('li[id="RB"]').show();
+            }
+            else if (someValue == 7) {
+                $('li[id="RI"]').hide();
+                $('li[id="RP"]').hide();
+                $('li[id="NR"]').hide();
+                $('li[id="SA"]').hide();
+                $('li[id="IAA"]').hide();
+                $('li[id="IFRA"]').hide();
+                $('li[id="IRCA"]').hide();
+                $('li[id="RAA"]').hide();
+                $('li[id="RFRA"]').hide();
+                $('li[id="RRCA"]').hide();
+                $('li[id="SA_nextmonth"]').hide();
+                $('li[id="IAA_nextmonth"]').hide();
+                $('li[id="IFRA_nextmonth"]').hide();
+                $('li[id="IRCA_nextmonth"]').hide();
+                $('li[id="RAA_nextmonth"]').hide();
+                $('li[id="RFRA_nextmonth"]').hide();
+                $('li[id="RRCA_nextmonth"]').hide();
+            }
+            else if (someValue == 6 || someValue == 14 || someValue == 12) {
+                $('li[id="DU"]').hide();
+                $('li[id="RI"]').hide();
+                $('li[id="NR"]').hide();
+                $('li[id="IDA"]').hide();
+                $('li[id="IFRA"]').hide();
+                $('li[id="IRCA"]').hide();
+                $('li[id="RDA"]').hide();
+                $('li[id="RFRA"]').hide();
+                $('li[id="RRCA"]').hide();
+                $('li[id="IDA_nextmonth"]').hide();
+                $('li[id="IFRA_nextmonth"]').hide();
+                $('li[id="IRCA_nextmonth"]').hide();
+                $('li[id="RDA_nextmonth"]').hide();
+                $('li[id="RFRA_nextmonth"]').hide();
+                $('li[id="RRCA_nextmonth"]').hide();
+            }
+            else if (someValue == 4 || someValue == 15 || someValue == 16 || someValue == 17 || someValue == 18) {
+                $('li[id="DU"]').hide();
+                $('li[id="RP"]').hide();
+                $('li[id="NR"]').hide();
+                $('li[id="SA"]').hide();
+                $('li[id="IDA"]').hide();
+                $('li[id="IAA"]').hide();
+                $('li[id="RDA"]').hide();
+                $('li[id="RAA"]').hide();
+                $('li[id="SA_nextmonth"]').hide();
+                $('li[id="IDA_nextmonth"]').hide();
+                $('li[id="IAA_nextmonth"]').hide();
+                $('li[id="RDA_nextmonth"]').hide();
+                $('li[id="RAA_nextmonth"]').hide();
+            }
+            else if (someValue == 1 || someValue == 2 || someValue == 3 || someValue == 9 || someValue == 13) {
+                $('li[class="list-group-item"]').show();
+            }
+            else {
+                $('li[class="list-group-item"]').hide();
+            }
+
+            var number = $('span[class="badge"]');
+            $.get("/Home/Number", {}, function (data) {
+                for (a = 0; a < 26; a++) {
+                    if (data[a].Value != 0) {
+                        number[a].innerHTML = data[a].Value;
+                    }
+                    //else {
+                    //    number[a].parentElement.parentElement.style.display = "none";
+                    //}
+
+                }
+            });
+            $.get("/Home/Number_nextmonth", {}, function (data) {
+                for (a = 0; a < 14; a++) {
+                    if (data[a].Value != 0) {
+                        number[a + 26].innerHTML = data[a].Value;
+                    }
+                    //else {
+                    //    number[a + 26].parentElement.parentElement.style.display = "none";
+                    //}
+
+                }
+            });
+
+
+
+
+
+
+            //$("#Resident_Incident").draggable({
+            //    handle: ".modal-header"
+            //});
+
+        </script>
 
         <script>
 
@@ -1647,285 +1879,6 @@
 
 
 
-
-        </script>
-
-        <style>
-            div[class="float_box"] ul[class="list-group"] li:hover {
-                background-color: grey;
-            }
-
-            div[id="Resident_Away"] div div div[class="modal-body"] table tbody tr {
-                cursor: pointer;
-            }
-
-                div[id="Resident_Away"] div div div[class="modal-body"] table tbody tr:hover {
-                    background-color: grey;
-                }
-
-            div[id="Dietary_Update"] div div div[class="modal-body"] table tbody tr {
-                cursor: pointer;
-            }
-
-                div[id="Dietary_Update"] div div div[class="modal-body"] table tbody tr:hover {
-                    background-color: grey;
-                }
-
-            div[id="Initial_Assessment"] div div div[class="modal-body"] table tbody tr {
-                cursor: pointer;
-            }
-
-                div[id="Initial_Assessment"] div div div[class="modal-body"] table tbody tr:hover {
-                    background-color: grey;
-                }
-
-            div[id="Progress_Note"] div div div[class="modal-body"] table tbody tr {
-                cursor: pointer;
-            }
-
-                div[id="Progress_Note"] div div div[class="modal-body"] table tbody tr:hover {
-                    background-color: grey;
-                }
-
-            div[id="Acknowledge_Notes"] div div div[class="modal-body"] table tbody tr {
-                cursor: pointer;
-            }
-
-                div[id="Acknowledge_Notes"] div div div[class="modal-body"] table tbody tr:hover {
-                    background-color: grey;
-                }
-
-            div[id="Reassessments"] div div div[class="modal-body"] table tbody tr {
-                cursor: pointer;
-            }
-
-                div[id="Reassessments"] div div div[class="modal-body"] table tbody tr:hover {
-                    background-color: grey;
-                }
-
-            div[id="Resident_Birthday"] div div div[class="modal-body"] table tbody tr {
-                cursor: pointer;
-            }
-
-                div[id="Resident_Birthday"] div div div[class="modal-body"] table tbody tr:hover {
-                    background-color: grey;
-                }
-
-            div[id="Resident_Profile"] div div div[class="modal-body"] table tbody tr {
-                cursor: pointer;
-            }
-
-                div[id="Resident_Profile"] div div div[class="modal-body"] table tbody tr:hover {
-                    background-color: grey;
-                }
-
-            div[id="Suggested_Activity_Event"] div div div[class="modal-body"] table tbody tr {
-                cursor: pointer;
-            }
-
-                div[id="Suggested_Activity_Event"] div div div[class="modal-body"] table tbody tr:hover {
-                    background-color: grey;
-                }
-
-            div[id="New_Resident"] div div div[class="modal-body"] table tbody tr {
-                cursor: pointer;
-            }
-
-                div[id="New_Resident"] div div div[class="modal-body"] table tbody tr:hover {
-                    background-color: grey;
-                }
-
-
-            div div div div[class="modal-body"] {
-                overflow: auto;
-                overflow-x: hidden;
-                max-height: 30vw;
-            }
-
-            .miketable {
-                width: 100%;
-                color: black;
-            }
-
-                .miketable thead th {
-                    padding: 1vw;
-                }
-
-                .miketable tbody tr {
-                    height: 3vw;
-                }
-
-                    .miketable tbody tr td {
-                        padding: 1vw;
-                    }
-        </style>
-
-        <style>
-            #contactForm {
-                display: none;
-                border: 6px solid salmon;
-                padding: 2em;
-                width: 30vw;
-                height: 40vw;
-                text-align: center;
-                background: #fff;
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%,-50%);
-                -webkit-transform: translate(-50%,-50%)
-            }
-
-            .formBtn, .formtext {
-                margin: .8em auto;
-                font-family: inherit;
-                text-transform: inherit;
-                font-size: inherit;
-                display: block;
-                padding: .4em;
-            }
-
-            .formtext {
-                resize: none;
-            }
-
-            .formBtn {
-                display: block;
-                background: teal;
-                color: #fff;
-                font-weight: 100;
-                font-size: 1.2em;
-                border: none;
-                width: 15vw
-            }
-
-            .formtext2 {
-                min-height: 10vw;
-                min-width: 10vw;
-            }
-        </style>
-
-        <script>
-
-            var number = $('span[class="badge"]');
-            $.get("/Home/Number", {}, function (data) {
-                for (a = 0; a < 26; a++) {
-                    if (data[a].Value != 0) {
-                        number[a].innerHTML = data[a].Value;
-                    }
-                    //else {
-                    //    number[a].parentElement.parentElement.style.display = "none";
-                    //}
-
-                }
-            });
-            $.get("/Home/Number_nextmonth", {}, function (data) {
-                for (a = 0; a < 14; a++) {
-                    if (data[a].Value != 0) {
-                        number[a + 26].innerHTML = data[a].Value;
-                    }
-                    //else {
-                    //    number[a + 26].parentElement.parentElement.style.display = "none";
-                    //}
-
-                }
-            });
-
-
-
-
-            var someValue = @(ViewBag.User.UserType);
-            if (someValue == 8) {
-                $('li[class="list-group-item"]').hide();
-                $('li[id="HO"]').show();
-                $('li[id="HO_nextmonth"]').show();
-            }
-            else if (someValue == 10 || someValue == 22) {
-                $('li[class="list-group-item"]').hide();
-                $('li[id="RB"]').show();
-            }
-            else if (someValue == 19) {
-                $('li[class="list-group-item"]').hide();
-                $('li[id="HO"]').show();
-                $('li[id="HO_nextmonth"]').show();
-                $('li[id="RB"]').show();
-                $('li[id="RP"]').show();
-            }
-            else if (someValue == 5) {
-                $('li[class="list-group-item"]').hide();
-                $('li[id="HO"]').show();
-                $('li[id="HO_nextmonth"]').show();
-                $('li[id="RB"]').show();
-            }
-            else if (someValue == 11 || someValue == 12 || someValue == 20) {
-                $('li[class="list-group-item"]').hide();
-                $('li[id="HO"]').show();
-                $('li[id="HO_nextmonth"]').show();
-                $('li[id="PN"]').show();
-                $('li[id="RI"]').show();
-                $('li[id="RB"]').show();
-            }
-            else if (someValue == 7) {
-                $('li[id="RI"]').hide();
-                $('li[id="RP"]').hide();
-                $('li[id="NR"]').hide();
-                $('li[id="SA"]').hide();
-                $('li[id="IAA"]').hide();
-                $('li[id="IFRA"]').hide();
-                $('li[id="IRCA"]').hide();
-                $('li[id="RAA"]').hide();
-                $('li[id="RFRA"]').hide();
-                $('li[id="RRCA"]').hide();
-                $('li[id="SA_nextmonth"]').hide();
-                $('li[id="IAA_nextmonth"]').hide();
-                $('li[id="IFRA_nextmonth"]').hide();
-                $('li[id="IRCA_nextmonth"]').hide();
-                $('li[id="RAA_nextmonth"]').hide();
-                $('li[id="RFRA_nextmonth"]').hide();
-                $('li[id="RRCA_nextmonth"]').hide();
-            }
-            else if (someValue == 6 || someValue == 14 || someValue == 12) {
-                $('li[id="DU"]').hide();
-                $('li[id="RI"]').hide();
-                $('li[id="NR"]').hide();
-                $('li[id="IDA"]').hide();
-                $('li[id="IFRA"]').hide();
-                $('li[id="IRCA"]').hide();
-                $('li[id="RDA"]').hide();
-                $('li[id="RFRA"]').hide();
-                $('li[id="RRCA"]').hide();
-                $('li[id="IDA_nextmonth"]').hide();
-                $('li[id="IFRA_nextmonth"]').hide();
-                $('li[id="IRCA_nextmonth"]').hide();
-                $('li[id="RDA_nextmonth"]').hide();
-                $('li[id="RFRA_nextmonth"]').hide();
-                $('li[id="RRCA_nextmonth"]').hide();
-            }
-            else if (someValue == 4 || someValue == 15 || someValue == 16 || someValue == 17 || someValue == 18) {
-                $('li[id="DU"]').hide();
-                $('li[id="RP"]').hide();
-                $('li[id="NR"]').hide();
-                $('li[id="SA"]').hide();
-                $('li[id="IDA"]').hide();
-                $('li[id="IAA"]').hide();
-                $('li[id="RDA"]').hide();
-                $('li[id="RAA"]').hide();
-                $('li[id="SA_nextmonth"]').hide();
-                $('li[id="IDA_nextmonth"]').hide();
-                $('li[id="IAA_nextmonth"]').hide();
-                $('li[id="RDA_nextmonth"]').hide();
-                $('li[id="RAA_nextmonth"]').hide();
-            }
-            else if (someValue == 1 || someValue == 2 || someValue == 3 || someValue == 9 || someValue == 13) {
-                $('li[class="list-group-item"]').show();
-            }
-            else {
-                $('li[class="list-group-item"]').hide();
-            }
-
-            //$("#Resident_Incident").draggable({
-            //    handle: ".modal-header"
-            //});
 
         </script>
 

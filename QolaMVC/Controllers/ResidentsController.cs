@@ -146,7 +146,7 @@ namespace QolaMVC.Controllers
             ViewBag.ProgressNotes = progressNotes;
             ProgressNotesHelper.RegisterSession(resident);
             TempData["Table"] = update_Suite_Handler_Table.get_innerHTML(resident.ID);
-
+            ViewBag.TableEDIT = update_Suite_Handler_Table.get_innerHTML_temperary2(resident.ID);
             TempData["hospital"] = "YES";
 
             return View("SuiteHandler", resident);
