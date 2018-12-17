@@ -20,7 +20,6 @@
 
         scrollTo(0, 0);
         $('#historySpan').hide();
-        $('#btnFinalSave').hide();
 
         $('.content').height($('.content').height());
         var srcEl = document.getElementById("fromHTMLtestdiv");
@@ -78,11 +77,11 @@
             });
         $('#MRAF_PRINT').hide();
         $('#historySpan').show();
-        $('#btnFinalSave').show();
         $('#fromHTMLtestdiv').css("margin-left", "20px");
 
 
     }
+
 
 </script>
 
@@ -126,20 +125,21 @@
                                 <div style="max-width:50%;">
                                     <label style="font-size:1.3vw;display:inline-block;">Assessment <span id="historySpan">History</span>:</label>
                                     <select name="AssessmentDate" id="selectdate" onchange="formsubmit(this)" style="width:12vw;height:30px;font-size:1.3vw;display:inline-block;">
-                                        @if (ViewBag.AssessmentDates != null && ViewBag.AssessmentDates[0].ToShortDateString() != "1/1/0001")
-                                        {
 
-                                            for (var ind = 0; ind < ((List<DateTime>)ViewBag.AssessmentDates).Count(); ind++)
-                                            {
-                                                <option value=@ind>@(((List<DateTime>)ViewBag.AssessmentDates)[ind].ToString("yyyy-MM-dd"))</option>
-                                            }
-                                        }
-                                        else
+                                    @for (var ind = 0; ind < ((List<DateTime>)ViewBag.AssessmentDates).Count(); ind++)
+                                    {
+                                        if (ViewBag.AssessmentDates[ind].ToShortDateString() == "1/1/0001")
                                         {
                                             <option value="0"></option>
                                         }
+                                        else
+                                        {
+                                            <option value=@ind>@(((List<DateTime>)ViewBag.AssessmentDates)[ind].ToString("yyyy-MM-dd"))</option>
+                                        }
+
+                                    }
+
                                     </select>
-                                    <button class="btn btn-primary" id="newButton" type="button" style="display:inline-block;margin-top:-6px" onclick="location.href='@Url.Action("Add_SBSWTL", "Assessments")'">New</button>
                                 </div>
                             </div>
                         </div>
@@ -160,110 +160,365 @@
                                             <h2 style="font-weight:bold;">@ViewBag.Home.Name</h2>
                                         </div>
                                     </div>
-                                    <br><br><br><br><br><br>
+                                    <br><br>
                                     <div class="col-md-12 text-center">
                                         <h2 style="font-weight:bold;">Negotiated Risk Agreement</h2>
                                     </div>
-                                    <br><br><br><br>
+
                                     <div class="col-md-12">
                                         <div class="col-md-1"></div>
-                                        <div class="col-md-2">
-                                            <p class="" style="font-size:20px;margin-bottom:0;">Resident's Name:</p>
+                                        <div class="" style="width:16%;display:inline-block;">
+                                            <p class="" style="font-size:1.4em;margin-bottom:0;">Resident's Name:</p>
                                         </div>
-                                        <div class="col-md-5" style="border-bottom-style:solid;margin-left:-2vw;">
-                                            <p class="text-center" style="font-size:20px;margin-bottom:0;">@ViewBag.Resident.FirstName @ViewBag.Resident.LastName </p>
+                                        <div class="" style="border-bottom-style:solid;margin-left:-2vw;width:41%;display:inline-block;">
+                                            <p class="text-center" style="font-size:1.4em;margin-bottom:0;">@ViewBag.Resident.FirstName @ViewBag.Resident.LastName </p>
                                         </div>
-                                        <div class="col-md-1">
-                                            <p class="text-center" style="font-size:20px;margin-bottom:0;">Suite #:</p>
+                                        <div class="" style="width:8%;display:inline-block;">
+                                            <p class="text-center" style="font-size:1.4em;margin-bottom:0;">Suite #:</p>
                                         </div>
-                                        <div class="col-md-2" style="border-bottom-style:solid;">
-                                            <p class="text-center" style="font-size:20px;margin-bottom:0;">@ViewBag.Resident.SuiteNo</p>
+                                        <div class="" style="border-bottom-style:solid;width:16%;display:inline-block;">
+                                            <p class="text-center" style="font-size:1.4em;margin-bottom:0;">@ViewBag.Resident.SuiteNo</p>
                                         </div>
 
+                                    </div>
+                                    <br><br>
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="col-md-1"></div>
+                                        <div class="" style="width:20%;display:inline-block;">
+                                            <p class="" style="font-size:1.4em;margin-bottom:0;">Implementation Date:</p>
+                                        </div>
+                                        <div class="" style="width:25%;display:inline-block;">
+                                            @Html.TextBoxFor(m => m.ImplementationDate, new { @class = "form-control", type = "date", style = "border-bottom:3px solid black" })
+                                        </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <br>
                                         <div class="col-md-1"></div>
                                         <div class="" style="width:20%;display:inline-block;">
-                                            <p class="" style="font-size:20px;margin-bottom:0;">Implementation Date:</p>
+                                            <p class="" style="font-size:1.4em;margin-bottom:0;">Scheduled Review Date: </p>
                                         </div>
-                                        <div class="" style="border-bottom-style:solid;width:25%;display:inline-block;">
-                                            <p class="text-center" style="font-size:20px;margin-bottom:0;height:25px;"></p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <br>
-                                        <div class="col-md-1"></div>
-                                        <div class="" style="width:20%;display:inline-block;">
-                                            <p class="" style="font-size:20px;margin-bottom:0;">Scheduled Review Date: </p>
-                                        </div>
-                                        <div class="" style="border-bottom-style:solid;width:25%;display:inline-block;">
-                                            <p class="text-center" style="font-size:20px;margin-bottom:0;height:25px;"></p>
+                                        <div class="" style="width:25%;display:inline-block;">
+                                            @Html.TextBoxFor(m => m.ScheduledReviewDate, new { @class = "form-control", type = "date", style = "border-bottom:3px solid black" })
                                         </div>
                                         <div class="" style="width:35%;display:inline-block;">
-                                            <p style="font-size:20px;margin-bottom:0;">(must be updated when review is completed)</p>
+                                            <p style="font-size:1.4em;margin-bottom:0;">(must be updated when review is completed)</p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <br>
                                         <div class="col-md-1"></div>
+                                        <div class="" style="display:inline-block;width:14%;">
+                                            <p class="" style="font-size:1.4em;margin-bottom:0;">Guardian:</p>
+                                        </div>
+                                        <div class="" style="width:20%;display:inline-block;">
+                                            @Html.TextBoxFor(m => m.GuardianName, new { @class = "form-control", style = "border-bottom:3px solid black;" })
+                                        </div>
+                                        <div class="" style="display:inline-block;width:14%;">
+                                            <p class="" style="font-size:1.4em;margin-bottom:0;">name:</p>
+                                        </div>
+                                        <div class="" style="border-bottom-style:solid;width:20%;display:inline-block;margin-bottom:-1.5vh;">
+                                            <p class="text-center" style="font-size:1.4em;height:25px;"></p>
+                                        </div>
                                         <div class="" style="display:inline-block;">
-                                            <p class="" style="font-size:20px;margin-bottom:0;">Guardian:</p>
-                                        </div>
-                                        <div class="" style="border-bottom-style:solid;width:15%;display:inline-block;">
-                                            <p class="text-center" style="font-size:20px;margin-bottom:0;height:25px;"></p>
-                                        </div>
-                                        <div class="" style="width:5%;display:inline-block;"></div>
-                                        <div class="" style="display:inline-block;">
-                                            <p class="" style="font-size:20px;margin-bottom:0;">name:</p>
-                                        </div>
-                                        <div class="" style="border-bottom-style:solid;width:15%;display:inline-block;">
-                                            <p class="text-center" style="font-size:20px;margin-bottom:0;height:25px;"></p>
-                                        </div>
-                                        <div class="" style="width:5%;display:inline-block;"></div>
-                                        <div class="" style="display:inline-block;">
-                                            <p class="" style="font-size:20px;margin-bottom:0;">signature:</p>
-                                        </div>
-                                        <div class="" style="border-bottom-style:solid;width:15%;display:inline-block;">
-                                            <p class="text-center" style="font-size:20px;margin-bottom:0;height:25px;"></p>
+                                            <p class="" style="font-size:1.4em;margin-bottom:0;">signature:</p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <br>
                                         <div class="col-md-1"></div>
+                                        <div class="" style="display:inline-block;width:14%;">
+                                            <p class="" style="font-size:1.4em;margin-bottom:0;">Trustee:</p>
+                                        </div>
+                                        <div class="" style="width:20%;display:inline-block;">
+                                            @Html.TextBoxFor(m => m.TrusteeName, new { @class = "form-control", style = "border-bottom:3px solid black;" })
+                                        </div>
+                                        <div class="" style="display:inline-block;width:14%;">
+                                            <p class="" style="font-size:1.4em;margin-bottom:0;">name:</p>
+                                        </div>
+                                        <div class="" style="border-bottom-style:solid;width:20%;display:inline-block;margin-bottom:-1.5vh;">
+                                            <p class="text-center" style="font-size:1.4em;margin-bottom:0;height:25px;"></p>
+                                        </div>
                                         <div class="" style="display:inline-block;">
-                                            <p class="" style="font-size:20px;margin-bottom:0;">Trustee:</p>
+                                            <p class="" style="font-size:1.4em;margin-bottom:0;">signature:</p>
                                         </div>
-                                        <div class="" style="border-bottom-style:solid;width:15%;display:inline-block;">
-                                            <p class="text-center" style="font-size:20px;margin-bottom:0;height:25px;"></p>
-                                        </div>
-                                        <div class="" style="width:5%;display:inline-block;"></div>
-                                        <div class="" style="display:inline-block;">
-                                            <p class="" style="font-size:20px;margin-bottom:0;">name:</p>
-                                        </div>
-                                        <div class="" style="border-bottom-style:solid;width:15%;display:inline-block;">
-                                            <p class="text-center" style="font-size:20px;margin-bottom:0;height:25px;"></p>
-                                        </div>
-                                        <div class="" style="width:5%;display:inline-block;"></div>
-                                        <div class="" style="display:inline-block;">
-                                            <p class="" style="font-size:20px;margin-bottom:0;">signature:</p>
-                                        </div>
-                                        <div class="" style="border-bottom-style:solid;width:15%;display:inline-block;">
-                                            <p class="text-center" style="font-size:20px;margin-bottom:0;height:25px;"></p>
-                                        </div>
+                                        <br><br><br>
                                     </div>
 
 
 
-                                    <br><br><br>
+
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="col-md-1"></div>
+                                        <div class="" style="display:inline-block;width:10%">
+                                            <p class="" style="font-size:1.4em;margin-bottom:0;">Brief History:</p>
+                                        </div>
+                                        <div class="" style="width:70%;display:inline-block;">
+                                            <p class="" style="font-size:0.9em;margin-bottom:0;">(summarize relevant specialist/consultant reports and results of implementation of suggested strategies)</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="col-md-1"></div>
+                                        <div class="" style="display:inline-block;width:80%">
+                                            @Html.TextAreaFor(m => m.BriefHistory, new { rows = "5", style = "max-width:98%;" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="col-md-1"></div>
+                                        <div class="" style="display:inline-block;width:60%">
+                                            <p class="" style="font-size:1.4em;margin-bottom:0;">Description of Behaviour:</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="col-md-1"></div>
+                                        <div class="" style="display:inline-block;width:80%">
+                                            @Html.TextAreaFor(m => m.DescriptionBehaviour, new { rows = "5", style = "max-width:98%;" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="col-md-1"></div>
+                                        <div class="" style="display:inline-block;width:60%">
+                                            <p class="" style="font-size:1.4em;margin-bottom:0;">Description of Risk to client and /or others:</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="col-md-1"></div>
+                                        <div class="" style="display:inline-block;width:80%">
+                                            @Html.TextAreaFor(m => m.DescriptionRisk, new { rows = "5", style = "max-width:98%;" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="col-md-1"></div>
+                                        <div class="" style="display:inline-block;width:60%">
+                                            <p class="" style="font-size:1.4em;margin-bottom:0;">Risk Agreement / Restriction:</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="col-md-1"></div>
+                                        <div class="" style="display:inline-block;width:80%">
+                                            @Html.TextAreaFor(m => m.RiskAgreement, new { rows = "5", style = "max-width:98%;" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="col-md-1"></div>
+                                        <div class="" style="display:inline-block;width:60%">
+                                            <p class="" style="font-size:1.4em;margin-bottom:0;">Goals of Risk Agreement:</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="col-md-1"></div>
+                                        <div class="" style="display:inline-block;width:80%">
+                                            @Html.TextAreaFor(m => m.GoalsRisk, new { rows = "5", style = "max-width:98%;" })
+                                        </div>
+                                    </div>
+
+                                    <!--ADD_PAGE-->
+
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="col-md-1"></div>
+                                        <div class="" style="display:inline-block;width:60%">
+                                            <p class="" style="font-size:1.4em;margin-bottom:0;">Term under which agreement is reviewed/annulled:</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="col-md-1"></div>
+                                        <div class="" style="display:inline-block;width:80%">
+                                            @Html.TextAreaFor(m => m.Termunder, new { rows = "5", style = "max-width:98%;" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="col-md-1"></div>
+                                        <div class="" style="display:inline-block;width:60%">
+                                            <p class="" style="font-size:1.4em;margin-bottom:0;">Staff training /resources of equipment required:</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="col-md-1"></div>
+                                        <div class="" style="display:inline-block;width:80%">
+                                            @Html.TextAreaFor(m => m.Stafftraining, new { rows = "5", style = "max-width:98%;" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <br><br><br><br>
+                                        <div class="col-md-1"></div>
+                                        <div class="" style="display:inline-block;width:20%">
+                                            <p class="" style="font-size:1.4em;margin-bottom:0;">Follow up Review Date: </p>
+                                        </div>
+                                        <div class="" style="width:25%;display:inline-block;">
+                                            @Html.TextBoxFor(m => m.FollowupReviewDate, new { @class = "form-control", type = "date", style = "border-bottom:3px solid black" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 text-center">
+                                        <br><br><br>
+                                        <h4 style="font-weight:bold;">Signatures</h4>
+                                    </div>
 
 
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="col-md-1"></div>
+                                        <div class="" style="width:24%;display:inline-block;">
+                                            <p class="" style="font-size:1.4em;margin-bottom:0;">Resident's Name:</p>
+                                        </div>
+                                        <div class="" style="border-bottom-style:solid;margin-left:-2vw;width:33%;display:inline-block;">
+                                            <p class="text-center" style="font-size:1.4em;margin-bottom:0;">@ViewBag.Resident.FirstName @ViewBag.Resident.LastName </p>
+                                        </div>
+                                        <div class="" style="width:8%;display:inline-block;">
+                                            <p class="text-center" style="font-size:1.4em;margin-bottom:0;">Signature:</p>
+                                        </div>
+                                        <div class="" style="border-bottom-style:solid;width:14%;display:inline-block;margin-bottom:-0.8vh;">
+                                            <p class="text-center" style="font-size:1.4em;margin-bottom:0;"></p>
+                                        </div>
 
+                                    </div>
 
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="col-md-1"></div>
+                                        <div class="" style="width:24%;display:inline-block;">
+                                            <p class="" style="font-size:1.4em;margin-bottom:0;">Copy Provided:</p>
+                                        </div>
+                                        <div class="" style="border-bottom-style:solid;margin-left:-2vw;width:33%;display:inline-block;">
+                                            <p class="text-center" style="font-size:1.4em;margin-bottom:0;">
+                                                @Html.RadioButtonFor(m => m.Copy1, "Yes", new { @class = "form-check-input" })
+                                                <label class="form-check-label" for="" style="font-size:1em;padding-right:2vw;">Yes</label>
+                                                @Html.RadioButtonFor(m => m.Copy1, "No", new { @class = "form-check-input" })
+                                                <label class="form-check-label" for="" style="font-size:1em;">No</label>
+                                            </p>
+                                        </div>
+                                        <div class="" style="width:8%;display:inline-block;">
+                                            <p class="text-center" style="font-size:1.4em;margin-bottom:0;">Date:</p>
+                                        </div>
+                                        <div class="" style="border-bottom-style:solid;width:14%;display:inline-block;margin-bottom:-0.8vh;">
+                                            <p class="text-center" style="font-size:1.4em;margin-bottom:0;">@Model.DateEnteredString</p>
+                                        </div>
 
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="col-md-1"></div>
+                                        <div class="" style="width:24%;display:inline-block;">
+                                            <p class="" style="font-size:1.4em;margin-bottom:0;">Guardian/Agent Name:</p>
+                                        </div>
+                                        <div class="" style="margin-left:-2vw;width:33%;display:inline-block;">
+                                            @Html.TextBoxFor(m => m.GuardianAgentName, new { @class = "form-control text-center", style = "font-size:1.4em;min-width:99%;border-bottom:3px solid black;" })
+                                        </div>
+                                        <div class="" style="width:8%;display:inline-block;">
+                                            <p class="text-center" style="font-size:1.4em;margin-bottom:0;">Signature:</p>
+                                        </div>
+                                        <div class="" style="border-bottom-style:solid;width:14%;display:inline-block;margin-bottom:-0.8vh;">
+                                            <p class="text-center" style="font-size:1.4em;margin-bottom:0;"></p>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="col-md-1"></div>
+                                        <div class="" style="width:24%;display:inline-block;">
+                                            <p class="" style="font-size:1.4em;margin-bottom:0;">Copy Provided:</p>
+                                        </div>
+                                        <div class="" style="border-bottom-style:solid;margin-left:-2vw;width:33%;display:inline-block;">
+                                            <p class="text-center" style="font-size:1.4em;margin-bottom:0;">
+                                                @Html.RadioButtonFor(m => m.Copy2, "Yes", new { @class = "form-check-input" })
+                                                <label class="form-check-label" for="" style="font-size:1em;padding-right:2vw;">Yes</label>
+                                                @Html.RadioButtonFor(m => m.Copy2, "No", new { @class = "form-check-input" })
+                                                <label class="form-check-label" for="" style="font-size:1em;">No</label>
+                                            </p>
+                                        </div>
+                                        <div class="" style="width:8%;display:inline-block;">
+                                            <p class="text-center" style="font-size:1.4em;margin-bottom:0;">Date:</p>
+                                        </div>
+                                        <div class="" style="border-bottom-style:solid;width:14%;display:inline-block;margin-bottom:-0.8vh;">
+                                            <p class="text-center" style="font-size:1.4em;margin-bottom:0;">@Model.DateEnteredString</p>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="col-md-1"></div>
+                                        <div class="" style="width:24%;display:inline-block;">
+                                            <p class="" style="font-size:1.4em;margin-bottom:0;">Service Provider Name:</p>
+                                        </div>
+                                        <div class="" style="margin-left:-2vw;width:33%;display:inline-block;">
+                                            @Html.TextBoxFor(m => m.ServiceProviderName, new { @class = "form-control text-center", style = "font-size:1.4em;min-width:99%;border-bottom:3px solid black;" })
+                                        </div>
+                                        <div class="" style="width:8%;display:inline-block;">
+                                            <p class="text-center" style="font-size:1.4em;margin-bottom:0;">Signature:</p>
+                                        </div>
+                                        <div class="" style="border-bottom-style:solid;width:14%;display:inline-block;margin-bottom:-0.8vh;">
+                                            <p class="text-center" style="font-size:1.4em;margin-bottom:0;"></p>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="col-md-1"></div>
+                                        <div class="" style="width:57%;display:inline-block;margin-left:-2vw;"></div>
+                                        <div class="" style="width:8%;display:inline-block;">
+                                            <p class="text-center" style="font-size:1.4em;margin-bottom:0;">Date:</p>
+                                        </div>
+                                        <div class="" style="border-bottom-style:solid;width:14%;display:inline-block;margin-bottom:-0.8vh;">
+                                            <p class="text-center" style="font-size:1.4em;margin-bottom:0;">@Model.DateEnteredString</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="col-md-1"></div>
+                                        <div class="" style="width:24%;display:inline-block;">
+                                            <p class="" style="font-size:1.4em;margin-bottom:0;">Client Care Coordinator Name:</p>
+                                        </div>
+                                        <div class="" style="margin-left:-2vw;width:33%;display:inline-block;">
+                                            @Html.TextBoxFor(m => m.ClientCareName, new { @class = "form-control text-center", style = "font-size:1.4em;min-width:99%;border-bottom:3px solid black;" })
+                                        </div>
+                                        <div class="" style="width:8%;display:inline-block;">
+                                            <p class="text-center" style="font-size:1.4em;margin-bottom:0;">Signature:</p>
+                                        </div>
+                                        <div class="" style="border-bottom-style:solid;width:14%;display:inline-block;margin-bottom:-0.8vh;">
+                                            <p class="text-center" style="font-size:1.4em;margin-bottom:0;"></p>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <br>
+                                        <div class="col-md-1"></div>
+                                        <div class="" style="width:57%;display:inline-block;margin-left:-2vw;"></div>
+                                        <div class="" style="width:8%;display:inline-block;">
+                                            <p class="text-center" style="font-size:1.4em;margin-bottom:0;">Date:</p>
+                                        </div>
+                                        <div class="" style="border-bottom-style:solid;width:14%;display:inline-block;margin-bottom:-0.8vh;">
+                                            <p class="text-center" style="font-size:1.4em;margin-bottom:0;">@Model.DateEnteredString</p>
+                                        </div>
+                                    </div>
 
                                 </div>
 
@@ -272,7 +527,7 @@
                             <div class="row">
                                 <div class="col-md-12 text-right">
                                     <br>
-                                    <input type="submit" id="btnFinalSave" class="btn btn-danger btn-lg" name="FORM" value="SAVE" />
+                                    <input type="submit" id="btnFinalSave" class="btn btn-danger btn-lg" name="FORM" value="SAVE" style="display:none;"/>
                                 </div>
                             </div>
                         </div>
@@ -296,37 +551,30 @@
         <script>
 
 
-    $('form').submit(function (event) {
-        var firstdate = $('#selectdate option:selected').text()
-        if (firstdate != "") {
-            $("input").removeAttr("disabled");
-            form = this;
-            //event.preventDefault();
-            form.submit();
-        }
-        else {
-            tempAlert("New a Date First", 2000);
-            return false;
-        }
-    });
-
-    var index_date = $('#hiddeninput1').val();
-    $('#selectdate').val(index_date);
 
 
-    var inputs_text = $('input[type=text]');
-    for (var b = 0; b < inputs_text.length; b++) {
-        if (inputs_text[b].value != "") {
-            inputs_text[b].disabled = true;
-            inputs_text[b].style.color = "black";
-        }
-    }
+            var index_date = $('#hiddeninput1').val();
+            $('#selectdate').val(index_date);
 
-    var firstdate = $('#selectdate option:selected').text()
-    if (firstdate == "") {
-        $('input[type=text]').attr('disabled', 'true');
 
-    }
+            var inputs_text = $('input[type=text]');
+            for (var b = 0; b < inputs_text.length; b++) {
+                if (inputs_text[b].value != "") {
+                    inputs_text[b].disabled = true;
+                    inputs_text[b].style.color = "black";
+                }
+            }
+
+            var firstdate = $('#selectdate option:selected').text()
+            if (firstdate != "") {
+                $('input').attr('disabled', 'true');
+                $('input').css('color', 'black');
+                $('textarea').attr('disabled', 'true');
+            }
+            else {
+                $('#btnFinalSave').show();
+            }
+
 
 
 

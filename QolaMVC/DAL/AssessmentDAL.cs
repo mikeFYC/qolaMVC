@@ -4073,6 +4073,117 @@ namespace QolaMVC.DAL
             }
         }
 
+        public static Collection<MRAF> getMRAF(int p_ResidentId, int homeID)
+        {
+            string exception = string.Empty;
+
+            Collection<MRAF> l_Assessments = new Collection<MRAF>();
+            MRAF l_Assessment = new MRAF();
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_MRAF", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@ResidentId", p_ResidentId);
+                l_Cmd.Parameters.AddWithValue("@HomeId", homeID);
+                DataSet AssesmentsReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(AssesmentsReceive);
+                if (AssesmentsReceive.Tables[0].Rows.Count > 0)
+                {
+                    for (int index = 0; index <= AssesmentsReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        l_Assessment = new MRAF();
+                        l_Assessment.Id = Convert.ToInt32(AssesmentsReceive.Tables[0].Rows[index]["Id"]);
+                        l_Assessment.DateEntered = Convert.ToDateTime(AssesmentsReceive.Tables[0].Rows[index]["DateEntered"]);
+                        l_Assessment.DateEnteredString = l_Assessment.DateEntered.ToString("yyyy-MM-dd");
+
+                        l_Assessment.BriefHistory = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["BriefHistory"]);
+                        l_Assessment.DescriptionBehaviour = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["DescriptionBehaviour"]);
+                        l_Assessment.DescriptionRisk = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["DescriptionRisk"]);
+                        l_Assessment.RiskAgreement = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["RiskAgreement"]);
+                        l_Assessment.GoalsRisk = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["GoalsRisk"]);
+                        l_Assessment.Termunder = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Termunder"]);
+                        l_Assessment.Stafftraining = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Stafftraining"]);
+                        l_Assessment.ImplementationDate = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["ImplementationDate"]);
+                        l_Assessment.ScheduledReviewDate = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["ScheduledReviewDate"]);
+                        l_Assessment.FollowupReviewDate = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["FollowupReviewDate"]);
+                        l_Assessment.GuardianName = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["GuardianName"]);
+                        l_Assessment.TrusteeName = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["TrusteeName"]);
+                        l_Assessment.GuardianAgentName = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["GuardianAgentName"]);
+                        l_Assessment.ServiceProviderName = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["ServiceProviderName"]);
+                        l_Assessment.ClientCareName = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["ClientCareName"]);
+                        l_Assessment.Copy1 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Copy1"]);
+                        l_Assessment.Copy2 = Convert.ToString(AssesmentsReceive.Tables[0].Rows[index]["Copy2"]);
+                        l_Assessments.Add(l_Assessment);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                exception = "getMRAF |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+
+
+            return l_Assessments;
+        }
+
+        public static void Add_MRAF(MRAF p_Model)
+        {
+            string exception = string.Empty;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Add_MRAF", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@ResidentId", p_Model.ResidentId);
+                l_Cmd.Parameters.AddWithValue("@EnteredBy", p_Model.EnteredBy);
+                l_Cmd.Parameters.AddWithValue("@HomeId", p_Model.HomeId);
+                l_Cmd.Parameters.AddWithValue("@BriefHistory", p_Model.BriefHistory);
+                l_Cmd.Parameters.AddWithValue("@DescriptionBehaviour", p_Model.DescriptionBehaviour);
+                l_Cmd.Parameters.AddWithValue("@DescriptionRisk", p_Model.DescriptionRisk);
+                l_Cmd.Parameters.AddWithValue("@RiskAgreement", p_Model.RiskAgreement);
+                l_Cmd.Parameters.AddWithValue("@GoalsRisk", p_Model.GoalsRisk);
+                l_Cmd.Parameters.AddWithValue("@Termunder", p_Model.Termunder);
+                l_Cmd.Parameters.AddWithValue("@Stafftraining", p_Model.Stafftraining);
+                l_Cmd.Parameters.AddWithValue("@ImplementationDate", p_Model.ImplementationDate);
+                l_Cmd.Parameters.AddWithValue("@ScheduledReviewDate", p_Model.ScheduledReviewDate);
+                l_Cmd.Parameters.AddWithValue("@FollowupReviewDate", p_Model.FollowupReviewDate);
+                l_Cmd.Parameters.AddWithValue("@GuardianName", p_Model.GuardianName);
+                l_Cmd.Parameters.AddWithValue("@TrusteeName", p_Model.TrusteeName);
+                l_Cmd.Parameters.AddWithValue("@GuardianAgentName", p_Model.GuardianAgentName);
+                l_Cmd.Parameters.AddWithValue("@ServiceProviderName", p_Model.ServiceProviderName);
+                l_Cmd.Parameters.AddWithValue("@ClientCareName", p_Model.ClientCareName);
+                l_Cmd.Parameters.AddWithValue("@Copy1", p_Model.Copy1);
+                l_Cmd.Parameters.AddWithValue("@Copy2", p_Model.Copy2);
+
+                l_Cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                exception = "Add_MRAF |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+
         public static void SaveFamilyConferenceNote(FamilyConfrenceNoteModel p_FamilyConferenceNote)
         {
             string exception = string.Empty;

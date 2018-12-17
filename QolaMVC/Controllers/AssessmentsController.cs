@@ -980,11 +980,9 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
-            //vm = AssessmentDAL.getSBSWTL(resident.ID, home.Id);
-            if (vm.Count() == 0)
-            {
-                vm.Add(new MRAF());
-            }
+            vm = AssessmentDAL.getMRAF(resident.ID, home.Id);
+            vm.Insert(0,new MRAF());
+            
 
             List<DateTime> l_AssessmentDates = new List<DateTime>();
             foreach (var l_A in vm)
@@ -1003,6 +1001,12 @@ namespace QolaMVC.Controllers
                 vm_single = vm[int.Parse(index)];
             }
             TempData.Keep("index");
+
+            if (vm_single.DateEnteredString == null || vm_single.DateEnteredString == "")
+            {
+                vm_single.DateEnteredString = DateTime.Now.ToString("yyyy-MM-dd");
+            }
+
             return View(vm_single);
         }
 
@@ -1014,9 +1018,22 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            //AssessmentDAL.Add_SBSWTL(resident.ID, user.ID, home.Id);
-            string ind = TempData["index"].ToString();
-            return RedirectToAction("MRAF", new { index = ind });
+
+            l_Model.ResidentId = resident.ID;
+            l_Model.EnteredBy = user.ID;
+            l_Model.HomeId = home.Id;
+
+            foreach (PropertyInfo prop in typeof(MRAF).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(l_Model) == null) { prop.SetValue(l_Model, ""); }
+                }
+            }
+
+
+            AssessmentDAL.Add_MRAF(l_Model);
+            return RedirectToAction("MRAF", new { index = 1 });
         }
 
 
