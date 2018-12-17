@@ -6823,7 +6823,7 @@ namespace QolaMVC.Controllers
             PdfPCell cell;
             tabHeader.TotalWidth = 783;
 
-            PdfPCell cell1 = new PdfPCell(new Phrase("QOLA Date printed: " + DateTime.Now, headerFont));
+            PdfPCell cell1 = new PdfPCell(new Phrase("QOLA Date printed: " + DateTime.Now.ToShortDateString()+" "+ DateTime.Now.ToShortTimeString(), headerFont));
             cell1.Border = 0;
             cell1.HorizontalAlignment = Element.ALIGN_LEFT;
 
