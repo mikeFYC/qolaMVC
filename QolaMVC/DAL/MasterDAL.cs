@@ -374,10 +374,12 @@ namespace QolaMVC.DAL
                     l_Cmd2.Parameters.AddWithValue("@AssessmentId", l_Model.Id);
                     SqlDataReader l_Reader2 = l_Cmd2.ExecuteReader();
 
+                    int index = 0;
                     while (l_Reader2.Read())
                     {
                         ActivityAssessmentModel l_Assessment = new ActivityAssessmentModel();
-                        l_Assessment.Id = Convert.ToInt32(l_Reader2["Id"]);
+                        //l_Assessment.Id = Convert.ToInt32(l_Reader2["Id"]);
+                        l_Assessment.Id = index;
                         l_Assessment.Value = Convert.ToString(l_Reader2["CheckedValue"]);
                         l_Assessment.ResidentId = Convert.ToInt32(l_Reader2["ResidentId"]);
 
@@ -390,6 +392,7 @@ namespace QolaMVC.DAL
 
                         l_Assessment.Activity = l_AssessmentActivity;
                         l_Assessments.Add(l_Assessment);
+                        index++;
                     }
 
                     Collection<ActivityCategoryModel> l_CategoryCollection = new Collection<ActivityCategoryModel>();
@@ -439,10 +442,11 @@ namespace QolaMVC.DAL
                 l_Cmd2.CommandType = System.Data.CommandType.StoredProcedure;
                 SqlDataReader l_Reader = l_Cmd2.ExecuteReader();
 
+                int index = 0;
                 while (l_Reader.Read())
                 {
                     ActivityAssessmentModel l_Assessment = new ActivityAssessmentModel();
-                    l_Assessment.Id = 0;
+                    l_Assessment.Id = index;
                     
                     var l_AssessmentActivity = new ActivityModel();
                     l_AssessmentActivity.Id = Convert.ToInt32(l_Reader["Id"]);
@@ -453,6 +457,7 @@ namespace QolaMVC.DAL
 
                     l_Assessment.Activity = l_AssessmentActivity;
                     l_Assessments.Add(l_Assessment);
+                    index++;
                 }
 
                 Collection<ActivityCategoryModel> l_CategoryCollection = new Collection<ActivityCategoryModel>();
