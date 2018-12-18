@@ -1602,10 +1602,13 @@ namespace QolaMVC.Controllers
             p_Model.Resident = resident;
             p_Model.ModifiedBy = user;
             p_Model.ModifiedOn = DateTime.Now;
-            
+            p_Model.Date = DateTime.Now;
+            if (p_Model.Note == null) p_Model.Note = "";
+
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
+
 
             ProgressNotesDAL.AddNewProgressNotes(p_Model);
             TempData["Message"] = "Progress not added successfully";

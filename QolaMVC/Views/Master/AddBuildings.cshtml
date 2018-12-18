@@ -69,6 +69,8 @@
                                 <form action="~/Master/AddBuildings" method="post" enctype="multipart/form-data">
 
                                     <div class="row">
+                                        <div class="col-md-6"></div>
+                                        <div class="col-md-6"></div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="" class="col-form-label">Name<span class="required_sign">&nbsp;*</span></label>
@@ -153,9 +155,17 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="" class="col-form-label">Home Image<span class="required_sign">&nbsp;*</span></label>
-                                                <input type="file" id="FileUpload" name="FileUpload" />
+                                                <input type="file" id="FileUpload" name="FileUpload" onchange="fileupload()" />
                                                 <br>
-                                                <img id="image" src="/Content/assets/@Model.IconImage" class="img-responsive" style="height:7em;width:10em;">
+                                                @if (File.Exists(Server.MapPath("/Content/assets/" + @Model.IconImage + ".jpg")))
+                                                {
+                                                    <img id="image" src="/Content/assets/@Model.IconImage" class="img-responsive" style="height:7em;width:10em;">
+                                                }
+                                                else
+                                                {
+                                                    <img id="image" src="/Content/assets/@Model.IconImage" class="img-responsive" style="height:7em;width:10em;display:none;">
+                                                }
+
                                             </div>
                                         </div>
 
@@ -323,6 +333,9 @@
                 }
             }
 
+            function fileupload() {
+                $('#image').show();
+            }
 
 
 

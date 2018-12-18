@@ -881,10 +881,10 @@ namespace QolaMVC.Controllers
             //                   .Select(c => c.Value).SingleOrDefault();
 
             var user = (UserModel)TempData["User"];
-
+            
             if (user != null)
             {
-                Collection<HomeModel> l_Homes = HomeDAL.GetHomeFill(user.ID, 1);// Convert.ToInt32(l_UserId));
+                Collection<HomeModel> l_Homes = HomeDAL.GetHomeFill(user.ID, user.UserType);// Convert.ToInt32(l_UserId));
                 UserModel l_User = UserDAL.GetUserById(user.ID);// Convert.ToInt32(l_UserId));
                 TempData["User"] = l_User;
 
