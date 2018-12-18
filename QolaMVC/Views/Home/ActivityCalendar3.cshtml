@@ -3105,29 +3105,18 @@
 
     }
 
-    //$('#activity_select').hover(function () {
-    //    $('#activity_select').children('option:not(:selected)').remove();
-    //    $.get("/Home/getCategoriesForCalendar", {}, function (data) {
-    //        for (var i = 0; i < data.length; i++) {
-    //            $('#activity_select').append('<option value="' + data[i].Id + '">' + data[i].Name + '</option>');
-    //            //$('#activity_select').append($("<option></option>").attr("value", data[i].Id).text(data[i].Name));
-    //        }
-    //    });
-    //});
-    //$('#activity_select2').hover(function () {
-    //    $('#activity_select2').children('option:not(:selected)').remove();
-    //    $.get("/Home/getCategoriesForCalendar", {}, function (data) {
-    //        for (var i = 0; i < data.length; i++) {
-    //            $('#activity_select2').append('<option value="' + data[i].Id + '">' + data[i].Name + '</option>');
-    //            //$('#activity_select').append($("<option></option>").attr("value", data[i].Id).text(data[i].Name));
-    //        }
-    //    });
-    //});
-
     function add_event_small_div(ee) {
         var NOWTIME = new Date();
-        var nowT = NOWTIME.getHours() + ":" + NOWTIME.getMinutes();
-        
+        var hour = NOWTIME.getHours();
+        var minute = NOWTIME.getMinutes();
+        if (hour < 10) {
+            hour = '0' + hour;
+        }
+        if (minute < 10) {
+            minute = '0' + minute;
+        }
+        var nowT = hour + ":" + minute;
+
 
         $('#ADD_CANCEL #CopyDivID').hide();
         $('#ADD_CANCEL #CopyEventID').val('');
