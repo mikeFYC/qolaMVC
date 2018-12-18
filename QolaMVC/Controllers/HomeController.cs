@@ -6561,7 +6561,7 @@ namespace QolaMVC.Controllers
             ViewBag.Home = home;
             ViewBag.Resident = resident;
 
-            TempData["datechoose"] = DateTime.Now.ToString("MMMM dd, yyyy");
+            TempData["datechoose"] = DateTime.Now.ToString("MMMM yyyy");
             Collection<ActivityEventModel> l_Events = HomeDAL.GetActivityEvents_mike_SAC(DateTime.Today.Date, home.Id, resident.ID);
             ViewBag.Events = l_Events;
 
