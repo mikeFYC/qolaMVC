@@ -1090,7 +1090,7 @@ namespace QolaMVC.DAL
             SqlCommand cmd = new SqlCommand();
             cmd.CommandText = " declare @mike datetime" +
                                 " select @mike = fd_created_on from tbl_User where fd_id =" + userid +
-                                " select ROW_NUMBER()over(order by PN.fd_fall_date) as number,PN.fd_id,PN.fd_resident_id,SSH.fd_suite_no,R.fd_first_name,R.fd_last_name,PN.fd_fall_date,PN.fd_location,PN.fd_note,PN.fd_action_note" +
+                                " select ROW_NUMBER()over(order by PN.fd_fall_date) as number,PN.fd_id,PN.fd_resident_id,SSH.fd_suite_no,R.fd_first_name,R.fd_last_name,PN.fd_fall_date,PN.fd_location,PN.fd_note,PN.fd_action_note,isNULL(PN.fd_witness_type,'') as fd_witness_type,isNULL(PN.fd_witness_fall,'') as fd_witness_fall" +
                                 " from tbl_Progress_Notes PN" +
                                 " left join tbl_Resident R on PN.fd_resident_id = R.fd_id" +
                                 " left join(select SH.fd_home_id, SH.fd_resident_id, SH.fd_occupancy, SH.fd_move_in_date, SH.fd_move_out_date, SH.fd_status, SH.fd_notes, SH.fd_modified_by, SH.fd_modified_on, SH.fd_pass_away_date, SH.fd_hospital, SH.fd_hospital_leaving, SH.fd_hospital_return, SH.fd_hospital_expected_return, S.fd_suite_no, S.fd_no_of_rooms, S.fd_floor from tbl_Suite_Handler SH join tbl_Suite S on SH.fd_suite_id= S.fd_id where GETDATE()> SH.fd_move_in_date and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')) as SSH on SSH.fd_resident_id = PN.fd_resident_id" +
@@ -1118,6 +1118,8 @@ namespace QolaMVC.DAL
                     l_J.fall_location = rd[7];
                     l_J.note = rd[8];
                     l_J.action_note = rd[9];
+                    l_J.witness_type = rd[10];
+                    l_J.witness_fall = rd[11];
                     l_Json.Add(l_J);
                 }
             conn.Close();
