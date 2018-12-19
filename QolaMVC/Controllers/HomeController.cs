@@ -123,7 +123,7 @@ namespace QolaMVC.Controllers
                 DateTime dtActivityEventDate;
                 int intDynamicColsPan = 0, intDynamicColsPanTop = 0;
 
-                using (SamDoc.DocX document = SamDoc.DocX.Load(Server.MapPath("/Content/CalendarTheme/Html/ActivityCalendarMonth.docx")))
+                using (SamDoc.DocX document = SamDoc.DocX.Load(Server.MapPath("/Content/CalendarTheme/Html/ActivityCalendarMonth_mike.docx")))
                 {
 
                     //Table
@@ -342,7 +342,7 @@ namespace QolaMVC.Controllers
 
                 DataTable dtActivityCalendar = HomeDAL.Get_Activity_Calendar1234_ExporttoWord(homeId, fromDate, toDate,CaNumber);
 
-                using (SamDoc.DocX document = SamDoc.DocX.Load(Server.MapPath("/Content/CalendarTheme/Html/ActivityCalendarWeek.docx")))
+                using (SamDoc.DocX document = SamDoc.DocX.Load(Server.MapPath("/Content/CalendarTheme/Html/ActivityCalendarWeek_mike.docx")))
                 {
 
                     var table = document.Tables.FirstOrDefault();

@@ -319,7 +319,10 @@
                                                     @*<li class="Goto_Today"><button class="btn btn-primary text-white" onclick="Goto_Today()" style="border-radius:1vw;margin-top:2%;margin-left:30vw;">Today</button></li>*@
                                                 </ul>
                                             </div>
-                                            <section id='calendar2'></section>
+                                            <div id="fromHTMLtestdivPrint2">
+                                                <section id='calendar2'></section>
+                                                <br><br><br>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -338,7 +341,10 @@
                                                     @*<li class="Goto_Today"><button class="btn btn-primary text-white" onclick="Goto_Today()" style="border-radius:1vw;margin-top:2%;margin-left:30vw;">Today</button></li>*@
                                                 </ul>
                                             </div>
-                                            <section id='calendar3'></section>
+                                            <div id="fromHTMLtestdivPrint3">
+                                                <section id='calendar3'></section>
+                                                <br><br><br>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -357,7 +363,10 @@
                                                     @*<li class="Goto_Today"><button class="btn btn-primary text-white" onclick="Goto_Today()" style="border-radius:1vw;margin-top:2%;margin-left:30vw;">Today</button></li>*@
                                                 </ul>
                                             </div>
-                                            <section id='calendar4'></section>
+                                            <div id="fromHTMLtestdivPrint4">
+                                                <section id='calendar4'></section>
+                                                <br><br><br>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -3453,17 +3462,37 @@
     });
 
     $('.print2').click(function () {
+        var tab = $('#hiddentab').val();
+        var whichcalendar = "";
+        var calendardiv = "";
+        if (tab == "a" || tab == "") {
+            whichcalendar = "#calendar";
+            calendardiv = "fromHTMLtestdivPrint1";
+        }
+        else if (tab == "b") {
+            whichcalendar = "#calendar2";
+            calendardiv = "fromHTMLtestdivPrint2";
+        }
+        else if (tab == "c") {
+            whichcalendar = "#calendar3";
+            calendardiv = "fromHTMLtestdivPrint3";
+        }
+        else if (tab == "d") {
+            whichcalendar = "#calendar4";
+            calendardiv = "fromHTMLtestdivPrint4";
+        }
         var contextHeight = $('.container-fixed-lg:eq(1)').height();
         var cardHeight = $('.card-block').height();
-        var fromHeight = $('#fromHTMLtestdivPrint1').height();
-        $('.fc-event').css("font-size", "18px");
-        $('.fc-event').css("min-height", "1vh");
+        var fromHeight = $('#'+calendardiv).height();
+        $(whichcalendar+' .fc-event').css("font-size", "18px");
+        $(whichcalendar+' .fc-event').css("min-height", "1vh");
         //$('#calendar').fullCalendar('option', 'contentHeight', 1800);
-        $('#calendar').css("width", "93%")
-        $('#calendar').css({ 'margin-top': '-240px' });
+        $(whichcalendar).css("width", "93%")
+        $(whichcalendar).css({ 'margin-top': '-240px' });
+        $('#' + calendardiv).css({ 'margin-top': '0' });
         RESIZEIMAGE();
-        var srcEl = document.getElementById("fromHTMLtestdivPrint1");
-        var tab = $('#hiddentab').val();
+        var srcEl = document.getElementById(calendardiv);
+        //var tab = $('#hiddentab').val();
         var scaleFactor = 2;
 
         var originalWidth = srcEl.offsetWidth;
@@ -3518,14 +3547,15 @@
                 doc.save(filename + '.pdf');
             });
 
-        $('.fc-event').css("font-size", "1vw");
-        $('.fc-event').css("min-height", "2.7vh");
+        $(whichcalendar+' .fc-event').css("font-size", "1vw");
+        $(whichcalendar+' .fc-event').css("min-height", "2.7vh");
         //$('#calendar').fullCalendar('option', 'contentHeight', 1400);
-        $('#calendar').css("width", "100%")
-        $('#fromHTMLtestdivPrint1').css({ 'margin-top': '35vh' });
+        $(whichcalendar).css("width", "100%")
+        $('#' +calendardiv).css({ 'margin-top': '35vh' });
         $('.container-fixed-lg:eq(1)').height(contextHeight);
         $('.card-block').height(cardHeight);
-        $('#fromHTMLtestdivPrint1').height(fromHeight);
+        $('#' + calendardiv).height(fromHeight);
+        
         RESIZEIMAGE();
 
 
@@ -3625,13 +3655,17 @@
 
         var view = $('#calendar').fullCalendar('getView');
         $('#lblCalendarMsg').html(view.title);
-        getImage();
+        if ($('#calendar #imgBot').length == 0) {
+            getImage();
+        }
 
         $('#DWM').val('month');
 
         $('#month1').css("background-color", "cornflowerblue");
         $('#day1').css("background-color", "#015093");
         $('#week1').css("background-color", "#015093");
+        $('#calendar').fullCalendar('option', 'contentHeight', "auto");
+        $('.card-block').height($('#calendar').height() + 200);
 
     });
     $("#week1").click(function () {
@@ -3684,12 +3718,16 @@
 
         var view = $('#calendar2').fullCalendar('getView');
         $('#lblCalendarMsg2').html(view.title);
-        getImage();
+        if ($('#calendar2 #imgBot').length == 0) {
+            getImage();
+        }
         $('#DWM').val('month');
 
         $('#month2').css("background-color", "cornflowerblue");
         $('#day2').css("background-color", "#015093");
         $('#week2').css("background-color", "#015093");
+        $('#calendar2').fullCalendar('option', 'contentHeight', "auto");
+        $('.card-block').height($('#calendar2').height() + 200)
     });
     $("#week2").click(function () {
         //$('#calendar2Parent').css('width', '100%');
@@ -3741,12 +3779,16 @@
 
         var view = $('#calendar3').fullCalendar('getView');
         $('#lblCalendarMsg3').html(view.title);
-        getImage();
+        if ($('#calendar3 #imgBot').length == 0) {
+            getImage();
+        }
         $('#DWM').val('month');
 
         $('#month3').css("background-color", "cornflowerblue");
         $('#day3').css("background-color", "#015093");
         $('#week3').css("background-color", "#015093");
+        $('#calendar3').fullCalendar('option', 'contentHeight', "auto");
+        $('.card-block').height($('#calendar3').height() + 200)
     });
     $("#week3").click(function () {
         //$('#calendar3Parent').css('width', '100%');
@@ -3798,12 +3840,16 @@
 
         var view = $('#calendar4').fullCalendar('getView');
         $('#lblCalendarMsg4').html(view.title);
-        getImage();
+        if ($('#calendar4 #imgBot').length==0) {
+            getImage();
+        }
         $('#DWM').val('month');
 
         $('#month4').css("background-color", "cornflowerblue");
         $('#day4').css("background-color", "#015093");
         $('#week4').css("background-color", "#015093");
+        $('#calendar4').fullCalendar('option', 'contentHeight', "auto");
+        $('.card-block').height($('#calendar4').height() + 200)
     });
     $("#week4").click(function () {
         //$('#calendar4Parent').css('width', '100%');
