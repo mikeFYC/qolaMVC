@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -526,7 +527,37 @@ namespace QolaMVC.DAL
             }
         }
 
+        public static List<Venue> GetAllVenuebyHome(int homeid)
+        {
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                List<Venue> l_Collection = new List<Venue>();
+                Venue l_Model;
+                l_Conn.Open();
+                SqlCommand l_Cmd = new SqlCommand("select * from new_tbl_venue where home="+ homeid.ToString(), l_Conn);
+                //l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlDataReader l_Reader = l_Cmd.ExecuteReader();
 
+                while (l_Reader.Read())
+                {
+                    l_Model = new Venue();
+
+                    l_Model.Id = Convert.ToInt32(l_Reader["Id"]);
+                    l_Model.homeid = Convert.ToInt32(l_Reader["home"]);
+                    l_Model.code = Convert.ToString(l_Reader["code"]);
+                    l_Model.venue = Convert.ToString(l_Reader["venue"]);
+
+                    l_Collection.Add(l_Model);
+                }
+
+                return l_Collection;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(".GetAllVenuebyHome\n" + ex.Message);
+            }
+        }
 
         public static void save_button(int tb_number, int userid, int residentid)
         {

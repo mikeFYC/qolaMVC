@@ -39,8 +39,8 @@
         }
 
         .fc-event {
-            min-height: 2.8vh !important;
-            font-size: 1vw !important;
+            min-height: 2.8vh ;
+            font-size: 1vw ;
         }
 
         .fc-month-view span.fc-title {
@@ -238,7 +238,7 @@
                             <div style="width:24%;display:inline-block;">
                                 <input id="backbutton" onclick="location.href='/Home/Menu/?p_HomeId=@ViewBag.Home.Id';" class="btn btn-primary" type="button" value="BACK" />
                                 <button class="btn btn-danger print" id="PrintDAY" style="">Print</button>
-                                <button class="btn btn-danger printBtn hidden-print " id="PrintWAM" style="display:none;">Print</button>
+                                <button class="btn btn-danger print2 hidden-print " id="PrintWAM" style="display:none;">Print</button>
                                 <button class="btn btn-danger" onclick="exportWord2()">DOC</button>
                             </div>
                         </div>
@@ -298,7 +298,10 @@
                                                 <input type="hidden" id="tempdate" value="@TempData["datechoose"].ToString()" />
                                             </div>
                                             @*<img  id="imgTop" src="~/Content/CalendarTheme/Images/MonthlyActivity/dec2018Theme1_6.JPG" style="position:fixed;width:10px;height:10px;display:none;z-index:10;" />*@
-                                            <section id='calendar'></section>
+                                            <div id="fromHTMLtestdivPrint1">
+                                                <section id='calendar'></section>
+                                                <br><br><br>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -1269,7 +1272,7 @@
                                                                 <div class="form-group row">
                                                                     <label for="" class="col-md-4  col-form-label">VENUE</label>
                                                                     <div class="col-md-7">
-                                                                        <select id="venue_select" class="form-control" name="venue">
+                                                                        <select id="venue_select2" class="form-control" name="venue">
                                                                             <option value="">-- Select --</option>
                                                                         </select>
                                                                     </div>
@@ -1332,7 +1335,7 @@
                                                 <div class="" style="margin:0 auto;width:90%;">
                                                     <div id="COPY">
                                                         <input type="hidden" id="CopyEventID" value="" />
-                                                        <a class="btn btn-danger btn-lg" href="#" style="width:100%;" onclick="copyEvent_End(this)">PASTE</a>
+                                                        <button class="btn btn-danger btn-lg" style="width:100%;" onclick="copyEvent_End(this)">PASTE</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1371,14 +1374,14 @@
                                             <div class="row" style="margin-top:1.1vw;">
                                                 <div class="" style="margin:0 auto;width:90%;">
                                                     <div id="COPY">
-                                                        <a class="btn btn-primary btn-lg" href="#" data-toggle="modal" data-target="#" style="width:100%;" onclick="copyEvent_Start(this)">Copy EVENT</a>
+                                                        <a class="btn btn-primary btn-lg" href="#" data-toggle="modal" data-target="" style="width:100%;" onclick="copyEvent_Start(this)">Copy EVENT</a>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row" style="margin-top:1.1vw;">
                                                 <div class="" style="margin:0 auto;width:90%;">
                                                     <div id="DELETE">
-                                                        <a class="btn btn-primary btn-lg" href="#" data-toggle="modal" data-target="#" style="width:100%;" onclick="deleteEvent(this)">Delete EVENT</a>
+                                                        <a class="btn btn-primary btn-lg" href="#" data-toggle="modal" data-target="" style="width:100%;" onclick="deleteEvent(this)">Delete EVENT</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -2238,6 +2241,14 @@
             $('#activity_select2').append('<option value="' + data[i].Id + '">' + data[i].Name + '</option>');
         }
     });
+    $('#venue_select').children('option:not(:first)').remove();
+    $('#venue_select2').children('option:not(:first)').remove();
+    $.get("/Home/getVenuesForCalendar", {}, function (data) {
+        for (var i = 0; i < data.length; i++) {
+            $('#venue_select').append('<option value="' + data[i].Id + '">' + data[i].venue + '</option>');
+            $('#venue_select2').append('<option value="' + data[i].Id + '">' + data[i].venue + '</option>');
+        }
+    });
 </script>
 
 <script>
@@ -2351,7 +2362,7 @@
         function GenerationCalendar(events) {
             $('#calendar').fullCalendar('destroy');
             $('#calendar').fullCalendar({
-                contentHeight: 800,
+                contentHeight: "auto",
                 defaultDate: new Date(),
                 timeFormat: 'h(:mm)a',
                 header: {
@@ -2362,7 +2373,7 @@
                 editable: true,
                 defaultView: '',
                 showNonCurrentDates:false,
-                eventLimit: true,
+                eventLimit: false,
                 dayNamesShort: ['Sunday', 'Monday', 'Tuesday', 'Wednesday','Thursday', 'Friday', 'Saturday'],
                 customButtons: {
                     CustomView: {
@@ -2398,13 +2409,15 @@
                     b[0].innerHTML = c;
                     $(this).css('border-color', 'red');
 
-                    $('#activity_select2').children('option:not(:first)').remove();
-                    $.get("/Home/getCategoriesForCalendar", {}, function (data) {
-                        for (var i = 0; i < data.length; i++) {
-                            $('#activity_select2').append('<option value="' + data[i].Id + '">' + data[i].Name + '</option>');
-                        }
-                        $('#EditEvent #activity_select2').val(calEvent.ActivityID);
-                    });
+                    //$('#activity_select2').children('option:not(:first)').remove();
+                    //$.get("/Home/getCategoriesForCalendar", {}, function (data) {
+                    //    for (var i = 0; i < data.length; i++) {
+                    //        $('#activity_select2').append('<option value="' + data[i].Id + '">' + data[i].Name + '</option>');
+                    //    }
+                    //    $('#EditEvent #activity_select2').val(calEvent.ActivityID);
+                    //});
+                    $('#EditEvent #activity_select2').val(calEvent.ActivityID);
+                    $('#EditEvent #venue_select2').val(calEvent.Venue);
 
                     $('#EditEvent #display_title_input').val(calEvent.title);
                     var inputs = $("#EditEvent input[type=radio]");
@@ -2451,7 +2464,7 @@
         function GenerationCalendar2(events) {
             $('#calendar2').fullCalendar('destroy');
             $('#calendar2').fullCalendar({
-                contentHeight: 800,
+                contentHeight: 1400,
                 defaultDate: new Date(),
                 timeFormat: 'h(:mm)a',
                 header: {
@@ -2462,7 +2475,7 @@
                 editable: true,
                 defaultView: '',
                 showNonCurrentDates: false,
-                eventLimit: true,
+                eventLimit: false,
                 dayNamesShort: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
                 customButtons: {
                     CustomView: {
@@ -2498,13 +2511,15 @@
                     b[0].innerHTML = c;
                     $(this).css('border-color', 'red');
 
-                    $('#activity_select2').children('option:not(:first)').remove();
-                    $.get("/Home/getCategoriesForCalendar", {}, function (data) {
-                        for (var i = 0; i < data.length; i++) {
-                            $('#activity_select2').append('<option value="' + data[i].Id + '">' + data[i].Name + '</option>');
-                        }
-                        $('#EditEvent #activity_select2').val(calEvent.ActivityID);
-                    });
+                    //$('#activity_select2').children('option:not(:first)').remove();
+                    //$.get("/Home/getCategoriesForCalendar", {}, function (data) {
+                    //    for (var i = 0; i < data.length; i++) {
+                    //        $('#activity_select2').append('<option value="' + data[i].Id + '">' + data[i].Name + '</option>');
+                    //    }
+                    //    $('#EditEvent #activity_select2').val(calEvent.ActivityID);
+                    //});
+                    $('#EditEvent #activity_select2').val(calEvent.ActivityID);
+                    $('#EditEvent #venue_select2').val(calEvent.Venue);
 
                     $('#EditEvent #display_title_input').val(calEvent.title);
                     var inputs = $("#EditEvent input[type=radio]");
@@ -2551,7 +2566,7 @@
         function GenerationCalendar3(events) {
             $('#calendar3').fullCalendar('destroy');
             $('#calendar3').fullCalendar({
-                contentHeight: 800,
+                contentHeight: 1400,
                 defaultDate: new Date(),
                 timeFormat: 'h(:mm)a',
                 header: {
@@ -2562,7 +2577,7 @@
                 editable: true,
                 defaultView: '',
                 showNonCurrentDates: false,
-                eventLimit: true,
+                eventLimit: false,
                 dayNamesShort: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
                 customButtons: {
                     CustomView: {
@@ -2598,13 +2613,15 @@
                     b[0].innerHTML = c;
                     $(this).css('border-color', 'red');
 
-                    $('#activity_select2').children('option:not(:first)').remove();
-                    $.get("/Home/getCategoriesForCalendar", {}, function (data) {
-                        for (var i = 0; i < data.length; i++) {
-                            $('#activity_select2').append('<option value="' + data[i].Id + '">' + data[i].Name + '</option>');
-                        }
-                        $('#EditEvent #activity_select2').val(calEvent.ActivityID);
-                    });
+                    //$('#activity_select2').children('option:not(:first)').remove();
+                    //$.get("/Home/getCategoriesForCalendar", {}, function (data) {
+                    //    for (var i = 0; i < data.length; i++) {
+                    //        $('#activity_select2').append('<option value="' + data[i].Id + '">' + data[i].Name + '</option>');
+                    //    }
+                    //    $('#EditEvent #activity_select2').val(calEvent.ActivityID);
+                    //});
+                    $('#EditEvent #activity_select2').val(calEvent.ActivityID);
+                    $('#EditEvent #venue_select2').val(calEvent.Venue);
 
                     $('#EditEvent #display_title_input').val(calEvent.title);
                     var inputs = $("#EditEvent input[type=radio]");
@@ -2651,7 +2668,7 @@
         function GenerationCalendar4(events) {
             $('#calendar4').fullCalendar('destroy');
             $('#calendar4').fullCalendar({
-                contentHeight: 800,
+                contentHeight: 1400,
                 defaultDate: new Date(),
                 timeFormat: 'h(:mm)a',
                 header: {
@@ -2663,7 +2680,7 @@
                 editable: true,
                 defaultView: '',
                 showNonCurrentDates: false,
-                eventLimit: true,
+                eventLimit: false,
                 dayNamesShort: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
                 customButtons: {
                     CustomView: {
@@ -2699,13 +2716,16 @@
                     b[0].innerHTML = c;
                     $(this).css('border-color', 'red');
 
-                    $('#activity_select2').children('option:not(:first)').remove();
-                    $.get("/Home/getCategoriesForCalendar", {}, function (data) {
-                        for (var i = 0; i < data.length; i++) {
-                            $('#activity_select2').append('<option value="' + data[i].Id + '">' + data[i].Name + '</option>');
-                        }
-                        $('#EditEvent #activity_select2').val(calEvent.ActivityID);
-                    });
+                    //$('#activity_select2').children('option:not(:first)').remove();
+                    //$.get("/Home/getCategoriesForCalendar", {}, function (data) {
+                    //    for (var i = 0; i < data.length; i++) {
+                    //        $('#activity_select2').append('<option value="' + data[i].Id + '">' + data[i].Name + '</option>');
+                    //    }
+                    //    $('#EditEvent #activity_select2').val(calEvent.ActivityID);
+                    //});
+                    $('#EditEvent #activity_select2').val(calEvent.ActivityID);
+                    $('#EditEvent #venue_select2').val(calEvent.Venue);
+
 
                     $('#EditEvent #display_title_input').val(calEvent.title);
                     var inputs = $("#EditEvent input[type=radio]");
@@ -2935,7 +2955,7 @@
         var first = $("#EditEvent #display_title_input").val();
         var second = $("#EditEvent #activity_select2").val();
         var third = $("#EditEvent #dateandtime_input").val();
-        var eighth = $("#EditEvent #venue_select").val();
+        var eighth = $("#EditEvent #venue_select2").val();
         //var ninth = $("#EditEvent #description_textarea").val();
         var ninth = "";
         if (first == '' || second == '' || third == '') { tempAlert("Mandatory Required", 2000); return false; }
@@ -3128,6 +3148,7 @@
         //$('#activity_select').children().remove();
         //$('#activity_select').append('<option value="">-- Select --</option>');
         $('#activity_select').val("");
+        $('#venue_select').val("");
         document.getElementById('ADD_CANCEL').className = 'modal fade';
     }
 
@@ -3415,16 +3436,101 @@
 
 
     $('.printBtn').on('click', function () {
+
+        $('.fc-event').css("min-height", "1.4vh!important");
+        $('.fc-event').css("font-size", "0.5vw!important");
         $('#ACtivityCalendarTitle').css({ 'margin-left': '5vw' });
         $('#backbutton').hide();
         $('.caname').hide();
         $('.jumbotron').hide();
         window.print();
+        $('.fc-event').css("min-height", "2.8vh!important");
+        $('.fc-event').css("font-size", "1vw!important");
         $('#ACtivityCalendarTitle').css({ 'margin-left': '0' });
         $('#backbutton').show();
         $('.caname').show();
         $('.jumbotron').show();
     });
+
+    $('.print2').click(function () {
+        var contextHeight = $('.container-fixed-lg:eq(1)').height();
+        var cardHeight = $('.card-block').height();
+        var fromHeight = $('#fromHTMLtestdivPrint1').height();
+        $('.fc-event').css("font-size", "18px");
+        $('.fc-event').css("min-height", "1vh");
+        //$('#calendar').fullCalendar('option', 'contentHeight', 1800);
+        $('#calendar').css("width", "93%")
+        $('#calendar').css({ 'margin-top': '-240px' });
+        RESIZEIMAGE();
+        var srcEl = document.getElementById("fromHTMLtestdivPrint1");
+        var tab = $('#hiddentab').val();
+        var scaleFactor = 2;
+
+        var originalWidth = srcEl.offsetWidth;
+        var originalHeight = srcEl.offsetHeight;
+        // Force px size (no %, EMs, etc)
+        srcEl.style.width = originalWidth + "px";
+        srcEl.style.height = originalHeight + "px";
+
+        // Position the element at the top left of the document because of bugs in html2canvas. The bug exists when supplying a custom canvas, and   //the rendering on the custom canvas based on the offset of the source element on the page; thus the source element MUST be at 0, 0.
+        // See html2canvas issues #790, #820, #893, #922
+        srcEl.style.position = "absolute";
+        srcEl.style.top = "0";
+        srcEl.style.left = "0";
+
+        // Create scaled canvas
+        var scaledCanvas = document.createElement("canvas");
+        scaledCanvas.width = originalWidth * scaleFactor;
+        scaledCanvas.height = originalHeight * scaleFactor;
+        scaledCanvas.style.width = originalWidth + "px";
+        scaledCanvas.style.height = originalHeight + "px";
+        var scaledContext = scaledCanvas.getContext("2d");
+        scaledContext.scale(scaleFactor, scaleFactor);
+
+        html2canvas(srcEl, { canvas: scaledCanvas })
+            .then(function (canvas) {
+                var imgData = canvas.toDataURL('image/png');
+                var imgWidth = 210;
+                var pageHeight = 295;
+                
+                var imgHeight = canvas.height * imgWidth / canvas.width;
+                var heightLeft = imgHeight;
+
+                var doc = new jsPDF('p', 'mm');
+                var position = 0;
+
+                doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                doc.setTextColor('#000');
+                var context = canvas.getContext('2d');
+                context.scale(2, 2);
+                heightLeft -= pageHeight;
+
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    doc.addPage();
+                    doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                    var context = canvas.getContext('2d');
+                    context.scale(2, 2);
+                    doc.setTextColor('#000');
+                    heightLeft -= pageHeight;
+                }
+                var filename = "Activity_Calendar";
+                doc.save(filename + '.pdf');
+            });
+
+        $('.fc-event').css("font-size", "1vw");
+        $('.fc-event').css("min-height", "2.7vh");
+        //$('#calendar').fullCalendar('option', 'contentHeight', 1400);
+        $('#calendar').css("width", "100%")
+        $('#fromHTMLtestdivPrint1').css({ 'margin-top': '35vh' });
+        $('.container-fixed-lg:eq(1)').height(contextHeight);
+        $('.card-block').height(cardHeight);
+        $('#fromHTMLtestdivPrint1').height(fromHeight);
+        RESIZEIMAGE();
+
+
+
+    })
 
     $('.print').click(function () {
 
@@ -3778,6 +3884,7 @@
         else {timeindex2 = 6 - lastday.getDay();}
         var finalwidth2 = (parseInt($(whichcalendar + ' .fc-day').css("width").replace('px', '')) * timeindex2).toString() + 'px';   
         var filename2 = firstThreeLetters + year + 'Theme1_' + timeindex2.toString() + '.JPG';
+
         $(whichcalendar + ' .fc-disabled-day:eq(' + timeindex + ')').prepend("<img id=\"imgBot\" src=\"\/Content\/CalendarTheme\/Images\/MonthlyActivity\/" + filename2 + "\" style=\"width:2px;height:2px;z-index:50;\" />");
         $(whichcalendar + ' .fc-disabled-day:eq(' + timeindex + ')').css("opacity", "1");
         $(whichcalendar + ' .fc-disabled-day').css("background", "none");
@@ -3823,6 +3930,44 @@
         $(whichcalendar + ' #imgBot').height($(whichcalendar + ' .fc-day').css("height"));
         $(whichcalendar + ' #imgBot').show();
     };
+
+    function RESIZEIMAGE() {
+        var tab = $('#hiddentab').val();
+        var whichcalendar = "";
+        var calendarDate = "";
+        if (tab == "a" || tab == "") {
+            whichcalendar = "#calendar";
+            calendarDate = "#lblCalendarMsg";
+        }
+        else if (tab == "b") {
+            whichcalendar = "#calendar2";
+            calendarDate = "#lblCalendarMsg2";
+        }
+        else if (tab == "c") {
+            whichcalendar = "#calendar3";
+            calendarDate = "#lblCalendarMsg3";
+        }
+        else if (tab == "d") {
+            whichcalendar = "#calendar4";
+            calendarDate = "#lblCalendarMsg4";
+        }
+        var b = new Date($(calendarDate).html());
+        var timeindex = b.getDay();
+        var finalwidth = (parseInt($(whichcalendar + ' .fc-day').css("width").replace('px', '')) * timeindex).toString() + 'px';
+        $(whichcalendar + ' #imgTop').width(finalwidth);
+        $(whichcalendar + ' #imgTop').height($(whichcalendar + ' .fc-day').css("height"));
+        $(whichcalendar + ' #imgTop').show();
+
+        var nextmonth = new Date(b.getFullYear(), b.getMonth() + 1, b.getDate())
+        var lastday = new Date(nextmonth - 1);
+        var timeindex2;
+        if (lastday.getDay() == 7) { timeindex2 = 6; }
+        else { timeindex2 = 6 - lastday.getDay(); }
+        var finalwidth2 = (parseInt($(whichcalendar + ' .fc-day').css("width").replace('px', '')) * timeindex2).toString() + 'px';
+        $(whichcalendar + ' #imgBot').width(finalwidth2);
+        $(whichcalendar + ' #imgBot').height($(whichcalendar + ' .fc-day').css("height"));
+        $(whichcalendar + ' #imgBot').show();
+    }
 
     function resetbuttoncolor() {
         $('#day1').css("background-color", "cornflowerblue");

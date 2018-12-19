@@ -1281,7 +1281,7 @@ namespace QolaMVC.Controllers
                         PdfWriter writer = PdfWriter.GetInstance(doc, mStream);
 
 
-                        writer.PageEvent = new pdfHeaderFooter();
+                        writer.PageEvent = new pdfHeaderFooter(home.Name);
 
                         doc.Open();
 
@@ -1311,7 +1311,7 @@ namespace QolaMVC.Controllers
                             PdfPTable PdfTable1;
 
                             PdfTable1 = new PdfPTable(10);
-                            float[] wthtbl1 = new float[] { .8f, 3f, 10f, 5f, 8f, 10f, 8f, .8f, 7.9f, 10f };
+                            float[] wthtbl1 = new float[] { 1.5f, 2f, 8f, 3f, 7f, 10f, 7f, 1.5f, 6f, 19f };
                             PdfTable1.SetWidths(wthtbl1);
                             PdfTable1.WidthPercentage = 100f;
                             PdfTable1.HorizontalAlignment = Element.ALIGN_LEFT;
@@ -3830,6 +3830,28 @@ namespace QolaMVC.Controllers
             return Json(l_ActivityCategories, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult getVenuesForCalendar()
+        {
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("Home");
+            List<Venue> l_Model = MasterDAL.GetAllVenuebyHome(home.Id);
+            List<Dictionary<string, string>> l_Venues = new List<Dictionary<string, string>>();
+
+            foreach (var l_Data in l_Model)
+            {
+                var columns = new Dictionary<string, string>
+                {
+                    { "Id", l_Data.Id.ToString() },
+                    {"code", l_Data.code},
+                    {"venue", l_Data.venue}
+                };
+
+                l_Venues.Add(columns);
+            }
+
+            return Json(l_Venues, JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult GetBirthdayCalendar()
         {
             var user = (UserModel)TempData["User"];
@@ -4636,7 +4658,7 @@ namespace QolaMVC.Controllers
                         PdfWriter writer = PdfWriter.GetInstance(doc, mStream);
 
 
-                        writer.PageEvent = new pdfHeaderFooter();
+                        writer.PageEvent = new pdfHeaderFooter(home.Name);
 
                         doc.Open();
 
@@ -6813,7 +6835,14 @@ namespace QolaMVC.Controllers
     public class pdfHeaderFooter : PdfPageEventHelper
     {
         int i = 1;
-        public override void OnStartPage(PdfWriter writer, Document document)
+        private string homename;
+
+    public pdfHeaderFooter(string name)
+    {
+        homename = name;
+    }
+
+    public override void OnStartPage(PdfWriter writer, Document document)
         {
 
             base.OnOpenDocument(writer, document);
@@ -6829,14 +6858,14 @@ namespace QolaMVC.Controllers
 
             tabHeader.AddCell(cell1);
 
-            cell = new PdfPCell(new Phrase("".ToString(), headerFont)); //removed homename
+            cell = new PdfPCell(new Phrase(homename, headerFont)); //removed homename
             cell.Border = 0;
 
             cell.HorizontalAlignment = Element.ALIGN_RIGHT;
             tabHeader.AddCell(cell);
             tabHeader.WriteSelectedRows(0, -1, 29, (document.PageSize.Height - 10), writer.DirectContent);
         }
-        public override void OnEndPage(PdfWriter writer, Document document)
+    public override void OnEndPage(PdfWriter writer, Document document)
         {
             base.OnEndPage(writer, document);
             base.OnEndPage(writer, document);
@@ -6909,7 +6938,7 @@ namespace QolaMVC.Controllers
             tabFot.WriteSelectedRows(0, -1, 29, document.Bottom - 3, writer.DirectContent);
         }
 
-    }
+}
 
 
 
