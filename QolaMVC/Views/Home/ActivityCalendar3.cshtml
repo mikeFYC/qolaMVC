@@ -44,7 +44,7 @@
         }
 
         .fc-month-view span.fc-title {
-            
+            white-space: normal !important;
         }
 
         .fc-center h2 {
@@ -68,66 +68,9 @@
 
     </style>
     <script>
+
+
         function exportWord() {
-            var data = JSON.stringify({
-                "input": [
-                    {
-                        "type": "remote",
-                        "source": "https://static.online-convert.com/example-file/raster%20image/jpg/example_small.jpg"
-                    }
-                ],
-                "conversion": [
-                    {
-                        "target": "pdf"
-                    }
-                ]
-            });
-
-            var xhr = new XMLHttpRequest();
-            xhr.withCredentials = true;
-
-            xhr.addEventListener("readystatechange", function () {
-                if (this.readyState === 4) {
-                    var jsondata = JSON.parse(this.responseText.toString());
-                    //console.log(this.responseText);
-
-
-                    setTimeout(function () {
-                        var settings = {
-                            "async": true,
-                            "crossDomain": true,
-                            "url": "https://api2.online-convert.com/jobs/" + jsondata.id,
-                            "method": "GET",
-                            "headers": {
-                                "x-oc-api-key": "f743149df723d0981b2e0fc6a949603f",
-                                "cache-control": "no-cache",
-                                "Postman-Token": "176fe5f2-1c8b-4edb-b9ff-3c95e3351f33"
-                            }
-                        }
-
-                        $.ajax(settings).done(function (response) {
-                            console.log(response);
-                            alert(response.output[0].uri)
-                        });
-                    }, 5000);
-
-                }
-            });
-
-            xhr.open("POST", "https://api2.online-convert.com/jobs");
-            xhr.setRequestHeader("x-oc-api-key", "f743149df723d0981b2e0fc6a949603f");
-            xhr.setRequestHeader("content-type", "application/json");
-            xhr.setRequestHeader("cache-control", "no-cache");
-
-            xhr.send(data);
-
-
-
-
-
-        }
-
-        function exportWord2() {
             var date = $('#lblCalendarMsg').html();
             var tab = $('#hiddentab').val();
             if (tab == "a" || tab == "") {
@@ -239,7 +182,7 @@
                                 <input id="backbutton" onclick="location.href='/Home/Menu/?p_HomeId=@ViewBag.Home.Id';" class="btn btn-primary" type="button" value="BACK" />
                                 <button class="btn btn-danger print" id="PrintDAY" style="">Print</button>
                                 <button class="btn btn-danger print2 hidden-print " id="PrintWAM" style="display:none;">Print</button>
-                                <button class="btn btn-danger" onclick="exportWord2()">DOC</button>
+                                <button class="btn btn-danger" onclick="exportWord()">DOC</button>
                             </div>
                         </div>
                         <!-- </div> -->
@@ -1289,15 +1232,17 @@
                                                             </div>
 
                                                             <input type="hidden" id="EventID" value="" />
+                                                            <input type="hidden" id="TrueFalseIndex" value="false" />
+
 
                                                             @*<div class="col-md-12" id="description" style="margin-top:1vw;">
-                                                                <div class="form-group row">
-                                                                    <label for="" class="col-md-4 col-form-label">DESCRIPTION</label>
-                                                                    <div class="col-md-7">
-                                                                        <textarea class="textarea" id="description_textarea" rows="5" style="width:65% !important;max-width:100%;float:left;" name="description"></textarea>
-                                                                    </div>
-                                                                </div>
-                                                            </div>*@
+            <div class="form-group row">
+                <label for="" class="col-md-4 col-form-label">DESCRIPTION</label>
+                <div class="col-md-7">
+                    <textarea class="textarea" id="description_textarea" rows="5" style="width:65% !important;max-width:100%;float:left;" name="description"></textarea>
+                </div>
+            </div>
+        </div>*@
                                                         </div>
 
                                                     </div>
@@ -1412,7 +1357,7 @@
 
                     </div>
 
-
+                    
 
 
                     <!-- END CONTAINER FLUID -->
@@ -1967,25 +1912,30 @@
 
         if ($('#day_div').css('display') == 'none' && $('#day_div2').css('display') == 'none' && $('#day_div3').css('display') == 'none' && $('#day_div4').css('display') == 'none') {
             var tab = $('#hiddentab').val();
+            whichcalendar = "";
             if (tab == "a" || tab == "") {
                 $('#calendar').fullCalendar('prev');
                 var view = $('#calendar').fullCalendar('getView');
                 $('#lblCalendarMsg').html(view.title);
+                whichcalendar = "#calendar";
             }
             else if (tab == "b") {
                 $('#calendar2').fullCalendar('prev');
                 var view = $('#calendar2').fullCalendar('getView');
                 $('#lblCalendarMsg2').html(view.title);
+                whichcalendar = "#calendar2";
             }
             else if (tab == "c") {
                 $('#calendar3').fullCalendar('prev');
                 var view = $('#calendar3').fullCalendar('getView');
                 $('#lblCalendarMsg3').html(view.title);
+                whichcalendar = "#calendar3";
             }
             else if (tab == "d") {
                 $('#calendar4').fullCalendar('prev');
                 var view = $('#calendar4').fullCalendar('getView');
                 $('#lblCalendarMsg4').html(view.title);
+                whichcalendar = "#calendar4";
             }
 
         }
@@ -2019,34 +1969,38 @@
 
 
         var DWM = $('#DWM').val();
-        if (DWM == "month") {
+        if (DWM == "month" && $(whichcalendar + ' #imgBot').length == 0) {
             getImage();
         }
 
     }
     function nextday_mike() {
         if ($('#day_div').css('display') == 'none' && $('#day_div2').css('display') == 'none' && $('#day_div3').css('display') == 'none' && $('#day_div4').css('display') == 'none') {
-
+            whichcalendar = "";
             var tab = $('#hiddentab').val();
             if (tab == "a" || tab == "") {
                 $('#calendar').fullCalendar('next');
                 var view = $('#calendar').fullCalendar('getView');
                 $('#lblCalendarMsg').html(view.title);
+                whichcalendar = "#calendar";
             }
             else if (tab == "b") {
                 $('#calendar2').fullCalendar('next');
                 var view = $('#calendar2').fullCalendar('getView');
                 $('#lblCalendarMsg2').html(view.title);
+                whichcalendar = "#calendar2";
             }
             else if (tab == "c") {
                 $('#calendar3').fullCalendar('next');
                 var view = $('#calendar3').fullCalendar('getView');
                 $('#lblCalendarMsg3').html(view.title);
+                whichcalendar = "#calendar3";
             }
             else if (tab == "d") {
                 $('#calendar4').fullCalendar('next');
                 var view = $('#calendar4').fullCalendar('getView');
                 $('#lblCalendarMsg4').html(view.title);
+                whichcalendar = "#calendar4";
             }
 
         }
@@ -2076,7 +2030,8 @@
         }
 
         var DWM = $('#DWM').val();
-        if (DWM == "month") {
+        if (DWM == "month" && $(whichcalendar+' #imgBot').length == 0) {
+
             getImage();
         }
     }
@@ -2167,6 +2122,94 @@
             el.parentNode.removeChild(el);
         }, duration);
         document.body.appendChild(el);
+    }
+
+    function tempAlert2(msg) {
+        var el = document.createElement("div");
+        el.setAttribute("style", "position:fixed;top:2%;left:28%;width:45vw;text-align: center;background-color:white;z-index:9999;color:black;padding:2.5vw 4vw 2.5vw 4vw;border-radius:1vw;font-size:2vw;font-weight:bold;border:black solid;");
+        el.innerHTML = "<img src=\"\/Content\/assets\/img\/qola_logo3.png\" style=\"width:120px;height:80px;margin-left:-2vw;\" \/><div style=\"margin-left:3vw;display:inline;\">" + msg + "<br><div style='width:90%;'><button class='btn btn-primary pull-right' style='display:inline-block;' onclick='this.parentNode.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode.parentNode);'>No<\/button><button class='btn btn-primary pull-right' style='display:inline-block;margin-right:10px' onclick='deleteEventReturnTrue(this)'>Yes<\/button><\/div><\/div>";
+
+        //el.parentNode.removeChild(el);
+
+        
+        document.body.appendChild(el);
+
+    }
+
+    function tempAlert3(msg,aa,bb) {
+        var el = document.createElement("div");
+        el.setAttribute("style", "position:fixed;top:2%;left:28%;width:45vw;text-align: center;background-color:white;z-index:9999;color:black;padding:2.5vw 4vw 2.5vw 4vw;border-radius:1vw;font-size:2vw;font-weight:bold;border:black solid;");
+        el.innerHTML = "<img src=\"\/Content\/assets\/img\/qola_logo3.png\" style=\"width:120px;height:80px;margin-left:-2vw;\" \/><div style=\"margin-left:3vw;display:inline;\">" + msg + "<br><div style='width:90%;'><button class='btn btn-primary pull-right' style='display:inline-block;' onclick='this.parentNode.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode.parentNode);'>No<\/button><button class='btn btn-primary pull-right' style='display:inline-block;margin-right:10px' onclick=\"dropEventReturnTrue(this,'" + aa.toString() + "','" + bb.toString() + "')\">Yes<\/button><\/div><\/div>";
+
+        //el.parentNode.removeChild(el);
+
+
+        document.body.appendChild(el);
+
+    }
+
+    function deleteEventReturnTrue(ee) {
+        ee.parentNode.parentNode.parentNode.parentNode.removeChild(ee.parentNode.parentNode.parentNode);
+
+        var aa = $('#EditEvent #EventID').val()
+        var tab = $('#hiddentab').val();
+        var xx = scrollX;
+        var yy = scrollY;
+        if (tab == "" || tab == "a") {
+            document.getElementById('EDIT_COPY_DELETE_CANCEL').className = 'modal fade';
+            $.get("/Home/DELETE_EVENT", { eventID: aa }, function (data) {
+                $('#calendar').fullCalendar('removeEvents', function (event) {
+                    return (event.Id == data);
+                });
+                update_day_div();
+                scroll(xx, yy);
+            });
+            
+        }
+        else if (tab == "b") {
+
+            document.getElementById('EDIT_COPY_DELETE_CANCEL').className = 'modal fade';
+            $.get("/Home/DELETE_EVENT2", { eventID: aa }, function (data) {
+                $('#calendar2').fullCalendar('removeEvents', function (event) {
+                    return (event.Id == data);
+                });
+                update_day_div();
+                scroll(xx, yy);
+            });
+            
+        }
+        else if (tab == "c") {
+
+            document.getElementById('EDIT_COPY_DELETE_CANCEL').className = 'modal fade';
+            $.get("/Home/DELETE_EVENT3", { eventID: aa }, function (data) {
+                $('#calendar3').fullCalendar('removeEvents', function (event) {
+                    return (event.Id == data);
+                });
+                update_day_div();
+                scroll(xx, yy);
+            });
+            
+        }
+        else if (tab == "d") {
+
+            document.getElementById('EDIT_COPY_DELETE_CANCEL').className = 'modal fade';
+            $.get("/Home/DELETE_EVENT4", { eventID: aa }, function (data) {
+                $('#calendar4').fullCalendar('removeEvents', function (event) {
+                    return (event.Id == data);
+                });
+                update_day_div();
+                scroll(xx, yy);
+            });
+            
+        }
+
+
+    }
+
+    function dropEventReturnTrue(ee, aa, bb) {
+        ee.parentNode.parentNode.parentNode.parentNode.removeChild(ee.parentNode.parentNode.parentNode);
+        DragandDrop(aa, bb);
+
     }
 
     $('#searchresidents3').keyup(function () {
@@ -2285,7 +2328,7 @@
             },
 
             error: function (error) {
-                alert('failed');
+                tempAlert('failed',2000);
             }
         })
 
@@ -2311,7 +2354,7 @@
             },
 
             error: function (error) {
-                alert('failed');
+                tempAlert('failed',2000);
             }
         })
 
@@ -2337,7 +2380,7 @@
             },
 
             error: function (error) {
-                alert('failed');
+                tempAlert('failed',2000);
             }
         })
 
@@ -2363,7 +2406,7 @@
             },
 
             error: function (error) {
-                alert('failed');
+                tempAlert('failed',2000);
             }
         })
 
@@ -2442,10 +2485,11 @@
 
                 },
                 eventDrop: function (event, delta, revertFunc) {
-                    if (confirm(event.title + " was dropped on " + event.start.format() + "   Are you sure about this change?")) {
-                        DragandDrop(event.Id, event.start.format());
-                    }
-                    else { revertFunc(); }
+                    tempAlert3(event.title + " was dropped on " + event.start.format() + "   Are you sure about this change?", event.Id, event.start.format());
+                    //if (confirm(event.title + " was dropped on " + event.start.format() + "   Are you sure about this change?")) {
+                    //    DragandDrop(event.Id, event.start.format());
+                    //}
+                    //else { revertFunc(); }
                 }
             }).on('click', '.fc-basicWeek-button', function () {
                     //var b = $('.fc-basicWeek-button');
@@ -2879,8 +2923,11 @@
                         ActivityID: data[ind].ActivityId,
                         startTime: data[ind].startTime
                     };
+                    var xx = scrollX;
+                    var yy = scrollY;
                     $('#calendar').fullCalendar('renderEvent', event, true);
                     update_day_div();
+                    scroll(xx, yy);
                 }
                 $('#AddEvent').modal('hide');
                 cancel1();
@@ -3171,50 +3218,10 @@
     function deleteEvent(ee) {
         var aa = $('#EditEvent #EventID').val()
         var tab = $('#hiddentab').val();
-        if (tab == "" || tab == "a") {
-            if (confirm("Sure about Delete?")) {
-                document.getElementById('EDIT_COPY_DELETE_CANCEL').className = 'modal fade';
-                $.get("/Home/DELETE_EVENT", { eventID: aa }, function (data) {
-                    $('#calendar').fullCalendar('removeEvents', function (event) {
-                        return (event.Id == data);
-                    });
-                    update_day_div();
-                });
-            }
-        }
-        else if (tab == "b") {
-            if (confirm("Sure about Delete?")) {
-                document.getElementById('EDIT_COPY_DELETE_CANCEL').className = 'modal fade';
-                $.get("/Home/DELETE_EVENT2", { eventID: aa }, function (data) {
-                    $('#calendar2').fullCalendar('removeEvents', function (event) {
-                        return (event.Id == data);
-                    });
-                    update_day_div();
-                });
-            }
-        }
-        else if (tab == "c") {
-            if (confirm("Sure about Delete?")) {
-                document.getElementById('EDIT_COPY_DELETE_CANCEL').className = 'modal fade';
-                $.get("/Home/DELETE_EVENT3", { eventID: aa }, function (data) {
-                    $('#calendar3').fullCalendar('removeEvents', function (event) {
-                        return (event.Id == data);
-                    });
-                    update_day_div();
-                });
-            }
-        }
-        else if (tab == "d") {
-            if (confirm("Sure about Delete?")) {
-                document.getElementById('EDIT_COPY_DELETE_CANCEL').className = 'modal fade';
-                $.get("/Home/DELETE_EVENT4", { eventID: aa }, function (data) {
-                    $('#calendar4').fullCalendar('removeEvents', function (event) {
-                        return (event.Id == data);
-                    });
-                    update_day_div();
-                });
-            }
-        }
+        tempAlert2("Sure about Delete?");
+        $('#EDIT_COPY_DELETE_CANCEL').removeClass('show');
+
+
 
     }
 

@@ -638,8 +638,10 @@
 
         setTimeout(function () {
             $("#calendar").fullCalendar("changeView", "month");
-            $('#calendar').fullCalendar('option', 'contentHeight', 800);
-            getImage();
+            $('#calendar').fullCalendar('option', 'contentHeight', 'auto');
+            if ($('#calendar #imgBot').length == 0) {
+                getImage();
+            }
         }, 300)
 
     }
@@ -662,8 +664,10 @@
 
         setTimeout(function () {
             $("#calendar2").fullCalendar("changeView", "month");
-            $('#calendar2').fullCalendar('option', 'contentHeight', 800);
-            getImage();
+            $('#calendar2').fullCalendar('option', 'contentHeight', 'auto');
+            if ($('#calendar2 #imgBot').length == 0) {
+                getImage();
+            }
         }, 300)
 
 
@@ -685,8 +689,10 @@
 
         setTimeout(function () {
             $("#calendar3").fullCalendar("changeView", "month");
-            $('#calendar3').fullCalendar('option', 'contentHeight', 800);
-            getImage();
+            $('#calendar3').fullCalendar('option', 'contentHeight', 'auto');
+            if ($('#calendar3 #imgBot').length == 0) {
+                getImage();
+            }
         }, 300)
 
     }
@@ -707,8 +713,10 @@
 
         setTimeout(function () {
             $("#calendar4").fullCalendar("changeView", "month");
-            $('#calendar4').fullCalendar('option', 'contentHeight', 800);
-            getImage();
+            $('#calendar4').fullCalendar('option', 'contentHeight', 'auto');
+            if ($('#calendar4 #imgBot').length == 0) {
+                getImage();
+            }
         }, 300)
 
 
@@ -972,7 +980,7 @@
         function GenerationCalendar(events) {
             $('#calendar').fullCalendar('destroy');
             $('#calendar').fullCalendar({
-                contentHeight: 800,
+                contentHeight: 'auto',
                 defaultDate: new Date(),
                 timeFormat: 'h:mma',
 
@@ -983,7 +991,7 @@
                 },
                 editable: false,
                 defaultView: 'month',
-                eventLimit: true,
+                eventLimit: false,
                 showNonCurrentDates: false,
                 dayNamesShort: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
                 eventColor: 'lightgreen',
@@ -1021,7 +1029,7 @@
         function GenerationCalendar2(events) {
             $('#calendar2').fullCalendar('destroy');
             $('#calendar2').fullCalendar({
-                contentHeight: 800,
+                contentHeight: 'auto',
                 defaultDate: new Date(),
                 timeFormat: 'h(:mm)a',
                 header: {
@@ -1031,7 +1039,7 @@
                 },
                 editable: false,
                 defaultView: '',
-                eventLimit: true,
+                eventLimit: false,
                 showNonCurrentDates: false,
                 dayNamesShort: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
                 eventColor: 'lightgreen',
@@ -1069,7 +1077,7 @@
 
             $('#calendar3').fullCalendar('destroy');
             $('#calendar3').fullCalendar({
-                contentHeight: 800,
+                contentHeight: 'auto',
                 defaultDate: new Date(),
                 timeFormat: 'h(:mm)a',
                 header: {
@@ -1079,7 +1087,7 @@
                 },
                 editable: false,
                 defaultView: '',
-                eventLimit: true,
+                eventLimit: false,
                 showNonCurrentDates: false,
                 dayNamesShort: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
                 eventColor: 'lightgreen',
@@ -1116,7 +1124,7 @@
         function GenerationCalendar4(events) {
             $('#calendar4').fullCalendar('destroy');
             $('#calendar4').fullCalendar({
-                contentHeight: 800,
+                contentHeight: 'auto',
                 defaultDate: new Date(),
                 timeFormat: 'h(:mm)a',
                 header: {
@@ -1126,7 +1134,7 @@
                 },
                 editable: false,
                 defaultView: '',
-                eventLimit: true,
+                eventLimit: false,
                 showNonCurrentDates: false,
                 dayNamesShort: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
                 eventColor: 'lightgreen',
@@ -1177,9 +1185,13 @@
         $('.caname').show();
     });
 
-    setTimeout(function () {
+    //setTimeout(function () {
+    //    getImage();
+    //}, 1000)
+
+    $(window).on('load', function () {
         getImage();
-    }, 1000)
+    })
 
     function getImage() {
         var tab = $('#hiddentab').val();
@@ -1225,7 +1237,7 @@
         $(whichcalendar + ' .fc-disabled-day:eq(' + timeindex + ')').css("opacity", "1");
         $(whichcalendar + ' .fc-disabled-day').css("background", "none");
         $(whichcalendar + ' #imgBot').width(finalwidth2);
-        $(whichcalendar + ' #imgBot').height($(whichcalendar + ' .fc-day').css("height"));
+        $(whichcalendar + ' #imgBot').height((parseInt($(whichcalendar + ' .fc-day').css("height")) - 5).toString());
         $(whichcalendar + ' #imgBot').show();
     }
 
@@ -1263,7 +1275,7 @@
         else { timeindex2 = 6 - lastday.getDay(); }
         var finalwidth2 = (parseInt($(whichcalendar + ' .fc-day').css("width").replace('px', '')) * timeindex2).toString() + 'px';
         $(whichcalendar + ' #imgBot').width(finalwidth2);
-        $(whichcalendar + ' #imgBot').height($(whichcalendar + ' .fc-day').css("height"));
+        $(whichcalendar + ' #imgBot').height((parseInt($(whichcalendar + ' .fc-day').css("height")) - 5).toString());
         $(whichcalendar + ' #imgBot').show();
     };
 
