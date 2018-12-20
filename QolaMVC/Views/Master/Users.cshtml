@@ -243,6 +243,35 @@
 
     $('#selectpage').val($('#startID').val());
 
+    function tempAlert2(msg, id) {
+        var el = document.createElement("div");
+        el.setAttribute("style", "position:fixed;top:2%;left:31%;width:35vw;background-color:white;z-index:9999;color:black;padding:2vw 3vw 2vw 3vw;border-radius:1vw;font-size:1.2em;font-weight:bold;border:black solid;");
+        el.innerHTML = "<img src=\"\/Content\/assets\/img\/qola_logo3.png\" style=\"width:120px;height:80px;display:inline-block\" \/><div style=\"margin-left:3vw;display:inline-block;width:50%;position:absolute;margin-top:3%;\">" + msg + "<\/div><div style='width:90%;'><button class='btn btn-primary pull-right' style='display:inline-block;' onclick='this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);'>No<\/button><button class='btn btn-danger pull-right' style='display:inline-block;margin-right:10px' onclick=\"deleteUserReturnTrue(this," + id + ")\">Yes<\/button><\/div>";
+        document.body.appendChild(el);
+
+    }
+
+    function deleteUserReturnTrue(ee, id) {
+        ee.parentNode.parentNode.parentNode.removeChild(ee.parentNode.parentNode);
+        var xx = scrollX;
+        var yy = scrollY;
+        $.get("/Master/DeleteUser/", { userid: id }, function (data) {
+            if (data == 1) {
+                tempAlert("User Delete", 2000);
+                setTimeout(function () { location.reload(); }, 2000);
+            }
+            else if (data == 2) {
+                tempAlert("User Inactive", 2000);
+                setTimeout(function () { location.reload(); }, 2000);
+            }
+            else {
+                tempAlert("User Delete Failed", 2000);
+            }
+        });
+
+
+    }
+
 
     function formsubmit(ee) {
         var index = $('#selectpage').val();
@@ -256,23 +285,25 @@
 
     }
 
-    function delete_user(ee,qq) {
+    function delete_user(id,qq) {
+        tempAlert2("Are You Sure About Delete User: " + qq, id);
 
-        if (confirm("Are You Sure About Delete User: " + qq) == true) {
-            $.get("/Master/DeleteUser/", { userid: ee }, function (data) {
-                if (data == 1) {
-                    tempAlert("User Delete", 2000);
-                    setTimeout(function () { location.reload(); }, 2000);
-                }
-                if (data == 1) {
-                    tempAlert("User Inactive", 2000);
-                    setTimeout(function () { location.reload(); }, 2000);
-                }
-                else {
-                    tempAlert("User Delete Failed", 2000);
-                }
-            });
-        }
+
+        //if (confirm("Are You Sure About Delete User: " + qq) == true) {
+        //    $.get("/Master/DeleteUser/", { userid: id }, function (data) {
+        //        if (data == 1) {
+        //            tempAlert("User Delete", 2000);
+        //            setTimeout(function () { location.reload(); }, 2000);
+        //        }
+        //        else if (data == 2) {
+        //            tempAlert("User Inactive", 2000);
+        //            setTimeout(function () { location.reload(); }, 2000);
+        //        }
+        //        else {
+        //            tempAlert("User Delete Failed", 2000);
+        //        }
+        //    });
+        //}
 
 
     }

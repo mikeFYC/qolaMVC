@@ -132,19 +132,47 @@
 
         <script>
 
-            function delete_home(ee,qq) {
-                if (confirm("Are You Sure About Delete Home: \n\n" + qq) == true) {
-                    $.get("/Master/DeleteBuildings", { homeid: ee }, function (data) {
-                        if (data == 1) {
-                            tempAlert("Home Delete", 2000);
-                            setTimeout(function () { location.reload(); }, 2000);
-                        }
-                        else {
-                            tempAlert("Home Delete Failed", 2000);
-                        }
+            function tempAlert2(msg, id) {
+                var el = document.createElement("div");
+                el.setAttribute("style", "position:fixed;top:2%;left:31%;width:35vw;background-color:white;z-index:9999;color:black;padding:2vw 3vw 2vw 3vw;border-radius:1vw;font-size:1.2em;font-weight:bold;border:black solid;");
+                el.innerHTML = "<img src=\"\/Content\/assets\/img\/qola_logo3.png\" style=\"width:120px;height:80px;display:inline-block\" \/><div style=\"margin-left:3vw;display:inline-block;width:50%;position:absolute;margin-top:2%;\">" + msg + "<\/div><div style='width:90%;margin-top:10px;'><button class='btn btn-primary pull-right' style='display:inline-block;' onclick='this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);'>No<\/button><button class='btn btn-danger pull-right' style='display:inline-block;margin-right:10px' onclick=\"deleteHomeReturnTrue(this," + id + ")\">Yes<\/button><\/div>";
+                document.body.appendChild(el);
 
-                    });
-                }
+            }
+
+            function deleteHomeReturnTrue(ee, id) {
+                ee.parentNode.parentNode.parentNode.removeChild(ee.parentNode.parentNode);
+                var xx = scrollX;
+                var yy = scrollY;
+                $.get("/Master/DeleteBuildings", { homeid: id }, function (data) {
+                    if (data == 1) {
+                        tempAlert("Home Delete", 2000);
+                        setTimeout(function () { location.reload(); }, 2000);
+                    }
+                    else {
+                        tempAlert("Home Delete Failed", 2000);
+                    }
+
+                });
+                
+
+            }
+
+
+            function delete_home(id,qq) {
+                //if (confirm("Are You Sure About Delete Home: \n\n" + qq) == true) {
+                //    $.get("/Master/DeleteBuildings", { homeid: ee }, function (data) {
+                //        if (data == 1) {
+                //            tempAlert("Home Delete", 2000);
+                //            setTimeout(function () { location.reload(); }, 2000);
+                //        }
+                //        else {
+                //            tempAlert("Home Delete Failed", 2000);
+                //        }
+
+                //    });
+                //}
+                tempAlert2("Are You Sure About Delete Home: \n\n" + qq, id);
             }
 
             function search_func() {

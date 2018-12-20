@@ -137,13 +137,38 @@
         @RenderPage("~/Views/Shared/_Footer.cshtml")
 
 <script>
-    function deleteVenue(ee) {
-        if (confirm("Confirm Deleting ?") == true) {
-            $.get("/Venue/DeleteVenue_mike", { id: ee }, function () {
-                tempAlert("Venue Deleted", 2000);
-                setTimeout(function () { location.reload();},2000)
-            });
-        }
+    function tempAlert2(msg, id) {
+        var el = document.createElement("div");
+        el.setAttribute("style", "position:fixed;top:2%;left:31%;width:35vw;background-color:white;z-index:9999;color:black;padding:2vw 3vw 2vw 3vw;border-radius:1vw;font-size:1.2em;font-weight:bold;border:black solid;");
+        el.innerHTML = "<img src=\"\/Content\/assets\/img\/qola_logo3.png\" style=\"width:120px;height:80px;display:inline-block\" \/><div style=\"margin-left:3vw;display:inline-block;width:50%;position:absolute;margin-top:5%;\">" + msg + "<\/div><div style='width:90%;'><button class='btn btn-primary pull-right' style='display:inline-block;' onclick='this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);'>No<\/button><button class='btn btn-danger pull-right' style='display:inline-block;margin-right:10px' onclick=\"deleteVenueReturnTrue(this," + id + ")\">Yes<\/button><\/div>";
+        document.body.appendChild(el);
+
+    }
+
+    function deleteVenueReturnTrue(ee, venueid) {
+        ee.parentNode.parentNode.parentNode.removeChild(ee.parentNode.parentNode);
+        var xx = scrollX;
+        var yy = scrollY;
+
+        $.get("/Venue/DeleteVenue_mike", { id: venueid }, function () {
+            tempAlert("Venue Deleted", 2000);
+            setTimeout(function () { location.reload(); }, 2000)
+        });
+
+
+
+    }
+
+
+    function deleteVenue(venueid) {
+        tempAlert2("Confirm Deleting ?", venueid);
+
+        //if (confirm("Confirm Deleting ?") == true) {
+        //    $.get("/Venue/DeleteVenue_mike", { id: venueid }, function () {
+        //        tempAlert("Venue Deleted", 2000);
+        //        setTimeout(function () { location.reload();},2000)
+        //    });
+        //}
     }
 
     function search_Venue() {

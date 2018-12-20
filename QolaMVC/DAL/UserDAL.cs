@@ -162,8 +162,7 @@ namespace QolaMVC.DAL
         public static int RemoveUsers(int usersId)
         {
             string exception = string.Empty;
-            bool result = false;
-            int affected = 0;
+            int retVal = 0;
             SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
             try
             {
@@ -171,10 +170,18 @@ namespace QolaMVC.DAL
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 l_Cmd.Parameters.AddWithValue("@id", usersId);
-                affected = l_Cmd.ExecuteNonQuery();
-                if (affected != 0)
+
+                SqlParameter resultParam = new SqlParameter("@result", System.Data.SqlDbType.Int);
+                resultParam.Direction = System.Data.ParameterDirection.Output;
+                l_Cmd.Parameters.Add(resultParam);
+                l_Cmd.ExecuteNonQuery();
+
+                int.TryParse(resultParam.Value.ToString(), out retVal);
+
+                //affected = l_Cmd.ExecuteNonQuery();
+                if (retVal != 0)
                 {
-                    return affected;
+                    return retVal;
                 }
             }
             catch (Exception ex)
@@ -186,7 +193,7 @@ namespace QolaMVC.DAL
             {
                 l_Conn.Close();
             }
-            return affected;
+            return retVal;
         }
 
         public static List<UserModel> GetUsersCollections(string homeIds, int userTypeId, char cStatus = 'A')
