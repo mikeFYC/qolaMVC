@@ -17,6 +17,11 @@
         width: 900px !important;
         max-width: 1000px !important;
     }
+
+    .required_sign {
+        color: red;
+    }
+
 </style>
 <!-- START PAGE-CONTAINER -->
 <div class="page-container">
@@ -93,7 +98,7 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group row">
-                                            <label for="" class="col-md-12 col-form-label"><b>Category</b></label>
+                                            <label for="" class="col-md-12 col-form-label"><b>Category</b><span class="required_sign">&nbsp;*</span></label>
                                             <div class="col-md-12">
                                                 <select name="category" class="form-control" onchange="checkResidentFall(this)">
                                                     <option value="0">Select</option>
@@ -109,16 +114,16 @@
                                     </div>
                                 </div>
 
-                                <div class="row" id="ResidentFallDiv" style="display:none;border:2px solid black;width:50%;background-color:lightgrey;">
+                                <div class="row" id="ResidentFallDiv" style="display:none;border:2px solid black;width:45%;background-color:lightgrey;padding:10px 0px 10px 10px">
                                     <div class="" style="width:99%;">
-                                        <div class="col-md-8 text-center">
-                                            <p style="font-weight:bold;">Resident Fall Information</p>
+                                        <div class="col-md-10 text-center">
+                                            <p style="font-weight:bold;font-size:1.2em;">Resident Fall Information</p>
                                         </div>
                                     </div>
                                     <div class="" style="width:99%;">
                                         <div style="width:2%;"></div>
                                         <div class="col-md-5">
-                                            <label class="form-control-label" id="RF_date_label">Date/Time</label>
+                                            <label class="form-control-label" id="RF_date_label">Date/Time<span class="required_sign">&nbsp;*</span></label>
                                         </div>
                                         <div class="col-md-7">
                                             <input type="datetime-local" class="form-control" id="RF_date" name="sFallDate" />
@@ -127,7 +132,7 @@
                                     <div class="" style="width:99%;">
                                         <div style="width:2%;"></div>
                                         <div class="col-md-5">
-                                            <label class="form-control-label" id="RF_location_label">Location</label>
+                                            <label class="form-control-label" id="RF_location_label">Location<span class="required_sign">&nbsp;*</span></label>
                                         </div>
                                         <div class="col-md-7">
                                             <input type="text" class="form-control" id="RF_location" name="Location" />
@@ -137,24 +142,24 @@
                                         <div style="width:2%;"></div>
                                         <div class="col-md-5">
                                             <input type="checkbox" id="RF_WF" style="display:inline-block;" name="WitnessType" value="Y"/>
-                                            <label class="form-control-label" id="RF_WF_label" style="display:inline-block;">Witnessed Fall</label>
+                                            <label class="form-control-label" id="RF_WF_label" style="display:inline-block;">Witnessed Fall<span class="required_sign">&nbsp;*</span></label>
                                         </div>
                                         <div class="col-md-7">
-                                            <input type="text" class="form-control" id="RF_WF_text" name="WitnessFall"/>
+                                            <input type="text" class="form-control" id="RF_WF_text" name="WitnessFall" disabled/>
                                         </div>
                                     </div>
                                     <div class="" style="width:99%;">
                                         <div style="width:2%;"></div>
                                         <div class="col-md-5">
                                             <input type="checkbox" id="RF_UF" style="display:inline-block;" name="WitnessType" value="N"/>
-                                            <label class="form-control-label" id="RF_UF_label" style="display:inline-block;">Unwitnessed Fall</label>
+                                            <label class="form-control-label" id="RF_UF_label" style="display:inline-block;">Unwitnessed Fall<span class="required_sign">&nbsp;*</span></label>
                                         </div>
                                     </div>
                                     <div class="" style="width:99%;">
                                         <div style="width:2%;"></div>
                                         <div class="col-md-5">
                                             <input type="checkbox" id="RF_IROF" style="display:inline-block;" name="IncidentReport" value="Y"/>
-                                            <label class="form-control-label" id="RF_IROF_label" style="display:inline-block;">Incident Report on File</label>
+                                            <label class="form-control-label" id="RF_IROF_label" style="display:inline-block;">Incident Report on File<span class="required_sign">&nbsp;*</span></label>
                                         </div>
                                     </div>
                                 </div>
@@ -181,7 +186,7 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group row">
-                                            <label for="" class="col-md-12 col-form-label"><b>Title</b></label>
+                                            <label for="" class="col-md-12 col-form-label"><b>Title</b><span class="required_sign">&nbsp;*</span></label>
                                             <div class="col-md-12">
                                                 <input name="title" type="text" class="col-md-12 form-control" id="Title">
                                             </div>
@@ -217,6 +222,69 @@
 
 
 <script>
+
+    $('#RF_WF').click(function () {
+        $('#RF_UF').prop('checked', false);
+        if ($('#RF_WF').prop('checked') == true) {
+            $('#RF_WF_text').prop('disabled', false);
+        }
+    })
+    $('#RF_UF').click(function () {
+        $('#RF_WF').prop('checked', false);
+        $('#RF_WF_text').val('');
+        $('#RF_WF_text').prop('disabled', true);
+        
+    })
+
+    $('form').submit(function (event) {
+        if (check_mandotary() == true) {
+            form = this;
+            form.submit();
+        }
+        else {
+            check_mandotary();
+            return false;
+        }
+    });
+
+    function check_mandotary() {
+
+        if ($('select[name="category"]').val() == "0") {
+            tempAlert("Category Needed", 2000);
+            return false;
+        }
+        else if ($('select[name="category"]').val() == "6") {
+            if ($('#RF_date').val() == "") {
+                tempAlert("Fall Date Needed", 2000);
+                return false;
+            }
+            else if ($('#RF_location').val().trim() == "") {
+                tempAlert("Fall Location Needed", 2000);
+                return false;
+            }
+            else if ($('#RF_WF').prop('checked') == true && $('#RF_WF_text').val().trim()=="") {
+                tempAlert("Witness Name Needed", 2000);
+                return false;
+            }
+            else if ($('#RF_WF').prop('checked') == false && $('#RF_UF').prop('checked') == false) {
+                tempAlert("Witness Type Needed", 2000);
+                return false;
+            }
+            else if ($('#RF_IROF').prop('checked') == false) {
+                tempAlert("IncidentReport Needed", 2000);
+                return false;
+            }
+        }
+
+        if ($('#Title').val().trim() == "") {
+            tempAlert("Title Needed", 2000);
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
     function checkResidentFall(ee) {
         if ($('select[name="category"]').val() == '6') {
             $('#ResidentFallDiv').show();
@@ -227,4 +295,6 @@
             $('#Title').val("");
         }
     }
+
+
 </script>

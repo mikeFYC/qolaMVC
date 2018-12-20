@@ -4433,6 +4433,16 @@ namespace QolaMVC.Controllers
         [HttpPost]
         public void btnPdf_Click()
         {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
             Collection<ProgressNotesModel> progressNotes;
             int residentId = 0;
             string[] arrSuiteNo;
