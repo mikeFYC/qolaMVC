@@ -3223,6 +3223,8 @@
     }
 
     function copyEvent_End(ee) {
+        var xx = scrollX;
+        var yy = scrollY;
         var aa = $('#ADD_CANCEL #CopyEventID').val();
         var titles = $('#ADD_CANCEL #ADD_CANCEL_title')
         var DT = titles[0].innerHTML;
@@ -3249,6 +3251,7 @@
                 }
                 update_day_div();
                 document.getElementById('ADD_CANCEL').className = 'modal fade';
+                scroll(xx, yy);
             });
         }
         else if (tab == "b") {
@@ -3273,6 +3276,7 @@
                 }
                 update_day_div();
                 document.getElementById('ADD_CANCEL').className = 'modal fade';
+                scroll(xx, yy);
             });
         }
         else if (tab == "c") {
@@ -3297,6 +3301,7 @@
                 }
                 update_day_div();
                 document.getElementById('ADD_CANCEL').className = 'modal fade';
+                scroll(xx, yy);
             });
         }
         else if (tab == "d") {
@@ -3321,6 +3326,7 @@
                 }
                 update_day_div();
                 document.getElementById('ADD_CANCEL').className = 'modal fade';
+                scroll(xx, yy);
             });
         }
 
@@ -3519,15 +3525,15 @@
             .then(function (canvas) {
                 var imgData = canvas.toDataURL('image/png');
                 var imgWidth = 210;
-                var pageHeight = 295;
+                var pageHeight = 395;
 
                 var imgHeight = canvas.height * imgWidth / canvas.width;
                 var heightLeft = imgHeight;
 
-                var doc = new jsPDF('p', 'mm');
+                var doc = new jsPDF('p', 'mm','legal',true);
                 var position = 0;
 
-                doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight, '', 'FAST');
                 doc.setTextColor('#000');
                 var context = canvas.getContext('2d');
                 context.scale(2, 2);
@@ -3536,7 +3542,7 @@
                 while (heightLeft >= 0) {
                     position = heightLeft - imgHeight;
                     doc.addPage();
-                    doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                    doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, '', 'FAST');
                     var context = canvas.getContext('2d');
                     context.scale(2, 2);
                     doc.setTextColor('#000');
@@ -3934,7 +3940,28 @@
         $(whichcalendar + ' .fc-month-view .fc-body .fc-widget-content .fc-day-grid .fc-row .fc-bg:first').prepend("<img id=\"imgTop\" src=\"\/Content\/CalendarTheme\/Images\/MonthlyActivity\/" + filename + "\" style=\"position:absolute;width:2px;height:2px;z-index:10;\" />");
         var finalwidth = (parseInt($(whichcalendar + ' .fc-day').css("width").replace('px', '')) * timeindex).toString() + 'px';
         $(whichcalendar + ' #imgTop').width(finalwidth);
-        $(whichcalendar + ' #imgTop').height($(whichcalendar + ' .fc-day').css("height"));
+
+        //------height max ------
+        var lastDay = new Date(b.getFullYear(), b.getMonth() + 1, 0);
+        var firstDaystring = lastDay.getFullYear().toString() + '-' + (lastDay.getMonth() + 1).toString() + '-01';
+        var lastDaystring = lastDay.getFullYear().toString() + '-' + (lastDay.getMonth() + 1).toString() + '-' + lastDay.getDate().toString();
+        var heightactualtop = (parseInt($(whichcalendar + ' .fc-day[data-date="' + firstDaystring + '"]').first().css("height")));
+        var heightactualbot = (parseInt($(whichcalendar + ' .fc-day[data-date="' + lastDaystring + '"]').first().css("height")));
+        if (heightactualtop > 200) {
+            heightactualtop = '200'
+        }
+        else {
+            heightactualtop = (parseInt($(whichcalendar + ' .fc-day').css("height"))).toString();
+        }
+        if (heightactualbot > 200) {
+            heightactualbot = '200'
+        }
+        else {
+            heightactualbot = (parseInt($(whichcalendar + ' .fc-day').css("height")) - 10).toString();
+        }
+
+
+        $(whichcalendar + ' #imgTop').height(heightactualtop);
         $(whichcalendar + ' #imgTop').show();
 
         var nextmonth = new Date(b.getFullYear(), b.getMonth() + 1, b.getDate())
@@ -3948,8 +3975,9 @@
         $(whichcalendar + ' .fc-disabled-day:eq(' + timeindex + ')').prepend("<img id=\"imgBot\" src=\"\/Content\/CalendarTheme\/Images\/MonthlyActivity\/" + filename2 + "\" style=\"width:2px;height:2px;z-index:50;\" />");
         $(whichcalendar + ' .fc-disabled-day:eq(' + timeindex + ')').css("opacity", "1");
         $(whichcalendar + ' .fc-disabled-day').css("background", "none");
+
         $(whichcalendar + ' #imgBot').width(finalwidth2);
-        $(whichcalendar + ' #imgBot').height((parseInt($(whichcalendar + ' .fc-day').css("height")) - 10).toString());
+        $(whichcalendar + ' #imgBot').height(heightactualbot);
         $(whichcalendar + ' #imgBot').show();
     }
 
@@ -3980,7 +4008,28 @@
             var timeindex = b.getDay();
             var finalwidth = (parseInt($(whichcalendar + ' .fc-day').css("width").replace('px', '')) * timeindex).toString() + 'px';
             $(whichcalendar + ' #imgTop').width(finalwidth);
-            $(whichcalendar + ' #imgTop').height($(whichcalendar + ' .fc-day').css("height"));
+
+            //------height max ------
+            var lastDay = new Date(b.getFullYear(), b.getMonth() + 1, 0);
+            var firstDaystring = lastDay.getFullYear().toString() + '-' + (lastDay.getMonth() + 1).toString() + '-01';
+            var lastDaystring = lastDay.getFullYear().toString() + '-' + (lastDay.getMonth()+1).toString() + '-' + lastDay.getDate().toString();
+            var heightactualtop = (parseInt($(whichcalendar + ' .fc-day[data-date="' + firstDaystring+'"]').first().css("height")));
+            var heightactualbot = (parseInt($(whichcalendar + ' .fc-day[data-date="' + lastDaystring + '"]').first().css("height")));
+            if (heightactualtop > 200) {
+                heightactualtop = '200'
+            }
+            else {
+                heightactualtop = (parseInt($(whichcalendar + ' .fc-day').css("height"))).toString();
+            }
+            if (heightactualbot > 200) {
+                heightactualbot = '200'
+            }
+            else {
+                heightactualbot = (parseInt($(whichcalendar + ' .fc-day').css("height")) - 10).toString();
+            }
+
+
+            $(whichcalendar + ' #imgTop').height(heightactualtop);
             $(whichcalendar + ' #imgTop').show();
 
             var nextmonth = new Date(b.getFullYear(), b.getMonth() + 1, b.getDate())
@@ -3990,7 +4039,7 @@
             else { timeindex2 = 6 - lastday.getDay(); }
             var finalwidth2 = (parseInt($(whichcalendar + ' .fc-day').css("width").replace('px', '')) * timeindex2).toString() + 'px';
             $(whichcalendar + ' #imgBot').width(finalwidth2);
-            $(whichcalendar + ' #imgBot').height((parseInt($(whichcalendar + ' .fc-day').css("height")) - 10).toString());
+            $(whichcalendar + ' #imgBot').height(heightactualbot);
             $(whichcalendar + ' #imgBot').show();
         }
 
@@ -4020,7 +4069,29 @@
         var timeindex = b.getDay();
         var finalwidth = (parseInt($(whichcalendar + ' .fc-day').css("width").replace('px', '')) * timeindex).toString() + 'px';
         $(whichcalendar + ' #imgTop').width(finalwidth);
-        $(whichcalendar + ' #imgTop').height($(whichcalendar + ' .fc-day').css("height"));
+
+
+        //------height max ------
+        var lastDay = new Date(b.getFullYear(), b.getMonth() + 1, 0);
+        var firstDaystring = lastDay.getFullYear().toString() + '-' + (lastDay.getMonth() + 1).toString() + '-01';
+        var lastDaystring = lastDay.getFullYear().toString() + '-' + (lastDay.getMonth() + 1).toString() + '-' + lastDay.getDate().toString();
+        var heightactualtop = (parseInt($(whichcalendar + ' .fc-day[data-date="' + firstDaystring + '"]').first().css("height")));
+        var heightactualbot = (parseInt($(whichcalendar + ' .fc-day[data-date="' + lastDaystring + '"]').first().css("height")));
+        if (heightactualtop > 200) {
+            heightactualtop = '200'
+        }
+        else {
+            heightactualtop = (parseInt($(whichcalendar + ' .fc-day').css("height"))).toString();
+        }
+        if (heightactualbot > 200) {
+            heightactualbot = '200'
+        }
+        else {
+            heightactualbot = (parseInt($(whichcalendar + ' .fc-day').css("height")) - 10).toString();
+        }
+
+
+        $(whichcalendar + ' #imgTop').height(heightactualtop);
         $(whichcalendar + ' #imgTop').show();
 
         var nextmonth = new Date(b.getFullYear(), b.getMonth() + 1, b.getDate())
@@ -4030,7 +4101,7 @@
         else { timeindex2 = 6 - lastday.getDay(); }
         var finalwidth2 = (parseInt($(whichcalendar + ' .fc-day').css("width").replace('px', '')) * timeindex2).toString() + 'px';
         $(whichcalendar + ' #imgBot').width(finalwidth2);
-        $(whichcalendar + ' #imgBot').height((parseInt($(whichcalendar + ' .fc-day').css("height")) - 10).toString());
+        $(whichcalendar + ' #imgBot').height(heightactualbot);
         $(whichcalendar + ' #imgBot').show();
     }
 
