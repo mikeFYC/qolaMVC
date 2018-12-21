@@ -400,7 +400,7 @@
                                 }
                             }
 
-                            <div class="row" style="min-width:95%;padding-bottom:80px">
+                            <div class="row" style="min-width:97%;width:97%;padding-bottom:80px">
                                 <div class="col-md-12">
 
                                     <div class="form-tabs mt-5">
@@ -439,7 +439,8 @@
 
                                                                 <span class="text-center" style="width:93%;display:inline-block;">Resident Details</span>
                                                                 <div style="width:6%;display:inline-block;">
-                                                                    <button class="btn btn-danger text-white" onclick="table1_EDIT()">EDIT</button>
+                                                                    <button class="btn btn-warning text-black" id="table1_EDIT" onclick="table1_EDIT()" style="border-radius:0.3vw;">EDIT</button>
+                                                                    <button class="btn btn-danger text-white" id="table1_SAVE" onclick="table1_SAVE()" style="display:none;border-radius:0.3vw;">SAVE</button>
                                                                 </div>
 
                                                             </th>
@@ -451,11 +452,31 @@
                                                             @{
                                                                 if (Model.ShortName != null && Model.ShortName != "")
                                                                 {
-                                                                    <td><div>Name: <span class="table1_item" id="table1_name">@Model.FirstName "@Model.ShortName" @Model.LastName</span></div></td>
+                                                                    <td style="width:36%;padding-right:5px !important;">
+                                                                        <div>
+                                                                            <span>Name:</span>
+                                                                            <span class="table1_item" id="table1_name1">@Model.FirstName "@Model.ShortName" @Model.LastName</span>
+                                                                            <div id="table1_name2" style="display:none;width:99%;">
+                                                                                <span style="font-size:0.8em;">First:</span><input class="form-control" id="table1_name2_first" value="@Model.FirstName" style="width:26% !important" />
+                                                                                <span style="font-size:0.8em;">Middle:</span><input class="form-control" id="table1_name2_middle" value="@Model.ShortName" style="width:24% !important" />
+                                                                                <span style="font-size:0.8em;">Last:</span><input class="form-control" id="table1_name2_last" value="@Model.LastName" style="width:26% !important" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
                                                                 }
                                                                 else
                                                                 {
-                                                                    <td><div>Name: <span class="table1_item" id="table1_name">@Model.FirstName @Model.LastName</span></div></td>
+                                                                    <td style="width:36%;padding-right:5px !important;">
+                                                                        <div>
+                                                                            <span>Name:</span>
+                                                                            <span class="table1_item" id="table1_name1">@Model.FirstName @Model.LastName</span>
+                                                                            <div id="table1_name2" style="display:none;width:99%;">
+                                                                                <span style="font-size:0.8em;">First:</span><input class="form-control" id="table1_name2_first" value="@Model.FirstName" style="width:26% !important" />
+                                                                                <span style="font-size:0.8em;">Middle:</span><input class="form-control" id="table1_name2_middle" value="@Model.ShortName" style="width:24% !important" />
+                                                                                <span style="font-size:0.8em;">Last:</span><input class="form-control" id="table1_name2_last" value="@Model.LastName" style="width:26% !important" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
                                                                 }
                                                             }
                                                             @{
@@ -525,9 +546,30 @@
                                                             
                                                         </tr>
                                                         <tr>
-                                                            <td>Number of Children: @Model.Number_of_children</td>
-                                                            <td>Number of Grandchildren: @Model.Number_of_grandchildren </td>
-                                                            <td>Veteran: @Model.Vetaran</td>
+                                                            <td>Number of Children: <span id="table1_Number_of_children1">@Model.Number_of_children</span>
+                                                                                    <select class="form-control" id="table1_Number_of_children2" style="display:none;">
+                                                                                        <option value="@Model.Number_of_children" selected>@Model.Number_of_children</option>
+                                                                                        <option value=""></option>
+                                                                                        <option value="1">1</option>
+                                                                                        <option value="2">2</option>
+                                                                                        <option value="3">3</option>
+                                                                                        <option value="4">4</option>
+                                                                                        <option value="5">5</option>
+                                                                                    </select>
+                                                            </td>
+                                                            <td>
+                                                                Number of Grandchildren: <span id="table1_Number_of_grandchildren1">@Model.Number_of_grandchildren</span>
+                                                                <select class="form-control" id="table1_Number_of_grandchildren2" style="display:none;">
+                                                                    <option value="@Model.Number_of_grandchildren" selected>@Model.Number_of_grandchildren</option>
+                                                                    <option value=""></option>
+                                                                    <option value="1">1</option>
+                                                                    <option value="2">2</option>
+                                                                    <option value="3">3</option>
+                                                                    <option value="4">4</option>
+                                                                    <option value="5">5</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>Veteran: <span id="table1_Vetaran1">@Model.Vetaran</span><input class="form-control" type="text" id="table1_Vetaran2" value="@Model.Vetaran" style="display:none;" /></td>
                                                         </tr>
                                                         <tr style="display:none;">
                                                             <td>Contract Number: @Model.ContractNumber</td>
@@ -552,30 +594,34 @@
 
                                                                 <span class="text-center" style="width:93%;display:inline-block;">Emergency Contact Details</span>
                                                                 <div style="width:6%;display:inline-block;">
-                                                                    <button class="btn btn-danger text-white">EDIT</button>
+                                                                    <button class="btn btn-warning text-black" id="table2_EDIT" onclick="table2_EDIT()" style="border-radius:0.3vw;">EDIT</button>
+                                                                    <button class="btn btn-danger text-white" id="table2_SAVE" onclick="table2_SAVE()" style="display:none;border-radius:0.3vw;">SAVE</button>
                                                                 </div>
                                                             </th>
 
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
+                                                        <tr id="POAtitle">
                                                             @{
                                                                 var POAC1 = ""; var POAF1 = "";
                                                                 var POAC2 = ""; var POAF2 = "";
                                                                 var POAC3 = ""; var POAF3 = "";
-                                                                if (Model.POACareStatus == 'Y') { POAC1 = "POA Care"; } else { POAC1 = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0"; }
-                                                                if (Model.POACareType2Status == 'Y') { POAC2 = "POA Care"; } else { POAC2 = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0"; }
-                                                                if (Model.POACareType3Status == 'Y') { POAC3 = "POA Care"; } else { POAC3 = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0"; }
-                                                                if (Model.POAFinanceStatus == 'Y') { POAF1 = "POA Finance"; } else { POAF1 = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0"; }
-                                                                if (Model.POAFinanceType2Status == 'Y') { POAF2 = "POA Finance"; } else { POAF2 = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0"; }
-                                                                if (Model.POAFinanceType3Status == 'Y') { POAF3 = "POA Finance"; } else { POAF3 = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0"; }
+                                                                var POAC1color = "black"; var POAF1color = "black";
+                                                                var POAC2color = "black"; var POAF2color = "black";
+                                                                var POAC3color = "black"; var POAF3color = "black";
+                                                                if (Model.POACareStatus == 'Y') { POAC1 = "POA Care"; POAC1color = "red"; } else { POAC1 = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0"; }  // 9
+                                                                if (Model.POACareType2Status == 'Y') { POAC2 = "POA Care"; POAC2color = "red"; } else { POAC2 = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0"; }  // 9
+                                                                if (Model.POACareType3Status == 'Y') { POAC3 = "POA Care"; POAC3color = "red"; } else { POAC3 = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0"; }  // 9
+                                                                if (Model.POAFinanceStatus == 'Y') { POAF1 = "POA Finance"; POAF1color = "red"; } else { POAF1 = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0"; }  // 8
+                                                                if (Model.POAFinanceType2Status == 'Y') { POAF2 = "POA Finance"; POAF2color = "red"; } else { POAF2 = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0"; }  // 8
+                                                                if (Model.POAFinanceType3Status == 'Y') { POAF3 = "POA Finance"; POAF3color = "red"; } else { POAF3 = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0"; }  // 8
                                                             }
                                                             @*<td class="text-center"><b>Description</b></td>*@
-                                                            <td class="" style="width:26%;padding:1% !important;"><p style="margin-bottom:3px !important;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p><p class="text-center" style="font-size:1.3em;"><b>Description</b></p></td>
-                                                            <td class="" style="width:26%;padding:1% !important;"><p style="margin-bottom:3px !important;"><b id="POACare1" style="color:red;">@POAC1</b><b id="POAFinance1" style="float:right;color:red;">@POAF1</b></p><p class="text-center" style="font-size:1.3em;"><b>1st Contact</b></p></td>
-                                                            <td class="" style="width:26%;padding:1% !important;"><p style="margin-bottom:3px !important;"><b id="POACare2" style="color:red;">@POAC2</b><b id="POAFinance2" style="float:right;color:red;">@POAF2</b></p><p class="text-center" style="font-size:1.3em;"><b>2nd Contact</b></p></td>
-                                                            <td class="" style="width:26%;padding:1% !important;"><p style="margin-bottom:3px !important;"><b id="POACare3" style="color:red;">@POAC3</b><b id="POAFinance3" style="float:right;color:red;">@POAF3</b></p><p class="text-center" style="font-size:1.3em;"><b>3rd Contact</b></p></td>
+                                                            <td class="" style="width:26%;padding:1% !important;"><p style="margin-bottom:3px !important;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p><p class="text-center" style="font-size:1.3em;"><b>Description</b></p></td>
+                                                            <td class="" style="width:26%;padding:1% !important;"><p style="margin-bottom:3px !important;"><b id="POACare1" style="color:@POAC1color;cursor:pointer;" onclick="POAclick(this)">@POAC1</b><b id="POAFinance1" style="float:right;color:@POAF1color;cursor:pointer;" onclick="POAclick(this)">@POAF1</b></p><p class="text-center" style="font-size:1.3em;"><b>1st Contact</b></p></td>
+                                                            <td class="" style="width:26%;padding:1% !important;"><p style="margin-bottom:3px !important;"><b id="POACare2" style="color:@POAC2color;cursor:pointer;" onclick="POAclick(this)">@POAC2</b><b id="POAFinance2" style="float:right;color:@POAF2color;cursor:pointer;" onclick="POAclick(this)">@POAF2</b></p><p class="text-center" style="font-size:1.3em;"><b>2nd Contact</b></p></td>
+                                                            <td class="" style="width:26%;padding:1% !important;"><p style="margin-bottom:3px !important;"><b id="POACare3" style="color:@POAC3color;cursor:pointer;" onclick="POAclick(this)">@POAC3</b><b id="POAFinance3" style="float:right;color:@POAF3color;cursor:pointer;" onclick="POAclick(this)">@POAF3</b></p><p class="text-center" style="font-size:1.3em;"><b>3rd Contact</b></p></td>
                                                         </tr>
 
                                                         <tr>
@@ -631,7 +677,8 @@
 
                                                                 <span class="text-center" style="width:93%;display:inline-block;">Medical Contact Details</span>
                                                                 <div style="width:6%;display:inline-block;">
-                                                                    <button class="btn btn-danger text-white">EDIT</button>
+                                                                    <button class="btn btn-warning text-black" id="table3_EDIT" onclick="table3_EDIT()" style="border-radius:0.3vw;">EDIT</button>
+                                                                    <button class="btn btn-danger text-white" id="table3_SAVE" onclick="table3_SAVE()" style="display:none;border-radius:0.3vw;">SAVE</button>
                                                                 </div>
                                                             </th>
                                                         </tr>
@@ -2954,29 +3001,116 @@
                 });
 
                 function table1_EDIT() {
-                    $('#table1_gendar1').hide()
-                    $('#table1_gendar2').show()
 
-                    $('#table1_birth1').hide()
-                    $('#table1_birth2').show()
+                    $('#table1_EDIT').hide();
+                    $('#table1_SAVE').show();
 
-                    $('#table1_Phone1').hide()
-                    $('#table1_Phone2').show()
+                    $('#table1_name1').hide();
+                    $('#table1_name2').show();
 
-                    $('#table1_MBhealthNumber1').hide()
-                    $('#table1_MBhealthNumber2').show()
+                    $('#table1_gendar1').hide();
+                    $('#table1_gendar2').show();
 
-                    $('#table1_OtherLanguage1').hide()
-                    $('#table1_OtherLanguage2').show()
+                    $('#table1_birth1').hide();
+                    $('#table1_birth2').show();
 
-                    $('#table1_MaritalStatustext1').hide()
-                    $('#table1_MaritalStatustext2').show()
+                    $('#table1_Phone1').hide();
+                    $('#table1_Phone2').show();
 
-                    $('#table1_SignificatOther1').hide()
-                    $('#table1_SignificatOther2').show()
+                    $('#table1_MBhealthNumber1').hide();
+                    $('#table1_MBhealthNumber2').show();
 
-                    $('#table1_AnniversaryDate1').hide()
-                    $('#table1_AnniversaryDate2').show()
+                    $('#table1_OtherLanguage1').hide();
+                    $('#table1_OtherLanguage2').show();
+
+                    $('#table1_MaritalStatustext1').hide();
+                    $('#table1_MaritalStatustext2').show();
+
+                    $('#table1_SignificatOther1').hide();
+                    $('#table1_SignificatOther2').show();
+
+                    $('#table1_AnniversaryDate1').hide();
+                    $('#table1_AnniversaryDate2').show();
+
+                    $('#table1_Number_of_children1').hide();
+                    $('#table1_Number_of_children2').show();
+
+                    $('#table1_Number_of_grandchildren1').hide();
+                    $('#table1_Number_of_grandchildren2').show();
+
+                    $('#table1_Vetaran1').hide();
+                    $('#table1_Vetaran2').show();
+
+                } 
+
+                function table1_SAVE() {
+                    $('#table1_SAVE').hide();
+                    $('#table1_EDIT').show();
+
+                    $('#table1_name2').hide();
+                    $('#table1_name1').show();
+
+                    $('#table1_gendar2').hide();
+                    $('#table1_gendar1').show();
+
+                    $('#table1_birth2').hide();
+                    $('#table1_birth1').show();
+
+                    $('#table1_Phone2').hide();
+                    $('#table1_Phone1').show();
+
+                    $('#table1_MBhealthNumber2').hide();
+                    $('#table1_MBhealthNumber1').show();
+
+                    $('#table1_OtherLanguage2').hide();
+                    $('#table1_OtherLanguage1').show();
+
+                    $('#table1_MaritalStatustext2').hide();
+                    $('#table1_MaritalStatustext1').show();
+
+                    $('#table1_SignificatOther2').hide();
+                    $('#table1_SignificatOther1').show();
+
+                    $('#table1_AnniversaryDate2').hide();
+                    $('#table1_AnniversaryDate1').show();
+
+                    $('#table1_Number_of_children2').hide();
+                    $('#table1_Number_of_children1').show();
+
+                    $('#table1_Number_of_grandchildren2').hide();
+                    $('#table1_Number_of_grandchildren1').show();
+
+                    $('#table1_Vetaran2').hide();
+                    $('#table1_Vetaran1').show();
+                }
+
+                function table2_EDIT() {
+
+                    $('#table2_EDIT').hide();
+                    $('#table2_SAVE').show();
+
+                    String.prototype.replaceAll = function (search, replacement) {
+                        var target = this;
+                        return target.split(search).join(replacement);
+                    };
+                    var a = $('#POAtitle').html();
+                    var b = a.replaceAll('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', 'POA Care')
+                    var c = b.replaceAll('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', 'POA Finance')
+                    $('#POAtitle').html(c);
+                }
+
+
+                function POAclick(ee) {
+                    if ($('#table2_SAVE').is(":visible")) {
+                        if (ee.style.color == "black") {
+                            ee.style.color = "red";
+                        }
+                        else {
+                            ee.style.color = "black";
+                        }
+                    }
+
+                    
                 }
 
             </script>
