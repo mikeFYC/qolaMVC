@@ -92,6 +92,23 @@
         page-break-before: always;
     }
 
+    #tableone select {
+        display: inline-block;
+        width: 50%;
+        /*color: black;
+        background-color: white;
+        border-color: white;
+        -webkit-appearance: none;*/
+    }
+    #tableone input {
+        display: inline-block;
+        width: 50%;
+        /*color: black;
+        background-color: white;
+        border: none;
+        -webkit-appearance: none;*/
+    }
+
 </style>
 
 <!-- START PAGE-CONTAINER -->
@@ -141,7 +158,7 @@
                                         <img id="image" src="~/Content/assets/@Model.ResidentImage" class="img-responsive" style="margin-left:10%;height:70%;width:50%;">
                                         <button id="rotatebutton" class="btn btn-default btn-group-sm" style="margin-left:10%;"><i class="fa fa-rotate-right"></i></button>
                                         <button id="rotatebutton2" class="btn btn-default btn-group-sm"><i class="fa fa-rotate-left"></i></button>
-                                        <input  id="edit_photo" type="file" style="display:none;" onchange="EDIT_PHOTO()" />
+                                        <input id="edit_photo" type="file" style="display:none;" onchange="EDIT_PHOTO()" />
                                         <button class="btn btn-sm" id="upfile1" style="cursor:pointer;margin-left:10%;z-index:100;">EDIT PIC</button>
                                     </div>
                                     <div class="" style="width:66% !important;">
@@ -181,7 +198,7 @@
                             <div class="text-right" style="width:48% !important" id="options_in_profile">
                                 <div class="Row" style="padding: 5px;">
                                     <a href="/Home/ERDetails" style="padding: 5px;" class="btn btn-danger">Print Emergency Resident Details</a>
-                                    
+
                                 </div>
                                 <div class="Row" style="padding: 5px;">
                                     <button style="padding: 5px;" class="btn btn-primary" onclick="QOLAFIED()">Print QOLAFIED Assessment</button>
@@ -350,8 +367,8 @@
                                                 <div class="row">
                                                     <div class="col-md-12 text-center">
                                                         @*<button class="btn btn-danger" data-dismiss="modal">
-                                    BACK
-                                </button>*@
+                                                        BACK
+                                                    </button>*@
                                                         <button class="btn btn-danger" onclick="saveButton_archive()" style="width:6vw;">
                                                             SAVE
                                                         </button>
@@ -398,8 +415,8 @@
                                                 <a class="nav-link" id="pills-care-tab" data-toggle="pill" href="#pills-care" role="tab" aria-controls="pills-care" aria-selected="false" onclick="tab_click(this)"><b>Plan of Care</b></a>
                                             </li>
                                             @*<li class="nav-item">
-                                                <a class="nav-link" id="pills-goals-tab" data-toggle="pill" href="#pills-goals" role="tab" aria-controls="pills-goals" aria-selected="false"><b>Resident Specific Goals</b></a>
-                                            </li>*@
+                                            <a class="nav-link" id="pills-goals-tab" data-toggle="pill" href="#pills-goals" role="tab" aria-controls="pills-goals" aria-selected="false"><b>Resident Specific Goals</b></a>
+                                        </li>*@
                                             <li class="nav-item">
                                                 <a class="nav-link" id="pills-notes-tab" data-toggle="pill" href="#pills-notes" role="tab" aria-controls="pills-notes" aria-selected="false" onclick="tab_click(this)"><b>Progress Notes</b></a>
                                             </li>
@@ -415,12 +432,16 @@
                                         <div class="tab-content" id="pills-tabContent">
                                             <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
 
-                                                <table class="table table-bordered">
+                                                <table class="table table-bordered" id="tableone">
                                                     <thead class="bg-primary">
                                                         <tr>
                                                             <th class="text-white" colspan="3">
-                                                                <span>Resident Details</span>
-                                                                <button style="margin-left:20%;display:inline-block;" class="btn btn-danger text-white">EDIT</button>
+
+                                                                <span class="text-center" style="width:93%;display:inline-block;">Resident Details</span>
+                                                                <div style="width:6%;display:inline-block;">
+                                                                    <button class="btn btn-danger text-white" onclick="table1_EDIT()">EDIT</button>
+                                                                </div>
+
                                                             </th>
                                                         </tr>
                                                     </thead>
@@ -430,43 +451,78 @@
                                                             @{
                                                                 if (Model.ShortName != null && Model.ShortName != "")
                                                                 {
-                                                                    <td><div>Name: @Model.FirstName "@Model.ShortName" @Model.LastName</div></td>
+                                                                    <td><div>Name: <span class="table1_item" id="table1_name">@Model.FirstName "@Model.ShortName" @Model.LastName</span></div></td>
                                                                 }
                                                                 else
                                                                 {
-                                                                    <td><div>Name: @Model.FirstName @Model.LastName</div></td>
+                                                                    <td><div>Name: <span class="table1_item" id="table1_name">@Model.FirstName @Model.LastName</span></div></td>
                                                                 }
                                                             }
                                                             @{
                                                                 if (Model.Gendar == 'F')
                                                                 {
-                                                                    <td><div>Gender: Female</div></td>
+                                                                    <td>
+                                                                        <div>
+                                                                            Gender:
+                                                                            <span id="table1_gendar1">Female</span>
+                                                                            <select class="table1_item form-control" id="table1_gendar2" style="display:none;">
+                                                                                <option value="F" selected>Female</option>
+                                                                                <option value="M">Male</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </td>
                                                                 }
                                                                 else
                                                                 {
-                                                                    <td><div>Gender: Male</div></td>
+                                                                    <td>
+                                                                        <div>
+                                                                            Gender:
+                                                                            <span id="table1_gendar1">Male</span>
+                                                                            <select class="table1_item form-control" id="table1_gendar2" style="display:none;">
+                                                                                <option value="F">Female</option>
+                                                                                <option value="M" selected>Male</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </td>
                                                                 }
                                                             }
 
 
-                                                            <td><div>Date Of Birth: @Model.BirthDate.ToString("yyyy-MM-dd")</div></td>
+                                                            <td><div>
+                                                                Date Of Birth: 
+                                                                    <span id="table1_birth1">@Model.BirthDate.ToString("yyyy-MM-dd")</span>
+                                                                <input class="form-control" type="date" id="table1_birth2" value="@Model.BirthDate.ToString("yyyy-MM-dd")" style="display:none;" /> 
+                                                                </div></td>
                                                         </tr>
                                                         <tr>
-                                                            <td><div>Phone Number: @Model.Phone </div></td>
-                                                            <td><div>Health Card #: @Model.MBhealthNumber</div></td>
-                                                            <td><div>Primary Language: @Model.OtherLanguage</div></td>
+                                                            <td><div>Phone Number: <span id="table1_Phone1">@Model.Phone</span><input class="form-control" type="text" id="table1_Phone2" value="@Model.Phone" style="display:none;"/> </div></td>
+                                                            <td><div>Health Card #: <span id="table1_MBhealthNumber1">@Model.MBhealthNumber</span><input class="form-control" type="text" id="table1_MBhealthNumber2" value="@Model.MBhealthNumber" style="display:none;" /></div></td>
+                                                            <td><div>Primary Language: <span id="table1_OtherLanguage1">@Model.OtherLanguage</span><input class="form-control" type="text" id="table1_OtherLanguage2" value="@Model.OtherLanguage" style="display:none;" /></div></td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Marital Status: @Model.MaritalStatustext </td>
-                                                            <td>Significant Other: @Model.SignificatOther </td>
-                                                            @{ 
+                                                            <td>
+                                                                Marital Status:
+                                                                <span id="table1_MaritalStatustext1">@Model.MaritalStatustext</span>
+                                                                <select class="table1_item form-control" id="table1_MaritalStatustext2" style="display:none;">
+                                                                    <option selected>@Model.MaritalStatustext</option>
+                                                                    <option value="1">Married</option>
+                                                                    <option value="2">Widowed</option>
+                                                                    <option value="3">Single</option>
+                                                                    <option value="4">Divorced</option>
+                                                                </select>
+
+                                                            </td>
+                                                            <td>Significant Other: <span id="table1_SignificatOther1">@Model.SignificatOther</span><input class="form-control" type="text" id="table1_SignificatOther2" value="@Model.SignificatOther" style="display:none;"/></td>
+                                                            @{
                                                                 var AnnDate = "";
-                                                                if(@Model.AnniversaryDate.ToString("yyyy-MM-dd") != "0001-01-01")
+                                                                if (@Model.AnniversaryDate.ToString("yyyy-MM-dd") != "0001-01-01")
                                                                 {
                                                                     AnnDate = @Model.AnniversaryDate.ToString("yyyy-MM-dd");
                                                                 }
                                                             }
-                                                            <td>Anniversity Date: @AnnDate</td>
+                                                            <td>Anniversity Date: <span id="table1_AnniversaryDate1">@AnnDate</span><input class="form-control" type="date" id="table1_AnniversaryDate2" value="@AnnDate" style="display:none;"/></td>
+                                                            
+                                                            
                                                         </tr>
                                                         <tr>
                                                             <td>Number of Children: @Model.Number_of_children</td>
@@ -488,10 +544,18 @@
                                                     </tbody>
                                                 </table>
                                                 <br><br>
-                                                <table class="table table-bordered">
+                                                <table class="table table-bordered" id="tabletwo">
                                                     <thead class="bg-primary">
                                                         <tr>
-                                                            <th class="text-white text-center" colspan="4">Emergency Contact Details</th>
+                                                            <th class="text-white" colspan="4">
+
+
+                                                                <span class="text-center" style="width:93%;display:inline-block;">Emergency Contact Details</span>
+                                                                <div style="width:6%;display:inline-block;">
+                                                                    <button class="btn btn-danger text-white">EDIT</button>
+                                                                </div>
+                                                            </th>
+
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -560,10 +624,16 @@
                                                     </tbody>
                                                 </table>
                                                 <br><br>
-                                                <table class="table table-bordered">
+                                                <table class="table table-bordered" id="tablethree">
                                                     <thead class="bg-primary">
                                                         <tr>
-                                                            <th class="text-white text-center" colspan="3">Medical Contact Details</th>
+                                                            <th class="text-white" colspan="3">
+
+                                                                <span class="text-center" style="width:93%;display:inline-block;">Medical Contact Details</span>
+                                                                <div style="width:6%;display:inline-block;">
+                                                                    <button class="btn btn-danger text-white">EDIT</button>
+                                                                </div>
+                                                            </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -621,7 +691,7 @@
                                                                         <td>@ViewBag.TableSH[rd].reason</td>
                                                                     </tr>
                                                                 }
-                                                                }
+                                                            }
                                                         }
 
                                                     </tbody>
@@ -707,7 +777,7 @@
                                                 </table>
 
                                             </div>
-                                            
+
                                             <div class="tab-pane fade" id="pills-care" role="tabpanel" aria-labelledby="pills-care-tab">
                                                 <div id="fromHTMLtestdiv">
                                                     <div id="pills-care">
@@ -2620,6 +2690,7 @@
 
             @RenderPage("~/Views/Shared/_Footer.cshtml")
             <script type="text/javascript" src="http://cdn.sobekrepository.org/includes/jquery-rotate/2.2/jquery-rotate.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.1.62/jquery.inputmask.bundle.js"></script>
             <script type="text/javascript">
                 var angle = 0;
                 $('#rotatebutton').on('click', function () {
@@ -2820,7 +2891,7 @@
                 function QOLAFIED() {
                     window.location.href = "/Home/QOLAFIED";
                 }
-                
+
                 function ERDetails() {
                     window.location.href = "/Home/ERDetails";
                 }
@@ -2870,7 +2941,42 @@
                     else {
                         $('#print_PoC').hide();
                     }
-                    
+
+                }
+
+                $(window).load(function () {
+                    var phones = [{ "mask": "(###) ###-####" }, { "mask": "(###) ###-####" }];
+                    $('#table1_Phone2').inputmask({
+                        mask: phones,
+                        greedy: false,
+                        definitions: { '#': { validator: "[0-9]", cardinality: 1 } }
+                    });
+                });
+
+                function table1_EDIT() {
+                    $('#table1_gendar1').hide()
+                    $('#table1_gendar2').show()
+
+                    $('#table1_birth1').hide()
+                    $('#table1_birth2').show()
+
+                    $('#table1_Phone1').hide()
+                    $('#table1_Phone2').show()
+
+                    $('#table1_MBhealthNumber1').hide()
+                    $('#table1_MBhealthNumber2').show()
+
+                    $('#table1_OtherLanguage1').hide()
+                    $('#table1_OtherLanguage2').show()
+
+                    $('#table1_MaritalStatustext1').hide()
+                    $('#table1_MaritalStatustext2').show()
+
+                    $('#table1_SignificatOther1').hide()
+                    $('#table1_SignificatOther2').show()
+
+                    $('#table1_AnniversaryDate1').hide()
+                    $('#table1_AnniversaryDate2').show()
                 }
 
             </script>
