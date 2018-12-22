@@ -6799,7 +6799,14 @@ namespace QolaMVC.Controllers
         [HttpPost]
         public ActionResult EditProfileTable1(ResidentModel postdata)
         {
-            //System.Threading.Thread.Sleep(2000);  /*simulating slow connection*/
+            foreach (PropertyInfo prop in typeof(ResidentModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(postdata) == null) { prop.SetValue(postdata, ""); }
+                }
+            }
+
             ResidentsDAL.UpdateResidentGeneralInfo1(postdata);
 
             return Json(new { msg = "Successfully added "});
@@ -6808,7 +6815,43 @@ namespace QolaMVC.Controllers
         [HttpPost]
         public ActionResult EditProfileTable2(ResidentModel postdata)
         {
-            //System.Threading.Thread.Sleep(2000);  /*simulating slow connection*/
+            foreach (PropertyInfo prop in typeof(ResidentModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(postdata) == null) { prop.SetValue(postdata, ""); }
+                }
+            }
+
+            ResidentModel currentModel = ResidentsDAL.GetResidentById(postdata.ID);
+            postdata.HomePhone1 = currentModel.HomePhone1;
+            postdata.CellPhone1 = currentModel.CellPhone1;
+            postdata.BusinessPhone1 = currentModel.BusinessPhone1;
+            postdata.HomePhoneType1 = currentModel.HomePhoneType1;
+            postdata.CellPhoneType1 = currentModel.CellPhoneType1;
+            postdata.BusinessPhoneType1 = currentModel.BusinessPhoneType1;
+            postdata.HomePhone2 = currentModel.HomePhone2;
+            postdata.CellPhone2 = currentModel.CellPhone2;
+            postdata.BusinessPhone2 = currentModel.BusinessPhone2;
+            postdata.HomePhoneType2 = currentModel.HomePhoneType2;
+            postdata.CellPhoneType2 = currentModel.CellPhoneType2;
+            postdata.BusinessPhoneType2 = currentModel.BusinessPhoneType2;
+            postdata.HomePhone3 = currentModel.HomePhone3;
+            postdata.CellPhone3 = currentModel.CellPhone3;
+            postdata.BusinessPhone3 = currentModel.BusinessPhone3;
+            postdata.HomePhoneType3 = currentModel.HomePhoneType3;
+            postdata.CellPhoneType3 = currentModel.CellPhoneType3;
+            postdata.BusinessPhoneType3 = currentModel.BusinessPhoneType3;
+            if (currentModel.HomePhoneType1 == 1) currentModel.HomePhone1 = currentModel.First_phone1;
+            else if (currentModel.CellPhoneType1 == 1) currentModel.CellPhone1 = currentModel.CellPhone1;
+            else if (currentModel.BusinessPhoneType1 == 1) currentModel.BusinessPhone1 = currentModel.BusinessPhone1;
+            if (currentModel.HomePhoneType2 == 1) currentModel.HomePhone2 = currentModel.First_phone2;
+            else if (currentModel.CellPhoneType2 == 1) currentModel.CellPhone2 = currentModel.CellPhone2;
+            else if (currentModel.BusinessPhoneType2 == 1) currentModel.BusinessPhone2 = currentModel.BusinessPhone2;
+            if (currentModel.HomePhoneType3 == 1) currentModel.HomePhone3 = currentModel.First_phone3;
+            else if (currentModel.CellPhoneType3 == 1) currentModel.CellPhone3 = currentModel.CellPhone3;
+            else if (currentModel.BusinessPhoneType3 == 1) currentModel.BusinessPhone3 = currentModel.BusinessPhone3;
+
             ResidentsDAL.UpdateResidentGeneralInfo2(postdata);
 
             return Json(new { msg = "Successfully added " });
@@ -6817,7 +6860,13 @@ namespace QolaMVC.Controllers
         [HttpPost]
         public ActionResult EditProfileTable3(ResidentModel postdata)
         {
-            //System.Threading.Thread.Sleep(2000);  /*simulating slow connection*/
+            foreach (PropertyInfo prop in typeof(ResidentModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(postdata) == null) { prop.SetValue(postdata, ""); }
+                }
+            }
             ResidentsDAL.UpdateResidentGeneralInfo3(postdata);
 
             return Json(new { msg = "Successfully added " });
