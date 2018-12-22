@@ -2785,6 +2785,101 @@ namespace QolaMVC.DAL
             };
         }
 
+        public static void UpdateResidentGeneralInfo1(ResidentModel p_Model)
+        {
+            string exception = string.Empty;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@homeId", p_Model.Home.Id);
+                l_Cmd.Parameters.AddWithValue("@suiteId", p_Model.SuiteIds);
+                l_Cmd.Parameters.AddWithValue("@Occupancy ", p_Model.Occupancy);
+                l_Cmd.Parameters.AddWithValue("@birthPlace", p_Model.BirthPlace);
+                l_Cmd.Parameters.AddWithValue("@maritalStatus ", p_Model.MaritalStatus);
+                l_Cmd.Parameters.AddWithValue("@MBHealthNo", p_Model.MBhealthNumber);
+            }
+            catch (Exception ex)
+            {
+                exception = "UpdateResidentGeneralInfo1 |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+        public static void UpdateResidentGeneralInfo2(ResidentModel p_Model)
+        {
+            string exception = string.Empty;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@homeId", p_Model.Home.Id);
+                l_Cmd.Parameters.AddWithValue("@suiteId", p_Model.SuiteIds);
+                l_Cmd.Parameters.AddWithValue("@Occupancy ", p_Model.Occupancy);
+                l_Cmd.Parameters.AddWithValue("@birthPlace", p_Model.BirthPlace);
+                l_Cmd.Parameters.AddWithValue("@maritalStatus ", p_Model.MaritalStatus);
+                l_Cmd.Parameters.AddWithValue("@MBHealthNo", p_Model.MBhealthNumber);
+            }
+            catch (Exception ex)
+            {
+                exception = "UpdateResidentGeneralInfo1 |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+        public static void UpdateResidentGeneralInfo3(ResidentModel p_Model)
+        {
+            string exception = string.Empty;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@homeId", p_Model.Home.Id);
+                l_Cmd.Parameters.AddWithValue("@suiteId", p_Model.SuiteIds);
+                l_Cmd.Parameters.AddWithValue("@Occupancy ", p_Model.Occupancy);
+                l_Cmd.Parameters.AddWithValue("@birthPlace", p_Model.BirthPlace);
+                l_Cmd.Parameters.AddWithValue("@maritalStatus ", p_Model.MaritalStatus);
+                l_Cmd.Parameters.AddWithValue("@MBHealthNo", p_Model.MBhealthNumber);
+            }
+            catch (Exception ex)
+            {
+                exception = "UpdateResidentGeneralInfo1 |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+
+
+
+
+
     }
 
 }

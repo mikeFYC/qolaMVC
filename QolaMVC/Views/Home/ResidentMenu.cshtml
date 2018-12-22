@@ -109,6 +109,11 @@
         -webkit-appearance: none;*/
     }
 
+    #tablethree input {
+        display: inline-block;
+        width: 50%;
+    }
+
 </style>
 
 <!-- START PAGE-CONTAINER -->
@@ -509,14 +514,16 @@
                                                             }
 
 
-                                                            <td><div>
-                                                                Date Of Birth: 
+                                                            <td>
+                                                                <div>
+                                                                    Date Of Birth:
                                                                     <span id="table1_birth1">@Model.BirthDate.ToString("yyyy-MM-dd")</span>
-                                                                <input class="form-control" type="date" id="table1_birth2" value="@Model.BirthDate.ToString("yyyy-MM-dd")" style="display:none;" /> 
-                                                                </div></td>
+                                                                    <input class="form-control" type="date" id="table1_birth2" value="@Model.BirthDate.ToString("yyyy-MM-dd")" style="display:none;" />
+                                                                </div>
+                                                            </td>
                                                         </tr>
                                                         <tr>
-                                                            <td><div>Phone Number: <span id="table1_Phone1">@Model.Phone</span><input class="form-control" type="text" id="table1_Phone2" value="@Model.Phone" style="display:none;"/> </div></td>
+                                                            <td><div>Phone Number: <span id="table1_Phone1">@Model.Phone</span><input class="form-control phonemask" type="text" id="table1_Phone2" value="@Model.Phone" style="display:none;" /> </div></td>
                                                             <td><div>Health Card #: <span id="table1_MBhealthNumber1">@Model.MBhealthNumber</span><input class="form-control" type="text" id="table1_MBhealthNumber2" value="@Model.MBhealthNumber" style="display:none;" /></div></td>
                                                             <td><div>Primary Language: <span id="table1_OtherLanguage1">@Model.OtherLanguage</span><input class="form-control" type="text" id="table1_OtherLanguage2" value="@Model.OtherLanguage" style="display:none;" /></div></td>
                                                         </tr>
@@ -525,7 +532,7 @@
                                                                 Marital Status:
                                                                 <span id="table1_MaritalStatustext1">@Model.MaritalStatustext</span>
                                                                 <select class="table1_item form-control" id="table1_MaritalStatustext2" style="display:none;">
-                                                                    <option selected>@Model.MaritalStatustext</option>
+                                                                    <option value="@Model.MaritalStatus" selected>@Model.MaritalStatustext</option>
                                                                     <option value="1">Married</option>
                                                                     <option value="2">Widowed</option>
                                                                     <option value="3">Single</option>
@@ -533,7 +540,7 @@
                                                                 </select>
 
                                                             </td>
-                                                            <td>Significant Other: <span id="table1_SignificatOther1">@Model.SignificatOther</span><input class="form-control" type="text" id="table1_SignificatOther2" value="@Model.SignificatOther" style="display:none;"/></td>
+                                                            <td>Significant Other: <span id="table1_SignificatOther1">@Model.SignificatOther</span><input class="form-control" type="text" id="table1_SignificatOther2" value="@Model.SignificatOther" style="display:none;" /></td>
                                                             @{
                                                                 var AnnDate = "";
                                                                 if (@Model.AnniversaryDate.ToString("yyyy-MM-dd") != "0001-01-01")
@@ -541,21 +548,22 @@
                                                                     AnnDate = @Model.AnniversaryDate.ToString("yyyy-MM-dd");
                                                                 }
                                                             }
-                                                            <td>Anniversity Date: <span id="table1_AnniversaryDate1">@AnnDate</span><input class="form-control" type="date" id="table1_AnniversaryDate2" value="@AnnDate" style="display:none;"/></td>
-                                                            
-                                                            
+                                                            <td>Anniversity Date: <span id="table1_AnniversaryDate1">@AnnDate</span><input class="form-control" type="date" id="table1_AnniversaryDate2" value="@AnnDate" style="display:none;" /></td>
+
+
                                                         </tr>
                                                         <tr>
-                                                            <td>Number of Children: <span id="table1_Number_of_children1">@Model.Number_of_children</span>
-                                                                                    <select class="form-control" id="table1_Number_of_children2" style="display:none;">
-                                                                                        <option value="@Model.Number_of_children" selected>@Model.Number_of_children</option>
-                                                                                        <option value=""></option>
-                                                                                        <option value="1">1</option>
-                                                                                        <option value="2">2</option>
-                                                                                        <option value="3">3</option>
-                                                                                        <option value="4">4</option>
-                                                                                        <option value="5">5</option>
-                                                                                    </select>
+                                                            <td>
+                                                                Number of Children: <span id="table1_Number_of_children1">@Model.Number_of_children</span>
+                                                                <select class="form-control" id="table1_Number_of_children2" style="display:none;">
+                                                                    <option value="@Model.Number_of_children" selected>@Model.Number_of_children</option>
+                                                                    <option value=""></option>
+                                                                    <option value="1">1</option>
+                                                                    <option value="2">2</option>
+                                                                    <option value="3">3</option>
+                                                                    <option value="4">4</option>
+                                                                    <option value="5">5</option>
+                                                                </select>
                                                             </td>
                                                             <td>
                                                                 Number of Grandchildren: <span id="table1_Number_of_grandchildren1">@Model.Number_of_grandchildren</span>
@@ -626,33 +634,33 @@
 
                                                         <tr>
                                                             <td>Contact</td>
-                                                            <td>@Model.Contract1</td>
-                                                            <td>@Model.Contract2</td>
-                                                            <td>@Model.Contract3</td>
+                                                            <td><span id="table2_Contract1_1">@Model.Contract1</span><input class="form-control" type="text" id="table2_Contract1_2" value="@Model.Contract1" style="display:none;" /></td>
+                                                            <td><span id="table2_Contract2_1">@Model.Contract2</span><input class="form-control" type="text" id="table2_Contract2_2" value="@Model.Contract2" style="display:none;" /></td>
+                                                            <td><span id="table2_Contract3_1">@Model.Contract3</span><input class="form-control" type="text" id="table2_Contract3_2" value="@Model.Contract3" style="display:none;" /></td>
                                                         </tr>
                                                         <tr>
                                                             <td>Address</td>
-                                                            <td>@Model.Address1</td>
-                                                            <td>@Model.Address2</td>
-                                                            <td>@Model.Address3</td>
+                                                            <td><span id="table2_Address1_1">@Model.Address1</span><input class="form-control" type="text" id="table2_Address1_2" value="@Model.Address1" style="display:none;" /></td>
+                                                            <td><span id="table2_Address2_1">@Model.Address2</span><input class="form-control" type="text" id="table2_Address2_2" value="@Model.Address2" style="display:none;" /></td>
+                                                            <td><span id="table2_Address3_1">@Model.Address3</span><input class="form-control" type="text" id="table2_Address3_2" value="@Model.Address3" style="display:none;" /></td>
                                                         </tr>
                                                         <tr>
                                                             <td>Relationship</td>
-                                                            <td>@Model.Relationship1</td>
-                                                            <td>@Model.Relationship2</td>
-                                                            <td>@Model.Relationship3</td>
+                                                            <td><span id="table2_Relationship1_1">@Model.Relationship1</span><input class="form-control" type="text" id="table2_Relationship1_2" value="@Model.Relationship1" style="display:none;" /></td>
+                                                            <td><span id="table2_Relationship2_1">@Model.Relationship2</span><input class="form-control" type="text" id="table2_Relationship2_2" value="@Model.Relationship2" style="display:none;" /></td>
+                                                            <td><span id="table2_Relationship3_1">@Model.Relationship3</span><input class="form-control" type="text" id="table2_Relationship3_2" value="@Model.Relationship3" style="display:none;" /></td>
                                                         </tr>
                                                         <tr>
                                                             <td>Primary Contact </td>
-                                                            <td>@Model.First_phone1</td>
-                                                            <td>@Model.First_phone2</td>
-                                                            <td>@Model.First_phone3</td>
+                                                            <td><span id="table2_First_phone1_1">@Model.First_phone1</span><input class="form-control phonemask" type="text" id="table2_First_phone1_2" value="@Model.First_phone1" style="display:none;" /></td>
+                                                            <td><span id="table2_First_phone2_1">@Model.First_phone2</span><input class="form-control phonemask" type="text" id="table2_First_phone2_2" value="@Model.First_phone2" style="display:none;" /></td>
+                                                            <td><span id="table2_First_phone3_1">@Model.First_phone3</span><input class="form-control phonemask" type="text" id="table2_First_phone3_2" value="@Model.First_phone3" style="display:none;" /></td>
                                                         </tr>
                                                         <tr>
                                                             <td>E-Mail</td>
-                                                            <td>@Model.Email1</td>
-                                                            <td>@Model.Email2</td>
-                                                            <td>@Model.Email3</td>
+                                                            <td><span id="table2_Email1_1">@Model.Email1</span><input class="form-control" type="text" id="table2_Email1_2" value="@Model.Email1" style="display:none;" /></td>
+                                                            <td><span id="table2_Email2_1">@Model.Email2</span><input class="form-control" type="text" id="table2_Email2_2" value="@Model.Email2" style="display:none;" /></td>
+                                                            <td><span id="table2_Email3_1">@Model.Email3</span><input class="form-control" type="text" id="table2_Email3_2" value="@Model.Email3" style="display:none;" /></td>
                                                         </tr>
                                                         <tr style="display:none;">
                                                             <td>Secondary Contact </td>
@@ -685,22 +693,22 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td>Physician: @Model.Physician</td>
-                                                            <td>Physician Phone: @Model.PhysicianPhone</td>
-                                                            <td>Fax #: @Model.PhysicianFaxNo</td>
+                                                            <td>Physician: <span id="table3_Physician_1">@Model.Physician</span><input class="form-control" type="text" id="table3_Physician_2" value="@Model.Physician" style="display:none;" /></td>
+                                                            <td>Physician Phone: <span id="table3_PhysicianPhone_1">@Model.PhysicianPhone</span><input class="form-control phonemask" type="text" id="table3_PhysicianPhone_2" value="@Model.PhysicianPhone" style="display:none;" /></td>
+                                                            <td>Fax #: <span id="table3_PhysicianFaxNo_1">@Model.PhysicianFaxNo</span><input class="form-control" type="text" id="table3_PhysicianFaxNo_2" value="@Model.PhysicianFaxNo" style="display:none;" /></td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Pharmacy: @Model.PharmaceSelf</td>
-                                                            <td>Pharmacy Phone: @Model.PharmacePhoneNo</td>
-                                                            <td>Fax #: @Model.PharmaceFaxNumber</td>
+                                                            <td>Pharmacy: <span id="table3_PharmaceSelf_1">@Model.PharmaceSelf</span><input class="form-control" type="text" id="table3_PharmaceSelf_2" value="@Model.PharmaceSelf" style="display:none;" /></td>
+                                                            <td>Pharmacy Phone: <span id="table3_PharmacePhoneNo_1">@Model.PharmacePhoneNo</span><input class="form-control phonemask" type="text" id="table3_PharmacePhoneNo_2" value="@Model.PharmacePhoneNo" style="display:none;" /></td>
+                                                            <td>Fax #: <span id="table3_PharmaceFaxNumber_1">@Model.PharmaceFaxNumber</span><input class="form-control" type="text" id="table3_PharmaceFaxNumber_2" value="@Model.PharmaceFaxNumber" style="display:none;" /></td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Insurance Company: @Model.InsuranceCompany</td>
-                                                            <td>Contract Number: @Model.ContractNumber</td>
-                                                            <td>Group Number: @Model.GroupNumber</td>
+                                                            <td>Insurance Company: <span id="table3_InsuranceCompany_1">@Model.InsuranceCompany</span><input class="form-control" type="text" id="table3_InsuranceCompany_2" value="@Model.InsuranceCompany" style="display:none;" /></td>
+                                                            <td>Contract Number: <span id="table3_ContractNumber_1">@Model.ContractNumber</span><input class="form-control phonemask" type="text" id="table3_ContractNumber_2" value="@Model.ContractNumber" style="display:none;" /></td>
+                                                            <td>Group Number: <span id="table3_GroupNumber_1">@Model.GroupNumber</span><input class="form-control" type="text" id="table3_GroupNumber_2" value="@Model.GroupNumber" style="display:none;" /></td>
                                                         </tr>
                                                         <tr>
-                                                            <td colspan="3">Funeral Arrangements: @Model.FuneralArguments</td>
+                                                            <td colspan="3">Funeral Arrangements: <span id="table3_FuneralArguments_1">@Model.FuneralArguments</span><input class="form-control" type="text" id="table3_FuneralArguments_2" value="@Model.FuneralArguments" style="display:none;max-width:100% !important" /></td>
                                                         </tr>
 
 
@@ -2734,6 +2742,7 @@
             <input id="tempdata_archive" type="hidden" value="@TempData["archive"]" />
             <input id="pass_away_index" type="hidden" value="@TempData["pass"]" />
             <input id="temp_RID" type="hidden" value="@TempData["tempRID"]" />
+            <input id="residentID" type="hidden" value="@ViewBag.resident.ID" />
 
             @RenderPage("~/Views/Shared/_Footer.cshtml")
             <script type="text/javascript" src="http://cdn.sobekrepository.org/includes/jquery-rotate/2.2/jquery-rotate.min.js"></script>
@@ -2980,7 +2989,6 @@
 
                 }
 
-
                 function tab_click(ee) {
                     if (ee.innerHTML.includes("Plan of Care") == true) {
                         $('#print_PoC').show();
@@ -2991,9 +2999,12 @@
 
                 }
 
+
+
+
                 $(window).load(function () {
                     var phones = [{ "mask": "(###) ###-####" }, { "mask": "(###) ###-####" }];
-                    $('#table1_Phone2').inputmask({
+                    $('.phonemask').inputmask({
                         mask: phones,
                         greedy: false,
                         definitions: { '#': { validator: "[0-9]", cardinality: 1 } }
@@ -3041,9 +3052,43 @@
                     $('#table1_Vetaran1').hide();
                     $('#table1_Vetaran2').show();
 
-                } 
+                }
 
                 function table1_SAVE() {
+
+                    var postdata = {
+                        ID: $('#residentID').val(),
+                        FirstName: $('#table1_name2_first').val(),
+                        ShortName: $('#table1_name2_middle').val(),
+                        LastName: $('#table1_name2_last').val(),
+                        Gendar: $('#table1_gendar2').val(),
+                        BirthDate: $('#table1_birth2').val(),
+                        Phone: $('#table1_Phone2').val(),
+                        MBhealthNumber: $('#table1_MBhealthNumber2').val(),
+                        OtherLanguage: $('#table1_OtherLanguage2').val(),
+                        MaritalStatus: $('#table1_MaritalStatustext2').val(),
+                        SignificatOther: $('#table1_SignificatOther2').val(),
+                        AnniversaryDate: $('#table1_AnniversaryDate2').val(),
+                        Number_of_children: $('#table1_Number_of_children2').val(),
+                        Number_of_grandchildren: $('#table1_Number_of_grandchildren2').val(),
+                        Vetaran: $('#table1_Vetaran2').val()
+                    }
+
+                    $.ajax({
+                        url: '/Home/EditProfileTable1',
+                        type: 'post',
+                        dataType: 'json',
+                        contentType: 'application/json; charset=utf-8',
+                        data: "{postdata:" + JSON.stringify(postdata) + "}",
+                        success: function (data) {
+                            tempAlert('success', 2000);
+                        },
+                        error: function (errorThrown) {
+                            console.log(errorThrown);
+                        }
+                    });
+
+
                     $('#table1_SAVE').hide();
                     $('#table1_EDIT').show();
 
@@ -3097,6 +3142,250 @@
                     var b = a.replaceAll('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', 'POA Care')
                     var c = b.replaceAll('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', 'POA Finance')
                     $('#POAtitle').html(c);
+
+                    $('#table2_Contract1_1').hide();
+                    $('#table2_Contract1_2').show();
+
+                    $('#table2_Contract2_1').hide();
+                    $('#table2_Contract2_2').show();
+
+                    $('#table2_Contract3_1').hide();
+                    $('#table2_Contract3_2').show();
+
+                    $('#table2_Address1_1').hide();
+                    $('#table2_Address1_2').show();
+
+                    $('#table2_Address2_1').hide();
+                    $('#table2_Address2_2').show();
+
+                    $('#table2_Address3_1').hide();
+                    $('#table2_Address3_2').show();
+
+                    $('#table2_Relationship1_1').hide();
+                    $('#table2_Relationship1_2').show();
+
+                    $('#table2_Relationship2_1').hide();
+                    $('#table2_Relationship2_2').show();
+
+                    $('#table2_Relationship3_1').hide();
+                    $('#table2_Relationship3_2').show();
+
+                    $('#table2_First_phone1_1').hide();
+                    $('#table2_First_phone1_2').show();
+
+                    $('#table2_First_phone2_1').hide();
+                    $('#table2_First_phone2_2').show();
+
+                    $('#table2_First_phone3_1').hide();
+                    $('#table2_First_phone3_2').show();
+
+                    $('#table2_Email1_1').hide();
+                    $('#table2_Email1_2').show();
+
+                    $('#table2_Email2_1').hide();
+                    $('#table2_Email2_2').show();
+
+                    $('#table2_Email3_1').hide();
+                    $('#table2_Email3_2').show();
+
+                }
+
+                function table2_SAVE() {
+
+                    var postdata = {
+                        ID: $('#residentID').val(),
+                        POACareStatus: $('#POACare1').css('color') == "rgb(255, 0, 0)" ? 'Y' : 'N',
+                        POACareType2Status: $('#POACare2').css('color') == "rgb(255, 0, 0)" ? 'Y' : 'N',
+                        POACareType3Status: $('#POACare3').css('color') == "rgb(255, 0, 0)" ? 'Y' : 'N',
+                        POAFinanceStatus: $('#POAFinance1').css('color') == "rgb(255, 0, 0)" ? 'Y' : 'N',
+                        POAFinanceType2Status: $('#POAFinance2').css('color') == "rgb(255, 0, 0)" ? 'Y' : 'N',
+                        POAFinanceType3Status: $('#POAFinance3').css('color') == "rgb(255, 0, 0)" ? 'Y' : 'N',
+                        Contract1: $('#table2_Contract1_2').val(),
+                        Contract2: $('#table2_Contract2_2').val(),
+                        Contract3: $('#table2_Contract3_2').val(),
+                        Address1: $('#table2_Address1_2').val(),
+                        Address2: $('#table2_Address2_2').val(),
+                        Address3: $('#table2_Address3_2').val(),
+                        Relationship1: $('#table2_Relationship1_2').val(),
+                        Relationship2: $('#table2_Relationship2_2').val(),
+                        Relationship3: $('#table2_Relationship3_2').val(),
+                        First_phone1: $('#table2_First_phone1_2').val(),
+                        First_phone2: $('#table2_First_phone2_2').val(),
+                        First_phone3: $('#table2_First_phone3_2').val(),
+                        Email1: $('#table2_Email1_2').val(),
+                        Email2: $('#table2_Email2_2').val(),
+                        Email3: $('#table2_Email3_2').val()
+                    }
+
+                    $.ajax({
+                        url: '/Home/EditProfileTable2',
+                        type: 'post',
+                        dataType: 'json',
+                        contentType: 'application/json; charset=utf-8',
+                        data: "{postdata:" + JSON.stringify(postdata) + "}",
+                        success: function (data) {
+                            tempAlert('success', 2000);
+                        },
+                        error: function (errorThrown) {
+                            console.log(errorThrown);
+                        }
+                    });
+
+
+                    $('#table2_SAVE').hide();
+                    $('#table2_EDIT').show();
+
+                    $('#table2_Contract1_2').hide();
+                    $('#table2_Contract1_1').show();
+
+                    $('#table2_Contract2_2').hide();
+                    $('#table2_Contract2_1').show();
+
+                    $('#table2_Contract3_2').hide();
+                    $('#table2_Contract3_1').show();
+
+                    $('#table2_Address1_2').hide();
+                    $('#table2_Address1_1').show();
+
+                    $('#table2_Address2_2').hide();
+                    $('#table2_Address2_1').show();
+
+                    $('#table2_Address3_2').hide();
+                    $('#table2_Address3_1').show();
+
+                    $('#table2_Relationship1_2').hide();
+                    $('#table2_Relationship1_1').show();
+
+                    $('#table2_Relationship2_2').hide();
+                    $('#table2_Relationship2_1').show();
+
+                    $('#table2_Relationship3_2').hide();
+                    $('#table2_Relationship3_1').show();
+
+                    $('#table2_First_phone1_2').hide();
+                    $('#table2_First_phone1_1').show();
+
+                    $('#table2_First_phone2_2').hide();
+                    $('#table2_First_phone2_1').show();
+
+                    $('#table2_First_phone3_2').hide();
+                    $('#table2_First_phone3_1').show();
+
+                    $('#table2_Email1_2').hide();
+                    $('#table2_Email1_1').show();
+
+                    $('#table2_Email2_2').hide();
+                    $('#table2_Email2_1').show();
+
+                    $('#table2_Email3_2').hide();
+                    $('#table2_Email3_1').show();
+
+                }
+
+                function table3_EDIT() {
+                    $('#table3_EDIT').hide();
+                    $('#table3_SAVE').show();
+
+                    $('#table3_Physician_1').hide();
+                    $('#table3_Physician_2').show();
+
+                    $('#table3_PhysicianPhone_1').hide();
+                    $('#table3_PhysicianPhone_2').show();
+
+                    $('#table3_PhysicianFaxNo_1').hide();
+                    $('#table3_PhysicianFaxNo_2').show();
+
+                    $('#table3_PharmaceSelf_1').hide();
+                    $('#table3_PharmaceSelf_2').show();
+
+                    $('#table3_PharmacePhoneNo_1').hide();
+                    $('#table3_PharmacePhoneNo_2').show();
+
+                    $('#table3_PharmaceFaxNumber_1').hide();
+                    $('#table3_PharmaceFaxNumber_2').show();
+
+                    $('#table3_InsuranceCompany_1').hide();
+                    $('#table3_InsuranceCompany_2').show();
+
+                    $('#table3_ContractNumber_1').hide();
+                    $('#table3_ContractNumber_2').show();
+
+                    $('#table3_GroupNumber_1').hide();
+                    $('#table3_GroupNumber_2').show();
+
+                    $('#table3_FuneralArguments_1').hide();
+                    $('#table3_FuneralArguments_2').show();
+
+
+
+                }
+
+                function table3_SAVE() {
+
+                    var postdata = {
+                        ID: $('#residentID').val(),
+                        Physician: $('#table3_Physician_2').val(),
+                        PhysicianPhone: $('#table3_PhysicianPhone_2').val(),
+                        PhysicianFaxNo: $('#table3_PhysicianFaxNo_2').val(),
+                        PharmaceSelf: $('#table3_PharmaceSelf_2').val(),
+                        PharmacePhoneNo: $('#table3_PharmacePhoneNo_2').val(),
+                        PharmaceFaxNumber: $('#table3_PharmaceFaxNumber_2').val(),
+                        InsuranceCompany: $('#table3_InsuranceCompany_2').val(),
+                        ContractNumber: $('#table3_ContractNumber_2').val(),
+                        GroupNumber: $('#table3_GroupNumber_2').val(),
+                        FuneralArguments: $('#table3_FuneralArguments_2').val()
+                    }
+
+                    $.ajax({
+                        url: '/Home/EditProfileTable3',
+                        type: 'post',
+                        dataType: 'json',
+                        contentType: 'application/json; charset=utf-8',
+                        data: "{postdata:" + JSON.stringify(postdata) + "}",
+                        success: function (data) {
+                            tempAlert('success', 2000);
+                        },
+                        error: function (errorThrown) {
+                            console.log(errorThrown);
+                        }
+                    });
+
+
+                    $('#table3_SAVE').hide();
+                    $('#table3_EDIT').show();
+
+                    $('#table3_Physician_2').hide();
+                    $('#table3_Physician_1').show();
+
+                    $('#table3_PhysicianPhone_2').hide();
+                    $('#table3_PhysicianPhone_1').show();
+
+                    $('#table3_PhysicianFaxNo_2').hide();
+                    $('#table3_PhysicianFaxNo_1').show();
+
+                    $('#table3_PharmaceSelf_2').hide();
+                    $('#table3_PharmaceSelf_1').show();
+
+                    $('#table3_PharmacePhoneNo_2').hide();
+                    $('#table3_PharmacePhoneNo_1').show();
+
+                    $('#table3_PharmaceFaxNumber_2').hide();
+                    $('#table3_PharmaceFaxNumber_1').show();
+
+                    $('#table3_InsuranceCompany_2').hide();
+                    $('#table3_InsuranceCompany_1').show();
+
+                    $('#table3_ContractNumber_2').hide();
+                    $('#table3_ContractNumber_1').show();
+
+                    $('#table3_GroupNumber_2').hide();
+                    $('#table3_GroupNumber_1').show();
+
+                    $('#table3_FuneralArguments_2').hide();
+                    $('#table3_FuneralArguments_1').show();
+
+
+
                 }
 
 
@@ -3110,7 +3399,7 @@
                         }
                     }
 
-                    
+
                 }
 
             </script>

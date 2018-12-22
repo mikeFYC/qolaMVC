@@ -6795,6 +6795,37 @@ namespace QolaMVC.Controllers
 
         }
 
+
+        [HttpPost]
+        public ActionResult EditProfileTable1(ResidentModel postdata)
+        {
+            //System.Threading.Thread.Sleep(2000);  /*simulating slow connection*/
+            ResidentsDAL.UpdateResidentGeneralInfo1(postdata);
+
+            return Json(new { msg = "Successfully added "});
+        }
+
+        [HttpPost]
+        public ActionResult EditProfileTable2(ResidentModel postdata)
+        {
+            //System.Threading.Thread.Sleep(2000);  /*simulating slow connection*/
+            ResidentsDAL.UpdateResidentGeneralInfo2(postdata);
+
+            return Json(new { msg = "Successfully added " });
+        }
+
+        [HttpPost]
+        public ActionResult EditProfileTable3(ResidentModel postdata)
+        {
+            //System.Threading.Thread.Sleep(2000);  /*simulating slow connection*/
+            ResidentsDAL.UpdateResidentGeneralInfo3(postdata);
+
+            return Json(new { msg = "Successfully added " });
+        }
+
+
+
+
         //[HttpPost]
         //public JsonResult saveButton_Image()
         //{
