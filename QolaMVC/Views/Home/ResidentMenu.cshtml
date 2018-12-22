@@ -627,9 +627,9 @@
                                                             }
                                                             @*<td class="text-center"><b>Description</b></td>*@
                                                             <td class="" style="width:26%;padding:1% !important;"><p style="margin-bottom:3px !important;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p><p class="text-center" style="font-size:1.3em;"><b>Description</b></p></td>
-                                                            <td class="" style="width:26%;padding:1% !important;"><p style="margin-bottom:3px !important;"><b id="POACare1" style="color:@POAC1color;cursor:pointer;" onclick="POAclick(this)">@POAC1</b><b id="POAFinance1" style="float:right;color:@POAF1color;cursor:pointer;" onclick="POAclick(this)">@POAF1</b></p><p class="text-center" style="font-size:1.3em;"><b>1st Contact</b></p></td>
-                                                            <td class="" style="width:26%;padding:1% !important;"><p style="margin-bottom:3px !important;"><b id="POACare2" style="color:@POAC2color;cursor:pointer;" onclick="POAclick(this)">@POAC2</b><b id="POAFinance2" style="float:right;color:@POAF2color;cursor:pointer;" onclick="POAclick(this)">@POAF2</b></p><p class="text-center" style="font-size:1.3em;"><b>2nd Contact</b></p></td>
-                                                            <td class="" style="width:26%;padding:1% !important;"><p style="margin-bottom:3px !important;"><b id="POACare3" style="color:@POAC3color;cursor:pointer;" onclick="POAclick(this)">@POAC3</b><b id="POAFinance3" style="float:right;color:@POAF3color;cursor:pointer;" onclick="POAclick(this)">@POAF3</b></p><p class="text-center" style="font-size:1.3em;"><b>3rd Contact</b></p></td>
+                                                            <td class="" style="width:26%;padding:1% !important;"><p style="margin-bottom:3px !important;"><b class="POAcarelist" id="POACare1" style="color:@POAC1color;cursor:pointer;" onclick="POAclick(this)">@POAC1</b><b class="POAfinancelist" id="POAFinance1" style="float:right;color:@POAF1color;cursor:pointer;" onclick="POAclick(this)">@POAF1</b></p><p class="text-center" style="font-size:1.3em;"><b>1st Contact</b></p></td>
+                                                            <td class="" style="width:26%;padding:1% !important;"><p style="margin-bottom:3px !important;"><b class="POAcarelist" id="POACare2" style="color:@POAC2color;cursor:pointer;" onclick="POAclick(this)">@POAC2</b><b class="POAfinancelist" id="POAFinance2" style="float:right;color:@POAF2color;cursor:pointer;" onclick="POAclick(this)">@POAF2</b></p><p class="text-center" style="font-size:1.3em;"><b>2nd Contact</b></p></td>
+                                                            <td class="" style="width:26%;padding:1% !important;"><p style="margin-bottom:3px !important;"><b class="POAcarelist" id="POACare3" style="color:@POAC3color;cursor:pointer;" onclick="POAclick(this)">@POAC3</b><b class="POAfinancelist" id="POAFinance3" style="float:right;color:@POAF3color;cursor:pointer;" onclick="POAclick(this)">@POAF3</b></p><p class="text-center" style="font-size:1.3em;"><b>3rd Contact</b></p></td>
                                                         </tr>
 
                                                         <tr>
@@ -3081,7 +3081,27 @@
                         contentType: 'application/json; charset=utf-8',
                         data: "{postdata:" + JSON.stringify(postdata) + "}",
                         success: function (data) {
-                            tempAlert('success', 2000);
+                            tempAlert('Update Success', 2000);
+                            if ($('#table1_name2_middle').val().trim() == "") {
+                                $('#table1_name1').html($('#table1_name2_first').val() + " " + $('#table1_name2_last').val());
+                            }
+                            else {
+                                $('#table1_name1').html($('#table1_name2_first').val() + " \"" + $('#table1_name2_middle').val() + "\" " + $('#table1_name2_last').val());
+                            }
+                            
+                            $('#table1_gendar1').html($('#table1_gendar2').find(":selected").text());
+                            $('#table1_birth1').html($('#table1_birth2').val());
+                            $('#table1_Phone1').html($('#table1_Phone2').val());
+                            $('#table1_MBhealthNumber1').html($('#table1_MBhealthNumber2').val());
+                            $('#table1_OtherLanguage1').html($('#table1_OtherLanguage2').val());
+                            $('#table1_MaritalStatustext1').html($('#table1_MaritalStatustext2').find(":selected").text());
+                            $('#table1_SignificatOther1').html($('#table1_SignificatOther2').val());
+                            $('#table1_AnniversaryDate1').html($('#table1_AnniversaryDate2').val());
+                            $('#table1_Number_of_children1').html($('#table1_Number_of_children2').val());
+                            $('#table1_Number_of_grandchildren1').html($('#table1_Number_of_grandchildren2').val());
+                            $('#table1_Vetaran1').html($('#table1_Vetaran2').val());
+                            
+
                         },
                         error: function (errorThrown) {
                             console.log(errorThrown);
@@ -3089,6 +3109,7 @@
                     });
 
 
+                    
                     $('#table1_SAVE').hide();
                     $('#table1_EDIT').show();
 
@@ -3225,6 +3246,23 @@
                         data: "{postdata:" + JSON.stringify(postdata) + "}",
                         success: function (data) {
                             tempAlert('success', 2000);
+
+                            $('#table2_Contract1_1').html($('#table2_Contract1_2').val());
+                            $('#table2_Contract2_1').html($('#table2_Contract2_2').val());
+                            $('#table2_Contract3_1').html($('#table2_Contract3_2').val());
+                            $('#table2_Address1_1').html($('#table2_Address1_2').val());
+                            $('#table2_Address2_1').html($('#table2_Address2_2').val());
+                            $('#table2_Address3_1').html($('#table2_Address3_2').val());
+                            $('#table2_Relationship1_1').html($('#table2_Relationship1_2').val());
+                            $('#table2_Relationship2_1').html($('#table2_Relationship2_2').val());
+                            $('#table2_Relationship3_1').html($('#table2_Relationship3_2').val());
+                            $('#table2_First_phone1_1').html($('#table2_First_phone1_2').val());
+                            $('#table2_First_phone2_1').html($('#table2_First_phone2_2').val());
+                            $('#table2_First_phone3_1').html($('#table2_First_phone3_2').val());
+                            $('#table2_Email1_1').html($('#table2_Email1_2').val());
+                            $('#table2_Email2_1').html($('#table2_Email2_2').val());
+                            $('#table2_Email3_1').html($('#table2_Email3_2').val());
+                            
                         },
                         error: function (errorThrown) {
                             console.log(errorThrown);
@@ -3234,6 +3272,17 @@
 
                     $('#table2_SAVE').hide();
                     $('#table2_EDIT').show();
+
+                    $('#POAtitle .POAcarelist').each(function () {
+                        if (this.style.color == "black") {
+                            this.innerHTML = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0";
+                        }
+                    })
+                    $('#POAtitle .POAfinancelist').each(function () {
+                        if (this.style.color == "black") {
+                            this.innerHTML = "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0";
+                        }
+                    })
 
                     $('#table2_Contract1_2').hide();
                     $('#table2_Contract1_1').show();
@@ -3344,6 +3393,17 @@
                         data: "{postdata:" + JSON.stringify(postdata) + "}",
                         success: function (data) {
                             tempAlert('success', 2000);
+
+                            $('#table3_Physician_1').html($('#table3_Physician_2').val());
+                            $('#table3_PhysicianPhone_1').html($('#table3_PhysicianPhone_2').val());
+                            $('#table3_PhysicianFaxNo_2').html($('#table3_PhysicianFaxNo_2').val());
+                            $('#table3_PharmaceSelf_1').html($('#table3_PharmaceSelf_2').val());
+                            $('#table3_PharmacePhoneNo_1').html($('#table3_PharmacePhoneNo_2').val());
+                            $('#table3_PharmaceFaxNumber_1').html($('#table3_PharmaceFaxNumber_2').val());
+                            $('#table3_InsuranceCompany_1').html($('#table3_InsuranceCompany_2').val());
+                            $('#table3_ContractNumber_1').html($('#table3_ContractNumber_2').val());
+                            $('#table3_GroupNumber_1').html($('#table3_GroupNumber_2').val());
+                            $('#table3_FuneralArguments_1').html($('#table3_FuneralArguments_2').val());
                         },
                         error: function (errorThrown) {
                             console.log(errorThrown);

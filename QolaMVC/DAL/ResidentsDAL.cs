@@ -2793,15 +2793,33 @@ namespace QolaMVC.DAL
             try
             {
                 SqlDataAdapter l_DA = new SqlDataAdapter();
-                SqlCommand l_Cmd = new SqlCommand("", l_Conn);
+                SqlCommand l_Cmd = new SqlCommand("UpdateResidentGeneralInfo1", l_Conn);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                l_Cmd.Parameters.AddWithValue("@homeId", p_Model.Home.Id);
-                l_Cmd.Parameters.AddWithValue("@suiteId", p_Model.SuiteIds);
-                l_Cmd.Parameters.AddWithValue("@Occupancy ", p_Model.Occupancy);
-                l_Cmd.Parameters.AddWithValue("@birthPlace", p_Model.BirthPlace);
-                l_Cmd.Parameters.AddWithValue("@maritalStatus ", p_Model.MaritalStatus);
-                l_Cmd.Parameters.AddWithValue("@MBHealthNo", p_Model.MBhealthNumber);
+                l_Cmd.Parameters.AddWithValue("@ID", p_Model.ID);
+                l_Cmd.Parameters.AddWithValue("@FirstName", p_Model.FirstName);
+                l_Cmd.Parameters.AddWithValue("@ShortName", p_Model.ShortName);
+                l_Cmd.Parameters.AddWithValue("@LastName", p_Model.LastName);
+                l_Cmd.Parameters.AddWithValue("@Gendar", p_Model.Gendar);
+                l_Cmd.Parameters.AddWithValue("@BirthDate", p_Model.BirthDate);
+                l_Cmd.Parameters.AddWithValue("@Phone", p_Model.Phone);
+                l_Cmd.Parameters.AddWithValue("@MBhealthNumber", p_Model.MBhealthNumber);
+                l_Cmd.Parameters.AddWithValue("@OtherLanguage", p_Model.OtherLanguage);
+                l_Cmd.Parameters.AddWithValue("@MaritalStatus", p_Model.MaritalStatus);
+                l_Cmd.Parameters.AddWithValue("@SignificatOther", p_Model.SignificatOther);
+                if (p_Model.AnniversaryDate==DateTime.MinValue)
+                {
+                    l_Cmd.Parameters.AddWithValue("@AnniversaryDate", DBNull.Value);
+                }
+                else
+                {
+                    l_Cmd.Parameters.AddWithValue("@AnniversaryDate", p_Model.AnniversaryDate);
+                }
+                
+                l_Cmd.Parameters.AddWithValue("@Number_of_children", p_Model.Number_of_children);
+                l_Cmd.Parameters.AddWithValue("@Number_of_grandchildren", p_Model.Number_of_grandchildren);
+                l_Cmd.Parameters.AddWithValue("@Vetaran", p_Model.Vetaran);
+                l_Cmd.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
@@ -2823,15 +2841,47 @@ namespace QolaMVC.DAL
             try
             {
                 SqlDataAdapter l_DA = new SqlDataAdapter();
-                SqlCommand l_Cmd = new SqlCommand("", l_Conn);
+                SqlCommand l_Cmd = new SqlCommand("UpdateResidentGeneralInfo2", l_Conn);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                l_Cmd.Parameters.AddWithValue("@homeId", p_Model.Home.Id);
-                l_Cmd.Parameters.AddWithValue("@suiteId", p_Model.SuiteIds);
-                l_Cmd.Parameters.AddWithValue("@Occupancy ", p_Model.Occupancy);
-                l_Cmd.Parameters.AddWithValue("@birthPlace", p_Model.BirthPlace);
-                l_Cmd.Parameters.AddWithValue("@maritalStatus ", p_Model.MaritalStatus);
-                l_Cmd.Parameters.AddWithValue("@MBHealthNo", p_Model.MBhealthNumber);
+                l_Cmd.Parameters.AddWithValue("@ID", p_Model.ID);
+                l_Cmd.Parameters.AddWithValue("@POACareStatus", p_Model.POACareStatus);
+                l_Cmd.Parameters.AddWithValue("@POACareType2Status", p_Model.POACareType2Status);
+                l_Cmd.Parameters.AddWithValue("@POACareType3Status", p_Model.POACareType3Status);
+                l_Cmd.Parameters.AddWithValue("@POAFinanceStatus", p_Model.POAFinanceStatus);
+                l_Cmd.Parameters.AddWithValue("@POAFinanceType2Status", p_Model.POAFinanceType2Status);
+                l_Cmd.Parameters.AddWithValue("@POAFinanceType3Status", p_Model.POAFinanceType3Status);
+                l_Cmd.Parameters.AddWithValue("@Contract1", p_Model.Contract1);
+                l_Cmd.Parameters.AddWithValue("@Contract2", p_Model.Contract2);
+                l_Cmd.Parameters.AddWithValue("@Contract3", p_Model.Contract3);
+                l_Cmd.Parameters.AddWithValue("@Address1", p_Model.Address1);
+                l_Cmd.Parameters.AddWithValue("@Address2", p_Model.Address2);
+                l_Cmd.Parameters.AddWithValue("@Address3", p_Model.Address3);
+                l_Cmd.Parameters.AddWithValue("@Relationship1", p_Model.Relationship1);
+                l_Cmd.Parameters.AddWithValue("@Relationship2", p_Model.Relationship2);
+                l_Cmd.Parameters.AddWithValue("@Relationship3", p_Model.Relationship3);
+                l_Cmd.Parameters.AddWithValue("@HomePhone1", p_Model.HomePhone1);
+                l_Cmd.Parameters.AddWithValue("@CellPhone1", p_Model.CellPhone1);
+                l_Cmd.Parameters.AddWithValue("@BusinessPhone1", p_Model.BusinessPhone1);
+                l_Cmd.Parameters.AddWithValue("@HomePhoneType1", p_Model.HomePhoneType1);
+                l_Cmd.Parameters.AddWithValue("@CellPhoneType1", p_Model.CellPhoneType1);
+                l_Cmd.Parameters.AddWithValue("@BusinessPhoneType1", p_Model.BusinessPhoneType1);
+                l_Cmd.Parameters.AddWithValue("@HomePhone2", p_Model.HomePhone2);
+                l_Cmd.Parameters.AddWithValue("@CellPhone2", p_Model.CellPhone2);
+                l_Cmd.Parameters.AddWithValue("@BusinessPhone2", p_Model.BusinessPhone2);
+                l_Cmd.Parameters.AddWithValue("@HomePhoneType2", p_Model.HomePhoneType2);
+                l_Cmd.Parameters.AddWithValue("@CellPhoneType2", p_Model.CellPhoneType2);
+                l_Cmd.Parameters.AddWithValue("@BusinessPhoneType2", p_Model.BusinessPhoneType2);
+                l_Cmd.Parameters.AddWithValue("@HomePhone3", p_Model.HomePhone3);
+                l_Cmd.Parameters.AddWithValue("@CellPhone3", p_Model.CellPhone3);
+                l_Cmd.Parameters.AddWithValue("@BusinessPhone3", p_Model.BusinessPhone3);
+                l_Cmd.Parameters.AddWithValue("@HomePhoneType3", p_Model.HomePhoneType3);
+                l_Cmd.Parameters.AddWithValue("@CellPhoneType3", p_Model.CellPhoneType3);
+                l_Cmd.Parameters.AddWithValue("@BusinessPhoneType3", p_Model.BusinessPhoneType3);
+                l_Cmd.Parameters.AddWithValue("@Email1", p_Model.Email1);
+                l_Cmd.Parameters.AddWithValue("@Email2", p_Model.Email2);
+                l_Cmd.Parameters.AddWithValue("@Email3", p_Model.Email3);
+                l_Cmd.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
@@ -2853,15 +2903,21 @@ namespace QolaMVC.DAL
             try
             {
                 SqlDataAdapter l_DA = new SqlDataAdapter();
-                SqlCommand l_Cmd = new SqlCommand("", l_Conn);
+                SqlCommand l_Cmd = new SqlCommand("UpdateResidentGeneralInfo3", l_Conn);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                l_Cmd.Parameters.AddWithValue("@homeId", p_Model.Home.Id);
-                l_Cmd.Parameters.AddWithValue("@suiteId", p_Model.SuiteIds);
-                l_Cmd.Parameters.AddWithValue("@Occupancy ", p_Model.Occupancy);
-                l_Cmd.Parameters.AddWithValue("@birthPlace", p_Model.BirthPlace);
-                l_Cmd.Parameters.AddWithValue("@maritalStatus ", p_Model.MaritalStatus);
-                l_Cmd.Parameters.AddWithValue("@MBHealthNo", p_Model.MBhealthNumber);
+                l_Cmd.Parameters.AddWithValue("@ID", p_Model.ID);
+                l_Cmd.Parameters.AddWithValue("@Physician", p_Model.Physician);
+                l_Cmd.Parameters.AddWithValue("@PhysicianPhone", p_Model.PhysicianPhone);
+                l_Cmd.Parameters.AddWithValue("@PhysicianFaxNo", p_Model.PhysicianFaxNo);
+                l_Cmd.Parameters.AddWithValue("@PharmaceSelf", p_Model.PharmaceSelf);
+                l_Cmd.Parameters.AddWithValue("@PharmacePhoneNo", p_Model.PharmacePhoneNo);
+                l_Cmd.Parameters.AddWithValue("@PharmaceFaxNumber", p_Model.PharmaceFaxNumber);
+                l_Cmd.Parameters.AddWithValue("@InsuranceCompany", p_Model.InsuranceCompany);
+                l_Cmd.Parameters.AddWithValue("@ContractNumber", p_Model.ContractNumber);
+                l_Cmd.Parameters.AddWithValue("@GroupNumber", p_Model.GroupNumber);
+                l_Cmd.Parameters.AddWithValue("@FuneralArguments", p_Model.FuneralArguments);
+                l_Cmd.ExecuteNonQuery();
             }
             catch (Exception ex)
             {

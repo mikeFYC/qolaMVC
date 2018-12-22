@@ -6842,15 +6842,15 @@ namespace QolaMVC.Controllers
             postdata.HomePhoneType3 = currentModel.HomePhoneType3;
             postdata.CellPhoneType3 = currentModel.CellPhoneType3;
             postdata.BusinessPhoneType3 = currentModel.BusinessPhoneType3;
-            if (currentModel.HomePhoneType1 == 1) currentModel.HomePhone1 = currentModel.First_phone1;
-            else if (currentModel.CellPhoneType1 == 1) currentModel.CellPhone1 = currentModel.CellPhone1;
-            else if (currentModel.BusinessPhoneType1 == 1) currentModel.BusinessPhone1 = currentModel.BusinessPhone1;
-            if (currentModel.HomePhoneType2 == 1) currentModel.HomePhone2 = currentModel.First_phone2;
-            else if (currentModel.CellPhoneType2 == 1) currentModel.CellPhone2 = currentModel.CellPhone2;
-            else if (currentModel.BusinessPhoneType2 == 1) currentModel.BusinessPhone2 = currentModel.BusinessPhone2;
-            if (currentModel.HomePhoneType3 == 1) currentModel.HomePhone3 = currentModel.First_phone3;
-            else if (currentModel.CellPhoneType3 == 1) currentModel.CellPhone3 = currentModel.CellPhone3;
-            else if (currentModel.BusinessPhoneType3 == 1) currentModel.BusinessPhone3 = currentModel.BusinessPhone3;
+            if (postdata.HomePhoneType1 == 1) postdata.HomePhone1 = postdata.First_phone1;
+            else if (postdata.CellPhoneType1 == 1) postdata.CellPhone1 = postdata.First_phone1;
+            else if (postdata.BusinessPhoneType1 == 1) postdata.BusinessPhone1 = postdata.First_phone1;
+            if (postdata.HomePhoneType2 == 1) postdata.HomePhone2 = postdata.First_phone2;
+            else if (postdata.CellPhoneType2 == 1) postdata.CellPhone2 = postdata.First_phone2;
+            else if (postdata.BusinessPhoneType2 == 1) postdata.BusinessPhone2 = postdata.First_phone2;
+            if (postdata.HomePhoneType3 == 1) postdata.HomePhone3 = postdata.First_phone3;
+            else if (postdata.CellPhoneType3 == 1) postdata.CellPhone3 = postdata.First_phone3;
+            else if (postdata.BusinessPhoneType3 == 1) postdata.BusinessPhone3 = postdata.First_phone3;
 
             ResidentsDAL.UpdateResidentGeneralInfo2(postdata);
 
