@@ -1974,6 +1974,62 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
+        public static Collection<ActivityEventModel> GetActivityEvents_between(int homeid,string start,string end)
+        {
+            string exception = string.Empty;
+            Collection<ActivityEventModel> l_Events = new Collection<ActivityEventModel>();
+            ActivityEventModel l_Event;
+            //UserModel l_User;
+            //ResidentModel l_Resident;
+            //SuiteModel l_Suite;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_Activity_Events_between", l_Conn);
+                l_Cmd.Parameters.AddWithValue("@homeid", homeid);
+                l_Cmd.Parameters.AddWithValue("@start", start);
+                l_Cmd.Parameters.AddWithValue("@end", end);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                DataSet homeReceive = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(homeReceive);
+
+                if ((homeReceive != null) && (homeReceive.Tables.Count > 0) && (homeReceive.Tables[0].Rows.Count > 0))
+                {
+                    foreach (DataRow homeTypeRow in homeReceive.Tables[0].Rows)
+                    {
+                        l_Event = new ActivityEventModel();
+
+                        l_Event.ProgramId = Convert.ToInt32(homeTypeRow["Id"]);
+                        l_Event.ActivityId = Convert.ToInt32(homeTypeRow["ActivityId"]);
+                        l_Event.ProgramName = Convert.ToString(homeTypeRow["EventTitle"]);
+                        l_Event.ProgramStartDate = Convert.ToDateTime(homeTypeRow["StartDate"]);
+                        l_Event.ProgramEndDate = Convert.ToDateTime(homeTypeRow["EndDate"]);
+                        l_Event.ProgramStartTime = Convert.ToString(homeTypeRow["StartTime"]);
+                        l_Event.ProgramEndTime = Convert.ToString(homeTypeRow["EndTime"]);
+                        l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
+                        l_Event.note = Convert.ToString(homeTypeRow["note"]);
+                        l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
+
+                        l_Events.Add(l_Event);
+                    }
+                }
+                return l_Events;
+            }
+            catch (Exception ex)
+            {
+                exception = "GetActivityEvents |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
         public static int AddNewActivityEvent(ActivityEventModel p_Model,int homeid)
         {
             int retunvalue = 0;
@@ -2062,6 +2118,62 @@ namespace QolaMVC.DAL
                 SqlDataAdapter l_DA = new SqlDataAdapter();
                 SqlCommand l_Cmd = new SqlCommand("spAB_Get_Activity_Events_C2", l_Conn);
                 l_Cmd.Parameters.AddWithValue("@homeid", homeid);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                DataSet homeReceive = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(homeReceive);
+
+                if ((homeReceive != null) && (homeReceive.Tables.Count > 0) && (homeReceive.Tables[0].Rows.Count > 0))
+                {
+                    foreach (DataRow homeTypeRow in homeReceive.Tables[0].Rows)
+                    {
+                        l_Event = new ActivityEventModel();
+
+                        l_Event.ProgramId = Convert.ToInt32(homeTypeRow["Id"]);
+                        l_Event.ActivityId = Convert.ToInt32(homeTypeRow["ActivityId"]);
+                        l_Event.ProgramName = Convert.ToString(homeTypeRow["EventTitle"]);
+                        l_Event.ProgramStartDate = Convert.ToDateTime(homeTypeRow["StartDate"]);
+                        l_Event.ProgramEndDate = Convert.ToDateTime(homeTypeRow["EndDate"]);
+                        l_Event.ProgramStartTime = Convert.ToString(homeTypeRow["StartTime"]);
+                        l_Event.ProgramEndTime = Convert.ToString(homeTypeRow["EndTime"]);
+                        l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
+                        l_Event.note = Convert.ToString(homeTypeRow["note"]);
+                        l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
+
+                        l_Events.Add(l_Event);
+                    }
+                }
+                return l_Events;
+            }
+            catch (Exception ex)
+            {
+                exception = "GetActivityEvents |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+        public static Collection<ActivityEventModel> GetActivityEvents_C2_between(int homeid, string start, string end)
+        {
+            string exception = string.Empty;
+            Collection<ActivityEventModel> l_Events = new Collection<ActivityEventModel>();
+            ActivityEventModel l_Event;
+            //UserModel l_User;
+            //ResidentModel l_Resident;
+            //SuiteModel l_Suite;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_Activity_Events_C2_between", l_Conn);
+                l_Cmd.Parameters.AddWithValue("@homeid", homeid);
+                l_Cmd.Parameters.AddWithValue("@start", start);
+                l_Cmd.Parameters.AddWithValue("@end", end);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 DataSet homeReceive = new DataSet();
@@ -2228,6 +2340,62 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
+        public static Collection<ActivityEventModel> GetActivityEvents_C3_between(int homeid, string start, string end)
+        {
+            string exception = string.Empty;
+            Collection<ActivityEventModel> l_Events = new Collection<ActivityEventModel>();
+            ActivityEventModel l_Event;
+            //UserModel l_User;
+            //ResidentModel l_Resident;
+            //SuiteModel l_Suite;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_Activity_Events_C3_between", l_Conn);
+                l_Cmd.Parameters.AddWithValue("@homeid", homeid);
+                l_Cmd.Parameters.AddWithValue("@start", start);
+                l_Cmd.Parameters.AddWithValue("@end", end);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                DataSet homeReceive = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(homeReceive);
+
+                if ((homeReceive != null) && (homeReceive.Tables.Count > 0) && (homeReceive.Tables[0].Rows.Count > 0))
+                {
+                    foreach (DataRow homeTypeRow in homeReceive.Tables[0].Rows)
+                    {
+                        l_Event = new ActivityEventModel();
+
+                        l_Event.ProgramId = Convert.ToInt32(homeTypeRow["Id"]);
+                        l_Event.ActivityId = Convert.ToInt32(homeTypeRow["ActivityId"]);
+                        l_Event.ProgramName = Convert.ToString(homeTypeRow["EventTitle"]);
+                        l_Event.ProgramStartDate = Convert.ToDateTime(homeTypeRow["StartDate"]);
+                        l_Event.ProgramEndDate = Convert.ToDateTime(homeTypeRow["EndDate"]);
+                        l_Event.ProgramStartTime = Convert.ToString(homeTypeRow["StartTime"]);
+                        l_Event.ProgramEndTime = Convert.ToString(homeTypeRow["EndTime"]);
+                        l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
+                        l_Event.note = Convert.ToString(homeTypeRow["note"]);
+                        l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
+
+                        l_Events.Add(l_Event);
+                    }
+                }
+                return l_Events;
+            }
+            catch (Exception ex)
+            {
+                exception = "GetActivityEvents |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
         public static int AddNewActivityEvent_C3(ActivityEventModel p_Model, int homeid)
         {
             int retunvalue = 0;
@@ -2316,6 +2484,62 @@ namespace QolaMVC.DAL
                 SqlDataAdapter l_DA = new SqlDataAdapter();
                 SqlCommand l_Cmd = new SqlCommand("spAB_Get_Activity_Events_C4", l_Conn);
                 l_Cmd.Parameters.AddWithValue("@homeid", homeid);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                DataSet homeReceive = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(homeReceive);
+
+                if ((homeReceive != null) && (homeReceive.Tables.Count > 0) && (homeReceive.Tables[0].Rows.Count > 0))
+                {
+                    foreach (DataRow homeTypeRow in homeReceive.Tables[0].Rows)
+                    {
+                        l_Event = new ActivityEventModel();
+
+                        l_Event.ProgramId = Convert.ToInt32(homeTypeRow["Id"]);
+                        l_Event.ActivityId = Convert.ToInt32(homeTypeRow["ActivityId"]);
+                        l_Event.ProgramName = Convert.ToString(homeTypeRow["EventTitle"]);
+                        l_Event.ProgramStartDate = Convert.ToDateTime(homeTypeRow["StartDate"]);
+                        l_Event.ProgramEndDate = Convert.ToDateTime(homeTypeRow["EndDate"]);
+                        l_Event.ProgramStartTime = Convert.ToString(homeTypeRow["StartTime"]);
+                        l_Event.ProgramEndTime = Convert.ToString(homeTypeRow["EndTime"]);
+                        l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
+                        l_Event.note = Convert.ToString(homeTypeRow["note"]);
+                        l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
+
+                        l_Events.Add(l_Event);
+                    }
+                }
+                return l_Events;
+            }
+            catch (Exception ex)
+            {
+                exception = "GetActivityEvents |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+        public static Collection<ActivityEventModel> GetActivityEvents_C4_between(int homeid, string start, string end)
+        {
+            string exception = string.Empty;
+            Collection<ActivityEventModel> l_Events = new Collection<ActivityEventModel>();
+            ActivityEventModel l_Event;
+            //UserModel l_User;
+            //ResidentModel l_Resident;
+            //SuiteModel l_Suite;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_Activity_Events_C4_between", l_Conn);
+                l_Cmd.Parameters.AddWithValue("@homeid", homeid);
+                l_Cmd.Parameters.AddWithValue("@start", start);
+                l_Cmd.Parameters.AddWithValue("@end", end);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 DataSet homeReceive = new DataSet();

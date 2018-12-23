@@ -226,7 +226,7 @@
 
                                     <li class="nav-item" style="width:30%;margin-left:10%;">
                                         <label style="display:inline-block;font-size:1vw;font-weight:bold;">Category:</label>
-                                        <select class="nav-link" id="categorychoose" style="display:inline-block;" onchange="changeCategory(this.value)">
+                                        <select class="nav-link" id="categorychoose" style="display:inline-block;" onchange="changeCategory2(this.value)">
                                             <option value="0">All</option>
                                             @{ 
                                                 foreach(var Category in ViewBag.ActivityCategory)
@@ -1987,8 +1987,10 @@
             Update_When_Change_Date(dateselect);
         }
 
+        refetch_one_Calendar_Events_Based_On_Current_Date_Between_And_Calendar();
 
         var DWM = $('#DWM').val();
+    
         if (DWM == "month" && $(whichcalendar + ' #imgBot').length == 0) {
             getImage();
         }
@@ -2049,7 +2051,10 @@
             Update_When_Change_Date(dateselect);
         }
 
+        refetch_one_Calendar_Events_Based_On_Current_Date_Between_And_Calendar();
+
         var DWM = $('#DWM').val();
+
         if (DWM == "month" && $(whichcalendar + ' #imgBot').length == 0) {
 
             getImage();
@@ -2129,6 +2134,420 @@
                     '');
             }
         });
+    }
+
+    function refetch_one_Calendar_Events_Based_On_Current_Date_Between_And_Calendar() {
+
+        var category = $('#categorychoose').val();
+        var tab = $('#hiddentab').val();
+        var DWM = $('#DWM').val();
+
+        if (category == '0') {
+            if (DWM == "month" || DWM == "week") {
+
+                if (tab == "a" || tab == "") {
+                    var showdate = document.getElementById("lblCalendarMsg").innerHTML;
+                    var ggg = getStartEnddate(showdate);
+                    var firstDayString = ggg[0];
+                    var lastDayString = ggg[1];
+                    $('#calendar').fullCalendar("removeEvents");
+                    $.ajax({
+                        type: "GET",
+                        url: "/home/getEvents_mike_between",
+                        data: { start: firstDayString, end: lastDayString },
+                        success: function (data) {
+                            $.each(data, function (i, v) {
+
+
+                                data.push({
+                                    Id: v.id,
+                                    title: v.title,
+                                    start: v.startT,
+                                    end: v.endT != null ? v.endT : null,
+                                    startDate: v.startDate,
+                                    Venue: v.Venue,
+                                    Note: v.note,
+                                    Category: v.Category,
+                                    ActivityID: v.ActivityId,
+                                    startTime: v.startTime
+                                });
+
+                            })
+                            $('#calendar').fullCalendar('renderEvents', data);
+
+                        },
+
+                        error: function (error) {
+                            tempAlert('failed', 2000);
+                        }
+                    })
+                }
+                else if (tab == "b") {
+                    var showdate = document.getElementById("lblCalendarMsg2").innerHTML;
+                    var ggg = getStartEnddate(showdate);
+                    var firstDayString = ggg[0];
+                    var lastDayString = ggg[1];
+
+                    $('#calendar2').fullCalendar("removeEvents");
+                    $.ajax({
+                        type: "GET",
+                        url: "/home/getEvents_C2_mike_between",
+                        data: { start: firstDayString, end: lastDayString },
+                        success: function (data) {
+                            $.each(data, function (i, v) {
+
+
+                                data.push({
+                                    Id: v.id,
+                                    title: v.title,
+                                    start: v.startT,
+                                    end: v.endT != null ? v.endT : null,
+                                    startDate: v.startDate,
+                                    Venue: v.Venue,
+                                    Note: v.note,
+                                    Category: v.Category,
+                                    ActivityID: v.ActivityId,
+                                    startTime: v.startTime
+                                });
+
+                            })
+                            $('#calendar2').fullCalendar('renderEvents', data);
+
+                        },
+
+                        error: function (error) {
+                            tempAlert('failed', 2000);
+                        }
+                    })
+                }
+                else if (tab == "c") {
+                    var showdate = document.getElementById("lblCalendarMsg3").innerHTML;
+                    var ggg = getStartEnddate(showdate);
+                    var firstDayString = ggg[0];
+                    var lastDayString = ggg[1];
+
+                    $('#calendar3').fullCalendar("removeEvents");
+                    $.ajax({
+                        type: "GET",
+                        url: "/home/getEvents_C3_mike_between",
+                        data: { start: firstDayString, end: lastDayString },
+                        success: function (data) {
+                            $.each(data, function (i, v) {
+
+
+                                data.push({
+                                    Id: v.id,
+                                    title: v.title,
+                                    start: v.startT,
+                                    end: v.endT != null ? v.endT : null,
+                                    startDate: v.startDate,
+                                    Venue: v.Venue,
+                                    Note: v.note,
+                                    Category: v.Category,
+                                    ActivityID: v.ActivityId,
+                                    startTime: v.startTime
+                                });
+
+                            })
+                            $('#calendar3').fullCalendar('renderEvents', data);
+
+                        },
+
+                        error: function (error) {
+                            tempAlert('failed', 2000);
+                        }
+                    })
+                }
+                else if (tab == "d") {
+                    var showdate = document.getElementById("lblCalendarMsg4").innerHTML;
+                    var ggg = getStartEnddate(showdate);
+                    var firstDayString = ggg[0];
+                    var lastDayString = ggg[1];
+
+                    $('#calendar4').fullCalendar("removeEvents");
+                    $.ajax({
+                        type: "GET",
+                        url: "/home/getEvents_C4_mike_between",
+                        data: { start: firstDayString, end: lastDayString },
+                        success: function (data) {
+                            $.each(data, function (i, v) {
+
+
+                                data.push({
+                                    Id: v.id,
+                                    title: v.title,
+                                    start: v.startT,
+                                    end: v.endT != null ? v.endT : null,
+                                    startDate: v.startDate,
+                                    Venue: v.Venue,
+                                    Note: v.note,
+                                    Category: v.Category,
+                                    ActivityID: v.ActivityId,
+                                    startTime: v.startTime
+                                });
+
+                            })
+                            $('#calendar4').fullCalendar('renderEvents', data);
+
+                        },
+
+                        error: function (error) {
+                            tempAlert('failed', 2000);
+                        }
+                    })
+                }
+            }
+        }
+        else {
+            if (DWM == "month" || DWM == "week") {
+
+                if (tab == "a" || tab == "") {
+                    var showdate = document.getElementById("lblCalendarMsg").innerHTML;
+                    var ggg = getStartEnddate(showdate);
+                    var firstDayString = ggg[0];
+                    var lastDayString = ggg[1];
+                    $('#calendar').fullCalendar("removeEvents");
+                    $.ajax({
+                        type: "GET",
+                        url: "/home/getEvents_mike_between",
+                        data: { start: firstDayString, end: lastDayString },
+                        success: function (data) {
+                            $.each(data, function (i, v) {
+                                if (v.Category == category) {
+                                    data.push({
+                                        Id: v.id,
+                                        title: v.title,
+                                        start: v.startT,
+                                        end: v.endT != null ? v.endT : null,
+                                        startDate: v.startDate,
+                                        Venue: v.Venue,
+                                        Note: v.note,
+                                        Category: v.Category,
+                                        ActivityID: v.ActivityId,
+                                        startTime: v.startTime
+                                    });
+                                }
+
+
+
+                            })
+                            $('#calendar').fullCalendar('renderEvents', data);
+
+                        },
+
+                        error: function (error) {
+                            tempAlert('failed', 2000);
+                        }
+                    })
+                }
+                else if (tab == "b") {
+                    var showdate = document.getElementById("lblCalendarMsg2").innerHTML;
+                    var ggg = getStartEnddate(showdate);
+                    var firstDayString = ggg[0];
+                    var lastDayString = ggg[1];
+
+                    $('#calendar2').fullCalendar("removeEvents");
+                    $.ajax({
+                        type: "GET",
+                        url: "/home/getEvents_C2_mike_between",
+                        data: { start: firstDayString, end: lastDayString },
+                        success: function (data) {
+                            $.each(data, function (i, v) {
+
+                                if (v.Category == category) {
+                                    data.push({
+                                        Id: v.id,
+                                        title: v.title,
+                                        start: v.startT,
+                                        end: v.endT != null ? v.endT : null,
+                                        startDate: v.startDate,
+                                        Venue: v.Venue,
+                                        Note: v.note,
+                                        Category: v.Category,
+                                        ActivityID: v.ActivityId,
+                                        startTime: v.startTime
+                                    });
+                                }
+                                    
+
+
+
+                            })
+                            $('#calendar2').fullCalendar('renderEvents', data);
+
+                        },
+
+                        error: function (error) {
+                            tempAlert('failed', 2000);
+                        }
+                    })
+                }
+                else if (tab == "c") {
+                    var showdate = document.getElementById("lblCalendarMsg3").innerHTML;
+                    var ggg = getStartEnddate(showdate);
+                    var firstDayString = ggg[0];
+                    var lastDayString = ggg[1];
+
+                    $('#calendar3').fullCalendar("removeEvents");
+                    $.ajax({
+                        type: "GET",
+                        url: "/home/getEvents_C3_mike_between",
+                        data: { start: firstDayString, end: lastDayString },
+                        success: function (data) {
+                            $.each(data, function (i, v) {
+
+                                if (v.Category == category) {
+                                    data.push({
+                                        Id: v.id,
+                                        title: v.title,
+                                        start: v.startT,
+                                        end: v.endT != null ? v.endT : null,
+                                        startDate: v.startDate,
+                                        Venue: v.Venue,
+                                        Note: v.note,
+                                        Category: v.Category,
+                                        ActivityID: v.ActivityId,
+                                        startTime: v.startTime
+                                    });
+                                }
+
+
+
+                            })
+                            $('#calendar3').fullCalendar('renderEvents', data);
+
+                        },
+
+                        error: function (error) {
+                            tempAlert('failed', 2000);
+                        }
+                    })
+                }
+                else if (tab == "d") {
+                    var showdate = document.getElementById("lblCalendarMsg4").innerHTML;
+                    var ggg = getStartEnddate(showdate);
+                    var firstDayString = ggg[0];
+                    var lastDayString = ggg[1];
+
+                    $('#calendar4').fullCalendar("removeEvents");
+                    $.ajax({
+                        type: "GET",
+                        url: "/home/getEvents_C4_mike_between",
+                        data: { start: firstDayString, end: lastDayString },
+                        success: function (data) {
+                            $.each(data, function (i, v) {
+
+                                if (v.Category == category) {
+                                    data.push({
+                                        Id: v.id,
+                                        title: v.title,
+                                        start: v.startT,
+                                        end: v.endT != null ? v.endT : null,
+                                        startDate: v.startDate,
+                                        Venue: v.Venue,
+                                        Note: v.note,
+                                        Category: v.Category,
+                                        ActivityID: v.ActivityId,
+                                        startTime: v.startTime
+                                    });
+                                }
+
+
+
+                            })
+                            $('#calendar4').fullCalendar('renderEvents', data);
+
+                        },
+
+                        error: function (error) {
+                            tempAlert('failed', 2000);
+                        }
+                    })
+                }
+            }
+        }
+
+
+
+        
+
+    }
+
+    function getStartEnddate(showdate) {
+        var ggg = [];
+        var DWM = $('#DWM').val();
+        if (DWM == "month") {
+            var newshowdate = new Date(showdate);
+            var y = newshowdate.getFullYear();
+            var m = newshowdate.getMonth();
+            var firstDay = new Date(y, m, 1);
+            var lastDay = new Date(y, m + 1, 0);
+
+            if (firstDay.getMonth() + 1 < 10) {
+                monthstring_first = '0' + (firstDay.getMonth() + 1).toString();
+            }
+            else {
+                monthstring_first = (firstDay.getMonth() + 1).toString();
+            }
+
+            if (lastDay.getMonth() + 1 < 10) {
+                monthstring_last = '0' + (lastDay.getMonth() + 1).toString();
+            }
+            else {
+                monthstring_last = (lastDay.getMonth() + 1).toString();
+            }
+
+
+            var firstDayString = firstDay.getFullYear() + '-' + monthstring_first + '-01';
+            var lastDayString = lastDay.getFullYear() + '-' + monthstring_last + '-' + lastDay.getDate();
+            ggg.push(firstDayString);
+            ggg.push(lastDayString);
+           
+        }
+        else if (DWM == 'week') {
+
+            if (showdate.indexOf('–') > 0) {
+                if (showdate.substring(0, showdate.indexOf('–')).indexOf(',') < 0) {
+                    startdate = new Date(showdate.substring(0, showdate.indexOf('–')) + showdate.substring(showdate.length - 4))
+                }
+                else {
+                    startdate = new Date(showdate.substring(0, showdate.indexOf('–')));
+                }
+
+                enddate = new Date(startdate.getFullYear(), startdate.getMonth(), startdate.getDate() + 6);
+            }
+            if (startdate.getMonth() + 1 < 10) {
+                var monthstring_start = '0' + (startdate.getMonth() + 1).toString();
+            }
+            else {
+                var monthstring_start = (startdate.getMonth() + 1).toString();
+            }
+            if (startdate.getDate() < 10) {
+                var daystring_start = '0' + (startdate.getDate()).toString();
+            }
+            else {
+                var daystring_start = (startdate.getDate()).toString();
+            }
+
+            if (enddate.getMonth() + 1 < 10) {
+                var monthstring_end = '0' + (enddate.getMonth() + 1).toString();
+            }
+            else {
+                var monthstring_end = (enddate.getMonth() + 1).toString();
+            }
+            if (enddate.getDate() < 10) {
+                var daystring_end = '0' + (enddate.getDate()).toString();
+            }
+            else {
+                var daystring_end = (enddate.getDate()).toString();
+            }
+
+            var startDayString = startdate.getFullYear() + '-' + monthstring_start + '-' + daystring_start;
+            var endDayString = enddate.getFullYear() + '-' + monthstring_end + '-' + daystring_end;
+            ggg.push(startDayString);
+            ggg.push(endDayString);
+        }
+        return ggg;
     }
 
 </script>
@@ -2311,10 +2730,17 @@
 
 <script>
     $(document).ready(function () {
+        var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+        var firstDay = new Date(y, m, 1);
+        var lastDay = new Date(y, m + 1, 0);
+        var firstDayString = firstDay.getFullYear() + '-' + (firstDay.getMonth() + 1).toString() + '-01';
+        var lastDayString = lastDay.getFullYear() + '-' + (lastDay.getMonth() + 1).toString() + '-' + lastDay.getDate();
+
 
         $.ajax({
             type: "GET",
-            url: "/home/getEvents_mike",
+            url: "/home/getEvents_mike_between",
+            data: {start: firstDayString,end: lastDayString},
             success: function (data) {
                 $.each(data, function (i, v) {
                     data.push({
@@ -2341,7 +2767,8 @@
 
         $.ajax({
             type: "GET",
-            url: "/home/getEvents_C2_mike",
+            url: "/home/getEvents_C2_mike_between",
+            data: { start: firstDayString, end: lastDayString },
             success: function (data) {
                 $.each(data, function (i, v) {
                     data.push({
@@ -2367,7 +2794,8 @@
 
         $.ajax({
             type: "GET",
-            url: "/home/getEvents_C3_mike",
+            url: "/home/getEvents_C3_mike_between",
+            data: { start: firstDayString, end: lastDayString },
             success: function (data) {
                 $.each(data, function (i, v) {
                     data.push({
@@ -2393,7 +2821,8 @@
 
         $.ajax({
             type: "GET",
-            url: "/home/getEvents_C4_mike",
+            url: "/home/getEvents_C4_mike_between",
+            data: { start: firstDayString, end: lastDayString },
             success: function (data) {
                 $.each(data, function (i, v) {
                     data.push({
@@ -3089,6 +3518,10 @@
       
     }
 
+    function changeCategory2(ee) {
+        refetch_one_Calendar_Events_Based_On_Current_Date_Between_And_Calendar();
+        update_day_div_all(ee);
+    }
 
     function changeCategory2_not_using_right_now() {
         $('#calendar .fc-event .fc-content b').each(function () {
@@ -4140,6 +4573,7 @@
             $('.card-block').height($('#calendar').height() + 200);
 
         }
+        refetch_one_Calendar_Events_Based_On_Current_Date_Between_And_Calendar();
 
 
 
@@ -4163,6 +4597,8 @@
         $('#week1').css("background-color", "cornflowerblue");
         $('#day1').css("background-color", "#015093");
         $('#month1').css("background-color", "#015093");
+
+        refetch_one_Calendar_Events_Based_On_Current_Date_Between_And_Calendar();
     });
     $("#day1").click(function () {
         //$('#calendar1Parent').css('width', '60%');
@@ -4208,6 +4644,7 @@
             $('.card-block').height($('#calendar2').height() + 200);
 
         }
+        refetch_one_Calendar_Events_Based_On_Current_Date_Between_And_Calendar();
     });
     $("#week2").click(function () {
         //$('#calendar2Parent').css('width', '100%');
@@ -4227,6 +4664,8 @@
         $('#week2').css("background-color", "cornflowerblue");
         $('#day2').css("background-color", "#015093");
         $('#month2').css("background-color", "#015093");
+
+        refetch_one_Calendar_Events_Based_On_Current_Date_Between_And_Calendar();
     });
     $("#day2").click(function () {
         //$('#calendar2Parent').css('width', '60%');
@@ -4272,6 +4711,7 @@
             $('.card-block').height($('#calendar3').height() + 200);
 
         }
+        refetch_one_Calendar_Events_Based_On_Current_Date_Between_And_Calendar();
     });
     $("#week3").click(function () {
         //$('#calendar3Parent').css('width', '100%');
@@ -4291,6 +4731,8 @@
         $('#week3').css("background-color", "cornflowerblue");
         $('#day3').css("background-color", "#015093");
         $('#month3').css("background-color", "#015093");
+
+        refetch_one_Calendar_Events_Based_On_Current_Date_Between_And_Calendar();
     });
     $("#day3").click(function () {
         //$('#calendar3Parent').css('width', '60%');
@@ -4336,6 +4778,7 @@
             $('.card-block').height($('#calendar4').height() + 200);
 
         }
+        refetch_one_Calendar_Events_Based_On_Current_Date_Between_And_Calendar();
     });
     $("#week4").click(function () {
         //$('#calendar4Parent').css('width', '100%');
@@ -4355,6 +4798,9 @@
         $('#week4').css("background-color", "cornflowerblue");
         $('#day4').css("background-color", "#015093");
         $('#month4').css("background-color", "#015093");
+
+
+        refetch_one_Calendar_Events_Based_On_Current_Date_Between_And_Calendar();
     });
     $("#day4").click(function () {
         //$('#calendar4Parent').css('width', '60%');

@@ -2662,6 +2662,45 @@ namespace QolaMVC.Controllers
             return Json(l_Events, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        public JsonResult getEvents_mike_between(string start, string end)
+        {
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("Home");
+            ViewBag.Home = home;
+            var l_ActivityEvents = HomeDAL.GetActivityEvents_between(home.Id,start,end);
+
+            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
+
+            foreach (var l_Data in l_ActivityEvents)
+            {
+                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
+                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
+
+                var columns = new Dictionary<string, string>
+                {
+                    { "id", l_Data.ProgramId.ToString()},
+                    { "title", l_Data.ProgramName},
+                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
+                    { "endDate", ggend.ToString("yyyy-MM-dd")},
+                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "Venue", l_Data.Venue},
+                    { "note", l_Data.note},
+                    { "Category", l_Data.CategoryId},
+                    { "ActivityId", l_Data.ActivityId.ToString()}
+
+                };
+
+                l_Events.Add(columns);
+            }
+
+
+            return Json(l_Events, JsonRequestBehavior.AllowGet);
+        }
+
         #region Activity_Calendar_Add
         [HttpPost]
         public JsonResult AddEvents_mike(string aa,string bb,string cc,string dd,string ee,string ff,string gg,string hh,string ii,string fre)
@@ -4095,6 +4134,44 @@ namespace QolaMVC.Controllers
             return Json(l_Events, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult getEvents_C2_mike_between(string start, string end)
+        {
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("Home");
+            ViewBag.Home = home;
+            var l_ActivityEvents = HomeDAL.GetActivityEvents_C2_between(home.Id, start, end);
+
+            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
+
+            foreach (var l_Data in l_ActivityEvents)
+            {
+                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
+                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
+
+                var columns = new Dictionary<string, string>
+                {
+                    { "id", l_Data.ProgramId.ToString()},
+                    { "title", l_Data.ProgramName},
+                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
+                    { "endDate", ggend.ToString("yyyy-MM-dd")},
+                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "Venue", l_Data.Venue},
+                    { "note", l_Data.note},
+                    { "Category", l_Data.CategoryId},
+                    { "ActivityId", l_Data.ActivityId.ToString()}
+
+                };
+
+                l_Events.Add(columns);
+            }
+
+
+            return Json(l_Events, JsonRequestBehavior.AllowGet);
+        }
+
 
         #endregion
 
@@ -4263,6 +4340,44 @@ namespace QolaMVC.Controllers
 
             return Json(l_Events, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult getEvents_C3_mike_between(string start, string end)
+        {
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("Home");
+            ViewBag.Home = home;
+            var l_ActivityEvents = HomeDAL.GetActivityEvents_C3_between(home.Id, start, end);
+
+            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
+
+            foreach (var l_Data in l_ActivityEvents)
+            {
+                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
+                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
+
+                var columns = new Dictionary<string, string>
+                {
+                    { "id", l_Data.ProgramId.ToString()},
+                    { "title", l_Data.ProgramName},
+                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
+                    { "endDate", ggend.ToString("yyyy-MM-dd")},
+                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "Venue", l_Data.Venue},
+                    { "note", l_Data.note},
+                    { "Category", l_Data.CategoryId},
+                    { "ActivityId", l_Data.ActivityId.ToString()}
+
+                };
+
+                l_Events.Add(columns);
+            }
+
+
+            return Json(l_Events, JsonRequestBehavior.AllowGet);
+        }
         #endregion
 
         #region calendar 4
@@ -4399,6 +4514,44 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             ViewBag.Home = home;
             var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get_C4(home.Id);
+
+            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
+
+            foreach (var l_Data in l_ActivityEvents)
+            {
+                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
+                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
+
+                var columns = new Dictionary<string, string>
+                {
+                    { "id", l_Data.ProgramId.ToString()},
+                    { "title", l_Data.ProgramName},
+                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
+                    { "endDate", ggend.ToString("yyyy-MM-dd")},
+                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "Venue", l_Data.Venue},
+                    { "note", l_Data.note},
+                    { "Category", l_Data.CategoryId},
+                    { "ActivityId", l_Data.ActivityId.ToString()}
+
+                };
+
+                l_Events.Add(columns);
+            }
+
+
+            return Json(l_Events, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult getEvents_C4_mike_between(string start, string end)
+        {
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("Home");
+            ViewBag.Home = home;
+            var l_ActivityEvents = HomeDAL.GetActivityEvents_C4_between(home.Id, start, end);
 
             List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
 
