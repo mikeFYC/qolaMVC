@@ -112,9 +112,15 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="" class="col-form-label">User Type<span class="required_sign">&nbsp;*</span></label>
-                                                <select class="form-control" name="UserType">
+                                                <select class="form-control" name="UserType" onchange="UserTypeChange(this.value)">
                                                     <option value="0">-- User Type --</option>
-                                                    <option value="1">Head Office</option>
+                                                    @{
+                                                        if (ViewBag.User.UserType == 1)
+                                                        {
+                                                            <option value="1">Head Office</option>
+                                                        }
+                                                    }
+
                                                     <option value="2">Regional Manager</option>
                                                     <option value="3">Executive Director</option>
                                                     <option value="13">Marketing Director</option>
@@ -143,7 +149,7 @@
                                             <div class="form-group">
                                                 <label for="" class="col-form-label">Home<span class="required_sign">&nbsp;*</span></label>
                                                 <div class="multiselect" style="width:99%;">
-                                                    <div class="selectBox" onclick="showCheckboxes()">
+                                                    <div class="selectBox" onclick="">
                                                         <select style="height: 5vh;">
                                                             <option>&nbsp;&nbsp;&nbsp;-- Select --</option>
                                                         </select>
@@ -475,19 +481,82 @@
         }
     }
 
-
     var expanded = false;
 
-    function showCheckboxes() {
-        var checkboxes = document.getElementById("checkboxes");
-        if (!expanded) {
-            checkboxes.style.display = "block";
-            expanded = true;
-        } else {
-            checkboxes.style.display = "none";
-            expanded = false;
+    //function showCheckboxes() {
+    //    var checkboxes = document.getElementById("checkboxes");
+    //    if (!expanded) {
+    //        checkboxes.style.display = "block";
+    //        expanded = true;
+    //    } else {
+    //        checkboxes.style.display = "none";
+    //        expanded = false;
+    //    }
+    //}
+
+    function getoptionString() {
+        var selectString = "";
+        var moreStringNumber = 0;
+        var boolString = 'true';
+        $('#checkboxes label input').each(function () {
+            if (this.checked == true) {
+                if (boolString == 'true') {
+                    var string = this.parentElement.innerText;
+                    var index = string.indexOf(' ', string.indexOf(' ') + 1);
+                    if (index > 0) {
+                        selectString = string.substring(0, index);
+                    }
+                    else {
+                        selectString = string;
+                    }
+                    boolString = 'false';
+
+                }
+                else {
+                    moreStringNumber++;
+                }
+            }
+        })
+        if (selectString.trim() != '') {
+            $('.selectBox select option:first').html('\xa0\xa0\xa0' + selectString.trim() + '\xa0\xa0\xa0\xa0\xa0 +' + moreStringNumber + ' more');
+        }
+        else {
+            $('.selectBox select option:first').html('\xa0\xa0\xa0-- Select --');
         }
     }
+
+    $(window).load(function () {
+
+        getoptionString();
+       
+        var except = document.getElementsByClassName('selectBox');
+        var except2 = document.getElementById('checkboxes');
+        document.body.addEventListener("click", function () {
+            if ($('#checkboxes').is(":visible") == true) {
+                checkboxes.style.display = "none";
+                getoptionString();
+            } 
+        }, false);
+        except[0].addEventListener("click", function (ev) {
+            
+            if ($('#checkboxes').is(":visible")==false) {
+                checkboxes.style.display = "block";
+            } else {
+                checkboxes.style.display = "none";
+                getoptionString();
+            }
+            ev.stopPropagation(); 
+            
+        }, false);
+        except2.addEventListener("click", function (ev) {
+
+            ev.stopPropagation();
+
+        }, false);
+
+    });
+
+
 
 
     $('#checkboxes label input:first').change(function () {
@@ -508,5 +577,16 @@
             }
         }
     });
+
+
+
+
+
+    function UserTypeChange(ee) {
+        if (ee == '1') {
+
+        }
+    }
+
 
 </script>
