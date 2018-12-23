@@ -42,8 +42,7 @@
             min-height: 2.8vh;
             font-size: 1vw !important;
         }
-
-        .fc-month-view span.fc-title {
+            .fc-month-view span.fc-title {
             white-space: normal !important;
         }
 
@@ -194,6 +193,9 @@
                     <div class="card">
                         <div class="card-block">
                             <div class="form-tabs mt-4" id="AC_FirstRow">
+
+
+
                                 @{
                                     var name1 = "Independent Calendar";
                                     var name2 = "Memory Care Calendar";
@@ -220,6 +222,19 @@
                                     <li class="nav-item">
                                         <a class="nav-link" id="pills-achive-tab3" data-toggle="pill" href="#pills-C4" role="tab" aria-controls="pills-C4" aria-selected="false" onclick="calendar_four()"><p id="calendar4_name" style="min-width:5vw;">@name4</p></a>
                                         <input type="image" style="width:1.1vw;height:1.5vh;position:absolute;margin-top:-5.3vh;margin-left:92%;background-color:white;border-radius:20%;opacity:0.90;" src="/Content/pages/img/icoedit.png" data-toggle="modal" data-target="#Calendar_Name_Change" onclick="calendar_change_name_click(this)">
+                                    </li>
+
+                                    <li class="nav-item" style="width:30%;margin-left:10%;">
+                                        <label style="display:inline-block;font-size:1vw;font-weight:bold;">Category:</label>
+                                        <select class="nav-link" id="categorychoose" style="display:inline-block;" onchange="changeCategory(this.value)">
+                                            <option value="0">All</option>
+                                            @{ 
+                                                foreach(var Category in ViewBag.ActivityCategory)
+                                                {
+                                                    <option value="@Category.Id">@Category.EnglishName</option>
+                                                }
+                                            }
+                                        </select>
                                     </li>
                                 </ul>
                                 <br>
@@ -325,11 +340,11 @@
 
                                             @*<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top:-12vh;margin-left:38%;padding-bottom:5%;">
 
-                                                    <li class="Prevbtn"><a id="imgPrevbtn_a" href="#" onclick="previousday_mike()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
-                                                    <li class="clear_bg"><label id="lblCalendarMsg" style="font-weight:bolder;font-size:1.5em;margin-top:1.5vh;color:black;">@TempData["datechoose"].ToString()</label></li>
-                                                    <li class="Nextbtn"><a id="imgNextbtn_a" href="#" onclick="nextday_mike()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
-                                                    <li class="Goto_Today"><button class="btn btn-primary text-white" onclick="Goto_Today()" style="border-radius:1vw;margin-top:2%;margin-left:30vw;">Today</button></li>
-                                                </ul>*@
+                                <li class="Prevbtn"><a id="imgPrevbtn_a" href="#" onclick="previousday_mike()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
+                                <li class="clear_bg"><label id="lblCalendarMsg" style="font-weight:bolder;font-size:1.5em;margin-top:1.5vh;color:black;">@TempData["datechoose"].ToString()</label></li>
+                                <li class="Nextbtn"><a id="imgNextbtn_a" href="#" onclick="nextday_mike()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
+                                <li class="Goto_Today"><button class="btn btn-primary text-white" onclick="Goto_Today()" style="border-radius:1vw;margin-top:2%;margin-left:30vw;">Today</button></li>
+                            </ul>*@
 
 
                                             <div class="tab-content" id="pills-tabContent">
@@ -399,11 +414,11 @@
 
                                             @*<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top:-12vh;margin-left:38%;padding-bottom:5%;">
 
-                                                    <li class="Prevbtn"><a href="#" onclick="previousday_mike()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
-                                                    <li class="clear_bg"><label id="lblCalendarMsg2" style="font-weight:bolder;font-size:1.5em;margin-top:1.5vh;color:black">@TempData["datechoose"].ToString()</label></li>
-                                                    <li class="Nextbtn"><a href="#" onclick="nextday_mike()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
-                                                    <li class="Goto_Today"><button class="btn btn-primary text-white" onclick="Goto_Today()" style="border-radius:1vw;margin-top:2%;margin-left:30vw;">Today</button></li>
-                                                </ul>*@
+                                <li class="Prevbtn"><a href="#" onclick="previousday_mike()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
+                                <li class="clear_bg"><label id="lblCalendarMsg2" style="font-weight:bolder;font-size:1.5em;margin-top:1.5vh;color:black">@TempData["datechoose"].ToString()</label></li>
+                                <li class="Nextbtn"><a href="#" onclick="nextday_mike()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
+                                <li class="Goto_Today"><button class="btn btn-primary text-white" onclick="Goto_Today()" style="border-radius:1vw;margin-top:2%;margin-left:30vw;">Today</button></li>
+                            </ul>*@
 
                                             <div class="tab-content" id="pills-tabContent">
                                                 <div class="tab-pane fade show active" id="pills-day" role="tabpanel" aria-labelledby="pills-home-tab">
@@ -472,11 +487,11 @@
 
                                             @*<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top:-12vh;margin-left:38%;padding-bottom:5%;">
 
-                                                    <li class="Prevbtn"><a href="#" onclick="previousday_mike()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
-                                                    <li class="clear_bg"><label id="lblCalendarMsg3" style="font-weight:bolder;font-size:1.5em;margin-top:1.5vh;color:black">@TempData["datechoose"].ToString()</label></li>
-                                                    <li class="Nextbtn"><a href="#" onclick="nextday_mike()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
-                                                    <li class="Goto_Today"><button class="btn btn-primary text-white" onclick="Goto_Today()" style="border-radius:1vw;margin-top:2%;margin-left:30vw;">Today</button></li>
-                                                </ul>*@
+                                <li class="Prevbtn"><a href="#" onclick="previousday_mike()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
+                                <li class="clear_bg"><label id="lblCalendarMsg3" style="font-weight:bolder;font-size:1.5em;margin-top:1.5vh;color:black">@TempData["datechoose"].ToString()</label></li>
+                                <li class="Nextbtn"><a href="#" onclick="nextday_mike()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
+                                <li class="Goto_Today"><button class="btn btn-primary text-white" onclick="Goto_Today()" style="border-radius:1vw;margin-top:2%;margin-left:30vw;">Today</button></li>
+                            </ul>*@
 
                                             <div class="tab-content" id="pills-tabContent">
                                                 <div class="tab-pane fade show active" id="pills-day" role="tabpanel" aria-labelledby="pills-home-tab">
@@ -545,11 +560,11 @@
 
                                             @*<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top:-12vh;margin-left:38%;padding-bottom:5%;">
 
-                                                    <li class="Prevbtn"><a href="#" onclick="previousday_mike()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
-                                                    <li class="clear_bg"><label id="lblCalendarMsg4" style="font-weight:bolder;font-size:1.5em;margin-top:1.5vh;color:black">@TempData["datechoose"].ToString()</label></li>
-                                                    <li class="Nextbtn"><a href="#" onclick="nextday_mike()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
-                                                    <li class="Goto_Today"><button class="btn btn-primary text-white" onclick="Goto_Today()" style="border-radius:1vw;margin-top:2%;margin-left:30vw;">Today</button></li>
-                                                </ul>*@
+                                <li class="Prevbtn"><a href="#" onclick="previousday_mike()"><img id="imgPrevbtn" src="~/Content/pages/img/previous.png" alt="" /></a> </li>
+                                <li class="clear_bg"><label id="lblCalendarMsg4" style="font-weight:bolder;font-size:1.5em;margin-top:1.5vh;color:black">@TempData["datechoose"].ToString()</label></li>
+                                <li class="Nextbtn"><a href="#" onclick="nextday_mike()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
+                                <li class="Goto_Today"><button class="btn btn-primary text-white" onclick="Goto_Today()" style="border-radius:1vw;margin-top:2%;margin-left:30vw;">Today</button></li>
+                            </ul>*@
 
                                             <div class="tab-content" id="pills-tabContent">
                                                 <div class="tab-pane fade show active" id="pills-day" role="tabpanel" aria-labelledby="pills-home-tab">
@@ -1078,13 +1093,13 @@
 
 
                                                             @*<div class="col-md-12" id="description" style="margin-top:1vw;">
-                                                                    <div class="form-group row">
-                                                                        <label for="" class="col-md-4 col-form-label">DESCRIPTION</label>
-                                                                        <div class="col-md-7">
-                                                                            <textarea class="textarea" id="description_textarea" rows="5" style="width:65% !important;max-width:100%;float:left;" name="description"></textarea>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>*@
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-4 col-form-label">DESCRIPTION</label>
+                                                    <div class="col-md-7">
+                                                        <textarea class="textarea" id="description_textarea" rows="5" style="width:65% !important;max-width:100%;float:left;" name="description"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>*@
                                                         </div>
 
                                                     </div>
@@ -1235,13 +1250,13 @@
 
 
                                                             @*<div class="col-md-12" id="description" style="margin-top:1vw;">
-                                                                    <div class="form-group row">
-                                                                        <label for="" class="col-md-4 col-form-label">DESCRIPTION</label>
-                                                                        <div class="col-md-7">
-                                                                            <textarea class="textarea" id="description_textarea" rows="5" style="width:65% !important;max-width:100%;float:left;" name="description"></textarea>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>*@
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-4 col-form-label">DESCRIPTION</label>
+                                                    <div class="col-md-7">
+                                                        <textarea class="textarea" id="description_textarea" rows="5" style="width:65% !important;max-width:100%;float:left;" name="description"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>*@
                                                         </div>
 
                                                     </div>
@@ -1626,6 +1641,10 @@
 
     a.active {
         background-color: #015093 !important;
+    }
+
+    .fc-scroller{
+        overflow:hidden !important;
     }
 </style>
 
@@ -2312,6 +2331,7 @@
                     });
                 })
                 GenerationCalendar(data);
+                
             },
 
             error: function (error) {
@@ -2435,6 +2455,9 @@
                 },
                 eventColor: 'lightgreen',
                 events: events,
+                //eventRender: function (event, element) {
+                //    element.find('.fc-title').prepend("<b style='display:none;'>" + event.Category + "</b>");
+                //},
                 dayClick: function (date, jsEvent, view) {
                     var a = $('#ADD_CANCEL');
                     var b = $('#ADD_CANCEL_title');
@@ -2498,7 +2521,7 @@
                 //$('.fc-right').show();
                 //$('#PrintDAY').css({ "display": "none" });
                 //$('#PrintWAM').css({ "display": "inline-block" });
-            })
+                })
 
         };
 
@@ -2815,7 +2838,265 @@
 
     });
 
+    function changeCategory(ee) {
+        $('#calendar').fullCalendar("removeEvents");
+        $('#calendar2').fullCalendar("removeEvents");
+        $('#calendar3').fullCalendar("removeEvents");
+        $('#calendar4').fullCalendar("removeEvents");
 
+        if (ee == '0') {
+
+            $.ajax({
+                type: "GET",
+                url: "/home/getEvents_mike",
+                success: function (data) {
+                    $.each(data, function (i, v) {
+
+
+                        data.push({
+                            Id: v.id,
+                            title: v.title,
+                            start: v.startT,
+                            end: v.endT != null ? v.endT : null,
+                            startDate: v.startDate,
+                            Venue: v.Venue,
+                            Note: v.note,
+                            Category: v.Category,
+                            ActivityID: v.ActivityId,
+                            startTime: v.startTime
+                        });
+                        
+                    })
+                    $('#calendar').fullCalendar('renderEvents', data);
+
+                },
+
+                error: function (error) {
+                    tempAlert('failed', 2000);
+                }
+            })
+
+            $.ajax({
+                type: "GET",
+                url: "/home/getEvents_C2_mike",
+                success: function (data) {
+                    $.each(data, function (i, v) {
+
+                        data.push({
+                            Id: v.id,
+                            title: v.title,
+                            start: v.startT,
+                            end: v.endT != null ? v.endT : null,
+                            startDate: v.startDate,
+                            Venue: v.Venue,
+                            Note: v.note,
+                            Category: v.Category,
+                            ActivityID: v.ActivityId,
+                            startTime: v.startTime
+                        });
+                        
+                    })
+                    $('#calendar2').fullCalendar('renderEvents', data);
+
+                },
+
+                error: function (error) {
+                    tempAlert('failed', 2000);
+                }
+            })
+
+            $.ajax({
+                type: "GET",
+                url: "/home/getEvents_C3_mike",
+                success: function (data) {
+                    $.each(data, function (i, v) {
+
+                        data.push({
+                            Id: v.id,
+                            title: v.title,
+                            start: v.startT,
+                            end: v.endT != null ? v.endT : null,
+                            startDate: v.startDate,
+                            Venue: v.Venue,
+                            Note: v.note,
+                            Category: v.Category,
+                            ActivityID: v.ActivityId,
+                            startTime: v.startTime
+                        });
+                        
+                    })
+                    $('#calendar3').fullCalendar('renderEvents', data);
+
+                },
+
+                error: function (error) {
+                    tempAlert('failed', 2000);
+                }
+            })
+
+            $.ajax({
+                type: "GET",
+                url: "/home/getEvents_C4_mike",
+                success: function (data) {
+                    $.each(data, function (i, v) {
+
+                        data.push({
+                            Id: v.id,
+                            title: v.title,
+                            start: v.startT,
+                            end: v.endT != null ? v.endT : null,
+                            startDate: v.startDate,
+                            Venue: v.Venue,
+                            Note: v.note,
+                            Category: v.Category,
+                            ActivityID: v.ActivityId,
+                            startTime: v.startTime
+                        });
+                        
+                    })
+                    $('#calendar4').fullCalendar('renderEvents', data);
+
+                },
+
+                error: function (error) {
+                    tempAlert('failed', 2000);
+                }
+            })
+        }
+        else {
+            $.ajax({
+                type: "GET",
+                url: "/home/getEvents_mike",
+                success: function (data) {
+                    $.each(data, function (i, v) {
+                        if (v.Category.toString() == ee.toString()) {
+                            data.push({
+                                Id: v.id,
+                                title: v.title,
+                                start: v.startT,
+                                end: v.endT != null ? v.endT : null,
+                                startDate: v.startDate,
+                                Venue: v.Venue,
+                                Note: v.note,
+                                Category: v.Category,
+                                ActivityID: v.ActivityId,
+                                startTime: v.startTime
+                            });
+                        }
+                    })
+                    $('#calendar').fullCalendar('renderEvents', data);
+                },
+
+                error: function (error) {
+                    tempAlert('failed', 2000);
+                }
+            })
+
+            $.ajax({
+                type: "GET",
+                url: "/home/getEvents_C2_mike",
+                success: function (data) {
+                    $.each(data, function (i, v) {
+                        if (v.Category.toString() == ee) {
+
+                            data.push({
+                                Id: v.id,
+                                title: v.title,
+                                start: v.startT,
+                                end: v.endT != null ? v.endT : null,
+                                startDate: v.startDate,
+                                Venue: v.Venue,
+                                Note: v.note,
+                                Category: v.Category,
+                                ActivityID: v.ActivityId,
+                                startTime: v.startTime
+                            });
+                        }
+                    })
+                    $('#calendar2').fullCalendar('renderEvents', data);
+
+                },
+
+                error: function (error) {
+                    tempAlert('failed', 2000);
+                }
+            })
+
+            $.ajax({
+                type: "GET",
+                url: "/home/getEvents_C3_mike",
+                success: function (data) {
+                    $.each(data, function (i, v) {
+                        if (v.Category.toString() == ee) {
+
+                            data.push({
+                                Id: v.id,
+                                title: v.title,
+                                start: v.startT,
+                                end: v.endT != null ? v.endT : null,
+                                startDate: v.startDate,
+                                Venue: v.Venue,
+                                Note: v.note,
+                                Category: v.Category,
+                                ActivityID: v.ActivityId,
+                                startTime: v.startTime
+                            });
+                        }
+                    })
+                    $('#calendar3').fullCalendar('renderEvents', data);
+
+                },
+
+                error: function (error) {
+                    tempAlert('failed', 2000);
+                }
+            })
+
+            $.ajax({
+                type: "GET",
+                url: "/home/getEvents_C4_mike",
+                success: function (data) {
+                    $.each(data, function (i, v) {
+                        if (v.Category.toString() == ee) {
+
+                            data.push({
+                                Id: v.id,
+                                title: v.title,
+                                start: v.startT,
+                                end: v.endT != null ? v.endT : null,
+                                startDate: v.startDate,
+                                Venue: v.Venue,
+                                Note: v.note,
+                                Category: v.Category,
+                                ActivityID: v.ActivityId,
+                                startTime: v.startTime
+                            });
+                        }
+                    })
+                    $('#calendar4').fullCalendar('renderEvents', data);
+
+                },
+
+                error: function (error) {
+                    tempAlert('failed', 2000);
+                }
+            })
+        }
+
+
+        update_day_div_all(ee);
+
+      
+    }
+
+
+    function changeCategory2_not_using_right_now() {
+        $('#calendar .fc-event .fc-content b').each(function () {
+            if (this.innerHTML == '1') {
+                this.parentElement.parentElement.parentElement.style.display = 'none'
+            }
+        })
+    }
 
 </script>
 
@@ -3420,6 +3701,191 @@
                 }
             });
         }
+
+
+
+    }
+
+    function update_day_div_all(ee) {
+
+        var dateselect = $('#tempdate').val();
+
+        if (ee == '0') {
+            $.get("/Home/update_day_div1", { datesel: dateselect }, function (data) {
+                $('#day_div #main_page #pills-day table tbody').html('');
+                for (var i = 0; i < data.length; i++) {
+
+
+                    $('#day_div #main_page #pills-day table tbody').append('' +
+
+                        '<tr name=' + data[i].ProgramId + ' id = ' + data[i].ProgramName + ' englishname = ' + data[i].ActivityNameEnglish + ' >' +
+                        '<td>' + data[i].ProgramStartTime + '</td>' +
+                        '<td>' + data[i].ProgramName + '</td>' +
+                        '<td>' + data[i].Venue + '</td>' +
+                        '<td><a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#"><i class="fa fa-file-text-o"></i></a></td>' +
+                        '<td>' + data[i].Active + '</td>' +
+                        '<td>' + data[i].Declined + '</td>' +
+                        '</tr>' +
+
+                        '');
+                }
+            });
+
+            $.get("/Home/update_day_div2", { datesel: dateselect }, function (data) {
+                $('#day_div2 #main_page #pills-day table tbody').html('');
+                for (var i = 0; i < data.length; i++) {
+                    $('#day_div2 #main_page #pills-day table tbody').append('' +
+
+                        '<tr name=' + data[i].ProgramId + ' id = ' + data[i].ProgramName + ' englishname = ' + data[i].ActivityNameEnglish + ' >' +
+                        '<td>' + data[i].ProgramStartTime + '</td>' +
+                        '<td>' + data[i].ProgramName + '</td>' +
+                        '<td>' + data[i].Venue + '</td>' +
+                        '<td><a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#"><i class="fa fa-file-text-o"></i></a></td>' +
+                        '<td>' + data[i].Active + '</td>' +
+                        '<td>' + data[i].Declined + '</td>' +
+                        '</tr>' +
+
+                        '');
+                }
+            });
+
+            $.get("/Home/update_day_div3", { datesel: dateselect }, function (data) {
+                $('#day_div3 #main_page #pills-day table tbody').html('');
+                for (var i = 0; i < data.length; i++) {
+
+                    $('#day_div3 #main_page #pills-day table tbody').append('' +
+
+                        '<tr name=' + data[i].ProgramId + ' id = ' + data[i].ProgramName + ' englishname = ' + data[i].ActivityNameEnglish + ' >' +
+                        '<td>' + data[i].ProgramStartTime + '</td>' +
+                        '<td>' + data[i].ProgramName + '</td>' +
+                        '<td>' + data[i].Venue + '</td>' +
+                        '<td><a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#"><i class="fa fa-file-text-o"></i></a></td>' +
+                        '<td>' + data[i].Active + '</td>' +
+                        '<td>' + data[i].Declined + '</td>' +
+                        '</tr>' +
+
+                        '');
+                }
+            });
+
+            $.get("/Home/update_day_div4", { datesel: dateselect }, function (data) {
+                $('#day_div4 #main_page #pills-day table tbody').html('');
+                for (var i = 0; i < data.length; i++) {
+                    $('#day_div4 #main_page #pills-day table tbody').append('' +
+
+                        '<tr name=' + data[i].ProgramId + ' id = ' + data[i].ProgramName + ' englishname = ' + data[i].ActivityNameEnglish + ' >' +
+                        '<td>' + data[i].ProgramStartTime + '</td>' +
+                        '<td>' + data[i].ProgramName + '</td>' +
+                        '<td>' + data[i].Venue + '</td>' +
+                        '<td><a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#"><i class="fa fa-file-text-o"></i></a></td>' +
+                        '<td>' + data[i].Active + '</td>' +
+                        '<td>' + data[i].Declined + '</td>' +
+                        '</tr>' +
+
+                        '');
+                }
+            });
+        }
+        else {
+            $.get("/Home/update_day_div1", { datesel: dateselect }, function (data) {
+                $('#day_div #main_page #pills-day table tbody').html('');
+                for (var i = 0; i < data.length; i++) {
+
+                    if (data[i].Category == ee) {
+                        $('#day_div #main_page #pills-day table tbody').append('' +
+
+                            '<tr name=' + data[i].ProgramId + ' id = ' + data[i].ProgramName + ' englishname = ' + data[i].ActivityNameEnglish + ' >' +
+                            '<td>' + data[i].ProgramStartTime + '</td>' +
+                            '<td>' + data[i].ProgramName + '</td>' +
+                            '<td>' + data[i].Venue + '</td>' +
+                            '<td><a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#"><i class="fa fa-file-text-o"></i></a></td>' +
+                            '<td>' + data[i].Active + '</td>' +
+                            '<td>' + data[i].Declined + '</td>' +
+                            '</tr>' +
+
+                            '');
+                    }
+
+
+                }
+            });
+
+            $.get("/Home/update_day_div2", { datesel: dateselect }, function (data) {
+                $('#day_div2 #main_page #pills-day table tbody').html('');
+                for (var i = 0; i < data.length; i++) {
+
+                    if (data[i].Category == ee) {
+                        $('#day_div2 #main_page #pills-day table tbody').append('' +
+
+                            '<tr name=' + data[i].ProgramId + ' id = ' + data[i].ProgramName + ' englishname = ' + data[i].ActivityNameEnglish + ' >' +
+                            '<td>' + data[i].ProgramStartTime + '</td>' +
+                            '<td>' + data[i].ProgramName + '</td>' +
+                            '<td>' + data[i].Venue + '</td>' +
+                            '<td><a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#"><i class="fa fa-file-text-o"></i></a></td>' +
+                            '<td>' + data[i].Active + '</td>' +
+                            '<td>' + data[i].Declined + '</td>' +
+                            '</tr>' +
+
+                            '');
+                    }
+
+
+                }
+            });
+
+            $.get("/Home/update_day_div3", { datesel: dateselect }, function (data) {
+
+                $('#day_div3 #main_page #pills-day table tbody').html('');
+                for (var i = 0; i < data.length; i++) {
+
+                    if (data[i].Category == ee) {
+                        $('#day_div3 #main_page #pills-day table tbody').append('' +
+
+                            '<tr name=' + data[i].ProgramId + ' id = ' + data[i].ProgramName + ' englishname = ' + data[i].ActivityNameEnglish + ' >' +
+                            '<td>' + data[i].ProgramStartTime + '</td>' +
+                            '<td>' + data[i].ProgramName + '</td>' +
+                            '<td>' + data[i].Venue + '</td>' +
+                            '<td><a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#"><i class="fa fa-file-text-o"></i></a></td>' +
+                            '<td>' + data[i].Active + '</td>' +
+                            '<td>' + data[i].Declined + '</td>' +
+                            '</tr>' +
+
+                            '');
+                    }
+
+
+                }
+            });
+
+            $.get("/Home/update_day_div4", { datesel: dateselect }, function (data) {
+                $('#day_div4 #main_page #pills-day table tbody').html('');
+                for (var i = 0; i < data.length; i++) {
+
+                    if (data[i].Category == ee) {
+                        $('#day_div4 #main_page #pills-day table tbody').append('' +
+
+                            '<tr name=' + data[i].ProgramId + ' id = ' + data[i].ProgramName + ' englishname = ' + data[i].ActivityNameEnglish + ' >' +
+                            '<td>' + data[i].ProgramStartTime + '</td>' +
+                            '<td>' + data[i].ProgramName + '</td>' +
+                            '<td>' + data[i].Venue + '</td>' +
+                            '<td><a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#"><i class="fa fa-file-text-o"></i></a></td>' +
+                            '<td>' + data[i].Active + '</td>' +
+                            '<td>' + data[i].Declined + '</td>' +
+                            '</tr>' +
+
+                            '');
+                    }
+
+
+                }
+            });
+        }
+
+        
+
+
+
+
 
 
 

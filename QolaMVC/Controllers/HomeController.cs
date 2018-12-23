@@ -2650,7 +2650,7 @@ namespace QolaMVC.Controllers
                     { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
                     { "Venue", l_Data.Venue},
                     { "note", l_Data.note},
-                    { "Category", "1"},
+                    { "Category", l_Data.CategoryId},
                     { "ActivityId", l_Data.ActivityId.ToString()}
 
                 };
@@ -3625,7 +3625,8 @@ namespace QolaMVC.Controllers
                         { "ProgramStartTime", DateTime.Parse(l_Data.ProgramStartTime).ToShortTimeString()},
                         { "Venue", l_Data.Venue},
                         { "Active", l_Data.Active.ToString()},
-                        { "Declined", l_Data.Declined.ToString()}
+                        { "Declined", l_Data.Declined.ToString()},
+                        { "Category", l_Data.CategoryId.ToString()}
                     };
                     JsonEVENTs.Add(columns);
                 }
@@ -3681,7 +3682,8 @@ namespace QolaMVC.Controllers
                         { "ProgramStartTime", DateTime.Parse(l_Data.ProgramStartTime).ToShortTimeString()},
                         { "Venue", l_Data.Venue},
                         { "Active", l_Data.Active.ToString()},
-                        { "Declined", l_Data.Declined.ToString()}
+                        { "Declined", l_Data.Declined.ToString()},
+                        { "Category", l_Data.CategoryId.ToString()}
                     };
                     JsonEVENTs.Add(columns);
                 }
@@ -3737,7 +3739,8 @@ namespace QolaMVC.Controllers
                         { "ProgramStartTime", DateTime.Parse(l_Data.ProgramStartTime).ToShortTimeString()},
                         { "Venue", l_Data.Venue},
                         { "Active", l_Data.Active.ToString()},
-                        { "Declined", l_Data.Declined.ToString()}
+                        { "Declined", l_Data.Declined.ToString()},
+                        { "Category", l_Data.CategoryId.ToString()}
                     };
                     JsonEVENTs.Add(columns);
                 }
@@ -3793,7 +3796,8 @@ namespace QolaMVC.Controllers
                         { "ProgramStartTime", DateTime.Parse(l_Data.ProgramStartTime).ToShortTimeString()},
                         { "Venue", l_Data.Venue},
                         { "Active", l_Data.Active.ToString()},
-                        { "Declined", l_Data.Declined.ToString()}
+                        { "Declined", l_Data.Declined.ToString()},
+                        { "Category", l_Data.CategoryId.ToString()}
                     };
                     JsonEVENTs.Add(columns);
                 }
@@ -4079,7 +4083,7 @@ namespace QolaMVC.Controllers
                     { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
                     { "Venue", l_Data.Venue},
                     { "note", l_Data.note},
-                    { "Category", "1"},
+                    { "Category", l_Data.CategoryId},
                     { "ActivityId", l_Data.ActivityId.ToString()}
 
                 };
@@ -4248,7 +4252,7 @@ namespace QolaMVC.Controllers
                     { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
                     { "Venue", l_Data.Venue},
                     { "note", l_Data.note},
-                    { "Category", "1"},
+                    { "Category", l_Data.CategoryId},
                     { "ActivityId", l_Data.ActivityId.ToString()}
 
                 };
@@ -4415,7 +4419,7 @@ namespace QolaMVC.Controllers
                     { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
                     { "Venue", l_Data.Venue},
                     { "note", l_Data.note},
-                    { "Category", "1"},
+                    { "Category", l_Data.CategoryId},
                     { "ActivityId", l_Data.ActivityId.ToString()}
 
                 };
@@ -6057,6 +6061,10 @@ namespace QolaMVC.Controllers
             ViewBag.CalendarName = returnStr;
 
             TempData["tab"] = tab;
+
+            ViewBag.ActivityCategory = MasterDAL.GetAllActivityCategory();
+
+
 
             return View(LIST_VIEW_RESIDENT);
 
