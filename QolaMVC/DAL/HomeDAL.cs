@@ -2030,7 +2030,7 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-        public static int AddNewActivityEvent(ActivityEventModel p_Model,int homeid)
+        public static int AddNewActivityEvent(ActivityEventModel p_Model,int homeid,int Special)
         {
             int retunvalue = 0;
             string exception = string.Empty;
@@ -2049,6 +2049,7 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@Venue", p_Model.Venue);
                 l_Cmd.Parameters.AddWithValue("@Note", p_Model.note);
                 l_Cmd.Parameters.AddWithValue("@homtId", homeid);
+                l_Cmd.Parameters.AddWithValue("@Special", Special);
                 l_Cmd.Parameters.Add("@out", SqlDbType.VarChar, 20);
                 l_Cmd.Parameters["@out"].Direction = ParameterDirection.Output;
                 l_Cmd.ExecuteNonQuery();
@@ -2213,7 +2214,7 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-        public static int AddNewActivityEvent_C2(ActivityEventModel p_Model, int homeid)
+        public static int AddNewActivityEvent_C2(ActivityEventModel p_Model, int homeid,int Special)
         {
             int retunvalue = 0;
             string exception = string.Empty;
@@ -2232,6 +2233,7 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@Venue", p_Model.Venue);
                 l_Cmd.Parameters.AddWithValue("@Note", p_Model.note);
                 l_Cmd.Parameters.AddWithValue("@homtId", homeid);
+                l_Cmd.Parameters.AddWithValue("@Special", Special);
                 l_Cmd.Parameters.Add("@out", SqlDbType.VarChar, 20);
                 l_Cmd.Parameters["@out"].Direction = ParameterDirection.Output;
                 l_Cmd.ExecuteNonQuery();
@@ -2396,7 +2398,7 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-        public static int AddNewActivityEvent_C3(ActivityEventModel p_Model, int homeid)
+        public static int AddNewActivityEvent_C3(ActivityEventModel p_Model, int homeid,int Special)
         {
             int retunvalue = 0;
             string exception = string.Empty;
@@ -2415,6 +2417,7 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@Venue", p_Model.Venue);
                 l_Cmd.Parameters.AddWithValue("@Note", p_Model.note);
                 l_Cmd.Parameters.AddWithValue("@homtId", homeid);
+                l_Cmd.Parameters.AddWithValue("@Special", Special);
                 l_Cmd.Parameters.Add("@out", SqlDbType.VarChar, 20);
                 l_Cmd.Parameters["@out"].Direction = ParameterDirection.Output;
                 l_Cmd.ExecuteNonQuery();
@@ -2579,7 +2582,7 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-        public static int AddNewActivityEvent_C4(ActivityEventModel p_Model, int homeid)
+        public static int AddNewActivityEvent_C4(ActivityEventModel p_Model, int homeid,int Special)
         {
             int retunvalue = 0;
             string exception = string.Empty;
@@ -2598,6 +2601,7 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@Venue", p_Model.Venue);
                 l_Cmd.Parameters.AddWithValue("@Note", p_Model.note);
                 l_Cmd.Parameters.AddWithValue("@homtId", homeid);
+                l_Cmd.Parameters.AddWithValue("@Special", Special);
                 l_Cmd.Parameters.Add("@out", SqlDbType.VarChar, 20);
                 l_Cmd.Parameters["@out"].Direction = ParameterDirection.Output;
                 l_Cmd.ExecuteNonQuery();
