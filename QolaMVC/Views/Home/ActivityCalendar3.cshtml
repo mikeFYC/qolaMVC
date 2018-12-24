@@ -45,6 +45,9 @@
             .fc-month-view span.fc-title {
             white-space: normal !important;
         }
+        .fc-basicWeek-view span.fc-title {
+            white-space: normal !important;
+        }
 
         .fc-center h2 {
             font-weight: bold !important;
@@ -63,6 +66,50 @@
             margin-bottom: 0px !important;
             font-weight: bold;
             font-size: 1.2em !important;
+        }
+
+        .nav-pills li a{
+            padding:10px 14px !important;
+        }
+
+    </style>
+    <style>
+        .multiselect {
+            width: 200px;
+        }
+
+        .selectBox {
+            position: relative;
+            height: 5vh;
+        }
+
+        .selectBox select {
+            width: 100%;
+        }
+
+        .overSelect {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+        #checkboxes {
+            display: none;
+            border: 1px #dadada solid;
+            position: absolute;
+            background-color: white;
+            z-index: 100;
+        }
+
+        #checkboxes label {
+            display: block;
+            margin-bottom: 0 !important;
+        }
+
+        #checkboxes label:hover {
+            background-color: #1e90ff;
         }
     </style>
     <script>
@@ -224,17 +271,21 @@
                                         <input type="image" style="width:1.1vw;height:1.5vh;position:absolute;margin-top:-5.3vh;margin-left:92%;background-color:white;border-radius:20%;opacity:0.90;" src="/Content/pages/img/icoedit.png" data-toggle="modal" data-target="#Calendar_Name_Change" onclick="calendar_change_name_click(this)">
                                     </li>
 
-                                    <li class="nav-item" style="width:30%;margin-left:10%;">
+                                    <li class="nav-item" style="width:25%;margin-left:8%;">
                                         <label style="display:inline-block;font-size:1vw;font-weight:bold;">Category:</label>
                                         <select class="nav-link" id="categorychoose" style="display:inline-block;" onchange="changeCategory2(this.value)">
                                             <option value="0">All</option>
-                                            @{ 
-                                                foreach(var Category in ViewBag.ActivityCategory)
+                                            @{
+                                                foreach (var Category in ViewBag.ActivityCategory)
                                                 {
                                                     <option value="@Category.Id">@Category.EnglishName</option>
                                                 }
                                             }
                                         </select>
+                                    </li>
+                                    <li class="nav-item">
+                                        <button class="btn btn-primary" href="#" data-toggle="modal" data-target="#AddEvent_Hannan" style="font-size:1vw;font-weight:bold;">ADD</button>
+
                                     </li>
                                 </ul>
                                 <br>
@@ -884,25 +935,25 @@
                                                                                         <td>@a.FirstName @a.LastName</td>
                                                                                         <td>
                                                                                             <div class="form-check form-check-inline">
-                                                                                                <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option1">
+                                                                                                <input class="form-check-input" type="radio" name=@a.ID + id="inlineRadio2" value="option1">
                                                                                                 <label class="form-check-label">Active</label>
                                                                                             </div>
                                                                                         </td>
                                                                                         <td>
                                                                                             <div class="form-check form-check-inline">
-                                                                                                <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option2">
+                                                                                                <input class="form-check-input" type="radio" name=@a.ID + id="inlineRadio2" value="option2">
                                                                                                 <label class="form-check-label">Passive</label>
                                                                                             </div>
                                                                                         </td>
                                                                                         <td>
                                                                                             <div class="form-check form-check-inline">
-                                                                                                <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option3">
+                                                                                                <input class="form-check-input" type="radio" name=@a.ID + id="inlineRadio2" value="option3">
                                                                                                 <label class="form-check-label">Declined</label>
                                                                                             </div>
                                                                                         </td>
                                                                                         <td>
                                                                                             <div class="form-check form-check-inline">
-                                                                                                <input class="form-check-input" type="radio" name=@a.ID+ id="inlineRadio2" value="option4">
+                                                                                                <input class="form-check-input" type="radio" name=@a.ID + id="inlineRadio2" value="option4">
                                                                                                 <label class="form-check-label">Away</label>
                                                                                             </div>
                                                                                         </td>
@@ -990,6 +1041,7 @@
                                                     <div class="tab-pane fade show active" id="pills-InternalTransfer" role="tabpanel" aria-labelledby="pills-contact-tab">
                                                         <br>
                                                         <div class="row">
+                                                            <div class="col-md-12"></div>
                                                             <div class="col-md-12" id="display_title">
                                                                 <div class="form-group row">
                                                                     <label for="" class="col-md-4 col-form-label">ACTIVITY DISPLAY TITLE<span class="required_sign">&nbsp;*</span></label>
@@ -1093,13 +1145,13 @@
 
 
                                                             @*<div class="col-md-12" id="description" style="margin-top:1vw;">
-                                                <div class="form-group row">
-                                                    <label for="" class="col-md-4 col-form-label">DESCRIPTION</label>
-                                                    <div class="col-md-7">
-                                                        <textarea class="textarea" id="description_textarea" rows="5" style="width:65% !important;max-width:100%;float:left;" name="description"></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>*@
+            <div class="form-group row">
+                <label for="" class="col-md-4 col-form-label">DESCRIPTION</label>
+                <div class="col-md-7">
+                    <textarea class="textarea" id="description_textarea" rows="5" style="width:65% !important;max-width:100%;float:left;" name="description"></textarea>
+                </div>
+            </div>
+        </div>*@
                                                         </div>
 
                                                     </div>
@@ -1145,6 +1197,7 @@
                                                     <div class="tab-pane fade show active" id="pills-InternalTransfer" role="tabpanel" aria-labelledby="pills-contact-tab">
                                                         <br>
                                                         <div class="row">
+                                                            <div class="col-md-12"></div>
                                                             <div class="col-md-12" id="display_title">
                                                                 <div class="form-group row">
                                                                     <label for="" class="col-md-4 col-form-label">ACTIVITY DISPLAY TITLE<span class="required_sign">&nbsp;*</span></label>
@@ -1250,13 +1303,13 @@
 
 
                                                             @*<div class="col-md-12" id="description" style="margin-top:1vw;">
-                                                <div class="form-group row">
-                                                    <label for="" class="col-md-4 col-form-label">DESCRIPTION</label>
-                                                    <div class="col-md-7">
-                                                        <textarea class="textarea" id="description_textarea" rows="5" style="width:65% !important;max-width:100%;float:left;" name="description"></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>*@
+            <div class="form-group row">
+                <label for="" class="col-md-4 col-form-label">DESCRIPTION</label>
+                <div class="col-md-7">
+                    <textarea class="textarea" id="description_textarea" rows="5" style="width:65% !important;max-width:100%;float:left;" name="description"></textarea>
+                </div>
+            </div>
+        </div>*@
                                                         </div>
 
                                                     </div>
@@ -1364,6 +1417,238 @@
                                         </div>
                                     </div>
                                     <input type="hidden" id="DWM" value="" />
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="AddEvent_Hannan" role="dialog" style="right:0">
+                            <div class="modal-dialog" style="left:0;right:0;">
+                                <div class="modal-content" style="width:60vw;right:45%;">
+
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h1 class="modal-title" style="font-weight:bolder;color:black;margin-left:2%;">Special Add Event</h1>
+                                    </div>
+                                    <hr>
+                                    <div class="modal-body">
+                                        <form action="/Home/AddEvents_mike" method="post" id="addEventForm" name="addEventForm">
+                                            <div id="ck" class="">
+
+                                                <div style="padding:15px 0px 15px 15px; width: 100%; display:inline-block;">
+
+                                                    <div class="tab-pane fade show active" id="pills-InternalTransfer" role="tabpanel" aria-labelledby="pills-contact-tab">
+                                                        <br>
+                                                        <div class="row">
+                                                            <div class="col-md-12"></div>
+                                                            <div class="col-md-12" id="AddType" style="margin-top:1vw;">
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-md-4 col-form-label">Add Type<span class="required_sign">&nbsp;*</span></label>
+                                                                    <div class="col-md-7" id="AddType_div">
+                                                                        <input type="radio" class="radio-primary" name="AddType" value="1" checked />
+                                                                        <label for="" class="col-form-label">All Building</label>
+                                                                        <input type="radio" class="radio-primary" name="AddType" value="2" style="margin-left:1vw;" />
+                                                                        <label for="" class="col-form-label">Choose Province</label>
+                                                                        <input type="radio" class="radio-primary" name="AddType" value="3" style="margin-left:1vw;" />
+                                                                        <label for="" class="col-form-label">Choose Buildings</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-12" id="Province" style="margin-top:1vw;display:none;">
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-md-4 col-form-label">Province<span class="required_sign">&nbsp;*</span></label>
+                                                                    <select class="col-md-7" id="ProvinceSelect">
+                                                                        <option>ON</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-12" id="Buildings" style="margin-top:1vw;display:none;">
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-md-4 col-form-label">Province<span class="required_sign">&nbsp;*</span></label>
+                                                                    <div class="col-md-7">
+                                                                        <div class="form-group">
+                                                                            <label for="" class="col-form-label">Home<span class="required_sign">&nbsp;*</span></label>
+                                                                            <div class="multiselect" style="width:99%;">
+                                                                                <div class="selectBox" onclick="">
+                                                                                    <select style="height: 5vh;">
+                                                                                        <option>&nbsp;&nbsp;&nbsp;-- Select --</option>
+                                                                                    </select>
+                                                                                    <div class="overSelect"></div>
+                                                                                </div>
+                                                                                <div id="checkboxes" style="min-width:50%;">
+                                                                                    <label for="0"><input type="checkbox" id="0" value="0" class="ALL_check" />ALL</label>
+                                                                                    <label for="15"><input type="checkbox" id="15" value="15" />Auburn Heights Retirement Residence</label>
+                                                                                    <label for="5"><input type="checkbox" id="5" value="5" /> Laurel Heights Retirement Residence </label>
+                                                                                    <label for="26"><input type="checkbox" id="26" value="26" />Lewis Estates</label>
+                                                                                    <label for="35"><input type="checkbox" id="35" value="35" />Mactaggart Place Retirement Residence</label>
+                                                                                    <label for="1"><input type="checkbox" id="1" value="1" /> Rutherford Heights Retirement Residence </label>
+                                                                                    <label for="33"><input type="checkbox" id="33" value="33" />Sage Hill Retirement Residence</label>
+                                                                                    <label for="31"><input type="checkbox" id="31" value="31" />St. Albert Retirement Residence</label>
+                                                                                    <label for="3"><input type="checkbox" id="3" value="3" /> Summerwood Village Retirement Residence </label>
+                                                                                    <label for="30"><input type="checkbox" id="30" value="30" />River Ridge 2 Retirement Residence</label>
+                                                                                    <label for="4"><input type="checkbox" id="4" value="4" /> River Ridge Retirement Residence </label>
+                                                                                    <label for="17"><input type="checkbox" id="17" value="17" />Seine River Retirement Residence</label>
+                                                                                    <label for="6"><input type="checkbox" id="6" value="6" /> Shaftesbury Park Retirement Residence </label>
+                                                                                    <label for="18"><input type="checkbox" id="18" value="18" />Sturgeon Creek I Retirement Residence</label>
+                                                                                    <label for="13"><input type="checkbox" id="13" value="13" />Sturgeon Creek II Retirement Residence</label>
+                                                                                    <label for="12"><input type="checkbox" id="12" value="12" />Victoria Landing Retirement Residence</label>
+                                                                                    <label for="2"><input type="checkbox" id="2" value="2" /> Beacon Heights Retirement Residence </label>
+                                                                                    <label for="7"><input type="checkbox" id="7" value="7" /> Cedarcroft Place Retirement Residence </label>
+                                                                                    <label for="27"><input type="checkbox" id="27" value="27" />Chapel Hill Retirement Residence</label>
+                                                                                    <label for="32"><input type="checkbox" id="32" value="32" />Cit&#233; Parkway Retirement Residence</label>
+                                                                                    <label for="34"><input type="checkbox" id="34" value="34" />Eagleson Retirement Residence</label>
+                                                                                    <label for="28"><input type="checkbox" id="28" value="28" />Mccarthy Place</label>
+                                                                                    <label for="29"><input type="checkbox" id="29" value="29" />Sample</label>
+                                                                                    <label for="16"><input type="checkbox" id="16" value="16" />College Park II Retirement Residence</label>
+                                                                                    <label for="8"><input type="checkbox" id="8" value="8" /> College Park Retirement Residence </label>
+                                                                                    <label for="14"><input type="checkbox" id="14" value="14" />Preston Park II Retirement Residence</label>
+                                                                                    <label for="11"><input type="checkbox" id="11" value="11" />Preston Park Retirement Residence</label>
+                                                                                    <label for="20"><input type="checkbox" id="20" value="20" />465, Boulevard De La Gappe</label>
+                                                                                    <label for="21"><input type="checkbox" id="21" value="21" />475 Boulevard De La Gappe</label>
+                                                                                    <label for="22"><input type="checkbox" id="22" value="22" />485 Boulevard De La Gappe</label>
+                                                                                    <label for="23"><input type="checkbox" id="23" value="23" />495 Boulevard De La Gappe</label>
+                                                                                    <label for="19"><input type="checkbox" id="19" value="19" />Chateau Symmes Retirement Residence</label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-12" id="display_title">
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-md-4 col-form-label">ACTIVITY DISPLAY TITLE<span class="required_sign">&nbsp;*</span></label>
+                                                                    <div class="col-md-7">
+                                                                        <input type="text" class="form-control" id="display_title_input" name="title">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12" id="activity" style="margin-top:1vw;">
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-md-4 col-form-label">ACTIVITY<span class="required_sign">&nbsp;*</span></label>
+                                                                    <div class="col-md-7">
+                                                                        @*<select id="activity_select" class="form-control" name="activity" onfocus="activityonclick(this)">*@
+                                                                        <select id="activity_select" class="form-control" name="activity" style="background-color:white;">
+                                                                            <option value="">-- Select --</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12" id="frequency" style="margin-top:1vw;">
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-md-4 col-form-label">FREQUENCY<span class="required_sign">&nbsp;*</span></label>
+                                                                    <div class="col-md-7" id="frequency_div">
+                                                                        <input type="radio" class="radio-primary" name="frequency" value="1" checked />
+                                                                        <label for="" class="col-form-label">Date & Time</label>
+                                                                        <input type="radio" class="radio-primary" name="frequency" value="2" style="margin-left:1vw;" />
+                                                                        <label for="" class="col-form-label">Every Weekday</label>
+                                                                        <input type="radio" class="radio-primary" name="frequency" value="3" style="margin-left:1vw;" />
+                                                                        <label for="" class="col-form-label">Date Between</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="col-md-12" id="dateandtime" style="margin-top:1vw;">
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-md-4 col-form-label">DATE & TIME<span class="required_sign">&nbsp;*</span></label>
+                                                                    <div class="col-md-7">
+                                                                        <input type="datetime-local" class="form-control" id="dateandtime_input" name="startDateTime" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-12" id="weekday" style="display:none;margin-top:1vw;">
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-md-4 col-form-label">WEEK DAY<span class="required_sign">&nbsp;*</span></label>
+                                                                    <div class="col-md-7">
+                                                                        <select id="weekday_select" class="form-control" name="weekday">
+                                                                            <option value="">-- Select --</option>
+                                                                            <option value="Monday">Monday</option>
+                                                                            <option value="Tuesday">Tuesday</option>
+                                                                            <option value="Wednesday">Wednesday</option>
+                                                                            <option value="Thursday">Thursday</option>
+                                                                            <option value="Friday">Friday</option>
+                                                                            <option value="Saturday">Saturday</option>
+                                                                            <option value="Sunday">Sunday</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-12" id="datefrom" style="display:none;margin-top:1vw;">
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-md-4 col-form-label">DATE FROM<span class="required_sign">&nbsp;*</span></label>
+                                                                    <div class="col-md-7">
+                                                                        <input type="date" class="form-control" id="datefrom_input" name="datefrom" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-12" id="dateto" style="display:none;margin-top:1vw;">
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-md-4 col-form-label">DATE TO<span class="required_sign">&nbsp;*</span></label>
+                                                                    <div class="col-md-7">
+                                                                        <input type="date" class="form-control" id="dateto_input" name="dateto" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-12" id="time" style="display:none;margin-top:1vw;">
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-md-4 col-form-label">TIME<span class="required_sign">&nbsp;*</span></label>
+                                                                    <div class="col-md-7">
+                                                                        <input type="time" class="form-control" id="time_input" name="time" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+
+                                                            <div class="col-md-12" id="venue" style="margin-top:1vw;">
+                                                                <div class="form-group row">
+                                                                    <label for="" class="col-md-4  col-form-label">VENUE</label>
+                                                                    <div class="col-md-7">
+                                                                        <select id="venue_select" class="form-control" name="venue">
+                                                                            <option value="">-- Select --</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                            @*<div class="col-md-12" id="description" style="margin-top:1vw;">
+            <div class="form-group row">
+                <label for="" class="col-md-4 col-form-label">DESCRIPTION</label>
+                <div class="col-md-7">
+                    <textarea class="textarea" id="description_textarea" rows="5" style="width:65% !important;max-width:100%;float:left;" name="description"></textarea>
+                </div>
+            </div>
+        </div>*@
+                                                        </div>
+
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <div class="row">
+                                            <div class="col-md-12 text-center">
+                                                <button class="btn btn-lg" data-dismiss="modal" onclick="cancel1()">
+                                                    CANCEL
+                                                </button>
+                                                <button class="btn btn-primary btn-lg" type="submit" form="addEventForm">
+                                                    SAVE
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </div>
 
                                 </div>
                             </div>
@@ -2633,10 +2918,6 @@
 
     }
 
-
-
-
-
     $('#searchresidents3').keyup(function () {
         val = $(this).val();
         if (val.length > 1) {
@@ -2678,37 +2959,38 @@
         //$('#searchresidents3').val("");
 
     });
+
 </script>
 
 <script>
-    var tab = $('#hiddentab').val();
-    if (tab == "a" || tab == "") {
-    }
-    else if (tab == "b") {
-        document.getElementById("pills-active-tab").className = "nav-link";
-        document.getElementById("pills-achive-tab").className = "nav-link active";
-        document.getElementById("pills-active").className = "tab-pane fade";
-        document.getElementById("pills-achive").className = "tab-pane fade show active";
+    //var tab = $('#hiddentab').val();
+    //if (tab == "a" || tab == "") {
+    //}
+    //else if (tab == "b") {
+    //    document.getElementById("pills-active-tab").className = "nav-link";
+    //    document.getElementById("pills-achive-tab").className = "nav-link active";
+    //    document.getElementById("pills-active").className = "tab-pane fade";
+    //    document.getElementById("pills-achive").className = "tab-pane fade show active";
 
-        document.getElementById("day_div").style.display = "none";
-        document.getElementById("day_div2").style.display = "block";
-    }
-    else if (tab == "c") {
-        document.getElementById("pills-active-tab").className = "nav-link";
-        document.getElementById("pills-achive-tab2").className = "nav-link active";
-        document.getElementById("pills-active").className = "tab-pane fade";
-        document.getElementById("pills-C3").className = "tab-pane fade show active";
-        document.getElementById("day_div").style.display = "none";
-        document.getElementById("day_div3").style.display = "block";
-    }
-    else if (tab == "d") {
-        document.getElementById("pills-active-tab").className = "nav-link";
-        document.getElementById("pills-achive-tab3").className = "nav-link active";
-        document.getElementById("pills-active").className = "tab-pane fade";
-        document.getElementById("pills-C4").className = "tab-pane fade show active";
-        document.getElementById("day_div").style.display = "none";
-        document.getElementById("day_div4").style.display = "block";
-    }
+    //    document.getElementById("day_div").style.display = "none";
+    //    document.getElementById("day_div2").style.display = "block";
+    //}
+    //else if (tab == "c") {
+    //    document.getElementById("pills-active-tab").className = "nav-link";
+    //    document.getElementById("pills-achive-tab2").className = "nav-link active";
+    //    document.getElementById("pills-active").className = "tab-pane fade";
+    //    document.getElementById("pills-C3").className = "tab-pane fade show active";
+    //    document.getElementById("day_div").style.display = "none";
+    //    document.getElementById("day_div3").style.display = "block";
+    //}
+    //else if (tab == "d") {
+    //    document.getElementById("pills-active-tab").className = "nav-link";
+    //    document.getElementById("pills-achive-tab3").className = "nav-link active";
+    //    document.getElementById("pills-active").className = "tab-pane fade";
+    //    document.getElementById("pills-C4").className = "tab-pane fade show active";
+    //    document.getElementById("day_div").style.display = "none";
+    //    document.getElementById("day_div4").style.display = "block";
+    //}
 
     $('#activity_select').children('option:not(:first)').remove();
     $('#activity_select2').children('option:not(:first)').remove();
@@ -2740,7 +3022,7 @@
         $.ajax({
             type: "GET",
             url: "/home/getEvents_mike_between",
-            data: {start: firstDayString,end: lastDayString},
+            data: { start: firstDayString, end: lastDayString },
             success: function (data) {
                 $.each(data, function (i, v) {
                     data.push({
@@ -2757,7 +3039,7 @@
                     });
                 })
                 GenerationCalendar(data);
-                
+
             },
 
             error: function (error) {
@@ -2765,87 +3047,92 @@
             }
         })
 
-        $.ajax({
-            type: "GET",
-            url: "/home/getEvents_C2_mike_between",
-            data: { start: firstDayString, end: lastDayString },
-            success: function (data) {
-                $.each(data, function (i, v) {
-                    data.push({
-                        Id: v.id,
-                        title: v.title,
-                        start: v.startT,
-                        end: v.endT != null ? v.endT : null,
-                        startDate: v.startDate,
-                        Venue: v.Venue,
-                        Note: v.note,
-                        Category: v.Category,
-                        ActivityID: v.ActivityId,
-                        startTime: v.startTime
-                    });
-                })
-                GenerationCalendar2(data);
-            },
+        //$.ajax({
+        //    type: "GET",
+        //    url: "/home/getEvents_C2_mike_between",
+        //    data: { start: firstDayString, end: lastDayString },
+        //    success: function (data) {
+        //        $.each(data, function (i, v) {
+        //            data.push({
+        //                Id: v.id,
+        //                title: v.title,
+        //                start: v.startT,
+        //                end: v.endT != null ? v.endT : null,
+        //                startDate: v.startDate,
+        //                Venue: v.Venue,
+        //                Note: v.note,
+        //                Category: v.Category,
+        //                ActivityID: v.ActivityId,
+        //                startTime: v.startTime
+        //            });
+        //        })
+        //        GenerationCalendar2(data);
+        //    },
 
-            error: function (error) {
-                tempAlert('failed', 2000);
-            }
-        })
+        //    error: function (error) {
+        //        tempAlert('failed', 2000);
+        //    }
+        //})
 
-        $.ajax({
-            type: "GET",
-            url: "/home/getEvents_C3_mike_between",
-            data: { start: firstDayString, end: lastDayString },
-            success: function (data) {
-                $.each(data, function (i, v) {
-                    data.push({
-                        Id: v.id,
-                        title: v.title,
-                        start: v.startT,
-                        end: v.endT != null ? v.endT : null,
-                        startDate: v.startDate,
-                        Venue: v.Venue,
-                        Note: v.note,
-                        Category: v.Category,
-                        ActivityID: v.ActivityId,
-                        startTime: v.startTime
-                    });
-                })
-                GenerationCalendar3(data);
-            },
+        //$.ajax({
+        //    type: "GET",
+        //    url: "/home/getEvents_C3_mike_between",
+        //    data: { start: firstDayString, end: lastDayString },
+        //    success: function (data) {
+        //        $.each(data, function (i, v) {
+        //            data.push({
+        //                Id: v.id,
+        //                title: v.title,
+        //                start: v.startT,
+        //                end: v.endT != null ? v.endT : null,
+        //                startDate: v.startDate,
+        //                Venue: v.Venue,
+        //                Note: v.note,
+        //                Category: v.Category,
+        //                ActivityID: v.ActivityId,
+        //                startTime: v.startTime
+        //            });
+        //        })
+        //        GenerationCalendar3(data);
+        //    },
 
-            error: function (error) {
-                tempAlert('failed', 2000);
-            }
-        })
+        //    error: function (error) {
+        //        tempAlert('failed', 2000);
+        //    }
+        //})
 
-        $.ajax({
-            type: "GET",
-            url: "/home/getEvents_C4_mike_between",
-            data: { start: firstDayString, end: lastDayString },
-            success: function (data) {
-                $.each(data, function (i, v) {
-                    data.push({
-                        Id: v.id,
-                        title: v.title,
-                        start: v.startT,
-                        end: v.endT != null ? v.endT : null,
-                        startDate: v.startDate,
-                        Venue: v.Venue,
-                        Note: v.note,
-                        Category: v.Category,
-                        ActivityID: v.ActivityId,
-                        startTime: v.startTime
-                    });
-                })
-                GenerationCalendar4(data);
-            },
+        //$.ajax({
+        //    type: "GET",
+        //    url: "/home/getEvents_C4_mike_between",
+        //    data: { start: firstDayString, end: lastDayString },
+        //    success: function (data) {
+        //        $.each(data, function (i, v) {
+        //            data.push({
+        //                Id: v.id,
+        //                title: v.title,
+        //                start: v.startT,
+        //                end: v.endT != null ? v.endT : null,
+        //                startDate: v.startDate,
+        //                Venue: v.Venue,
+        //                Note: v.note,
+        //                Category: v.Category,
+        //                ActivityID: v.ActivityId,
+        //                startTime: v.startTime
+        //            });
+        //        })
+        //        GenerationCalendar4(data);
+        //    },
 
-            error: function (error) {
-                tempAlert('failed', 2000);
-            }
-        })
+        //    error: function (error) {
+        //        tempAlert('failed', 2000);
+        //    }
+        //})
 
+
+
+        GenerationCalendar2({});
+        GenerationCalendar3({});
+        GenerationCalendar4({});
 
         function GenerationCalendar(events) {
             $('#calendar').fullCalendar('destroy');
@@ -3521,6 +3808,7 @@
     function changeCategory2(ee) {
         refetch_one_Calendar_Events_Based_On_Current_Date_Between_And_Calendar();
         update_day_div_all(ee);
+        RESIZEIMAGE();
     }
 
     function changeCategory2_not_using_right_now() {
@@ -4347,22 +4635,22 @@
     }
 
 
-    $('.printBtn').on('click', function () {
+    //$('.printBtn').on('click', function () {
 
-        $('.fc-event').css("min-height", "1.4vh!important");
-        $('.fc-event').css("font-size", "0.5vw!important");
-        $('#ACtivityCalendarTitle').css({ 'margin-left': '5vw' });
-        $('#backbutton').hide();
-        $('.caname').hide();
-        $('.jumbotron').hide();
-        window.print();
-        $('.fc-event').css("min-height", "2.8vh!important");
-        $('.fc-event').css("font-size", "1vw!important");
-        $('#ACtivityCalendarTitle').css({ 'margin-left': '0' });
-        $('#backbutton').show();
-        $('.caname').show();
-        $('.jumbotron').show();
-    });
+    //    $('.fc-event').css("min-height", "1.4vh!important");
+    //    $('.fc-event').css("font-size", "0.5vw!important");
+    //    $('#ACtivityCalendarTitle').css({ 'margin-left': '5vw' });
+    //    $('#backbutton').hide();
+    //    $('.caname').hide();
+    //    $('.jumbotron').hide();
+    //    window.print();
+    //    $('.fc-event').css("min-height", "2.8vh!important");
+    //    $('.fc-event').css("font-size", "1vw!important");
+    //    $('#ACtivityCalendarTitle').css({ 'margin-left': '0' });
+    //    $('#backbutton').show();
+    //    $('.caname').show();
+    //    $('.jumbotron').show();
+    //});
 
     $('.print2').click(function () {
         scrollTo(0, 0);
@@ -4551,8 +4839,6 @@
         //$('#calendar1Parent').css('width', '100%');
         $('#day_div').hide();
         $('.fc-view-container').show();
-        //$('.fc-center').show();
-        //$('.fc-right').show();
         $('#PrintDAY').css({ "display": "none" });
         $('#PrintWAM').css({ "display": "inline-block" });
         $("#calendar").fullCalendar("changeView", "month");
@@ -4583,8 +4869,6 @@
         //$('#calendar1Parent').css('width', '100%');
         $('#day_div').hide();
         $('.fc-view-container').show();
-        //$('.fc-center').show();
-        //$('.fc-right').show();
         $('#PrintDAY').css({ "display": "none" });
         $('#PrintWAM').css({ "display": "inline-block" });
         $("#calendar").fullCalendar("changeView", "basicWeek");
@@ -4603,8 +4887,6 @@
     $("#day1").click(function () {
         //$('#calendar1Parent').css('width', '60%');
         $('.fc-view-container').hide();
-        //$('.fc-center').hide();
-        //$('.fc-right').hide();
         $('#day_div').show();
         $('#PrintWAM').css({ "display": "none" });
         $('#PrintDAY').css({ "display": "inline-block" });
@@ -4623,8 +4905,6 @@
         //$('#calendar2Parent').css('width', '100%');
         $('#day_div2').hide();
         $('.fc-view-container').show();
-        //$('.fc-center').show();
-        //$('.fc-right').show();
         $('#PrintDAY').css({ "display": "none" });
         $('#PrintWAM').css({ "display": "inline-block" });
         $("#calendar2").fullCalendar("changeView", "month");
@@ -4650,8 +4930,6 @@
         //$('#calendar2Parent').css('width', '100%');
         $('#day_div2').hide();
         $('.fc-view-container').show();
-        //$('.fc-center').show();
-        //$('.fc-right').show();
         $('#PrintDAY').css({ "display": "none" });
         $('#PrintWAM').css({ "display": "inline-block" });
         $("#calendar2").fullCalendar("changeView", "basicWeek");
@@ -4670,8 +4948,6 @@
     $("#day2").click(function () {
         //$('#calendar2Parent').css('width', '60%');
         $('.fc-view-container').hide();
-        //$('.fc-center').hide();
-        //$('.fc-right').hide();
         $('#day_div2').show();
         $('#PrintWAM').css({ "display": "none" });
         $('#PrintDAY').css({ "display": "inline-block" });
@@ -4690,8 +4966,6 @@
         //$('#calendar3Parent').css('width', '100%');
         $('#day_div3').hide();
         $('.fc-view-container').show();
-        //$('.fc-center').show();
-        //$('.fc-right').show();
         $('#PrintDAY').css({ "display": "none" });
         $('#PrintWAM').css({ "display": "inline-block" });
         $("#calendar3").fullCalendar("changeView", "month");
@@ -4717,8 +4991,6 @@
         //$('#calendar3Parent').css('width', '100%');
         $('#day_div3').hide();
         $('.fc-view-container').show();
-        //$('.fc-center').show();
-        //$('.fc-right').show();
         $('#PrintDAY').css({ "display": "none" });
         $('#PrintWAM').css({ "display": "inline-block" });
         $("#calendar3").fullCalendar("changeView", "basicWeek");
@@ -4737,8 +5009,6 @@
     $("#day3").click(function () {
         //$('#calendar3Parent').css('width', '60%');
         $('.fc-view-container').hide();
-        //$('.fc-center').hide();
-        //$('.fc-right').hide();
         $('#day_div3').show();
         $('#PrintWAM').css({ "display": "none" });
         $('#PrintDAY').css({ "display": "inline-block" });
@@ -4757,8 +5027,6 @@
         //$('#calendar4Parent').css('width', '100%');
         $('#day_div4').hide();
         $('.fc-view-container').show();
-        //$('.fc-center').show();
-        //$('.fc-right').show();
         $('#PrintDAY').css({ "display": "none" });
         $('#PrintWAM').css({ "display": "inline-block" });
         $("#calendar4").fullCalendar("changeView", "month");
@@ -4784,8 +5052,6 @@
         //$('#calendar4Parent').css('width', '100%');
         $('#day_div4').hide();
         $('.fc-view-container').show();
-        //$('.fc-center').show();
-        //$('.fc-right').show();
         $('#PrintDAY').css({ "display": "none" });
         $('#PrintWAM').css({ "display": "inline-block" });
         $("#calendar4").fullCalendar("changeView", "basicWeek");
@@ -4805,8 +5071,6 @@
     $("#day4").click(function () {
         //$('#calendar4Parent').css('width', '60%');
         $('.fc-view-container').hide();
-        //$('.fc-center').hide();
-        //$('.fc-right').hide();
         $('#day_div4').show();
         $('#PrintWAM').css({ "display": "none" });
         $('#PrintDAY').css({ "display": "inline-block" });
