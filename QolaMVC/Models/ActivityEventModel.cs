@@ -27,5 +27,7 @@ namespace QolaMVC.Models
         public string note { get; set; }
 
         public string Color { get; set; }
+
+        public int Special { get; set; }
     }
 }

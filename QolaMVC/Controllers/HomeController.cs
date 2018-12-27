@@ -2631,33 +2631,8 @@ namespace QolaMVC.Controllers
             ViewBag.Home = home;
             var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get(home.Id);//HomeDAL.GetActivityEvents();
 
-            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
+            List<Dictionary<string, string>> l_Events = addEVENTStol_Events(l_ActivityEvents);
 
-            foreach (var l_Data in l_ActivityEvents)
-            {
-                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
-                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
-
-                var columns = new Dictionary<string, string>
-                {
-                    { "id", l_Data.ProgramId.ToString()},
-                    { "title", l_Data.ProgramName},
-                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
-                    { "endDate", ggend.ToString("yyyy-MM-dd")},
-                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "Venue", l_Data.Venue},
-                    { "note", l_Data.note},
-                    { "Category", l_Data.CategoryId},
-                    { "ActivityId", l_Data.ActivityId.ToString()}
-
-                };
-
-                l_Events.Add(columns);
-            }
-            
 
             return Json(l_Events, JsonRequestBehavior.AllowGet);
         }
@@ -2670,9 +2645,19 @@ namespace QolaMVC.Controllers
             ViewBag.Home = home;
             var l_ActivityEvents = HomeDAL.GetActivityEvents_between(home.Id,start,end);
 
+            List<Dictionary<string, string>> l_Events = addEVENTStol_Events(l_ActivityEvents);
+
+
+            return Json(l_Events, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        public List<Dictionary<string, string>> addEVENTStol_Events(Collection<ActivityEventModel> EVENTS)
+        {
             List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
 
-            foreach (var l_Data in l_ActivityEvents)
+            foreach (var l_Data in EVENTS)
             {
                 var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
                 var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
@@ -2690,15 +2675,44 @@ namespace QolaMVC.Controllers
                     { "Venue", l_Data.Venue},
                     { "note", l_Data.note},
                     { "Category", l_Data.CategoryId},
-                    { "ActivityId", l_Data.ActivityId.ToString()}
-
+                    { "ActivityId", l_Data.ActivityId.ToString()},
+                    { "Special", l_Data.Special.ToString()}
                 };
 
                 l_Events.Add(columns);
             }
 
+            return l_Events;
+        }
 
-            return Json(l_Events, JsonRequestBehavior.AllowGet);
+        public List<Dictionary<string, string>> addEVENTStol_Events_single(ActivityEventModel l_Data)
+        {
+            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
+
+                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
+                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
+
+                var columns = new Dictionary<string, string>
+                {
+                    { "id", l_Data.ProgramId.ToString()},
+                    { "title", l_Data.ProgramName},
+                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
+                    { "endDate", ggend.ToString("yyyy-MM-dd")},
+                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "Venue", l_Data.Venue},
+                    { "note", l_Data.note},
+                    { "Category", l_Data.CategoryId},
+                    { "ActivityId", l_Data.ActivityId.ToString()},
+                    { "Special", l_Data.Special.ToString()}
+                };
+
+                l_Events.Add(columns);
+            
+
+            return l_Events;
         }
 
         #region Activity_Calendar_Add
@@ -2731,6 +2745,8 @@ namespace QolaMVC.Controllers
 
                 int temp = HomeDAL.AddNewActivityEvent(l_Model, home.Id, 0);
                 l_Model.ProgramId = temp;
+                l_Model.CategoryId=HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                l_Model.Special = 0;
                 EVENTS.Add(l_Model);
             }
             else if (frequency == 2) //every week day
@@ -2756,6 +2772,8 @@ namespace QolaMVC.Controllers
 
                     int temp = HomeDAL.AddNewActivityEvent(l_Model, home.Id, 0);
                     l_Model.ProgramId = temp;
+                    l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                    l_Model.Special = 0;
                     EVENTS.Add(l_Model);
                 }
             }
@@ -2780,6 +2798,8 @@ namespace QolaMVC.Controllers
 
                     int temp = HomeDAL.AddNewActivityEvent(l_Model, home.Id, 0);
                     l_Model.ProgramId = temp;
+                    l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                    l_Model.Special = 0;
                     EVENTS.Add(l_Model);
                 }
             }
@@ -2787,31 +2807,9 @@ namespace QolaMVC.Controllers
 
             //var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get();//HomeDAL.GetActivityEvents();
 
-            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
+            List<Dictionary<string, string>> l_Events = addEVENTStol_Events(EVENTS);
 
-            foreach (var l_Data in EVENTS)
-            {
-                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
-                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
 
-                var columns = new Dictionary<string, string>
-                {
-                    { "id", l_Data.ProgramId.ToString()},
-                    { "title", l_Data.ProgramName},
-                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
-                    { "endDate", ggend.ToString("yyyy-MM-dd")},
-                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "Venue", l_Data.Venue},
-                    { "note", l_Data.note},
-                    { "Category", "1"},
-                    { "ActivityId", l_Data.ActivityId.ToString()}
-                };
-
-                l_Events.Add(columns);
-            }
             return Json(l_Events, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
@@ -2843,6 +2841,8 @@ namespace QolaMVC.Controllers
 
                 int temp = HomeDAL.AddNewActivityEvent_C2(l_Model, home.Id, 0);
                 l_Model.ProgramId = temp;
+                l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                l_Model.Special = 0;
                 EVENTS.Add(l_Model);
             }
             else if (frequency == 2) //every week day
@@ -2868,6 +2868,8 @@ namespace QolaMVC.Controllers
 
                     int temp = HomeDAL.AddNewActivityEvent_C2(l_Model, home.Id, 0);
                     l_Model.ProgramId = temp;
+                    l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                    l_Model.Special = 0;
                     EVENTS.Add(l_Model);
                 }
             }
@@ -2892,38 +2894,16 @@ namespace QolaMVC.Controllers
 
                     int temp = HomeDAL.AddNewActivityEvent_C2(l_Model, home.Id, 0);
                     l_Model.ProgramId = temp;
+                    l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                    l_Model.Special = 0;
                     EVENTS.Add(l_Model);
                 }
             }
 
 
             //var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get();//HomeDAL.GetActivityEvents();
+            List<Dictionary<string, string>> l_Events = addEVENTStol_Events(EVENTS);
 
-            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
-
-            foreach (var l_Data in EVENTS)
-            {
-                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
-                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
-
-                var columns = new Dictionary<string, string>
-                {
-                    { "id", l_Data.ProgramId.ToString()},
-                    { "title", l_Data.ProgramName},
-                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
-                    { "endDate", ggend.ToString("yyyy-MM-dd")},
-                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "Venue", l_Data.Venue},
-                    { "note", l_Data.note},
-                    { "Category", "1"},
-                    { "ActivityId", l_Data.ActivityId.ToString()}
-                };
-
-                l_Events.Add(columns);
-            }
             return Json(l_Events, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
@@ -2955,6 +2935,9 @@ namespace QolaMVC.Controllers
 
                 int temp = HomeDAL.AddNewActivityEvent_C3(l_Model, home.Id, 0);
                 l_Model.ProgramId = temp;
+                l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                l_Model.Special = 0;
+
                 EVENTS.Add(l_Model);
             }
             else if (frequency == 2) //every week day
@@ -2980,6 +2963,8 @@ namespace QolaMVC.Controllers
 
                     int temp = HomeDAL.AddNewActivityEvent_C3(l_Model, home.Id, 0);
                     l_Model.ProgramId = temp;
+                    l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                    l_Model.Special = 0;
                     EVENTS.Add(l_Model);
                 }
             }
@@ -3004,6 +2989,8 @@ namespace QolaMVC.Controllers
 
                     int temp = HomeDAL.AddNewActivityEvent_C3(l_Model, home.Id, 0);
                     l_Model.ProgramId = temp;
+                    l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                    l_Model.Special = 0;
                     EVENTS.Add(l_Model);
                 }
             }
@@ -3011,31 +2998,8 @@ namespace QolaMVC.Controllers
 
             //var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get();//HomeDAL.GetActivityEvents();
 
-            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
+            List<Dictionary<string, string>> l_Events = addEVENTStol_Events(EVENTS);
 
-            foreach (var l_Data in EVENTS)
-            {
-                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
-                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
-
-                var columns = new Dictionary<string, string>
-                {
-                    { "id", l_Data.ProgramId.ToString()},
-                    { "title", l_Data.ProgramName},
-                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
-                    { "endDate", ggend.ToString("yyyy-MM-dd")},
-                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "Venue", l_Data.Venue},
-                    { "note", l_Data.note},
-                    { "Category", "1"},
-                    { "ActivityId", l_Data.ActivityId.ToString()}
-                };
-
-                l_Events.Add(columns);
-            }
             return Json(l_Events, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
@@ -3067,6 +3031,8 @@ namespace QolaMVC.Controllers
 
                 int temp = HomeDAL.AddNewActivityEvent_C4(l_Model, home.Id, 0);
                 l_Model.ProgramId = temp;
+                l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                l_Model.Special = 0;
                 EVENTS.Add(l_Model);
             }
             else if (frequency == 2) //every week day
@@ -3092,6 +3058,8 @@ namespace QolaMVC.Controllers
 
                     int temp = HomeDAL.AddNewActivityEvent_C4(l_Model, home.Id, 0);
                     l_Model.ProgramId = temp;
+                    l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                    l_Model.Special = 0;
                     EVENTS.Add(l_Model);
                 }
             }
@@ -3116,6 +3084,8 @@ namespace QolaMVC.Controllers
 
                     int temp = HomeDAL.AddNewActivityEvent_C4(l_Model, home.Id, 0);
                     l_Model.ProgramId = temp;
+                    l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                    l_Model.Special = 0;
                     EVENTS.Add(l_Model);
                 }
             }
@@ -3123,31 +3093,8 @@ namespace QolaMVC.Controllers
 
             //var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get();//HomeDAL.GetActivityEvents();
 
-            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
+            List<Dictionary<string, string>> l_Events = addEVENTStol_Events(EVENTS);
 
-            foreach (var l_Data in EVENTS)
-            {
-                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
-                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
-
-                var columns = new Dictionary<string, string>
-                {
-                    { "id", l_Data.ProgramId.ToString()},
-                    { "title", l_Data.ProgramName},
-                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
-                    { "endDate", ggend.ToString("yyyy-MM-dd")},
-                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "Venue", l_Data.Venue},
-                    { "note", l_Data.note},
-                    { "Category", "1"},
-                    { "ActivityId", l_Data.ActivityId.ToString()}
-                };
-
-                l_Events.Add(columns);
-            }
             return Json(l_Events, JsonRequestBehavior.AllowGet);
         }
         #endregion
@@ -3359,6 +3306,8 @@ namespace QolaMVC.Controllers
                 if (temp > 0)
                 {
                     l_Model.ProgramId = temp;
+                    l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                    l_Model.Special = 1;
                     EVENTS.Add(l_Model);
                 }
 
@@ -3391,6 +3340,8 @@ namespace QolaMVC.Controllers
                     if (temp > 0)
                     {
                         l_Model.ProgramId = temp;
+                        l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                        l_Model.Special = 1;
                         EVENTS.Add(l_Model);
                     }
                 }
@@ -3421,6 +3372,8 @@ namespace QolaMVC.Controllers
                     if (temp > 0)
                     {
                         l_Model.ProgramId = temp;
+                        l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                        l_Model.Special = 1;
                         EVENTS.Add(l_Model);
                     }
                 }
@@ -3429,31 +3382,7 @@ namespace QolaMVC.Controllers
 
             //var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get();//HomeDAL.GetActivityEvents();
 
-            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
-
-            foreach (var l_Data in EVENTS)
-            {
-                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
-                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
-
-                var columns = new Dictionary<string, string>
-                {
-                    { "id", l_Data.ProgramId.ToString()},
-                    { "title", l_Data.ProgramName},
-                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
-                    { "endDate", ggend.ToString("yyyy-MM-dd")},
-                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "Venue", l_Data.Venue},
-                    { "note", l_Data.note},
-                    { "Category", "1"},
-                    { "ActivityId", l_Data.ActivityId.ToString()}
-                };
-
-                l_Events.Add(columns);
-            }
+            List<Dictionary<string, string>> l_Events = addEVENTStol_Events(EVENTS);
             return Json(l_Events, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
@@ -3490,6 +3419,8 @@ namespace QolaMVC.Controllers
                 if (temp > 0)
                 {
                     l_Model.ProgramId = temp;
+                    l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                    l_Model.Special = 1;
                     EVENTS.Add(l_Model);
                 }
 
@@ -3522,6 +3453,8 @@ namespace QolaMVC.Controllers
                     if (temp > 0)
                     {
                         l_Model.ProgramId = temp;
+                        l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                        l_Model.Special = 1;
                         EVENTS.Add(l_Model);
                     }
                 }
@@ -3552,6 +3485,8 @@ namespace QolaMVC.Controllers
                     if (temp > 0)
                     {
                         l_Model.ProgramId = temp;
+                        l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                        l_Model.Special = 1;
                         EVENTS.Add(l_Model);
                     }
                 }
@@ -3560,31 +3495,7 @@ namespace QolaMVC.Controllers
 
             //var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get();//HomeDAL.GetActivityEvents();
 
-            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
-
-            foreach (var l_Data in EVENTS)
-            {
-                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
-                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
-
-                var columns = new Dictionary<string, string>
-                {
-                    { "id", l_Data.ProgramId.ToString()},
-                    { "title", l_Data.ProgramName},
-                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
-                    { "endDate", ggend.ToString("yyyy-MM-dd")},
-                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "Venue", l_Data.Venue},
-                    { "note", l_Data.note},
-                    { "Category", "1"},
-                    { "ActivityId", l_Data.ActivityId.ToString()}
-                };
-
-                l_Events.Add(columns);
-            }
+            List<Dictionary<string, string>> l_Events = addEVENTStol_Events(EVENTS);
             return Json(l_Events, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
@@ -3621,6 +3532,8 @@ namespace QolaMVC.Controllers
                 if (temp > 0)
                 {
                     l_Model.ProgramId = temp;
+                    l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                    l_Model.Special = 1;
                     EVENTS.Add(l_Model);
                 }
             }
@@ -3652,6 +3565,8 @@ namespace QolaMVC.Controllers
                     if (temp > 0)
                     {
                         l_Model.ProgramId = temp;
+                        l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                        l_Model.Special = 1;
                         EVENTS.Add(l_Model);
                     }
                 }
@@ -3682,6 +3597,8 @@ namespace QolaMVC.Controllers
                     if (temp > 0)
                     {
                         l_Model.ProgramId = temp;
+                        l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                        l_Model.Special = 1;
                         EVENTS.Add(l_Model);
                     }
                 }
@@ -3690,31 +3607,7 @@ namespace QolaMVC.Controllers
 
             //var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get();//HomeDAL.GetActivityEvents();
 
-            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
-
-            foreach (var l_Data in EVENTS)
-            {
-                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
-                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
-
-                var columns = new Dictionary<string, string>
-                {
-                    { "id", l_Data.ProgramId.ToString()},
-                    { "title", l_Data.ProgramName},
-                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
-                    { "endDate", ggend.ToString("yyyy-MM-dd")},
-                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "Venue", l_Data.Venue},
-                    { "note", l_Data.note},
-                    { "Category", "1"},
-                    { "ActivityId", l_Data.ActivityId.ToString()}
-                };
-
-                l_Events.Add(columns);
-            }
+            List<Dictionary<string, string>> l_Events = addEVENTStol_Events(EVENTS);
             return Json(l_Events, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
@@ -3751,6 +3644,8 @@ namespace QolaMVC.Controllers
                 if (temp > 0)
                 {
                     l_Model.ProgramId = temp;
+                    l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                    l_Model.Special = 1;
                     EVENTS.Add(l_Model);
                 }
             }
@@ -3782,6 +3677,8 @@ namespace QolaMVC.Controllers
                     if (temp > 0)
                     {
                         l_Model.ProgramId = temp;
+                        l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                        l_Model.Special = 1;
                         EVENTS.Add(l_Model);
                     }
                 }
@@ -3812,6 +3709,8 @@ namespace QolaMVC.Controllers
                     if (temp > 0)
                     {
                         l_Model.ProgramId = temp;
+                        l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                        l_Model.Special = 1;
                         EVENTS.Add(l_Model);
                     }
                 }
@@ -3820,31 +3719,7 @@ namespace QolaMVC.Controllers
 
             //var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get();//HomeDAL.GetActivityEvents();
 
-            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
-
-            foreach (var l_Data in EVENTS)
-            {
-                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
-                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
-
-                var columns = new Dictionary<string, string>
-                {
-                    { "id", l_Data.ProgramId.ToString()},
-                    { "title", l_Data.ProgramName},
-                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
-                    { "endDate", ggend.ToString("yyyy-MM-dd")},
-                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "Venue", l_Data.Venue},
-                    { "note", l_Data.note},
-                    { "Category", "1"},
-                    { "ActivityId", l_Data.ActivityId.ToString()}
-                };
-
-                l_Events.Add(columns);
-            }
+            List<Dictionary<string, string>> l_Events = addEVENTStol_Events(EVENTS);
             return Json(l_Events, JsonRequestBehavior.AllowGet);
         }
         #endregion
@@ -3913,34 +3788,16 @@ namespace QolaMVC.Controllers
 
             HomeDAL.EditNewActivityEvent(int.Parse(ID),l_Model, home.Id);
             l_Model.ProgramId = int.Parse(ID);
-            
+
+            l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+            l_Model.Special = 0;
+
 
 
 
             //var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get();//HomeDAL.GetActivityEvents();
 
-            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
-
-            var ggstart = new DateTime(l_Model.ProgramStartDate.Year, l_Model.ProgramStartDate.Month, l_Model.ProgramStartDate.Day);
-            var ggend = new DateTime(l_Model.ProgramStartDate.Year, l_Model.ProgramStartDate.Month, l_Model.ProgramEndDate.Day);
-
-            var columns = new Dictionary<string, string>
-            {
-                { "id", l_Model.ProgramId.ToString()},
-                { "title", l_Model.ProgramName},
-                { "startDate", ggstart.ToString("yyyy-MM-dd")},
-                { "endDate", ggend.ToString("yyyy-MM-dd")},
-                { "startTime", DateTime.Parse(l_Model.ProgramStartTime).ToString("HH:mm")},
-                { "endTime", DateTime.Parse(l_Model.ProgramEndTime).ToString("HH:mm")},
-                { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Model.ProgramStartTime).ToString("HH:mm")},
-                { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Model.ProgramEndTime).ToString("HH:mm")},
-                { "Venue", l_Model.Venue},
-                { "note", l_Model.note},
-                { "Category", "1"},
-                { "ActivityId", l_Model.ActivityId.ToString()}
-            };
-
-            l_Events.Add(columns);
+            List<Dictionary<string, string>> l_Events = addEVENTStol_Events_single(l_Model);
 
             return Json(l_Events, JsonRequestBehavior.AllowGet);
         }
@@ -3967,33 +3824,13 @@ namespace QolaMVC.Controllers
             HomeDAL.EditNewActivityEvent_C2(int.Parse(ID), l_Model, home.Id);
             l_Model.ProgramId = int.Parse(ID);
 
-
+            l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+            l_Model.Special = 0;
 
 
             //var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get();//HomeDAL.GetActivityEvents();
 
-            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
-
-            var ggstart = new DateTime(l_Model.ProgramStartDate.Year, l_Model.ProgramStartDate.Month, l_Model.ProgramStartDate.Day);
-            var ggend = new DateTime(l_Model.ProgramStartDate.Year, l_Model.ProgramStartDate.Month, l_Model.ProgramEndDate.Day);
-
-            var columns = new Dictionary<string, string>
-            {
-                { "id", l_Model.ProgramId.ToString()},
-                { "title", l_Model.ProgramName},
-                { "startDate", ggstart.ToString("yyyy-MM-dd")},
-                { "endDate", ggend.ToString("yyyy-MM-dd")},
-                { "startTime", DateTime.Parse(l_Model.ProgramStartTime).ToString("HH:mm")},
-                { "endTime", DateTime.Parse(l_Model.ProgramEndTime).ToString("HH:mm")},
-                { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Model.ProgramStartTime).ToString("HH:mm")},
-                { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Model.ProgramEndTime).ToString("HH:mm")},
-                { "Venue", l_Model.Venue},
-                { "note", l_Model.note},
-                { "Category", "1"},
-                { "ActivityId", l_Model.ActivityId.ToString()}
-            };
-
-            l_Events.Add(columns);
+            List<Dictionary<string, string>> l_Events = addEVENTStol_Events_single(l_Model);
 
             return Json(l_Events, JsonRequestBehavior.AllowGet);
         }
@@ -4020,33 +3857,13 @@ namespace QolaMVC.Controllers
             HomeDAL.EditNewActivityEvent_C3(int.Parse(ID), l_Model, home.Id);
             l_Model.ProgramId = int.Parse(ID);
 
-
+            l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+            l_Model.Special = 0;
 
 
             //var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get();//HomeDAL.GetActivityEvents();
 
-            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
-
-            var ggstart = new DateTime(l_Model.ProgramStartDate.Year, l_Model.ProgramStartDate.Month, l_Model.ProgramStartDate.Day);
-            var ggend = new DateTime(l_Model.ProgramStartDate.Year, l_Model.ProgramStartDate.Month, l_Model.ProgramEndDate.Day);
-
-            var columns = new Dictionary<string, string>
-            {
-                { "id", l_Model.ProgramId.ToString()},
-                { "title", l_Model.ProgramName},
-                { "startDate", ggstart.ToString("yyyy-MM-dd")},
-                { "endDate", ggend.ToString("yyyy-MM-dd")},
-                { "startTime", DateTime.Parse(l_Model.ProgramStartTime).ToString("HH:mm")},
-                { "endTime", DateTime.Parse(l_Model.ProgramEndTime).ToString("HH:mm")},
-                { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Model.ProgramStartTime).ToString("HH:mm")},
-                { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Model.ProgramEndTime).ToString("HH:mm")},
-                { "Venue", l_Model.Venue},
-                { "note", l_Model.note},
-                { "Category", "1"},
-                { "ActivityId", l_Model.ActivityId.ToString()}
-            };
-
-            l_Events.Add(columns);
+            List<Dictionary<string, string>> l_Events = addEVENTStol_Events_single(l_Model);
 
             return Json(l_Events, JsonRequestBehavior.AllowGet);
         }
@@ -4073,33 +3890,13 @@ namespace QolaMVC.Controllers
             HomeDAL.EditNewActivityEvent_C4(int.Parse(ID), l_Model, home.Id);
             l_Model.ProgramId = int.Parse(ID);
 
-
+            l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+            l_Model.Special = 0;
 
 
             //var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get();//HomeDAL.GetActivityEvents();
 
-            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
-
-            var ggstart = new DateTime(l_Model.ProgramStartDate.Year, l_Model.ProgramStartDate.Month, l_Model.ProgramStartDate.Day);
-            var ggend = new DateTime(l_Model.ProgramStartDate.Year, l_Model.ProgramStartDate.Month, l_Model.ProgramEndDate.Day);
-
-            var columns = new Dictionary<string, string>
-            {
-                { "id", l_Model.ProgramId.ToString()},
-                { "title", l_Model.ProgramName},
-                { "startDate", ggstart.ToString("yyyy-MM-dd")},
-                { "endDate", ggend.ToString("yyyy-MM-dd")},
-                { "startTime", DateTime.Parse(l_Model.ProgramStartTime).ToString("HH:mm")},
-                { "endTime", DateTime.Parse(l_Model.ProgramEndTime).ToString("HH:mm")},
-                { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Model.ProgramStartTime).ToString("HH:mm")},
-                { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Model.ProgramEndTime).ToString("HH:mm")},
-                { "Venue", l_Model.Venue},
-                { "note", l_Model.note},
-                { "Category", "1"},
-                { "ActivityId", l_Model.ActivityId.ToString()}
-            };
-
-            l_Events.Add(columns);
+            List<Dictionary<string, string>> l_Events = addEVENTStol_Events_single(l_Model);
 
             return Json(l_Events, JsonRequestBehavior.AllowGet);
         }
@@ -4158,32 +3955,7 @@ namespace QolaMVC.Controllers
 
             var l_ActivityEvents = HomeDAL.COPY_EVENT(Int32.Parse(eventID), DT, home.Id);
 
-            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
-
-            foreach (var l_Data in l_ActivityEvents)
-            {
-                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
-                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
-
-                var columns = new Dictionary<string, string>
-                {
-                    { "id", l_Data.ProgramId.ToString()},
-                    { "title", l_Data.ProgramName},
-                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
-                    { "endDate", ggend.ToString("yyyy-MM-dd")},
-                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "Venue", l_Data.Venue},
-                    { "note", l_Data.note},
-                    { "Category", "1"},
-                    { "ActivityId", l_Data.ActivityId.ToString()}
-
-                };
-
-                l_Events.Add(columns);
-            }
+            List<Dictionary<string, string>> l_Events = addEVENTStol_Events(l_ActivityEvents);
 
 
             return Json(l_Events, JsonRequestBehavior.AllowGet);
@@ -4200,32 +3972,7 @@ namespace QolaMVC.Controllers
 
             var l_ActivityEvents = HomeDAL.COPY_EVENT2(Int32.Parse(eventID), DT, home.Id);
 
-            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
-
-            foreach (var l_Data in l_ActivityEvents)
-            {
-                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
-                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
-
-                var columns = new Dictionary<string, string>
-                {
-                    { "id", l_Data.ProgramId.ToString()},
-                    { "title", l_Data.ProgramName},
-                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
-                    { "endDate", ggend.ToString("yyyy-MM-dd")},
-                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "Venue", l_Data.Venue},
-                    { "note", l_Data.note},
-                    { "Category", "1"},
-                    { "ActivityId", l_Data.ActivityId.ToString()}
-
-                };
-
-                l_Events.Add(columns);
-            }
+            List<Dictionary<string, string>> l_Events = addEVENTStol_Events(l_ActivityEvents);
 
 
             return Json(l_Events, JsonRequestBehavior.AllowGet);
@@ -4242,32 +3989,7 @@ namespace QolaMVC.Controllers
 
             var l_ActivityEvents = HomeDAL.COPY_EVENT3(Int32.Parse(eventID), DT, home.Id);
 
-            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
-
-            foreach (var l_Data in l_ActivityEvents)
-            {
-                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
-                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
-
-                var columns = new Dictionary<string, string>
-                {
-                    { "id", l_Data.ProgramId.ToString()},
-                    { "title", l_Data.ProgramName},
-                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
-                    { "endDate", ggend.ToString("yyyy-MM-dd")},
-                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "Venue", l_Data.Venue},
-                    { "note", l_Data.note},
-                    { "Category", "1"},
-                    { "ActivityId", l_Data.ActivityId.ToString()}
-
-                };
-
-                l_Events.Add(columns);
-            }
+            List<Dictionary<string, string>> l_Events = addEVENTStol_Events(l_ActivityEvents);
 
 
             return Json(l_Events, JsonRequestBehavior.AllowGet);
@@ -4284,32 +4006,7 @@ namespace QolaMVC.Controllers
 
             var l_ActivityEvents = HomeDAL.COPY_EVENT4(Int32.Parse(eventID), DT, home.Id);
 
-            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
-
-            foreach (var l_Data in l_ActivityEvents)
-            {
-                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
-                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
-
-                var columns = new Dictionary<string, string>
-                {
-                    { "id", l_Data.ProgramId.ToString()},
-                    { "title", l_Data.ProgramName},
-                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
-                    { "endDate", ggend.ToString("yyyy-MM-dd")},
-                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "Venue", l_Data.Venue},
-                    { "note", l_Data.note},
-                    { "Category", "1"},
-                    { "ActivityId", l_Data.ActivityId.ToString()}
-
-                };
-
-                l_Events.Add(columns);
-            }
+            List<Dictionary<string, string>> l_Events = addEVENTStol_Events(l_ActivityEvents);
 
 
             return Json(l_Events, JsonRequestBehavior.AllowGet);
@@ -4562,7 +4259,8 @@ namespace QolaMVC.Controllers
                 var columns = new Dictionary<string, string>
                 {
                     { "Id", l_Data.Id.ToString() },
-                    {"Name", l_Data.EnglishName}
+                    {"Name", l_Data.EnglishName},
+                    {"Category", l_Data.Category.Id.ToString()}
                 };
 
                 l_ActivityCategories.Add(columns);
@@ -4801,32 +4499,7 @@ namespace QolaMVC.Controllers
             ViewBag.Home = home;
             var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get_C2(home.Id);
 
-            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
-
-            foreach (var l_Data in l_ActivityEvents)
-            {
-                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
-                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
-
-                var columns = new Dictionary<string, string>
-                {
-                    { "id", l_Data.ProgramId.ToString()},
-                    { "title", l_Data.ProgramName},
-                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
-                    { "endDate", ggend.ToString("yyyy-MM-dd")},
-                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "Venue", l_Data.Venue},
-                    { "note", l_Data.note},
-                    { "Category", l_Data.CategoryId},
-                    { "ActivityId", l_Data.ActivityId.ToString()}
-
-                };
-
-                l_Events.Add(columns);
-            }
+            List<Dictionary<string, string>> l_Events = addEVENTStol_Events(l_ActivityEvents);
 
 
             return Json(l_Events, JsonRequestBehavior.AllowGet);
@@ -4839,32 +4512,7 @@ namespace QolaMVC.Controllers
             ViewBag.Home = home;
             var l_ActivityEvents = HomeDAL.GetActivityEvents_C2_between(home.Id, start, end);
 
-            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
-
-            foreach (var l_Data in l_ActivityEvents)
-            {
-                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
-                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
-
-                var columns = new Dictionary<string, string>
-                {
-                    { "id", l_Data.ProgramId.ToString()},
-                    { "title", l_Data.ProgramName},
-                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
-                    { "endDate", ggend.ToString("yyyy-MM-dd")},
-                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "Venue", l_Data.Venue},
-                    { "note", l_Data.note},
-                    { "Category", l_Data.CategoryId},
-                    { "ActivityId", l_Data.ActivityId.ToString()}
-
-                };
-
-                l_Events.Add(columns);
-            }
+            List<Dictionary<string, string>> l_Events = addEVENTStol_Events(l_ActivityEvents);
 
 
             return Json(l_Events, JsonRequestBehavior.AllowGet);
@@ -5008,32 +4656,7 @@ namespace QolaMVC.Controllers
             ViewBag.Home = home;
             var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get_C3(home.Id);
 
-            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
-
-            foreach (var l_Data in l_ActivityEvents)
-            {
-                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
-                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
-
-                var columns = new Dictionary<string, string>
-                {
-                    { "id", l_Data.ProgramId.ToString()},
-                    { "title", l_Data.ProgramName},
-                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
-                    { "endDate", ggend.ToString("yyyy-MM-dd")},
-                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "Venue", l_Data.Venue},
-                    { "note", l_Data.note},
-                    { "Category", l_Data.CategoryId},
-                    { "ActivityId", l_Data.ActivityId.ToString()}
-
-                };
-
-                l_Events.Add(columns);
-            }
+            List<Dictionary<string, string>> l_Events = addEVENTStol_Events(l_ActivityEvents);
 
 
             return Json(l_Events, JsonRequestBehavior.AllowGet);
@@ -5046,32 +4669,7 @@ namespace QolaMVC.Controllers
             ViewBag.Home = home;
             var l_ActivityEvents = HomeDAL.GetActivityEvents_C3_between(home.Id, start, end);
 
-            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
-
-            foreach (var l_Data in l_ActivityEvents)
-            {
-                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
-                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
-
-                var columns = new Dictionary<string, string>
-                {
-                    { "id", l_Data.ProgramId.ToString()},
-                    { "title", l_Data.ProgramName},
-                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
-                    { "endDate", ggend.ToString("yyyy-MM-dd")},
-                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "Venue", l_Data.Venue},
-                    { "note", l_Data.note},
-                    { "Category", l_Data.CategoryId},
-                    { "ActivityId", l_Data.ActivityId.ToString()}
-
-                };
-
-                l_Events.Add(columns);
-            }
+            List<Dictionary<string, string>> l_Events = addEVENTStol_Events(l_ActivityEvents);
 
 
             return Json(l_Events, JsonRequestBehavior.AllowGet);
@@ -5213,32 +4811,7 @@ namespace QolaMVC.Controllers
             ViewBag.Home = home;
             var l_ActivityEvents = new QolaMVC.WebAPI.ActivityCalendarController().Get_C4(home.Id);
 
-            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
-
-            foreach (var l_Data in l_ActivityEvents)
-            {
-                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
-                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
-
-                var columns = new Dictionary<string, string>
-                {
-                    { "id", l_Data.ProgramId.ToString()},
-                    { "title", l_Data.ProgramName},
-                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
-                    { "endDate", ggend.ToString("yyyy-MM-dd")},
-                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "Venue", l_Data.Venue},
-                    { "note", l_Data.note},
-                    { "Category", l_Data.CategoryId},
-                    { "ActivityId", l_Data.ActivityId.ToString()}
-
-                };
-
-                l_Events.Add(columns);
-            }
+            List<Dictionary<string, string>> l_Events = addEVENTStol_Events(l_ActivityEvents);
 
 
             return Json(l_Events, JsonRequestBehavior.AllowGet);
@@ -5251,32 +4824,7 @@ namespace QolaMVC.Controllers
             ViewBag.Home = home;
             var l_ActivityEvents = HomeDAL.GetActivityEvents_C4_between(home.Id, start, end);
 
-            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
-
-            foreach (var l_Data in l_ActivityEvents)
-            {
-                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
-                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
-
-                var columns = new Dictionary<string, string>
-                {
-                    { "id", l_Data.ProgramId.ToString()},
-                    { "title", l_Data.ProgramName},
-                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
-                    { "endDate", ggend.ToString("yyyy-MM-dd")},
-                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
-                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
-                    { "Venue", l_Data.Venue},
-                    { "note", l_Data.note},
-                    { "Category", l_Data.CategoryId},
-                    { "ActivityId", l_Data.ActivityId.ToString()}
-
-                };
-
-                l_Events.Add(columns);
-            }
+            List<Dictionary<string, string>> l_Events = addEVENTStol_Events(l_ActivityEvents);
 
 
             return Json(l_Events, JsonRequestBehavior.AllowGet);

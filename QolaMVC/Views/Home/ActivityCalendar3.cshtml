@@ -1378,6 +1378,7 @@
                         </div>
 
                         <div class="modal fade" id="EDIT_COPY_DELETE_CANCEL" role="dialog" style="margin-top:15%;">
+                            <input type="hidden" id="Event_Special" value=""/>
                             <div class="modal-dialog" style="left:0;right:0;width:20%;">
                                 <div class="modal-content" style="background-color:lightgray">
 
@@ -1388,7 +1389,7 @@
                                             <div class="row">
                                                 <div class="" style="margin:0 auto;width:90%;">
                                                     <div id="EDIT">
-                                                        <a class="btn btn-primary btn-lg" href="#" data-toggle="modal" data-target="#EditEvent" style="width:100%;" onclick="document.getElementById('EDIT_COPY_DELETE_CANCEL').className='modal fade'">Edit EVENT</a>
+                                                        <a class="btn btn-primary btn-lg" href="#" data-toggle="modal" style="width:100%;" onclick="EditEvent(this)">Edit EVENT</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -2447,6 +2448,9 @@
                         url: "/home/getEvents_mike_between",
                         data: { start: firstDayString, end: lastDayString },
                         success: function (data) {
+
+
+
                             $.each(data, function (i, v) {
 
 
@@ -2460,7 +2464,8 @@
                                     Note: v.note,
                                     Category: v.Category,
                                     ActivityID: v.ActivityId,
-                                    startTime: v.startTime
+                                    startTime: v.startTime,
+                                    special: v.Special
                                 });
 
                             })
@@ -2498,7 +2503,8 @@
                                     Note: v.note,
                                     Category: v.Category,
                                     ActivityID: v.ActivityId,
-                                    startTime: v.startTime
+                                    startTime: v.startTime,
+                                    special: v.Special
                                 });
 
                             })
@@ -2536,7 +2542,8 @@
                                     Note: v.note,
                                     Category: v.Category,
                                     ActivityID: v.ActivityId,
-                                    startTime: v.startTime
+                                    startTime: v.startTime,
+                                    special: v.Special
                                 });
 
                             })
@@ -2574,7 +2581,8 @@
                                     Note: v.note,
                                     Category: v.Category,
                                     ActivityID: v.ActivityId,
-                                    startTime: v.startTime
+                                    startTime: v.startTime,
+                                    special: v.Special
                                 });
 
                             })
@@ -2615,7 +2623,8 @@
                                         Note: v.note,
                                         Category: v.Category,
                                         ActivityID: v.ActivityId,
-                                        startTime: v.startTime
+                                        startTime: v.startTime,
+                                        special: v.Special
                                     });
                                 }
 
@@ -2656,7 +2665,8 @@
                                         Note: v.note,
                                         Category: v.Category,
                                         ActivityID: v.ActivityId,
-                                        startTime: v.startTime
+                                        startTime: v.startTime,
+                                        special: v.Special
                                     });
                                 }
                                     
@@ -2698,7 +2708,8 @@
                                         Note: v.note,
                                         Category: v.Category,
                                         ActivityID: v.ActivityId,
-                                        startTime: v.startTime
+                                        startTime: v.startTime,
+                                        special: v.Special
                                     });
                                 }
 
@@ -2739,7 +2750,8 @@
                                         Note: v.note,
                                         Category: v.Category,
                                         ActivityID: v.ActivityId,
-                                        startTime: v.startTime
+                                        startTime: v.startTime,
+                                        special: v.Special
                                     });
                                 }
 
@@ -3022,40 +3034,41 @@
 
 <script>
     $(document).ready(function () {
-        var date = new Date(), y = date.getFullYear(), m = date.getMonth();
-        var firstDay = new Date(y, m, 1);
-        var lastDay = new Date(y, m + 1, 0);
-        var firstDayString = firstDay.getFullYear() + '-' + (firstDay.getMonth() + 1).toString() + '-01';
-        var lastDayString = lastDay.getFullYear() + '-' + (lastDay.getMonth() + 1).toString() + '-' + lastDay.getDate();
+        //var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+        //var firstDay = new Date(y, m, 1);
+        //var lastDay = new Date(y, m + 1, 0);
+        //var firstDayString = firstDay.getFullYear() + '-' + (firstDay.getMonth() + 1).toString() + '-01';
+        //var lastDayString = lastDay.getFullYear() + '-' + (lastDay.getMonth() + 1).toString() + '-' + lastDay.getDate();
 
 
-        $.ajax({
-            type: "GET",
-            url: "/home/getEvents_mike_between",
-            data: { start: firstDayString, end: lastDayString },
-            success: function (data) {
-                $.each(data, function (i, v) {
-                    data.push({
-                        Id: v.id,
-                        title: v.title,
-                        start: v.startT,
-                        end: v.endT != null ? v.endT : null,
-                        startDate: v.startDate,
-                        Venue: v.Venue,
-                        Note: v.note,
-                        Category: v.Category,
-                        ActivityID: v.ActivityId,
-                        startTime: v.startTime
-                    });
-                })
-                GenerationCalendar(data);
+        //$.ajax({
+        //    type: "GET",
+        //    url: "/home/getEvents_mike_between",
+        //    data: { start: firstDayString, end: lastDayString },
+        //    success: function (data) {
+        //        $.each(data, function (i, v) {
+        //            data.push({
+        //                Id: v.id,
+        //                title: v.title,
+        //                start: v.startT,
+        //                end: v.endT != null ? v.endT : null,
+        //                startDate: v.startDate,
+        //                Venue: v.Venue,
+        //                Note: v.note,
+        //                Category: v.Category,
+        //                ActivityID: v.ActivityId,
+        //                startTime: v.startTime,
+        //                special: v.Special
+        //            });
+        //        })
+        //        GenerationCalendar(data);
 
-            },
+        //    },
 
-            error: function (error) {
-                tempAlert('failed', 2000);
-            }
-        })
+        //    error: function (error) {
+        //        tempAlert('failed', 2000);
+        //    }
+        //})
 
         //$.ajax({
         //    type: "GET",
@@ -3073,7 +3086,8 @@
         //                Note: v.note,
         //                Category: v.Category,
         //                ActivityID: v.ActivityId,
-        //                startTime: v.startTime
+        //                startTime: v.startTime,
+        //                special: v.Special
         //            });
         //        })
         //        GenerationCalendar2(data);
@@ -3100,7 +3114,8 @@
         //                Note: v.note,
         //                Category: v.Category,
         //                ActivityID: v.ActivityId,
-        //                startTime: v.startTime
+        //                startTime: v.startTime,
+        //                special: v.Special
         //            });
         //        })
         //        GenerationCalendar3(data);
@@ -3127,7 +3142,8 @@
         //                Note: v.note,
         //                Category: v.Category,
         //                ActivityID: v.ActivityId,
-        //                startTime: v.startTime
+        //                startTime: v.startTime,
+        //                special: v.Special
         //            });
         //        })
         //        GenerationCalendar4(data);
@@ -3139,7 +3155,7 @@
         //})
 
 
-
+        GenerationCalendar({});
         GenerationCalendar2({});
         GenerationCalendar3({});
         GenerationCalendar4({});
@@ -3197,6 +3213,7 @@
                     var c = calEvent.startDate;
                     b[0].innerHTML = c;
                     $(this).css('border-color', 'red');
+                    $('#Event_Special').val(calEvent.special);
 
                     //$('#activity_select2').children('option:not(:first)').remove();
                     //$.get("/Home/getCategoriesForCalendar", {}, function (data) {
@@ -3225,7 +3242,15 @@
                     //    DragandDrop(event.Id, event.start.format());
                     //}
                     //else { revertFunc(); }
-                    DragandDrop(event.Id, event.start.format());
+
+                    if (event.special == '0') {
+                        DragandDrop(event.Id, event.start.format());
+                    }
+                    else {
+                        tempAlert('Event Cannot Edit', 2000);
+                        revertFunc();
+                    }
+                    
                 }
             }).on('click', '.fc-basicWeek-button', function () {
                 //var b = $('.fc-basicWeek-button');
@@ -3300,6 +3325,7 @@
                     var c = calEvent.startDate;
                     b[0].innerHTML = c;
                     $(this).css('border-color', 'red');
+                    $('#Event_Special').val(calEvent.special);
 
                     //$('#activity_select2').children('option:not(:first)').remove();
                     //$.get("/Home/getCategoriesForCalendar", {}, function (data) {
@@ -3328,7 +3354,13 @@
                     //    DragandDrop(event.Id, event.start.format());
                     //}
                     //else { revertFunc(); }
-                    DragandDrop(event.Id, event.start.format());
+                    if (event.special == '0') {
+                        DragandDrop(event.Id, event.start.format());
+                    }
+                    else {
+                        tempAlert('Event Cannot Edit', 2000);
+                        revertFunc();
+                    }
                 }
             }).on('click', '.fc-basicWeek-button', function () {
                 //var b = $('.fc-basicWeek-button');
@@ -3403,6 +3435,7 @@
                     var c = calEvent.startDate;
                     b[0].innerHTML = c;
                     $(this).css('border-color', 'red');
+                    $('#Event_Special').val(calEvent.special);
 
                     //$('#activity_select2').children('option:not(:first)').remove();
                     //$.get("/Home/getCategoriesForCalendar", {}, function (data) {
@@ -3431,7 +3464,13 @@
                     //    DragandDrop(event.Id, event.start.format());
                     //}
                     //else { revertFunc(); }
-                    DragandDrop(event.Id, event.start.format());
+                    if (event.special == '0') {
+                        DragandDrop(event.Id, event.start.format());
+                    }
+                    else {
+                        tempAlert('Event Cannot Edit', 2000);
+                        revertFunc();
+                    }
                 }
             }).on('click', '.fc-basicWeek-button', function () {
                 //var b = $('.fc-basicWeek-button');
@@ -3507,6 +3546,7 @@
                     var c = calEvent.startDate;
                     b[0].innerHTML = c;
                     $(this).css('border-color', 'red');
+                    $('#Event_Special').val(calEvent.special);
 
                     //$('#activity_select2').children('option:not(:first)').remove();
                     //$.get("/Home/getCategoriesForCalendar", {}, function (data) {
@@ -3536,7 +3576,13 @@
                     //    DragandDrop(event.Id, event.start.format());
                     //}
                     //else { revertFunc(); }
-                    DragandDrop(event.Id, event.start.format());
+                    if (event.special == '0') {
+                        DragandDrop(event.Id, event.start.format());
+                    }
+                    else {
+                        tempAlert('Event Cannot Edit', 2000);
+                        revertFunc();
+                    }
                 }
             }).on('click', '.fc-basicWeek-button', function () {
                 //var b = $('.fc-basicWeek-button');
@@ -3589,7 +3635,8 @@
                             Note: v.note,
                             Category: v.Category,
                             ActivityID: v.ActivityId,
-                            startTime: v.startTime
+                            startTime: v.startTime,
+                            special: v.Special
                         });
                         
                     })
@@ -3618,7 +3665,8 @@
                             Note: v.note,
                             Category: v.Category,
                             ActivityID: v.ActivityId,
-                            startTime: v.startTime
+                            startTime: v.startTime,
+                            special: v.Special
                         });
                         
                     })
@@ -3647,7 +3695,8 @@
                             Note: v.note,
                             Category: v.Category,
                             ActivityID: v.ActivityId,
-                            startTime: v.startTime
+                            startTime: v.startTime,
+                            special: v.Special
                         });
                         
                     })
@@ -3676,7 +3725,8 @@
                             Note: v.note,
                             Category: v.Category,
                             ActivityID: v.ActivityId,
-                            startTime: v.startTime
+                            startTime: v.startTime,
+                            special: v.Special
                         });
                         
                     })
@@ -3706,7 +3756,8 @@
                                 Note: v.note,
                                 Category: v.Category,
                                 ActivityID: v.ActivityId,
-                                startTime: v.startTime
+                                startTime: v.startTime,
+                                special: v.Special
                             });
                         }
                     })
@@ -3735,7 +3786,8 @@
                                 Note: v.note,
                                 Category: v.Category,
                                 ActivityID: v.ActivityId,
-                                startTime: v.startTime
+                                startTime: v.startTime,
+                                special: v.Special
                             });
                         }
                     })
@@ -3765,7 +3817,8 @@
                                 Note: v.note,
                                 Category: v.Category,
                                 ActivityID: v.ActivityId,
-                                startTime: v.startTime
+                                startTime: v.startTime,
+                                special: v.Special
                             });
                         }
                     })
@@ -3795,7 +3848,8 @@
                                 Note: v.note,
                                 Category: v.Category,
                                 ActivityID: v.ActivityId,
-                                startTime: v.startTime
+                                startTime: v.startTime,
+                                special: v.Special
                             });
                         }
                     })
@@ -3923,12 +3977,20 @@
                         Note: data[ind].note,
                         Category: data[ind].Category,
                         ActivityID: data[ind].ActivityId,
-                        startTime: data[ind].startTime
+                        startTime: data[ind].startTime,
+                        special: data[ind].Special
                     };
                     var xx = scrollX;
                     var yy = scrollY;
-                    $('#calendar').fullCalendar('renderEvent', event, true);
-                    update_day_div();
+
+
+                    if ($('#categorychoose').val() == '0' || data[ind].Category.toString().trim() == $('#categorychoose').val()) {
+                        $('#calendar').fullCalendar('renderEvent', event, true);
+                        update_day_div();
+                    }
+
+                    
+                    
                     scroll(xx, yy);
                 }
                 $('#AddEvent').modal('hide');
@@ -3950,10 +4012,13 @@
                         Note: data[ind].note,
                         Category: data[ind].Category,
                         ActivityID: data[ind].ActivityId,
-                        startTime: data[ind].startTime
+                        startTime: data[ind].startTime,
+                        special: data[ind].Special
                     };
-                    $('#calendar2').fullCalendar('renderEvent', event, true);
-                    update_day_div();
+                    if ($('#categorychoose').val() == '0' || data[ind].Category.toString().trim() == $('#categorychoose').val()) {
+                        $('#calendar2').fullCalendar('renderEvent', event, true);
+                        update_day_div();
+                    }
                 }
                 $('#AddEvent').modal('hide');
                 cancel1();
@@ -3974,10 +4039,13 @@
                         Note: data[ind].note,
                         Category: data[ind].Category,
                         ActivityID: data[ind].ActivityId,
-                        startTime: data[ind].startTime
+                        startTime: data[ind].startTime,
+                        special: data[ind].Special
                     };
-                    $('#calendar3').fullCalendar('renderEvent', event, true);
-                    update_day_div();
+                    if ($('#categorychoose').val() == '0' || data[ind].Category.toString().trim() == $('#categorychoose').val()) {
+                        $('#calendar3').fullCalendar('renderEvent', event, true);
+                        update_day_div();
+                    }
                 }
                 $('#AddEvent').modal('hide');
                 cancel1();
@@ -3998,10 +4066,13 @@
                         Note: data[ind].note,
                         Category: data[ind].Category,
                         ActivityID: data[ind].ActivityId,
-                        startTime: data[ind].startTime
+                        startTime: data[ind].startTime,
+                        special: data[ind].Special
                     };
-                    $('#calendar4').fullCalendar('renderEvent', event, true);
-                    update_day_div();
+                    if ($('#categorychoose').val() == '0' || data[ind].Category.toString().trim() == $('#categorychoose').val()) {
+                        $('#calendar4').fullCalendar('renderEvent', event, true);
+                        update_day_div();
+                    }
                 }
                 $('#AddEvent').modal('hide');
                 cancel1();
@@ -4045,9 +4116,14 @@
                         Note: data[ind].note,
                         Category: data[ind].Category,
                         ActivityID: data[ind].ActivityId,
-                        startTime: data[ind].startTime
+                        startTime: data[ind].startTime,
+                        special: data[ind].Special
                     };
-                    $('#calendar').fullCalendar('renderEvent', event, true);
+                    
+                    
+                    if ($('#categorychoose').val() == '0' || data[ind].Category.toString().trim() == $('#categorychoose').val()) {
+                        $('#calendar').fullCalendar('renderEvent', event, true);               
+                    }
                     update_day_div();
                 }
                 $('#EditEvent').modal('hide');
@@ -4072,9 +4148,12 @@
                         Note: data[ind].note,
                         Category: data[ind].Category,
                         ActivityID: data[ind].ActivityId,
-                        startTime: data[ind].startTime
+                        startTime: data[ind].startTime,
+                        special: data[ind].Special
                     };
-                    $('#calendar2').fullCalendar('renderEvent', event, true);
+                    if ($('#categorychoose').val() == '0' || data[ind].Category.toString().trim() == $('#categorychoose').val()) {
+                        $('#calendar2').fullCalendar('renderEvent', event, true);
+                    }
                     update_day_div();
                 }
                 $('#EditEvent').modal('hide');
@@ -4099,9 +4178,12 @@
                         Note: data[ind].note,
                         Category: data[ind].Category,
                         ActivityID: data[ind].ActivityId,
-                        startTime: data[ind].startTime
+                        startTime: data[ind].startTime,
+                        special: data[ind].Special
                     };
-                    $('#calendar3').fullCalendar('renderEvent', event, true);
+                    if ($('#categorychoose').val() == '0' || data[ind].Category.toString().trim() == $('#categorychoose').val()) {
+                        $('#calendar3').fullCalendar('renderEvent', event, true);
+                    }
                     update_day_div();
                 }
                 $('#EditEvent').modal('hide');
@@ -4126,9 +4208,12 @@
                         Note: data[ind].note,
                         Category: data[ind].Category,
                         ActivityID: data[ind].ActivityId,
-                        startTime: data[ind].startTime
+                        startTime: data[ind].startTime,
+                        special: data[ind].Special
                     };
-                    $('#calendar4').fullCalendar('renderEvent', event, true);
+                    if ($('#categorychoose').val() == '0' || data[ind].Category.toString().trim() == $('#categorychoose').val()) {
+                        $('#calendar4').fullCalendar('renderEvent', event, true);
+                    }
                     update_day_div();
                 }
                 $('#EditEvent').modal('hide');
@@ -4218,12 +4303,19 @@
                         Note: data[ind].note,
                         Category: data[ind].Category,
                         ActivityID: data[ind].ActivityId,
-                        startTime: data[ind].startTime
+                        startTime: data[ind].startTime,
+                        special: data[ind].Special
                     };
                     var xx = scrollX;
                     var yy = scrollY;
-                    $('#calendar').fullCalendar('renderEvent', event, true);
-                    update_day_div();
+                    
+                    
+
+                    if ($('#categorychoose').val() == '0' || data[ind].Category.toString().trim() == $('#categorychoose').val()) {
+                        $('#calendar').fullCalendar('renderEvent', event, true);
+                        update_day_div();
+                    }
+
                     scroll(xx, yy);
                 }
                 $('#AddEvent_Hannan').modal('hide');
@@ -4245,10 +4337,13 @@
                         Note: data[ind].note,
                         Category: data[ind].Category,
                         ActivityID: data[ind].ActivityId,
-                        startTime: data[ind].startTime
+                        startTime: data[ind].startTime,
+                        special: data[ind].Special
                     };
-                    $('#calendar2').fullCalendar('renderEvent', event, true);
-                    update_day_div();
+                    if ($('#categorychoose').val() == '0' || data[ind].Category.toString().trim() == $('#categorychoose').val()) {
+                        $('#calendar2').fullCalendar('renderEvent', event, true);
+                        update_day_div();
+                    }
                 }
                 $('#AddEvent_Hannan').modal('hide');
                 cancel1();
@@ -4269,10 +4364,13 @@
                         Note: data[ind].note,
                         Category: data[ind].Category,
                         ActivityID: data[ind].ActivityId,
-                        startTime: data[ind].startTime
+                        startTime: data[ind].startTime,
+                        special: data[ind].Special
                     };
-                    $('#calendar3').fullCalendar('renderEvent', event, true);
-                    update_day_div();
+                    if ($('#categorychoose').val() == '0' || data[ind].Category.toString().trim() == $('#categorychoose').val()) {
+                        $('#calendar3').fullCalendar('renderEvent', event, true);
+                        update_day_div();
+                    }
                 }
                 $('#AddEvent_Hannan').modal('hide');
                 cancel1();
@@ -4293,10 +4391,13 @@
                         Note: data[ind].note,
                         Category: data[ind].Category,
                         ActivityID: data[ind].ActivityId,
-                        startTime: data[ind].startTime
+                        startTime: data[ind].startTime,
+                        special: data[ind].Special
                     };
-                    $('#calendar4').fullCalendar('renderEvent', event, true);
-                    update_day_div();
+                    if ($('#categorychoose').val() == '0' || data[ind].Category.toString().trim() == $('#categorychoose').val()) {
+                        $('#calendar4').fullCalendar('renderEvent', event, true);
+                        update_day_div();
+                    }
                 }
                 $('#AddEvent_Hannan').modal('hide');
                 cancel1();
@@ -4318,7 +4419,8 @@
         $('#AddEvent_Hannan #venue_select3').val('');
 
         var now = new Date();
-        var nowString = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().substring(0, 19);
+        var nowString = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().substring(0, 16);
+
         $('#AddEvent_Hannan #dateandtime_input').val(nowString);
 
         $('#AddEvent_Hannan #datefrom').hide();
@@ -4409,12 +4511,30 @@
     }
 
     function deleteEvent(ee) {
-        var aa = $('#EditEvent #EventID').val()
-        var tab = $('#hiddentab').val();
-        tempAlert2("Sure about Delete?");
-        $('#EDIT_COPY_DELETE_CANCEL').removeClass('show');
+        if ($('#Event_Special').val() == '0') {
+            var aa = $('#EditEvent #EventID').val()
+            var tab = $('#hiddentab').val();
+            tempAlert2("Sure about Delete?");
+            $('#EDIT_COPY_DELETE_CANCEL').removeClass('show');
+        }
+        else {
+            tempAlert("Event Cannot Delete",2000);
+        }
 
 
+
+
+    }
+
+    function EditEvent(ee) {
+        if ($('#Event_Special').val() == '0') {
+            document.getElementById('EDIT_COPY_DELETE_CANCEL').className = 'modal fade';
+            $("#EditEvent").modal("show");
+        }
+        else {
+            tempAlert("Event Cannot Edit", 2000);
+        }
+        
 
     }
 
@@ -4448,7 +4568,8 @@
                         Note: data[ind].note,
                         Category: data[ind].Category,
                         ActivityID: data[ind].ActivityId,
-                        startTime: data[ind].startTime
+                        startTime: data[ind].startTime,
+                        special: data[ind].Special
                     };
                     $('#calendar').fullCalendar('renderEvent', event, true);
                 }
@@ -4473,7 +4594,8 @@
                         Note: data[ind].note,
                         Category: data[ind].Category,
                         ActivityID: data[ind].ActivityId,
-                        startTime: data[ind].startTime
+                        startTime: data[ind].startTime,
+                        special: data[ind].Special
                     };
                     $('#calendar2').fullCalendar('renderEvent', event, true);
                 }
@@ -4498,7 +4620,8 @@
                         Note: data[ind].note,
                         Category: data[ind].Category,
                         ActivityID: data[ind].ActivityId,
-                        startTime: data[ind].startTime
+                        startTime: data[ind].startTime,
+                        special: data[ind].Special
                     };
                     $('#calendar3').fullCalendar('renderEvent', event, true);
                 }
@@ -4523,7 +4646,8 @@
                         Note: data[ind].note,
                         Category: data[ind].Category,
                         ActivityID: data[ind].ActivityId,
-                        startTime: data[ind].startTime
+                        startTime: data[ind].startTime,
+                        special: data[ind].Special
                     };
                     $('#calendar4').fullCalendar('renderEvent', event, true);
                 }
@@ -4547,82 +4671,190 @@
         //var dateselect = document.getElementById("lblCalendarMsg").innerHTML;
         var dateselect = $('#tempdate').val();
 
-        if (tab == "a" || tab == "") {
-            $.get("/Home/update_day_div1", { datesel: dateselect }, function (data) {
-                $('#day_div #main_page #pills-day table tbody').html('');
-                for (var i = 0; i < data.length; i++) {
-                    $('#day_div #main_page #pills-day table tbody').append('' +
+        var ee = $('#categorychoose').val();
 
-                        '<tr name=' + data[i].ProgramId + ' id = ' + data[i].ProgramName + ' englishname = ' + data[i].ActivityNameEnglish + ' >' +
-                        '<td>' + data[i].ProgramStartTime + '</td>' +
-                        '<td>' + data[i].ProgramName + '</td>' +
-                        '<td>' + data[i].Venue + '</td>' +
-                        '<td><a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#"><i class="fa fa-file-text-o"></i></a></td>' +
-                        '<td>' + data[i].Active + '</td>' +
-                        '<td>' + data[i].Declined + '</td>' +
-                        '</tr>' +
+        if (ee == '0') {
+            if (tab == "a" || tab == "") {
+                $.get("/Home/update_day_div1", { datesel: dateselect }, function (data) {
+                    $('#day_div #main_page #pills-day table tbody').html('');
+                    for (var i = 0; i < data.length; i++) {
 
-                        '');
-                }
-            });
+                        if (data[i].Category == ee) { }
+
+                        $('#day_div #main_page #pills-day table tbody').append('' +
+
+                            '<tr name=' + data[i].ProgramId + ' id = ' + data[i].ProgramName + ' englishname = ' + data[i].ActivityNameEnglish + ' >' +
+                            '<td>' + data[i].ProgramStartTime + '</td>' +
+                            '<td>' + data[i].ProgramName + '</td>' +
+                            '<td>' + data[i].Venue + '</td>' +
+                            '<td><a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#"><i class="fa fa-file-text-o"></i></a></td>' +
+                            '<td>' + data[i].Active + '</td>' +
+                            '<td>' + data[i].Declined + '</td>' +
+                            '</tr>' +
+
+                            '');
+                    }
+                });
+            }
+            else if (tab == "b") {
+                $.get("/Home/update_day_div2", { datesel: dateselect }, function (data) {
+                    $('#day_div2 #main_page #pills-day table tbody').html('');
+                    for (var i = 0; i < data.length; i++) {
+                        $('#day_div2 #main_page #pills-day table tbody').append('' +
+
+                            '<tr name=' + data[i].ProgramId + ' id = ' + data[i].ProgramName + ' englishname = ' + data[i].ActivityNameEnglish + ' >' +
+                            '<td>' + data[i].ProgramStartTime + '</td>' +
+                            '<td>' + data[i].ProgramName + '</td>' +
+                            '<td>' + data[i].Venue + '</td>' +
+                            '<td><a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#"><i class="fa fa-file-text-o"></i></a></td>' +
+                            '<td>' + data[i].Active + '</td>' +
+                            '<td>' + data[i].Declined + '</td>' +
+                            '</tr>' +
+
+                            '');
+                    }
+                });
+            }
+            else if (tab == "c") {
+                $.get("/Home/update_day_div3", { datesel: dateselect }, function (data) {
+                    $('#day_div3 #main_page #pills-day table tbody').html('');
+                    for (var i = 0; i < data.length; i++) {
+                        $('#day_div3 #main_page #pills-day table tbody').append('' +
+
+                            '<tr name=' + data[i].ProgramId + ' id = ' + data[i].ProgramName + ' englishname = ' + data[i].ActivityNameEnglish + ' >' +
+                            '<td>' + data[i].ProgramStartTime + '</td>' +
+                            '<td>' + data[i].ProgramName + '</td>' +
+                            '<td>' + data[i].Venue + '</td>' +
+                            '<td><a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#"><i class="fa fa-file-text-o"></i></a></td>' +
+                            '<td>' + data[i].Active + '</td>' +
+                            '<td>' + data[i].Declined + '</td>' +
+                            '</tr>' +
+
+                            '');
+                    }
+                });
+            }
+            else if (tab == "d") {
+                $.get("/Home/update_day_div4", { datesel: dateselect }, function (data) {
+                    $('#day_div4 #main_page #pills-day table tbody').html('');
+                    for (var i = 0; i < data.length; i++) {
+                        $('#day_div4 #main_page #pills-day table tbody').append('' +
+
+                            '<tr name=' + data[i].ProgramId + ' id = ' + data[i].ProgramName + ' englishname = ' + data[i].ActivityNameEnglish + ' >' +
+                            '<td>' + data[i].ProgramStartTime + '</td>' +
+                            '<td>' + data[i].ProgramName + '</td>' +
+                            '<td>' + data[i].Venue + '</td>' +
+                            '<td><a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#"><i class="fa fa-file-text-o"></i></a></td>' +
+                            '<td>' + data[i].Active + '</td>' +
+                            '<td>' + data[i].Declined + '</td>' +
+                            '</tr>' +
+
+                            '');
+                    }
+                });
+            }
         }
-        else if (tab == "b") {
-            $.get("/Home/update_day_div2", { datesel: dateselect }, function (data) {
-                $('#day_div2 #main_page #pills-day table tbody').html('');
-                for (var i = 0; i < data.length; i++) {
-                    $('#day_div2 #main_page #pills-day table tbody').append('' +
+        else {
+            if (tab == "a" || tab == "") {
+                $.get("/Home/update_day_div1", { datesel: dateselect }, function (data) {
+                    $('#day_div #main_page #pills-day table tbody').html('');
+                    for (var i = 0; i < data.length; i++) {
 
-                        '<tr name=' + data[i].ProgramId + ' id = ' + data[i].ProgramName + ' englishname = ' + data[i].ActivityNameEnglish + ' >' +
-                        '<td>' + data[i].ProgramStartTime + '</td>' +
-                        '<td>' + data[i].ProgramName + '</td>' +
-                        '<td>' + data[i].Venue + '</td>' +
-                        '<td><a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#"><i class="fa fa-file-text-o"></i></a></td>' +
-                        '<td>' + data[i].Active + '</td>' +
-                        '<td>' + data[i].Declined + '</td>' +
-                        '</tr>' +
+                        if (data[i].Category == ee) {
+                            $('#day_div #main_page #pills-day table tbody').append('' +
 
-                        '');
-                }
-            });
+                                '<tr name=' + data[i].ProgramId + ' id = ' + data[i].ProgramName + ' englishname = ' + data[i].ActivityNameEnglish + ' >' +
+                                '<td>' + data[i].ProgramStartTime + '</td>' +
+                                '<td>' + data[i].ProgramName + '</td>' +
+                                '<td>' + data[i].Venue + '</td>' +
+                                '<td><a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#"><i class="fa fa-file-text-o"></i></a></td>' +
+                                '<td>' + data[i].Active + '</td>' +
+                                '<td>' + data[i].Declined + '</td>' +
+                                '</tr>' +
+
+                                '');
+                        }
+
+
+                    }
+                });
+            }
+            else if (tab == "b") {
+                $.get("/Home/update_day_div2", { datesel: dateselect }, function (data) {
+                    $('#day_div2 #main_page #pills-day table tbody').html('');
+                    for (var i = 0; i < data.length; i++) {
+
+                        if (data[i].Category == ee) {
+                            $('#day_div2 #main_page #pills-day table tbody').append('' +
+
+                                '<tr name=' + data[i].ProgramId + ' id = ' + data[i].ProgramName + ' englishname = ' + data[i].ActivityNameEnglish + ' >' +
+                                '<td>' + data[i].ProgramStartTime + '</td>' +
+                                '<td>' + data[i].ProgramName + '</td>' +
+                                '<td>' + data[i].Venue + '</td>' +
+                                '<td><a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#"><i class="fa fa-file-text-o"></i></a></td>' +
+                                '<td>' + data[i].Active + '</td>' +
+                                '<td>' + data[i].Declined + '</td>' +
+                                '</tr>' +
+
+                                '');
+                        }
+
+
+                    }
+                });
+            }
+            else if (tab == "c") {
+                $.get("/Home/update_day_div3", { datesel: dateselect }, function (data) {
+                    $('#day_div3 #main_page #pills-day table tbody').html('');
+                    for (var i = 0; i < data.length; i++) {
+
+                        if (data[i].Category == ee) {
+
+                            $('#day_div3 #main_page #pills-day table tbody').append('' +
+
+                                '<tr name=' + data[i].ProgramId + ' id = ' + data[i].ProgramName + ' englishname = ' + data[i].ActivityNameEnglish + ' >' +
+                                '<td>' + data[i].ProgramStartTime + '</td>' +
+                                '<td>' + data[i].ProgramName + '</td>' +
+                                '<td>' + data[i].Venue + '</td>' +
+                                '<td><a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#"><i class="fa fa-file-text-o"></i></a></td>' +
+                                '<td>' + data[i].Active + '</td>' +
+                                '<td>' + data[i].Declined + '</td>' +
+                                '</tr>' +
+
+                                '');
+                        }
+
+
+                    }
+                });
+            }
+            else if (tab == "d") {
+                $.get("/Home/update_day_div4", { datesel: dateselect }, function (data) {
+                    $('#day_div4 #main_page #pills-day table tbody').html('');
+                    for (var i = 0; i < data.length; i++) {
+
+                        if (data[i].Category == ee) {
+                            $('#day_div4 #main_page #pills-day table tbody').append('' +
+
+                                '<tr name=' + data[i].ProgramId + ' id = ' + data[i].ProgramName + ' englishname = ' + data[i].ActivityNameEnglish + ' >' +
+                                '<td>' + data[i].ProgramStartTime + '</td>' +
+                                '<td>' + data[i].ProgramName + '</td>' +
+                                '<td>' + data[i].Venue + '</td>' +
+                                '<td><a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#"><i class="fa fa-file-text-o"></i></a></td>' +
+                                '<td>' + data[i].Active + '</td>' +
+                                '<td>' + data[i].Declined + '</td>' +
+                                '</tr>' +
+
+                                '');
+                        }
+
+
+                    }
+                });
+            }
         }
-        else if (tab == "c") {
-            $.get("/Home/update_day_div3", { datesel: dateselect }, function (data) {
-                $('#day_div3 #main_page #pills-day table tbody').html('');
-                for (var i = 0; i < data.length; i++) {
-                    $('#day_div3 #main_page #pills-day table tbody').append('' +
 
-                        '<tr name=' + data[i].ProgramId + ' id = ' + data[i].ProgramName + ' englishname = ' + data[i].ActivityNameEnglish + ' >' +
-                        '<td>' + data[i].ProgramStartTime + '</td>' +
-                        '<td>' + data[i].ProgramName + '</td>' +
-                        '<td>' + data[i].Venue + '</td>' +
-                        '<td><a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#"><i class="fa fa-file-text-o"></i></a></td>' +
-                        '<td>' + data[i].Active + '</td>' +
-                        '<td>' + data[i].Declined + '</td>' +
-                        '</tr>' +
 
-                        '');
-                }
-            });
-        }
-        else if (tab == "d") {
-            $.get("/Home/update_day_div4", { datesel: dateselect }, function (data) {
-                $('#day_div4 #main_page #pills-day table tbody').html('');
-                for (var i = 0; i < data.length; i++) {
-                    $('#day_div4 #main_page #pills-day table tbody').append('' +
-
-                        '<tr name=' + data[i].ProgramId + ' id = ' + data[i].ProgramName + ' englishname = ' + data[i].ActivityNameEnglish + ' >' +
-                        '<td>' + data[i].ProgramStartTime + '</td>' +
-                        '<td>' + data[i].ProgramName + '</td>' +
-                        '<td>' + data[i].Venue + '</td>' +
-                        '<td><a data-toggle="modal" data-target="#attendent_form" onclick="open_form(this)" href="#"><i class="fa fa-file-text-o"></i></a></td>' +
-                        '<td>' + data[i].Active + '</td>' +
-                        '<td>' + data[i].Declined + '</td>' +
-                        '</tr>' +
-
-                        '');
-                }
-            });
-        }
 
 
 
