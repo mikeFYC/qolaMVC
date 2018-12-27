@@ -373,6 +373,7 @@ namespace QolaMVC.DAL
                     SqlCommand l_Cmd2 = new SqlCommand("spAB_Get_ActivityAssessmentByAssessmentId", l_Conn);
                     l_Cmd2.CommandType = System.Data.CommandType.StoredProcedure;
                     l_Cmd2.Parameters.AddWithValue("@AssessmentId", l_Model.Id);
+                    l_Cmd2.Parameters.AddWithValue("@ResidentId", p_ResidentId);
                     SqlDataReader l_Reader2 = l_Cmd2.ExecuteReader();
 
                     int index = 0;

@@ -224,7 +224,7 @@
                                 <h3>Activity Calendar</h3>
                             </div>
                             <div style="width:24%;display:inline-block;">
-                                <input id="backbutton" onclick="location.href='/Home/Menu/?p_HomeId=@ViewBag.Home.Id';" class="btn btn-primary" type="button" value="BACK" />
+                                <button onclick="location.href='/Home/Menu/?p_HomeId=@ViewBag.Home.Id';" class="btn btn-primary"><i class="fa fa-backward"></i> Back</button>
                                 <button class="btn btn-danger print" id="PrintDAY" style="">Print</button>
                                 <button class="btn btn-danger print2 hidden-print " id="PrintWAM" style="display:none;">Print</button>
                                 <button class="btn btn-danger" onclick="exportWord()">DOC</button>
@@ -271,22 +271,33 @@
                                         <input type="image" style="width:1.1vw;height:1.5vh;position:absolute;margin-top:-5.3vh;margin-left:92%;background-color:white;border-radius:20%;opacity:0.90;" src="/Content/pages/img/icoedit.png" data-toggle="modal" data-target="#Calendar_Name_Change" onclick="calendar_change_name_click(this)">
                                     </li>
 
-                                    <li class="nav-item" style="width:25%;margin-left:8%;">
-                                        <label style="display:inline-block;font-size:1vw;font-weight:bold;">Category:</label>
-                                        <select class="nav-link" id="categorychoose" style="display:inline-block;" onchange="changeCategory2(this.value)">
-                                            <option value="0">All</option>
-                                            @{
-                                                foreach (var Category in ViewBag.ActivityCategory)
-                                                {
-                                                    <option value="@Category.Id">@Category.EnglishName</option>
-                                                }
-                                            }
-                                        </select>
-                                    </li>
-                                    <li class="nav-item">
-                                        <button class="btn btn-primary" href="#" data-toggle="modal" data-target="#AddEvent_Hannan" style="font-size:1vw;font-weight:bold;" onclick="resetForm3()">ADD</button>
+                                    @{
+                                        if (ViewBag.User.ID == 1338 || ViewBag.User.ID == 1346 || ViewBag.User.ID == 20 || ViewBag.User.ID == 1552)
+                                        {
+                                            <li class="nav-item" style="width:25%;margin-left:8%;">
+                                                <label style="display:inline-block;font-size:1vw;font-weight:bold;">Category:</label>
+                                                <select class="nav-link" id="categorychoose" style="display:inline-block;" onchange="changeCategory2(this.value)">
+                                                    <option value="0">All</option>
+                                                    @{
+                                                        foreach (var Category in ViewBag.ActivityCategory)
+                                                        {
+                                                            <option value="@Category.Id">@Category.EnglishName</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button class="btn btn-primary" href="#" data-toggle="modal" data-target="#AddEvent_Hannan" style="font-size:1vw;font-weight:bold;" onclick="resetForm3()">ADD</button>
 
-                                    </li>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <input type="hidden" id="categorychoose" value="0"/>
+                                        }
+                                    }
+
+
                                 </ul>
                                 <br>
                                 <div class="tab-content" id="pills-tabContent">
@@ -1714,8 +1725,7 @@
 <script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script src="~/Content/assets/js/html2canvas.js" crossorigin="anonymous"></script>
-<script src="~/Content/calendar/plugins/html2canvas/html2canvas.min.js"></script>
-<script src="~/Content/calendar/plugins/jspdf/jspdf.min.js"></script>
+
 
 
 

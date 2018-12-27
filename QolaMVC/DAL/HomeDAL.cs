@@ -3765,7 +3765,6 @@ namespace QolaMVC.DAL
             }
         }
 
-
         public static Collection<ActivityEventModel_PC> GetPersonalCalendar(int p_HomeId,int residentID)
         {
             string exception = string.Empty;
@@ -3828,9 +3827,6 @@ namespace QolaMVC.DAL
             }
         }
 
-
-
-
         public static void AddPersonalCalendar(int p_HomeId, int residentID,string title,int userid)
         {
             string exception = string.Empty;
@@ -3862,7 +3858,6 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-
 
         public static DataTable Get_Activity_Calendar1234_ExporttoWord(int homeId, DateTime eventFromDate, DateTime eventToDate,string CaNumber)
         {
@@ -3919,8 +3914,68 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-       
 
+        public static List<Dictionary<string, string>> addEVENTStol_Events(Collection<ActivityEventModel> EVENTS)
+        {
+            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
+
+            foreach (var l_Data in EVENTS)
+            {
+                var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
+                var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
+
+                var columns = new Dictionary<string, string>
+                {
+                    { "id", l_Data.ProgramId.ToString()},
+                    { "title", l_Data.ProgramName},
+                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
+                    { "endDate", ggend.ToString("yyyy-MM-dd")},
+                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "Venue", l_Data.Venue},
+                    { "note", l_Data.note},
+                    { "Category", l_Data.CategoryId},
+                    { "ActivityId", l_Data.ActivityId.ToString()},
+                    { "Special", l_Data.Special.ToString()}
+                };
+
+                l_Events.Add(columns);
+            }
+
+            return l_Events;
+        }
+
+        public static List<Dictionary<string, string>> addEVENTStol_Events_single(ActivityEventModel l_Data)
+        {
+            List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
+
+            var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
+            var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
+
+            var columns = new Dictionary<string, string>
+                {
+                    { "id", l_Data.ProgramId.ToString()},
+                    { "title", l_Data.ProgramName},
+                    { "startDate", ggstart.ToString("yyyy-MM-dd")},
+                    { "endDate", ggend.ToString("yyyy-MM-dd")},
+                    { "startTime", DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endTime", DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "startT", ggstart.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramStartTime).ToString("HH:mm")},
+                    { "endT", ggend.ToString("yyyy-MM-dd")+"T"+DateTime.Parse(l_Data.ProgramEndTime).ToString("HH:mm")},
+                    { "Venue", l_Data.Venue},
+                    { "note", l_Data.note},
+                    { "Category", l_Data.CategoryId},
+                    { "ActivityId", l_Data.ActivityId.ToString()},
+                    { "Special", l_Data.Special.ToString()}
+                };
+
+            l_Events.Add(columns);
+
+
+            return l_Events;
+        }
 
 
     }
