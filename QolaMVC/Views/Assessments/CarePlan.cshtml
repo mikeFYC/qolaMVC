@@ -3,6 +3,7 @@
 @RenderPage("~/Views/Shared/_SideBar.cshtml")
 
 <style>
+
     .form-tabs .nav-link {
         font-size: 1rem;
     }
@@ -2892,7 +2893,7 @@
                             <div class="row">
                                 <div class="col-md-12 text-right">
                                     <br>
-                                    <button class="btn btn-danger btn-lg">SAVE</button>
+                                    <button id="saveButton" class="btn btn-danger btn-lg">SAVE</button>
                                 </div>
                             </div>
 
@@ -3776,17 +3777,26 @@
         var mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
         mywindow.document.write('<html><head><title>' + document.title + '</title>');
-        mywindow.document.write('<link rel="stylesheet" href="/Content/assets/plugins/bootstrap/css/bootstrap.min.css">');
-        mywindow.document.write('<link rel="stylesheet" href="/Content/bootstrap.css">');
-        mywindow.document.write('<link rel="stylesheet" href="/Content/site.css">');
-        mywindow.document.write('<link rel="stylesheet" href="/Content/assets/plugins/font-awesome/css/font-awesome.css">');
-        mywindow.document.write('<link rel="stylesheet" href="/Content/assets/plugins/jquery-scrollbar/jquery.scrollbar.css">');
-        mywindow.document.write('<link rel="stylesheet" href="/Content/assets/css/pages.css">');
-        mywindow.document.write('<link rel="stylesheet" href="/Content/assets/css/datatables.css">');
-        mywindow.document.write('<link rel="stylesheet" href="/Content/assets/css/style.css">');
-        mywindow.document.write('<link rel="stylesheet" href="~/Content/mike_print/CarePlan_print.css">');
+        //mywindow.document.write('<link href="/Content/bootstrap.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/site.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/assets/plugins/pace/pace-theme-flash.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">');
+        //mywindow.document.write('<link rel="stylesheet" type="text/css" media="print" href="/Content/assets/plugins/bootstrap/css/bootstrap.min.css">');
+        mywindow.document.write('<link href="/Content/assets/plugins/font-awesome/css/font-awesome.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/assets/plugins/jquery-scrollbar/jquery.scrollbar.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/assets/plugins/select2/css/select2.min.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/assets/plugins/switchery/css/switchery.min.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/pages/css/pages-icons.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/assets/css/pages.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/assets/css/datatables.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/assets/css/style.css" rel="stylesheet">');
+
+        mywindow.document.write('<link rel="stylesheet" media="print" href="/Content/mike_print/CarePlan_print.css">');
+        mywindow.document.write('<style>table{-webkit-print-color-adjust: exact;}     #fromHTMLtestdiv {-webkit-print-color-adjust: exact;}</style>');
+        mywindow.document.write('<style>div,label,input {-webkit-print-color-adjust: exact;}@@page {-webkit-print-color-adjust: exact;}</style>');
+        //mywindow.document.write('<style>.col-md-3{width:25%;}</style>');
         mywindow.document.write('</head><body>');
-        mywindow.document.write('<h1>' + document.title + '</h1>');
+        mywindow.document.write('<h1 style="margin-left:30%;">Resident Care Assessment</h1>');
         mywindow.document.write(document.getElementById("fromHTMLtestdiv").innerHTML);
         mywindow.document.write('</body></html>');
 
@@ -3800,7 +3810,7 @@
 
 
         return true;
-        
+
     }
 
     function SomeDeleteRowFunction(o) {

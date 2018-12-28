@@ -32,11 +32,11 @@ namespace QolaMVC.Controllers
         private string _mobiltySelectedValue = string.Empty;
         private string _previousValue = string.Empty;
 
-        public void exportToWord(string titleDate,string DWM,string CaName,string CaNumber)
+        public void exportToWord(string titleDate, string DWM, string CaName, string CaNumber)
         {
             if (DWM == "month")
             {
-                CreateDocMonth(titleDate,CaName, CaNumber);
+                CreateDocMonth(titleDate, CaName, CaNumber);
             }
             else if (DWM == "week")
             {
@@ -50,7 +50,7 @@ namespace QolaMVC.Controllers
 
 
 
-        public void CreateDocMonth(string titleDate,string CaName,string CaNumber)
+        public void CreateDocMonth(string titleDate, string CaName, string CaNumber)
         {
             var user = (UserModel)TempData["User"];
             var home = (HomeModel)TempData["Home"];
@@ -115,8 +115,8 @@ namespace QolaMVC.Controllers
                 {
                     maxCellheight = cellHeight[0];
                 }
-                    
-                DataTable dtActivityCalendar = HomeDAL.Get_Activity_Calendar1234_ExporttoWord(homeId, fromDate, toDate,CaNumber);
+
+                DataTable dtActivityCalendar = HomeDAL.Get_Activity_Calendar1234_ExporttoWord(homeId, fromDate, toDate, CaNumber);
                 //DataTable dtActivityCalendar = new DataTable();
                 DataRow[] drEachDate;
                 string strActivityEventDate = string.Empty, strDynamTime = string.Empty, strVenue = string.Empty, clsName = string.Empty;
@@ -165,10 +165,10 @@ namespace QolaMVC.Controllers
                                                     string temSignUPVal = drEachDate[index]["EventTitle"].ToString();
                                                     clsName = temSignUPVal;
 
-                                                    strDynamTime =DateTime.Parse(drEachDate[index]["StartTime"].ToString()).ToShortTimeString();
+                                                    strDynamTime = DateTime.Parse(drEachDate[index]["StartTime"].ToString()).ToShortTimeString();
 
 
-                                                if (drEachDate[index]["Venue"].ToString() == "")
+                                                    if (drEachDate[index]["Venue"].ToString() == "")
                                                     {
                                                         strVenue = "";
                                                     }
@@ -203,8 +203,8 @@ namespace QolaMVC.Controllers
 
                                             if (CultureInfo.CurrentCulture.Name == "fr-BE")
                                             {
-                                                
-                                                sTopImg = Server.MapPath("/Content/CalendarTheme/Images/MonthlyActivity/"+ titleDate.Substring(0, 3).ToLower() + CurDate.Year.ToString() + "Theme1_"+ intDynamicColsPan.ToString() + ".JPG");
+
+                                                sTopImg = Server.MapPath("/Content/CalendarTheme/Images/MonthlyActivity/" + titleDate.Substring(0, 3).ToLower() + CurDate.Year.ToString() + "Theme1_" + intDynamicColsPan.ToString() + ".JPG");
                                             }
                                             else
                                             {
@@ -257,7 +257,7 @@ namespace QolaMVC.Controllers
                                         {
                                             table.Rows[table.RowCount - 1].MergeCells(CellStartPoint, CellStartPoint + (intDynamicColsPan - 1));
                                         }
-                                        
+
                                         int width = (Convert.ToInt32(table.Rows[table.RowCount - 1].Cells[CellStartPoint].Width) + 54) * intDynamicColsPan;
 
                                         var image = document.AddImage(sBtmImg);
@@ -308,7 +308,7 @@ namespace QolaMVC.Controllers
                         }
                     }
                 }
-                
+
             }
             catch (Exception Ex)
             {
@@ -332,7 +332,7 @@ namespace QolaMVC.Controllers
 
                 int dashindex = titleDate.IndexOf("–");
 
-                DateTime fromDate = DateTime.Parse(titleDate.Substring(0, dashindex-1) + ", "+ titleDate.Substring(titleDate.Length-4, 4));
+                DateTime fromDate = DateTime.Parse(titleDate.Substring(0, dashindex - 1) + ", " + titleDate.Substring(titleDate.Length - 4, 4));
                 DateTime toDate = fromDate.AddDays(7).AddSeconds(-1);
                 string s_MonthName = "Weekly Calendar " + fromDate.ToString("MMMM dd, yyyy") + " - " + toDate.ToString("MMMM dd, yyyy");
 
@@ -340,7 +340,7 @@ namespace QolaMVC.Controllers
                 DateTime fDt = fromDate;
                 DateTime tDt = toDate;
 
-                DataTable dtActivityCalendar = HomeDAL.Get_Activity_Calendar1234_ExporttoWord(homeId, fromDate, toDate,CaNumber);
+                DataTable dtActivityCalendar = HomeDAL.Get_Activity_Calendar1234_ExporttoWord(homeId, fromDate, toDate, CaNumber);
 
                 using (SamDoc.DocX document = SamDoc.DocX.Load(Server.MapPath("/Content/CalendarTheme/Html/ActivityCalendarWeek_mike.docx")))
                 {
@@ -404,7 +404,7 @@ namespace QolaMVC.Controllers
                         }
                     }
                 }
-                
+
             }
             catch (Exception Ex)
             {
@@ -442,7 +442,7 @@ namespace QolaMVC.Controllers
                 DateTime fDt = fromDate;
                 DateTime tDt = toDate;
 
-                DataTable dtActivityCalendar = HomeDAL.Get_Activity_Calendar1234_ExporttoWord(homeId, fromDate, toDate,CaNumber);
+                DataTable dtActivityCalendar = HomeDAL.Get_Activity_Calendar1234_ExporttoWord(homeId, fromDate, toDate, CaNumber);
                 //DataTable dtActivityCalendar = new DataTable();
 
                 using (SamDoc.DocX document = SamDoc.DocX.Load(Server.MapPath("/Content/CalendarTheme/Html/ActivityCalendarWeek.docx")))
@@ -621,7 +621,7 @@ namespace QolaMVC.Controllers
                         if (table.RowCount > 1)
                         {
                             var rowPattern = table.Rows[1];
-                            DataTable dtDayCalendar = HomeDAL.Get_Activity_Calendar1234_ExporttoWord(homeId, fromDate, toDate,CaNumber);
+                            DataTable dtDayCalendar = HomeDAL.Get_Activity_Calendar1234_ExporttoWord(homeId, fromDate, toDate, CaNumber);
                             //DataTable dtDayCalendar = new DataTable();
 
 
@@ -675,7 +675,7 @@ namespace QolaMVC.Controllers
                     //}
                     //System.Web.HttpContext.Current.ApplicationInstance.CompleteRequest();
                 }
-                
+
             }
             catch (Exception Ex)
             {
@@ -816,7 +816,7 @@ namespace QolaMVC.Controllers
             string fileName = "AuburnHeightsRetirementResidenceIndependentCalendarDec.docx", myStringWebResource = null;
             WebClient myWebClient = new WebClient();
             myStringWebResource = remoteUri + fileName;
-            myWebClient.DownloadFile(myStringWebResource, Environment.GetFolderPath(Environment.SpecialFolder.Desktop)+ "\\" +fileName);
+            myWebClient.DownloadFile(myStringWebResource, Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\" + fileName);
         }
         public void downloadSampleDocument_test2()
         {
@@ -881,7 +881,7 @@ namespace QolaMVC.Controllers
             //                   .Select(c => c.Value).SingleOrDefault();
 
             var user = (UserModel)TempData["User"];
-            
+
             if (user != null)
             {
                 Collection<HomeModel> l_Homes = HomeDAL.GetHomeFill(user.ID, user.UserType);// Convert.ToInt32(l_UserId));
@@ -937,7 +937,7 @@ namespace QolaMVC.Controllers
             var user = (UserModel)TempData["User"];
             TempData.Keep("User");
             TempData.Keep("Home");
-            
+
             dynamic l_Json = to_do_list_function.get_to_do_list_number(user.ID, home.Id);
 
             return Json(l_Json, JsonRequestBehavior.AllowGet);
@@ -1024,7 +1024,7 @@ namespace QolaMVC.Controllers
             l_Model.SpecialEquipment = l_SpecialEquipment;
 
 
-            var l_VitalSigns = new CarePlanVitalSignsModel();l_Model.VitalSigns = l_VitalSigns;
+            var l_VitalSigns = new CarePlanVitalSignsModel(); l_Model.VitalSigns = l_VitalSigns;
             var l_Mobility = new CarePlanMobilityModel(); ; l_Model.Mobility = l_Mobility;
             var l_Safety = new CarePlanSafetyModel(); ; l_Model.Safety = l_Safety;
             var l_MealEscort = new CarePlanMealEscortModel(); ; l_Model.MealEscort = l_MealEscort;
@@ -1087,7 +1087,7 @@ namespace QolaMVC.Controllers
             if (resident.CellPhoneType3 == 3) { resident.Third_phone3 = resident.CellPhone3; resident.Third_phone_type3 = 3; }
 
             if (resident.First_phone_type1 == 1) { resident.First_phone_type1_text = "Home"; }
-            else if(resident.First_phone_type1 == 2) { resident.First_phone_type1_text = "Business"; }
+            else if (resident.First_phone_type1 == 2) { resident.First_phone_type1_text = "Business"; }
             else if (resident.First_phone_type1 == 3) { resident.First_phone_type1_text = "Mobile"; }
             if (resident.Second_phone_type1 == 1) { resident.Second_phone_type1_text = "Home"; }
             else if (resident.Second_phone_type1 == 2) { resident.Second_phone_type1_text = "Business"; }
@@ -1231,7 +1231,7 @@ namespace QolaMVC.Controllers
             return View(resident);
         }
 
-        public ActionResult EmergencyList_mike(int orderType=1)
+        public ActionResult EmergencyList_mike(int orderType = 1)
         {
             var user = (UserModel)TempData["User"];
             var home = (HomeModel)TempData["Home"];
@@ -1239,7 +1239,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             ViewBag.User = user;
             ViewBag.Home = home;
-            ResidentEmergencyListModel samples = HomeDAL.get_EmergencyList(home.Id,orderType);
+            ResidentEmergencyListModel samples = HomeDAL.get_EmergencyList(home.Id, orderType);
 
             TempData["orderType"] = orderType.ToString();
 
@@ -1266,7 +1266,7 @@ namespace QolaMVC.Controllers
             //Int32.TryParse(Session["HomeId"].ToString(), out iHomeId
             try
             {
-                
+
                 if (home != null)
                 {
                     iHomeId = home.Id;
@@ -1360,8 +1360,8 @@ namespace QolaMVC.Controllers
                             PdfTable1.AddCell(PdfTable1HeaderComment);
 
                             //if (Convert.ToInt32(Session["CarePlanP2HomeId"]) == Convert.ToInt32(Session["HomeId"]))
-                            
-    
+
+
                             for (int iRow = 0; iRow < ds.EmergencyResidentList.Count; iRow++)
                             {
 
@@ -1371,7 +1371,7 @@ namespace QolaMVC.Controllers
 
                                 PdfPCell suiteColorCell = new PdfPCell();
 
-                                if (ds.EmergencyResidentList[iRow].RiskLevel== "High Risk")
+                                if (ds.EmergencyResidentList[iRow].RiskLevel == "High Risk")
                                 {
                                     suiteColorCell.BackgroundColor = BaseColor.RED;
                                 }
@@ -1425,8 +1425,8 @@ namespace QolaMVC.Controllers
                                 PdfTable1Comment.HorizontalAlignment = Element.ALIGN_LEFT;
                                 PdfTable1.AddCell(PdfTable1Comment);
                             }
-                            
-                            
+
+
                             doc.Add(PdfTable1);
                         }
 
@@ -1451,6 +1451,211 @@ namespace QolaMVC.Controllers
 
             }
         }
+
+        public ActionResult Nursing_Note(string datestring="")
+        {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            DateTime date;
+            if (datestring == "" || datestring == null)
+            {
+                date = DateTime.Now;
+            }
+            else
+            {
+                date = DateTime.Parse(datestring);
+            }
+            NursingNoteReport samples = HomeDAL.get_NursingNoteReport(home.Id, date);
+            TempData["dateEntered"] = date.ToString("yyyy-MM-dd");
+
+            return View(samples);
+        }
+
+        public void btnPdf_Click_Nursing_Note(string datestring = "")
+        {
+            string sException = string.Empty;
+            int iHomeId = 0;
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            DateTime date;
+            if (datestring == "")
+            {
+                date = DateTime.Now;
+            }
+            else
+            {
+                date = DateTime.Parse(datestring);
+            }
+
+            //Int32.TryParse(Session["HomeId"].ToString(), out iHomeId
+            try
+            {
+
+                if (home != null)
+                {
+                    iHomeId = home.Id;
+                    //ds = ResidentsDAL.GetEmergencyResidentDetails(iHomeId, "0");
+                    NursingNoteReport ds = HomeDAL.get_NursingNoteReport(home.Id, date);
+                    if (ds != null)
+                    {
+                        Document doc = new Document(PageSize.A4, 30f, 30f, 40f, 20f);
+                        doc.SetPageSize(iTextSharp.text.PageSize.A4.Rotate());
+                        System.IO.MemoryStream mStream = new System.IO.MemoryStream();
+                        PdfWriter writer = PdfWriter.GetInstance(doc, mStream);
+
+
+                        writer.PageEvent = new pdfHeaderFooter2(home.Name);
+
+                        doc.Open();
+
+                        iTextSharp.text.Font fontCellSize12 = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 12, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize12B = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 12, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize11 = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 11, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize11B = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 12, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize10 = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 10, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize10B = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 10, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize9 = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 9, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize9B = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 9, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize8 = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 12, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize8B = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 12, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize7 = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 7, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+                        iTextSharp.text.Font fontCellSize7B = FontFactory.GetFont(FontFactory.TIMES_ROMAN, 7, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+
+                        Paragraph paragraph = new Paragraph("Nursing Note", fontCellSize11B);
+                        paragraph.Alignment = Element.TITLE;
+
+
+
+                        if (ds.NursingNoteList.Count > 0)
+                        {
+                            string sReason = string.Empty;
+                            string sReasonValue = string.Empty;
+
+                            PdfPTable PdfTable1;
+
+                            PdfTable1 = new PdfPTable(6);
+                            float[] wthtbl1 = new float[] { 10f, 5f, 10f, 10f, 40f, 10f};
+                            PdfTable1.SetWidths(wthtbl1);
+                            PdfTable1.WidthPercentage = 100f;
+                            PdfTable1.HorizontalAlignment = Element.ALIGN_LEFT;
+                            PdfTable1.SpacingAfter = 5f;
+                            PdfTable1.SpacingBefore = 5f;
+
+                            PdfPCell cell = new PdfPCell(new Phrase("Nursing Note", fontCellSize11B));
+                            cell.Border = 0;
+                            cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                            cell.Colspan = 10;
+                            cell.PaddingBottom = 10f;
+                            PdfTable1.AddCell(cell);
+
+                            PdfPCell PdfTable1HeaderSuitNo = new PdfPCell(new Phrase("User Name", fontCellSize9B));
+                            //PdfTable1HeaderSuitNo.Colspan = 2;
+                            PdfTable1HeaderSuitNo.HorizontalAlignment = Element.ALIGN_CENTER;
+                            PdfTable1.AddCell(PdfTable1HeaderSuitNo);
+
+                            PdfPCell PdfTable1HeaderName = new PdfPCell(new Phrase("Suite", fontCellSize9B));
+                            PdfTable1HeaderName.HorizontalAlignment = Element.ALIGN_CENTER;
+                            PdfTable1.AddCell(PdfTable1HeaderName);
+
+
+                            PdfPCell PdfTable1HeaderPhone = new PdfPCell(new Phrase("Resident Name", fontCellSize9B));
+                            PdfTable1HeaderPhone.HorizontalAlignment = Element.ALIGN_CENTER;
+                            PdfTable1.AddCell(PdfTable1HeaderPhone);
+
+                            PdfPCell PdfTable1HeaderContactPerson = new PdfPCell(new Phrase("Category", fontCellSize9B));
+                            PdfTable1HeaderContactPerson.HorizontalAlignment = Element.ALIGN_CENTER;
+                            PdfTable1.AddCell(PdfTable1HeaderContactPerson);
+
+                            PdfPCell PdfTable1HeaderEmergencyContact = new PdfPCell(new Phrase("Note", fontCellSize9B));
+                            PdfTable1HeaderEmergencyContact.HorizontalAlignment = Element.ALIGN_CENTER;
+                            PdfTable1.AddCell(PdfTable1HeaderEmergencyContact);
+
+                            PdfPCell PdfTable1HeaderComment = new PdfPCell(new Phrase("Date", fontCellSize9B));
+                            PdfTable1HeaderComment.HorizontalAlignment = Element.ALIGN_CENTER;
+                            PdfTable1.AddCell(PdfTable1HeaderComment);
+
+                            //if (Convert.ToInt32(Session["CarePlanP2HomeId"]) == Convert.ToInt32(Session["HomeId"]))
+
+
+                            for (int iRow = 0; iRow < ds.NursingNoteList.Count; iRow++)
+                            {
+
+                                sReasonValue = string.Empty;
+                                sReason = string.Empty;
+                                sReason = ds.NursingNoteList[iRow].Note;
+
+                                PdfPCell PdfTable1userName = new PdfPCell(new Phrase(ds.NursingNoteList[iRow].userName+" ("+ ds.NursingNoteList[iRow].userNameType+")", fontCellSize9));
+                                PdfTable1userName.HorizontalAlignment = Element.ALIGN_LEFT;
+                                PdfTable1.AddCell(PdfTable1userName);
+
+                                PdfPCell PdfTable1suiteNo = new PdfPCell(new Phrase(ds.NursingNoteList[iRow].suiteNo, fontCellSize9));
+                                PdfTable1suiteNo.HorizontalAlignment = Element.ALIGN_LEFT;
+                                PdfTable1.AddCell(PdfTable1suiteNo);
+
+
+                                //string phone = ds.EmergencyResidentList[iRow].phone.Trim().Length > 0 ? ds.EmergencyResidentList[iRow].phone : "NoPhone";
+                                PdfPCell PdfTable1FullName = new PdfPCell(new Phrase(ds.NursingNoteList[iRow].FullName, fontCellSize9));
+                                PdfTable1FullName.HorizontalAlignment = Element.ALIGN_LEFT;
+                                PdfTable1.AddCell(PdfTable1FullName);
+
+                                PdfPCell PdfTable1CategoryFull = new PdfPCell(new Phrase(ds.NursingNoteList[iRow].CategoryFull, fontCellSize9));
+                                PdfTable1CategoryFull.HorizontalAlignment = Element.ALIGN_LEFT;
+                                PdfTable1.AddCell(PdfTable1CategoryFull);
+
+                                PdfPCell PdfTable1Note = new PdfPCell(new Phrase(ds.NursingNoteList[iRow].Note, fontCellSize9));
+                                PdfTable1Note.HorizontalAlignment = Element.ALIGN_LEFT;
+                                PdfTable1.AddCell(PdfTable1Note);
+
+                                PdfPCell PdfTable1DateEntered = new PdfPCell(new Phrase(ds.NursingNoteList[iRow].DateEntered.ToString("yyyy-MM-dd")+" "+ ds.NursingNoteList[iRow].DateEntered.ToShortTimeString(), fontCellSize9));
+                                PdfTable1DateEntered.HorizontalAlignment = Element.ALIGN_LEFT;
+                                PdfTable1.AddCell(PdfTable1DateEntered);
+
+
+                                //PdfPCell PdfTable1Comment = new PdfPCell(new Phrase(sReason.Replace("<b>", string.Empty).Replace("</b>", string.Empty), fontCellSize9));
+                                //PdfTable1Comment.HorizontalAlignment = Element.ALIGN_LEFT;
+                                //PdfTable1.AddCell(PdfTable1Comment);
+                            }
+
+
+                            doc.Add(PdfTable1);
+                        }
+
+                        doc.Close();
+                        string reportName = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+                        Response.ContentType = "application/octet-stream";
+                        Response.AddHeader("Content-Disposition", "attachment; filename=Nursing_Notes_List_" + reportName + ".pdf");
+                        Response.Clear();
+                        Response.BinaryWrite(mStream.ToArray());
+                        //HttpContext.Current.ApplicationInstance.CompleteRequest();
+                    }
+                    else
+                    {
+                        //AlertMessage.ShowErrorMsg(this.Page, Resources.Qola.CustomMessages.NoRecord, Resources.Qola.UIverbiage.EmergencyResidentDetails);
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                sException = "frmEmergencyResidentDetails btnPdf_Click |" + Ex.Message.ToString();
+                //Log.Write(sException);
+
+            }
+        }
+
 
         public ActionResult ERDetails()
         {
@@ -7424,6 +7629,67 @@ namespace QolaMVC.Controllers
             tabFot.AddCell(cell);
             tabFot.WriteSelectedRows(0, -1, 29, document.Bottom - 3, writer.DirectContent);
         }
+
+}
+
+public class pdfHeaderFooter2 : PdfPageEventHelper
+{
+    int i = 1;
+    private string homename;
+
+    public pdfHeaderFooter2(string name)
+    {
+        homename = name;
+    }
+
+    public override void OnStartPage(PdfWriter writer, Document document)
+    {
+
+        base.OnOpenDocument(writer, document);
+        iTextSharp.text.Font headerFont = FontFactory.GetFont(BaseFont.TIMES_ROMAN, 10f);
+        PdfPTable tabHeader = new PdfPTable(new float[] { 1F, 1F });
+        tabHeader.SpacingAfter = 1F;
+        PdfPCell cell;
+        tabHeader.TotalWidth = 783;
+
+        PdfPCell cell1 = new PdfPCell(new Phrase("QOLA Date printed: " + DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString(), headerFont));
+        cell1.Border = 0;
+        cell1.HorizontalAlignment = Element.ALIGN_LEFT;
+
+        tabHeader.AddCell(cell1);
+
+        cell = new PdfPCell(new Phrase(homename, headerFont)); //removed homename
+        cell.Border = 0;
+
+        cell.HorizontalAlignment = Element.ALIGN_RIGHT;
+        tabHeader.AddCell(cell);
+        tabHeader.WriteSelectedRows(0, -1, 29, (document.PageSize.Height - 10), writer.DirectContent);
+    }
+    public override void OnEndPage(PdfWriter writer, Document document)
+    {
+        base.OnEndPage(writer, document);
+        base.OnEndPage(writer, document);
+        iTextSharp.text.Font footerFont = FontFactory.GetFont(BaseFont.TIMES_ROMAN, 10f);
+        PdfPTable tabFot = new PdfPTable(new float[] { 9f, 8f });
+
+        tabFot.TotalWidth = 785;
+        tabFot.WidthPercentage = 100f;
+
+        PdfPCell cell1 = new PdfPCell(new Phrase("Nursing Note List", footerFont));
+        cell1.Border = 0;
+
+        cell1.HorizontalAlignment = Element.ALIGN_LEFT;
+
+        tabFot.AddCell(cell1);
+
+
+        PdfPCell cell = new PdfPCell(new Phrase("Page" + " - " + i++, footerFont));
+        cell.Border = 0;
+
+        cell.HorizontalAlignment = Element.ALIGN_RIGHT;
+        tabFot.AddCell(cell);
+        tabFot.WriteSelectedRows(0, -1, 29, document.Bottom - 3, writer.DirectContent);
+    }
 
 }
 

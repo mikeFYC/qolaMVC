@@ -3700,6 +3700,84 @@ namespace QolaMVC.DAL
             }
         }
 
+        public static NursingNoteReport get_NursingNoteReport(int homeid, DateTime date)
+        {
+            string exception = string.Empty;
+            NursingNoteReport l_Events = new NursingNoteReport();
+            l_Events.NursingNoteList = new List<NursingNotesModel>();
+            NursingNotesModel l_Event;
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("GET_NursingNoteReport", l_Conn);
+                l_Cmd.Parameters.AddWithValue("@homeid", homeid);
+                l_Cmd.Parameters.AddWithValue("@modifiedon", date);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                DataSet homeReceive = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(homeReceive);
+
+                if ((homeReceive != null) && (homeReceive.Tables.Count > 0) && (homeReceive.Tables[0].Rows.Count > 0))
+                {
+                    foreach (DataRow homeTypeRow in homeReceive.Tables[0].Rows)
+                    {
+                        l_Event = new NursingNotesModel();
+
+                        l_Event.userName = Convert.ToString(homeTypeRow["UserName"]);
+                        l_Event.userNameType = Convert.ToString(homeTypeRow["UserTypeName"]);
+                        l_Event.suiteNo = Convert.ToString(homeTypeRow["fd_suite_no"]);
+                        l_Event.FullName = Convert.ToString(homeTypeRow["ResidentName"]);
+                        l_Event.Category = Convert.ToInt32(homeTypeRow["fd_category"]);
+
+                        switch (l_Event.Category)
+                        {
+                            case 1:
+                                l_Event.CategoryFull = "1";
+                                break;
+                            case 2:
+                                l_Event.CategoryFull = "Medical Update";
+                                break;
+                            case 3:
+                                l_Event.CategoryFull = "Social/activity update";
+                                break;
+                            case 4:
+                                l_Event.CategoryFull = "Dietary Update";
+                                break;
+                            case 5:
+                                l_Event.CategoryFull = "General Update";
+                                break;
+                            case 6:
+                                l_Event.CategoryFull = "Resident Fall";
+                                break;
+                            case 7:
+                                l_Event.CategoryFull = "Resident Bruised";
+                                break;
+
+                        }
+
+                        l_Event.Note = Convert.ToString(homeTypeRow["fd_note"]);
+                        l_Event.DateEntered = Convert.ToDateTime(homeTypeRow["fd_modified_on"]);
+
+
+                        l_Events.NursingNoteList.Add(l_Event);
+                    }
+                }
+                return l_Events;
+            }
+            catch (Exception ex)
+            {
+                exception = "get_NursingNoteReport |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
 
         public static void Change_Calendar_Name(int homeId,int number, string newName,int userId)
         {

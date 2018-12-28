@@ -36,7 +36,7 @@ namespace QolaMVC.DAL
 
 
                 l_Cmd.Parameters.AddWithValue("@falldatetype", Convert.ToChar(p_ProgressNotes.FallDateType));
-                if (p_ProgressNotes.sFallDate != "")
+                if (p_ProgressNotes.sFallDate != "" && p_ProgressNotes.sFallDate != null)
                 {
                     l_Cmd.Parameters.AddWithValue("@falldate", DateTime.Parse(p_ProgressNotes.sFallDate));
                 }

@@ -1,0 +1,193 @@
+﻿@model QolaMVC.Models.NursingNoteReport
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+<style>
+    table {
+        -webkit-print-color-adjust: exact;
+    }
+
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+
+    .pagebreak {
+        page-break-before: always;
+    }
+
+    th, td {
+        border-right: 2px solid darkgrey !important;
+        border-bottom: 2px solid darkgrey !important;
+        border-color: darkgrey !important;
+    }
+
+    th {
+        border-top: 2px solid darkgrey !important;
+    }
+
+    tr td:first-child {
+        border-left: 2px solid darkgrey !important;
+    }
+
+    .title2 {
+        color: black !important;
+        font-size: 1.5em !important;
+        font-family: Times,serif !important;
+    }
+
+    .title1 {
+        font-weight: bold !important;
+        color: black !important;
+        font-size: 1.7em !important;
+        font-family: Times,serif !important;
+    }
+</style>
+
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+    <!-- START PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+                        <div class="col-md-9">
+                            <h3>Nursing Notes</h3>
+                        </div>
+                        <div class="col-md-2">
+                            <button onclick="location.href='/Home/Menu/?p_HomeId=@ViewBag.Home.Id';" class="btn btn-primary"><i class="fa fa-backward"></i> Back</button>
+                            <button class="btn btn-danger" id="NN_PRINT" onclick="NN_PRINT_PDF()">PRINT</button>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+            <div style="height: 60px;"></div>
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+                <div class="row">
+                    <div class="col-md-8 py-4 text-left">
+                        <form class="form-inline">
+                            <input id="dateselect" type="date" class="form-control" style="width:20%;" value="@TempData["dateEntered"]"/>
+
+                            <button type="button" class="btn btn-primary" style="margin-left:1%;" onclick="DateView()">View</button>
+                        </form>
+                    </div>
+
+                </div>
+                <div class="card" id="fromHTMLtestdiv">
+                    <hr>
+                    <br>
+                    <div class="card-block">
+                        <div style="width:97%;margin-left:2%;" id="EL_firstrow">
+                            <div class="text-center" style="width:99%" id="">
+                                <p class="title1">Nursing Notes</p>
+                            </div>
+                            <div style="width:99%">
+                                <div class="" style="width:60%;display:inline-block;"><p class="title2">QOLA Date printed: @DateTime.Now.ToString("yyyy-MM-dd") @DateTime.Now.ToShortTimeString()</p></div>
+                                <div class="" style="display:inline-block;float:right;"><p class="title2">@ViewBag.home.Name</p></div>
+                            </div>
+                        </div>
+                        <table class="table table-bordered">
+                            <thead class="bg-primary">
+                                <tr>
+                                    <th class="text-white text-center" style="width:13%;font-weight:bold;">User Name</th>
+                                    <th class="text-white text-center" style="width:7%;font-weight:bold;">Suite</th>
+                                    <th class="text-white text-center" style="width:12%;font-weight:bold;">Resident Name</th>
+                                    <th class="text-white text-center" style="width:12%;font-weight:bold;">Categoty</th>
+                                    <th class="text-white text-center" style="font-weight:bold;">Note</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    foreach (var single in Model.NursingNoteList)
+                                    {
+
+                                        <tr class="">
+                                            <td class="align-middle">@single.userName<br>(@single.userNameType)</td>
+                                            <td class="align-middle">@single.suiteNo</td>
+                                            <td class="align-middle">@single.FullName</td>
+                                            <td class="align-middle">@single.CategoryFull</td>
+                                            <td class="align-middle">@single.Note</td>
+                                        </tr>
+
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+                <!-- END PLACE PAGE CONTENT HERE -->
+            </div>
+            <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+
+        @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+        <script>
+
+            function NN_PRINT() {
+
+                var mywindow = window.open('', 'PRINT', 'height=1200,width=1200');
+
+                mywindow.document.write('<html><head><title>' + document.title + '</title>');
+                //mywindow.document.write('<link href="/Content/bootstrap.css" rel="stylesheet">');
+                mywindow.document.write('<link href="/Content/site.css" rel="stylesheet">');
+                mywindow.document.write('<link href="/Content/assets/plugins/pace/pace-theme-flash.css" rel="stylesheet">');
+                //mywindow.document.write('<link href="/Content/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">');
+                mywindow.document.write('<link href="/Content/assets/plugins/font-awesome/css/font-awesome.css" rel="stylesheet">');
+                mywindow.document.write('<link href="/Content/assets/plugins/jquery-scrollbar/jquery.scrollbar.css" rel="stylesheet">');
+                mywindow.document.write('<link href="/Content/assets/plugins/select2/css/select2.min.css" rel="stylesheet">');
+                mywindow.document.write('<link href="/Content/assets/plugins/switchery/css/switchery.min.css" rel="stylesheet">');
+                mywindow.document.write('<link href="/Content/pages/css/pages-icons.css" rel="stylesheet">');
+                mywindow.document.write('<link href="/Content/assets/css/pages.css" rel="stylesheet">');
+                mywindow.document.write('<link href="/Content/assets/css/datatables.css" rel="stylesheet">');
+                mywindow.document.write('<link href="/Content/assets/css/style.css" rel="stylesheet">');
+
+                mywindow.document.write('<link rel="stylesheet" href="/Content/mike_print/EmeergencyList_mike_print.css">');
+                mywindow.document.write('<style>table,td,th,tr {-webkit-print-color-adjust: exact;}@@page {-webkit-print-color-adjust: exact;}</style>');
+
+                mywindow.document.write('</head><body>');
+                mywindow.document.write(document.getElementById("fromHTMLtestdiv").innerHTML);
+                mywindow.document.write('</body></html>');
+
+                mywindow.document.close(); // necessary for IE >= 10
+                mywindow.focus(); // necessary for IE >= 10*/
+                setTimeout(function () {
+                    mywindow.print();
+                    mywindow.close();
+                }, 2000);
+
+
+
+                return true;
+
+            }
+
+            function DateView() {
+                var order = $('#dateselect').val();
+                location.href = '/Home/Nursing_Note?datestring=' + order;
+            }
+
+            function NN_PRINT_PDF() {
+                var order = $('#dateselect').val();
+                location.href = '/Home/btnPdf_Click_Nursing_Note?datestring=' + order;
+            }
+
+
+
+
+        </script>
