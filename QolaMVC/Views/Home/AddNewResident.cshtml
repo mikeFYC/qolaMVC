@@ -394,57 +394,36 @@
                                                 <div class="form-group row">
                                                     <label for="" class="col-md-5 col-form-label">Marital Status<span class="required_sign">&nbsp;*</span></label>
                                                     <div class="col-md-7">
-                                                        @*<select name="MaritalStatus" class="form-control" required>
-                    <option value="">-- Select --</option>
-                    <option value="Married">Married</option>
-                    <option value="Widowed">Widowed</option>
-                    <option value="Single">Single</option>
-                    <option value="Divorced">Divorced</option>
-                </select>*@
 
-                                                        @Html.DropDownListFor(x => x.MaritalStatus, Model.MaritalStatusList, new { @class = "form-control", placeholder = "Place of Birth", name = "MaritalStatus" })
+                                                        @Html.DropDownListFor(x => x.MaritalStatus, Model.MaritalStatusList, new { @class = "form-control", placeholder = "Place of Birth", name = "MaritalStatus",onchange= "MaritalStatusonchange(this)" })
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="" class="col-md-5 col-form-label">Significant Other</label>
                                                     <div class="col-md-7">
                                                         @*<input type="text" name="SignificatOther" class="form-control" id="SignificatOther" placeholder="Significant Other">*@
-                                                        @Html.TextBoxFor(m => m.SignificatOther, new { @class = "form-control", name = "SignificatOther", id = "SignificatOther", placeholder = "Significant Other" })
+                                                        @Html.TextBoxFor(m => m.SignificatOther, new { @class = "form-control", name = "SignificatOther", id = "SignificatOther", placeholder = "Significant Other", disabled = "true" })
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="" class="col-md-5 col-form-label">Anniversary Date</label>
                                                     <div class="col-md-7">
                                                         @*<input type="date" name="AnniversaryDate" class="form-control" id="AnniversaryDate">*@
-                                                        @Html.TextBoxFor(m => m.AnniversaryDate, "{0:yyyy-MM-dd}", new { @class = "form-control", name = "AnniversaryDate", id = "AnniversaryDate", type = "date" })
+                                                        @Html.TextBoxFor(m => m.AnniversaryDate, "{0:yyyy-MM-dd}", new { @class = "form-control", name = "AnniversaryDate", id = "AnniversaryDate", type = "date",disabled="true" })
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="" class="col-md-5 col-form-label">Number of Children</label>
                                                     <div class="col-md-7">
-                                                        @*<select name="Number_of_children" class="form-control">
-                    <option></option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                </select>*@
-                                                        @Html.DropDownListFor(x => x.Number_of_children, Model.Number_of_childrenList, new { @class = "form-control", id = "Number_of_children", name = "Number_of_children" })
+                                                        @*@Html.DropDownListFor(x => x.Number_of_children, Model.Number_of_childrenList, new { @class = "form-control", id = "Number_of_children", name = "Number_of_children" })*@
+                                                        @Html.TextBoxFor(x => x.Number_of_children, new { @class = "form-control", id = "Number_of_children", name = "Number_of_children", placeholder = "Number of Children" })
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="" class="col-md-5 col-form-label">Number of Grandchildren</label>
                                                     <div class="col-md-7">
-                                                        @*<select name="Number_of_grandchildren" class="form-control">
-                    <option></option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                </select>*@
-                                                        @Html.DropDownListFor(x => x.Number_of_grandchildren, Model.Number_of_grandchildrenList, new { @class = "form-control", id = "Number_of_grandchildren", name = "Number_of_grandchildren" })
+                                                        @*@Html.DropDownListFor(x => x.Number_of_grandchildren, Model.Number_of_grandchildrenList, new { @class = "form-control", id = "Number_of_grandchildren", name = "Number_of_grandchildren" })*@
+                                                        @Html.TextBoxFor(x => x.Number_of_grandchildren, new { @class = "form-control", id = "Number_of_grandchildren", name = "Number_of_grandchildren", placeholder = "Number of Grandchildren" })
                                                     </div>
                                                 </div>
 
@@ -1401,7 +1380,7 @@
                                                             <div class="col-md-1"></div>
                                                             <div class="col-md-6">
                                                                 @*<input type="text" class="form-control" id="" name="ContractNumber" group="phonegroup">*@
-                                                                @Html.TextBoxFor(m => m.ContractNumber, new { @class = "form-control", group = "phonegroup" })
+                                                                @Html.TextBoxFor(m => m.ContractNumber, new { @class = "form-control" })
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1485,7 +1464,7 @@
                                                             <label for="" class="col-md-5 col-form-label">Fax Number</label>
                                                             <div class="col-md-7">
                                                                 @*<input type="text" class="form-control" id="PhysicianFaxNo" name="PhysicianFaxNo">*@
-                                                                @Html.TextBoxFor(m => m.PhysicianFaxNo, new { @class = "form-control",id= "PhysicianFaxNo" })
+                                                                @Html.TextBoxFor(m => m.PhysicianFaxNo, new { @class = "form-control",id= "PhysicianFaxNo", group = "phonegroup" })
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1517,7 +1496,7 @@
                                                             <label for="" class="col-md-5 col-form-label">Fax Number</label>
                                                             <div class="col-md-7">
                                                                 @*<input type="text" class="form-control" id="PharmaceFaxNumber" name="PharmaceFaxNumber">*@
-                                                                @Html.TextBoxFor(m => m.PharmaceFaxNumber, new { @class = "form-control", id = "PharmaceFaxNumber" })
+                                                                @Html.TextBoxFor(m => m.PharmaceFaxNumber, new { @class = "form-control", id = "PharmaceFaxNumber", group = "phonegroup" })
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1698,6 +1677,18 @@
                     });
                 }
             }
+
+            function MaritalStatusonchange(ee) {
+                if (ee.value == '1') {
+                    $('#SignificatOther').prop('disabled', false);
+                    $('#AnniversaryDate').prop('disabled', false);
+                }
+                else {
+                    $('#SignificatOther').prop('disabled', true);
+                    $('#AnniversaryDate').prop('disabled', true);
+                }
+            }
+
         </script>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>

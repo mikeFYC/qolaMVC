@@ -108,6 +108,10 @@
         border: none;
         -webkit-appearance: none;*/
     }
+    #tableone td {
+        padding:20px 10px 20px 20px;
+
+    }
 
     #tablethree input {
         display: inline-block;
@@ -444,7 +448,7 @@
 
                                                                 <span class="text-center" style="width:93%;display:inline-block;">Resident Details</span>
                                                                 <div style="width:6%;display:inline-block;">
-                                                                    <button class="btn btn-warning text-black" id="table1_EDIT" onclick="table1_EDIT()" style="border-radius:0.3vw;">EDIT</button>
+                                                                    <button class="btn btn-light text-black" id="table1_EDIT" onclick="table1_EDIT()" style="border-radius:0.3vw;">EDIT</button>
                                                                     <button class="btn btn-danger text-white" id="table1_SAVE" onclick="table1_SAVE()" style="display:none;border-radius:0.3vw;">SAVE</button>
                                                                 </div>
 
@@ -531,7 +535,7 @@
                                                             <td>
                                                                 Marital Status:
                                                                 <span id="table1_MaritalStatustext1">@Model.MaritalStatustext</span>
-                                                                <select class="table1_item form-control" id="table1_MaritalStatustext2" style="display:none;">
+                                                                <select class="table1_item form-control" id="table1_MaritalStatustext2" style="display:none;" onchange="table1_MaritalStatustext2onChange(this)">
                                                                     <option value="@Model.MaritalStatus" selected>@Model.MaritalStatustext</option>
                                                                     <option value="1">Married</option>
                                                                     <option value="2">Widowed</option>
@@ -540,44 +544,64 @@
                                                                 </select>
 
                                                             </td>
-                                                            <td>Significant Other: <span id="table1_SignificatOther1">@Model.SignificatOther</span><input class="form-control" type="text" id="table1_SignificatOther2" value="@Model.SignificatOther" style="display:none;" /></td>
+                                                            @{
+                                                                if (@Model.MaritalStatus != 1)
+                                                                {
+                                                                    <td>Significant Other: <span id="table1_SignificatOther1">N/A</span><input class="form-control" type="text" id="table1_SignificatOther2" value="" style="display:none;" disabled /></td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td>Significant Other: <span id="table1_SignificatOther1">@Model.SignificatOther</span><input class="form-control" type="text" id="table1_SignificatOther2" value="@Model.SignificatOther" style="display:none;" /></td>
+                                                                }
+                                                            }
+
+
                                                             @{
                                                                 var AnnDate = "";
                                                                 if (@Model.AnniversaryDate.ToString("yyyy-MM-dd") != "0001-01-01")
                                                                 {
                                                                     AnnDate = @Model.AnniversaryDate.ToString("yyyy-MM-dd");
                                                                 }
+
+                                                                if (@Model.MaritalStatus != 1)
+                                                                {
+                                                                    <td>Anniversity Date: <span id="table1_AnniversaryDate1">N/A</span><input class="form-control" type="date" id="table1_AnniversaryDate2" value="" style="display:none;" disabled /></td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td>Anniversity Date: <span id="table1_AnniversaryDate1">@AnnDate</span><input class="form-control" type="date" id="table1_AnniversaryDate2" value="@AnnDate" style="display:none;" /></td>
+                                                                }
                                                             }
-                                                            <td>Anniversity Date: <span id="table1_AnniversaryDate1">@AnnDate</span><input class="form-control" type="date" id="table1_AnniversaryDate2" value="@AnnDate" style="display:none;" /></td>
+
 
 
                                                         </tr>
                                                         <tr>
                                                             <td>
                                                                 Number of Children: <span id="table1_Number_of_children1">@Model.Number_of_children</span>
-                                                                <select class="form-control" id="table1_Number_of_children2" style="display:none;">
-                                                                    <option value="@Model.Number_of_children" selected>@Model.Number_of_children</option>
-                                                                    <option value=""></option>
-                                                                    <option value="1">1</option>
-                                                                    <option value="2">2</option>
-                                                                    <option value="3">3</option>
-                                                                    <option value="4">4</option>
-                                                                    <option value="5">5</option>
-                                                                </select>
+                                                                <input class="form-control" id="table1_Number_of_children2" style="display:none;" value="@Model.Number_of_children" />
+
                                                             </td>
                                                             <td>
                                                                 Number of Grandchildren: <span id="table1_Number_of_grandchildren1">@Model.Number_of_grandchildren</span>
-                                                                <select class="form-control" id="table1_Number_of_grandchildren2" style="display:none;">
-                                                                    <option value="@Model.Number_of_grandchildren" selected>@Model.Number_of_grandchildren</option>
-                                                                    <option value=""></option>
-                                                                    <option value="1">1</option>
-                                                                    <option value="2">2</option>
-                                                                    <option value="3">3</option>
-                                                                    <option value="4">4</option>
-                                                                    <option value="5">5</option>
-                                                                </select>
+                                                                <input class="form-control" id="table1_Number_of_grandchildren2" style="display:none;" value="@Model.Number_of_grandchildren"/>
+
                                                             </td>
-                                                            <td>Veteran: <span id="table1_Vetaran1">@Model.Vetaran</span><input class="form-control" type="text" id="table1_Vetaran2" value="@Model.Vetaran" style="display:none;" /></td>
+                                                            <td>
+                                                                Veteran:
+                                                                <span id="table1_Vetaran1">@Model.Vetaran</span>
+                                                                @*<input class="form-control" type="text" id="table1_Vetaran2" value="@Model.Vetaran" style="display:none;" />*@
+                                                                <select class="table1_item form-control" id="table1_Vetaran2" style="display:none;width:40%;" onchange="table1_Vetaran2onChange(this)">
+                                                                    <option value="@Model.Vetaran" selected>@Model.Vetaran</option>
+                                                                    <option value=""></option>
+                                                                    <option value="Army">Army</option>
+                                                                    <option value="Navy">Navy</option>
+                                                                    <option value="Air Force">Air Force</option>
+                                                                    <option value="Other">Other</option>
+                                                                    <option value="None of the Above">None of the Above</option>
+                                                                </select>
+                                                                <input class="form-control" type="text" id="table1_Vetaran3" style="width:35%;display:none;" onchange="table1_Vetaran3onChange(this)" />
+                                                            </td>
                                                         </tr>
                                                         <tr style="display:none;">
                                                             <td>Contract Number: @Model.ContractNumber</td>
@@ -602,7 +626,7 @@
 
                                                                 <span class="text-center" style="width:93%;display:inline-block;">Emergency Contact Details</span>
                                                                 <div style="width:6%;display:inline-block;">
-                                                                    <button class="btn btn-warning text-black" id="table2_EDIT" onclick="table2_EDIT()" style="border-radius:0.3vw;">EDIT</button>
+                                                                    <button class="btn btn-light text-black" id="table2_EDIT" onclick="table2_EDIT()" style="border-radius:0.3vw;">EDIT</button>
                                                                     <button class="btn btn-danger text-white" id="table2_SAVE" onclick="table2_SAVE()" style="display:none;border-radius:0.3vw;">SAVE</button>
                                                                 </div>
                                                             </th>
@@ -685,7 +709,7 @@
 
                                                                 <span class="text-center" style="width:93%;display:inline-block;">Medical Contact Details</span>
                                                                 <div style="width:6%;display:inline-block;">
-                                                                    <button class="btn btn-warning text-black" id="table3_EDIT" onclick="table3_EDIT()" style="border-radius:0.3vw;">EDIT</button>
+                                                                    <button class="btn btn-light text-black" id="table3_EDIT" onclick="table3_EDIT()" style="border-radius:0.3vw;">EDIT</button>
                                                                     <button class="btn btn-danger text-white" id="table3_SAVE" onclick="table3_SAVE()" style="display:none;border-radius:0.3vw;">SAVE</button>
                                                                 </div>
                                                             </th>
@@ -695,16 +719,16 @@
                                                         <tr>
                                                             <td>Physician: <span id="table3_Physician_1">@Model.Physician</span><input class="form-control" type="text" id="table3_Physician_2" value="@Model.Physician" style="display:none;" /></td>
                                                             <td>Physician Phone: <span id="table3_PhysicianPhone_1">@Model.PhysicianPhone</span><input class="form-control phonemask" type="text" id="table3_PhysicianPhone_2" value="@Model.PhysicianPhone" style="display:none;" /></td>
-                                                            <td>Fax #: <span id="table3_PhysicianFaxNo_1">@Model.PhysicianFaxNo</span><input class="form-control" type="text" id="table3_PhysicianFaxNo_2" value="@Model.PhysicianFaxNo" style="display:none;" /></td>
+                                                            <td>Fax #: <span id="table3_PhysicianFaxNo_1">@Model.PhysicianFaxNo</span><input class="form-control phonemask" type="text" id="table3_PhysicianFaxNo_2" value="@Model.PhysicianFaxNo" style="display:none;" /></td>
                                                         </tr>
                                                         <tr>
                                                             <td>Pharmacy: <span id="table3_PharmaceSelf_1">@Model.PharmaceSelf</span><input class="form-control" type="text" id="table3_PharmaceSelf_2" value="@Model.PharmaceSelf" style="display:none;" /></td>
                                                             <td>Pharmacy Phone: <span id="table3_PharmacePhoneNo_1">@Model.PharmacePhoneNo</span><input class="form-control phonemask" type="text" id="table3_PharmacePhoneNo_2" value="@Model.PharmacePhoneNo" style="display:none;" /></td>
-                                                            <td>Fax #: <span id="table3_PharmaceFaxNumber_1">@Model.PharmaceFaxNumber</span><input class="form-control" type="text" id="table3_PharmaceFaxNumber_2" value="@Model.PharmaceFaxNumber" style="display:none;" /></td>
+                                                            <td>Fax #: <span id="table3_PharmaceFaxNumber_1">@Model.PharmaceFaxNumber</span><input class="form-control phonemask" type="text" id="table3_PharmaceFaxNumber_2" value="@Model.PharmaceFaxNumber" style="display:none;" /></td>
                                                         </tr>
                                                         <tr>
                                                             <td>Insurance Company: <span id="table3_InsuranceCompany_1">@Model.InsuranceCompany</span><input class="form-control" type="text" id="table3_InsuranceCompany_2" value="@Model.InsuranceCompany" style="display:none;" /></td>
-                                                            <td>Contract Number: <span id="table3_ContractNumber_1">@Model.ContractNumber</span><input class="form-control phonemask" type="text" id="table3_ContractNumber_2" value="@Model.ContractNumber" style="display:none;" /></td>
+                                                            <td>Contract Number: <span id="table3_ContractNumber_1">@Model.ContractNumber</span><input class="form-control" type="text" id="table3_ContractNumber_2" value="@Model.ContractNumber" style="display:none;" /></td>
                                                             <td>Group Number: <span id="table3_GroupNumber_1">@Model.GroupNumber</span><input class="form-control" type="text" id="table3_GroupNumber_2" value="@Model.GroupNumber" style="display:none;" /></td>
                                                         </tr>
                                                         <tr>
@@ -3050,6 +3074,11 @@
                     $('#table1_Number_of_grandchildren2').show();
 
                     $('#table1_Vetaran1').hide();
+                    $('#table1_Vetaran2 option:eq(0)').val($('#table1_Vetaran1').html());
+                    $('#table1_Vetaran2 option:eq(0)').html($('#table1_Vetaran1').html());
+                    $('#table1_Vetaran2 option:eq(0)').prop('selected', true);
+                    $('#table1_Vetaran2 option:eq(5)').val('Other');
+
                     $('#table1_Vetaran2').show();
 
                 }
@@ -3100,6 +3129,12 @@
                             $('#table1_Number_of_children1').html($('#table1_Number_of_children2').val());
                             $('#table1_Number_of_grandchildren1').html($('#table1_Number_of_grandchildren2').val());
                             $('#table1_Vetaran1').html($('#table1_Vetaran2').val());
+
+
+                            if ($('#table1_MaritalStatustext2').val() != '1') {
+                                $('#table1_SignificatOther1').html('N/A');
+                                $('#table1_AnniversaryDate1').html('N/A');
+                            }
                             
 
                         },
@@ -3134,6 +3169,7 @@
                     $('#table1_MaritalStatustext2').hide();
                     $('#table1_MaritalStatustext1').show();
 
+
                     $('#table1_SignificatOther2').hide();
                     $('#table1_SignificatOther1').show();
 
@@ -3148,6 +3184,10 @@
 
                     $('#table1_Vetaran2').hide();
                     $('#table1_Vetaran1').show();
+
+                    $('#table1_Vetaran3').css('display', 'none');
+
+
                 }
 
                 function table2_EDIT() {
@@ -3245,7 +3285,7 @@
                         contentType: 'application/json; charset=utf-8',
                         data: "{postdata:" + JSON.stringify(postdata) + "}",
                         success: function (data) {
-                            tempAlert('success', 2000);
+                            tempAlert('Update Success', 2000);
 
                             $('#table2_Contract1_1').html($('#table2_Contract1_2').val());
                             $('#table2_Contract2_1').html($('#table2_Contract2_2').val());
@@ -3392,7 +3432,7 @@
                         contentType: 'application/json; charset=utf-8',
                         data: "{postdata:" + JSON.stringify(postdata) + "}",
                         success: function (data) {
-                            tempAlert('success', 2000);
+                            tempAlert('Update Success', 2000);
 
                             $('#table3_Physician_1').html($('#table3_Physician_2').val());
                             $('#table3_PhysicianPhone_1').html($('#table3_PhysicianPhone_2').val());
@@ -3448,7 +3488,6 @@
 
                 }
 
-
                 function POAclick(ee) {
                     if ($('#table2_SAVE').is(":visible")) {
                         if (ee.style.color == "black") {
@@ -3460,6 +3499,34 @@
                     }
 
 
+                }
+
+                function table1_Vetaran2onChange(ee) {
+                    if (ee.value == 'Other') {
+                        $('#table1_Vetaran3').val('');
+                        $('#table1_Vetaran3').css('display', 'inline-block');
+                    }
+                    else {
+                        $('#table1_Vetaran3').val('');
+                        $('#table1_Vetaran3').css('display', 'none');
+                    }
+                }
+
+                function table1_Vetaran3onChange(ee) {
+                    $('#table1_Vetaran2 option:eq(5)').val(ee.value);
+                }
+
+                function table1_MaritalStatustext2onChange(ee) {
+                    if (ee.value == "1") {
+                        $('#table1_SignificatOther2').prop('disabled', false);
+                        $('#table1_AnniversaryDate2').prop('disabled', false);
+                    }
+                    else {
+                        $('#table1_SignificatOther2').val('');
+                        $('#table1_AnniversaryDate2').val('');
+                        $('#table1_SignificatOther2').prop('disabled', true);
+                        $('#table1_AnniversaryDate2').prop('disabled', true);
+                    }
                 }
 
             </script>

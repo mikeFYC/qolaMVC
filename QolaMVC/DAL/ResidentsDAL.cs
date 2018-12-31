@@ -2737,22 +2737,7 @@ namespace QolaMVC.DAL
                 new SelectListItem { Value = "With Cueing", Text = "With Cueing" },
                 new SelectListItem { Value = "No", Text = "No" },
             };
-            AAA.Number_of_childrenList = new[]{
-                new SelectListItem { Value = "", Text = "-- Select --" },
-                new SelectListItem { Value = "1", Text = "1" },
-                new SelectListItem { Value = "2", Text = "2" },
-                new SelectListItem { Value = "3", Text = "3" },
-                new SelectListItem { Value = "4", Text = "4" },
-                new SelectListItem { Value = "5", Text = "5" },
-            };
-            AAA.Number_of_grandchildrenList = new[]{
-                new SelectListItem { Value = "", Text = "-- Select --" },
-                new SelectListItem { Value = "1", Text = "1" },
-                new SelectListItem { Value = "2", Text = "2" },
-                new SelectListItem { Value = "3", Text = "3" },
-                new SelectListItem { Value = "4", Text = "4" },
-                new SelectListItem { Value = "5", Text = "5" },
-            };
+
             AAA.PhoneTypeList = new[]{
                 new SelectListItem { Value = "", Text = "-- Select --" },
                 new SelectListItem { Value = "1", Text = "Home" },

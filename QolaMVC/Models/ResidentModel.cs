@@ -1102,8 +1102,6 @@ namespace QolaMVC.Models
         public IEnumerable<SelectListItem> SuiteNoList { get; set; }
         public IEnumerable<SelectListItem> ReligiousAffiliationList { get; set; }
         public IEnumerable<SelectListItem> AbilityToReadList { get; set; }
-        public IEnumerable<SelectListItem> Number_of_childrenList { get; set; }
-        public IEnumerable<SelectListItem> Number_of_grandchildrenList { get; set; }
         public IEnumerable<SelectListItem> PhoneTypeList { get; set; }
         public IEnumerable<SelectListItem> HandDominanceList { get; set; }
         public IEnumerable<SelectListItem> AbilityToWriteList { get; set; }

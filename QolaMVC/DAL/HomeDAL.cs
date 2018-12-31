@@ -1946,6 +1946,36 @@ namespace QolaMVC.DAL
             return retunvalue;
         }
 
+        public static string GetCodebyVenue(int VenueID)
+        {
+            string retunvalue = "";
+            string exception = string.Empty;
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_Code_by_VenueID", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@Venue", VenueID);
+                l_Cmd.Parameters.Add("@out", SqlDbType.VarChar, 20);
+                l_Cmd.Parameters["@out"].Direction = ParameterDirection.Output;
+                l_Cmd.ExecuteNonQuery();
+                retunvalue = l_Cmd.Parameters["@out"].Value.ToString();
+            }
+            catch (Exception ex)
+            {
+                exception = "GetCodebyVenue |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+
+            }
+            return retunvalue;
+        }
+
 
 
         public static Collection<ActivityEventModel> GetActivityEvents(int homeid)
@@ -1987,6 +2017,7 @@ namespace QolaMVC.DAL
                         l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
 
                         l_Event.Special = Convert.ToInt32(homeTypeRow["Special"]);
+                        l_Event.Code = Convert.ToString(homeTypeRow["code"]);
 
                         l_Events.Add(l_Event);
                     }
@@ -2045,6 +2076,7 @@ namespace QolaMVC.DAL
                         l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
 
                         l_Event.Special = Convert.ToInt32(homeTypeRow["Special"]);
+                        l_Event.Code = Convert.ToString(homeTypeRow["code"]);
 
                         l_Events.Add(l_Event);
                     }
@@ -2175,6 +2207,7 @@ namespace QolaMVC.DAL
                         l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
 
                         l_Event.Special = Convert.ToInt32(homeTypeRow["Special"]);
+                        l_Event.Code = Convert.ToString(homeTypeRow["code"]);
 
                         l_Events.Add(l_Event);
                     }
@@ -2233,6 +2266,7 @@ namespace QolaMVC.DAL
                         l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
 
                         l_Event.Special = Convert.ToInt32(homeTypeRow["Special"]);
+                        l_Event.Code = Convert.ToString(homeTypeRow["code"]);
 
                         l_Events.Add(l_Event);
                     }
@@ -2363,6 +2397,7 @@ namespace QolaMVC.DAL
                         l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
 
                         l_Event.Special = Convert.ToInt32(homeTypeRow["Special"]);
+                        l_Event.Code = Convert.ToString(homeTypeRow["code"]);
 
                         l_Events.Add(l_Event);
                     }
@@ -2421,6 +2456,7 @@ namespace QolaMVC.DAL
                         l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
 
                         l_Event.Special = Convert.ToInt32(homeTypeRow["Special"]);
+                        l_Event.Code = Convert.ToString(homeTypeRow["code"]);
 
                         l_Events.Add(l_Event);
                     }
@@ -2551,6 +2587,7 @@ namespace QolaMVC.DAL
                         l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
 
                         l_Event.Special = Convert.ToInt32(homeTypeRow["Special"]);
+                        l_Event.Code = Convert.ToString(homeTypeRow["code"]);
 
                         l_Events.Add(l_Event);
                     }
@@ -2609,6 +2646,7 @@ namespace QolaMVC.DAL
                         l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
 
                         l_Event.Special = Convert.ToInt32(homeTypeRow["Special"]);
+                        l_Event.Code = Convert.ToString(homeTypeRow["code"]);
 
                         l_Events.Add(l_Event);
                     }
@@ -3364,6 +3402,7 @@ namespace QolaMVC.DAL
 
                         l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
                         l_Event.Special = Convert.ToInt32(homeTypeRow["Special"]);
+                        l_Event.Code = Convert.ToString(homeTypeRow["code"]);
 
                         l_Events.Add(l_Event);
                     }
@@ -3418,6 +3457,7 @@ namespace QolaMVC.DAL
 
                         l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
                         l_Event.Special = Convert.ToInt32(homeTypeRow["Special"]);
+                        l_Event.Code = Convert.ToString(homeTypeRow["code"]);
 
                         l_Events.Add(l_Event);
                     }
@@ -3472,6 +3512,7 @@ namespace QolaMVC.DAL
 
                         l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
                         l_Event.Special = Convert.ToInt32(homeTypeRow["Special"]);
+                        l_Event.Code = Convert.ToString(homeTypeRow["code"]);
 
                         l_Events.Add(l_Event);
                     }
@@ -3526,6 +3567,7 @@ namespace QolaMVC.DAL
 
                         l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
                         l_Event.Special = Convert.ToInt32(homeTypeRow["Special"]);
+                        l_Event.Code = Convert.ToString(homeTypeRow["code"]);
 
                         l_Events.Add(l_Event);
                     }
@@ -4016,7 +4058,8 @@ namespace QolaMVC.DAL
                     { "note", l_Data.note},
                     { "Category", l_Data.CategoryId},
                     { "ActivityId", l_Data.ActivityId.ToString()},
-                    { "Special", l_Data.Special.ToString()}
+                    { "Special", l_Data.Special.ToString()},
+                    { "Code", l_Data.Code}
                 };
 
                 l_Events.Add(columns);
@@ -4046,7 +4089,8 @@ namespace QolaMVC.DAL
                     { "note", l_Data.note},
                     { "Category", l_Data.CategoryId},
                     { "ActivityId", l_Data.ActivityId.ToString()},
-                    { "Special", l_Data.Special.ToString()}
+                    { "Special", l_Data.Special.ToString()},
+                    { "Code", l_Data.Code}
                 };
 
             l_Events.Add(columns);

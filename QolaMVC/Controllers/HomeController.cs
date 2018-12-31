@@ -2891,6 +2891,7 @@ namespace QolaMVC.Controllers
                 int temp = HomeDAL.AddNewActivityEvent(l_Model, home.Id, 0);
                 l_Model.ProgramId = temp;
                 l_Model.CategoryId=HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
                 l_Model.Special = 0;
                 EVENTS.Add(l_Model);
             }
@@ -2918,6 +2919,7 @@ namespace QolaMVC.Controllers
                     int temp = HomeDAL.AddNewActivityEvent(l_Model, home.Id, 0);
                     l_Model.ProgramId = temp;
                     l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                    l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
                     l_Model.Special = 0;
                     EVENTS.Add(l_Model);
                 }
@@ -2944,6 +2946,7 @@ namespace QolaMVC.Controllers
                     int temp = HomeDAL.AddNewActivityEvent(l_Model, home.Id, 0);
                     l_Model.ProgramId = temp;
                     l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                    l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
                     l_Model.Special = 0;
                     EVENTS.Add(l_Model);
                 }
@@ -2987,6 +2990,7 @@ namespace QolaMVC.Controllers
                 int temp = HomeDAL.AddNewActivityEvent_C2(l_Model, home.Id, 0);
                 l_Model.ProgramId = temp;
                 l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
                 l_Model.Special = 0;
                 EVENTS.Add(l_Model);
             }
@@ -3014,6 +3018,7 @@ namespace QolaMVC.Controllers
                     int temp = HomeDAL.AddNewActivityEvent_C2(l_Model, home.Id, 0);
                     l_Model.ProgramId = temp;
                     l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                    l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
                     l_Model.Special = 0;
                     EVENTS.Add(l_Model);
                 }
@@ -3040,6 +3045,7 @@ namespace QolaMVC.Controllers
                     int temp = HomeDAL.AddNewActivityEvent_C2(l_Model, home.Id, 0);
                     l_Model.ProgramId = temp;
                     l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                    l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
                     l_Model.Special = 0;
                     EVENTS.Add(l_Model);
                 }
@@ -3081,6 +3087,7 @@ namespace QolaMVC.Controllers
                 int temp = HomeDAL.AddNewActivityEvent_C3(l_Model, home.Id, 0);
                 l_Model.ProgramId = temp;
                 l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
                 l_Model.Special = 0;
 
                 EVENTS.Add(l_Model);
@@ -3109,6 +3116,7 @@ namespace QolaMVC.Controllers
                     int temp = HomeDAL.AddNewActivityEvent_C3(l_Model, home.Id, 0);
                     l_Model.ProgramId = temp;
                     l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                    l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
                     l_Model.Special = 0;
                     EVENTS.Add(l_Model);
                 }
@@ -3135,6 +3143,7 @@ namespace QolaMVC.Controllers
                     int temp = HomeDAL.AddNewActivityEvent_C3(l_Model, home.Id, 0);
                     l_Model.ProgramId = temp;
                     l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                    l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
                     l_Model.Special = 0;
                     EVENTS.Add(l_Model);
                 }
@@ -3177,6 +3186,7 @@ namespace QolaMVC.Controllers
                 int temp = HomeDAL.AddNewActivityEvent_C4(l_Model, home.Id, 0);
                 l_Model.ProgramId = temp;
                 l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
                 l_Model.Special = 0;
                 EVENTS.Add(l_Model);
             }
@@ -3204,6 +3214,7 @@ namespace QolaMVC.Controllers
                     int temp = HomeDAL.AddNewActivityEvent_C4(l_Model, home.Id, 0);
                     l_Model.ProgramId = temp;
                     l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                    l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
                     l_Model.Special = 0;
                     EVENTS.Add(l_Model);
                 }
@@ -3230,6 +3241,7 @@ namespace QolaMVC.Controllers
                     int temp = HomeDAL.AddNewActivityEvent_C4(l_Model, home.Id, 0);
                     l_Model.ProgramId = temp;
                     l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                    l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
                     l_Model.Special = 0;
                     EVENTS.Add(l_Model);
                 }
@@ -3458,6 +3470,7 @@ namespace QolaMVC.Controllers
                     {
                         l_Model.ProgramId = temp;
                         l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                        l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
                         l_Model.Special = 1;
                         EVENTS.Add(l_Model);
                     }
@@ -3492,6 +3505,7 @@ namespace QolaMVC.Controllers
                         {
                             l_Model.ProgramId = temp;
                             l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                            l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
                             l_Model.Special = 1;
                             EVENTS.Add(l_Model);
                         }
@@ -3524,6 +3538,7 @@ namespace QolaMVC.Controllers
                         {
                             l_Model.ProgramId = temp;
                             l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                            l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
                             l_Model.Special = 1;
                             EVENTS.Add(l_Model);
                         }
@@ -3585,6 +3600,7 @@ namespace QolaMVC.Controllers
                     {
                         l_Model.ProgramId = temp;
                         l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                        l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
                         l_Model.Special = 1;
                         EVENTS.Add(l_Model);
                     }
@@ -3619,6 +3635,7 @@ namespace QolaMVC.Controllers
                         {
                             l_Model.ProgramId = temp;
                             l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                            l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
                             l_Model.Special = 1;
                             EVENTS.Add(l_Model);
                         }
@@ -3651,6 +3668,7 @@ namespace QolaMVC.Controllers
                         {
                             l_Model.ProgramId = temp;
                             l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                            l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
                             l_Model.Special = 1;
                             EVENTS.Add(l_Model);
                         }
@@ -3709,6 +3727,7 @@ namespace QolaMVC.Controllers
                     {
                         l_Model.ProgramId = temp;
                         l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                        l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
                         l_Model.Special = 1;
                         EVENTS.Add(l_Model);
                     }
@@ -3742,6 +3761,7 @@ namespace QolaMVC.Controllers
                         {
                             l_Model.ProgramId = temp;
                             l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                            l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
                             l_Model.Special = 1;
                             EVENTS.Add(l_Model);
                         }
@@ -3774,6 +3794,7 @@ namespace QolaMVC.Controllers
                         {
                             l_Model.ProgramId = temp;
                             l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                            l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
                             l_Model.Special = 1;
                             EVENTS.Add(l_Model);
                         }
@@ -3833,6 +3854,7 @@ namespace QolaMVC.Controllers
                     {
                         l_Model.ProgramId = temp;
                         l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                        l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
                         l_Model.Special = 1;
                         EVENTS.Add(l_Model);
                     }
@@ -3866,6 +3888,7 @@ namespace QolaMVC.Controllers
                         {
                             l_Model.ProgramId = temp;
                             l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                            l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
                             l_Model.Special = 1;
                             EVENTS.Add(l_Model);
                         }
@@ -3898,6 +3921,7 @@ namespace QolaMVC.Controllers
                         {
                             l_Model.ProgramId = temp;
                             l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+                            l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
                             l_Model.Special = 1;
                             EVENTS.Add(l_Model);
                         }
@@ -3985,6 +4009,7 @@ namespace QolaMVC.Controllers
             l_Model.ProgramId = int.Parse(ID);
 
             l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+            l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
             l_Model.Special = 0;
 
 
@@ -4020,6 +4045,7 @@ namespace QolaMVC.Controllers
             l_Model.ProgramId = int.Parse(ID);
 
             l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+            l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
             l_Model.Special = 0;
 
 
@@ -4053,6 +4079,7 @@ namespace QolaMVC.Controllers
             l_Model.ProgramId = int.Parse(ID);
 
             l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+            l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
             l_Model.Special = 0;
 
 
@@ -4086,6 +4113,7 @@ namespace QolaMVC.Controllers
             l_Model.ProgramId = int.Parse(ID);
 
             l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
+            l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
             l_Model.Special = 0;
 
 
