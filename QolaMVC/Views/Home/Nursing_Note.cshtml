@@ -78,7 +78,7 @@
                 <div class="row">
                     <div class="col-md-8 py-4 text-left">
                         <form class="form-inline">
-                            <input id="dateselect" type="date" class="form-control" style="width:20%;" value="@TempData["dateEntered"]"/>
+                            <input id="dateselect" type="date" class="form-control" style="width:20%;" value="@DateTime.Now.ToString("yyyy-MM-dd")"/>
 
                             <button type="button" class="btn btn-primary" style="margin-left:1%;" onclick="DateView()">View</button>
                         </form>
@@ -177,17 +177,27 @@
 
             }
 
-            function DateView() {
-                var order = $('#dateselect').val();
-                location.href = '/Home/Nursing_Note?datestring=' + order;
-            }
 
             function NN_PRINT_PDF() {
                 var order = $('#dateselect').val();
                 location.href = '/Home/btnPdf_Click_Nursing_Note?datestring=' + order;
             }
 
-
+            function DateView() {
+                var order = $('#dateselect').val();
+                $('#EL_firstrow').next().find('tbody').empty()
+                $.get("/Home/Nursing_Note2/", { datestring: order }, function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        $('#EL_firstrow').next().find('tbody').append('<tr class="">'+
+                            '<td class="align-middle">' + data[i][0].Value + '<br>(' + data[i][1].Value+')</td>'+
+                            '<td class="align-middle">' + data[i][2].Value + '</td>'+
+                            '<td class="align-middle">' + data[i][3].Value + '</td>'+
+                            '<td class="align-middle">' + data[i][4].Value + '</td>'+
+                            '<td class="align-middle">' + data[i][5].Value + '</td>'+
+                            '</tr>');
+                    }
+                });
+            }
 
 
         </script>

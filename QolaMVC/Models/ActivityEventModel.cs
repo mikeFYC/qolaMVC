@@ -25,11 +25,10 @@ namespace QolaMVC.Models
         public string CategoryId { get; set; }
 
         public string note { get; set; }
-
         public string Color { get; set; }
-
         public int Special { get; set; }
 
         public string Code { get; set; }
+        public string VenueName { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using QolaMVC.DAL;
 using QolaMVC.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -10,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services;
 
 namespace QolaMVC.Controllers
 {
@@ -18,12 +20,67 @@ namespace QolaMVC.Controllers
         // GET: Login
         public ActionResult Index(string p_Message = "")
         {
-            if(p_Message != string.Empty)
+            if (p_Message != string.Empty)
             {
                 ViewBag.ErrorMessage = p_Message;
             }
+            if (Session["language"] == null || Session["language"].ToString() == "")
+            {
+                Session["language"] = "en";
+            }
+
             return View();
         }
+
+
+        public ActionResult ChangeLanguage(string LanguageAbbrevation)
+        {
+            if (LanguageAbbrevation != null)
+            {
+                Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(LanguageAbbrevation);
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(LanguageAbbrevation);
+            }
+
+            HttpCookie cookie = new HttpCookie("Language");
+            cookie.Value = LanguageAbbrevation;
+            Response.Cookies.Add(cookie);
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        public void ChangeLanguage2(string LanguageAbbrevation)
+        {
+            if (LanguageAbbrevation != null)
+            {
+                Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(LanguageAbbrevation);
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(LanguageAbbrevation);
+            }
+
+            HttpCookie cookie = new HttpCookie("Language");
+            cookie.Value = LanguageAbbrevation;
+            Response.Cookies.Add(cookie);
+
+            if (LanguageAbbrevation == "" || LanguageAbbrevation==null || LanguageAbbrevation == "en")
+            {
+                Session["Language"] = "en";
+            }
+            else if (LanguageAbbrevation == "fr")
+            {
+                Session["Language"] = "fr";
+            }
+
+        }
+
+        [WebMethod(EnableSession = true)]
+        public string setLanguageId(string sLanguageId)
+        {
+            string result = string.Empty;
+
+            System.Web.HttpContext.Current.Session["language"] = sLanguageId;
+
+            return result;
+        }
+
 
         [HttpPost]
         public ActionResult Auth_Decom(FormCollection p_Collection)

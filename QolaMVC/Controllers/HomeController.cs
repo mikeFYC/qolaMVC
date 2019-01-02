@@ -1452,7 +1452,22 @@ namespace QolaMVC.Controllers
             }
         }
 
-        public ActionResult Nursing_Note(string datestring="")
+        public ActionResult Nursing_Note()
+        {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            ViewBag.User = user;
+            ViewBag.Home = home;
+
+            NursingNoteReport samples = HomeDAL.get_NursingNoteReport(home.Id, DateTime.Now);
+            
+
+            return View(samples);
+        }
+
+        public JsonResult Nursing_Note2(string datestring)
         {
             var user = (UserModel)TempData["User"];
             var home = (HomeModel)TempData["Home"];
@@ -1469,11 +1484,24 @@ namespace QolaMVC.Controllers
             {
                 date = DateTime.Parse(datestring);
             }
-            NursingNoteReport samples = HomeDAL.get_NursingNoteReport(home.Id, date);
-            TempData["dateEntered"] = date.ToString("yyyy-MM-dd");
+            var samples = HomeDAL.get_NursingNoteReport(home.Id, date);
 
-            return View(samples);
+            List<dynamic> l_Json = new List<dynamic>();
+
+            foreach (var r in samples.NursingNoteList)
+            {
+                dynamic l_J = new System.Dynamic.ExpandoObject();
+                l_J.userName = r.userName;
+                l_J.userNameType = r.userNameType;
+                l_J.suiteNo = r.suiteNo;
+                l_J.FullName = r.FullName;
+                l_J.CategoryFull = r.CategoryFull;
+                l_J.Note = r.Note;
+                l_Json.Add(l_J);
+            }
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
         }
+
 
         public void btnPdf_Click_Nursing_Note(string datestring = "")
         {
@@ -1491,15 +1519,8 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
-            DateTime date;
-            if (datestring == "")
-            {
-                date = DateTime.Now;
-            }
-            else
-            {
-                date = DateTime.Parse(datestring);
-            }
+            DateTime date = DateTime.Parse(datestring);
+
 
             //Int32.TryParse(Session["HomeId"].ToString(), out iHomeId
             try
@@ -1555,7 +1576,7 @@ namespace QolaMVC.Controllers
                             PdfTable1.SpacingAfter = 5f;
                             PdfTable1.SpacingBefore = 5f;
 
-                            PdfPCell cell = new PdfPCell(new Phrase("Nursing Note", fontCellSize11B));
+                            PdfPCell cell = new PdfPCell(new Phrase("Nursing Note" + " (" + date.ToString("yyyy-MM-dd") + ")", fontCellSize11B));
                             cell.Border = 0;
                             cell.HorizontalAlignment = Element.ALIGN_CENTER;
                             cell.Colspan = 10;
@@ -3306,8 +3327,8 @@ namespace QolaMVC.Controllers
                 Collection<HomeModel> HomeModels = HomeDAL.GetHomeCollections();
                 foreach (var sin in HomeModels)
                 {
-                    if (sin.Id == homeID) temp = HomeDAL.AddNewActivityEvent_C2(l_Model, 1, 1);
-                    else HomeDAL.AddNewActivityEvent(l_Model, 1, 1);
+                    if (sin.Id == homeID) temp = HomeDAL.AddNewActivityEvent_C2(l_Model, sin.Id, 1);
+                    else HomeDAL.AddNewActivityEvent_C2(l_Model, sin.Id, 1);
                 }
             }
             else if (AddType == "2")
@@ -3317,8 +3338,8 @@ namespace QolaMVC.Controllers
                 {
                     if (sin.Province.ID == Int32.Parse(homestring))
                     {
-                        if (sin.Id == homeID) temp = HomeDAL.AddNewActivityEvent_C2(l_Model, 1, 1);
-                        else HomeDAL.AddNewActivityEvent(l_Model, 1, 1);
+                        if (sin.Id == homeID) temp = HomeDAL.AddNewActivityEvent_C2(l_Model, sin.Id, 1);
+                        else HomeDAL.AddNewActivityEvent_C2(l_Model, sin.Id, 1);
                     }
 
                 }
@@ -3329,8 +3350,8 @@ namespace QolaMVC.Controllers
                 {
                     if (sin.Trim() != "")
                     {
-                        if (Int32.Parse(sin) == homeID) temp = HomeDAL.AddNewActivityEvent_C2(l_Model, 1, 1);
-                        else HomeDAL.AddNewActivityEvent(l_Model, 1, 1);
+                        if (Int32.Parse(sin) == homeID) temp = HomeDAL.AddNewActivityEvent_C2(l_Model, Int32.Parse(sin), 1);
+                        else HomeDAL.AddNewActivityEvent_C2(l_Model, Int32.Parse(sin), 1);
                     }
 
 
@@ -3349,8 +3370,8 @@ namespace QolaMVC.Controllers
                 Collection<HomeModel> HomeModels = HomeDAL.GetHomeCollections();
                 foreach (var sin in HomeModels)
                 {
-                    if (sin.Id == homeID) temp = HomeDAL.AddNewActivityEvent_C3(l_Model, 1, 1);
-                    else HomeDAL.AddNewActivityEvent(l_Model, 1, 1);
+                    if (sin.Id == homeID) temp = HomeDAL.AddNewActivityEvent_C3(l_Model, sin.Id, 1);
+                    else HomeDAL.AddNewActivityEvent_C3(l_Model, sin.Id, 1);
                 }
             }
             else if (AddType == "2")
@@ -3360,8 +3381,8 @@ namespace QolaMVC.Controllers
                 {
                     if (sin.Province.ID == Int32.Parse(homestring))
                     {
-                        if (sin.Id == homeID) temp = HomeDAL.AddNewActivityEvent_C3(l_Model, 1, 1);
-                        else HomeDAL.AddNewActivityEvent(l_Model, 1, 1);
+                        if (sin.Id == homeID) temp = HomeDAL.AddNewActivityEvent_C3(l_Model, sin.Id, 1);
+                        else HomeDAL.AddNewActivityEvent_C3(l_Model, sin.Id, 1);
                     }
 
                 }
@@ -3372,8 +3393,8 @@ namespace QolaMVC.Controllers
                 {
                     if (sin.Trim() != "")
                     {
-                        if (Int32.Parse(sin) == homeID) temp = HomeDAL.AddNewActivityEvent_C3(l_Model, 1, 1);
-                        else HomeDAL.AddNewActivityEvent(l_Model, 1, 1);
+                        if (Int32.Parse(sin) == homeID) temp = HomeDAL.AddNewActivityEvent_C3(l_Model, Int32.Parse(sin), 1);
+                        else HomeDAL.AddNewActivityEvent_C3(l_Model, Int32.Parse(sin), 1);
                     }
 
 
@@ -3392,8 +3413,8 @@ namespace QolaMVC.Controllers
                 Collection<HomeModel> HomeModels = HomeDAL.GetHomeCollections();
                 foreach (var sin in HomeModels)
                 {
-                    if (sin.Id == homeID) temp = HomeDAL.AddNewActivityEvent_C4(l_Model, 1, 1);
-                    else HomeDAL.AddNewActivityEvent(l_Model, 1, 1);
+                    if (sin.Id == homeID) temp = HomeDAL.AddNewActivityEvent_C4(l_Model, sin.Id, 1);
+                    else HomeDAL.AddNewActivityEvent_C4(l_Model, sin.Id, 1);
                 }
             }
             else if (AddType == "2")
@@ -3403,8 +3424,8 @@ namespace QolaMVC.Controllers
                 {
                     if (sin.Province.ID == Int32.Parse(homestring))
                     {
-                        if (sin.Id == homeID) temp = HomeDAL.AddNewActivityEvent_C4(l_Model, 1, 1);
-                        else HomeDAL.AddNewActivityEvent(l_Model, 1, 1);
+                        if (sin.Id == homeID) temp = HomeDAL.AddNewActivityEvent_C4(l_Model, sin.Id, 1);
+                        else HomeDAL.AddNewActivityEvent_C4(l_Model, sin.Id, 1);
                     }
 
                 }
@@ -3415,8 +3436,8 @@ namespace QolaMVC.Controllers
                 {
                     if (sin.Trim() != "")
                     {
-                        if (Int32.Parse(sin) == homeID) temp = HomeDAL.AddNewActivityEvent_C4(l_Model, 1, 1);
-                        else HomeDAL.AddNewActivityEvent(l_Model, 1, 1);
+                        if (Int32.Parse(sin) == homeID) temp = HomeDAL.AddNewActivityEvent_C4(l_Model, Int32.Parse(sin), 1);
+                        else HomeDAL.AddNewActivityEvent_C4(l_Model, Int32.Parse(sin), 1);
                     }
 
 

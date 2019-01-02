@@ -1049,7 +1049,7 @@ namespace QolaMVC.DAL
                         l_Event.ProgramEndDate = Convert.ToDateTime(homeTypeRow["EndDate"]);
                         l_Event.ProgramStartTime = Convert.ToDateTime(homeTypeRow["StartTime"].ToString()).ToShortTimeString();
                         l_Event.ProgramEndTime = Convert.ToString(homeTypeRow["EndTime"]);
-                        l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
+                        l_Event.Venue = Convert.ToString(homeTypeRow["venueName"]);
                         l_Event.Active = Convert.ToInt32(homeTypeRow["Active"]);
                         l_Event.Declined = Convert.ToInt32(homeTypeRow["Declined"]);
 
@@ -1103,7 +1103,7 @@ namespace QolaMVC.DAL
                         l_Event.ProgramEndDate = Convert.ToDateTime(homeTypeRow["EndDate"]);
                         l_Event.ProgramStartTime = Convert.ToDateTime(homeTypeRow["StartTime"].ToString()).ToShortTimeString();
                         l_Event.ProgramEndTime = Convert.ToString(homeTypeRow["EndTime"]);
-                        l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
+                        l_Event.Venue = Convert.ToString(homeTypeRow["venueName"]);
                         l_Event.Active = Convert.ToInt32(homeTypeRow["Active"]);
                         l_Event.Declined = Convert.ToInt32(homeTypeRow["Declined"]);
 
@@ -1157,7 +1157,7 @@ namespace QolaMVC.DAL
                         l_Event.ProgramEndDate = Convert.ToDateTime(homeTypeRow["EndDate"]);
                         l_Event.ProgramStartTime = Convert.ToDateTime(homeTypeRow["StartTime"].ToString()).ToShortTimeString();
                         l_Event.ProgramEndTime = Convert.ToString(homeTypeRow["EndTime"]);
-                        l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
+                        l_Event.Venue = Convert.ToString(homeTypeRow["venueName"]);
                         l_Event.Active = Convert.ToInt32(homeTypeRow["Active"]);
                         l_Event.Declined = Convert.ToInt32(homeTypeRow["Declined"]);
 
@@ -1211,7 +1211,7 @@ namespace QolaMVC.DAL
                         l_Event.ProgramEndDate = Convert.ToDateTime(homeTypeRow["EndDate"]);
                         l_Event.ProgramStartTime = Convert.ToDateTime(homeTypeRow["StartTime"].ToString()).ToShortTimeString();
                         l_Event.ProgramEndTime = Convert.ToString(homeTypeRow["EndTime"]);
-                        l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
+                        l_Event.Venue = Convert.ToString(homeTypeRow["venueName"]);
                         l_Event.Active = Convert.ToInt32(homeTypeRow["Active"]);
                         l_Event.Declined = Convert.ToInt32(homeTypeRow["Declined"]);
 
@@ -3380,6 +3380,7 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@eventID", EventID);
                 l_Cmd.Parameters.AddWithValue("@NewDate", DT);
                 l_Cmd.Parameters.AddWithValue("@homtId", HomeID);
+
                 DataSet homeReceive = new DataSet();
                 l_DA.SelectCommand = l_Cmd;
                 l_DA.Fill(homeReceive);
@@ -3435,6 +3436,7 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@eventID", EventID);
                 l_Cmd.Parameters.AddWithValue("@NewDate", DT);
                 l_Cmd.Parameters.AddWithValue("@homtId", HomeID);
+
                 DataSet homeReceive = new DataSet();
                 l_DA.SelectCommand = l_Cmd;
                 l_DA.Fill(homeReceive);
@@ -3490,6 +3492,7 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@eventID", EventID);
                 l_Cmd.Parameters.AddWithValue("@NewDate", DT);
                 l_Cmd.Parameters.AddWithValue("@homtId", HomeID);
+
                 DataSet homeReceive = new DataSet();
                 l_DA.SelectCommand = l_Cmd;
                 l_DA.Fill(homeReceive);
@@ -3545,6 +3548,7 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@eventID", EventID);
                 l_Cmd.Parameters.AddWithValue("@NewDate", DT);
                 l_Cmd.Parameters.AddWithValue("@homtId", HomeID);
+
                 DataSet homeReceive = new DataSet();
                 l_DA.SelectCommand = l_Cmd;
                 l_DA.Fill(homeReceive);
