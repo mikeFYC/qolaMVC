@@ -42,11 +42,13 @@
             min-height: 2.8vh;
             font-size: 1vw !important;
         }
-            .fc-month-view span.fc-title {
+        .fc-month-view span.fc-title {
             white-space: normal !important;
+            color:black;
         }
         .fc-basicWeek-view span.fc-title {
             white-space: normal !important;
+            color: black;
         }
 
         .fc-center h2 {
@@ -65,7 +67,7 @@
         #calendar1_name, #calendar2_name, #calendar3_name, #calendar4_name {
             margin-bottom: 0px !important;
             font-weight: bold;
-            font-size: 1.2em;
+            font-size: 1.2vw;
         }
 
         .nav-pills li a{
@@ -273,9 +275,9 @@
                                     @{
                                         if (ViewBag.User.ID == 1338 || ViewBag.User.ID == 1346 || ViewBag.User.ID == 20 || ViewBag.User.ID == 1552)
                                         {
-                                            <li class="nav-item" style="width:25%;margin-left:5%;">
+                                            <li class="nav-item" style="width:22%;margin-left:5%;">
                                                 <label style="display:inline-block;font-size:1vw;font-weight:bold;">Category:</label>
-                                                <select class="nav-link" id="categorychoose" style="display:inline-block;width:65%;" onchange="changeCategory2(this.value)">
+                                                <select class="nav-link" id="categorychoose" style="display:inline-block;width:68%;" onchange="changeCategory2(this.value)">
                                                     <option value="0">All</option>
                                                     @{
                                                         foreach (var Category in ViewBag.ActivityCategory)
@@ -3223,7 +3225,7 @@
                         }
                     }
                 },
-                eventColor: 'lightgreen',
+                eventColor: 'white',
                 events: events,
                 eventRender: function (event, element) {
                     if (event.code != undefined && event.code.trim() != '') {
@@ -3343,7 +3345,7 @@
                         }
                     }
                 },
-                eventColor: 'lightgreen',
+                eventColor: 'white',
                 events: events,
                 eventRender: function (event, element) {
                     if (event.code != undefined && event.code.trim() != '') {
@@ -3461,7 +3463,7 @@
                         }
                     }
                 },
-                eventColor: 'lightgreen',
+                eventColor: 'white',
                 events: events,
                 eventRender: function (event, element) {
                     if (event.code != undefined && event.code.trim() != '') {
@@ -3580,7 +3582,7 @@
                         }
                     }
                 },
-                eventColor: 'lightgreen',
+                eventColor: 'white',
                 events: events,
                 eventRender: function (event, element) {
                     if (event.code != undefined && event.code.trim() != '') {
@@ -4026,127 +4028,40 @@
 
     function submitform(first, second, third, forth, fifth, sixth, seventh, eighth, ninth, a) {
         var tab = $('#hiddentab').val();
-
-        if (tab == "" || tab == "a") {
-            var posting = $.post("/Home/AddEvents_mike", { aa: first, bb: second, cc: third, dd: forth, ee: fifth, ff: sixth, gg: seventh, hh: eighth, ii: ninth, fre: a });
-            posting.done(function (data) {
-                //$('#calendar').fullCalendar('removeEvents');
-                for (var ind = 0; ind < data.length; ind++) {
-                    var event = {
-                        Id: data[ind].id,
-                        title: data[ind].title,
-                        start: data[ind].startT,
-                        end: data[ind].endT != null ? data[ind].endT : null,
-                        startDate: data[ind].startDate,
-                        Venue: data[ind].Venue,
-                        Note: data[ind].note,
-                        Category: data[ind].Category,
-                        ActivityID: data[ind].ActivityId,
-                        startTime: data[ind].startTime,
-                        special: data[ind].Special,
-                        code: data[ind].Code
-                    };
-                    var xx = scrollX;
-                    var yy = scrollY;
-
-
-                    if ($('#categorychoose').val() == '0' || data[ind].Category.toString().trim() == $('#categorychoose').val()) {
-                        $('#calendar').fullCalendar('renderEvent', event, true);
-                        update_day_div();
-                    }
-
-                    
-                    
-                    scroll(xx, yy);
+        if (tab == "a" || tab == "") whichcalendar = "#calendar";
+        else if (tab == "b")        whichcalendar = "#calendar2";
+        else if (tab == "c")        whichcalendar = "#calendar3";
+        else if (tab == "d")        whichcalendar = "#calendar4";
+        var posting = $.post("/Home/AddEvents_mike_All", { aa: first, bb: second, cc: third, dd: forth, ee: fifth, ff: sixth, gg: seventh, hh: eighth, ii: ninth, fre: a, tab: tab });
+        posting.done(function (data) {
+            for (var ind = 0; ind < data.length; ind++) {
+                var event = {
+                    Id: data[ind].id,
+                    title: data[ind].title,
+                    start: data[ind].startT,
+                    end: data[ind].endT != null ? data[ind].endT : null,
+                    startDate: data[ind].startDate,
+                    Venue: data[ind].Venue,
+                    Note: data[ind].note,
+                    Category: data[ind].Category,
+                    ActivityID: data[ind].ActivityId,
+                    startTime: data[ind].startTime,
+                    special: data[ind].Special,
+                    code: data[ind].Code
+                };
+                var xx = scrollX;
+                var yy = scrollY;
+                if ($('#categorychoose').val() == '0' || data[ind].Category.toString().trim() == $('#categorychoose').val()) {
+                    $(whichcalendar).fullCalendar('renderEvent', event, true);
+                    update_day_div();
                 }
-                $('#AddEvent').modal('hide');
-                cancel1();
-            });
-        }
-        else if (tab == "b") {
-            var posting = $.post("/Home/AddEvents_mike2", { aa: first, bb: second, cc: third, dd: forth, ee: fifth, ff: sixth, gg: seventh, hh: eighth, ii: ninth, fre: a });
-            posting.done(function (data) {
-                //$('#calendar').fullCalendar('removeEvents');
-                for (var ind = 0; ind < data.length; ind++) {
-                    var event = {
-                        Id: data[ind].id,
-                        title: data[ind].title,
-                        start: data[ind].startT,
-                        end: data[ind].endT != null ? data[ind].endT : null,
-                        startDate: data[ind].startDate,
-                        Venue: data[ind].Venue,
-                        Note: data[ind].note,
-                        Category: data[ind].Category,
-                        ActivityID: data[ind].ActivityId,
-                        startTime: data[ind].startTime,
-                        special: data[ind].Special,
-                        code: data[ind].Code
-                    };
-                    if ($('#categorychoose').val() == '0' || data[ind].Category.toString().trim() == $('#categorychoose').val()) {
-                        $('#calendar2').fullCalendar('renderEvent', event, true);
-                        update_day_div();
-                    }
-                }
-                $('#AddEvent').modal('hide');
-                cancel1();
-            });
-        }
-        else if (tab == "c") {
-            var posting = $.post("/Home/AddEvents_mike3", { aa: first, bb: second, cc: third, dd: forth, ee: fifth, ff: sixth, gg: seventh, hh: eighth, ii: ninth, fre: a });
-            posting.done(function (data) {
-                //$('#calendar').fullCalendar('removeEvents');
-                for (var ind = 0; ind < data.length; ind++) {
-                    var event = {
-                        Id: data[ind].id,
-                        title: data[ind].title,
-                        start: data[ind].startT,
-                        end: data[ind].endT != null ? data[ind].endT : null,
-                        startDate: data[ind].startDate,
-                        Venue: data[ind].Venue,
-                        Note: data[ind].note,
-                        Category: data[ind].Category,
-                        ActivityID: data[ind].ActivityId,
-                        startTime: data[ind].startTime,
-                        special: data[ind].Special,
-                        code: data[ind].Code
-                    };
-                    if ($('#categorychoose').val() == '0' || data[ind].Category.toString().trim() == $('#categorychoose').val()) {
-                        $('#calendar3').fullCalendar('renderEvent', event, true);
-                        update_day_div();
-                    }
-                }
-                $('#AddEvent').modal('hide');
-                cancel1();
-            });
-        }
-        else if (tab == "d") {
-            var posting = $.post("/Home/AddEvents_mike4", { aa: first, bb: second, cc: third, dd: forth, ee: fifth, ff: sixth, gg: seventh, hh: eighth, ii: ninth, fre: a });
-            posting.done(function (data) {
-                //$('#calendar').fullCalendar('removeEvents');
-                for (var ind = 0; ind < data.length; ind++) {
-                    var event = {
-                        Id: data[ind].id,
-                        title: data[ind].title,
-                        start: data[ind].startT,
-                        end: data[ind].endT != null ? data[ind].endT : null,
-                        startDate: data[ind].startDate,
-                        Venue: data[ind].Venue,
-                        Note: data[ind].note,
-                        Category: data[ind].Category,
-                        ActivityID: data[ind].ActivityId,
-                        startTime: data[ind].startTime,
-                        special: data[ind].Special,
-                        code: data[ind].Code
-                    };
-                    if ($('#categorychoose').val() == '0' || data[ind].Category.toString().trim() == $('#categorychoose').val()) {
-                        $('#calendar4').fullCalendar('renderEvent', event, true);
-                        update_day_div();
-                    }
-                }
-                $('#AddEvent').modal('hide');
-                cancel1();
-            });
-        }
+                scroll(xx, yy);
+            }
+            $('#AddEvent').modal('hide');
+            cancel1();
+        });
+
+
     }
 
     $('form[name="addEventForm2"]').submit(function (event) {
@@ -4166,137 +4081,39 @@
 
     function submitform2(ID, first, second, third, eighth, ninth) {
         var tab = $('#hiddentab').val();
+        if (tab == "a" || tab == "") whichcalendar = "#calendar";
+        else if (tab == "b")        whichcalendar = "#calendar2";
+        else if (tab == "c")        whichcalendar = "#calendar3";
+        else if (tab == "d")        whichcalendar = "#calendar4";
 
-        if (tab == "" || tab == "a") {
-            var posting = $.post("/Home/AddEvents_mike_EDIT", { ID: ID, aa: first, bb: second, cc: third, hh: eighth, ii: ninth });
-            posting.done(function (data) {
-                //$('#calendar').fullCalendar('removeEvents');
-                for (var ind = 0; ind < data.length; ind++) {
-                    $('#calendar').fullCalendar('removeEvents', function (event) {
-                        return (event.Id == data[ind].id);
-                    });
-                    var event = {
-                        Id: data[ind].id,
-                        title: data[ind].title,
-                        start: data[ind].startT,
-                        end: data[ind].endT != null ? data[ind].endT : null,
-                        startDate: data[ind].startDate,
-                        Venue: data[ind].Venue,
-                        Note: data[ind].note,
-                        Category: data[ind].Category,
-                        ActivityID: data[ind].ActivityId,
-                        startTime: data[ind].startTime,
-                        special: data[ind].Special,
-                        code: data[ind].Code
-                    };
-                    
-                    
-                    if ($('#categorychoose').val() == '0' || data[ind].Category.toString().trim() == $('#categorychoose').val()) {
-                        $('#calendar').fullCalendar('renderEvent', event, true);               
-                    }
-                    update_day_div();
+        var posting = $.post("/Home/AddEvents_mike_EDIT_All", { ID: ID, aa: first, bb: second, cc: third, hh: eighth, ii: ninth,tab:tab });
+        posting.done(function (data) {
+            for (var ind = 0; ind < data.length; ind++) {
+                $(whichcalendar).fullCalendar('removeEvents', function (event) {
+                    return (event.Id == data[ind].id);
+                });
+                var event = {
+                    Id: data[ind].id,
+                    title: data[ind].title,
+                    start: data[ind].startT,
+                    end: data[ind].endT != null ? data[ind].endT : null,
+                    startDate: data[ind].startDate,
+                    Venue: data[ind].Venue,
+                    Note: data[ind].note,
+                    Category: data[ind].Category,
+                    ActivityID: data[ind].ActivityId,
+                    startTime: data[ind].startTime,
+                    special: data[ind].Special,
+                    code: data[ind].Code
+                };
+                if ($('#categorychoose').val() == '0' || data[ind].Category.toString().trim() == $('#categorychoose').val()) {
+                    $(whichcalendar).fullCalendar('renderEvent', event, true);
                 }
-                $('#EditEvent').modal('hide');
-
-            });
-        }
-        else if (tab == "b") {
-            var posting = $.post("/Home/AddEvents_mike_EDIT2", { ID: ID, aa: first, bb: second, cc: third, hh: eighth, ii: ninth });
-            posting.done(function (data) {
-                //$('#calendar').fullCalendar('removeEvents');
-                for (var ind = 0; ind < data.length; ind++) {
-                    $('#calendar2').fullCalendar('removeEvents', function (event) {
-                        return (event.Id == data[ind].id);
-                    });
-                    var event = {
-                        Id: data[ind].id,
-                        title: data[ind].title,
-                        start: data[ind].startT,
-                        end: data[ind].endT != null ? data[ind].endT : null,
-                        startDate: data[ind].startDate,
-                        Venue: data[ind].Venue,
-                        Note: data[ind].note,
-                        Category: data[ind].Category,
-                        ActivityID: data[ind].ActivityId,
-                        startTime: data[ind].startTime,
-                        special: data[ind].Special,
-                        code: data[ind].Code
-                    };
-                    if ($('#categorychoose').val() == '0' || data[ind].Category.toString().trim() == $('#categorychoose').val()) {
-                        $('#calendar2').fullCalendar('renderEvent', event, true);
-                    }
-                    update_day_div();
-                }
-                $('#EditEvent').modal('hide');
-
-            });
-        }
-        else if (tab == "c") {
-            var posting = $.post("/Home/AddEvents_mike_EDIT3", { ID: ID, aa: first, bb: second, cc: third, hh: eighth, ii: ninth });
-            posting.done(function (data) {
-                //$('#calendar').fullCalendar('removeEvents');
-                for (var ind = 0; ind < data.length; ind++) {
-                    $('#calendar3').fullCalendar('removeEvents', function (event) {
-                        return (event.Id == data[ind].id);
-                    });
-                    var event = {
-                        Id: data[ind].id,
-                        title: data[ind].title,
-                        start: data[ind].startT,
-                        end: data[ind].endT != null ? data[ind].endT : null,
-                        startDate: data[ind].startDate,
-                        Venue: data[ind].Venue,
-                        Note: data[ind].note,
-                        Category: data[ind].Category,
-                        ActivityID: data[ind].ActivityId,
-                        startTime: data[ind].startTime,
-                        special: data[ind].Special,
-                        code: data[ind].Code
-                    };
-                    if ($('#categorychoose').val() == '0' || data[ind].Category.toString().trim() == $('#categorychoose').val()) {
-                        $('#calendar3').fullCalendar('renderEvent', event, true);
-                    }
-                    update_day_div();
-                }
-                $('#EditEvent').modal('hide');
-
-            });
-        }
-        else if (tab == "d") {
-            var posting = $.post("/Home/AddEvents_mike_EDIT4", { ID: ID, aa: first, bb: second, cc: third, hh: eighth, ii: ninth });
-            posting.done(function (data) {
-                //$('#calendar').fullCalendar('removeEvents');
-                for (var ind = 0; ind < data.length; ind++) {
-                    $('#calendar4').fullCalendar('removeEvents', function (event) {
-                        return (event.Id == data[ind].id);
-                    });
-                    var event = {
-                        Id: data[ind].id,
-                        title: data[ind].title,
-                        start: data[ind].startT,
-                        end: data[ind].endT != null ? data[ind].endT : null,
-                        startDate: data[ind].startDate,
-                        Venue: data[ind].Venue,
-                        Note: data[ind].note,
-                        Category: data[ind].Category,
-                        ActivityID: data[ind].ActivityId,
-                        startTime: data[ind].startTime,
-                        special: data[ind].Special,
-                        code: data[ind].Code
-                    };
-                    if ($('#categorychoose').val() == '0' || data[ind].Category.toString().trim() == $('#categorychoose').val()) {
-                        $('#calendar4').fullCalendar('renderEvent', event, true);
-                    }
-                    update_day_div();
-                }
-                $('#EditEvent').modal('hide');
-
-            });
-        }
-
-
+                update_day_div();
+            }
+            $('#EditEvent').modal('hide');
+        });
     }
-    
 
     $('form[name="addSpecialEventForm"]').submit(function (event) {
         var homestring = "";
@@ -4360,126 +4177,40 @@
 
     function submitform3(first, second, third, forth, fifth, sixth, seventh, eighth, ninth, a, AddType, homestring) {
         var tab = $('#hiddentab').val();
+        if (tab == "a" || tab == "") whichcalendar = "#calendar";
+        else if (tab == "b") whichcalendar = "#calendar2";
+        else if (tab == "c") whichcalendar = "#calendar3";
+        else if (tab == "d") whichcalendar = "#calendar4";
 
-        if (tab == "" || tab == "a") {
-            var posting = $.post("/Home/AddEvents_mike_Special", { aa: first, bb: second, cc: third, dd: forth, ee: fifth, ff: sixth, gg: seventh, hh: eighth, ii: ninth, fre: a, AddType: AddType, homestring: homestring});
-            posting.done(function (data) {
-                //$('#calendar').fullCalendar('removeEvents');
-                for (var ind = 0; ind < data.length; ind++) {
-                    var event = {
-                        Id: data[ind].id,
-                        title: data[ind].title,
-                        start: data[ind].startT,
-                        end: data[ind].endT != null ? data[ind].endT : null,
-                        startDate: data[ind].startDate,
-                        Venue: data[ind].Venue,
-                        Note: data[ind].note,
-                        Category: data[ind].Category,
-                        ActivityID: data[ind].ActivityId,
-                        startTime: data[ind].startTime,
-                        special: data[ind].Special,
-                        code: data[ind].Code
-                    };
-                    var xx = scrollX;
-                    var yy = scrollY;
-                    
-                    
+        var posting = $.post("/Home/AddEvents_mike_Special_All", { aa: first, bb: second, cc: third, dd: forth, ee: fifth, ff: sixth, gg: seventh, hh: eighth, ii: ninth, fre: a, AddType: AddType, homestring: homestring,tab:tab });
+        posting.done(function (data) {
+            for (var ind = 0; ind < data.length; ind++) {
+                var event = {
+                    Id: data[ind].id,
+                    title: data[ind].title,
+                    start: data[ind].startT,
+                    end: data[ind].endT != null ? data[ind].endT : null,
+                    startDate: data[ind].startDate,
+                    Venue: data[ind].Venue,
+                    Note: data[ind].note,
+                    Category: data[ind].Category,
+                    ActivityID: data[ind].ActivityId,
+                    startTime: data[ind].startTime,
+                    special: data[ind].Special,
+                    code: data[ind].Code
+                };
+                var xx = scrollX;
+                var yy = scrollY;
+                if ($('#categorychoose').val() == '0' || data[ind].Category.toString().trim() == $('#categorychoose').val()) {
+                    $(whichcalendar).fullCalendar('renderEvent', event, true);
+                    update_day_div();
+                }
+                scroll(xx, yy);
+            }
+            $('#AddEvent_Hannan').modal('hide');
+            cancel1();
+        });
 
-                    if ($('#categorychoose').val() == '0' || data[ind].Category.toString().trim() == $('#categorychoose').val()) {
-                        $('#calendar').fullCalendar('renderEvent', event, true);
-                        update_day_div();
-                    }
-
-                    scroll(xx, yy);
-                }
-                $('#AddEvent_Hannan').modal('hide');
-                cancel1();
-            });
-        }
-        else if (tab == "b") {
-            var posting = $.post("/Home/AddEvents_mike2_Special", { aa: first, bb: second, cc: third, dd: forth, ee: fifth, ff: sixth, gg: seventh, hh: eighth, ii: ninth, fre: a, AddType: AddType, homestring: homestring});
-            posting.done(function (data) {
-                //$('#calendar').fullCalendar('removeEvents');
-                for (var ind = 0; ind < data.length; ind++) {
-                    var event = {
-                        Id: data[ind].id,
-                        title: data[ind].title,
-                        start: data[ind].startT,
-                        end: data[ind].endT != null ? data[ind].endT : null,
-                        startDate: data[ind].startDate,
-                        Venue: data[ind].Venue,
-                        Note: data[ind].note,
-                        Category: data[ind].Category,
-                        ActivityID: data[ind].ActivityId,
-                        startTime: data[ind].startTime,
-                        special: data[ind].Special,
-                        code: data[ind].Code
-                    };
-                    if ($('#categorychoose').val() == '0' || data[ind].Category.toString().trim() == $('#categorychoose').val()) {
-                        $('#calendar2').fullCalendar('renderEvent', event, true);
-                        update_day_div();
-                    }
-                }
-                $('#AddEvent_Hannan').modal('hide');
-                cancel1();
-            });
-        }
-        else if (tab == "c") {
-            var posting = $.post("/Home/AddEvents_mike3_Special", { aa: first, bb: second, cc: third, dd: forth, ee: fifth, ff: sixth, gg: seventh, hh: eighth, ii: ninth, fre: a, AddType: AddType, homestring: homestring });
-            posting.done(function (data) {
-                //$('#calendar').fullCalendar('removeEvents');
-                for (var ind = 0; ind < data.length; ind++) {
-                    var event = {
-                        Id: data[ind].id,
-                        title: data[ind].title,
-                        start: data[ind].startT,
-                        end: data[ind].endT != null ? data[ind].endT : null,
-                        startDate: data[ind].startDate,
-                        Venue: data[ind].Venue,
-                        Note: data[ind].note,
-                        Category: data[ind].Category,
-                        ActivityID: data[ind].ActivityId,
-                        startTime: data[ind].startTime,
-                        special: data[ind].Special,
-                        code: data[ind].Code
-                    };
-                    if ($('#categorychoose').val() == '0' || data[ind].Category.toString().trim() == $('#categorychoose').val()) {
-                        $('#calendar3').fullCalendar('renderEvent', event, true);
-                        update_day_div();
-                    }
-                }
-                $('#AddEvent_Hannan').modal('hide');
-                cancel1();
-            });
-        }
-        else if (tab == "d") {
-            var posting = $.post("/Home/AddEvents_mike4_Special", { aa: first, bb: second, cc: third, dd: forth, ee: fifth, ff: sixth, gg: seventh, hh: eighth, ii: ninth, fre: a, AddType: AddType, homestring: homestring});
-            posting.done(function (data) {
-                //$('#calendar').fullCalendar('removeEvents');
-                for (var ind = 0; ind < data.length; ind++) {
-                    var event = {
-                        Id: data[ind].id,
-                        title: data[ind].title,
-                        start: data[ind].startT,
-                        end: data[ind].endT != null ? data[ind].endT : null,
-                        startDate: data[ind].startDate,
-                        Venue: data[ind].Venue,
-                        Note: data[ind].note,
-                        Category: data[ind].Category,
-                        ActivityID: data[ind].ActivityId,
-                        startTime: data[ind].startTime,
-                        special: data[ind].Special,
-                        code: data[ind].Code
-                    };
-                    if ($('#categorychoose').val() == '0' || data[ind].Category.toString().trim() == $('#categorychoose').val()) {
-                        $('#calendar4').fullCalendar('renderEvent', event, true);
-                        update_day_div();
-                    }
-                }
-                $('#AddEvent_Hannan').modal('hide');
-                cancel1();
-            });
-        }
     }
 
     function resetForm3() {
