@@ -24,12 +24,21 @@
     }
     input[type=checkbox] {
         /* Double-sized Checkboxes */
-        -ms-transform: scale(2); /* IE */
-        -moz-transform: scale(2); /* FF */
-        -webkit-transform: scale(2); /* Safari and Chrome */
-        -o-transform: scale(2); /* Opera */
+        -ms-transform: scale(1.5); /* IE */
+        -moz-transform: scale(1.5); /* FF */
+        -webkit-transform: scale(1.5); /* Safari and Chrome */
+        -o-transform: scale(1.5); /* Opera */
         padding: 10px;
-        margin-top:15px;
+        margin-top: 10px;
+    }
+    #edit_table tbody tr td{
+        font-size:1vw;
+    }
+    #edit_table tbody tr td select{
+        font-size: 1vw;
+    }
+    #edit_table tbody tr input {
+        font-size: 1vw;
     }
 
 </style>
@@ -172,19 +181,19 @@
                 <div class="card">
                     <div class="card-block">
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="" style="width:30%;margin-left:2%;">
                                 <div class="row">
-                                    <div class="col-md-7">
+                                    <div class="" style="width:45%;display:inline-block;">
                                         <img src="~/Content/assets/@Model.ResidentImage"
-                                             style="width: 120px"
+                                             style="width:70%"
                                              alt="">
                                     </div>
-                                    <div class="col-md-5">
+                                    <div class="" style="width:50%;display:inline-block;">
                                         <h6>@Model.FirstName   @Model.LastName</h6>
                                         <h6>@Model.Gendar</h6>
                                         <h6>@Model.BirthDate.ToShortDateString()</h6>
                                         @{
-                                            if (ViewBag.User.ID == 1338 || ViewBag.User.ID == 1346)
+                                            if (ViewBag.User.ID == 1338 || ViewBag.User.ID == 1346 || ViewBag.User.ID == 1552)
                                             {
                                                 <button class="edit_button" id="EDIT_BUTTON" onclick="edit_button_click()">
                                                     EDIT
@@ -197,14 +206,14 @@
                                     <br />
                                     <div class="row" style="min-width:93vw">
                                         @*@(new HtmlString(TempData["table2"].ToString()))*@
-                                        <table class="table table-bordered" style="margin-left:1vw">
+                                        <table class="table table-bordered" style="margin-left:1vw" id="edit_table">
                                             <thead class="bg-primary">
                                                 <tr>
                                                     <th class="text-white text-center" style="width:5% !important;"></th>
                                                     <th class="text-white text-center" style="width:24% !important;">Home</th>
-                                                    <th class="text-white text-center" style="width:8% !important;">Suite No</th>
-                                                    <th class="text-white text-center" style="width:9% !important;">Move In Date</th>
-                                                    <th class="text-white text-center" style="width:9% !important;">Move Out Date</th>
+                                                    <th class="text-white text-center" style="width:7% !important;">Suite No</th>
+                                                    <th class="text-white text-center" style="width:14% !important;">Move In Date</th>
+                                                    <th class="text-white text-center" style="width:14% !important;">Move Out Date</th>
                                                     <th class="text-white text-center" style="width:9% !important;">Occupancy</th>
                                                     <th class="text-white text-center">Notes</th>
                                                     <th class="text-white text-center" style="width:5% !important;">Hospital</th>
@@ -217,8 +226,8 @@
                                                         foreach (var rd in ViewBag.TableEDIT)
                                                         {
                                                             <tr id=@rd.SHid>
-                                                                <td style="padding:15px !important;"><input type="checkbox" class="checkboxlist" id=@rd.SHid /></td>
-                                                                <td style="padding:15px !important;">
+                                                                <td style="padding:10px !important;"><input type="checkbox" class="checkboxlist" id=@rd.SHid /></td>
+                                                                <td style="padding:10px !important;">
                                                                     <select class="edit_home form-control" onchange="edit_selection_onchange_empty_suite(this)">
                                                                         <option value=@rd.homeid selected>@rd.homename</option>
                                                                         <option value="15">Auburn Heights Retirement Residence</option>
@@ -254,15 +263,15 @@
                                                                         <option value="19">Chateau Symmes Retirement Residence</option>
                                                                     </select>
                                                                 </td>
-                                                                <td style="padding:15px !important;">
+                                                                <td style="padding:10px !important;">
                                                                     <select name=@rd.SHid class="available_Suite_EDIT form-control" onfocus="suitenumber4(this)" value="">
                                                                         <option value="0"></option>
                                                                         <option selected value=@rd.suiteno>@rd.suiteno</option>
                                                                     </select>
                                                                 </td>
-                                                                <td style="padding:15px !important;"><input type="date" class="edit_movein form-control" value=@rd.movein onchange="edit_selection_onchange_empty_suite(this)" /></td>
-                                                                <td style="padding:15px !important;"><input type="date" class="form-control" value=@rd.moveout /></td>
-                                                                <td style="padding:15px !important;">
+                                                                <td style="padding:10px !important;"><input type="date" class="edit_movein form-control" value=@rd.movein onchange="edit_selection_onchange_empty_suite(this)" /></td>
+                                                                <td style="padding:10px !important;"><input type="date" class="form-control" value=@rd.moveout /></td>
+                                                                <td style="padding:10px !important;">
                                                                     <select class="edit_occu form-control" onchange="edit_selection_onchange_empty_suite(this)">
                                                                         <option value=@rd.occuID selected>@rd.occupancy</option>
                                                                         <option value="1">Single</option>
@@ -271,8 +280,8 @@
                                                                     </select>
 
                                                                 </td>
-                                                                <td style="padding:15px !important;" contenteditable>@rd.notes</td>
-                                                                <td style="padding:15px !important;">
+                                                                <td style="padding:10px !important;" contenteditable>@rd.notes</td>
+                                                                <td style="padding:10px !important;">
                                                                     <select class="form-control">
                                                                         @if (@rd.hospital != "" && @rd.hospital != null)
                                                                         {
@@ -309,7 +318,7 @@
                                         <option value="update_move_out_and_note">ALL Other Move Out</option>
                                     </select>
                                     <br>
-                                    <button class="btn btn-danger" id="BACK_Button_in_Edit" onclick="Back_in_edit_button_click()">
+                                    <button class="btn btn-primary" id="BACK_Button_in_Edit" onclick="Back_in_edit_button_click()">
                                         BACK
                                     </button>
                                     <button class="btn btn-danger" id="SAVE_Button_in_Edit" onclick="UNDO_in_edit_button_click()">
@@ -405,8 +414,8 @@
                                         <div class="tab-pane fade" id="pills-ApplicationSuite" role="tabpanel" aria-labelledby="pills-home-tab">
                                             <br>
                                             <br>
-                                            <div class="row">
-                                                <div class="col-md-6">
+                                            <div class="row" style="margin-left:2%;">
+                                                <div class="" style="width:49%;display:inline-block;">
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-md-4 col-form-label">Move In Date</label>
                                                         <div class="col-md-5">
@@ -426,7 +435,7 @@
                                                     </div>
 
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="" style="width:49%;display:inline-block;">
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-md-4 text-right col-form-label">Occupancy</label>
                                                         <div class="col-md-7">
@@ -439,24 +448,24 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12">
+                                                <div class="" style="width:49%;display:inline-block;">
                                                     <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-1 col-form-label">Notes</label>
-                                                        <div class="col-md-11">
-                                                            <textarea class="textarea" id="notes_ApplicationSuite" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
+                                                        <label for="staticEmail" class="col-md-4 col-form-label">Notes</label>
+                                                        <div class="col-md-7">
+                                                            <textarea class="textarea" id="notes_ApplicationSuite" rows="5" style="width: 95% !important;"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
-                                                    <button class="btn btn-danger" onclick="window.history.back()">
+                                                    <button class="btn btn-primary" onclick="window.history.back()">
                                                         BACK
                                                     </button>
                                                     <button class="btn btn-danger" onclick="saveButton_ApplicationSuite()">
                                                         SAVE
                                                     </button>
-                                                    <button class="btn btn-danger" onclick="clearButton()">
+                                                    <button class="btn btn-primary" onclick="clearButton()">
                                                         CLEAR
                                                     </button>
                                                 </div>
@@ -465,8 +474,8 @@
                                         <div class="tab-pane fade" id="pills-ChangeOccupancy" role="tabpanel" aria-labelledby="pills-profile-tab">
                                             <br>
                                             <br>
-                                            <div class="row">
-                                                <div class="col-md-6">
+                                            <div class="row" style="margin-left:2%;">
+                                                <div class="" style="width:49%;display:inline-block;">
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-md-4 col-form-label">Transfer Date</label>
                                                         <div class="col-md-5">
@@ -477,7 +486,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="" style="width:49%;display:inline-block;">
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-md-4 text-right col-form-label">Occupancy</label>
                                                         <div class="col-md-7">
@@ -490,24 +499,24 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12">
+                                                <div class="" style="width:49%;display:inline-block;">
                                                     <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-1 col-form-label">Notes</label>
-                                                        <div class="col-md-11">
-                                                            <textarea class="textarea" id="notes_ChangeOccupancy" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
+                                                        <label for="staticEmail" class="col-md-4 col-form-label">Notes</label>
+                                                        <div class="col-md-7">
+                                                            <textarea class="textarea" id="notes_ChangeOccupancy" rows="5" style="width: 95% !important;"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
-                                                    <button class="btn btn-danger" onclick="window.history.back()">
+                                                    <button class="btn btn-primary" onclick="window.history.back()">
                                                         BACK
                                                     </button>
                                                     <button class="btn btn-danger" onclick="saveButton_ChangeOccupancy()">
                                                         SAVE
                                                     </button>
-                                                    <button class="btn btn-danger" onclick="clearButton()">
+                                                    <button class="btn btn-primary" onclick="clearButton()">
                                                         CLEAR
                                                     </button>
                                                 </div>
@@ -517,8 +526,8 @@
                                         <div class="tab-pane fade" id="pills-InternalTransfer" role="tabpanel" aria-labelledby="pills-contact-tab">
                                             <br>
                                             <br>
-                                            <div class="row">
-                                                <div class="col-md-6">
+                                            <div class="row" style="margin-left:2%;">
+                                                <div class="" style="width:49%;display:inline-block;">
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-md-4 col-form-label">Transfer Date</label>
                                                         <div class="col-md-5">
@@ -538,7 +547,7 @@
                                                     </div>
 
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="" style="width:49%;display:inline-block;">
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-md-4 text-right col-form-label">Occupancy</label>
                                                         <div class="col-md-7">
@@ -551,24 +560,24 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12">
+                                                <div class="" style="width:49%;display:inline-block;">
                                                     <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-1 col-form-label">Notes</label>
-                                                        <div class="col-md-11">
-                                                            <textarea class="textarea" id="notes_InternalTransfer" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
+                                                        <label for="staticEmail" class="col-md-4 col-form-label">Notes</label>
+                                                        <div class="col-md-7">
+                                                            <textarea class="textarea" id="notes_InternalTransfer" rows="5" style="width: 95% !important;"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
-                                                    <button class="btn btn-danger" onclick="window.history.back()">
+                                                    <button class="btn btn-primary" onclick="window.history.back()">
                                                         BACK
                                                     </button>
                                                     <button class="btn btn-danger" onclick="saveButton_InternalTransfer()">
                                                         SAVE
                                                     </button>
-                                                    <button class="btn btn-danger" onclick="clearButton()">
+                                                    <button class="btn btn-primary" onclick="clearButton()">
                                                         CLEAR
                                                     </button>
                                                 </div>
@@ -577,47 +586,50 @@
                                         <div class="tab-pane fade" id="pills-TransfertoASCHOME" role="tabpanel" aria-labelledby="pills-contact-tab">
                                             <br>
                                             <br>
-                                            <div class="row">
-                                                <div class="col-md-6">
+                                            <div class="row" style="margin-left:2%;">
+                                                <div class="" style="width:49%;display:inline-block;">
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-md-4 col-form-label">Home</label>
-                                                        <select name="ctl00$QOLAContent$ddlHome" id="QOLAContent_ddlHome" class="combo_clr" style="height:27px;" onchange="selection_onchange_empty_suite()">
-                                                            <option value="">--Home--</option>
-                                                            <option value="15">Auburn Heights Retirement Residence</option>
-                                                            <option value="5">Laurel Heights Retirement Residence</option>
-                                                            <option value="26">Lewis Estates</option>
-                                                            <option value="35">Mactaggart Place Retirement Residence</option>
-                                                            <option value="1">Rutherford Heights Retirement Residence</option>
-                                                            <option value="33">Sage Hill Retirement Residence</option>
-                                                            <option value="31">St. Albert Retirement Residence</option>
-                                                            <option value="3">Summerwood Village Retirement Residence</option>
-                                                            <option value="30">River Ridge 2 Retirement Residence</option>
-                                                            <option value="4">River Ridge Retirement Residence</option>
-                                                            <option value="17">Seine River Retirement Residence</option>
-                                                            <option value="6">Shaftesbury Park Retirement Residence</option>
-                                                            <option value="18">Sturgeon Creek I Retirement Residence</option>
-                                                            <option value="13">Sturgeon Creek II Retirement Residence</option>
-                                                            <option value="12">Victoria Landing Retirement Residence</option>
-                                                            <option value="2">Beacon Heights Retirement Residence</option>
-                                                            <option value="7">Cedarcroft Place Retirement Residence</option>
-                                                            <option value="27">Chapel Hill Retirement Residence</option>
-                                                            <option value="32">Cit&#233; Parkway Retirement Residence</option>
-                                                            <option value="34">Eagleson Retirement Residence</option>
-                                                            <option value="28">Mccarthy Place</option>
-                                                            <option value="29">Sample</option>
-                                                            <option value="16">College Park II Retirement Residence</option>
-                                                            <option value="8">College Park Retirement Residence</option>
-                                                            <option value="14">Preston Park II Retirement Residence</option>
-                                                            <option value="11">Preston Park Retirement Residence</option>
-                                                            <option value="20">465, Boulevard De La Gappe</option>
-                                                            <option value="21">475 Boulevard De La Gappe</option>
-                                                            <option value="22">485 Boulevard De La Gappe</option>
-                                                            <option value="23">495 Boulevard De La Gappe</option>
-                                                            <option value="19">Chateau Symmes Retirement Residence</option>
-                                                        </select>
+                                                        <div class="col-md-7">
+                                                            <select class="form-control" name="ctl00$QOLAContent$ddlHome" id="QOLAContent_ddlHome" style="height:27px;" onchange="selection_onchange_empty_suite()">
+                                                                <option value="">--Home--</option>
+                                                                <option value="15">Auburn Heights Retirement Residence</option>
+                                                                <option value="5">Laurel Heights Retirement Residence</option>
+                                                                <option value="26">Lewis Estates</option>
+                                                                <option value="35">Mactaggart Place Retirement Residence</option>
+                                                                <option value="1">Rutherford Heights Retirement Residence</option>
+                                                                <option value="33">Sage Hill Retirement Residence</option>
+                                                                <option value="31">St. Albert Retirement Residence</option>
+                                                                <option value="3">Summerwood Village Retirement Residence</option>
+                                                                <option value="30">River Ridge 2 Retirement Residence</option>
+                                                                <option value="4">River Ridge Retirement Residence</option>
+                                                                <option value="17">Seine River Retirement Residence</option>
+                                                                <option value="6">Shaftesbury Park Retirement Residence</option>
+                                                                <option value="18">Sturgeon Creek I Retirement Residence</option>
+                                                                <option value="13">Sturgeon Creek II Retirement Residence</option>
+                                                                <option value="12">Victoria Landing Retirement Residence</option>
+                                                                <option value="2">Beacon Heights Retirement Residence</option>
+                                                                <option value="7">Cedarcroft Place Retirement Residence</option>
+                                                                <option value="27">Chapel Hill Retirement Residence</option>
+                                                                <option value="32">Cit&#233; Parkway Retirement Residence</option>
+                                                                <option value="34">Eagleson Retirement Residence</option>
+                                                                <option value="28">Mccarthy Place</option>
+                                                                <option value="29">Sample</option>
+                                                                <option value="16">College Park II Retirement Residence</option>
+                                                                <option value="8">College Park Retirement Residence</option>
+                                                                <option value="14">Preston Park II Retirement Residence</option>
+                                                                <option value="11">Preston Park Retirement Residence</option>
+                                                                <option value="20">465, Boulevard De La Gappe</option>
+                                                                <option value="21">475 Boulevard De La Gappe</option>
+                                                                <option value="22">485 Boulevard De La Gappe</option>
+                                                                <option value="23">495 Boulevard De La Gappe</option>
+                                                                <option value="19">Chateau Symmes Retirement Residence</option>
+                                                            </select>
+                                                        </div>
+                                                        
                                                         <label for="staticEmail" class="col-md-4 col-form-label">Transfer Date</label>
                                                         <div class="col-md-5">
-                                                            <input type="date" class="form-control" id="dateinputTransfertoASCHOME" onchange="selection_onchange_empty_suite()">
+                                                            <input type="date" class="form-control" id="dateinputTransfertoASCHOME" onchange="selection_onchange_empty_suite()" style="margin-top:4px;">
                                                         </div>
                                                         <div class="col-md-2">
                                                             <p style="font-size: 9px; float: left">(MM/DD/YYYY)</p>
@@ -633,7 +645,7 @@
                                                     </div>
 
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="" style="width:49%;display:inline-block;">
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-md-4 text-right col-form-label">Occupancy</label>
                                                         <div class="col-md-7">
@@ -646,24 +658,24 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12">
+                                                <div class="" style="width:49%;display:inline-block;">
                                                     <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-1 col-form-label">Notes</label>
-                                                        <div class="col-md-11">
-                                                            <textarea class="textarea" id="notes_TransfertoASCHOME" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
+                                                        <label for="staticEmail" class="col-md-4 col-form-label">Notes</label>
+                                                        <div class="col-md-7">
+                                                            <textarea class="textarea" id="notes_TransfertoASCHOME" rows="5" style="width: 95% !important;"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
-                                                    <button class="btn btn-danger" onclick="window.history.back()">
+                                                    <button class="btn btn-primary" onclick="window.history.back()">
                                                         BACK
                                                     </button>
                                                     <button class="btn btn-danger" onclick="saveButton_TransfertoASCHOME()">
                                                         SAVE
                                                     </button>
-                                                    <button class="btn btn-danger" onclick="clearButton()">
+                                                    <button class="btn btn-primary" onclick="clearButton()">
                                                         CLEAR
                                                     </button>
                                                 </div>
@@ -673,10 +685,10 @@
                                             <br>
                                             <br>
                                             <div class="row">
-                                                <div class="col-md-6" style="min-width:50vw">
+                                                <div class="col-md-12">
                                                     <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Move out Date</label>
-                                                        <div class="col-md-5">
+                                                        <label for="staticEmail" class="col-md-2 col-form-label">Move out Date</label>
+                                                        <div class="col-md-3">
                                                             <input type="date" class="form-control" id="dateinputEndofLease">
                                                         </div>
                                                         <div class="col-md-2">
@@ -684,24 +696,25 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                               
                                                 <div class="col-md-12">
                                                     <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-1 col-form-label">Notes</label>
-                                                        <div class="col-md-11">
-                                                            <textarea class="textarea" id="notes_EndofLease" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
+                                                        <label for="staticEmail" class="col-md-2 col-form-label">Notes</label>
+                                                        <div class="col-md-4">
+                                                            <textarea class="textarea" id="notes_EndofLease" rows="5" style="width: 95% !important;"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
-                                                    <button class="btn btn-danger" onclick="window.history.back()">
+                                                    <button class="btn btn-primary" onclick="window.history.back()">
                                                         BACK
                                                     </button>
                                                     <button class="btn btn-danger" onclick="saveButton_Normal_Move_Out()">
                                                         SAVE
                                                     </button>
-                                                    <button class="btn btn-danger" onclick="clearButton()">
+                                                    <button class="btn btn-primary" onclick="clearButton()">
                                                         CLEAR
                                                     </button>
                                                 </div>
@@ -711,10 +724,10 @@
                                             <br>
                                             <br>
                                             <div class="row">
-                                                <div class="col-md-6" style="min-width:50vw">
+                                                <div class="col-md-12">
                                                     <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Move out Date</label>
-                                                        <div class="col-md-5">
+                                                        <label for="staticEmail" class="col-md-2 col-form-label">Move out Date</label>
+                                                        <div class="col-md-3">
                                                             <input type="date" class="form-control" id="dateinputPalliative">
                                                         </div>
                                                         <div class="col-md-2">
@@ -724,22 +737,22 @@
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-1 col-form-label">Notes</label>
-                                                        <div class="col-md-11">
-                                                            <textarea class="textarea" id="notes_Palliative" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
+                                                        <label for="staticEmail" class="col-md-2 col-form-label">Notes</label>
+                                                        <div class="col-md-4">
+                                                            <textarea class="textarea" id="notes_Palliative" rows="5" style="width: 95% !important;"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
-                                                    <button class="btn btn-danger" onclick="window.history.back()">
+                                                    <button class="btn btn-primary" onclick="window.history.back()">
                                                         BACK
                                                     </button>
                                                     <button class="btn btn-danger" onclick="saveButton_Normal_Move_Out()">
                                                         SAVE
                                                     </button>
-                                                    <button class="btn btn-danger" onclick="clearButton()">
+                                                    <button class="btn btn-primary" onclick="clearButton()">
                                                         CLEAR
                                                     </button>
                                                 </div>
@@ -750,10 +763,10 @@
                                             <br>
                                             <br>
                                             <div class="row">
-                                                <div class="col-md-6" style="min-width:50vw">
+                                                <div class="col-md-12">
                                                     <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Move Out Date</label>
-                                                        <div class="col-md-5">
+                                                        <label for="staticEmail" class="col-md-2 col-form-label">Move Out Date</label>
+                                                        <div class="col-md-3">
                                                             <input type="date" class="form-control" id="dateinputLTC">
                                                         </div>
                                                         <div class="col-md-2">
@@ -763,22 +776,22 @@
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-1 col-form-label">Notes</label>
-                                                        <div class="col-md-11">
-                                                            <textarea class="textarea" id="notes_LTC" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
+                                                        <label for="staticEmail" class="col-md-2 col-form-label">Notes</label>
+                                                        <div class="col-md-4">
+                                                            <textarea class="textarea" id="notes_LTC" rows="5" style="width: 95% !important;"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
-                                                    <button class="btn btn-danger" onclick="window.history.back()">
+                                                    <button class="btn btn-primary" onclick="window.history.back()">
                                                         BACK
                                                     </button>
                                                     <button class="btn btn-danger" onclick="saveButton_Normal_Move_Out()">
                                                         SAVE
                                                     </button>
-                                                    <button class="btn btn-danger" onclick="clearButton()">
+                                                    <button class="btn btn-primary" onclick="clearButton()">
                                                         CLEAR
                                                     </button>
                                                 </div>
@@ -788,10 +801,10 @@
                                             <br>
                                             <br>
                                             <div class="row">
-                                                <div class="col-md-6" style="min-width:50vw">
+                                                <div class="col-md-12">
                                                     <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Move Out Date</label>
-                                                        <div class="col-md-5">
+                                                        <label for="staticEmail" class="col-md-2 col-form-label">Move Out Date</label>
+                                                        <div class="col-md-3">
                                                             <input type="date" class="form-control" id="dateinputOtherRetirement">
                                                         </div>
                                                         <div class="col-md-2">
@@ -801,22 +814,22 @@
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-1 col-form-label">Notes</label>
-                                                        <div class="col-md-11">
-                                                            <textarea class="textarea" id="notes_OtherRetirement" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
+                                                        <label for="staticEmail" class="col-md-2 col-form-label">Notes</label>
+                                                        <div class="col-md-4">
+                                                            <textarea class="textarea" id="notes_OtherRetirement" rows="5" style="width: 95% !important;"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
-                                                    <button class="btn btn-danger" onclick="window.history.back()">
+                                                    <button class="btn btn-primary" onclick="window.history.back()">
                                                         BACK
                                                     </button>
                                                     <button class="btn btn-danger" onclick="saveButton_Normal_Move_Out()">
                                                         SAVE
                                                     </button>
-                                                    <button class="btn btn-danger" onclick="clearButton()">
+                                                    <button class="btn btn-primary" onclick="clearButton()">
                                                         CLEAR
                                                     </button>
                                                 </div>
@@ -826,10 +839,10 @@
                                             <br>
                                             <br>
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-12">
                                                     <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Pass Away Date</label>
-                                                        <div class="col-md-5">
+                                                        <label for="staticEmail" class="col-md-2 col-form-label">Pass Away Date</label>
+                                                        <div class="col-md-3">
                                                             <input type="date" class="form-control" id="passawaydatePassedAway">
                                                         </div>
                                                         <div class="col-md-2">
@@ -837,10 +850,10 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-12">
                                                     <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Move Out Date</label>
-                                                        <div class="col-md-5">
+                                                        <label for="staticEmail" class="col-md-2 col-form-label">Move Out Date</label>
+                                                        <div class="col-md-3">
                                                             <input type="date" class="form-control" id="dateinputPassedAway">
                                                         </div>
                                                         <div class="col-md-2">
@@ -850,22 +863,22 @@
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-1 col-form-label">Notes</label>
-                                                        <div class="col-md-11">
-                                                            <textarea class="textarea" id="notes_PassedAway" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
+                                                        <label for="staticEmail" class="col-md-2 col-form-label">Notes</label>
+                                                        <div class="col-md-4">
+                                                            <textarea class="textarea" id="notes_PassedAway" rows="5" style="width: 95% !important;"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
-                                                    <button class="btn btn-danger" onclick="window.history.back()">
+                                                    <button class="btn btn-primary" onclick="window.history.back()">
                                                         BACK
                                                     </button>
                                                     <button class="btn btn-danger" onclick="saveButton_Passed_Away()">
                                                         SAVE
                                                     </button>
-                                                    <button class="btn btn-danger" onclick="clearButton()">
+                                                    <button class="btn btn-primary" onclick="clearButton()">
                                                         CLEAR
                                                     </button>
                                                 </div>
@@ -875,10 +888,10 @@
                                             <br>
                                             <br>
                                             <div class="row">
-                                                <div class="col-md-6" style="min-width:50vw">
+                                                <div class="col-md-12">
                                                     <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-4 col-form-label">Move Out Date</label>
-                                                        <div class="col-md-5">
+                                                        <label for="staticEmail" class="col-md-2 col-form-label">Move Out Date</label>
+                                                        <div class="col-md-3">
                                                             <input type="date" class="form-control" id="dateinputOther">
                                                         </div>
                                                         <div class="col-md-2">
@@ -888,22 +901,22 @@
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-1 col-form-label">Notes</label>
-                                                        <div class="col-md-11">
-                                                            <textarea class="textarea" id="notes_Other" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
+                                                        <label for="staticEmail" class="col-md-2 col-form-label">Notes</label>
+                                                        <div class="col-md-4">
+                                                            <textarea class="textarea" id="notes_Other" rows="5" style="width: 95% !important;"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
-                                                    <button class="btn btn-danger" onclick="window.history.back()">
+                                                    <button class="btn btn-primary" onclick="window.history.back()">
                                                         BACK
                                                     </button>
                                                     <button class="btn btn-danger" onclick="saveButton_Normal_Move_Out()">
                                                         SAVE
                                                     </button>
-                                                    <button class="btn btn-danger" onclick="clearButton()">
+                                                    <button class="btn btn-primary" onclick="clearButton()">
                                                         CLEAR
                                                     </button>
                                                 </div>
@@ -912,8 +925,8 @@
                                         <div class="tab-pane fade" id="pills-Hospitalization" role="tabpanel" aria-labelledby="pills-contact-tab">
                                             <br>
                                             <br>
-                                            <div class="row">
-                                                <div class="col-md-6">
+                                            <div class="row" style="margin-left:2%;">
+                                                <div class="" style="width:49%;display:inline-block;">
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-md-4 col-form-label">Leaving Date</label>
                                                         <div class="col-md-5">
@@ -924,7 +937,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="" style="width:49%;display:inline-block;">
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-md-4 col-form-label">Expected Return Date</label>
                                                         <div class="col-md-5">
@@ -935,7 +948,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="" style="width:49%;display:inline-block;">
                                                     <div class="form-group row">
                                                         <label for="staticEmail" class="col-md-4 col-form-label">Actual Return Date</label>
                                                         <div class="col-md-5">
@@ -946,24 +959,24 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12">
+                                                <div class="" style="width:98%;display:inline-block;">
                                                     <div class="form-group row">
-                                                        <label for="staticEmail" class="col-md-1 col-form-label">Notes</label>
-                                                        <div class="col-md-11">
-                                                            <textarea class="textarea" id="notes_Hospitalization" rows="5" style="width: 95% !important; margin-left: 47px"></textarea>
+                                                        <label for="staticEmail" class="col-md-2 col-form-label">Notes</label>
+                                                        <div class="col-md-4">
+                                                            <textarea class="textarea" id="notes_Hospitalization" rows="5" style="width: 95% !important;"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 text-center">
-                                                    <button class="btn btn-danger" onclick="window.history.back()">
+                                                    <button class="btn btn-primary" onclick="window.history.back()">
                                                         BACK
                                                     </button>
                                                     <button class="btn btn-danger" onclick="saveButton_Hospitalization()">
                                                         SAVE
                                                     </button>
-                                                    <button class="btn btn-danger" onclick="clearButton()">
+                                                    <button class="btn btn-primary" onclick="clearButton()">
                                                         CLEAR
                                                     </button>
                                                 </div>
