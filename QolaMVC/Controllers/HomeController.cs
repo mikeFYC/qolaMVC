@@ -3207,7 +3207,11 @@ namespace QolaMVC.Controllers
                 int temp = HomeDAL.AddNewActivityEvent_C4(l_Model, home.Id, 0);
                 l_Model.ProgramId = temp;
                 l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
-                l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
+                if (l_Model.Venue.Trim() != "")
+                {
+                    l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
+                }
+                l_Model.Code = "";
                 l_Model.Special = 0;
                 EVENTS.Add(l_Model);
             }

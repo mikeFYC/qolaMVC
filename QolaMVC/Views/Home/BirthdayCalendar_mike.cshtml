@@ -255,6 +255,10 @@
         document.body.appendChild(el);
     }
 
+    String.prototype.splice = function (idx, rem, str) {
+        return this.slice(0, idx) + str + this.slice(idx + Math.abs(rem));
+    };
+
 </script>
 
 
@@ -415,7 +419,9 @@
         var whichcalendar = "#calendar";
         var calendarDate = "#lblCalendarMsg";
         
-        var b = new Date($(calendarDate).html());
+        var showdate = $(calendarDate).html()
+        var showdate = showdate.splice(showdate.length - 4, 0, "01 ");
+        var b = new Date(showdate);
         var firstThreeLetters = $(calendarDate).html().substring(0, 3).toLowerCase();
         var year = b.getFullYear().toString();
         var timeindex = b.getDay();
@@ -466,7 +472,9 @@
         var whichcalendar = "#calendar";
         var calendarDate = "#lblCalendarMsg";
         
-        var b = new Date($(calendarDate).html());
+        var showdate = $(calendarDate).html()
+        var showdate = showdate.splice(showdate.length - 4, 0, "01 ");
+        var b = new Date(showdate);
         var timeindex = b.getDay();
         var finalwidth = (parseInt($(whichcalendar + ' .fc-day').css("width").replace('px', '')) * timeindex).toString() + 'px';
         $(whichcalendar + ' #imgTop').width(finalwidth);
@@ -510,7 +518,9 @@
         var whichcalendar = "#calendar";
         var calendarDate = "#lblCalendarMsg";
         
-        var b = new Date($(calendarDate).html());
+        var showdate = $(calendarDate).html()
+        var showdate = showdate.splice(showdate.length - 4, 0, "01 ");
+        var b = new Date(showdate);
         var timeindex = b.getDay();
         var finalwidth = (parseInt($(whichcalendar + ' .fc-day').css("width").replace('px', '')) * timeindex).toString() + 'px';
         $(whichcalendar + ' #imgTop').width(finalwidth);

@@ -65,7 +65,7 @@
         #calendar1_name, #calendar2_name, #calendar3_name, #calendar4_name {
             margin-bottom: 0px !important;
             font-weight: bold;
-            font-size: 1.2em !important;
+            font-size: 1.2em;
         }
 
         .nav-pills li a{
@@ -162,7 +162,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="~/Content/calendar/plugins/jquery/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
     @*<script src="~/Content/calendar/js/calendar-plugin.js"></script>*@
 
@@ -274,9 +273,9 @@
                                     @{
                                         if (ViewBag.User.ID == 1338 || ViewBag.User.ID == 1346 || ViewBag.User.ID == 20 || ViewBag.User.ID == 1552)
                                         {
-                                            <li class="nav-item" style="width:25%;margin-left:8%;">
+                                            <li class="nav-item" style="width:25%;margin-left:5%;">
                                                 <label style="display:inline-block;font-size:1vw;font-weight:bold;">Category:</label>
-                                                <select class="nav-link" id="categorychoose" style="display:inline-block;" onchange="changeCategory2(this.value)">
+                                                <select class="nav-link" id="categorychoose" style="display:inline-block;width:65%;" onchange="changeCategory2(this.value)">
                                                     <option value="0">All</option>
                                                     @{
                                                         foreach (var Category in ViewBag.ActivityCategory)
@@ -393,7 +392,7 @@
                             </div>
                         </div>
 
-                        <div id="day_div" class="fromHTMLtestdiv" style="display:block;margin-top:11.5%;margin-left:-2%; z-index:0;position:absolute;width:104%;">
+                        <div id="day_div" class="fromHTMLtestdiv" style="display:block;margin-top:21vh;margin-left:-2.5%; z-index:0;position:absolute;width:105%;">
 
                             <div class="container-fluid container-fixed-lg" id="main_page">
                                 <div class="card">
@@ -467,7 +466,7 @@
 
                         </div>
 
-                        <div id="day_div2" class="fromHTMLtestdiv" style="display:none;margin-top:11.5%;margin-left:-2%; z-index:0;position:absolute;width:104%;">
+                        <div id="day_div2" class="fromHTMLtestdiv" style="display:none;margin-top:21vh;margin-left:-2.5%; z-index:0;position:absolute;width:105%;">
 
                             <div class="container-fluid container-fixed-lg" id="main_page">
                                 <div class="card">
@@ -540,7 +539,7 @@
 
                         </div>
 
-                        <div id="day_div3" class="fromHTMLtestdiv" style="display:none;margin-top:11.5%;margin-left:-2%; z-index:0;position:absolute;width:104%;">
+                        <div id="day_div3" class="fromHTMLtestdiv" style="display:none;margin-top:21vh;margin-left:-2.5%; z-index:0;position:absolute;width:105%;">
 
                             <div class="container-fluid container-fixed-lg" id="main_page">
                                 <div class="card">
@@ -613,7 +612,7 @@
 
                         </div>
 
-                        <div id="day_div4" class="fromHTMLtestdiv" style="display:none;margin-top:11.5%;margin-left:-2%; z-index:0;position:absolute;width:104%;">
+                        <div id="day_div4" class="fromHTMLtestdiv" style="display:none;margin-top:21vh;margin-left:-2.5%; z-index:0;position:absolute;width:105%;">
 
                             <div class="container-fluid container-fixed-lg" id="main_page">
                                 <div class="card">
@@ -1036,7 +1035,7 @@
 
                         <div class="modal fade" id="AddEvent" role="dialog" style="right:0">
                             <div class="modal-dialog" style="left:0;right:0;">
-                                <div class="modal-content" style="width:60vw;right:45%;">
+                                <div class="modal-content" style="width:60vw;right:15vw;">
 
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -1192,7 +1191,7 @@
 
                         <div class="modal fade" id="EditEvent" role="dialog" style="right:0">
                             <div class="modal-dialog" style="left:0;right:0;">
-                                <div class="modal-content" style="width:60vw;right:45%;">
+                                <div class="modal-content" style="width:60vw;right:15vw;">
 
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -1436,7 +1435,7 @@
 
                         <div class="modal fade" id="AddEvent_Hannan" role="dialog" style="right:0">
                             <div class="modal-dialog" style="left:0;right:0;">
-                                <div class="modal-content" style="width:60vw;right:45%;margin-top:-5%;">
+                                <div class="modal-content" style="width:60vw;right:15vw;margin-top:-5%;">
 
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -2794,11 +2793,18 @@
 
     }
 
+    String.prototype.splice = function (idx, rem, str) {
+        return this.slice(0, idx) + str + this.slice(idx + Math.abs(rem));
+    };
+
     function getStartEnddate(showdate) {
         var ggg = [];
         var DWM = $('#DWM').val();
         if (DWM == "month") {
+
+            var showdate = showdate.splice(showdate.length - 4, 0, "01 ");
             var newshowdate = new Date(showdate);
+
             var y = newshowdate.getFullYear();
             var m = newshowdate.getMonth();
             var firstDay = new Date(y, m, 1);
@@ -5620,8 +5626,11 @@
             calendarDate = "#lblCalendarMsg4";
         }
 
+        
 
-        var b = new Date($(calendarDate).html());
+        var showdate = $(calendarDate).html()
+        var showdate = showdate.splice(showdate.length - 4, 0, "01 ");
+        var b = new Date(showdate);
         var firstThreeLetters = $(calendarDate).html().substring(0, 3).toLowerCase();
         var year = b.getFullYear().toString();
         var timeindex = b.getDay();
@@ -5693,7 +5702,9 @@
                 whichcalendar = "#calendar4";
                 calendarDate = "#lblCalendarMsg4";
             }
-            var b = new Date($(calendarDate).html());
+            var showdate = $(calendarDate).html()
+            var showdate = showdate.splice(showdate.length - 4, 0, "01 ");
+            var b = new Date(showdate);
             var timeindex = b.getDay();
             var finalwidth = (parseInt($(whichcalendar + ' .fc-day').css("width").replace('px', '')) * timeindex).toString() + 'px';
             $(whichcalendar + ' #imgTop').width(finalwidth);
@@ -5754,7 +5765,9 @@
             whichcalendar = "#calendar4";
             calendarDate = "#lblCalendarMsg4";
         }
-        var b = new Date($(calendarDate).html());
+        var showdate = $(calendarDate).html()
+        var showdate = showdate.splice(showdate.length - 4, 0, "01 ");
+        var b = new Date(showdate);
         var timeindex = b.getDay();
         var finalwidth = (parseInt($(whichcalendar + ' .fc-day').css("width").replace('px', '')) * timeindex).toString() + 'px';
         $(whichcalendar + ' #imgTop').width(finalwidth);
