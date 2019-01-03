@@ -3211,7 +3211,11 @@ namespace QolaMVC.Controllers
                 {
                     l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
                 }
-                l_Model.Code = "";
+                else
+                {
+                    l_Model.Code = "";
+                }
+                
                 l_Model.Special = 0;
                 EVENTS.Add(l_Model);
             }
