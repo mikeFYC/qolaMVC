@@ -142,6 +142,15 @@ namespace QolaMVC.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Building.
+        /// </summary>
+        public static string AddBuilding {
+            get {
+                return ResourceManager.GetString("AddBuilding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add New.
         /// </summary>
         public static string AddNew {
@@ -219,6 +228,15 @@ namespace QolaMVC.Resources {
         public static string Back_small {
             get {
                 return ResourceManager.GetString("Back_small", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Breakfast.
+        /// </summary>
+        public static string Breakfast {
+            get {
+                return ResourceManager.GetString("Breakfast", resourceCulture);
             }
         }
         
@@ -394,6 +412,15 @@ namespace QolaMVC.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dinner.
+        /// </summary>
+        public static string Dinner {
+            get {
+                return ResourceManager.GetString("Dinner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string Edit {
@@ -417,6 +444,15 @@ namespace QolaMVC.Resources {
         public static string EditAllergy {
             get {
                 return ResourceManager.GetString("EditAllergy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Building.
+        /// </summary>
+        public static string EditBuilding {
+            get {
+                return ResourceManager.GetString("EditBuilding", resourceCulture);
             }
         }
         
@@ -511,6 +547,15 @@ namespace QolaMVC.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Home Image.
+        /// </summary>
+        public static string HomeImage {
+            get {
+                return ResourceManager.GetString("HomeImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Homes.
         /// </summary>
         public static string Homes {
@@ -543,6 +588,15 @@ namespace QolaMVC.Resources {
         public static string Logout {
             get {
                 return ResourceManager.GetString("Logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lunch.
+        /// </summary>
+        public static string Lunch {
+            get {
+                return ResourceManager.GetString("Lunch", resourceCulture);
             }
         }
         
@@ -646,6 +700,15 @@ namespace QolaMVC.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to # of Floor.
+        /// </summary>
+        public static string numberofFloor {
+            get {
+                return ResourceManager.GetString("numberofFloor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to # of Rooms.
         /// </summary>
         public static string numberofRooms {
@@ -687,6 +750,15 @@ namespace QolaMVC.Resources {
         public static string Password {
             get {
                 return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone.
+        /// </summary>
+        public static string Phone {
+            get {
+                return ResourceManager.GetString("Phone", resourceCulture);
             }
         }
         
