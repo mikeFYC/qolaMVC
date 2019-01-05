@@ -40,10 +40,10 @@
                 <div class="container-fluid container-fixed-lg">
                     <!-- <div class="inner"> -->
                     <div class="row align-items-center">
-                        <div class="col-md-9">
+                        <div style="width:74%;display:inline-block;">
                             <h3>Catheter Urine Output Log Report</h3>
                         </div>
-                        <div class="col-md-2">
+                        <div style="width:25%;display:inline-block;">
                             <button class="btn btn-primary" onclick="location.href='/Assessments/CUOL'"><i class="fa fa-backward"></i> BACK</button>
                             <button class="btn btn-danger" id="CUOL_PRINT" onclick="PRINTPDF()"><i class="fa fa-file-pdf-o"></i> PRINT</button>
                         </div>
@@ -163,6 +163,7 @@
                                         if (@Model.Where(c => c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).Count() >= 1)
                                         {
                                             var color = @Model.Where(c => c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().Color;
+                                            if (color.Substring(0, 1) != "#") color = "#" + color;
                                             var userName = @Model.Where(c => c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().userName;
                                             var userNameType = @Model.Where(c => c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().userNameType;
                                             <td class="align-middle colorBlack">@Model.Where(c => c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().TimeStamp.ToShortTimeString()</td>
