@@ -122,11 +122,11 @@
             <li class="p-r-10 inline">
                 <a href="#" class="header-icon pg pg-thumbs"></a>
             </li>
-            @*<li class="p-r-10 inline">
+            <li class="p-r-10 inline">
                 @{
                     if (Session["Language"] == null || Session["Language"].ToString() == "" || Session["Language"].ToString() == "en")
                     {
-                        <button class="btn btn-sm btn-primary" id="aLang" data-value="en">@Html.ActionLink("English", "ChangeLanguage", "Login", new { LanguageAbbrevation = "en" }, new { style = "color:white;" })</button>
+                        @*<button class="btn btn-sm btn-primary" id="aLang" data-value="en">@Html.ActionLink("English", "ChangeLanguage", "Login", new { LanguageAbbrevation = "en" }, new { style = "color:white;" })</button>*@
                         <button class="btn btn-sm btn-primary" id="aLang" data-value="fr" onclick="aLang_click(this)">French</button>
                     }
                     else if (Session["Language"].ToString() == "fr")
@@ -134,7 +134,7 @@
                         <button class="btn btn-sm btn-primary" id="aLang" data-value="en" onclick="aLang_click(this)">English</button>
                     }
                 }
-            </li>*@
+            </li>
 
         </ul>
 
@@ -150,7 +150,7 @@
             <ul class="navbar-nav mr-auto" style="display:inline-block">
                 <li class="nav-item">
                     <a class="nav-link" href="/Home/" style="display:inline-block;">
-                        <span style="display:inline-block;">Homes</span>
+                        <span style="display:inline-block;">@QolaMVC.Resources.Text.Homes</span>
                         <span class="icon-thumbnail" style="display:inline-block;"><i class="pg-home"></i></span>
                     </a>
 
@@ -160,7 +160,7 @@
                     {
                         <li class="nav-item">
                             <a href="/Home/Menu/?p_HomeId=@ViewBag.Home.Id" class="nav-link" style="display:inline-block;">
-                                <span style="display:inline-block;">Dashboard</span>
+                                <span style="display:inline-block;">@QolaMVC.Resources.Text.Dashboard</span>
                                 <span class="icon-thumbnail" style="display:inline-block;"><i class="fa fa-dashboard"></i></span>
                             </a>
                         </li>
@@ -172,7 +172,7 @@
                     {
                         <li class="nav-item">
                             <a href="/Home/ResidentMenu/?p_ResidentId=@ViewBag.Resident.ID" class="nav-link" style="display:inline-block;">
-                                <span style="display:inline-block;">Profile</span>
+                                <span style="display:inline-block;">@QolaMVC.Resources.Text.Profile</span>
                                 <span class="icon-thumbnail" style="display:inline-block;"><i class="fa fa-user"></i></span>
                             </a>
                         </li>
@@ -191,7 +191,7 @@
                     @*property inside <a>: data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"*@
 
                     <a class="nav-link" id="navbarDropdown" role="button" style="display:inline-block;" onclick="mike_dropdown()">
-                        <span style="display:inline-block;">Masters</span>
+                        <span style="display:inline-block;">@QolaMVC.Resources.Text.Masters</span>
                         <span class="icon-thumbnail" style="display:inline-block;"><i class="pg-grid"></i></span>
                     </a>
                     <div class="dropdown-menu" id="master_dropdown" aria-labelledby="navbarDropdown">
@@ -200,22 +200,22 @@
                             TempData.Keep("User");
                             if (tevar.UserType == 1)
                             {
-                                <a class="dropdown-item" href="~/Master/Buildings">Buildings</a>
-                                <a class="dropdown-item" href="~/Master/Users">Users</a>
-                                <a class="dropdown-item" href="~/Allergy/List">Allergy</a>
-                                <a class="dropdown-item" href="~/Master/ActivityCategory">Activity Category</a>
-                                <a class="dropdown-item" href="~/Master/Activity">Activity</a>
-                                <a class="dropdown-item" href="~/DineTime/List">Dine Time</a>
-                                <a class="dropdown-item" href="~/SpecialDiet/List">Special Diet</a>
-                                <a class="dropdown-item" href="~/Suite/List">Suite</a>
-                                <a class="dropdown-item" href="~/Venue/List">Venue</a>
+                                <a class="dropdown-item" href="~/Master/Buildings">@QolaMVC.Resources.Text.Buildings</a>
+                                <a class="dropdown-item" href="~/Master/Users">@QolaMVC.Resources.Text.Users</a>
+                                <a class="dropdown-item" href="~/Allergy/List">@QolaMVC.Resources.Text.Allergy</a>
+                                <a class="dropdown-item" href="~/Master/ActivityCategory">@QolaMVC.Resources.Text.ActivityCategory</a>
+                                <a class="dropdown-item" href="~/Master/Activity">@QolaMVC.Resources.Text.Activity</a>
+                                <a class="dropdown-item" href="~/DineTime/List">@QolaMVC.Resources.Text.DineTime</a>
+                                <a class="dropdown-item" href="~/SpecialDiet/List">@QolaMVC.Resources.Text.SpecialDiet</a>
+                                <a class="dropdown-item" href="~/Suite/List">@QolaMVC.Resources.Text.Suite</a>
+                                <a class="dropdown-item" href="~/Venue/List">@QolaMVC.Resources.Text.Venue</a>
                             }
                             else if (tevar.UserType == 3 || tevar.UserType == 21 || tevar.UserType == 2)
                             {
-                                <a class="dropdown-item" href="~/Master/Users">Users</a>
+                                <a class="dropdown-item" href="~/Master/Users">@QolaMVC.Resources.Text.Users</a>
                             }
                         }
-                        <a class="dropdown-item" href="~/Master/ChangePassword">Change Password</a>
+                                <a class="dropdown-item" href="~/Master/ChangePassword">@QolaMVC.Resources.Text.ChangePassword</a>
                         @*<a class="dropdown-item" href="#" data-toggle="modal" data-target="#supportModal">Support</a>*@
                     </div>
                 </li>
@@ -236,7 +236,7 @@
 
             <button class="profile-dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="pull-left p-r-10 fs-14 font-heading hidden-md-down" style="font-weight:bold !important;color:black !important;font-size:1vw !important;">
-                    Welcome
+                    @QolaMVC.Resources.Text.Welcome
                     @{
                         if (ViewBag.User != null)
                         {
@@ -252,11 +252,11 @@
             </button>
             <div class="dropdown-menu dropdown-menu-right profile-dropdown" role="menu">
                 @*<a href="#" class="dropdown-item"><i class="pg-settings_small"></i> Settings</a>*@
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#supportModal">Support</a>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#supportModal">@QolaMVC.Resources.Text.Support</a>
                 @*<a href="#" class="dropdown-item"><i class="pg-outdent"></i> Feedback</a>
                     <a href="#" class="dropdown-item"><i class="pg-signals"></i> Help</a>*@
                 <a href="~/Login" class="clearfix bg-master-lighter dropdown-item">
-                    <span class="pull-left">Logout</span>
+                    <span class="pull-left">@QolaMVC.Resources.Text.Logout</span>
                     <span class="pull-right"><i class="pg-power"></i></span>
                 </a>
             </div>
@@ -336,11 +336,11 @@
         var value = $(ee).data("value");
         $.ajax({
             type: "POST",
-            url: "Login/ChangeLanguage2",
+            url: "/Login/ChangeLanguage2",
             data: { LanguageAbbrevation: value },
             dataType: "html",
             success: function () {
-                var url = window.location.pathname;
+                var url = window.location.toString();
                 $(location).attr('href', url);
             },
             error: function () {
