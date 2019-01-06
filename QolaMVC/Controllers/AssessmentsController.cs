@@ -1212,6 +1212,52 @@ namespace QolaMVC.Controllers
             return View(single);
         }
 
+        public ActionResult HeadToToeAssessment2(string index)
+        {
+            var l_Home = (HomeModel)TempData["Home"];
+            var l_User = (UserModel)TempData["User"];
+            var l_Resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = l_User;
+            ViewBag.Home = l_Home;
+            ViewBag.Resident = l_Resident;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            var l_Assessments = AssessmentDAL.GetAdmissionHeadToToe(l_Resident.ID);
+
+
+
+
+            AdmissionHeadToToeModel single = new AdmissionHeadToToeModel();
+            List<DateTime> l_AssessmentDates = new List<DateTime>();
+            if (l_Assessments.Count == 0)
+            {
+                l_Assessments.Add(new AdmissionHeadToToeModel());
+            }
+            foreach (var l_Ass in l_Assessments)
+            {
+                l_AssessmentDates.Add(l_Ass.DateEntered);
+            }
+
+            if (index == null || index == "")
+            {
+                TempData["index"] = "0";
+                single = l_Assessments[0];
+            }
+            else
+            {
+                TempData["index"] = index;
+                single = l_Assessments[int.Parse(index)];
+            }
+            TempData.Keep("index");
+            ViewBag.AssessmentDates = l_AssessmentDates;
+
+            return View(single);
+        }
+
         [HttpPost]
         public ActionResult HeadToToeAssessment(FormCollection p_Form)
         {
@@ -1328,7 +1374,7 @@ namespace QolaMVC.Controllers
             AssessmentDAL.AddAdmissionHeadToToe(p_Model);
 
             var ind = TempData["index"];       
-            return RedirectToAction("HeadToToeAssessment", new { index = ind });
+            return RedirectToAction("HeadToToeAssessment2", new { index = ind });
         }
 
         public ActionResult HSEPTracking()
