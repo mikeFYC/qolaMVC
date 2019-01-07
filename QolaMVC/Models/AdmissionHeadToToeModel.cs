@@ -125,5 +125,7 @@ namespace QolaMVC.Models
         public bool edema_hands1_check1 { get; set; }
         public bool edema_hands1_check2 { get; set; }
         public bool edema_hands1_check3 { get; set; }
+
+        public string canvasImageDot { get; set; }
     }
 }

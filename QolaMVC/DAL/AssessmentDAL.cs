@@ -735,6 +735,7 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@EnteredBy", p_Model.EnteredBy.ID);
                 l_Cmd.Parameters.AddWithValue("@PulseStrength", p_Model.PulseStrength);
 
+
                 SqlParameter returnVal = l_Cmd.Parameters.Add("tempid", SqlDbType.Int);
                 returnVal.Direction = ParameterDirection.ReturnValue;
                 l_Cmd.ExecuteNonQuery();
@@ -802,6 +803,8 @@ namespace QolaMVC.DAL
                 l_Cmd2.Parameters.AddWithValue("@p_describe", p_Model.p_describe);
                 l_Cmd2.Parameters.AddWithValue("@p_other", p_Model.p_other);
                 l_Cmd2.Parameters.AddWithValue("@completed_by", p_Model.completed_by);
+
+                l_Cmd2.Parameters.AddWithValue("@canvasImageDot", p_Model.canvasImageDot);
                 l_Cmd2.ExecuteNonQuery();
 
             }
@@ -999,6 +1002,8 @@ namespace QolaMVC.DAL
                         l_AdmissionHeadToToe.p_other = Convert.ToString(dataReceive.Tables[0].Rows[index]["p_other"]);
                         l_AdmissionHeadToToe.completed_by = Convert.ToString(dataReceive.Tables[0].Rows[index]["completed_by"]);
 
+                        l_AdmissionHeadToToe.canvasImageDot = Convert.ToString(dataReceive.Tables[0].Rows[index]["canvasImageDot"]);
+
 
 
                         l_AdmissionHeadToToe.c_c_check1 = Convert.ToBoolean(l_AdmissionHeadToToe.c_c.Split(',')[0]);
@@ -1012,6 +1017,8 @@ namespace QolaMVC.DAL
                         l_AdmissionHeadToToe.edema_hands1_check1 = Convert.ToBoolean(l_AdmissionHeadToToe.edema_hands1.Split(',')[0]);
                         l_AdmissionHeadToToe.edema_hands1_check2 = Convert.ToBoolean(l_AdmissionHeadToToe.edema_hands1.Split(',')[1]);
                         l_AdmissionHeadToToe.edema_hands1_check3 = Convert.ToBoolean(l_AdmissionHeadToToe.edema_hands1.Split(',')[2]);
+
+
 
                         l_AdmissionHeadToToes.Add(l_AdmissionHeadToToe);
                     }
