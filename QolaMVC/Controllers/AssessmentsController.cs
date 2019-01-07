@@ -16,6 +16,7 @@ using System.Web.Script;
 using System.Web.Script.Serialization;
 using System.Reflection;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace QolaMVC.Controllers
 {
@@ -1256,6 +1257,20 @@ namespace QolaMVC.Controllers
             ViewBag.AssessmentDates = l_AssessmentDates;
 
             return View(single);
+        }
+
+        [HttpPost]
+        public void SaveCanvasImage()
+        {
+            int len = (int)Request.InputStream.Length;
+            byte[] buffer = new byte[len];
+            int c = Request.InputStream.Read(buffer, 0, len);
+            string png64 = Encoding.UTF8.GetString(buffer, 0, len);
+            byte[] png = Convert.FromBase64String(png64);
+            System.IO.File.WriteAllBytes("C:\\Users\\Mike.Feng\\Documents\\a.png", png);
+            //string pngz = Encoding.UTF8.GetString(png, 0, png.Length);
+            //code.....
+            
         }
 
         [HttpPost]
