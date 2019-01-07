@@ -589,7 +589,18 @@
             getoptionString();
         }
         else {
-            $('#checkboxes label:not(:first)').show();
+            var homesplit = $('#userhome').val().split(',');
+            if (homesplit[0] != "0") {
+                $('#checkboxes label').hide();
+                for (var li = 0; li < homesplit.length; li++) {
+                    if (homesplit[li].trim() != "") {
+                        $('#checkboxes label[for="' + homesplit[li].trim() + '"]').show();
+                    }
+                }
+            }
+            else {
+                $('#checkboxes label:not(:first)').show();
+            }
             $('#checkboxes label input:first').prop('checked', false);
             getoptionString();
         }
