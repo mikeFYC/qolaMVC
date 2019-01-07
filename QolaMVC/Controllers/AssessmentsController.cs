@@ -1259,19 +1259,6 @@ namespace QolaMVC.Controllers
             return View(single);
         }
 
-        [HttpPost]
-        public void SaveCanvasImage()
-        {
-            int len = (int)Request.InputStream.Length;
-            byte[] buffer = new byte[len];
-            int c = Request.InputStream.Read(buffer, 0, len);
-            string png64 = Encoding.UTF8.GetString(buffer, 0, len);
-            byte[] png = Convert.FromBase64String(png64);
-            System.IO.File.WriteAllBytes("C:\\Users\\Mike.Feng\\Documents\\a.png", png);
-            //string pngz = Encoding.UTF8.GetString(png, 0, png.Length);
-            //code.....
-            
-        }
 
         [HttpPost]
         public ActionResult HeadToToeAssessment(FormCollection p_Form)
