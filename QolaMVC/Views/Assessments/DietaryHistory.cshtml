@@ -62,21 +62,29 @@
                                 <label for="" class="col-form-label"><b>Assessment History:</b></label>     
                             </div>
                             <div class="col-2">
-                                <select class="form-control col-12" name="AssessmentDate" id="selectdate" onchange="formsubmit(this)">
+                                @if (TempData["ack"].ToString() != "true")
+                                {
+                                    <select class="form-control col-12" name="AssessmentDate" id="selectdate" onchange="formsubmit(this)">
 
-                                    @if (ViewBag.AssessmentDates != null && ViewBag.AssessmentDates[0].ToShortDateString() != "1/1/0001")
-                                    {
-                                        for (var ind = 0; ind < ((List<DateTime>)ViewBag.AssessmentDates).Count(); ind++)
+                                        @if (ViewBag.AssessmentDates != null && ViewBag.AssessmentDates[0].ToShortDateString() != "1/1/0001")
                                         {
-                                            <option value=@ind>@(((List<DateTime>)ViewBag.AssessmentDates)[ind].ToString("yyyy-MM-dd"))</option>
+                                            for (var ind = 0; ind < ((List<DateTime>)ViewBag.AssessmentDates).Count(); ind++)
+                                            {
+                                                <option value=@ind>@(((List<DateTime>)ViewBag.AssessmentDates)[ind].ToString("yyyy-MM-dd"))</option>
+                                            }
                                         }
-                                    }
-                                    else
-                                    {
-                                        <option value="0"></option>
-                                    }
+                                        else
+                                        {
+                                            <option value="0"></option>
+                                        }
 
-                                </select>
+                                    </select>
+                                }
+                                else
+                                {
+                                    <label class="col-form-label">@TempData["actDate"].ToString()</label>
+                                }
+
                                 <input type="hidden" id="ID_ID" name="Id" value="" />
                             </div>
                         </div>

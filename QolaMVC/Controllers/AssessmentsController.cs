@@ -111,7 +111,7 @@ namespace QolaMVC.Controllers
             return Redirect(p_ReturnUrl);
         }
 
-        public ActionResult DietaryHistory(string index, string ack= "")
+        public ActionResult DietaryHistory(string index, string ack= "",int daID = 0)
         {
             TempData["ack"] = ack;
 
@@ -146,16 +146,37 @@ namespace QolaMVC.Controllers
             ViewBag.AssessmentDates = l_AssessmentDates;
 
             nDietaryAssessmentModel single = new nDietaryAssessmentModel();
-            if (index == null || index == "")
+
+            if (ack == "true")
             {
-                TempData["index"] = "0";
-                single = l_DietaryAssessment[0];
+                foreach (var assessment in l_DietaryAssessment)
+                {
+                    if (assessment.Id == daID)
+                    {
+                        single = assessment;
+                        TempData["actDate"] = single.DateEntered.ToString("yyyy-MM-dd");
+                    }
+                }
             }
             else
             {
-                TempData["index"] = index;
-                single = l_DietaryAssessment[int.Parse(index)];
+                if (index == null || index == "")
+                {
+                    TempData["index"] = "0";
+                    single = l_DietaryAssessment[0];
+                }
+                else
+                {
+                    TempData["index"] = index;
+                    single = l_DietaryAssessment[int.Parse(index)];
+                }
+                TempData["actDate"] = "";
             }
+            
+
+           
+
+
             TempData.Keep("index");
             ViewBag.AssessmentDates = l_AssessmentDates;
             //return View(l_DietaryAssessment.LastOrDefault());
@@ -196,7 +217,29 @@ namespace QolaMVC.Controllers
 
             
 
-            return RedirectToAction("DietaryHistory",new { ack="true"});
+            return RedirectToAction("DietaryHistory");
+        }
+
+        public ActionResult DietaryHistory3(int p_ResidentId, int da)
+        {
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
+            var resident = ResidentsDAL.GetResidentById(p_ResidentId);
+            var progressNotes = ProgressNotesDAL.GetProgressNotesCollections(resident.ID, DateTime.Now, DateTime.Now, "A");
+            ViewBag.Message = TempData["Message"];
+            TempData["Resident"] = resident;
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            ViewBag.User = user;
+            ViewBag.Home = home;
+            ViewBag.Resident = resident;
+            ViewBag.ProgressNotes = progressNotes;
+            ProgressNotesHelper.RegisterSession(resident);
+
+
+
+            return RedirectToAction("DietaryHistory", new { ack = "true", daID= da });
         }
 
 
