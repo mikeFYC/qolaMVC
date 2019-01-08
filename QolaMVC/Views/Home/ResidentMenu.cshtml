@@ -207,7 +207,11 @@
                                         <button id="rotatebutton" class="btn btn-default btn-group-sm" style="margin-left:10%;"><i class="fa fa-rotate-right"></i></button>
                                         <button id="rotatebutton2" class="btn btn-default btn-group-sm"><i class="fa fa-rotate-left"></i></button>
                                         <input id="edit_photo" type="file" style="display:none;" onchange="EDIT_PHOTO()" />
-                                        <button class="btn btn-sm" id="upfile1" style="cursor:pointer;margin-left:10%;z-index:100;">EDIT PIC</button>
+                                        @if (ViewBag.User.UserType != 10)
+                                        {
+                                            <button class="btn btn-sm" id="upfile1" style="cursor:pointer;margin-left:10%;z-index:100;">EDIT PIC</button>
+                                        }
+
                                     </div>
                                     <div class="" style="width:66% !important;">
                                         <br>
@@ -253,7 +257,7 @@
                                     @*<a href="/Reports/" style="padding: 5px;" class="btn btn-primary">Assessment Forms (Left here for demo only)</a>*@
 
                                 </div>
-                                @if (ViewBag.User.UserType != 8 && ViewBag.User.UserType != 22 && ViewBag.User.UserType != 19)
+                                @if (ViewBag.User.UserType != 8 && ViewBag.User.UserType != 22 && ViewBag.User.UserType != 19 && ViewBag.User.UserType != 10)
                                 {
                                     <div class="Row" style="padding: 5px;">
                                         <a href="#" style="padding: 5px;" class="btn btn-primary" onclick="form_click(this)">Forms</a>
@@ -463,11 +467,15 @@
                                                 <a class="nav-link" id="pills-care-tab" data-toggle="pill" href="#pills-care" role="tab" aria-controls="pills-care" aria-selected="false" onclick="tab_click(this)"><b>Plan of Care</b></a>
                                             </li>
                                             @*<li class="nav-item">
-                                            <a class="nav-link" id="pills-goals-tab" data-toggle="pill" href="#pills-goals" role="tab" aria-controls="pills-goals" aria-selected="false"><b>Resident Specific Goals</b></a>
-                                        </li>*@
-                                            <li class="nav-item">
-                                                <a class="nav-link" id="pills-notes-tab" data-toggle="pill" href="#pills-notes" role="tab" aria-controls="pills-notes" aria-selected="false" onclick="tab_click(this)"><b>Progress Notes</b></a>
-                                            </li>
+            <a class="nav-link" id="pills-goals-tab" data-toggle="pill" href="#pills-goals" role="tab" aria-controls="pills-goals" aria-selected="false"><b>Resident Specific Goals</b></a>
+        </li>*@
+                                            @if (ViewBag.User.UserType != 10)
+                                            {
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="pills-notes-tab" data-toggle="pill" href="#pills-notes" role="tab" aria-controls="pills-notes" aria-selected="false" onclick="tab_click(this)"><b>Progress Notes</b></a>
+                                                </li>
+                                            }
+
                                             <li class="nav-item" style="display:none;">
                                                 <a class="nav-link" id="pills-story-tab" data-toggle="pill" href="#pills-story" role="tab" aria-controls="pills-story" aria-selected="false" onclick="tab_click(this)"><b>Life Story Summary</b></a>
                                             </li>
@@ -488,10 +496,14 @@
                                                                     <div class="text-center" style="float:left;width:90%;">
                                                                         <span class="text-center" style="display:inline-block;">Resident Details</span>
                                                                     </div>
-                                                                    <div style="display:inline-block;float:right;">
-                                                                        <button class="btn btn-light text-black" id="table1_EDIT" onclick="table1_EDIT()" style="border-radius:0.3vw;">EDIT</button>
-                                                                        <button class="btn btn-danger text-white" id="table1_SAVE" onclick="table1_SAVE()" style="display:none;border-radius:0.3vw;">SAVE</button>
-                                                                    </div>
+                                                                    @if (ViewBag.User.UserType != 10)
+                                                                    {
+                                                                        <div style="display:inline-block;float:right;">
+                                                                            <button class="btn btn-light text-black" id="table1_EDIT" onclick="table1_EDIT()" style="border-radius:0.3vw;">EDIT</button>
+                                                                            <button class="btn btn-danger text-white" id="table1_SAVE" onclick="table1_SAVE()" style="display:none;border-radius:0.3vw;">SAVE</button>
+                                                                        </div>
+                                                                    }
+
                                                                 </div>
 
                                                             </th>
@@ -668,10 +680,14 @@
                                                                     <div class="text-center" style="float:left;width:90%;">
                                                                         <span class="text-center" style="display:inline-block;">Emergency Contact Details</span>
                                                                     </div>
-                                                                    <div style="display:inline-block;float:right;">
-                                                                        <button class="btn btn-light text-black" id="table2_EDIT" onclick="table2_EDIT()" style="border-radius:0.3vw;">EDIT</button>
-                                                                        <button class="btn btn-danger text-white" id="table2_SAVE" onclick="table2_SAVE()" style="display:none;border-radius:0.3vw;">SAVE</button>
-                                                                    </div>
+                                                                    @if (ViewBag.User.UserType != 10)
+                                                                    {
+                                                                        <div style="display:inline-block;float:right;">
+                                                                            <button class="btn btn-light text-black" id="table2_EDIT" onclick="table2_EDIT()" style="border-radius:0.3vw;">EDIT</button>
+                                                                            <button class="btn btn-danger text-white" id="table2_SAVE" onclick="table2_SAVE()" style="display:none;border-radius:0.3vw;">SAVE</button>
+                                                                        </div>
+                                                                    }
+
                                                                 </div>
                                                             </th>
 
@@ -754,10 +770,14 @@
                                                                     <div class="text-center" style="float:left;width:90%;">
                                                                         <span class="text-center" style="display:inline-block;">Medical Contact Details</span>
                                                                     </div>
-                                                                    <div style="display:inline-block;float:right;">
-                                                                        <button class="btn btn-light text-black" id="table3_EDIT" onclick="table3_EDIT()" style="border-radius:0.3vw;">EDIT</button>
-                                                                        <button class="btn btn-danger text-white" id="table3_SAVE" onclick="table3_SAVE()" style="display:none;border-radius:0.3vw;">SAVE</button>
-                                                                    </div>
+                                                                    @if (ViewBag.User.UserType != 10)
+                                                                    {
+                                                                        <div style="display:inline-block;float:right;">
+                                                                            <button class="btn btn-light text-black" id="table3_EDIT" onclick="table3_EDIT()" style="border-radius:0.3vw;">EDIT</button>
+                                                                            <button class="btn btn-danger text-white" id="table3_SAVE" onclick="table3_SAVE()" style="display:none;border-radius:0.3vw;">SAVE</button>
+                                                                        </div>
+                                                                    }
+
                                                                 </div>
                                                             </th>
                                                         </tr>
