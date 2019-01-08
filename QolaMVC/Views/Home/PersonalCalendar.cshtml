@@ -211,6 +211,8 @@
                         </div>
 
                         <input type="hidden" id="residentid" value="@ViewBag.resident.ID" />
+                        <input type="hidden" id="archive" value="@TempData["archive"]" />
+                        <input type="hidden" id="pass" value="@TempData["pass"]" />
 
                     </div>
 
@@ -310,7 +312,15 @@
 
     function backfunction() {
         var id = $('#residentid').val();
-        window.location.href = "/Home/ResidentMenu/?p_ResidentId=" + id;
+        var archive = $('#archive').val()
+        var pass = $('#pass').val()
+        if (archive != "YES") {
+            window.location.href = "/Home/ResidentMenu/?p_ResidentId=" + id;
+        }
+        else {
+            window.location.href = "/Home/ResidentMenu3/?p_ResidentId=" + id + "&pass=" + pass;
+        }
+        
     }
 
     String.prototype.splice = function (idx, rem, str) {

@@ -23,6 +23,8 @@ namespace QolaMVC.Controllers
         [HttpGet]
         public ActionResult Search(string term)
         {
+            TempData["archive"] = "NO";
+            TempData.Keep("archive");
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
             var resident = (ResidentModel)TempData["Resident"];

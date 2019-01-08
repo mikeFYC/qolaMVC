@@ -36,8 +36,15 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
+            if(TempData["archive"] != null && TempData["archive"].ToString() == "YES")
+            {
+                TempData["archive"] = "YES";
+            }
+            else
+            {
+                TempData["archive"] = "NO";
+            }
 
-            TempData["archive"] = "NO";
 
             return View();
         }

@@ -170,57 +170,66 @@
                 @{
                     if (ViewBag.Resident != null)
                     {
-                        <li class="nav-item">
-                            <a href="/Home/ResidentMenu/?p_ResidentId=@ViewBag.Resident.ID" class="nav-link" style="display:inline-block;">
-                                <span style="display:inline-block;">@QolaMVC.Resources.Text.Profile</span>
-                                <span class="icon-thumbnail" style="display:inline-block;"><i class="fa fa-user"></i></span>
-                            </a>
-                        </li>
+                        if (TempData["archive"] != null && TempData["archive"].ToString() == "YES")
+                        {
+                            TempData.Keep("archive");
+                            TempData.Keep("pass");
+                        }
+                        else
+                        {
+                                <li class="nav-item">
+                                    <a href="/Home/ResidentMenu/?p_ResidentId=@ViewBag.Resident.ID" class="nav-link" style="display:inline-block;">
+                                        <span style="display:inline-block;">@QolaMVC.Resources.Text.Profile</span>
+                                        <span class="icon-thumbnail" style="display:inline-block;"><i class="fa fa-user"></i></span>
+                                    </a>
+                                </li>
+                            }
+                            
+                        }
                     }
-                }
 
-                @*<li class="">
+                            @*<li class="">
                         <a href="#">
                             <span class="title">Todo List</span>
                         </a>
                         <span class="icon-thumbnail "><i class="pg-social"></i></span>
                     </li>*@
 
-                <li class="nav-item dropdown" id="dropdown_li">
+                            <li class="nav-item dropdown" id="dropdown_li">
 
-                    @*property inside <a>: data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"*@
+                                @*property inside <a>: data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"*@
 
-                    <a class="nav-link" id="navbarDropdown" role="button" style="display:inline-block;" onclick="mike_dropdown()">
-                        <span style="display:inline-block;">@QolaMVC.Resources.Text.Masters</span>
-                        <span class="icon-thumbnail" style="display:inline-block;"><i class="pg-grid"></i></span>
-                    </a>
-                    <div class="dropdown-menu" id="master_dropdown" aria-labelledby="navbarDropdown">
-                        @{
-                            var tevar = TempData["User"] as UserModel;
-                            TempData.Keep("User");
-                            if (tevar.UserType == 1)
-                            {
-                                <a class="dropdown-item" href="~/Master/Buildings">@QolaMVC.Resources.Text.Buildings</a>
-                                <a class="dropdown-item" href="~/Master/Users">@QolaMVC.Resources.Text.Users</a>
-                                <a class="dropdown-item" href="~/Allergy/List">@QolaMVC.Resources.Text.Allergy</a>
-                                <a class="dropdown-item" href="~/Master/ActivityCategory">@QolaMVC.Resources.Text.ActivityCategory</a>
-                                <a class="dropdown-item" href="~/Master/Activity">@QolaMVC.Resources.Text.Activity</a>
-                                <a class="dropdown-item" href="~/DineTime/List">@QolaMVC.Resources.Text.DineTime</a>
-                                <a class="dropdown-item" href="~/SpecialDiet/List">@QolaMVC.Resources.Text.SpecialDiet</a>
-                                <a class="dropdown-item" href="~/Suite/List">@QolaMVC.Resources.Text.Suite</a>
-                                <a class="dropdown-item" href="~/Venue/List">@QolaMVC.Resources.Text.Venue</a>
-                            }
-                            else if (tevar.UserType == 3 || tevar.UserType == 21 || tevar.UserType == 2)
-                            {
-                                <a class="dropdown-item" href="~/Master/Users">@QolaMVC.Resources.Text.Users</a>
-                            }
-                        }
-                                <a class="dropdown-item" href="~/Master/ChangePassword">@QolaMVC.Resources.Text.ChangePassword</a>
-                        @*<a class="dropdown-item" href="#" data-toggle="modal" data-target="#supportModal">Support</a>*@
-                    </div>
-                </li>
+                                <a class="nav-link" id="navbarDropdown" role="button" style="display:inline-block;" onclick="mike_dropdown()">
+                                    <span style="display:inline-block;">@QolaMVC.Resources.Text.Masters</span>
+                                    <span class="icon-thumbnail" style="display:inline-block;"><i class="pg-grid"></i></span>
+                                </a>
+                                <div class="dropdown-menu" id="master_dropdown" aria-labelledby="navbarDropdown">
+                                    @{
+                                        var tevar = TempData["User"] as UserModel;
+                                        TempData.Keep("User");
+                                        if (tevar.UserType == 1)
+                                        {
+                                            <a class="dropdown-item" href="~/Master/Buildings">@QolaMVC.Resources.Text.Buildings</a>
+                                            <a class="dropdown-item" href="~/Master/Users">@QolaMVC.Resources.Text.Users</a>
+                                            <a class="dropdown-item" href="~/Allergy/List">@QolaMVC.Resources.Text.Allergy</a>
+                                            <a class="dropdown-item" href="~/Master/ActivityCategory">@QolaMVC.Resources.Text.ActivityCategory</a>
+                                            <a class="dropdown-item" href="~/Master/Activity">@QolaMVC.Resources.Text.Activity</a>
+                                            <a class="dropdown-item" href="~/DineTime/List">@QolaMVC.Resources.Text.DineTime</a>
+                                            <a class="dropdown-item" href="~/SpecialDiet/List">@QolaMVC.Resources.Text.SpecialDiet</a>
+                                            <a class="dropdown-item" href="~/Suite/List">@QolaMVC.Resources.Text.Suite</a>
+                                            <a class="dropdown-item" href="~/Venue/List">@QolaMVC.Resources.Text.Venue</a>
+                                        }
+                                        else if (tevar.UserType == 3 || tevar.UserType == 21 || tevar.UserType == 2)
+                                        {
+                                            <a class="dropdown-item" href="~/Master/Users">@QolaMVC.Resources.Text.Users</a>
+                                        }
+                                    }
+                                    <a class="dropdown-item" href="~/Master/ChangePassword">@QolaMVC.Resources.Text.ChangePassword</a>
+                                    @*<a class="dropdown-item" href="#" data-toggle="modal" data-target="#supportModal">Support</a>*@
+                                </div>
+                            </li>
 
-            </ul>
+                        </ul>
 
             <div class="clearfix"></div>
         </div>

@@ -165,7 +165,7 @@
             <br>
             <input type="hidden" value="QOLAFIED" name="" class="filename">
             <!-- START CONTAINER FLUID -->
-            <div class="container-fluid container-fixed-lg" >
+            <div class="container-fluid container-fixed-lg">
                 <!-- BEGIN PlACE PAGE CONTENT HERE -->
                 <div class="card">
                     <div class="card-block" id="fromHTMLtestdiv">
@@ -1858,7 +1858,9 @@
 
                     </div>
                 </div>
-                <input type="hidden" id="residentid" value="@ViewBag.resident.ID"/>
+                <input type="hidden" id="residentid" value="@ViewBag.resident.ID" />
+                <input type="hidden" id="archive" value="@TempData["archive"]" />
+                <input type="hidden" id="pass" value="@TempData["pass"]" />
                 <!-- END PLACE PAGE CONTENT HERE -->
             </div>
             <!-- END CONTAINER FLUID -->
@@ -1870,7 +1872,14 @@
         <script>
             function backfunction() {
                 var id = $('#residentid').val();
-                window.location.href = "/Home/ResidentMenu/?p_ResidentId=" + id;
+                var archive = $('#archive').val()
+                var pass = $('#pass').val()
+                if (archive != "YES") {
+                    window.location.href = "/Home/ResidentMenu/?p_ResidentId=" + id;
+                }
+                else {
+                    window.location.href = "/Home/ResidentMenu3/?p_ResidentId=" + id + "&pass=" + pass;
+                }
             }
 
             function QOLAFIED_PRINT() {
