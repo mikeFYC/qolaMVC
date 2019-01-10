@@ -11,6 +11,9 @@
         padding:10px !important;
         font-size:1em !important;
     }
+    .darkblueul .nav-link.active {
+        background-color: #015093 !important;
+    }
 
 </style>
 
@@ -46,7 +49,7 @@
                     <div class="card-block">
 
                         <div class="form-tabs mt-4">
-                            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                            <ul class="nav nav-pills mb-3 darkblueul" id="pills-tab" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="pills-active-tab" data-toggle="pill" href="#pills-active" role="tab" aria-controls="pills-active" aria-selected="true">@QolaMVC.Resources.Text.ActiviteUser</a>
                                 </li>
@@ -79,10 +82,10 @@
                                                 <button type="button" class="btn btn-danger" onclick="search_func()">@QolaMVC.Resources.Text.Search</button>
                                             </form>
                                         </div>
-                                        <div class="py-4"><label class="form-check-label" style="font-weight:bold;color:black;font-size:1.2vw;margin-top:10%;">@QolaMVC.Resources.Text.Page: </label></div>
-                                        <div class="col-md-2 py-4 text-right">
-                                            
-                                            <select class="form-control" id="selectpage" onchange="formsubmit(this)">
+                                        @*<div class="py-4"><label class="form-check-label" style="font-weight:bold;color:black;font-size:1.2vw;margin-top:10%;">@QolaMVC.Resources.Text.Page: </label></div>*@
+                                        <div class="col-md-3 py-4 text-right">
+
+                                            @*<select class="form-control" id="selectpage" onchange="formsubmit(this)">
                                                 <option value="1">1</option>
                                                 @{
                                                     for (int gg = 2; gg <= Math.Ceiling(Decimal.Parse((Model.Count() / 50.0).ToString())); gg++)
@@ -91,7 +94,12 @@
                                                     }
                                                 }
 
-                                            </select>
+                                            </select>*@
+
+                                            <button class="btn btn-default btn-sm" onclick="formsubmit2_prev()">Prev</button>
+                                            <label id="pageID" class="form-check-label" style="font-weight:bold;color:black;font-size:1.2vw;padding-left:0.4rem !important;" value="@TempData["start"]"><span id="currentpage">@TempData["start"]</span>/@Math.Ceiling(Decimal.Parse((Model.Count() / 50.0).ToString()))  </label>
+                                            <button class="btn btn-default btn-sm" onclick="formsubmit2_next()">Next</button>
+
                                         </div>
                                         <div class="col-md-3 py-4 text-right">
                                             <a class="btn btn-lg btn-primary" href="~/Master/AddUser">@QolaMVC.Resources.Text.AddNew</a>
@@ -112,7 +120,7 @@
                                                 <th class="text-white">@QolaMVC.Resources.Text.Delete_small</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="tbodyUser">
                                             @{
                                                 var start = int.Parse(TempData["start"].ToString());
                                                 for (var ind = (start-1)*50; ind < (start)*50; ind++)
@@ -128,7 +136,7 @@
                                                             <td class="align-middle">@Model[ind].Mobile</td>
                                                             <td class="align-middle">@Model[ind].Email</td>
                                                             <td class="align-middle">
-                                                                <button class="btn btn-default btn-xs" onclick="location.href='@Url.Action("EditUser", "Master",new { userid = Model[ind].ID  })'">
+                                                                <button class="btn btn-default btn-xs" onclick="edituser(@Model[ind].ID)">
                                                                     <i class="fa fa-pencil"></i>
                                                                 </button>
                                                             </td>
@@ -199,7 +207,7 @@
                                                         <td></td>
                                                         <td></td>
                                                         <td class="align-middle">
-                                                            <button class="btn btn-default btn-xs" onclick="location.href='@Url.Action("EditUser", "Master",new { userid = l_User.ID  })'">
+                                                            <button class="btn btn-default btn-xs" onclick="edituser(@l_User.ID)">
                                                                 <i class="fa fa-pencil"></i>
                                                             </button>
                                                         </td>
@@ -214,6 +222,7 @@
                                         </tbody>
                                     </table>
                                     <input type="hidden" id="startID" value="@TempData["start"]" />
+                                    <input type="hidden" id="totalPage" value="@Math.Ceiling(Decimal.Parse((Model.Count() / 50.0).ToString()))"/>
 
                                 </div>
                             </div>
@@ -239,7 +248,7 @@
         @RenderPage("~/Views/Shared/_Footer.cshtml")
 
 
-<script>
+        <script>
 
     $('#selectpage').val($('#startID').val());
 
@@ -258,11 +267,15 @@
         $.get("/Master/DeleteUser/", { userid: id }, function (data) {
             if (data == 1) {
                 tempAlert("User Delete", 2000);
-                setTimeout(function () { location.reload(); }, 2000);
+                setTimeout(function () {
+                    window.location.href = '/Master/Users?index=' + $('#pageID').attr('value');
+                }, 2000);
             }
             else if (data == 2) {
                 tempAlert("User Inactive", 2000);
-                setTimeout(function () { location.reload(); }, 2000);
+                setTimeout(function () {
+                    window.location.href = '/Master/Users?index=' + $('#pageID').attr('value');
+                }, 2000);
             }
             else {
                 tempAlert("User Delete Failed", 2000);
@@ -272,7 +285,6 @@
 
     }
 
-
     function formsubmit(ee) {
         var index = $('#selectpage').val();
         if (window.location.href.includes("?")) {
@@ -281,6 +293,75 @@
         }
         else {
             window.location.href = window.location.href + "?index=" + index;
+        }
+
+    }
+
+    function formsubmit2_prev() {
+        var index = parseInt($('#pageID').attr('value'))-1;
+        if (index >= 1) {
+            $.get("/Master/GetUserList", { index: index }, function (data) {
+                $('#currentpage').html(index.toString());
+                $('#pageID').attr('value', index.toString());
+                $('#tbodyUser').empty();
+                for (var i = 0; i < data.length; i++) {
+                    $('#tbodyUser').append( '<tr>'+
+                                            '<td class="align-middle">' + data[i][1].Value+'</td>'+
+                                            '<td class="align-middle">' + data[i][2].Value+'</td>'+
+                                            '<td class="align-middle">' + data[i][3].Value+'</td>'+
+                                            '<td class="align-middle">' + data[i][4].Value+'</td>'+
+                                            '<td class="align-middle">' + data[i][5].Value+'</td>'+
+                                            '<td></td>'+
+                                            '<td></td>'+
+                                            '<td class="align-middle">'+
+                                            '<button class="btn btn-default btn-xs" onclick="edituser('+data[i][0].Value+')">'+
+                                            '<i class="fa fa-pencil"></i>'+
+                                            '</button>'+
+                                            '</td>'+
+                                            '<td class="align-middle">'+
+                                            '<button class="btn btn-danger btn-xs" onclick="delete_user('+data[i][0].Value+',\''+data[i][0].Value+'\'+\' \'+\''+data[i][0].Value+'\')">'+
+                                            '<i class="fa fa-trash-o"></i>'+
+                                            '</button>'+
+                                            '</td>'+
+                                            '</tr>');
+                }
+            });
+
+        }
+
+    }
+
+    function formsubmit2_next() {
+        var index = parseInt($('#pageID').attr('value')) + 1;
+        var maxPage = parseInt($('#totalPage').val());
+        if (index <= maxPage) {
+            $.get("/Master/GetUserList", { index: index }, function (data) {
+                $('#currentpage').html(index.toString());
+                $('#pageID').attr('value', index.toString());
+                $('#tbodyUser').empty();
+                for (var i = 0; i < data.length; i++) {
+                    $('#tbodyUser').append('<tr>' +
+                        '<td class="align-middle">' + data[i][1].Value + '</td>' +
+                        '<td class="align-middle">' + data[i][2].Value + '</td>' +
+                        '<td class="align-middle">' + data[i][3].Value + '</td>' +
+                        '<td class="align-middle">' + data[i][4].Value + '</td>' +
+                        '<td class="align-middle">' + data[i][5].Value + '</td>' +
+                        '<td></td>' +
+                        '<td></td>' +
+                        '<td class="align-middle">' +
+                        '<button class="btn btn-default btn-xs" onclick="edituser(' + data[i][0].Value + ')">' +
+                        '<i class="fa fa-pencil"></i>' +
+                        '</button>' +
+                        '</td>' +
+                        '<td class="align-middle">' +
+                        '<button class="btn btn-danger btn-xs" onclick="delete_user(' + data[i][0].Value + ',\'' + data[i][3].Value + '\'+\' \'+\'' + data[i][4].Value + '\')">' +
+                        '<i class="fa fa-trash-o"></i>' +
+                        '</button>' +
+                        '</td>' +
+                        '</tr>');
+                }
+            });
+
         }
 
     }
@@ -308,15 +389,20 @@
 
     }
 
+    function edituser(ee) {
+        window.location.href = '/Master/EditUser?userid=' + ee;
+    }
+
     function search_func() {
         var str = $('#exampleInputAmount1').val();
         window.location.href = "/Master/Users?str=" + str;
     }
+
     function search_func2() {
         var str = $('#exampleInputAmount2').val();
         window.location.href = "/Master/Users?str=" + str;
     }
-    
-</script>
+
+        </script>
 
 

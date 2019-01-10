@@ -64,26 +64,29 @@
 </script>
 
 <script>
-    $('.searchresidents').keyup(function () {
-        val = $(this).val();
-        if (val.length > 1) {
-            $('.searchboxresult').empty();
-            $.get("/Residents/Search/", { term: val }, function (data) {
-                console.log(data);
-                for (var i = 0; i < data.length; i++) {
-                    $('.searchboxresult').append('<a href="/Home/ResidentMenu/?p_ResidentId=' + data[i][4].Value + '" class="list-group-item list-group-item-action">' +
-                        '<img src="/Content/assets/' + data[i][5].Value + '" class="searchimg">' +
-                        '<p class="ml-3">' + data[i][0].Value + '<span style="color:red;">' + data[i][6].Value+'</span><br></p>' +
-                        '</a>');
-                }
-                if (data.length == 0) {
-                    $('.searchboxresult').append('No resident found with the specified name/room number');
-                }
-            });
-            $('.searchBox').show();
-        } else {
-            $('.searchBox').hide();
+    $('.searchresidents').keyup(function (e) {
+        if (e.keyCode != 40 && e.keyCode != 38 && e.keyCode != 13) {
+            val = $(this).val();
+            if (val.length > 1) {
+                $('.searchboxresult').empty();
+                $.get("/Residents/Search/", { term: val }, function (data) {
+                    console.log(data);
+                    for (var i = 0; i < data.length; i++) {
+                        $('.searchboxresult').append('<a href="/Home/ResidentMenu/?p_ResidentId=' + data[i][4].Value + '" class="list-group-item list-group-item-action">' +
+                            '<img src="/Content/assets/' + data[i][5].Value + '" class="searchimg">' +
+                            '<p class="ml-3">' + data[i][0].Value + '<span style="color:red;">' + data[i][6].Value + '</span><br></p>' +
+                            '</a>');
+                    }
+                    if (data.length == 0) {
+                        $('.searchboxresult').append('No resident found with the specified name/room number');
+                    }
+                });
+                $('.searchBox').show();
+            } else {
+                $('.searchBox').hide();
+            }
         }
+
     })
 
     $('.searchresidents2').keyup(function () {

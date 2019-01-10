@@ -78,7 +78,7 @@
             width:8.5vw;
             min-height:3vw;
             padding: 0 !important;
-            font-size:1vw;
+            font-size:0.9vw;
         }
 
         #ggg_next ul li[class=list-group-item] {
@@ -385,7 +385,7 @@
                                     <li class="list-group-item" id="IA">
                                         <a class="one" style="cursor:pointer;" onclick="nextlayer(this)">Initial Assessments</a>
                                         <span class="badge">0</span>
-                                        <div>
+                                        <div style="margin-left:-390% !important">
                                             <ul id="IA_ul">
                                                 <li type="Initial Activity Assessment" id="IAA"><a href="#" data-toggle="modal" data-target="#Initial_Assessment" style="color:white" onclick="IAA_click(this)"><span class="badge">0</span> Activity Assessment</a></li>
                                                 <li type="Initial Dietary Assessment" id="IDA"><a href="#" data-toggle="modal" data-target="#Initial_Assessment" style="color:white" onclick="IDA_click(this)"><span class="badge">0</span> Dietary Assessment</a></li>
@@ -397,7 +397,7 @@
                                     <li class="list-group-item" id="PN">
                                         <a class="one" style="cursor:pointer;" onclick="nextlayer(this)">Progress Notes</a>
                                         <span class="badge">0</span>
-                                        <div>
+                                        <div  style="margin-left:-390% !important">
                                             <ul id="PN_ul">
                                                 <li type="Progress Notes" id="PN"><a href="#" data-toggle="modal" data-target="#Progress_Note" style="color:white" onclick="PN_click(this)"><span class="badge">0</span> Progress Notes</a></li>
                                                 @*<li type="Acknowledge Notes" id="AN"><a href="#" data-toggle="modal" data-target="#Acknowledge_Notes" style="color:white" onclick="AN_click(this)"><span class="badge">0</span> Acknowledge Notes</a></li>*@
@@ -1918,6 +1918,81 @@
 
 
             });
+
+
+            $(document).keydown(function (e) {
+                var node;
+                if (e.keyCode == 40 && $('.searchBox').css('display') == 'block') {
+                    //alert("arrowdown pressed");
+                    var check = 'false';
+                    $('.searchboxresult a').each(function () {
+                        if (this.style.backgroundColor == 'lightblue') {
+                            check = 'true';
+                            this.style.backgroundColor = '#fff';
+                            if (this.nextElementSibling == null) {
+
+                                node = $('.searchboxresult a:first');
+                            }
+                            else {
+                                node = this.nextElementSibling;
+                            }
+                        }
+                    })
+                    if (check == 'false') {
+                        $('.searchboxresult a:first').css('background-color', 'lightblue');
+                    }
+                    else {
+                        $(node).css('background-color', 'lightblue');
+                        if ($(node).offset().top + $(node).height() > $(window).height() + $(window).scrollTop()) {
+                            $(window).scrollTop($(node).offset().top + $(node).height() - $(window).height());
+                        }
+                        else if ($(node).offset().top + $(node).height() < $(window).height()) {
+                            $(window).scrollTop(0);
+                        }
+                    }
+                }
+                else if (e.keyCode == 38 && $('.searchBox').css('display') == 'block') {
+                    //alert("arrowdown pressed");
+                    var check = 'false';
+                    $('.searchboxresult a').each(function () {
+                        if (this.style.backgroundColor == 'lightblue') {
+                            check = 'true';
+                            this.style.backgroundColor = '#fff';
+                            if (this.previousElementSibling == null) {
+
+                                node = $('.searchboxresult a:last');
+                            }
+                            else {
+                                node = this.previousElementSibling;
+                            }
+                        }
+                    })
+                    if (check == 'false') {
+                        $('.searchboxresult a:last').css('background-color', 'lightblue');
+                        node = $('.searchboxresult a:last');
+                    }
+                    else {
+                        $(node).css('background-color', 'lightblue');
+                    }
+
+                    if ($(node).offset().top < $(window).scrollTop() + 40) {
+                        $(window).scrollTop($(node).offset().top - 60);
+                    }
+                    else if ($(node).offset().top > $(window).scrollTop() + $(window).height()) {
+                        $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+                    }
+                }
+                else if (e.keyCode == 13 && $('.searchBox').css('display') == 'block') {
+                    $('.searchboxresult a').each(function () {
+                        if (this.style.backgroundColor == 'lightblue') {
+                            location.href=$(this).attr('href');
+                        }
+                    })
+                }
+            });
+
+
+
 
         </script>
 

@@ -39,8 +39,11 @@
                     <div class="container-fluid container-fixed-lg">
                         <!-- <div class="inner"> -->
                         <div class="row align-items-center">
-                            <div class="col-md-8">
+                            <div style="width:89%;display:inline-block;">
                                 <h3>Progress Notes</h3>
+                            </div>
+                            <div style="width:10%;display:inline-block;">
+                                <button class="btn btn-primary" type="button" onclick="backfunction()">BACK</button>
                             </div>
                         </div>
                         <!-- </div> -->
@@ -66,26 +69,26 @@
                                     </div>
                                 </div>
                                 @*<div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group row">
-                                            <label for="" class="col-md-12 col-form-label"><b>Date</b></label>
-                                            <div class="col-md-12">
-                                                <input type="date" value="@DateTime.Now" name="date" class="form-control" id="">
-                                            </div>
-                                        </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label for="" class="col-md-12 col-form-label"><b>Date</b></label>
+                                    <div class="col-md-12">
+                                        <input type="date" value="@DateTime.Now" name="date" class="form-control" id="">
                                     </div>
-                                </div>*@
+                                </div>
+                            </div>
+                        </div>*@
                                 @*<div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group row">
-                                            <label for="" class="col-md-12 col-form-label"><b>Time</b></label>
-                                            <div class="col-md-12">
-                                                <input type="datetime-local" name="date" class="form-control" id="">
-                                            </div>
-                                        </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label for="" class="col-md-12 col-form-label"><b>Time</b></label>
+                                    <div class="col-md-12">
+                                        <input type="datetime-local" name="date" class="form-control" id="">
                                     </div>
-                                </div>*@
-                                <div class="row">
+                                </div>
+                            </div>
+                        </div>*@
+                                <div class="row" style="display:none;">
                                     <div class="col-md-4">
                                         <div class="form-group row">
                                             <label for="" class="col-md-12 col-form-label"><b>Department</b></label>
@@ -141,24 +144,24 @@
                                     <div class="" style="width:99%;">
                                         <div style="width:2%;"></div>
                                         <div class="col-md-5">
-                                            <input type="checkbox" id="RF_WF" style="display:inline-block;" name="WitnessType" value="Y"/>
+                                            <input type="checkbox" id="RF_WF" style="display:inline-block;" name="WitnessType" value="Y" />
                                             <label class="form-control-label" id="RF_WF_label" style="display:inline-block;">Witnessed Fall<span class="required_sign">&nbsp;*</span></label>
                                         </div>
                                         <div class="col-md-7">
-                                            <input type="text" class="form-control" id="RF_WF_text" name="WitnessFall" disabled/>
+                                            <input type="text" class="form-control" id="RF_WF_text" name="WitnessFall" disabled />
                                         </div>
                                     </div>
                                     <div class="" style="width:99%;">
                                         <div style="width:2%;"></div>
                                         <div class="col-md-5">
-                                            <input type="checkbox" id="RF_UF" style="display:inline-block;" name="WitnessType" value="N"/>
+                                            <input type="checkbox" id="RF_UF" style="display:inline-block;" name="WitnessType" value="N" />
                                             <label class="form-control-label" id="RF_UF_label" style="display:inline-block;">Unwitnessed Fall<span class="required_sign">&nbsp;*</span></label>
                                         </div>
                                     </div>
                                     <div class="" style="width:99%;">
                                         <div style="width:2%;"></div>
                                         <div class="col-md-7">
-                                            <input type="checkbox" id="RF_IROF" style="display:inline-block;" name="IncidentReport" value="Y"/>
+                                            <input type="checkbox" id="RF_IROF" style="display:inline-block;" name="IncidentReport" value="Y" />
                                             <label class="form-control-label" id="RF_IROF_label" style="display:inline-block;">Incident Report on File<span class="required_sign">&nbsp;*</span></label>
                                         </div>
                                     </div>
@@ -215,6 +218,9 @@
                     </form>
                     <!-- END PLACE PAGE CONTENT HERE -->
                 </div>
+                <input type="hidden" id="residentid" value="@ViewBag.resident.ID" />
+                <input type="hidden" id="archive" value="@TempData["archive"]" />
+                <input type="hidden" id="pass" value="@TempData["pass"]" />
                 <!-- END CONTAINER FLUID -->
             </div>
             <!-- END PAGE CONTENT -->
@@ -296,5 +302,16 @@
         }
     }
 
+    function backfunction() {
+        var id = $('#residentid').val();
+        var archive = $('#archive').val()
+        var pass = $('#pass').val()
+        if (archive != "YES") {
+            window.location.href = "/Home/ResidentMenu/?p_ResidentId=" + id;
+        }
+        else {
+            window.location.href = "/Home/ResidentMenu3/?p_ResidentId=" + id + "&pass=" + pass;
+        }
 
+    }
 </script>

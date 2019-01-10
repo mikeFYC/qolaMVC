@@ -383,6 +383,43 @@ namespace QolaMVC.Controllers
             return View(l_Users);
         }
 
+        [HttpGet]
+        public ActionResult GetUserList(int index)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            List<UserModel> l_Users;
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            l_Users = UserDAL.GetUsersCollections(user.Home, user.UserType);
+            List<dynamic> l_Json = new List<dynamic>();
+
+            for(int a = (index - 1) * 50; a< index*50; a++)
+            {
+                if (l_Users[a] != null)
+                {
+                    dynamic l_J = new System.Dynamic.ExpandoObject();
+                    l_J.ID = l_Users[a].ID;
+                    l_J.UserTypeName = l_Users[a].UserTypeName;
+                    l_J.UserName = l_Users[a].UserName;
+                    l_J.FirstName = l_Users[a].FirstName;
+                    l_J.LastName = l_Users[a].LastName;
+                    l_J.HomeName = l_Users[a].HomeName;
+                    l_J.Mobile = l_Users[a].Mobile;
+                    l_J.Email = l_Users[a].Email;
+                    l_Json.Add(l_J);
+                }
+
+            }
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult AddUser()
         {
             var home = (HomeModel)TempData["Home"];
