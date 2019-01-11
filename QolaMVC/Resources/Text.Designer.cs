@@ -133,6 +133,15 @@ namespace QolaMVC.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Activity Category.
+        /// </summary>
+        public static string AddActivityCategory {
+            get {
+                return ResourceManager.GetString("AddActivityCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Allergy.
         /// </summary>
         public static string AddAllergy {
@@ -435,6 +444,15 @@ namespace QolaMVC.Resources {
         public static string EditActivity {
             get {
                 return ResourceManager.GetString("EditActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Activity Category.
+        /// </summary>
+        public static string EditActivityCategory {
+            get {
+                return ResourceManager.GetString("EditActivityCategory", resourceCulture);
             }
         }
         
