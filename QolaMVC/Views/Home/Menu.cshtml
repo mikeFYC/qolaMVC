@@ -266,7 +266,7 @@
 
                                                 <div class="text-center my-4 pointer" style="width:33%;display:inline-block;">
                                                     <a href="/Home/AddNewResident/" class="menu-box">
-                                                        <img class="w-50 menu" src="~/Content/assets/img/icons/id-card.png" />
+                                                        <img class="w-50 menu" src="~/Content/assets/img/Add_New_Resident_Icon.png" />
                                                         <h5 class="menu">Add New Resident</h5>
                                                     </a>
                                                 </div>
@@ -281,16 +281,25 @@
                                             </div>
                                         }
 
-                                        @if (ViewBag.User.UserType != 19 && ViewBag.User.UserType != 10 && ViewBag.User.UserType != 8 && ViewBag.User.UserType != 7)
+                                        @if (ViewBag.User.UserType != 22)
                                         {
                                             <div class="text-center my-4 pointer" style="width:33%;display:inline-block;">
-                                                <a href="/Home/ActivityCalendar3" class="menu-box">
-                                                    <img class="w-50 menu" src="~/Content/pages/img/calendar_icon.png" />
-                                                    <h5 class="menu">Activity/Attendance Calendar</h5>
+                                                <a href="/Home/Nursing_Note/" class="menu-box">
+                                                    <img class="w-50 menu" src="~/Content/assets/img/Nursing_Notes_Icon.png" />
+                                                    <h5 class="menu">Nursing Note</h5>
                                                 </a>
                                             </div>
                                         }
-                                        @if (ViewBag.User.UserType != 19 && ViewBag.User.UserType != 10 && ViewBag.User.UserType != 8)
+
+                                        @{
+                                            List<int> DA = new List<int>() { 4, 11, 15, 16, 17, 18, 8, 10, 19 };
+                                            List<int> AC = new List<int>() { 4, 11, 15, 16, 17, 18, 7, 8, 10, 19 };
+                                            List<int> BC = new List<int>() { 22, 19, 8, 7 };
+                                            List<int> SH = new List<int>() { 22, 19, 8, 7, 10, 5, 12, 14, 20 };
+                                            List<int> RA = new List<int>() { 1, 2, 3, 6, 9, 13, 21 };
+                                            List<int> RE = new List<int>() { 22, 19, 8, 7, 10, 5 };
+                                        }
+                                        @if (DA.Contains(ViewBag.User.UserType) == false)
                                         {
                                             <div class="text-center my-4 pointer" style="width:33%;display:inline-block;">
                                                 <a href="/Home/DiningAttendance/" class="menu-box">
@@ -300,32 +309,18 @@
                                             </div>
                                         }
 
-
-
-                                        @if (ViewBag.User.UserType != 22 && ViewBag.User.UserType != 19 && ViewBag.User.UserType != 8 && ViewBag.User.UserType != 7)
+                                        @if (AC.Contains(ViewBag.User.UserType) == false)
                                         {
-                                            if (ViewBag.User.UserType != 10)
-                                            {
-                                                if (ViewBag.User.UserType != 14 && ViewBag.User.UserType != 5 && ViewBag.User.UserType != 12 && ViewBag.User.UserType != 20)
-                                                {
-                                                    <div class="text-center my-4 pointer" style="width:33%;display:inline-block;">
-                                                        <a href="/Residents/SearchResident" class="menu-box">
-                                                            <img class="w-50 menu" src="~/Content/pages/img/suitehandler_2.png" />
-                                                            <h5 class="menu">Suite Handler</h5>
-                                                        </a>
-                                                    </div>
-                                                }
-                                                if (ViewBag.User.UserType != 5)
-                                                {
-                                                    <div class="text-center my-4 pointer" style="width:33%;display:inline-block;">
-                                                        <a href="/HomeReports/" class="menu-box">
-                                                            <img class="w-50 menu" src="~/Content/assets/img/icons/search4.png" />
-                                                            <h5 class="menu">Reports</h5>
-                                                        </a>
-                                                    </div>
-                                                }
+                                            <div class="text-center my-4 pointer" style="width:33%;display:inline-block;">
+                                                <a href="/Home/ActivityCalendar3" class="menu-box">
+                                                    <img class="w-50 menu" src="~/Content/assets/img/Activity_Calendar_Icon.png" />
+                                                    <h5 class="menu">Activity/Attendance Calendar</h5>
+                                                </a>
+                                            </div>
+                                        }
 
-                                            }
+                                        @if (BC.Contains(ViewBag.User.UserType) == false)
+                                        {
                                             <div class="text-center my-4 pointer" style="width:33%;display:inline-block;">
                                                 <a href="/Home/BirthdayCalendar_mike/" class="menu-box">
                                                     <img class="w-50 menu" src="~/Content/pages/img/birthday_calendar.png" />
@@ -333,24 +328,40 @@
                                                 </a>
                                             </div>
                                         }
-                                        @if (ViewBag.User.UserType == 1 || ViewBag.User.UserType == 2 || ViewBag.User.UserType == 3 || ViewBag.User.UserType == 13 || ViewBag.User.UserType == 9 || ViewBag.User.UserType == 6 || ViewBag.User.UserType == 21)
+
+                                        @if (SH.Contains(ViewBag.User.UserType) == false)
+                                        {
+                                            <div class="text-center my-4 pointer" style="width:33%;display:inline-block;">
+                                                <a href="/Residents/SearchResident" class="menu-box">
+                                                    <img class="w-50 menu" src="~/Content/pages/img/suitehandler_2.png" />
+                                                    <h5 class="menu">Suite Handler</h5>
+                                                </a>
+                                            </div>
+                                        }
+
+                                        @if (RA.Contains(ViewBag.User.UserType) == true)
                                         {
                                             <div class="text-center my-4 pointer" style="width:33%;display:inline-block;">
                                                 <a href="/Home/Search_Archive/" class="menu-box">
-                                                    <img class="w-50 menu" src="~/Content/pages/img/archive.png" />
+                                                    <img class="w-50 menu" src="~/Content/assets/img/Resident_Archive_Icon.png" />
                                                     <h5 class="menu">Resident Archive</h5>
                                                 </a>
                                             </div>
                                         }
-                                        @if (ViewBag.User.UserType != 22)
+
+                                        @if (RE.Contains(ViewBag.User.UserType) == false)
                                         {
                                             <div class="text-center my-4 pointer" style="width:33%;display:inline-block;">
-                                                <a href="/Home/Nursing_Note/" class="menu-box">
-                                                    <img class="w-50 menu" src="~/Content/pages/img/nursing_Notes.jpg" />
-                                                    <h5 class="menu">Nursing Note</h5>
+                                                <a href="/HomeReports/" class="menu-box">
+                                                    <img class="w-50 menu" src="~/Content/assets/img/Reports_Icon.png" />
+                                                    <h5 class="menu">Reports</h5>
                                                 </a>
                                             </div>
                                         }
+
+
+
+
 
 
 
@@ -1919,8 +1930,16 @@
 
             });
 
+            var ar = new Array(37, 38, 39, 40);
+            var disableArrowKeys = function (e) {
+                if ($.inArray(e.keyCode, ar) >= 0) {
+                    e.preventDefault();
+                }
+            }
+            $(document).keydown(disableArrowKeys);
 
             $(document).keydown(function (e) {
+                
                 var node;
                 if (e.keyCode == 40 && $('.searchBox').css('display') == 'block') {
                     //alert("arrowdown pressed");
@@ -1940,18 +1959,24 @@
                     })
                     if (check == 'false') {
                         $('.searchboxresult a:first').css('background-color', 'lightblue');
+                        $(window).scrollTop(0);
                     }
                     else {
                         $(node).css('background-color', 'lightblue');
-                        if ($(node).offset().top + $(node).height() > $(window).height() + $(window).scrollTop()) {
-                            $(window).scrollTop($(node).offset().top + $(node).height() - $(window).height());
+                        if ($(node).offset().top + $(node).height() > $(window).height() + $(window).scrollTop()) {                           
+                            $("html, body").animate({ scrollTop: $(node).offset().top + $(node).height() - $(window).height() + 30 }, "fast");
                         }
-                        else if ($(node).offset().top + $(node).height() < $(window).height()) {
-                            $(window).scrollTop(0);
+                        else if ($(node).offset().top + $(node).height() < $(window).scrollTop() + 30) {
+                            $("html, body").animate({ scrollTop: $(node).offset().top - $(node).height() - 20 }, "fast");
                         }
+                        else {
+
+                        }
+
                     }
                 }
                 else if (e.keyCode == 38 && $('.searchBox').css('display') == 'block') {
+                    
                     //alert("arrowdown pressed");
                     var check = 'false';
                     $('.searchboxresult a').each(function () {
@@ -1979,8 +2004,12 @@
                         $(window).scrollTop($(node).offset().top - 60);
                     }
                     else if ($(node).offset().top > $(window).scrollTop() + $(window).height()) {
-                        $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+                        $("html, body").animate({ scrollTop: $(node).offset().top - $(window).height() + $(node).height() + 30 }, "fast");
                     }
+                    else {
+
+                    }
+
                 }
                 else if (e.keyCode == 13 && $('.searchBox').css('display') == 'block') {
                     $('.searchboxresult a').each(function () {
