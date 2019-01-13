@@ -502,6 +502,283 @@ namespace QolaMVC.DAL
             }
         }
 
+        public static Collection<PlanOfCareModel> GetResidentsPlanOfCare_SpeedUp(int p_ResidentId)
+        {
+            string exception = string.Empty;
+            Collection<PlanOfCareModel> l_Assessments = new Collection<PlanOfCareModel>();
+
+            ResidentModel l_Resident = new ResidentModel();
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_PlanOfCare_FULL_SpeedUp", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@ResidentId", p_ResidentId);
+                DataSet dataReceive = new DataSet();
+
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(dataReceive);
+
+                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
+                {
+                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        PlanOfCareModel l_Assessment = new PlanOfCareModel();
+                        l_Assessment.VitalSigns = new CarePlanVitalSignsModel();
+                        l_Assessment.PersonalHygiene = new CarePlanPersonalHygieneModel();
+                        l_Assessment.AssistanceWith = new CarePlanAssistanceWithModel();
+                        l_Assessment.Mobility = new CarePlanMobilityModel();
+                        l_Assessment.Safety = new CarePlanSafetyModel();
+                        l_Assessment.MealEscort = new CarePlanMealEscortModel();
+                        l_Assessment.Behaviour = new CarePlanBehaviourModel();
+                        l_Assessment.CognitiveFunction = new CarePlanCognitiveFunctionModel();
+                        l_Assessment.Orientation = new CarePlanOrientationModel();
+                        l_Assessment.Nutrition = new CarePlanNutritionModel();
+                        l_Assessment.Meals = new CarePlanMealsModel();
+                        l_Assessment.Elimination = new CarePlanEliminationModel();
+                        l_Assessment.Toileting = new CarePlanToiletingModel();
+                        l_Assessment.Medication = new CarePlanMedication();
+                        l_Assessment.SensoryAbilities = new CarePlanSensoryAbilitiesModel();
+                        l_Assessment.WoundCare = new CarePlanWoundCareModel();
+                        l_Assessment.SkinCare = new CarePlanSkinCareModel();
+                        l_Assessment.SpecialNeeds = new CarePlanSpecialNeedsModel();
+                        l_Assessment.SpecialEquipment = new CarePlanSpecialEquipmentModel();
+                        l_Assessment.FamilySupportModel = new CarePlanFamilySupportModel();
+                        l_Assessment.Immunization = new CarePlanImmunizationModel();
+                        l_Assessment.InfectiousDiseases = new CarePlanInfectiousDiseasesModel();
+
+
+                        l_Assessment.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
+                        l_Assessment.Assessed = Convert.ToString(dataReceive.Tables[0].Rows[index]["Assessed"]);
+                        l_Assessment.LevelOfCare = Convert.ToString(dataReceive.Tables[0].Rows[index]["LevelOfCare"]);
+                        l_Assessment.CompleteStatus = Convert.ToString(dataReceive.Tables[0].Rows[index]["CompleteStatus"]);
+                        l_Resident.ID = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_Assessment.Resident = l_Resident;
+                        l_Assessment.DateEntered = Convert.ToDateTime(dataReceive.Tables[0].Rows[index]["DateEntered"]);
+
+
+                        l_Assessment.VitalSigns.BPSystolic = Convert.ToString(dataReceive.Tables[0].Rows[index]["BP_Systolic"]);
+                        l_Assessment.VitalSigns.BPDiastolic = Convert.ToString(dataReceive.Tables[0].Rows[index]["BP_Diastolic"]);
+                        l_Assessment.VitalSigns.BPDateCompleted = Convert.ToString(dataReceive.Tables[0].Rows[index]["BP_DateCompleted"]);
+                        l_Assessment.VitalSigns.Temperature = Convert.ToString(dataReceive.Tables[0].Rows[index]["Temperature"]);
+                        l_Assessment.VitalSigns.TempDateCompleted = Convert.ToString(dataReceive.Tables[0].Rows[index]["Temp_DateCompleted"]);
+                        l_Assessment.VitalSigns.Weight = Convert.ToString(dataReceive.Tables[0].Rows[index]["WeightLBS"]);
+                        l_Assessment.VitalSigns.WeightDateCompleted = Convert.ToString(dataReceive.Tables[0].Rows[index]["Weight_DateCompleted"]);
+                        l_Assessment.VitalSigns.HeightFeet = Convert.ToString(dataReceive.Tables[0].Rows[index]["Height_Feet"]);
+                        l_Assessment.VitalSigns.HeightInches = Convert.ToString(dataReceive.Tables[0].Rows[index]["Height_Inches"]);
+                        l_Assessment.VitalSigns.HeightDateCompleted = Convert.ToString(dataReceive.Tables[0].Rows[index]["Height_DateCompleted"]);
+                        l_Assessment.VitalSigns.Pulse = Convert.ToString(dataReceive.Tables[0].Rows[index]["Pulse"]);
+                        l_Assessment.VitalSigns.PulseDateCompleted = Convert.ToString(dataReceive.Tables[0].Rows[index]["Pulse_DateCompleted"]);
+                        l_Assessment.VitalSigns.PulseRegular = Convert.ToString(dataReceive.Tables[0].Rows[index]["PulseRegular"]);
+                        l_Assessment.VitalSigns.O2_sat = Convert.ToString(dataReceive.Tables[0].Rows[index]["O2_sat(%)"]);
+                        l_Assessment.VitalSigns.O2_sat_Date = Convert.ToString(dataReceive.Tables[0].Rows[index]["O2_sat_Date"]);
+
+                        l_Assessment.PersonalHygiene.AMCare = Convert.ToString(dataReceive.Tables[0].Rows[index]["AMCare"]);
+                        l_Assessment.PersonalHygiene.PMCare = Convert.ToString(dataReceive.Tables[0].Rows[index]["PMCare"]);
+                        l_Assessment.PersonalHygiene.Bathing = Convert.ToString(dataReceive.Tables[0].Rows[index]["Bathing"]);
+                        l_Assessment.PersonalHygiene.AMAssistedBy = Convert.ToString(dataReceive.Tables[0].Rows[index]["AM_AssistedBy"]);
+                        l_Assessment.PersonalHygiene.PMAssistedBy = Convert.ToString(dataReceive.Tables[0].Rows[index]["PM_AssistedBy"]);
+                        l_Assessment.PersonalHygiene.BathingAssistedBy = Convert.ToString(dataReceive.Tables[0].Rows[index]["Bathing_AssistedBy"]);
+                        l_Assessment.PersonalHygiene.AMAgencyName = Convert.ToString(dataReceive.Tables[0].Rows[index]["AM_AgencyName"]);
+                        l_Assessment.PersonalHygiene.PMAgencyName = Convert.ToString(dataReceive.Tables[0].Rows[index]["PM_AgencyName"]);
+                        l_Assessment.PersonalHygiene.BathingAgencyName = Convert.ToString(dataReceive.Tables[0].Rows[index]["Bathing_AgencyName"]);
+                        l_Assessment.PersonalHygiene.AMPreferredTime = Convert.ToString(dataReceive.Tables[0].Rows[index]["AM_PreferredTime"]);
+                        l_Assessment.PersonalHygiene.PMPreferredTime = Convert.ToString(dataReceive.Tables[0].Rows[index]["PM_PreferredTime"]);
+                        l_Assessment.PersonalHygiene.BathingPreferredTime = Convert.ToString(dataReceive.Tables[0].Rows[index]["Bathing_PreferredTime"]);
+                        l_Assessment.PersonalHygiene.AMPreferredType = Convert.ToString(dataReceive.Tables[0].Rows[index]["AM_PreferredType"]);
+                        l_Assessment.PersonalHygiene.PMPreferredType = Convert.ToString(dataReceive.Tables[0].Rows[index]["PM_PreferredType"]);
+                        l_Assessment.PersonalHygiene.BathingPreferredType = Convert.ToString(dataReceive.Tables[0].Rows[index]["Bathing_PreferredType"]);
+                        l_Assessment.PersonalHygiene.PreferredDaysCollection = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["PreferredDays"]));
+
+                        l_Assessment.AssistanceWith.Dressing = Convert.ToString(dataReceive.Tables[0].Rows[index]["Dressing"]);
+                        l_Assessment.AssistanceWith.DressingPreferredTime = Convert.ToString(dataReceive.Tables[0].Rows[index]["Dressing_PreferredTime"]);
+                        l_Assessment.AssistanceWith.NailCare = Convert.ToString(dataReceive.Tables[0].Rows[index]["NailCare"]);
+                        l_Assessment.AssistanceWith.NailCarePreferredTime = Convert.ToString(dataReceive.Tables[0].Rows[index]["NailCare_PreferredTime"]);
+                        l_Assessment.AssistanceWith.Shaving = Convert.ToString(dataReceive.Tables[0].Rows[index]["Shaving"]);
+                        l_Assessment.AssistanceWith.ShavingPreferredTime = Convert.ToString(dataReceive.Tables[0].Rows[index]["Shaving_PreferredTime"]);
+                        l_Assessment.AssistanceWith.FootCare = Convert.ToString(dataReceive.Tables[0].Rows[index]["FootCare"]);
+                        l_Assessment.AssistanceWith.FootCarePreferredTime = Convert.ToString(dataReceive.Tables[0].Rows[index]["FootCare_PreferredTime"]);
+                        l_Assessment.AssistanceWith.OralHygiene = Convert.ToString(dataReceive.Tables[0].Rows[index]["OralHygiene"]);
+                        l_Assessment.AssistanceWith.OralHygienePreferredTime = Convert.ToString(dataReceive.Tables[0].Rows[index]["OralHygiene_PreferredTime"]);
+                        l_Assessment.AssistanceWith.TeethCollection = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Teeth"]));
+
+                        l_Assessment.Mobility.Mobility = Convert.ToString(dataReceive.Tables[0].Rows[index]["Mobility"]);
+                        l_Assessment.Mobility.Transfers = Convert.ToString(dataReceive.Tables[0].Rows[index]["Transfers"]);
+                        l_Assessment.Mobility.Lift = Convert.ToString(dataReceive.Tables[0].Rows[index]["MechanicalLift"]);
+                        l_Assessment.Mobility.Walker = Convert.ToString(dataReceive.Tables[0].Rows[index]["Walker"]);
+                        l_Assessment.Mobility.WalkerType = Convert.ToString(dataReceive.Tables[0].Rows[index]["Walker_Type"]);
+                        l_Assessment.Mobility.WheelChair = Convert.ToString(dataReceive.Tables[0].Rows[index]["WheelChair"]);
+                        l_Assessment.Mobility.WheelChairType = Convert.ToString(dataReceive.Tables[0].Rows[index]["WheelChair_Type"]);
+                        l_Assessment.Mobility.Cane = Convert.ToString(dataReceive.Tables[0].Rows[index]["Cane"]);
+                        l_Assessment.Mobility.caneType = Convert.ToString(dataReceive.Tables[0].Rows[index]["Cane_Type"]);
+                        l_Assessment.Mobility.Scooter = Convert.ToString(dataReceive.Tables[0].Rows[index]["Scooter"]);
+                        l_Assessment.Mobility.ScooterType = Convert.ToString(dataReceive.Tables[0].Rows[index]["Scooter_Type"]);
+                        l_Assessment.Mobility.PT = Convert.ToString(dataReceive.Tables[0].Rows[index]["PT"]);
+                        l_Assessment.Mobility.PTFrequency = Convert.ToString(dataReceive.Tables[0].Rows[index]["PT_Frequency"]);
+                        l_Assessment.Mobility.PTProvider = Convert.ToString(dataReceive.Tables[0].Rows[index]["PT_Provider"]);
+                        l_Assessment.Mobility.OT = Convert.ToString(dataReceive.Tables[0].Rows[index]["OT"]);
+                        l_Assessment.Mobility.OTFrequency = Convert.ToString(dataReceive.Tables[0].Rows[index]["OT_Frequency"]);
+                        l_Assessment.Mobility.OTProvider = Convert.ToString(dataReceive.Tables[0].Rows[index]["OT_Provider"]);
+
+                        l_Assessment.Safety.Safety = Convert.ToString(dataReceive.Tables[0].Rows[index]["SafetyPASD"]);
+                        l_Assessment.Safety.Other = Convert.ToString(dataReceive.Tables[0].Rows[index]["Other"]);
+                        l_Assessment.Safety.Rails = Convert.ToString(dataReceive.Tables[0].Rows[index]["Rails"]);
+                        l_Assessment.Safety.NightOnly = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["NightOnly"]);
+
+                        l_Assessment.MealEscort.BreakFast = Convert.ToString(dataReceive.Tables[0].Rows[index]["ME_BreakFast"]);
+                        l_Assessment.MealEscort.Lunch = Convert.ToString(dataReceive.Tables[0].Rows[index]["ME_Lunch"]);
+                        l_Assessment.MealEscort.Dinner = Convert.ToString(dataReceive.Tables[0].Rows[index]["ME_Dinner"]);
+
+                        l_Assessment.Behaviour.BehaviourCollection = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Behavior"]));
+                        l_Assessment.Behaviour.HarmToSelf = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["HarmToSelf"]);
+                        l_Assessment.Behaviour.Smoker = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["smoker"]);
+                        l_Assessment.Behaviour.RiskOfWandering = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["RiskOfWandering"]);
+                        l_Assessment.Behaviour.CognitiveStatus = Convert.ToString(dataReceive.Tables[0].Rows[index]["CognitiveStatus"]);
+                        l_Assessment.Behaviour.OtherInfo = Convert.ToString(dataReceive.Tables[0].Rows[index]["OtherInfo"]);
+
+                        l_Assessment.CognitiveFunction.CognitiveFunction = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["CognitiveFunction"]));
+
+                        l_Assessment.Orientation.IsDementiaCare = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["IsDementiaCare"]);
+                        l_Assessment.Orientation.IsPerson = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["IsPerson"]);
+                        l_Assessment.Orientation.IsPlace = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["IsPlace"]);
+                        l_Assessment.Orientation.IsTime = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["IsTime"]);
+
+                        l_Assessment.Nutrition.NutritionStatus = Convert.ToString(dataReceive.Tables[0].Rows[index]["NutritionStatus"]);
+                        l_Assessment.Nutrition.Risk = Convert.ToString(dataReceive.Tables[0].Rows[index]["Risk"]);
+                        l_Assessment.Nutrition.AssistiveDevices = Convert.ToString(dataReceive.Tables[0].Rows[index]["AssistiveDevices"]);
+                        l_Assessment.Nutrition.Texture = Convert.ToString(dataReceive.Tables[0].Rows[index]["Texture"]);
+                        l_Assessment.Nutrition.Other = Convert.ToString(dataReceive.Tables[0].Rows[index]["Other"]);
+                        l_Assessment.Nutrition.Diet = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Diet"]));
+                        l_Assessment.Nutrition.OtherDiet = Convert.ToString(dataReceive.Tables[0].Rows[index]["OtherDiet"]);
+                        l_Assessment.Nutrition.Notes = Convert.ToString(dataReceive.Tables[0].Rows[index]["Notes"]);
+                        l_Assessment.Nutrition.Allergies = Convert.ToString(dataReceive.Tables[0].Rows[index]["Allergies"]);
+
+                        l_Assessment.Meals.Appetite = Convert.ToString(dataReceive.Tables[0].Rows[index]["MEAL_Appetite"]);
+                        l_Assessment.Meals.BreakFast = Convert.ToString(dataReceive.Tables[0].Rows[index]["MEAL_BreakFast"]);
+                        l_Assessment.Meals.Lunch = Convert.ToString(dataReceive.Tables[0].Rows[index]["MEAL_Lunch"]);
+                        l_Assessment.Meals.Dinner = Convert.ToString(dataReceive.Tables[0].Rows[index]["MEAL_Dinner"]);
+
+                        l_Assessment.Elimination.Bladder = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Bladder"]));
+                        l_Assessment.Elimination.Bowel = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Bowel"]));
+                        l_Assessment.Elimination.NameCode = Convert.ToString(dataReceive.Tables[0].Rows[index]["NameCode"]);
+                        l_Assessment.Elimination.Products = Convert.ToString(dataReceive.Tables[0].Rows[index]["ContinenceProducts"]);
+                        l_Assessment.Elimination.AssistiveDevices = Convert.ToString(dataReceive.Tables[0].Rows[index]["AssistiveDevices"]);
+                        l_Assessment.Elimination.CompletedBy = Convert.ToString(dataReceive.Tables[0].Rows[index]["AssessmentCompletedBy"]);
+                        l_Assessment.Elimination.AssessmentDate = Convert.ToString(dataReceive.Tables[0].Rows[index]["AssessmentDate"]);
+
+                        l_Assessment.Toileting.Bathroom = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Bathroom"]));
+                        l_Assessment.Toileting.Commode = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Commode"]));
+                        l_Assessment.Toileting.Bedpan = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Bedpan"]));
+                        l_Assessment.Toileting.Toileting = Convert.ToString(dataReceive.Tables[0].Rows[index]["Toileting"]);
+
+                        l_Assessment.Medication.Assistance = Convert.ToString(dataReceive.Tables[0].Rows[index]["Assistance"]);
+                        l_Assessment.Medication.Administration = Convert.ToString(dataReceive.Tables[0].Rows[index]["Administration"]);
+                        l_Assessment.Medication.CompletedBy = Convert.ToString(dataReceive.Tables[0].Rows[index]["CompletedBy"]);
+                        l_Assessment.Medication.Agency = Convert.ToString(dataReceive.Tables[0].Rows[index]["Agency"]);
+                        l_Assessment.Medication.Pharmacy = Convert.ToString(dataReceive.Tables[0].Rows[index]["Pharmacy"]);
+                        l_Assessment.Medication.Allergies = Convert.ToString(dataReceive.Tables[0].Rows[index]["Allergies"]);
+
+                        l_Assessment.SensoryAbilities.Vision = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Vision"]));
+                        l_Assessment.SensoryAbilities.Hearing = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Hearing"]));
+                        l_Assessment.SensoryAbilities.Communication = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Communication"]));
+                        l_Assessment.SensoryAbilities.Notes = Convert.ToString(dataReceive.Tables[0].Rows[index]["Notes"]);
+
+                        l_Assessment.WoundCare.WoundCare = Convert.ToString(dataReceive.Tables[0].Rows[index]["WoundCare"]);
+                        l_Assessment.WoundCare.AssistedBy = Convert.ToString(dataReceive.Tables[0].Rows[index]["AssistedBy"]);
+                        l_Assessment.WoundCare.Agency = Convert.ToString(dataReceive.Tables[0].Rows[index]["Agency"]);
+
+                        l_Assessment.SkinCare.SkinCare = Convert.ToString(dataReceive.Tables[0].Rows[index]["SkinCare"]);
+                        l_Assessment.SkinCare.SpecialTreatments = Convert.ToString(dataReceive.Tables[0].Rows[index]["SpecialTreatments"]);
+
+                        l_Assessment.SpecialNeeds.Oxygen = Convert.ToString(dataReceive.Tables[0].Rows[index]["Oxygen"]);
+                        l_Assessment.SpecialNeeds.OxygenSupplier = Convert.ToString(dataReceive.Tables[0].Rows[index]["Oxygen_Supplier"]);
+                        l_Assessment.SpecialNeeds.OxygenRate = Convert.ToString(dataReceive.Tables[0].Rows[index]["Oxygen_Rate"]);
+                        l_Assessment.SpecialNeeds.OxygenNotes = Convert.ToString(dataReceive.Tables[0].Rows[index]["Oxygen_Notes"]);
+                        l_Assessment.SpecialNeeds.CPAP = Convert.ToString(dataReceive.Tables[0].Rows[index]["CPAP"]);
+                        l_Assessment.SpecialNeeds.CPAPSupplier = Convert.ToString(dataReceive.Tables[0].Rows[index]["CPAP_Supplier"]);
+                        l_Assessment.SpecialNeeds.CPAPNotes = Convert.ToString(dataReceive.Tables[0].Rows[index]["CPAP_Notes"]);
+
+                        l_Assessment.SpecialEquipment.SpecialEquipment = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["SpecialEquipment"]));
+                        l_Assessment.SpecialEquipment.Details = Convert.ToString(dataReceive.Tables[0].Rows[index]["Details"]);
+
+                        l_Assessment.FamilySupportModel.FamilyMeeting = Convert.ToString(dataReceive.Tables[0].Rows[index]["FamilyMeeting"]);
+                        l_Assessment.FamilySupportModel.FamilyInvolvement = Convert.ToString(dataReceive.Tables[0].Rows[index]["FamilyInvolvement"]);
+
+                        l_Assessment.Immunization.TB = Convert.ToString(dataReceive.Tables[0].Rows[index]["TB"]);
+                        l_Assessment.Immunization.TBDate = Convert.ToString(dataReceive.Tables[0].Rows[index]["TB_Date"]);
+                        l_Assessment.Immunization.ChestXRay = Convert.ToString(dataReceive.Tables[0].Rows[index]["ChestXRay"]);
+                        l_Assessment.Immunization.ChestXRayDate = Convert.ToString(dataReceive.Tables[0].Rows[index]["ChestXRay_Date"]);
+                        l_Assessment.Immunization.Pneumonia = Convert.ToString(dataReceive.Tables[0].Rows[index]["Pneumonia"]);
+                        l_Assessment.Immunization.PneumoniaDate = Convert.ToString(dataReceive.Tables[0].Rows[index]["Pneumonia_Date"]);
+                        l_Assessment.Immunization.FluVaccine = Convert.ToString(dataReceive.Tables[0].Rows[index]["FluVaccine"]);
+                        l_Assessment.Immunization.FluVaccineDate = Convert.ToString(dataReceive.Tables[0].Rows[index]["FluVaccine_Date"]);
+                        l_Assessment.Immunization.Tetanus = Convert.ToString(dataReceive.Tables[0].Rows[index]["Tetanus"]);
+                        l_Assessment.Immunization.TetanusDate = Convert.ToString(dataReceive.Tables[0].Rows[index]["Tetanus_Date"]);
+
+                        l_Assessment.InfectiousDiseases.MRSA = Convert.ToString(dataReceive.Tables[0].Rows[index]["MRSA"]);
+                        l_Assessment.InfectiousDiseases.MRSADiagnosedDate = Convert.ToString(dataReceive.Tables[0].Rows[index]["MRSA_Diagnosed_Date"]);
+                        l_Assessment.InfectiousDiseases.MRSAResolvedDate = Convert.ToString(dataReceive.Tables[0].Rows[index]["MRSA_Resolved_Date"]);
+                        l_Assessment.InfectiousDiseases.VRE = Convert.ToString(dataReceive.Tables[0].Rows[index]["VRE"]);
+                        l_Assessment.InfectiousDiseases.VREDiagnosedDate = Convert.ToString(dataReceive.Tables[0].Rows[index]["VRE_Diagnosed_Date"]);
+                        l_Assessment.InfectiousDiseases.VREResolvedDate = Convert.ToString(dataReceive.Tables[0].Rows[index]["VRE_Resolved_Date"]);
+                        l_Assessment.InfectiousDiseases.CDiff = Convert.ToString(dataReceive.Tables[0].Rows[index]["CDiff"]);
+                        l_Assessment.InfectiousDiseases.CDiffDiagnosedDate = Convert.ToString(dataReceive.Tables[0].Rows[index]["CDiff_Diagnosed_Date"]);
+                        l_Assessment.InfectiousDiseases.CDiffResolvedDate = Convert.ToString(dataReceive.Tables[0].Rows[index]["CDiff_Resolved_Date"]);
+                        l_Assessment.InfectiousDiseases.Other = Convert.ToString(dataReceive.Tables[0].Rows[index]["Other"]);
+                        l_Assessment.InfectiousDiseases.OtherDiagnosedDate = Convert.ToString(dataReceive.Tables[0].Rows[index]["Other_Diagnosed_Date"]);
+                        l_Assessment.InfectiousDiseases.OtherResolvedDate = Convert.ToString(dataReceive.Tables[0].Rows[index]["Other_Resolved_Date"]);
+
+                        //hold on other methods. Go and work on adding a care plan
+                        switch (l_Assessment.Assessed)
+                        {
+                            case "7PA":
+                                l_Assessment.Assessed_Full = "Pre-Admin";
+                                break;
+                            case "6AN":
+                                l_Assessment.Assessed_Full = "5 Month Assessment";
+                                break;
+                            case "2AU":
+                                l_Assessment.Assessed_Full = "Update";
+                                break;
+                            case "8AA":
+                                l_Assessment.Assessed_Full = "Admission";
+                                break;
+                        }
+                        switch (l_Assessment.LevelOfCare)
+                        {
+                            case "3LI":
+                                l_Assessment.LevelOfCare_Full = "Independent";
+                                break;
+                            case "2LP":
+                                l_Assessment.LevelOfCare_Full = "Partial Assistt";
+                                break;
+                            case "4LD":
+                                l_Assessment.LevelOfCare_Full = "Dependent";
+                                break;
+                            case "5LPT":
+                                l_Assessment.LevelOfCare_Full = "Palliative";
+                                break;
+                        }
+
+
+                        l_Assessments.Add(l_Assessment);
+                    }
+                }
+                return l_Assessments;
+            }
+            catch (Exception ex)
+            {
+                exception = "CarePlanDAL GetResidentsPlanOfCare |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
         private static CarePlanVitalSignsModel GetCarePlanVitalSigns(int p_CarePlanId)
         {
             string exception = string.Empty;

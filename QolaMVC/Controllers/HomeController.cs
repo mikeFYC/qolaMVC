@@ -970,7 +970,8 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
-            var careplan = CarePlanDAL.GetResidentsPlanOfCare(resident.ID);
+            //var careplan = CarePlanDAL.GetResidentsPlanOfCare(resident.ID);
+            var careplan = CarePlanDAL.GetResidentsPlanOfCare_SpeedUp(resident.ID);
             PlanOfCareModel l_Model = new PlanOfCareModel();
 
             var l_PersonalHygiene = new CarePlanPersonalHygieneModel();
@@ -1148,8 +1149,8 @@ namespace QolaMVC.Controllers
 
             ViewBag.TableSH = update_Suite_Handler_Table.get_innerHTML_temperary2(resident.ID);
 
-            //PlanOfCareModel l_Model = GET_one_CarePlan();
-            //ViewBag.careplan = l_Model;
+            PlanOfCareModel l_Model = GET_one_CarePlan();
+            ViewBag.careplan = l_Model;
 
             return View(resident);
         }
