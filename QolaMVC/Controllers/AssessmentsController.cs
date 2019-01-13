@@ -1905,58 +1905,60 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
-            var careplan = CarePlanDAL.GetResidentsPlanOfCare(resident.ID);
+            var careplan = CarePlanDAL.GetResidentsPlanOfCare_SpeedUp(resident.ID);
+
             PlanOfCareModel l_Model = new PlanOfCareModel();
+            if (careplan.Count == 0)
+            {
+                var l_PersonalHygiene = new CarePlanPersonalHygieneModel();
+                l_PersonalHygiene.PreferredDaysCollection = new Collection<QOLACheckboxModel>();
+                QolaCulture.InitPreferredDays(ref l_PersonalHygiene);
+                l_Model.PersonalHygiene = l_PersonalHygiene;
 
-            var l_PersonalHygiene = new CarePlanPersonalHygieneModel();
-            l_PersonalHygiene.PreferredDaysCollection = new Collection<QOLACheckboxModel>();
-            QolaCulture.InitPreferredDays(ref l_PersonalHygiene);
-            l_Model.PersonalHygiene = l_PersonalHygiene;
+                var l_AssistanceWith = new CarePlanAssistanceWithModel();
+                l_AssistanceWith.TeethCollection = new Collection<QOLACheckboxModel>();
+                QolaCulture.InitAssistanceWithTeeth(ref l_AssistanceWith);
+                l_Model.AssistanceWith = l_AssistanceWith;
 
-            var l_AssistanceWith = new CarePlanAssistanceWithModel();
-            l_AssistanceWith.TeethCollection = new Collection<QOLACheckboxModel>();
-            QolaCulture.InitAssistanceWithTeeth(ref l_AssistanceWith);
-            l_Model.AssistanceWith = l_AssistanceWith;
+                var l_Behaviour = new CarePlanBehaviourModel();
+                l_Behaviour.BehaviourCollection = new Collection<QOLACheckboxModel>();
+                QolaCulture.InitBehaviour(ref l_Behaviour);
+                l_Model.Behaviour = l_Behaviour;
 
-            var l_Behaviour = new CarePlanBehaviourModel();
-            l_Behaviour.BehaviourCollection = new Collection<QOLACheckboxModel>();
-            QolaCulture.InitBehaviour(ref l_Behaviour);
-            l_Model.Behaviour = l_Behaviour;
+                var l_CognitiveFunction = new CarePlanCognitiveFunctionModel();
+                l_CognitiveFunction.CognitiveFunction = new Collection<QOLACheckboxModel>();
+                QolaCulture.InitCognitiveFunction(ref l_CognitiveFunction);
+                l_Model.CognitiveFunction = l_CognitiveFunction;
 
-            var l_CognitiveFunction = new CarePlanCognitiveFunctionModel();
-            l_CognitiveFunction.CognitiveFunction = new Collection<QOLACheckboxModel>();
-            QolaCulture.InitCognitiveFunction(ref l_CognitiveFunction);
-            l_Model.CognitiveFunction = l_CognitiveFunction;
+                var l_Nutrition = new CarePlanNutritionModel();
+                l_Nutrition.Diet = new Collection<QOLACheckboxModel>();
+                QolaCulture.InitNutrition(ref l_Nutrition);
+                l_Model.Nutrition = l_Nutrition;
 
-            var l_Nutrition = new CarePlanNutritionModel();
-            l_Nutrition.Diet = new Collection<QOLACheckboxModel>();
-            QolaCulture.InitNutrition(ref l_Nutrition);
-            l_Model.Nutrition = l_Nutrition;
+                var l_Elimination = new CarePlanEliminationModel();
+                l_Elimination.Bladder = new Collection<QOLACheckboxModel>();
+                l_Elimination.Bowel = new Collection<QOLACheckboxModel>();
+                QolaCulture.InitElimination(ref l_Elimination);
+                l_Model.Elimination = l_Elimination;
 
-            var l_Elimination = new CarePlanEliminationModel();
-            l_Elimination.Bladder = new Collection<QOLACheckboxModel>();
-            l_Elimination.Bowel = new Collection<QOLACheckboxModel>();
-            QolaCulture.InitElimination(ref l_Elimination);
-            l_Model.Elimination = l_Elimination;
+                var l_Toilet = new CarePlanToiletingModel();
+                l_Toilet.Bathroom = new Collection<QOLACheckboxModel>();
+                l_Toilet.Commode = new Collection<QOLACheckboxModel>();
+                l_Toilet.Bedpan = new Collection<QOLACheckboxModel>();
+                QolaCulture.InitToileting(ref l_Toilet);
+                l_Model.Toileting = l_Toilet;
 
-            var l_Toilet = new CarePlanToiletingModel();
-            l_Toilet.Bathroom = new Collection<QOLACheckboxModel>();
-            l_Toilet.Commode = new Collection<QOLACheckboxModel>();
-            l_Toilet.Bedpan = new Collection<QOLACheckboxModel>();
-            QolaCulture.InitToileting(ref l_Toilet);
-            l_Model.Toileting = l_Toilet;
+                var l_Sensory = new CarePlanSensoryAbilitiesModel();
+                l_Sensory.Vision = new Collection<QOLACheckboxModel>();
+                l_Sensory.Hearing = new Collection<QOLACheckboxModel>();
+                l_Sensory.Communication = new Collection<QOLACheckboxModel>();
+                QolaCulture.InitSensoryAbilities(ref l_Sensory);
+                l_Model.SensoryAbilities = l_Sensory;
 
-            var l_Sensory = new CarePlanSensoryAbilitiesModel();
-            l_Sensory.Vision = new Collection<QOLACheckboxModel>();
-            l_Sensory.Hearing = new Collection<QOLACheckboxModel>();
-            l_Sensory.Communication = new Collection<QOLACheckboxModel>();
-            QolaCulture.InitSensoryAbilities(ref l_Sensory);
-            l_Model.SensoryAbilities = l_Sensory;
-
-            var l_SpecialEquipment = new CarePlanSpecialEquipmentModel();
-            l_SpecialEquipment.SpecialEquipment = new Collection<QOLACheckboxModel>();
-            QolaCulture.InitSpecialEquipment(ref l_SpecialEquipment);
-            l_Model.SpecialEquipment = l_SpecialEquipment;
+                var l_SpecialEquipment = new CarePlanSpecialEquipmentModel();
+                l_SpecialEquipment.SpecialEquipment = new Collection<QOLACheckboxModel>();
+                QolaCulture.InitSpecialEquipment(ref l_SpecialEquipment);
+                l_Model.SpecialEquipment = l_SpecialEquipment;
 
             //if (careplan.Count >0)
             //{
@@ -1966,8 +1968,7 @@ namespace QolaMVC.Controllers
 
 
 
-            if (careplan.Count == 0)
-            {
+
                 careplan.Add(l_Model);
             }
 

@@ -973,75 +973,77 @@ namespace QolaMVC.Controllers
             //var careplan = CarePlanDAL.GetResidentsPlanOfCare(resident.ID);
             var careplan = CarePlanDAL.GetResidentsPlanOfCare_SpeedUp(resident.ID);
             PlanOfCareModel l_Model = new PlanOfCareModel();
-
-            var l_PersonalHygiene = new CarePlanPersonalHygieneModel();
-            l_PersonalHygiene.PreferredDaysCollection = new Collection<QOLACheckboxModel>();
-            QolaCulture.InitPreferredDays(ref l_PersonalHygiene);
-            l_Model.PersonalHygiene = l_PersonalHygiene;
-
-            var l_AssistanceWith = new CarePlanAssistanceWithModel();
-            l_AssistanceWith.TeethCollection = new Collection<QOLACheckboxModel>();
-            QolaCulture.InitAssistanceWithTeeth(ref l_AssistanceWith);
-            l_Model.AssistanceWith = l_AssistanceWith;
-
-            var l_Behaviour = new CarePlanBehaviourModel();
-            l_Behaviour.BehaviourCollection = new Collection<QOLACheckboxModel>();
-            QolaCulture.InitBehaviour(ref l_Behaviour);
-            l_Model.Behaviour = l_Behaviour;
-
-            var l_CognitiveFunction = new CarePlanCognitiveFunctionModel();
-            l_CognitiveFunction.CognitiveFunction = new Collection<QOLACheckboxModel>();
-            QolaCulture.InitCognitiveFunction(ref l_CognitiveFunction);
-            l_Model.CognitiveFunction = l_CognitiveFunction;
-
-            var l_Nutrition = new CarePlanNutritionModel();
-            l_Nutrition.Diet = new Collection<QOLACheckboxModel>();
-            QolaCulture.InitNutrition(ref l_Nutrition);
-            l_Model.Nutrition = l_Nutrition;
-
-            var l_Elimination = new CarePlanEliminationModel();
-            l_Elimination.Bladder = new Collection<QOLACheckboxModel>();
-            l_Elimination.Bowel = new Collection<QOLACheckboxModel>();
-            QolaCulture.InitElimination(ref l_Elimination);
-            l_Model.Elimination = l_Elimination;
-
-            var l_Toilet = new CarePlanToiletingModel();
-            l_Toilet.Bathroom = new Collection<QOLACheckboxModel>();
-            l_Toilet.Commode = new Collection<QOLACheckboxModel>();
-            l_Toilet.Bedpan = new Collection<QOLACheckboxModel>();
-            QolaCulture.InitToileting(ref l_Toilet);
-            l_Model.Toileting = l_Toilet;
-
-            var l_Sensory = new CarePlanSensoryAbilitiesModel();
-            l_Sensory.Vision = new Collection<QOLACheckboxModel>();
-            l_Sensory.Hearing = new Collection<QOLACheckboxModel>();
-            l_Sensory.Communication = new Collection<QOLACheckboxModel>();
-            QolaCulture.InitSensoryAbilities(ref l_Sensory);
-            l_Model.SensoryAbilities = l_Sensory;
-
-            var l_SpecialEquipment = new CarePlanSpecialEquipmentModel();
-            l_SpecialEquipment.SpecialEquipment = new Collection<QOLACheckboxModel>();
-            QolaCulture.InitSpecialEquipment(ref l_SpecialEquipment);
-            l_Model.SpecialEquipment = l_SpecialEquipment;
-
-
-            var l_VitalSigns = new CarePlanVitalSignsModel(); l_Model.VitalSigns = l_VitalSigns;
-            var l_Mobility = new CarePlanMobilityModel(); ; l_Model.Mobility = l_Mobility;
-            var l_Safety = new CarePlanSafetyModel(); ; l_Model.Safety = l_Safety;
-            var l_MealEscort = new CarePlanMealEscortModel(); ; l_Model.MealEscort = l_MealEscort;
-            var l_Orientation = new CarePlanOrientationModel(); ; l_Model.Orientation = l_Orientation;
-            var l_Meals = new CarePlanMealsModel(); ; l_Model.Meals = l_Meals;
-            var l_Medication = new CarePlanMedication(); ; l_Model.Medication = l_Medication;
-            var l_WoundCare = new CarePlanWoundCareModel(); ; l_Model.WoundCare = l_WoundCare;
-            var l_SkinCare = new CarePlanSkinCareModel(); ; l_Model.SkinCare = l_SkinCare;
-            var l_SpecialNeeds = new CarePlanSpecialNeedsModel(); ; l_Model.SpecialNeeds = l_SpecialNeeds;
-            var l_FamilySupportModel = new CarePlanFamilySupportModel(); ; l_Model.FamilySupportModel = l_FamilySupportModel;
-            var l_Immunization = new CarePlanImmunizationModel(); ; l_Model.Immunization = l_Immunization;
-            var l_InfectiousDiseases = new CarePlanInfectiousDiseasesModel(); ; l_Model.InfectiousDiseases = l_InfectiousDiseases;
-
-
             if (careplan.Count == 0)
             {
+                
+
+                var l_PersonalHygiene = new CarePlanPersonalHygieneModel();
+                l_PersonalHygiene.PreferredDaysCollection = new Collection<QOLACheckboxModel>();
+                QolaCulture.InitPreferredDays(ref l_PersonalHygiene);
+                l_Model.PersonalHygiene = l_PersonalHygiene;
+
+                var l_AssistanceWith = new CarePlanAssistanceWithModel();
+                l_AssistanceWith.TeethCollection = new Collection<QOLACheckboxModel>();
+                QolaCulture.InitAssistanceWithTeeth(ref l_AssistanceWith);
+                l_Model.AssistanceWith = l_AssistanceWith;
+
+                var l_Behaviour = new CarePlanBehaviourModel();
+                l_Behaviour.BehaviourCollection = new Collection<QOLACheckboxModel>();
+                QolaCulture.InitBehaviour(ref l_Behaviour);
+                l_Model.Behaviour = l_Behaviour;
+
+                var l_CognitiveFunction = new CarePlanCognitiveFunctionModel();
+                l_CognitiveFunction.CognitiveFunction = new Collection<QOLACheckboxModel>();
+                QolaCulture.InitCognitiveFunction(ref l_CognitiveFunction);
+                l_Model.CognitiveFunction = l_CognitiveFunction;
+
+                var l_Nutrition = new CarePlanNutritionModel();
+                l_Nutrition.Diet = new Collection<QOLACheckboxModel>();
+                QolaCulture.InitNutrition(ref l_Nutrition);
+                l_Model.Nutrition = l_Nutrition;
+
+                var l_Elimination = new CarePlanEliminationModel();
+                l_Elimination.Bladder = new Collection<QOLACheckboxModel>();
+                l_Elimination.Bowel = new Collection<QOLACheckboxModel>();
+                QolaCulture.InitElimination(ref l_Elimination);
+                l_Model.Elimination = l_Elimination;
+
+                var l_Toilet = new CarePlanToiletingModel();
+                l_Toilet.Bathroom = new Collection<QOLACheckboxModel>();
+                l_Toilet.Commode = new Collection<QOLACheckboxModel>();
+                l_Toilet.Bedpan = new Collection<QOLACheckboxModel>();
+                QolaCulture.InitToileting(ref l_Toilet);
+                l_Model.Toileting = l_Toilet;
+
+                var l_Sensory = new CarePlanSensoryAbilitiesModel();
+                l_Sensory.Vision = new Collection<QOLACheckboxModel>();
+                l_Sensory.Hearing = new Collection<QOLACheckboxModel>();
+                l_Sensory.Communication = new Collection<QOLACheckboxModel>();
+                QolaCulture.InitSensoryAbilities(ref l_Sensory);
+                l_Model.SensoryAbilities = l_Sensory;
+
+                var l_SpecialEquipment = new CarePlanSpecialEquipmentModel();
+                l_SpecialEquipment.SpecialEquipment = new Collection<QOLACheckboxModel>();
+                QolaCulture.InitSpecialEquipment(ref l_SpecialEquipment);
+                l_Model.SpecialEquipment = l_SpecialEquipment;
+
+
+                var l_VitalSigns = new CarePlanVitalSignsModel(); l_Model.VitalSigns = l_VitalSigns;
+                var l_Mobility = new CarePlanMobilityModel(); ; l_Model.Mobility = l_Mobility;
+                var l_Safety = new CarePlanSafetyModel(); ; l_Model.Safety = l_Safety;
+                var l_MealEscort = new CarePlanMealEscortModel(); ; l_Model.MealEscort = l_MealEscort;
+                var l_Orientation = new CarePlanOrientationModel(); ; l_Model.Orientation = l_Orientation;
+                var l_Meals = new CarePlanMealsModel(); ; l_Model.Meals = l_Meals;
+                var l_Medication = new CarePlanMedication(); ; l_Model.Medication = l_Medication;
+                var l_WoundCare = new CarePlanWoundCareModel(); ; l_Model.WoundCare = l_WoundCare;
+                var l_SkinCare = new CarePlanSkinCareModel(); ; l_Model.SkinCare = l_SkinCare;
+                var l_SpecialNeeds = new CarePlanSpecialNeedsModel(); ; l_Model.SpecialNeeds = l_SpecialNeeds;
+                var l_FamilySupportModel = new CarePlanFamilySupportModel(); ; l_Model.FamilySupportModel = l_FamilySupportModel;
+                var l_Immunization = new CarePlanImmunizationModel(); ; l_Model.Immunization = l_Immunization;
+                var l_InfectiousDiseases = new CarePlanInfectiousDiseasesModel(); ; l_Model.InfectiousDiseases = l_InfectiousDiseases;
+
+
+
                 careplan.Add(l_Model);
             }
             l_Model = careplan[0];
