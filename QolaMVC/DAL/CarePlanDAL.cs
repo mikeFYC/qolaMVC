@@ -704,7 +704,7 @@ namespace QolaMVC.DAL
                         l_Assessment.SpecialEquipment.Details = Convert.ToString(dataReceive.Tables[0].Rows[index]["Details"]);
 
                         l_Assessment.FamilySupportModel.FamilyMeeting = Convert.ToString(dataReceive.Tables[0].Rows[index]["FamilyMeeting"]);
-                        l_Assessment.FamilySupportModel.FamilyInvolvement = Convert.ToString(dataReceive.Tables[0].Rows[index]["FamilyInvolvement"]);
+                        l_Assessment.FamilySupportModel.FamilyInvolvement = Convert.ToString(dataReceive.Tables[0].Rows[index]["FamilyInvolvment"]);
 
                         l_Assessment.Immunization.TB = Convert.ToString(dataReceive.Tables[0].Rows[index]["TB"]);
                         l_Assessment.Immunization.TBDate = Convert.ToString(dataReceive.Tables[0].Rows[index]["TB_Date"]);
