@@ -68,9 +68,9 @@
         $.get("/Residents/get_Leaving_date", {}, function (data) {
             if (data != "") {
 
-                $.get("/Residents/get_Resident_Away_Schedule", {}, function (data) {
-                    if (data != "") {
-                        $('#Resident_Away_Table_Id').val(data);
+                $.get("/Residents/get_Resident_Away_Schedule", {}, function (data2) {
+                    if (data2 != "") {
+                        $('#Resident_Away_Table_Id').val(data2);
                     }
                 });
 
@@ -1016,6 +1016,13 @@
             if (a == "YES") {
                 $.get("/Residents/get_Leaving_date", {}, function (data) {
                     if (data != "") {
+
+                        $.get("/Residents/get_Resident_Away_Schedule", {}, function (data2) {
+                            if (data2 != "") {
+                                $('#Resident_Away_Table_Id').val(data2);
+                            }
+                        });
+
                         var a = $('#leavingDate_Hospitalization');
                         a[0].value = data;
                     }

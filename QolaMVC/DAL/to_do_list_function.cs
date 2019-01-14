@@ -40,8 +40,15 @@ namespace QolaMVC.DAL
                     l_J.first_name = rd[3];
                     l_J.last_name = rd[4];
                     l_J.gender = rd[5];
-                    l_J.hospital_leaving = rd[6];
-                    l_J.hospital_expected_return = rd[7];
+                    l_J.hospital_leaving = DateTime.Parse(rd[6].ToString()).ToString("yyyy-MM-dd");
+                    if (rd[7].ToString() == "")
+                    {
+                        l_J.hospital_expected_return = rd[7].ToString();
+                    } 
+                    else
+                    {
+                        l_J.hospital_expected_return = DateTime.Parse(rd[7].ToString()).ToString("yyyy-MM-dd");
+                    }
 
                     l_Json.Add(l_J);
                 }
@@ -80,8 +87,15 @@ namespace QolaMVC.DAL
                     l_J.first_name = rd[3];
                     l_J.last_name = rd[4];
                     l_J.gender = rd[5];
-                    l_J.hospital_leaving = rd[6];
-                    l_J.hospital_expected_return = rd[7];
+                    l_J.hospital_leaving = DateTime.Parse(rd[6].ToString()).ToString("yyyy-MM-dd");
+                    if (rd[7].ToString() == "")
+                    {
+                        l_J.hospital_expected_return = rd[7].ToString();
+                    }
+                    else
+                    {
+                        l_J.hospital_expected_return = DateTime.Parse(rd[7].ToString()).ToString("yyyy-MM-dd");
+                    }
 
                     l_Json.Add(l_J);
                 }
