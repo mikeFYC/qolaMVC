@@ -493,6 +493,7 @@
     }
 
     function saveButton_Hospitalization() {
+        var RATable_ID = $('#Resident_Away_Table_Id').val();
         var group = $("a[class='nav-link active']")
         var id = group[0].id;
         var move_out_reason = group[0].innerHTML;
@@ -509,7 +510,7 @@
             tempAlert("Leaving Date cannot be empty", 2000);
         }
         else {
-            $.post("/Residents/saveButton_Hospitalization", { leaving: a, ExpectedReturn: b, ActualReturn: c, notes: d, reason: move_out_reason, suiteno: suitenos }, function (data) {
+            $.post("/Residents/saveButton_Hospitalization", { leaving: a, ExpectedReturn: b, ActualReturn: c, notes: d, reason: move_out_reason, suiteno: suitenos, Resident_Away_Table_ID: RATable_ID}, function (data) {
                 if (data == 1) {
                     //location.reload();
                     //alert("Update successfully");

@@ -67,10 +67,19 @@
 
         $.get("/Residents/get_Leaving_date", {}, function (data) {
             if (data != "") {
+
+                $.get("/Residents/get_Resident_Away_Schedule", {}, function (data) {
+                    if (data != "") {
+                        $('#Resident_Away_Table_Id').val(data);
+                    }
+                });
+
                 var a = $('#leavingDate_Hospitalization');
                 a[0].value = data;
             }
         });
+
+
     }
 
     function moveoutbuttonclick() {
@@ -309,7 +318,7 @@
 
                                     </div>
                                     <br />
-                                    <select name="" id="select_option_in_edit_form" class="form-control" style="min-width:40vw">
+                                    <select name="" id="select_option_in_edit_form" class="form-control" style="min-width:40vw;display:none;">
                                         <option value="">----- Choose the Last Action you want to undo -----</option>
                                         <option value="only_delete">Application Suite</option>
                                         <option value="delete_and_update_move_out">Change Occupancy/Internal Transfer/Transfer to ASC HOME</option>
@@ -321,7 +330,7 @@
                                     <button class="btn btn-primary" id="BACK_Button_in_Edit" onclick="Back_in_edit_button_click()">
                                         BACK
                                     </button>
-                                    <button class="btn btn-danger" id="SAVE_Button_in_Edit" onclick="UNDO_in_edit_button_click()">
+                                    <button class="btn btn-danger" id="SAVE_Button_in_Edit" onclick="UNDO_in_edit_button_click()" style="display:none;">
                                         UNDO
                                     </button>
                                     <button class="btn btn-danger" id="Edit_Button" onclick="Edit_Button_Save()">
@@ -923,6 +932,7 @@
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="pills-Hospitalization" role="tabpanel" aria-labelledby="pills-contact-tab">
+                                            <input type="hidden" id="Resident_Away_Table_Id" value="0"/>
                                             <br>
                                             <br>
                                             <div class="row" style="margin-left:2%;">

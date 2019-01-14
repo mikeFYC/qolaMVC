@@ -354,7 +354,7 @@ namespace QolaMVC.Controllers
         }
 
         [HttpPost]
-        public int saveButton_Hospitalization(string leaving, string ExpectedReturn, string ActualReturn, string notes, string reason, string suiteno)
+        public int saveButton_Hospitalization(string leaving, string ExpectedReturn, string ActualReturn, string notes, string reason, string suiteno,int Resident_Away_Table_ID)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -371,7 +371,7 @@ namespace QolaMVC.Controllers
             
             else
             {
-                int returnint = update_Suite_Handler_Table.Hospitalization(user.ID, home.Id, resident.ID, suiteno, resident.Occupancy, leaving, ExpectedReturn, ActualReturn, notes, DateTime.Now, reason);
+                int returnint = update_Suite_Handler_Table.Hospitalization(user.ID, home.Id, resident.ID, suiteno, resident.Occupancy, leaving, ExpectedReturn, ActualReturn, notes, DateTime.Now, reason, Resident_Away_Table_ID);
                 return returnint;
             }
         }
@@ -423,6 +423,19 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             TempData.Keep("Resident");
             string returnleaving = update_Suite_Handler_Table.get_Leaving_date(resident.ID);
+            return returnleaving;
+        }
+
+        [HttpGet]
+        public string get_Resident_Away_Schedule()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            string returnleaving = update_Suite_Handler_Table.get_Resident_Away_Schedule(resident.ID);
             return returnleaving;
         }
 

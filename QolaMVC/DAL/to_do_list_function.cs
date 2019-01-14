@@ -16,18 +16,18 @@ namespace QolaMVC.DAL
             conn.ConnectionString = Constants.ConnectionString.PROD;
             conn.Open();
             SqlCommand cmd = new SqlCommand();
-            cmd.CommandText =   " select ROW_NUMBER() over(order by SH.fd_hospital_leaving) as number, " +
-                                " SH.fd_resident_id, S.fd_suite_no, R.fd_first_name, R.fd_last_name, " +
-                                " R.fd_gender, SH.fd_hospital_leaving, fd_hospital_expected_return" +
-                                " from[dbo].[tbl_Suite_Handler] SH" +
-                                " join tbl_Resident R on SH.fd_resident_id=R.fd_id" +
-                                " join tbl_Suite S on S.fd_id= SH.fd_suite_id" +
-                                " where SH.fd_home_id=" + homeid +
-                                " and SH.fd_pass_away_date is null " +
-                                " and SH.fd_move_out_date is null  " +
-                                " and SH.[fd_hospital_leaving] is not null" +
-                                " and GETDATE()>SH.[fd_hospital_leaving]" +
-                                " and GETDATE()<isNULL(SH.[fd_hospital_return],'2200-09-01')";
+            cmd.CommandText = " select ROW_NUMBER() over(order by RA.fd_leaving_date) as number, " +
+                            " RA.fd_resident_id, S.fd_suite_no, R.fd_first_name, R.fd_last_name, " +
+                            " R.fd_gender, RA.fd_leaving_date, RA.fd_expect_return_date" +
+                            " from[dbo].[tbl_Suite_Handler] SH" +
+                            " join tbl_Resident R on SH.fd_resident_id=R.fd_id" +
+                            " join tbl_Suite S on S.fd_id= SH.fd_suite_id" +
+                            " join tbl_Resident_Away_Schedule RA on RA.fd_resident_id=SH.fd_resident_id" +
+                            " where RA.fd_home_id=" + homeid +
+                            " and SH.fd_pass_away_date is null " +
+                            " and isNULL(SH.fd_move_out_date,'2200-01-01 00:00:00.000')>GETDATE()" +
+                            " and GETDATE()>RA.fd_leaving_date" +
+                            " and GETDATE()<isNULL(RA.fd_actual_return_date,'2200-09-01');";
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
             if (rd.HasRows)
@@ -56,17 +56,18 @@ namespace QolaMVC.DAL
             conn.ConnectionString = Constants.ConnectionString.PROD;
             conn.Open();
             SqlCommand cmd = new SqlCommand();
-            cmd.CommandText = " select ROW_NUMBER() over(order by SH.fd_hospital_leaving) as number, " +
-                                " SH.fd_resident_id, S.fd_suite_no, R.fd_first_name, R.fd_last_name, " +
-                                " R.fd_gender, SH.fd_hospital_leaving, fd_hospital_expected_return" +
-                                " from[dbo].[tbl_Suite_Handler] SH" +
-                                " join tbl_Resident R on SH.fd_resident_id=R.fd_id" +
-                                " join tbl_Suite S on S.fd_id= SH.fd_suite_id" +
-                                " where SH.fd_home_id=" + homeid +
-                                " and SH.fd_pass_away_date is null " +
-                                " and SH.fd_move_out_date is null  " +
-                                " and SH.[fd_hospital_leaving] is not null" +
-                                " and DATEADD(d, 1, EOMONTH(current_timestamp))<isNULL(SH.[fd_hospital_return],'2200-09-01')";
+            cmd.CommandText = " select ROW_NUMBER() over(order by RA.fd_leaving_date) as number, " +
+                            " RA.fd_resident_id, S.fd_suite_no, R.fd_first_name, R.fd_last_name, " +
+                            " R.fd_gender, RA.fd_leaving_date, RA.fd_expect_return_date" +
+                            " from[dbo].[tbl_Suite_Handler] SH" +
+                            " join tbl_Resident R on SH.fd_resident_id=R.fd_id" +
+                            " join tbl_Suite S on S.fd_id= SH.fd_suite_id" +
+                            " join tbl_Resident_Away_Schedule RA on RA.fd_resident_id=SH.fd_resident_id" +
+                            " where RA.fd_home_id=" + homeid +
+                            " and SH.fd_pass_away_date is null " +
+                            " and isNULL(SH.fd_move_out_date,'2200-01-01 00:00:00.000')>DATEADD(d, 1, EOMONTH(current_timestamp))" +
+                            " and DATEADD(d, 1, EOMONTH(current_timestamp))>RA.fd_leaving_date" +
+                            " and DATEADD(d, 1, EOMONTH(current_timestamp))<isNULL(RA.fd_actual_return_date,'2200-09-01');";
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
             if (rd.HasRows)

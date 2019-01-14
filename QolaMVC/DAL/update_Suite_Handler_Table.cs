@@ -168,7 +168,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static int Hospitalization(int userid, int homeid, int redidentid, string suiteno, int occupancy, string leaving, string ExpectedReturn, string ActualReturn, string notes, DateTime modify_on, string reason)
+        public static int Hospitalization(int userid, int homeid, int redidentid, string suiteno, int occupancy, string leaving, string ExpectedReturn, string ActualReturn, string notes, DateTime modify_on, string reason,int RATable_ID)
         {
             using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
             using (var cmdGARead = new SqlCommand("Suite_Handler_Hospitalization", conn)
@@ -188,6 +188,7 @@ namespace QolaMVC.DAL
                 cmdGARead.Parameters.AddWithValue("@notes", notes);
                 cmdGARead.Parameters.AddWithValue("@modify_on", modify_on);
                 cmdGARead.Parameters.AddWithValue("@reason", reason);
+                cmdGARead.Parameters.AddWithValue("@RATable_ID", RATable_ID);
                 cmdGARead.Parameters.Add("@returnint", SqlDbType.VarChar, 30);
                 cmdGARead.Parameters["@returnint"].Direction = ParameterDirection.Output;
                 cmdGARead.ExecuteNonQuery();
@@ -477,6 +478,30 @@ namespace QolaMVC.DAL
             conn.Open();
             SqlCommand cmd = new SqlCommand();
             cmd.CommandText = "select top(1)[fd_hospital_leaving] from [tbl_Suite_Handler] where [fd_hospital]='Y' and fd_resident_id="+ residentID + " order by fd_modified_on DESC";
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            if (rd.HasRows)
+                while (rd.Read())
+                {
+                    if (rd[0] == null || rd[0].ToString() == "")
+                        retu = "";
+                    else
+                        retu = rd[0].ToString();
+                }
+            conn.Close();
+            return retu;
+        }
+
+        public static string get_Resident_Away_Schedule(int residentID)
+        {
+            string retu = "";
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = " select top(1)RA.fd_id from tbl_Resident_Away_Schedule RA left join tbl_Suite_Handler SH on RA.fd_resident_id=SH.fd_resident_id"+
+                              " where RA.fd_actual_return_date is null and RA.fd_home_id = 15 and SH.fd_pass_away_date is null and fd_move_out_date is null"+
+                              " and RA.fd_resident_id="+residentID + " order by RA.fd_created_on DESC";
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
             if (rd.HasRows)
