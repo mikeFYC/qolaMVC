@@ -2005,7 +2005,7 @@ namespace QolaMVC.Controllers
             var user = (UserModel)TempData["User"];
             var home = (HomeModel)TempData["Home"];
             var resident = ResidentsDAL.GetResidentById(p_ResidentId);
-            var progressNotes = ProgressNotesDAL.GetProgressNotesCollections(resident.ID, DateTime.Now, DateTime.Now, "A");
+            //var progressNotes = ProgressNotesDAL.GetProgressNotesCollections(resident.ID, DateTime.Now, DateTime.Now, "A");
             ViewBag.Message = TempData["Message"];
             TempData["Resident"] = resident;
             TempData.Keep("User");
@@ -2014,7 +2014,7 @@ namespace QolaMVC.Controllers
             ViewBag.User = user;
             ViewBag.Home = home;
             ViewBag.Resident = resident;
-            ViewBag.ProgressNotes = progressNotes;
+            //ViewBag.ProgressNotes = progressNotes;
             ProgressNotesHelper.RegisterSession(resident);
             return RedirectToAction("CarePlan");
         }

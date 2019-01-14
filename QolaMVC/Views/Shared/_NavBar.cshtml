@@ -87,6 +87,71 @@
         font-weight:bold;
         
     }
+    .ToDoListNav {
+        margin-top: 0px !important;
+        color: black;
+        padding: 0px 10px 0px 20px !important;
+
+        height: 40px;
+    }
+    .ToDoListNav2 {
+        margin-top: 0px !important;
+        color: black;
+        padding: 0px 0px 0px 0px !important;
+        height:auto !important;
+    }
+    .badge_nav {
+        text-shadow: none;
+        font-family: wf_segoe-ui_light, wf_segoe-ui_normal, "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-weight: 600;
+        background-color: #e6e6e6;
+        font-size: 11px;
+        padding-left: 6px;
+        padding-right: 6px;
+        padding-bottom: 4px;
+        border-radius: 10px;
+    }
+    .one_nav {
+        width: 85% !important;
+        padding-left: 0.5vw;
+        padding-bottom: 0.8vw;
+        padding-top: 0.8vw;
+        padding-right: 0.5vw;
+        z-index: 0;
+        font-size: 0.9vw;
+    }
+    .noBOLDandSMALL{
+        font-weight:normal !important;
+        font-size:0.8vw !important;
+    }
+    .secondlayerinNAV {
+        width: 100%;
+    }
+    div[id="ToDoList_Nav_Modal"]  tbody tr { cursor: pointer; }
+
+    div[id="ToDoList_Nav_Modal"]  tbody tr:hover { background-color: grey; }
+
+        .miketable {
+            width: 100%;
+            color: black;
+        }
+
+        .miketable thead th {
+            padding: 1vw;
+        }
+
+        .miketable tbody tr {
+            height: 3vw;
+        }
+
+        .miketable tbody tr td {
+            padding: 1vw;
+        }
+    #ToDoList_Nav_Modal div[class="modal-body"] {
+        overflow: auto;
+        overflow-x: hidden;
+        max-height: 30vw;
+    }
 </style>
 <script>
     function mike_dropdown() {
@@ -96,6 +161,36 @@
         else {
             document.getElementById('dropdown_li').className = 'nav-item dropdown';
         }
+    }
+
+    function mike_dropdown_todolist() {
+        if (document.getElementById('dropdown_li_todolist').className != 'nav-item dropdown show') {
+            document.getElementById('dropdown_li_todolist').className = 'nav-item dropdown show';
+        }
+        else {
+            document.getElementById('dropdown_li_todolist').className = 'nav-item dropdown';
+        }
+
+        var number = $('span[class="badge_nav"]');
+        $.get("/Home/Number", {}, function (data) {
+            for (a = 0; a < 26; a++) {
+                if (data[a].Value != 0) {
+                    number[a].innerHTML = data[a].Value;
+                }
+            }
+        });   
+    }
+    function nextlayer_nav(ee) {
+
+        if (ee.parentElement.nextElementSibling.style.display != 'block') {
+            $('.ToDoListNav2').hide()
+            ee.parentElement.nextElementSibling.style.display = 'block';
+        }
+        else {
+            ee.parentElement.nextElementSibling.style.display = 'none';
+        }
+        
+
     }
 </script>
 
@@ -177,59 +272,160 @@
                         }
                         else
                         {
-                                <li class="nav-item">
-                                    <a href="/Home/ResidentMenu/?p_ResidentId=@ViewBag.Resident.ID" class="nav-link" style="display:inline-block;">
-                                        <span style="display:inline-block;">@QolaMVC.Resources.Text.Profile</span>
-                                        <span class="icon-thumbnail" style="display:inline-block;"><i class="fa fa-user"></i></span>
-                                    </a>
-                                </li>
-                            }
-                            
-                        }
-                    }
-
-                            @*<li class="">
-                        <a href="#">
-                            <span class="title">Todo List</span>
-                        </a>
-                        <span class="icon-thumbnail "><i class="pg-social"></i></span>
-                    </li>*@
-
-                            <li class="nav-item dropdown" id="dropdown_li">
-
-                                @*property inside <a>: data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"*@
-
-                                <a class="nav-link" id="navbarDropdown" role="button" style="display:inline-block;" onclick="mike_dropdown()">
-                                    <span style="display:inline-block;">@QolaMVC.Resources.Text.Masters</span>
-                                    <span class="icon-thumbnail" style="display:inline-block;"><i class="pg-grid"></i></span>
+                            <li class="nav-item">
+                                <a href="/Home/ResidentMenu/?p_ResidentId=@ViewBag.Resident.ID" class="nav-link" style="display:inline-block;">
+                                    <span style="display:inline-block;">@QolaMVC.Resources.Text.Profile</span>
+                                    <span class="icon-thumbnail" style="display:inline-block;"><i class="fa fa-user"></i></span>
                                 </a>
-                                <div class="dropdown-menu" id="master_dropdown" aria-labelledby="navbarDropdown">
-                                    @{
-                                        var tevar = TempData["User"] as UserModel;
-                                        TempData.Keep("User");
-                                        if (tevar.UserType == 1)
-                                        {
-                                            <a class="dropdown-item" href="~/Master/Buildings">@QolaMVC.Resources.Text.Buildings</a>
-                                            <a class="dropdown-item" href="~/Master/Users">@QolaMVC.Resources.Text.Users</a>
-                                            <a class="dropdown-item" href="~/Allergy/List">@QolaMVC.Resources.Text.Allergy</a>
-                                            <a class="dropdown-item" href="~/Master/ActivityCategory">@QolaMVC.Resources.Text.ActivityCategory</a>
-                                            <a class="dropdown-item" href="~/Master/Activity">@QolaMVC.Resources.Text.Activity</a>
-                                            <a class="dropdown-item" href="~/DineTime/List">@QolaMVC.Resources.Text.DineTime</a>
-                                            <a class="dropdown-item" href="~/SpecialDiet/List">@QolaMVC.Resources.Text.SpecialDiet</a>
-                                            <a class="dropdown-item" href="~/Suite/List">@QolaMVC.Resources.Text.Suite</a>
-                                            <a class="dropdown-item" href="~/Venue/List">@QolaMVC.Resources.Text.Venue</a>
-                                        }
-                                        else if (tevar.UserType == 3 || tevar.UserType == 21 || tevar.UserType == 2)
-                                        {
-                                            <a class="dropdown-item" href="~/Master/Users">@QolaMVC.Resources.Text.Users</a>
-                                        }
-                                    }
-                                    <a class="dropdown-item" href="~/Master/ChangePassword">@QolaMVC.Resources.Text.ChangePassword</a>
-                                    @*<a class="dropdown-item" href="#" data-toggle="modal" data-target="#supportModal">Support</a>*@
-                                </div>
                             </li>
+                        }
 
-                        </ul>
+                    }
+                }
+
+                @*<li class="">
+            <a href="#">
+                <span class="title">Todo List</span>
+            </a>
+            <span class="icon-thumbnail "><i class="pg-social"></i></span>
+        </li>*@
+
+                <li class="nav-item dropdown" id="dropdown_li">
+
+                    @*property inside <a>: data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"*@
+
+                    <a class="nav-link" id="navbarDropdown" role="button" style="display:inline-block;" onclick="mike_dropdown()">
+                        <span style="display:inline-block;">@QolaMVC.Resources.Text.Masters</span>
+                        <span class="icon-thumbnail" style="display:inline-block;"><i class="pg-grid"></i></span>
+                    </a>
+                    <div class="dropdown-menu" id="master_dropdown" aria-labelledby="navbarDropdown">
+                        @{
+                            var tevar = TempData["User"] as UserModel;
+                            TempData.Keep("User");
+                            if (tevar.UserType == 1)
+                            {
+                                <a class="dropdown-item" href="~/Master/Buildings">@QolaMVC.Resources.Text.Buildings</a>
+                                <a class="dropdown-item" href="~/Master/Users">@QolaMVC.Resources.Text.Users</a>
+                                <a class="dropdown-item" href="~/Allergy/List">@QolaMVC.Resources.Text.Allergy</a>
+                                <a class="dropdown-item" href="~/Master/ActivityCategory">@QolaMVC.Resources.Text.ActivityCategory</a>
+                                <a class="dropdown-item" href="~/Master/Activity">@QolaMVC.Resources.Text.Activity</a>
+                                <a class="dropdown-item" href="~/DineTime/List">@QolaMVC.Resources.Text.DineTime</a>
+                                <a class="dropdown-item" href="~/SpecialDiet/List">@QolaMVC.Resources.Text.SpecialDiet</a>
+                                <a class="dropdown-item" href="~/Suite/List">@QolaMVC.Resources.Text.Suite</a>
+                                <a class="dropdown-item" href="~/Venue/List">@QolaMVC.Resources.Text.Venue</a>
+                            }
+                            else if (tevar.UserType == 3 || tevar.UserType == 21 || tevar.UserType == 2)
+                            {
+                                <a class="dropdown-item" href="~/Master/Users">@QolaMVC.Resources.Text.Users</a>
+                            }
+                        }
+                        <a class="dropdown-item" href="~/Master/ChangePassword">@QolaMVC.Resources.Text.ChangePassword</a>
+                        @*<a class="dropdown-item" href="#" data-toggle="modal" data-target="#supportModal">Support</a>*@
+                    </div>
+                </li>
+                @{
+                    var ControllerName = ViewContext.RouteData.Values["controller"].ToString();
+                    var ActioneName = ViewContext.RouteData.Values["action"].ToString();
+                    if (TempData["ToDoListinNav"] != null && ActioneName!="Menu")
+                    {
+
+                        <li class="nav-item dropdown" id="dropdown_li_todolist">
+
+                            @*property inside <a>: data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"*@
+
+                            <a class="nav-link" id="navbarDropdown_todolist" role="button" style="display:inline-block;" onclick="mike_dropdown_todolist()">
+                                <span style="display:inline-block;">ToDoList</span>
+                                <span class="icon-thumbnail" style="display:inline-block;"><i class="pg-grid"></i></span>
+                            </a>
+                            <div class="dropdown-menu" id="master_dropdown_todolist" aria-labelledby="navbarDropdown_todolist" style="min-width:240px !important">
+                                <div class="float_box" id="ggg_nav">
+                                    <ul class="list-group" id="to_do_list_1_nav">
+                                        <li class="list-group-item ToDoListNav" id="DU_nav"><a class="one_nav" style="cursor:pointer;" onclick="nextlayer_nav(this)">Dietary Update</a><span class="badge_nav">0</span></li>
+                                        <li class="list-group-item ToDoListNav2" id="DU_nav_nextlayer" style="display:none;">
+                                            <ul class="list-group secondlayerinNAV" id="DU_ul_nav">
+                                                <li class="list-group-item ToDoListNav" type="Dietary Update">
+                                                    <a class="one_nav noBOLDandSMALL" href="#" data-toggle="modal" data-target="#ToDoList_Nav_Modal" style="color:black" onclick="DU_click_nav(this)"> Dietary Update</a>
+                                                    <span class="badge_nav">0</span>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="list-group-item ToDoListNav" id="HO_nav"><a class="one_nav" style="cursor:pointer;" onclick="nextlayer_nav(this)">Hospitalization</a><span class="badge_nav">0</span></li>
+                                        <li class="list-group-item ToDoListNav2" id="HO_nav_nextlayer" style="display:none;">
+                                            <ul class="list-group secondlayerinNAV" id="HO_ul_nav">
+                                                <li class="list-group-item ToDoListNav" type="Resident Away">
+                                                    <a class="one_nav noBOLDandSMALL" href="#" data-toggle="modal" data-target="#ToDoList_Nav_Modal" style="color:black" onclick="HO_click_nav(this)"> Resident Away</a>
+                                                    <span class="badge_nav">0</span>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="list-group-item ToDoListNav" id="IA_nav"><a class="one_nav" style="cursor:pointer;" onclick="nextlayer_nav(this)">Initial Assessments</a><span class="badge_nav">0</span></li>
+                                        <li class="list-group-item ToDoListNav2" id="IA_nav_nextlayer" style="display:none;">
+                                            <ul class="list-group secondlayerinNAV" id="IA_ul_nav">
+                                                <li class="list-group-item ToDoListNav" type="Initial Activity Assessment" id="IAA_nav"><a class="one_nav noBOLDandSMALL" href="#" data-toggle="modal" data-target="#ToDoList_Nav_Modal" style="color:black" onclick="IAA_click_nav(this)"> Activity Assessment</a><span class="badge_nav">0</span></li>
+                                                <li class="list-group-item ToDoListNav" type="Initial Dietary Assessment" id="IDA_nav"><a class="one_nav noBOLDandSMALL" href="#" data-toggle="modal" data-target="#ToDoList_Nav_Modal" style="color:black" onclick="IDA_click_nav(this)"> Dietary Assessment</a><span class="badge_nav">0</span></li>
+                                                <li class="list-group-item ToDoListNav" type="Initial Fall Risk Assessment" id="IFRA_nav"><a class="one_nav noBOLDandSMALL" href="#" data-toggle="modal" data-target="#ToDoList_Nav_Modal" style="color:black" onclick="IFRA_click_nav(this)"> Fall Risk Assessment</a><span class="badge_nav">0</span></li>
+                                                <li class="list-group-item ToDoListNav" type="Initial Resident Care Assessment" id="IRCA_nav"><a class="one_nav noBOLDandSMALL" href="#" data-toggle="modal" data-target="#ToDoList_Nav_Modal" style="color:black" onclick="IRCA_click_nav(this)"> Resident Care Assessment</a><span class="badge_nav">0</span></li>
+                                            </ul>
+                                        </li>
+                                        <li class="list-group-item ToDoListNav" id="PN_nav"><a class="one_nav" style="cursor:pointer;" onclick="nextlayer_nav(this)">Progress Notes</a><span class="badge_nav">0</span></li>
+                                        <li class="list-group-item ToDoListNav2" id="PN_nav_nextlayer" style="display:none;">
+                                            <ul class="list-group secondlayerinNAV" id="PN_ul_nav">
+                                                <li class="list-group-item ToDoListNav" type="Progress Notes" id="PN_nav">
+                                                    <a class="one_nav noBOLDandSMALL" href="#" data-toggle="modal" data-target="#ToDoList_Nav_Modal" style="color:black" onclick="PN_click_nav(this)"> Progress Notes</a><span class="badge_nav">0</span>
+                                                </li>
+                                                @*<li type="Acknowledge Notes" id="AN"><a href="#" data-toggle="modal" data-target="#Acknowledge_Notes" style="color:black" onclick="AN_click_nav(this)"><span class="badge_nav">0</span> Acknowledge Notes</a></li>*@
+                                            </ul>
+                                        </li>
+                                        <li class="list-group-item ToDoListNav" id="RA_nav"><a class="one_nav" style="cursor:pointer;" onclick="nextlayer_nav(this)">Reassessments</a><span class="badge_nav">0</span></li>
+                                        <li class="list-group-item ToDoListNav2" id="RA_nav_nextlayer" style="display:none;">
+
+                                            <ul class="list-group secondlayerinNAV" id="RA_ul_nav">
+                                                <li class="list-group-item ToDoListNav" type="Acticity Assessment" id="RAA_nav"><a class="one_nav noBOLDandSMALL" href="#" data-toggle="modal" data-target="#ToDoList_Nav_Modal" style="color:black" onclick="RAA_click_nav(this)"> Acticity Assessment</a><span class="badge_nav">0</span></li>
+                                                <li class="list-group-item ToDoListNav" type="Dietary Assessment" id="RDA_nav"><a class="one_nav noBOLDandSMALL" href="#" data-toggle="modal" data-target="#ToDoList_Nav_Modal" style="color:black" onclick="RDA_click_nav(this)"> Dietary Assessment</a><span class="badge_nav">0</span></li>
+                                                <li class="list-group-item ToDoListNav" type="Fall Risk Assessment" id="RFRA_nav"><a class="one_nav noBOLDandSMALL" href="#" data-toggle="modal" data-target="#ToDoList_Nav_Modal" style="color:black" onclick="RFRA_click_nav(this)"> Fall Risk Assessment</a><span class="badge_nav">0</span></li>
+                                                <li class="list-group-item ToDoListNav" type="Resident Care Assessment" id="RRCA_nav"><a class="one_nav noBOLDandSMALL" href="#" data-toggle="modal" data-target="#ToDoList_Nav_Modal" style="color:black" onclick="RRCA_click_nav(this)"> Resident Care Assessment</a><span class="badge_nav">0</span></li>
+                                            </ul>
+
+                                        </li>
+                                        <li class="list-group-item ToDoListNav" id="RI_nav"><a class="one_nav" style="cursor:pointer;" onclick="nextlayer_nav(this)">Resident Incidents</a><span class="badge_nav">0</span></li>
+                                        <li class="list-group-item ToDoListNav2" id="RI_nav_nextlayer" style="display:none;">
+                                            <ul class="list-group secondlayerinNAV" id="RI_ul_nav">
+                                                <li class="list-group-item ToDoListNav" type="Resident Fall"><a class="one_nav noBOLDandSMALL" href="#" data-toggle="modal" data-target="#ToDoList_Nav_Modal" style="color:black" onclick="RI_click_nav(this)"> Resident Fall</a><span class="badge_nav">0</span></li>
+                                            </ul>
+                                        </li>
+                                        <li class="list-group-item ToDoListNav" id="RB_nav"><a class="one_nav" style="cursor:pointer;" onclick="nextlayer_nav(this)">Residents Birthday</a><span class="badge_nav">0</span></li>
+                                        <li class="list-group-item ToDoListNav2" id="RB_nav_nextlayer" style="display:none;">
+                                            <ul class="list-group secondlayerinNAV" id="RB_ul_nav">
+                                                <li class="list-group-item ToDoListNav" type="Birthday"><a class="one_nav noBOLDandSMALL" href="#" data-toggle="modal" data-target="#ToDoList_Nav_Modal" style="color:black" onclick="RB_click_nav(this)"> Birthday</a><span class="badge_nav">0</span></li>
+                                            </ul>
+                                        </li>
+                                        <li class="list-group-item ToDoListNav" id="RP_nav"><a class="one_nav" style="cursor:pointer;" onclick="nextlayer_nav(this)">Residents Profile</a><span class="badge_nav">0</span></li>
+                                        <li class="list-group-item ToDoListNav2" id="RP_nav_nextlayer" style="display:none;">
+                                            <ul class="list-group secondlayerinNAV" id="RP_ul_nav">
+                                                <li class="list-group-item ToDoListNav" type="Profile Image"><a class="one_nav noBOLDandSMALL" href="#" data-toggle="modal" data-target="#ToDoList_Nav_Modal" style="color:black" onclick="RP_click_nav(this)"> Profile Image</a><span class="badge_nav">0</span></li>
+                                            </ul>
+                                        </li>
+                                        <li class="list-group-item ToDoListNav" id="NR_nav"><a class="one_nav" style="cursor:pointer;" onclick="nextlayer_nav(this)">New Resident</a><span class="badge_nav">0</span></li>
+                                        <li class="list-group-item ToDoListNav2" id="NR_nav_nextlayer" style="display:none;">
+                                            <ul class="list-group secondlayerinNAV" id="NR_ul_nav">
+                                                <li class="list-group-item ToDoListNav" type="New Resident"><a class="one_nav noBOLDandSMALL" href="#" data-toggle="modal" data-target="#ToDoList_Nav_Modal" style="color:black" onclick="NR_click_nav(this)"> New Resident</a><span class="badge_nav">0</span></li>
+                                            </ul>
+                                        </li>
+                                        <li class="list-group-item ToDoListNav" id="SAE_nav"><a class="one_nav" style="cursor:pointer;" onclick="nextlayer_nav(this)">Suggested Activity Event</a><span class="badge_nav">0</span></li>
+                                        <li class="list-group-item ToDoListNav2" id="SAE_nav_nextlayer" style="display:none;">
+                                            <ul class="list-group secondlayerinNAV" id="SA_ul_nav">
+                                                <li class="list-group-item ToDoListNav" type="Suggested Activity Event"><a class="one_nav noBOLDandSMALL" href="#" data-toggle="modal" data-target="#ToDoList_Nav_Modal" style="color:black" onclick="SA_click_nav(this)"> Suggested Activity Event</a><span class="badge_nav">0</span></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                    TempData.Keep("ToDoListinNav");
+                }
+
+            </ul>
 
             <div class="clearfix"></div>
         </div>
@@ -314,6 +510,31 @@
     </div>
 </div>
 
+
+<div class="modal fade" id="ToDoList_Nav_Modal" role="dialog" style="right:0">
+    <div class="modal-dialog" style="left:0;right:0;max-width:100%;width:60vw;">
+
+        <!-- Modal content-->
+        <div class="modal-content" style="">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+                <br>
+            </div>
+            <div class="modal-body">
+                <table class="miketable table-bordered">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script>
     //function nav_profile_button(ee) {
     //    var id = document.getElementById("tempdata_residentid").innerHTML;
@@ -358,5 +579,463 @@
         });
     }
 
+
+    function DU_click_nav(ee) {
+        ee.parentElement.parentElement.parentElement.style.display = "none";
+        $('#dropdown_li_todolist').removeClass('show');
+        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
+        $('div[id="ToDoList_Nav_Modal"] tbody').empty();
+        $('div[id="ToDoList_Nav_Modal"] thead').empty();
+        $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Dietary Update');
+        $('div[id="ToDoList_Nav_Modal"] thead').append('<tr><th>S.No</th><th>Suite No</th><th>Name</th><th>Assessed Date</th><th></th></tr>');
+
+        $.get("/Home/DU_CLICK", {}, function (data) {
+            var view = $('div[id="ToDoList_Nav_Modal"] tbody');
+            for (var i = 0; i < data.length; i++) {
+                view.append(
+                    "<tr name='" + data[i][1].Value + "' da='" + data[i][2].Value + "'>" +
+                    "<td>" + data[i][0].Value + " <\/td>" +
+                    "<td>" + data[i][3].Value + " <\/td>" +
+                    "<td>" + data[i][4].Value + " " + data[i][5].Value + " <\/td>" +
+                    "<td>" + data[i][6].Value + " <\/td>" +
+                    "<td>" +
+                    "<button type=\"button\" class=\"btn btn-primary\" onclick=\"window.location.href='\/Assessments\/DietaryHistory3\/?p_ResidentId=" + data[i][1].Value + "&da=" + data[i][2].Value + "'\">View<\/button>" +
+                    "<\/td>" +
+                    "<\/tr>");
+            }
+        });
+    }
+
+    function HO_click_nav(ee) {
+        ee.parentElement.parentElement.parentElement.style.display = "none";
+        $('#dropdown_li_todolist').removeClass('show');
+        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
+        $('div[id="ToDoList_Nav_Modal"] tbody').empty();
+        $('div[id="ToDoList_Nav_Modal"] thead').empty();
+        $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Resident Away');
+        $('div[id="ToDoList_Nav_Modal"] thead').append('<tr><th>S.No</th><th>Suite No</th><th>Name</th><th>Gender</th><th>Leaving Date</th><th>Expected Return Date</th></tr>');
+
+        $.get("/Home/HO_CLICK", {}, function (data) {
+            var view = $('div[id="ToDoList_Nav_Modal"] tbody');
+            for (var i = 0; i < data.length; i++) {
+                view.append(
+                    "<tr onclick=\"window.location.href='\/Residents\/SuiteHandler2\/?p_ResidentId=" + data[i][1].Value + "'\" name='" + data[i][1].Value + "'>" +
+                    "<td>" + data[i][0].Value + " <\/td>" +
+                    "<td>" + data[i][2].Value + " <\/td>" +
+                    "<td>" + data[i][3].Value + " " + data[i][4].Value + " <\/td>" +
+                    "<td>" + data[i][5].Value + " <\/td>" +
+                    "<td>" + data[i][6].Value + " <\/td>" +
+                    "<td>" + data[i][7].Value + " <\/td>" +
+                    "<\/tr>");
+            }
+        });
+    }
+
+    function IAA_click_nav(ee) {
+        ee.parentElement.parentElement.parentElement.style.display = "none";
+        $('#dropdown_li_todolist').removeClass('show');
+        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
+        $('div[id="ToDoList_Nav_Modal"] tbody').empty();
+        $('div[id="ToDoList_Nav_Modal"] thead').empty();
+        $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Initial Activity Assessment');
+        $('div[id="ToDoList_Nav_Modal"] thead').append('<tr><th>S.No</th><th>Suite No</th><th>Name</th><th>Move In Date</th><th>Assessed Date</th><th>Due Date</th></tr>');
+
+        $.get("/Home/IAA_CLICK", {}, function (data) {
+            var view = $('div[id="ToDoList_Nav_Modal"] tbody');
+            for (var i = 0; i < data.length; i++) {
+                view.append(
+                    "<tr onclick=\"window.location.href='\/Assessments\/Activity2\/?p_ResidentId=" + data[i][1].Value + "'\" name='" + data[i][1].Value + "'>" +
+                    "<td>" + data[i][0].Value + " <\/td>" +
+                    "<td>" + data[i][2].Value + " <\/td>" +
+                    "<td>" + data[i][3].Value + " " + data[i][4].Value + " <\/td>" +
+                    "<td>" + data[i][5].Value + " <\/td>" +
+                    "<td><\/td>" +
+                    "<td><\/td>" +
+                    "<\/tr>");
+            }
+        });
+    }
+
+    function IDA_click_nav(ee) {
+        ee.parentElement.parentElement.parentElement.style.display = "none";
+        $('#dropdown_li_todolist').removeClass('show');
+        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
+        $('div[id="ToDoList_Nav_Modal"] tbody').empty();
+        $('div[id="ToDoList_Nav_Modal"] thead').empty();
+        $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Initial Dietary Assessment');
+        $('div[id="ToDoList_Nav_Modal"] thead').append('<tr><th>S.No</th><th>Suite No</th><th>Name</th><th>Move In Date</th><th>Assessed Date</th><th>Due Date</th></tr>');
+        
+        $.get("/Home/IDA_CLICK", {}, function (data) {
+            var view = $('div[id="ToDoList_Nav_Modal"] tbody');
+            for (var i = 0; i < data.length; i++) {
+                view.append(
+                    "<tr onclick=\"window.location.href='\/Assessments\/DietaryHistory2\/?p_ResidentId=" + data[i][1].Value + "'\"  name='" + data[i][1].Value + "'>" +
+                    "<td>" + data[i][0].Value + " <\/td>" +
+                    "<td>" + data[i][2].Value + " <\/td>" +
+                    "<td>" + data[i][3].Value + " " + data[i][4].Value + " <\/td>" +
+                    "<td>" + data[i][5].Value + " <\/td>" +
+                    "<td><\/td>" +
+                    "<td><\/td>" +
+                    "<\/tr>");
+            }
+        });
+    }
+
+    function IFRA_click_nav(ee) {
+        ee.parentElement.parentElement.parentElement.style.display = "none";
+        $('#dropdown_li_todolist').removeClass('show');
+        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
+        $('div[id="ToDoList_Nav_Modal"] tbody').empty();
+        $('div[id="ToDoList_Nav_Modal"] thead').empty();
+        $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Initial Fall Risk Assessment');
+        $('div[id="ToDoList_Nav_Modal"] thead').append('<tr><th>S.No</th><th>Suite No</th><th>Name</th><th>Move In Date</th><th>Assessed Date</th><th>Due Date</th></tr>');
+
+        $.get("/Home/IFRA_CLICK", {}, function (data) {
+            var view = $('div[id="ToDoList_Nav_Modal"] tbody');
+            for (var i = 0; i < data.length; i++) {
+                view.append(
+                    "<tr onclick=\"window.location.href='\/Assessments\/FallRisk2\/?p_ResidentId=" + data[i][1].Value + "'\" name='" + data[i][1].Value + "'>" +
+                    "<td>" + data[i][0].Value + " <\/td>" +
+                    "<td>" + data[i][2].Value + " <\/td>" +
+                    "<td>" + data[i][3].Value + " " + data[i][4].Value + " <\/td>" +
+                    "<td>" + data[i][5].Value + " <\/td>" +
+                    "<td><\/td>" +
+                    "<td><\/td>" +
+                    "<\/tr>");
+            }
+        });
+    }
+
+    function IRCA_click_nav(ee) {
+        ee.parentElement.parentElement.parentElement.style.display = "none";
+        $('#dropdown_li_todolist').removeClass('show');
+        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
+        $('div[id="ToDoList_Nav_Modal"] tbody').empty();
+        $('div[id="ToDoList_Nav_Modal"] thead').empty();
+        $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Initial Resident Care Assessment');
+        $('div[id="ToDoList_Nav_Modal"] thead').append('<tr><th>S.No</th><th>Suite No</th><th>Name</th><th>Move In Date</th><th>Assessed Date</th><th>Due Date</th></tr>');
+
+        $.get("/Home/IRCA_CLICK", {}, function (data) {
+            var view = $('div[id="ToDoList_Nav_Modal"] tbody');
+            for (var i = 0; i < data.length; i++) {
+                view.append(
+                    "<tr onclick=\"window.location.href='\/Assessments\/CarePlan2\/?p_ResidentId=" + data[i][1].Value + "'\" name='" + data[i][1].Value + "'>" +
+                    "<td>" + data[i][0].Value + " <\/td>" +
+                    "<td>" + data[i][2].Value + " <\/td>" +
+                    "<td>" + data[i][3].Value + " " + data[i][4].Value + " <\/td>" +
+                    "<td>" + data[i][5].Value + " <\/td>" +
+                    "<td><\/td>" +
+                    "<td><\/td>" +
+                    "<\/tr>");
+            }
+        });
+    }
+
+    function PN_click_nav(ee) {
+        ee.parentElement.parentElement.parentElement.style.display = "none";
+        $('#dropdown_li_todolist').removeClass('show');
+        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
+        $('div[id="ToDoList_Nav_Modal"] tbody').empty();
+        $('div[id="ToDoList_Nav_Modal"] thead').empty();
+        $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Progress Note');
+        $('div[id="ToDoList_Nav_Modal"] thead').append('<tr><th>S.No</th><th> Suite No</th><th>Name</th><th>Move In Date</th><th>Assessed Date</th><th>Due Date</th></tr>');
+
+        $.get("/Home/PN_CLICK", {}, function (data) {
+            var view = $('div[id="ToDoList_Nav_Modal"] tbody');
+            for (var i = 0; i < data.length; i++) {
+                view.append(
+                    //"<tr onclick=\"window.location.href='\/Assessments\/ProgressNotes\/?p_ResidentId=" + data[i][1].Value + "'\"   name='" + data[i][1].Value + "'>" +
+                    "<tr onclick=\"window.location.href='\/Home\/ResidentMenu2\/?p_ResidentId=" + data[i][1].Value + "'\"   name='" + data[i][1].Value + "'>" +
+                    "<td>" + data[i][0].Value + " <\/td>" +
+                    "<td>" + data[i][2].Value + " <\/td>" +
+                    "<td>" + data[i][3].Value + " " + data[i][4].Value + " <\/td>" +
+                    "<td>" + data[i][5].Value + " <\/td>" +
+                    "<td>" + data[i][6].Value + "<\/td>" +
+                    "<td>" + data[i][7].Value + "<\/td>" +
+                    "<\/tr>");
+            }
+        });
+    }
+
+    function AN_click_nav(ee) {
+
+        ee.parentElement.parentElement.parentElement.style.display = "none";
+        $('#dropdown_li_todolist').removeClass('show');
+        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
+        $('div[id="ToDoList_Nav_Modal"] tbody').empty();
+        $('div[id="ToDoList_Nav_Modal"] thead').empty();
+        $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Acknowledge Note');
+        $('div[id="ToDoList_Nav_Modal"] thead').append('<tr><th>S.No</th><th> Suite No</th><th>Name</th><th>Move In Date</th><th>Progress Note Date</th><th style="width:11vw">Progress Note Tile</th><th></th></tr>');
+
+        $.get("/Home/AN_CLICK", {}, function (data) {
+            var view = $('div[id="ToDoList_Nav_Modal"] tbody');
+            for (var i = 0; i < data.length; i++) {
+                view.append(
+                    "<tr name='" + data[i][2].Value + "' PNid='" + data[i][1].Value + "'>" +
+                    "<td>" + data[i][0].Value + " <\/td>" +
+                    "<td>" + data[i][3].Value + " <\/td>" +
+                    "<td>" + data[i][4].Value + " " + data[i][5].Value + " <\/td>" +
+                    "<td>" + data[i][6].Value + " <\/td>" +
+                    "<td>" + data[i][7].Value + "<\/td>" +
+                    "<td>" + data[i][8].Value + "<\/td>" +
+                    "<td>" +
+                    "<button type=\"button\" class=\"btn btn-primary\" onclick=\"AN_view_click(this)\">View<\/button>" +
+                    "<\/td>" +
+                    "<\/tr>");
+            }
+        });
+    }
+
+    function RAA_click_nav(ee) {
+        ee.parentElement.parentElement.parentElement.style.display = "none";
+        $('#dropdown_li_todolist').removeClass('show');
+        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
+        $('div[id="ToDoList_Nav_Modal"] tbody').empty();
+        $('div[id="ToDoList_Nav_Modal"] thead').empty();
+        $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Re-Activity Assessment');
+        $('div[id="ToDoList_Nav_Modal"] thead').append('<tr><th>S.No</th><th> Suite No</th><th>Name</th><th>Assessed Date</th><th>Due Date</th><th>Due Days</th></tr>');
+
+        $.get("/Home/RAA_CLICK", {}, function (data) {
+            var view = $('div[id="ToDoList_Nav_Modal"] tbody');
+            for (var i = 0; i < data.length; i++) {
+                view.append(
+                    "<tr onclick=\"window.location.href='\/Assessments\/Activity2\/?p_ResidentId=" + data[i][1].Value + "'\" name='" + data[i][1].Value + "'>" +
+                    "<td>" + data[i][0].Value + " <\/td>" +
+                    "<td>" + data[i][2].Value + " <\/td>" +
+                    "<td>" + data[i][3].Value + " " + data[i][4].Value + " <\/td>" +
+                    //"<td>" + data[i][5].Value + " <\/td>" +
+                    "<td>" + data[i][6].Value + "<\/td>" +
+                    "<td>" + data[i][7].Value + "<\/td>" +
+                    "<td>" + data[i][8].Value + "<\/td>" +
+                    "<\/tr>");
+            }
+        });
+    }
+
+    function RDA_click_nav(ee) {
+        ee.parentElement.parentElement.parentElement.style.display = "none";
+        $('#dropdown_li_todolist').removeClass('show');
+        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
+        $('div[id="ToDoList_Nav_Modal"] tbody').empty();
+        $('div[id="ToDoList_Nav_Modal"] thead').empty();
+        $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Re-Dietary Assessment');
+        $('div[id="ToDoList_Nav_Modal"] thead').append('<tr><th>S.No</th><th> Suite No</th><th>Name</th><th>Assessed Date</th><th>Due Date</th><th>Due Days</th></tr>');
+
+
+        $.get("/Home/RDA_CLICK", {}, function (data) {
+            var view = $('div[id="ToDoList_Nav_Modal"] tbody');
+            for (var i = 0; i < data.length; i++) {
+                view.append(
+                    "<tr onclick=\"window.location.href='\/Assessments\/DietaryHistory2\/?p_ResidentId=" + data[i][1].Value + "'\"  name='" + data[i][1].Value + "'>" +
+                    "<td>" + data[i][0].Value + " <\/td>" +
+                    "<td>" + data[i][2].Value + " <\/td>" +
+                    "<td>" + data[i][3].Value + " " + data[i][4].Value + " <\/td>" +
+                    //"<td>" + data[i][5].Value + " <\/td>" +
+                    "<td>" + data[i][6].Value + "<\/td>" +
+                    "<td>" + data[i][7].Value + "<\/td>" +
+                    "<td>" + data[i][8].Value + "<\/td>" +
+                    "<\/tr>");
+            }
+        });
+    }
+
+    function RFRA_click_nav(ee) {
+        ee.parentElement.parentElement.parentElement.style.display = "none";
+        $('#dropdown_li_todolist').removeClass('show');
+        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
+        $('div[id="ToDoList_Nav_Modal"] tbody').empty();
+        $('div[id="ToDoList_Nav_Modal"] thead').empty();
+        $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Re-Fall Risk Assessment');
+        $('div[id="ToDoList_Nav_Modal"] thead').append('<tr><th>S.No</th><th> Suite No</th><th>Name</th><th>Assessed Date</th><th>Due Date</th><th>Due Days</th></tr>');
+
+        $.get("/Home/RFRA_CLICK", {}, function (data) {
+            var view = $('div[id="ToDoList_Nav_Modal"] tbody');
+            for (var i = 0; i < data.length; i++) {
+                view.append(
+                    "<tr onclick=\"window.location.href='\/Assessments\/FallRisk2\/?p_ResidentId=" + data[i][1].Value + "'\" name='" + data[i][1].Value + "'>" +
+                    "<td>" + data[i][0].Value + " <\/td>" +
+                    "<td>" + data[i][2].Value + " <\/td>" +
+                    "<td>" + data[i][3].Value + " " + data[i][4].Value + " <\/td>" +
+                    //"<td>" + data[i][5].Value + " <\/td>" +
+                    "<td>" + data[i][6].Value + "<\/td>" +
+                    "<td>" + data[i][7].Value + "<\/td>" +
+                    "<td>" + data[i][8].Value + "<\/td>" +
+                    "<\/tr>");
+            }
+        });
+    }
+
+    function RRCA_click_nav(ee) {
+        ee.parentElement.parentElement.parentElement.style.display = "none";
+        $('#dropdown_li_todolist').removeClass('show');
+        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
+        $('div[id="ToDoList_Nav_Modal"] tbody').empty();
+        $('div[id="ToDoList_Nav_Modal"] thead').empty();
+        $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Re-Resident Care Assessment');
+        $('div[id="ToDoList_Nav_Modal"] thead').append('<tr><th>S.No</th><th> Suite No</th><th>Name</th><th>Assessed Date</th><th>Due Date</th><th>Due Days</th></tr>');
+       
+        $.get("/Home/RRCA_CLICK", {}, function (data) {
+            var view = $('div[id="ToDoList_Nav_Modal"] tbody');
+            for (var i = 0; i < data.length; i++) {
+                view.append(
+                    "<tr onclick=\"window.location.href='\/Assessments\/CarePlan2\/?p_ResidentId=" + data[i][1].Value + "'\" name='" + data[i][1].Value + "'>" +
+                    "<td>" + data[i][0].Value + " <\/td>" +
+                    "<td>" + data[i][2].Value + " <\/td>" +
+                    "<td>" + data[i][3].Value + " " + data[i][4].Value + " <\/td>" +
+                    //"<td>" + data[i][5].Value + " <\/td>" +
+                    "<td>" + data[i][6].Value + "<\/td>" +
+                    "<td>" + data[i][7].Value + "<\/td>" +
+                    "<td>" + data[i][8].Value + "<\/td>" +
+                    "<\/tr>");
+            }
+        });
+    }
+
+    function RI_click_nav(ee) {
+        ee.parentElement.parentElement.parentElement.style.display = "none";
+        $('#dropdown_li_todolist').removeClass('show');
+        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width','90vw');
+        $('div[id="ToDoList_Nav_Modal"] tbody').empty();
+        $('div[id="ToDoList_Nav_Modal"] thead').empty();
+        $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Resident Fall');
+        $('div[id="ToDoList_Nav_Modal"] thead').append('<tr><th style="width:5vw;">Suite No</th><th style="width:5vw;"> Name</th><th style="width:12vw;">Detail</th><th style="width:40vw">Note</th><th>Action Note</th><th style="width:10vw;">Acknowledge</th></tr>');
+
+        $.get("/Home/RI_CLICK", {}, function (data) {
+            var view = $('div[id="ToDoList_Nav_Modal"] tbody');
+            for (var i = 0; i < data.length; i++) {
+                view.append(
+                    "<tr name='" + data[i][2].Value + "' PNid='" + data[i][1].Value + "'>" +
+                    "<td>" + data[i][3].Value + " <\/td>" +
+                    "<td>" + data[i][4].Value + " " + data[i][5].Value + " <\/td>" +
+                    "<td>Time: " + data[i][6].Value + "<br>Date: " + data[i][7].Value + "<br>" + data[i][8].Value + "<br>" + data[i][11].Value + " " + data[i][12].Value + " <\/td>" +
+                    "<td>" + data[i][9].Value + "<\/td>" +
+                    "<td><textarea class=\"formtext2\">" + data[i][10].Value + "<\/textarea><\/td>" +
+                    "<td>" +
+                    "<button type=\"button\" class=\"btn btn-primary\" style=\"font-size:0.7vw;\" onclick=\"RI_Acknowledge_click_nav(this)\">Acknowledge<\/button>" +
+                    "<\/td>" +
+                    "<\/tr>");
+            }
+        });
+    }
+
+    function RI_Acknowledge_click_nav(ee) {
+        var re_id = ee.parentElement.parentElement.getAttribute("name");
+        var PN_id = ee.parentElement.parentElement.getAttribute("pnid");
+        var act_note = ee.parentElement.previousSibling.firstElementChild.value;
+        $.post("/Home/RI_Acknowledge_CLICK", { pnid: PN_id, residentid: re_id, action: act_note }, function () {
+            var p = ee.parentNode.parentNode;
+            p.parentNode.removeChild(p);
+        });
+    }
+
+    function RB_click_nav(ee) {
+        ee.parentElement.parentElement.parentElement.style.display = "none";
+        $('#dropdown_li_todolist').removeClass('show');
+        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
+        $('div[id="ToDoList_Nav_Modal"] tbody').empty();
+        $('div[id="ToDoList_Nav_Modal"] thead').empty();
+        $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Resident Birthday');
+        $('div[id="ToDoList_Nav_Modal"] thead').append('<tr><th>S.No</th><th> Suite No</th><th>Name</th><th>Gender</th><th>Age</th><th>Birthday Date</th></tr>');
+
+        $.get("/Home/RB_CLICK", {}, function (data) {
+            var view = $('div[id="ToDoList_Nav_Modal"] tbody');
+            for (var i = 0; i < data.length; i++) {
+                view.append(
+                    "<tr onclick=\"window.location.href='/Home/ResidentMenu/?p_ResidentId=" + data[i][1].Value + "'\" name='" + data[i][1].Value + "'>" +
+                    "<td>" + data[i][0].Value + " <\/td>" +
+                    "<td>" + data[i][2].Value + " <\/td>" +
+                    "<td>" + data[i][3].Value + " " + data[i][4].Value + " <\/td>" +
+                    "<td>" + data[i][5].Value + " <\/td>" +
+                    "<td>" + data[i][6].Value + "<\/td>" +
+                    "<td>" + data[i][7].Value + "<\/td>" +
+                    "<\/tr>");
+            }
+        });
+    }
+
+    function RP_click_nav(ee) {
+        ee.parentElement.parentElement.parentElement.style.display = "none";
+        $('#dropdown_li_todolist').removeClass('show');
+        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
+        $('div[id="ToDoList_Nav_Modal"] tbody').empty();
+        $('div[id="ToDoList_Nav_Modal"] thead').empty();
+        $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Resident Birthday');
+        $('div[id="ToDoList_Nav_Modal"] thead').append('<tr><th>S.No</th><th> Suite No</th><th>Name</th><th>Gender</th><th>Birthday Date</th></tr>');
+
+        $.get("/Home/RP_CLICK", {}, function (data) {
+            var view = $('div[id="ToDoList_Nav_Modal"] tbody');
+            for (var i = 0; i < data.length; i++) {
+                view.append(
+                    "<tr onclick=\"window.location.href='/Home/ResidentMenu/?p_ResidentId=" + data[i][1].Value + "'\" name='" + data[i][1].Value + "'>" +
+                    "<td>" + data[i][0].Value + " <\/td>" +
+                    "<td>" + data[i][2].Value + " <\/td>" +
+                    "<td>" + data[i][3].Value + " " + data[i][4].Value + " <\/td>" +
+                    "<td>" + data[i][5].Value + " <\/td>" +
+                    "<td>" + data[i][6].Value + "<\/td>" +
+                    "<\/tr>");
+            }
+        });
+    }
+
+    function NR_click_nav(ee) {
+        ee.parentElement.parentElement.parentElement.style.display = "none";
+        $('#dropdown_li_todolist').removeClass('show');
+        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
+        $('div[id="ToDoList_Nav_Modal"] tbody').empty();
+        $('div[id="ToDoList_Nav_Modal"] thead').empty();
+        $('div[id="ToDoList_Nav_Modal"] .modal-title').html('New Resident');
+        $('div[id="ToDoList_Nav_Modal"] thead').append('<tr><th>S.No</th><th> Suite No</th><th>Name</th><th>Gender</th><th>Birthday Date</th></tr>');
+
+        $.get("/Home/NR_CLICK", {}, function (data) {
+            var view = $('div[id="ToDoList_Nav_Modal"] tbody');
+            for (var i = 0; i < data.length; i++) {
+                view.append(
+                    "<tr onclick=\"window.location.href='/Home/ResidentMenu/?p_ResidentId=" + data[i][1].Value + "'\" name='" + data[i][1].Value + "'>" +
+                    "<td>" + data[i][0].Value + " <\/td>" +
+                    "<td>" + data[i][2].Value + " <\/td>" +
+                    "<td>" + data[i][3].Value + " " + data[i][4].Value + " <\/td>" +
+                    "<td>" + data[i][5].Value + " <\/td>" +
+                    "<td>" + data[i][6].Value + "<\/td>" +
+                    "<\/tr>");
+            }
+        });
+    }
+
+    function SA_click_nav(ee) {
+        ee.parentElement.parentElement.parentElement.style.display = "none";
+        $('#dropdown_li_todolist').removeClass('show');
+        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
+        $('div[id="ToDoList_Nav_Modal"] tbody').empty();
+        $('div[id="ToDoList_Nav_Modal"] thead').empty();
+        $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Suggested Activity Event');
+        $('div[id="ToDoList_Nav_Modal"] thead').append('<tr><th>S.No</th><th> Suite No</th><th>Name</th><th>Suggested Event</th><th>Modified Date</th></tr>');
+
+        $.get("/Home/SA_CLICK", {}, function (data) {
+            var view = $('div[id="ToDoList_Nav_Modal"] tbody');
+            for (var i = 0; i < data.length; i++) {
+                view.append(
+                    "<tr name='" + data[i][1].Value + "'>" +
+                    "<td>" + data[i][0].Value + " <\/td>" +
+                    "<td>" + data[i][2].Value + " <\/td>" +
+                    "<td>" + data[i][3].Value + " " + data[i][4].Value + " <\/td>" +
+                    "<td>" + data[i][5].Value + " <\/td>" +
+                    "<td>" + data[i][6].Value + "<\/td>" +
+                    "<\/tr>");
+            }
+        });
+    }
+
+    document.body.addEventListener("click", function (e) {
+        if ($(e.target).closest('#dropdown_li_todolist').length)
+            return;
+        else {
+            if (document.getElementById('dropdown_li_todolist').className == 'nav-item dropdown show') {
+                $('.ToDoListNav2').hide()
+                document.getElementById('dropdown_li_todolist').className = 'nav-item dropdown';
+            }
+        }
+
+        
+    })
 
 </script>

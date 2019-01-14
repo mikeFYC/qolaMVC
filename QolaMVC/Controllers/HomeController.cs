@@ -927,6 +927,8 @@ namespace QolaMVC.Controllers
             //TempData["NR"] = l_Json.NR;
             //TempData["SAE"] = l_Json.SAE;
 
+            TempData["ToDoListinNav"] = "true";
+
             return View(l_Home);
         }
 

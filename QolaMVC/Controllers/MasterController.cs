@@ -362,12 +362,14 @@ namespace QolaMVC.Controllers
                 l_Users = UserDAL.GetUsersCollections(user.Home, user.UserType);
                 List<UserModel> l_UsersInactive = UserDAL.GetUsersCollections(user.Home, user.UserType, 'I');
                 ViewBag.InactiveUsers = l_UsersInactive;
+                TempData["search"] = "";
             }
             else
             {
                 l_Users = UserDAL.GetUsersCollections_Filter(user.Home, user.UserType, 'A', str);
                 List<UserModel> l_UsersInactive = UserDAL.GetUsersCollections_Filter(user.Home, user.UserType, 'I', str);
                 ViewBag.InactiveUsers = l_UsersInactive;
+                TempData["search"] = str;
             }
             if(index==null || index == "")
             {
@@ -384,7 +386,7 @@ namespace QolaMVC.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetUserList(int index)
+        public ActionResult GetUserList(int index,string search)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -396,8 +398,15 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-
-            l_Users = UserDAL.GetUsersCollections(user.Home, user.UserType);
+            if (search == null || search == "")
+            {
+                l_Users = UserDAL.GetUsersCollections(user.Home, user.UserType);
+            }
+            else
+            {
+                l_Users = UserDAL.GetUsersCollections_Filter(user.Home, user.UserType, 'A', search);
+            }
+            //l_Users = UserDAL.GetUsersCollections(user.Home, user.UserType);
             List<dynamic> l_Json = new List<dynamic>();
 
             for(int a = (index - 1) * 50; a< index*50; a++)

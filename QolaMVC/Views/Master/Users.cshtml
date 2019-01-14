@@ -160,15 +160,15 @@
                                             <form class="form-inline">
                                                 <div class="form-group pr-1">
                                                     @*<div class="input-group">
-                                                        <select class="form-control">
-                                                            <option>All fields</option>
-                                                            <option>First Name</option>
-                                                            <option>Last Name</option>
-                                                            <option>Suite No</option>
-                                                            <option>Emergency Contact</option>
-                                                            <option>Physician</option>
-                                                        </select>
-                                                    </div>*@
+                            <select class="form-control">
+                                <option>All fields</option>
+                                <option>First Name</option>
+                                <option>Last Name</option>
+                                <option>Suite No</option>
+                                <option>Emergency Contact</option>
+                                <option>Physician</option>
+                            </select>
+                        </div>*@
                                                     <div class="input-group">
                                                         <input type="text" class="form-control" id="exampleInputAmount2" placeholder="Search for">
                                                     </div>
@@ -222,8 +222,8 @@
                                         </tbody>
                                     </table>
                                     <input type="hidden" id="startID" value="@TempData["start"]" />
-                                    <input type="hidden" id="totalPage" value="@Math.Ceiling(Decimal.Parse((Model.Count() / 50.0).ToString()))"/>
-
+                                    <input type="hidden" id="totalPage" value="@Math.Ceiling(Decimal.Parse((Model.Count() / 50.0).ToString()))" />
+                                    <input type="hidden" id="searchstring" value="@TempData["search"]" />
                                 </div>
                             </div>
                         </div>
@@ -298,9 +298,10 @@
     }
 
     function formsubmit2_prev() {
+        var search_value = $('#searchstring').val();
         var index = parseInt($('#pageID').attr('value'))-1;
         if (index >= 1) {
-            $.get("/Master/GetUserList", { index: index }, function (data) {
+            $.get("/Master/GetUserList", { index: index, search: search_value }, function (data) {
                 $('#currentpage').html(index.toString());
                 $('#pageID').attr('value', index.toString());
                 $('#tbodyUser').empty();
@@ -332,10 +333,11 @@
     }
 
     function formsubmit2_next() {
+        var search_value = $('#searchstring').val();
         var index = parseInt($('#pageID').attr('value')) + 1;
         var maxPage = parseInt($('#totalPage').val());
         if (index <= maxPage) {
-            $.get("/Master/GetUserList", { index: index }, function (data) {
+            $.get("/Master/GetUserList", { index: index, search: search_value }, function (data) {
                 $('#currentpage').html(index.toString());
                 $('#pageID').attr('value', index.toString());
                 $('#tbodyUser').empty();
