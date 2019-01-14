@@ -52,7 +52,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static void AddAllergy(NEW_AllergyModel p_Model)
+        public static void AddAllergy(NEW_AllergyModel p_Model,int userid)
         {
             string exception = string.Empty;
 
@@ -60,11 +60,12 @@ namespace QolaMVC.DAL
             try
             {
                 SqlDataAdapter l_DA = new SqlDataAdapter();
-                SqlCommand l_Cmd = new SqlCommand("sp_add_new_tbl_allergy", l_Conn);
+                SqlCommand l_Cmd = new SqlCommand("sp_add_allergy_mike", l_Conn);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 l_Cmd.Parameters.AddWithValue("@allergy_name", p_Model.Allergy_Name);
                 l_Cmd.Parameters.AddWithValue("@category", p_Model.Category);
+                l_Cmd.Parameters.AddWithValue("@modifiedby", userid);
                 l_Cmd.ExecuteNonQuery();
 
             }
@@ -88,16 +89,16 @@ namespace QolaMVC.DAL
             {
                 l_Conn.Open();
                 NEW_AllergyModel l_Model = new NEW_AllergyModel();
-                SqlCommand l_Cmd = new SqlCommand("sp_get_by_id_new_tbl_allergy", l_Conn);
+                SqlCommand l_Cmd = new SqlCommand("sp_get_by_id_mike", l_Conn);
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 l_Cmd.Parameters.AddWithValue("@id", id);
                 SqlDataReader l_Reader = l_Cmd.ExecuteReader();
 
                 while (l_Reader.Read())
                 {
-                    l_Model.Id = Convert.ToInt32(l_Reader["Id"]);
-                    l_Model.Allergy_Name = Convert.ToString(l_Reader["allergy_name"]);
-                    l_Model.Category = Convert.ToString(l_Reader["category"]);
+                    l_Model.Id = Convert.ToInt32(l_Reader["fd_id"]);
+                    l_Model.Allergy_Name = Convert.ToString(l_Reader["fd_name"]);
+                    l_Model.Category = Convert.ToString(l_Reader["fd_category"]);
                     
                 }
 
@@ -140,6 +141,36 @@ namespace QolaMVC.DAL
             }
         }
 
+        public static List<NEW_AllergyModel> GetAllergy_mike(string value)
+        {
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                List<NEW_AllergyModel> l_Collection = new List<NEW_AllergyModel>();
+                l_Conn.Open();
+                SqlCommand l_Cmd = new SqlCommand("get_allergy_mike", l_Conn);
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@value", value);
+                SqlDataReader l_Reader = l_Cmd.ExecuteReader();
+
+                while (l_Reader.Read())
+                {
+                    NEW_AllergyModel l_Model = new NEW_AllergyModel();
+                    l_Model.Id = Convert.ToInt32(l_Reader["fd_id"]);
+                    l_Model.Allergy_Name = Convert.ToString(l_Reader["fd_name"]);
+                    l_Model.Category = Convert.ToString(l_Reader["fd_category"]);
+
+                    l_Collection.Add(l_Model);
+                }
+
+                return l_Collection;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(".GetAllergy_By_Column\n" + ex.Message);
+            }
+        }
+
 
         public static void EditAllergy(NEW_AllergyModel p_Model, int id)
         {
@@ -149,7 +180,7 @@ namespace QolaMVC.DAL
             try
             {
                 SqlDataAdapter l_DA = new SqlDataAdapter();
-                SqlCommand l_Cmd = new SqlCommand("sp_update_new_tbl_allergy", l_Conn);
+                SqlCommand l_Cmd = new SqlCommand("sp_update_allergy_mike", l_Conn);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 l_Cmd.Parameters.AddWithValue("@ID", id);
@@ -177,7 +208,7 @@ namespace QolaMVC.DAL
             try
             {
                 SqlDataAdapter l_DA = new SqlDataAdapter();
-                SqlCommand l_Cmd = new SqlCommand("sp_delete_new_tbl_allergy", l_Conn);
+                SqlCommand l_Cmd = new SqlCommand("sp_delete_allergy_mike", l_Conn);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 l_Cmd.Parameters.AddWithValue("@ID", id);

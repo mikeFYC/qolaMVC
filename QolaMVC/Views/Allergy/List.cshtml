@@ -49,28 +49,35 @@
                                 <div class="tab-pane fade show active" id="pills-active" role="tabpanel" aria-labelledby="pills-active-tab">
 
                                     <div class="row">
-                                        <div class="py-4 text-left" style="display:inline-block;width:80%;">
+                                        <div class="py-4 text-left" style="width:50%;display:inline-block;">
                                             <form class="form-inline">
-                                            @using (Html.BeginForm("List", "Allergy", FormMethod.Get))
-                                            {
-                                                <div class="form-group pr-1">
-                                                    @*<div class="input-group">
-                                                        <select class="form-control" name="column" id="column">
-                                                            <option value="*">All fields</option>
-                                                            <option value="0">Allergy Name</option>
-                                                            <option value="1">Category</option>
-                                                        </select>
-                                                    </div>*@
-                                                    <div class="input-group">
-                                                        @*@Html.TextBox("value", null, new { @class = "form-control", @placeholder = "Search for" })*@
-                                                        <input class="form-control" id="search_value" value="" />
+                                                @using (Html.BeginForm("List", "Allergy", FormMethod.Get))
+                                                {
+                                                    <div class="form-group pr-1">
+                                                        @*<div class="input-group">
+                                <select class="form-control" name="column" id="column">
+                                    <option value="*">All fields</option>
+                                    <option value="0">Allergy Name</option>
+                                    <option value="1">Category</option>
+                                </select>
+                            </div>*@
+                                                        <div class="input-group">
+                                                            @*@Html.TextBox("value", null, new { @class = "form-control", @placeholder = "Search for" })*@
+                                                            <input class="form-control" id="search_value" value="" />
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <button type="button" class="btn btn-danger" onclick="search_Allergy()">@QolaMVC.Resources.Text.Search</button>
-                                            }
+                                                    <button type="button" class="btn btn-danger" onclick="search_Allergy()">@QolaMVC.Resources.Text.Search</button>
+                                                }
                                             </form>
                                         </div>
-                                        <div class="py-4 text-right" style="display:inline-block;width:15%;">
+                                        <div class="py-4 text-right" style="width:24.5%;display:inline-block;">
+
+                                            <button class="btn btn-default btn-sm" onclick="formsubmit2_prev()">Prev</button>
+                                            <label id="pageID" class="form-check-label" style="font-weight:bold;color:black;font-size:1.2vw;padding-left:0.4rem !important;" value="@TempData["start"]"><span id="currentpage">@TempData["start"]</span>/@Math.Ceiling(Decimal.Parse((Model.Count() / 50.0).ToString()))  </label>
+                                            <button class="btn btn-default btn-sm" onclick="formsubmit2_next()">Next</button>
+
+                                        </div>
+                                        <div class="py-4 text-right" style="width:24.5%;display:inline-block;">
                                             <a class="btn btn-lg btn-primary" href="~/Allergy/AddAllergy">@QolaMVC.Resources.Text.AddNew</a>
                                         </div>
                                     </div>
@@ -85,35 +92,38 @@
                                                 <th class="text-white">@QolaMVC.Resources.Text.Delete_small</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            @{ int i = 1; }
-                                            @{ foreach (var data in Model)
+                                        <tbody id="tbodyAllergy">
+                                            @{ for (int i = 0; i < 50; i++)
                                                 {
-                                                    <tr>
-                                                        <td class="align-middle">@i</td>
-                                                        <td class="align-middle">@data.Allergy_Name</td>
-                                                        <td class="align-middle">@data.Category</td>
-                                                        <td class="align-middle">
-                                                            <a class="btn btn-success btn-xs" href="~/Allergy/EditAllergy/@data.Id">
-                                                                <i class="fa fa-pencil"></i>
-                                                            </a>
-                                                            @*@Html.ActionLink("Edit Allergy", "EditAllergy", new { id = data.Id })*@
-                                                        </td>
-                                                        <td class="align-middle">
+                                                    if (i < Model.Count())
+                                                    {
+                                                        <tr>
+                                                            <td class="align-middle">@Model[i].Id</td>
+                                                            <td class="align-middle">@Model[i].Allergy_Name</td>
+                                                            <td class="align-middle">@Model[i].Category</td>
+                                                            <td class="align-middle">
+                                                                <a class="btn btn-success btn-xs" href="~/Allergy/EditAllergy/@Model[i].Id">
+                                                                    <i class="fa fa-pencil"></i>
+                                                                </a>
+                                                                @*@Html.ActionLink("Edit Allergy", "EditAllergy", new { id = data.Id })*@
+                                                            </td>
+                                                            <td class="align-middle">
 
-                                                            <a class="btn btn-danger btn-xs" href="~/Allergy/DeleteAllergy/@data.Id">
-                                                                <i class="fa fa-trash-o"></i>
-                                                            </a>
-                                                         @*   @Html.ActionLink("Delete Allergy", "DeleteAllergy", new { id = data.Id })*@
-                                                        </td>
-                                                    </tr>
+                                                                <a class="btn btn-danger btn-xs" href="~/Allergy/DeleteAllergy/@Model[i].Id">
+                                                                    <i class="fa fa-trash-o"></i>
+                                                                </a>
+                                                                @*   @Html.ActionLink("Delete Allergy", "DeleteAllergy", new { id = data.Id })*@
+                                                            </td>
+                                                        </tr>
+                                                    }
 
-                                                    i = i + 1;
                                                 }
                                             }
                                         </tbody>
                                     </table>
-
+                                    <input type="hidden" id="startID" value="@TempData["start"]" />
+                                    <input type="hidden" id="searchstring" value="@TempData["search"]" />
+                                    <input type="hidden" id="totalPage" value="@Math.Ceiling(Decimal.Parse((Model.Count() / 50.0).ToString()))" />
                                 </div>
 
                             </div>
@@ -137,4 +147,64 @@
                 var a = $('#search_value').val();
                 window.location.href = "/Allergy/List?search=" + a;
             }
+
+            function formsubmit2_prev() {
+                var search_value = $('#searchstring').val();
+                var index = parseInt($('#pageID').attr('value')) - 1;
+                if (index >= 1) {
+                    $.get("/Allergy/GetAllergyList", { index: index, search: search_value}, function (data) {
+                        $('#currentpage').html(index.toString());
+                        $('#pageID').attr('value', index.toString());
+                        $('#tbodyAllergy').empty();
+                        for (var i = 0; i < data.length; i++) {
+                            $('#tbodyAllergy').append('<tr>'+
+                                                    '<td class="align-middle">' + data[i][0].Value+'</td>'+
+                                                    '<td class="align-middle">' + data[i][1].Value+'</td>' +
+                                                    '<td class="align-middle">' + data[i][2].Value+'</td>' +
+                                                    '<td class="align-middle">' +
+                                                    '<a class="btn btn-success btn-xs" href="~/Allergy/EditAllergy/' + data[i][0].Value+'">' +
+                                                    '<i class="fa fa-pencil"></i>' +
+                                                    '</a>' +
+                                                    '</td>' +
+                                                    '<td class="align-middle">' +
+                                                    '<a class="btn btn-danger btn-xs" href="~/Allergy/DeleteAllergy/' + data[i][0].Value +'">' +
+                                                    '<i class="fa fa-trash-o"></i>' +
+                                                    '</a></td></tr>');
+                        }
+                    });
+
+                }
+
+            }
+
+            function formsubmit2_next() {
+                var search_value = $('#searchstring').val();
+                var index = parseInt($('#pageID').attr('value')) + 1;
+                var maxPage = parseInt($('#totalPage').val());
+                if (index <= maxPage) {
+                    $.get("/Allergy/GetAllergyList", { index: index, search: search_value}, function (data) {
+                        $('#currentpage').html(index.toString());
+                        $('#pageID').attr('value', index.toString());
+                        $('#tbodyAllergy').empty();
+                        for (var i = 0; i < data.length; i++) {
+                            $('#tbodyAllergy').append('<tr>' +
+                                '<td class="align-middle">' + data[i][0].Value + '</td>' +
+                                '<td class="align-middle">' + data[i][1].Value + '</td>' +
+                                '<td class="align-middle">' + data[i][2].Value + '</td>' +
+                                '<td class="align-middle">' +
+                                '<a class="btn btn-success btn-xs" href="~/Allergy/EditAllergy/' + data[i][0].Value + '">' +
+                                '<i class="fa fa-pencil"></i>' +
+                                '</a>' +
+                                '</td>' +
+                                '<td class="align-middle">' +
+                                '<a class="btn btn-danger btn-xs" href="~/Allergy/DeleteAllergy/' + data[i][0].Value + '">' +
+                                '<i class="fa fa-trash-o"></i>' +
+                                '</a></td></tr>');
+                        }
+                    });
+
+                }
+
+            }
+
         </script>

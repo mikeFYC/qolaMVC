@@ -39,7 +39,7 @@ namespace QolaMVC.DAL
                     NEW_SuiteModel l_Model = new NEW_SuiteModel();
                     l_Model.Id = Convert.ToInt32(l_Reader["Id"]);
                     l_Model.Home = Convert.ToString(l_Reader["Home"]);
-                    l_Model.Suite_No = Convert.ToInt32(l_Reader["suite_no"]);
+                    l_Model.Suite_No = Convert.ToString(l_Reader["suite_no"]);
                     l_Model.Floor_No = Convert.ToInt32(l_Reader["floor_no"]);
                     l_Model.No_Of_Rooms = Convert.ToInt32(l_Reader["no_of_rooms"]);
 
@@ -54,7 +54,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static void AddSuite(NEW_SuiteModel p_Model)
+        public static void AddSuite(NEW_SuiteModel p_Model,int userID)
         {
             string exception = string.Empty;
 
@@ -62,13 +62,14 @@ namespace QolaMVC.DAL
             try
             {
                 SqlDataAdapter l_DA = new SqlDataAdapter();
-                SqlCommand l_Cmd = new SqlCommand("sp_add_new_tbl_suite", l_Conn);
+                SqlCommand l_Cmd = new SqlCommand("sp_add_suite_mike", l_Conn);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                l_Cmd.Parameters.AddWithValue("@Home", p_Model.Home);
+                l_Cmd.Parameters.AddWithValue("@Home", p_Model.HomeID);
                 l_Cmd.Parameters.AddWithValue("@suite_no", p_Model.Suite_No);
                 l_Cmd.Parameters.AddWithValue("@floor_no", p_Model.Floor_No);
                 l_Cmd.Parameters.AddWithValue("@no_of_rooms", p_Model.No_Of_Rooms);
+                l_Cmd.Parameters.AddWithValue("@modifiedby", userID);
                 l_Cmd.ExecuteNonQuery();
 
             }
@@ -92,18 +93,19 @@ namespace QolaMVC.DAL
             {
                 l_Conn.Open();
                 NEW_SuiteModel l_Model = new NEW_SuiteModel();
-                SqlCommand l_Cmd = new SqlCommand("sp_get_by_id_new_tbl_suite", l_Conn);
+                SqlCommand l_Cmd = new SqlCommand("sp_get_by_id_suite_mike", l_Conn);
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 l_Cmd.Parameters.AddWithValue("@id", id);
                 SqlDataReader l_Reader = l_Cmd.ExecuteReader();
 
                 while (l_Reader.Read())
                 {
-                    l_Model.Id = Convert.ToInt32(l_Reader["Id"]);
-                    l_Model.Home = Convert.ToString(l_Reader["Home"]);
-                    l_Model.Suite_No = Convert.ToInt32(l_Reader["suite_no"]);
-                    l_Model.Floor_No = Convert.ToInt32(l_Reader["floor_no"]);
-                    l_Model.No_Of_Rooms = Convert.ToInt32(l_Reader["no_of_rooms"]);
+                    l_Model.Id = Convert.ToInt32(l_Reader["fd_id"]);
+                    l_Model.Home = Convert.ToString(l_Reader["fd_name"]);
+                    l_Model.HomeID = Convert.ToInt32(l_Reader["fd_home_id"]);
+                    l_Model.Suite_No = Convert.ToString(l_Reader["fd_suite_no"]);
+                    l_Model.Floor_No = Convert.ToInt32(l_Reader["fd_floor"]);
+                    l_Model.No_Of_Rooms = Convert.ToInt32(l_Reader["fd_no_of_rooms"]);
                     
                 }
 
@@ -157,7 +159,7 @@ namespace QolaMVC.DAL
                     NEW_SuiteModel l_Model = new NEW_SuiteModel();
                     l_Model.Id = Convert.ToInt32(l_Reader["Id"]);
                     l_Model.Home = Convert.ToString(l_Reader["Home"]);
-                    l_Model.Suite_No = Convert.ToInt32(l_Reader["suite_no"]);
+                    l_Model.Suite_No = Convert.ToString(l_Reader["suite_no"]);
                     l_Model.Floor_No = Convert.ToInt32(l_Reader["floor_no"]);
                     l_Model.No_Of_Rooms = Convert.ToInt32(l_Reader["no_of_rooms"]);
 
@@ -172,6 +174,40 @@ namespace QolaMVC.DAL
             }
         }
 
+        public static List<NEW_SuiteModel> GetSuite_mike(string value)
+        {
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                List<NEW_SuiteModel> l_Collection = new List<NEW_SuiteModel>();
+                l_Conn.Open();
+
+                SqlCommand l_Cmd = new SqlCommand("sp_get_Suite_mike", l_Conn);
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@value", value);
+                SqlDataReader l_Reader = l_Cmd.ExecuteReader();
+
+                while (l_Reader.Read())
+                {
+                    NEW_SuiteModel l_Model = new NEW_SuiteModel();
+                    l_Model.Id = Convert.ToInt32(l_Reader["fd_id"]);
+                    l_Model.Home = Convert.ToString(l_Reader["fd_name"]);
+                    l_Model.HomeID = Convert.ToInt32(l_Reader["fd_home_id"]);
+                    l_Model.Suite_No = Convert.ToString(l_Reader["fd_suite_no"]);
+                    l_Model.Floor_No = Convert.ToInt32(l_Reader["fd_floor"]);
+                    l_Model.No_Of_Rooms = Convert.ToInt32(l_Reader["fd_no_of_rooms"]);
+
+                    l_Collection.Add(l_Model);
+
+                }
+                return l_Collection;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(".GetSuite_mike\n" + ex.Message);
+            }
+        }
+
 
         public static void EditSuite(NEW_SuiteModel p_Model, int id)
         {
@@ -181,11 +217,11 @@ namespace QolaMVC.DAL
             try
             {
                 SqlDataAdapter l_DA = new SqlDataAdapter();
-                SqlCommand l_Cmd = new SqlCommand("sp_update_new_tbl_suite", l_Conn);
+                SqlCommand l_Cmd = new SqlCommand("sp_update_suite_mike", l_Conn);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 l_Cmd.Parameters.AddWithValue("@ID", id);
-                l_Cmd.Parameters.AddWithValue("@Home", p_Model.Home);
+                l_Cmd.Parameters.AddWithValue("@Home", p_Model.HomeID);
                 l_Cmd.Parameters.AddWithValue("@suite_no", p_Model.Suite_No);
                 l_Cmd.Parameters.AddWithValue("@floor_no", p_Model.Floor_No);
                 l_Cmd.Parameters.AddWithValue("@no_of_rooms", p_Model.No_Of_Rooms);
@@ -211,7 +247,7 @@ namespace QolaMVC.DAL
             try
             {
                 SqlDataAdapter l_DA = new SqlDataAdapter();
-                SqlCommand l_Cmd = new SqlCommand("sp_delete_new_tbl_suite", l_Conn);
+                SqlCommand l_Cmd = new SqlCommand("sp_delete_suite_mike", l_Conn);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 l_Cmd.Parameters.AddWithValue("@ID", id);
@@ -249,7 +285,7 @@ namespace QolaMVC.DAL
                     NEW_SuiteModel l_Model = new NEW_SuiteModel();
                     l_Model.Id = Convert.ToInt32(l_Reader["Id"]);
                     l_Model.Home = Convert.ToString(l_Reader["Home"]);
-                    l_Model.Suite_No = Convert.ToInt32(l_Reader["suite_no"]);
+                    l_Model.Suite_No = Convert.ToString(l_Reader["suite_no"]);
                     l_Model.Floor_No = Convert.ToInt32(l_Reader["floor_no"]);
                     l_Model.No_Of_Rooms = Convert.ToInt32(l_Reader["no_of_rooms"]);
 

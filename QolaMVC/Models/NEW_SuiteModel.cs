@@ -9,10 +9,11 @@ namespace QolaMVC.Models
     public class NEW_SuiteModel
     {
         public int Id { get; set; }
-        [Required]
         public string Home { get; set; }
         [Required]
-        public int Suite_No { get; set; }
+        public int HomeID { get; set; }
+        [Required]
+        public string Suite_No { get; set; }
         [Required]
         public int Floor_No { get; set; }
         [Required]
