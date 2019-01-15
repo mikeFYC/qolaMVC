@@ -5867,7 +5867,16 @@ namespace QolaMVC.Controllers
             return Json(l_Json, JsonRequestBehavior.AllowGet);
         }
 
-
+        [HttpGet]
+        public ActionResult Progress_Note_Reminder()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            List<dynamic> l_Json = to_do_list_function.get_Progress_Note_Reminder_list(home.Id,user.ID);
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
 
         #endregion
 

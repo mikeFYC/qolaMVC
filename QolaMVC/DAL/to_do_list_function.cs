@@ -1336,6 +1336,45 @@ namespace QolaMVC.DAL
             return l_Json;
         }
 
+        public static List<dynamic> get_Progress_Note_Reminder_list(int homeid,int userID)
+        {
+            List<dynamic> l_Json = new List<dynamic>();
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Constants.ConnectionString.PROD;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = " select ROW_NUMBER()over(order by dateadd(HOUR, case PN.fd_remain_in when 1 then 1 when 2 then 2 when 3 then 4 when 4 then 8 when 5 then 12 when 6 then 24 when 7 then 168 else 0 end, PN.fd_modified_on)) as number,PN.fd_resident_id,SSH.fd_suite_no,R.fd_first_name," +
+                              " R.fd_last_name,PN.fd_title,PN.fd_note,PN.fd_id from tbl_Progress_Notes PN" +
+                              " left join tbl_Resident R on R.fd_id = PN.fd_resident_id" +
+                              " left join(select SH.fd_resident_id, S.fd_suite_no,SH.fd_home_id from tbl_Suite_Handler SH " +
+                                            " left join tbl_Suite S on S.fd_id= SH.fd_suite_id " +
+                                            " where GETDATE()< isnull(SH.fd_move_out_date, '2200-01-01')) SSH " +
+                                            " on PN.fd_resident_id = SSH.fd_resident_id" +
+                              " where PN.fd_modified_by = " + userID.ToString() + " and GETDATE()> dateadd(HOUR, case PN.fd_remain_in when 1 then 1 when 2 then 2 when 3 then 4 when 4 then 8 when 5 then 12 when 6 then 24 when 7 then 168 else 0 end, PN.fd_modified_on) " +
+                              " and isnull(PN.fd_acknowledged_by,0)!=" + userID.ToString() +
+                              " and isnull(PN.fd_remain_in,0)!= 0"+
+                              " and SSH.fd_home_id="+ homeid.ToString();
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            if (rd.HasRows)
+                while (rd.Read())
+                {
+                    dynamic l_J = new System.Dynamic.ExpandoObject();
+                    l_J.number = rd[0];
+                    l_J.resident_id = rd[1];
+                    l_J.suite_no = rd[2];
+                    l_J.first_name = rd[3];
+                    l_J.last_name = rd[4];
+                    l_J.Title = rd[5];
+                    l_J.Note = rd[6];
+                    l_J.PN_ID = rd[7];
+
+                    l_Json.Add(l_J);
+                }
+            conn.Close();
+            return l_Json;
+        }
+
 
 
         public static dynamic get_to_do_list_number(int userid, int homeid, int usertype)
