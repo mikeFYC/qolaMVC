@@ -1338,7 +1338,7 @@ namespace QolaMVC.DAL
 
 
 
-        public static dynamic get_to_do_list_number(int userid, int homeid)
+        public static dynamic get_to_do_list_number(int userid, int homeid, int usertype)
         {
             dynamic l_J = new System.Dynamic.ExpandoObject();
             using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
@@ -1364,7 +1364,23 @@ namespace QolaMVC.DAL
                         l_J.HO_outer = rd[1];
                         l_J.HO_inner = rd[1];
 
-                        l_J.IA =int.Parse(rd[2].ToString())+ int.Parse(rd[3].ToString())+ int.Parse(rd[4].ToString())+ int.Parse(rd[5].ToString());
+                        if(usertype==6 || usertype == 14 || usertype == 21)
+                        {
+                            l_J.IA = int.Parse(rd[2].ToString());
+                        }
+                        else if (usertype == 7)
+                        {
+                            l_J.IA = int.Parse(rd[3].ToString());
+                        }
+                        else if(usertype == 4 || usertype == 15 || usertype == 16 || usertype == 17 || usertype == 18)
+                        {
+                            l_J.IA = int.Parse(rd[4].ToString())+ int.Parse(rd[5].ToString());
+                        }
+                        else
+                        {
+                            l_J.IA = int.Parse(rd[2].ToString()) + int.Parse(rd[3].ToString()) + int.Parse(rd[4].ToString()) + int.Parse(rd[5].ToString());
+                        }
+                        
                         l_J.IAA = rd[2];
                         l_J.IDA = rd[3];
                         l_J.IFRA = rd[4];
@@ -1373,8 +1389,23 @@ namespace QolaMVC.DAL
                         l_J.PN_outer = rd[10];
                         l_J.PN = rd[10];
 
-
-                        l_J.RA = int.Parse(rd[6].ToString()) + int.Parse(rd[7].ToString()) + int.Parse(rd[8].ToString()) + int.Parse(rd[9].ToString());
+                        if (usertype == 6 || usertype == 14 || usertype == 21)
+                        {
+                            l_J.RA = int.Parse(rd[6].ToString());
+                        }
+                        else if (usertype == 7)
+                        {
+                            l_J.RA = int.Parse(rd[7].ToString());
+                        }
+                        else if (usertype == 4 || usertype == 15 || usertype == 16 || usertype == 17 || usertype == 18)
+                        {
+                            l_J.RA = int.Parse(rd[8].ToString()) + int.Parse(rd[9].ToString());
+                        }
+                        else
+                        {
+                            l_J.RA = int.Parse(rd[6].ToString()) + int.Parse(rd[7].ToString()) + int.Parse(rd[8].ToString()) + int.Parse(rd[9].ToString());
+                        }
+                        
                         l_J.RAA = rd[6];
                         l_J.RDA = rd[7];
                         l_J.RFRA = rd[8];
@@ -1395,7 +1426,7 @@ namespace QolaMVC.DAL
             return l_J;
         }
 
-        public static dynamic get_to_do_list_number_InitialAssessmentPart(int userid, int homeid)
+        public static dynamic get_to_do_list_number_InitialAssessmentPart(int userid, int homeid,int usertype)
         {
             dynamic l_J = new System.Dynamic.ExpandoObject();
             using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
@@ -1421,7 +1452,23 @@ namespace QolaMVC.DAL
                         l_J.HO_outer = rd[1];
                         l_J.HO_inner = rd[1];
 
-                        l_J.IA = int.Parse(rd[2].ToString()) + int.Parse(rd[3].ToString()) + int.Parse(rd[4].ToString()) + int.Parse(rd[5].ToString());
+                        if (usertype == 6 || usertype == 14 || usertype == 21)
+                        {
+                            l_J.IA = int.Parse(rd[2].ToString());
+                        }
+                        else if (usertype == 7)
+                        {
+                            l_J.IA = int.Parse(rd[3].ToString());
+                        }
+                        else if (usertype == 4 || usertype == 15 || usertype == 16 || usertype == 17 || usertype == 18)
+                        {
+                            l_J.IA = int.Parse(rd[4].ToString()) + int.Parse(rd[5].ToString());
+                        }
+                        else
+                        {
+                            l_J.IA = int.Parse(rd[2].ToString()) + int.Parse(rd[3].ToString()) + int.Parse(rd[4].ToString()) + int.Parse(rd[5].ToString());
+                        }
+
                         l_J.IAA = rd[2];
                         l_J.IDA = rd[3];
                         l_J.IFRA = rd[4];
@@ -1430,8 +1477,23 @@ namespace QolaMVC.DAL
                         l_J.PN_outer = rd[10];
                         l_J.PN = rd[10];
 
+                        if (usertype == 6 || usertype == 14 || usertype == 21)
+                        {
+                            l_J.RA = int.Parse(rd[6].ToString());
+                        }
+                        else if (usertype == 7)
+                        {
+                            l_J.RA = int.Parse(rd[7].ToString());
+                        }
+                        else if (usertype == 4 || usertype == 15 || usertype == 16 || usertype == 17 || usertype == 18)
+                        {
+                            l_J.RA = int.Parse(rd[8].ToString()) + int.Parse(rd[9].ToString());
+                        }
+                        else
+                        {
+                            l_J.RA = int.Parse(rd[6].ToString()) + int.Parse(rd[7].ToString()) + int.Parse(rd[8].ToString()) + int.Parse(rd[9].ToString());
+                        }
 
-                        l_J.RA = int.Parse(rd[6].ToString()) + int.Parse(rd[7].ToString()) + int.Parse(rd[8].ToString()) + int.Parse(rd[9].ToString());
                         l_J.RAA = rd[6];
                         l_J.RDA = rd[7];
                         l_J.RFRA = rd[8];
@@ -1452,7 +1514,7 @@ namespace QolaMVC.DAL
             return l_J;
         }
 
-        public static dynamic get_to_do_list_number_ReAssessmentPart(int userid, int homeid)
+        public static dynamic get_to_do_list_number_ReAssessmentPart(int userid, int homeid, int usertype)
         {
             dynamic l_J = new System.Dynamic.ExpandoObject();
             using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
@@ -1478,7 +1540,23 @@ namespace QolaMVC.DAL
                         l_J.HO_outer = rd[1];
                         l_J.HO_inner = rd[1];
 
-                        l_J.IA = int.Parse(rd[2].ToString()) + int.Parse(rd[3].ToString()) + int.Parse(rd[4].ToString()) + int.Parse(rd[5].ToString());
+                        if (usertype == 6 || usertype == 14 || usertype == 21)
+                        {
+                            l_J.IA = int.Parse(rd[2].ToString());
+                        }
+                        else if (usertype == 7)
+                        {
+                            l_J.IA = int.Parse(rd[3].ToString());
+                        }
+                        else if (usertype == 4 || usertype == 15 || usertype == 16 || usertype == 17 || usertype == 18)
+                        {
+                            l_J.IA = int.Parse(rd[4].ToString()) + int.Parse(rd[5].ToString());
+                        }
+                        else
+                        {
+                            l_J.IA = int.Parse(rd[2].ToString()) + int.Parse(rd[3].ToString()) + int.Parse(rd[4].ToString()) + int.Parse(rd[5].ToString());
+                        }
+
                         l_J.IAA = rd[2];
                         l_J.IDA = rd[3];
                         l_J.IFRA = rd[4];
@@ -1487,8 +1565,23 @@ namespace QolaMVC.DAL
                         l_J.PN_outer = rd[10];
                         l_J.PN = rd[10];
 
+                        if (usertype == 6 || usertype == 14 || usertype == 21)
+                        {
+                            l_J.RA = int.Parse(rd[6].ToString());
+                        }
+                        else if (usertype == 7)
+                        {
+                            l_J.RA = int.Parse(rd[7].ToString());
+                        }
+                        else if (usertype == 4 || usertype == 15 || usertype == 16 || usertype == 17 || usertype == 18)
+                        {
+                            l_J.RA = int.Parse(rd[8].ToString()) + int.Parse(rd[9].ToString());
+                        }
+                        else
+                        {
+                            l_J.RA = int.Parse(rd[6].ToString()) + int.Parse(rd[7].ToString()) + int.Parse(rd[8].ToString()) + int.Parse(rd[9].ToString());
+                        }
 
-                        l_J.RA = int.Parse(rd[6].ToString()) + int.Parse(rd[7].ToString()) + int.Parse(rd[8].ToString()) + int.Parse(rd[9].ToString());
                         l_J.RAA = rd[6];
                         l_J.RDA = rd[7];
                         l_J.RFRA = rd[8];
@@ -1509,7 +1602,7 @@ namespace QolaMVC.DAL
             return l_J;
         }
 
-        public static dynamic get_to_do_list_number_OtherPart(int userid, int homeid)
+        public static dynamic get_to_do_list_number_OtherPart(int userid, int homeid, int usertype)
         {
             dynamic l_J = new System.Dynamic.ExpandoObject();
             using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
@@ -1535,7 +1628,23 @@ namespace QolaMVC.DAL
                         l_J.HO_outer = rd[1];
                         l_J.HO_inner = rd[1];
 
-                        l_J.IA = int.Parse(rd[2].ToString()) + int.Parse(rd[3].ToString()) + int.Parse(rd[4].ToString()) + int.Parse(rd[5].ToString());
+                        if (usertype == 6 || usertype == 14 || usertype == 21)
+                        {
+                            l_J.IA = int.Parse(rd[2].ToString());
+                        }
+                        else if (usertype == 7)
+                        {
+                            l_J.IA = int.Parse(rd[3].ToString());
+                        }
+                        else if (usertype == 4 || usertype == 15 || usertype == 16 || usertype == 17 || usertype == 18)
+                        {
+                            l_J.IA = int.Parse(rd[4].ToString()) + int.Parse(rd[5].ToString());
+                        }
+                        else
+                        {
+                            l_J.IA = int.Parse(rd[2].ToString()) + int.Parse(rd[3].ToString()) + int.Parse(rd[4].ToString()) + int.Parse(rd[5].ToString());
+                        }
+
                         l_J.IAA = rd[2];
                         l_J.IDA = rd[3];
                         l_J.IFRA = rd[4];
@@ -1544,8 +1653,23 @@ namespace QolaMVC.DAL
                         l_J.PN_outer = rd[10];
                         l_J.PN = rd[10];
 
+                        if (usertype == 6 || usertype == 14 || usertype == 21)
+                        {
+                            l_J.RA = int.Parse(rd[6].ToString());
+                        }
+                        else if (usertype == 7)
+                        {
+                            l_J.RA = int.Parse(rd[7].ToString());
+                        }
+                        else if (usertype == 4 || usertype == 15 || usertype == 16 || usertype == 17 || usertype == 18)
+                        {
+                            l_J.RA = int.Parse(rd[8].ToString()) + int.Parse(rd[9].ToString());
+                        }
+                        else
+                        {
+                            l_J.RA = int.Parse(rd[6].ToString()) + int.Parse(rd[7].ToString()) + int.Parse(rd[8].ToString()) + int.Parse(rd[9].ToString());
+                        }
 
-                        l_J.RA = int.Parse(rd[6].ToString()) + int.Parse(rd[7].ToString()) + int.Parse(rd[8].ToString()) + int.Parse(rd[9].ToString());
                         l_J.RAA = rd[6];
                         l_J.RDA = rd[7];
                         l_J.RFRA = rd[8];
@@ -1566,7 +1690,7 @@ namespace QolaMVC.DAL
             return l_J;
         }
 
-        public static dynamic get_to_do_list_number_nextmonth(int userid, int homeid)
+        public static dynamic get_to_do_list_number_nextmonth(int userid, int homeid, int usertype)
         {
             dynamic l_J = new System.Dynamic.ExpandoObject();
             using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
@@ -1590,14 +1714,46 @@ namespace QolaMVC.DAL
                         l_J.HO_2_outer = rd[0];
                         l_J.HO_2_inner = rd[0];
 
-                        l_J.IA_2 = int.Parse(rd[1].ToString()) + int.Parse(rd[2].ToString()) + int.Parse(rd[3].ToString()) + int.Parse(rd[4].ToString());
+                        if (usertype == 6 || usertype == 14 || usertype == 21)
+                        {
+                            l_J.IA_2 = int.Parse(rd[1].ToString());
+                        }
+                        else if (usertype == 7)
+                        {
+                            l_J.IA_2 =  int.Parse(rd[2].ToString());
+                        }
+                        else if (usertype == 4 || usertype == 15 || usertype == 16 || usertype == 17 || usertype == 18)
+                        {
+                            l_J.IA_2 =  int.Parse(rd[3].ToString()) + int.Parse(rd[4].ToString());
+                        }
+                        else
+                        {
+                            l_J.IA_2 = int.Parse(rd[1].ToString()) + int.Parse(rd[2].ToString()) + int.Parse(rd[3].ToString()) + int.Parse(rd[4].ToString());
+                        }
+
+                        
                         l_J.IAA_2 = rd[1];
                         l_J.IDA_2 = rd[2];
                         l_J.IFRA_2 = rd[3];
                         l_J.IRCA_2 = rd[4];
 
-
-                        l_J.RA = int.Parse(rd[5].ToString()) + int.Parse(rd[6].ToString()) + int.Parse(rd[7].ToString()) + int.Parse(rd[8].ToString());
+                        if (usertype == 6 || usertype == 14 || usertype == 21)
+                        {
+                            l_J.RA = int.Parse(rd[5].ToString());
+                        }
+                        else if (usertype == 7)
+                        {
+                            l_J.RA =  int.Parse(rd[6].ToString());
+                        }
+                        else if (usertype == 4 || usertype == 15 || usertype == 16 || usertype == 17 || usertype == 18)
+                        {
+                            l_J.RA =  int.Parse(rd[7].ToString()) + int.Parse(rd[8].ToString());
+                        }
+                        else
+                        {
+                            l_J.RA = int.Parse(rd[5].ToString()) + int.Parse(rd[6].ToString()) + int.Parse(rd[7].ToString()) + int.Parse(rd[8].ToString());
+                        }
+                        
                         l_J.RAA = rd[5];
                         l_J.RDA = rd[6];
                         l_J.RFRA = rd[7];
@@ -1606,6 +1762,7 @@ namespace QolaMVC.DAL
                         l_J.SAE_2_outer = rd[9];
                         l_J.SAE_2_inner = rd[9];
                     }
+
             }
             return l_J;
         }

@@ -31,7 +31,7 @@
 
     .list-group-item div {
         display: none;
-        /*margin-left: -36.5vw;*/
+        top: 0%;
         margin-left: -315%;
         position: absolute;
         z-index: 200;
@@ -106,6 +106,9 @@
             padding: 0 0.5vw 0 0 !important;
             font-size: 0.9vw;
         }
+    .hidefromBegin{
+        display:none;
+    }
 </style>
 
 
@@ -261,12 +264,23 @@
                                     </div>
                                 }
 
-                                <div class="row">
-                                    @if (ViewBag.User.UserType != 22 && ViewBag.User.UserType != 19 && ViewBag.User.UserType != 8 && ViewBag.User.UserType != 7)
-                                    {
-                                        if (ViewBag.User.UserType != 10)
-                                        {
+                                    <div class="row">
 
+                                        @{
+                                            List<int> ANR = new List<int>() { 22, 7, 10 };
+                                            List<int> REE = new List<int>() { 22, 19, 8, 7 };
+                                            List<int> NN = new List<int>() { 22, 19, 8, 7 };
+                                            List<int> DA = new List<int>() { 4, 11, 15, 16, 17, 18, 8, 10, 19 };
+                                            List<int> AC = new List<int>() { 4, 11, 15, 16, 17, 18, 7, 8, 10, 19 };
+                                            List<int> BC = new List<int>() { 22, 19, 8, 7 };
+                                            List<int> SH = new List<int>() { 22, 19, 8, 7, 10, 5, 12, 14, 20 };
+                                            List<int> RA = new List<int>() { 1, 2, 3, 6, 9, 13, 21 };
+                                            List<int> RE = new List<int>() { 22, 19, 8, 7, 10, 5 };
+                                        }
+
+
+                                        @if (ANR.Contains(ViewBag.User.UserType) == false)
+                                        {
                                             <div class="text-center my-4 pointer" style="width:33%;display:inline-block;">
                                                 <a href="/Home/AddNewResident/" class="menu-box">
                                                     <img class="w-50 menu" src="~/Content/assets/img/Add_New_Resident_Icon.png" />
@@ -275,92 +289,90 @@
                                             </div>
                                         }
 
-                                        <div class="text-center my-4 pointer" style="width:33%;display:inline-block;">
-                                            <a href="/Home/EmergencyList_mike" class="menu-box">
-                                                <img class="w-50 menu" src="~/Content/pages/img/Resident_Emergency_Evactuation_Details_3.png" />
 
-                                                <h5 class="menu" style="margin-top:4vh;">Resident Emergency Evacuation</h5>
-                                            </a>
-                                        </div>
-                                    }
+                                        @if (REE.Contains(ViewBag.User.UserType) == false)
+                                        {
+                                            <div class="text-center my-4 pointer" style="width:33%;display:inline-block;">
+                                                <a href="/Home/EmergencyList_mike" class="menu-box">
+                                                    <img class="w-50 menu" src="~/Content/pages/img/Resident_Emergency_Evactuation_Details_3.png" />
 
-                                    @if (ViewBag.User.UserType != 22)
-                                    {
-                                        <div class="text-center my-4 pointer" style="width:33%;display:inline-block;">
-                                            <a href="/Home/Nursing_Note/" class="menu-box">
-                                                <img class="w-50 menu" src="~/Content/assets/img/Nursing_Notes_Icon.png" />
-                                                <h5 class="menu">Nursing Note</h5>
-                                            </a>
-                                        </div>
-                                    }
+                                                    <h5 class="menu" style="margin-top:4vh;">Resident Emergency Evacuation</h5>
+                                                </a>
+                                            </div>
+                                        }
 
-                                    @{
-                                        List<int> DA = new List<int>() { 4, 11, 15, 16, 17, 18, 8, 10, 19 };
-                                        List<int> AC = new List<int>() { 4, 11, 15, 16, 17, 18, 7, 8, 10, 19 };
-                                        List<int> BC = new List<int>() { 22, 19, 8, 7 };
-                                        List<int> SH = new List<int>() { 22, 19, 8, 7, 10, 5, 12, 14, 20 };
-                                        List<int> RA = new List<int>() { 1, 2, 3, 6, 9, 13, 21 };
-                                        List<int> RE = new List<int>() { 22, 19, 8, 7, 10, 5 };
-                                    }
-                                    @if (DA.Contains(ViewBag.User.UserType) == false)
-                                    {
-                                        <div class="text-center my-4 pointer" style="width:33%;display:inline-block;">
-                                            <a href="/Home/DiningAttendance/" class="menu-box">
-                                                <img class="w-50 menu" src="~/Content/pages/img/dining2.png" />
-                                                <h5 class="menu">Dining Attendance</h5>
-                                            </a>
-                                        </div>
-                                    }
 
-                                    @if (AC.Contains(ViewBag.User.UserType) == false)
-                                    {
-                                        <div class="text-center my-4 pointer" style="width:33%;display:inline-block;">
-                                            <a href="/Home/ActivityCalendar3" class="menu-box">
-                                                <img class="w-50 menu" src="~/Content/assets/img/Activity_Calendar_Icon.png" />
-                                                <h5 class="menu">Activity/Attendance Calendar</h5>
-                                            </a>
-                                        </div>
-                                    }
 
-                                    @if (BC.Contains(ViewBag.User.UserType) == false)
-                                    {
-                                        <div class="text-center my-4 pointer" style="width:33%;display:inline-block;">
-                                            <a href="/Home/BirthdayCalendar_mike/" class="menu-box">
-                                                <img class="w-50 menu" src="~/Content/pages/img/birthday_calendar.png" />
-                                                <h5 class="menu">Birthday Calendar</h5>
-                                            </a>
-                                        </div>
-                                    }
+                                        @if (NN.Contains(ViewBag.User.UserType) == false)
+                                        {
+                                            <div class="text-center my-4 pointer" style="width:33%;display:inline-block;">
+                                                <a href="/Home/Nursing_Note/" class="menu-box">
+                                                    <img class="w-50 menu" src="~/Content/assets/img/Nursing_Notes_Icon.png" />
+                                                    <h5 class="menu">Nursing Note</h5>
+                                                </a>
+                                            </div>
+                                        }
 
-                                    @if (SH.Contains(ViewBag.User.UserType) == false)
-                                    {
-                                        <div class="text-center my-4 pointer" style="width:33%;display:inline-block;">
-                                            <a href="/Residents/SearchResident" class="menu-box">
-                                                <img class="w-50 menu" src="~/Content/pages/img/suitehandler_2.png" />
-                                                <h5 class="menu">Suite Handler</h5>
-                                            </a>
-                                        </div>
-                                    }
 
-                                    @if (RA.Contains(ViewBag.User.UserType) == true)
-                                    {
-                                        <div class="text-center my-4 pointer" style="width:33%;display:inline-block;">
-                                            <a href="/Home/Search_Archive/" class="menu-box">
-                                                <img class="w-50 menu" src="~/Content/assets/img/Resident_Archive_Icon.png" />
-                                                <h5 class="menu">Resident Archive</h5>
-                                            </a>
-                                        </div>
-                                    }
+                                        @if (DA.Contains(ViewBag.User.UserType) == false)
+                                        {
+                                            <div class="text-center my-4 pointer" style="width:33%;display:inline-block;">
+                                                <a href="/Home/DiningAttendance/" class="menu-box">
+                                                    <img class="w-50 menu" src="~/Content/pages/img/dining2.png" />
+                                                    <h5 class="menu">Dining Attendance</h5>
+                                                </a>
+                                            </div>
+                                        }
 
-                                    @if (RE.Contains(ViewBag.User.UserType) == false)
-                                    {
-                                        <div class="text-center my-4 pointer" style="width:33%;display:inline-block;">
-                                            <a href="/HomeReports/" class="menu-box">
-                                                <img class="w-50 menu" src="~/Content/assets/img/Reports_Icon.png" />
-                                                <h5 class="menu">Reports</h5>
-                                            </a>
-                                        </div>
-                                    }
+                                        @if (AC.Contains(ViewBag.User.UserType) == false)
+                                        {
+                                            <div class="text-center my-4 pointer" style="width:33%;display:inline-block;">
+                                                <a href="/Home/ActivityCalendar3" class="menu-box">
+                                                    <img class="w-50 menu" src="~/Content/assets/img/Activity_Calendar_Icon.png" />
+                                                    <h5 class="menu">Activity/Attendance Calendar</h5>
+                                                </a>
+                                            </div>
+                                        }
+
+                                        @if (BC.Contains(ViewBag.User.UserType) == false)
+                                        {
+                                            <div class="text-center my-4 pointer" style="width:33%;display:inline-block;">
+                                                <a href="/Home/BirthdayCalendar_mike/" class="menu-box">
+                                                    <img class="w-50 menu" src="~/Content/pages/img/birthday_calendar.png" />
+                                                    <h5 class="menu">Birthday Calendar</h5>
+                                                </a>
+                                            </div>
+                                        }
+
+                                        @if (SH.Contains(ViewBag.User.UserType) == false)
+                                        {
+                                            <div class="text-center my-4 pointer" style="width:33%;display:inline-block;">
+                                                <a href="/Residents/SearchResident" class="menu-box">
+                                                    <img class="w-50 menu" src="~/Content/pages/img/suitehandler_2.png" />
+                                                    <h5 class="menu">Suite Handler</h5>
+                                                </a>
+                                            </div>
+                                        }
+
+                                        @if (RA.Contains(ViewBag.User.UserType) == true)
+                                        {
+                                            <div class="text-center my-4 pointer" style="width:33%;display:inline-block;">
+                                                <a href="/Home/Search_Archive/" class="menu-box">
+                                                    <img class="w-50 menu" src="~/Content/assets/img/Resident_Archive_Icon.png" />
+                                                    <h5 class="menu">Resident Archive</h5>
+                                                </a>
+                                            </div>
+                                        }
+
+                                        @if (RE.Contains(ViewBag.User.UserType) == false)
+                                        {
+                                            <div class="text-center my-4 pointer" style="width:33%;display:inline-block;">
+                                                <a href="/HomeReports/" class="menu-box">
+                                                    <img class="w-50 menu" src="~/Content/assets/img/Reports_Icon.png" />
+                                                    <h5 class="menu">Reports</h5>
+                                                </a>
+                                            </div>
+                                        }
 
 
 
@@ -371,7 +383,7 @@
 
 
 
-                                </div>
+                                    </div>
                             </div>
                         </div>
                     </div>
@@ -401,10 +413,10 @@
 
                                         <div style="margin-left:-315% !important">
                                             <ul id="IA_ul">
-                                                <li type="Initial Activity Assessment" id="IAA"><a href="#" data-toggle="modal" data-target="#Initial_Assessment" style="color:white" onclick="IAA_click(this)"><span class="badge">0</span> Activity Assessment</a></li>
-                                                <li type="Initial Dietary Assessment" id="IDA"><a href="#" data-toggle="modal" data-target="#Initial_Assessment" style="color:white" onclick="IDA_click(this)"><span class="badge">0</span> Dietary Assessment</a></li>
-                                                <li type="Initial Fall Risk Assessment" id="IFRA"><a href="#" data-toggle="modal" data-target="#Initial_Assessment" style="color:white" onclick="IFRA_click(this)"><span class="badge">0</span> Fall Risk Assessment</a></li>
-                                                <li type="Initial Resident Care Assessment" id="IRCA"><a href="#" data-toggle="modal" data-target="#Initial_Assessment" style="color:white" onclick="IRCA_click(this)"><span class="badge">0</span> Resident Care Assessment</a></li>
+                                                <li class="hidefromBegin" type="Initial Activity Assessment" id="IAA"><a href="#" data-toggle="modal" data-target="#Initial_Assessment" style="color:white" onclick="IAA_click(this)"><span class="badge">0</span> Activity Assessment</a></li>
+                                                <li class="hidefromBegin" type="Initial Dietary Assessment" id="IDA"><a href="#" data-toggle="modal" data-target="#Initial_Assessment" style="color:white" onclick="IDA_click(this)"><span class="badge">0</span> Dietary Assessment</a></li>
+                                                <li class="hidefromBegin" type="Initial Fall Risk Assessment" id="IFRA"><a href="#" data-toggle="modal" data-target="#Initial_Assessment" style="color:white" onclick="IFRA_click(this)"><span class="badge">0</span> Fall Risk Assessment</a></li>
+                                                <li class="hidefromBegin" type="Initial Resident Care Assessment" id="IRCA"><a href="#" data-toggle="modal" data-target="#Initial_Assessment" style="color:white" onclick="IRCA_click(this)"><span class="badge">0</span> Resident Care Assessment</a></li>
                                             </ul>
                                         </div>
                                     </li>
@@ -423,10 +435,10 @@
 
                                         <div>
                                             <ul id="RA_ul">
-                                                <li type="Acticity Assessment" id="RAA"><a href="#" data-toggle="modal" data-target="#Reassessments" style="color:white" onclick="RAA_click(this)"><span class="badge">0</span> Acticity Assessment</a></li>
-                                                <li type="Dietary Assessment" id="RDA"><a href="#" data-toggle="modal" data-target="#Reassessments" style="color:white" onclick="RDA_click(this)"><span class="badge">0</span> Dietary Assessment</a></li>
-                                                <li type="Fall Risk Assessment" id="RFRA"><a href="#" data-toggle="modal" data-target="#Reassessments" style="color:white" onclick="RFRA_click(this)"><span class="badge">0</span> Fall Risk Assessment</a></li>
-                                                <li type="Resident Care Assessment" id="RRCA"><a href="#" data-toggle="modal" data-target="#Reassessments" style="color:white" onclick="RRCA_click(this)"><span class="badge">0</span> Resident Care Assessment</a></li>
+                                                <li class="hidefromBegin" type="Acticity Assessment" id="RAA"><a href="#" data-toggle="modal" data-target="#Reassessments" style="color:white" onclick="RAA_click(this)"><span class="badge">0</span> Acticity Assessment</a></li>
+                                                <li class="hidefromBegin" type="Dietary Assessment" id="RDA"><a href="#" data-toggle="modal" data-target="#Reassessments" style="color:white" onclick="RDA_click(this)"><span class="badge">0</span> Dietary Assessment</a></li>
+                                                <li class="hidefromBegin" type="Fall Risk Assessment" id="RFRA"><a href="#" data-toggle="modal" data-target="#Reassessments" style="color:white" onclick="RFRA_click(this)"><span class="badge">0</span> Fall Risk Assessment</a></li>
+                                                <li class="hidefromBegin" type="Resident Care Assessment" id="RRCA"><a href="#" data-toggle="modal" data-target="#Reassessments" style="color:white" onclick="RRCA_click(this)"><span class="badge">0</span> Resident Care Assessment</a></li>
                                             </ul>
                                         </div>
                                     </li>
@@ -446,10 +458,10 @@
 
                                         <div>
                                             <ul id="IA_nextmonth_ul">
-                                                <li type="Initial Activity Assessment" id="IAA_nextmonth"><a href="#" data-toggle="modal" data-target="#Initial_Assessment" style="color:white" onclick="IAA_nextmonth_click(this)"><span class="badge">0</span> Initial Activity Assessment</a></li>
-                                                <li type="Initial Dietary Assessment" id="IDA_nextmonth"><a href="#" data-toggle="modal" data-target="#Initial_Assessment" style="color:white" onclick="IDA_nextmonth_click(this)"><span class="badge">0</span> Initial Dietary Assessment</a></li>
-                                                <li type="Initial Fall Risk Assessment" id="IFRA_nextmonth"><a href="#" data-toggle="modal" data-target="#Initial_Assessment" style="color:white" onclick="IFRA_nextmonth_click(this)"><span class="badge">0</span> Initial Fall Risk Assessment</a></li>
-                                                <li type="Initial Resident Care Assessment" id="IRCA_nextmonth"><a href="#" data-toggle="modal" data-target="#Initial_Assessment" style="color:white" onclick="IRCA_nextmonth_click(this)"><span class="badge">0</span> Initial Resident Care Assessment</a></li>
+                                                <li class="hidefromBegin" type="Initial Activity Assessment" id="IAA_nextmonth"><a href="#" data-toggle="modal" data-target="#Initial_Assessment" style="color:white" onclick="IAA_nextmonth_click(this)"><span class="badge">0</span> Initial Activity Assessment</a></li>
+                                                <li class="hidefromBegin" type="Initial Dietary Assessment" id="IDA_nextmonth"><a href="#" data-toggle="modal" data-target="#Initial_Assessment" style="color:white" onclick="IDA_nextmonth_click(this)"><span class="badge">0</span> Initial Dietary Assessment</a></li>
+                                                <li class="hidefromBegin" type="Initial Fall Risk Assessment" id="IFRA_nextmonth"><a href="#" data-toggle="modal" data-target="#Initial_Assessment" style="color:white" onclick="IFRA_nextmonth_click(this)"><span class="badge">0</span> Initial Fall Risk Assessment</a></li>
+                                                <li class="hidefromBegin" type="Initial Resident Care Assessment" id="IRCA_nextmonth"><a href="#" data-toggle="modal" data-target="#Initial_Assessment" style="color:white" onclick="IRCA_nextmonth_click(this)"><span class="badge">0</span> Initial Resident Care Assessment</a></li>
                                             </ul>
                                         </div>
                                     </li>
@@ -458,10 +470,10 @@
 
                                         <div>
                                             <ul id="RA_nextmonth_ul">
-                                                <li type="Acticity Assessment" id="RAA_nextmonth"><a href="#" data-toggle="modal" data-target="#Reassessments" style="color:white" onclick="RAA_nextmonth_click(this)"><span class="badge">0</span> Acticity Assessment</a></li>
-                                                <li type="Dietary Assessment" id="RDA_nextmonth"><a href="#" data-toggle="modal" data-target="#Reassessments" style="color:white" onclick="RDA_nextmonth_click(this)"><span class="badge">0</span> Dietary Assessment</a></li>
-                                                <li type="Fall Risk Assessment" id="RFRA_nextmonth"><a href="#" data-toggle="modal" data-target="#Reassessments" style="color:white" onclick="RFRA_nextmonth_click(this)"><span class="badge">0</span> Fall Risk Assessment</a></li>
-                                                <li type="Resident Care Assessment" id="RRCA_nextmonth"><a href="#" data-toggle="modal" data-target="#Reassessments" style="color:white" onclick="RRCA_nextmonth_click(this)"><span class="badge">0</span> Resident Care Assessment</a></li>
+                                                <li class="hidefromBegin" type="Acticity Assessment" id="RAA_nextmonth"><a href="#" data-toggle="modal" data-target="#Reassessments" style="color:white" onclick="RAA_nextmonth_click(this)"><span class="badge">0</span> Acticity Assessment</a></li>
+                                                <li class="hidefromBegin" type="Dietary Assessment" id="RDA_nextmonth"><a href="#" data-toggle="modal" data-target="#Reassessments" style="color:white" onclick="RDA_nextmonth_click(this)"><span class="badge">0</span> Dietary Assessment</a></li>
+                                                <li class="hidefromBegin" type="Fall Risk Assessment" id="RFRA_nextmonth"><a href="#" data-toggle="modal" data-target="#Reassessments" style="color:white" onclick="RFRA_nextmonth_click(this)"><span class="badge">0</span> Fall Risk Assessment</a></li>
+                                                <li class="hidefromBegin" type="Resident Care Assessment" id="RRCA_nextmonth"><a href="#" data-toggle="modal" data-target="#Reassessments" style="color:white" onclick="RRCA_nextmonth_click(this)"><span class="badge">0</span> Resident Care Assessment</a></li>
                                             </ul>
                                         </div>
                                     </li>
@@ -1056,130 +1068,253 @@
         <script>
 
             var someValue = $('#UserTypeNum').val();
-            if (someValue == 8) {
-                $('li[class="list-group-item"]').hide();
-                $('li[id="HO"]').show();
-                $('li[id="HO_nextmonth"]').show();
-            }
-            else if (someValue == 10 || someValue == 22) {
-                $('li[class="list-group-item"]').hide();
-                $('li[id="RB"]').show();
-            }
-            else if (someValue == 19) {
-                $('li[class="list-group-item"]').hide();
-                $('li[id="HO"]').show();
-                $('li[id="HO_nextmonth"]').show();
-                $('li[id="RB"]').show();
-                $('li[id="RP"]').show();
-            }
-            else if (someValue == 5) {
-                $('li[class="list-group-item"]').hide();
-                $('li[id="HO"]').show();
-                $('li[id="HO_nextmonth"]').show();
-                $('li[id="RB"]').show();
-            }
-            else if (someValue == 11 || someValue == 12 || someValue == 20) {
-                $('li[class="list-group-item"]').hide();
-                $('li[id="HO"]').show();
-                $('li[id="HO_nextmonth"]').show();
-                $('li[id="PN"]').show();
-                $('li[id="RI"]').show();
-                $('li[id="RB"]').show();
-            }
-            else if (someValue == 7) {
-                $('li[id="RI"]').hide();
-                $('li[id="RP"]').hide();
-                $('li[id="NR"]').hide();
-                $('li[id="SA"]').hide();
-                $('li[id="IAA"]').hide();
-                $('li[id="IFRA"]').hide();
-                $('li[id="IRCA"]').hide();
-                $('li[id="RAA"]').hide();
-                $('li[id="RFRA"]').hide();
-                $('li[id="RRCA"]').hide();
-                $('li[id="SA_nextmonth"]').hide();
-                $('li[id="IAA_nextmonth"]').hide();
-                $('li[id="IFRA_nextmonth"]').hide();
-                $('li[id="IRCA_nextmonth"]').hide();
-                $('li[id="RAA_nextmonth"]').hide();
-                $('li[id="RFRA_nextmonth"]').hide();
-                $('li[id="RRCA_nextmonth"]').hide();
-            }
-            else if (someValue == 6 || someValue == 14 || someValue == 12) {
-                $('li[id="DU"]').hide();
-                $('li[id="RI"]').hide();
-                $('li[id="NR"]').hide();
-                $('li[id="IDA"]').hide();
-                $('li[id="IFRA"]').hide();
-                $('li[id="IRCA"]').hide();
-                $('li[id="RDA"]').hide();
-                $('li[id="RFRA"]').hide();
-                $('li[id="RRCA"]').hide();
-                $('li[id="IDA_nextmonth"]').hide();
-                $('li[id="IFRA_nextmonth"]').hide();
-                $('li[id="IRCA_nextmonth"]').hide();
-                $('li[id="RDA_nextmonth"]').hide();
-                $('li[id="RFRA_nextmonth"]').hide();
-                $('li[id="RRCA_nextmonth"]').hide();
-            }
-            else if (someValue == 4 || someValue == 15 || someValue == 16 || someValue == 17 || someValue == 18) {
-                $('li[id="DU"]').hide();
-                $('li[id="RP"]').hide();
-                $('li[id="NR"]').hide();
-                $('li[id="SA"]').hide();
-                $('li[id="IDA"]').hide();
-                $('li[id="IAA"]').hide();
-                $('li[id="RDA"]').hide();
-                $('li[id="RAA"]').hide();
-                $('li[id="SA_nextmonth"]').hide();
-                $('li[id="IDA_nextmonth"]').hide();
-                $('li[id="IAA_nextmonth"]').hide();
-                $('li[id="RDA_nextmonth"]').hide();
-                $('li[id="RAA_nextmonth"]').hide();
-            }
-            else if (someValue == 1 || someValue == 2 || someValue == 3 || someValue == 9 || someValue == 13) {
-                $('li[class="list-group-item"]').show();
-            }
-            else {
-                $('li[class="list-group-item"]').hide();
-            }
+            var someValueInt = parseInt(someValue);
+            //if (someValue == 8) {
+            //    $('li[class="list-group-item"]').hide();
+            //    $('li[id="HO"]').show();
+            //    $('li[id="HO_nextmonth"]').show();
+            //}
+            //else if (someValue == 10 || someValue == 22) {
+            //    $('li[class="list-group-item"]').hide();
+            //    $('li[id="RB"]').show();
+            //}
+            //else if (someValue == 19) {
+            //    $('li[class="list-group-item"]').hide();
+            //    $('li[id="HO"]').show();
+            //    $('li[id="HO_nextmonth"]').show();
+            //    $('li[id="RB"]').show();
+            //    $('li[id="RP"]').show();
+            //}
+            //else if (someValue == 5) {
+            //    $('li[class="list-group-item"]').hide();
+            //    $('li[id="HO"]').show();
+            //    $('li[id="HO_nextmonth"]').show();
+            //    $('li[id="RB"]').show();
+            //}
+            //else if (someValue == 11 || someValue == 12 || someValue == 20) {
+            //    $('li[class="list-group-item"]').hide();
+            //    $('li[id="HO"]').show();
+            //    $('li[id="HO_nextmonth"]').show();
+            //    $('li[id="PN"]').show();
+            //    $('li[id="RI"]').show();
+            //    $('li[id="RB"]').show();
+            //}
+            //else if (someValue == 7) {
+            //    $('li[id="RI"]').hide();
+            //    $('li[id="RP"]').hide();
+            //    $('li[id="NR"]').hide();
+            //    $('li[id="SA"]').hide();
+            //    $('li[id="IAA"]').hide();
+            //    $('li[id="IFRA"]').hide();
+            //    $('li[id="IRCA"]').hide();
+            //    $('li[id="RAA"]').hide();
+            //    $('li[id="RFRA"]').hide();
+            //    $('li[id="RRCA"]').hide();
+            //    $('li[id="SA_nextmonth"]').hide();
+            //    $('li[id="IAA_nextmonth"]').hide();
+            //    $('li[id="IFRA_nextmonth"]').hide();
+            //    $('li[id="IRCA_nextmonth"]').hide();
+            //    $('li[id="RAA_nextmonth"]').hide();
+            //    $('li[id="RFRA_nextmonth"]').hide();
+            //    $('li[id="RRCA_nextmonth"]').hide();
+            //}
+            //else if (someValue == 6 || someValue == 14 || someValue == 12) {
+            //    $('li[id="DU"]').hide();
+            //    $('li[id="RI"]').hide();
+            //    $('li[id="NR"]').hide();
+            //    $('li[id="IDA"]').hide();
+            //    $('li[id="IFRA"]').hide();
+            //    $('li[id="IRCA"]').hide();
+            //    $('li[id="RDA"]').hide();
+            //    $('li[id="RFRA"]').hide();
+            //    $('li[id="RRCA"]').hide();
+            //    $('li[id="IDA_nextmonth"]').hide();
+            //    $('li[id="IFRA_nextmonth"]').hide();
+            //    $('li[id="IRCA_nextmonth"]').hide();
+            //    $('li[id="RDA_nextmonth"]').hide();
+            //    $('li[id="RFRA_nextmonth"]').hide();
+            //    $('li[id="RRCA_nextmonth"]').hide();
+            //}
+            //else if (someValue == 4 || someValue == 15 || someValue == 16 || someValue == 17 || someValue == 18) {
+            //    $('li[id="DU"]').hide();
+            //    $('li[id="RP"]').hide();
+            //    $('li[id="NR"]').hide();
+            //    $('li[id="SA"]').hide();
+            //    $('li[id="IDA"]').hide();
+            //    $('li[id="IAA"]').hide();
+            //    $('li[id="RDA"]').hide();
+            //    $('li[id="RAA"]').hide();
+            //    $('li[id="SA_nextmonth"]').hide();
+            //    $('li[id="IDA_nextmonth"]').hide();
+            //    $('li[id="IAA_nextmonth"]').hide();
+            //    $('li[id="RDA_nextmonth"]').hide();
+            //    $('li[id="RAA_nextmonth"]').hide();
+            //}
+            //else if (someValue == 1 || someValue == 2 || someValue == 3 || someValue == 9 || someValue == 13) {
+            //    $('li[class="list-group-item"]').show();
+            //}
+            //else {
+            //    $('li[class="list-group-item"]').hide();
+            //}
 
-            var number = $('span[class="badge"]');
+            var number = $('#ggg span[class="badge"]');
+            //for (a = 0; a < 26; a++) {
+            //    number[a].parentElement.parentElement.style.display = "none";
+            //}
+
+            var UserTypePart1 = [8];//Pharmacy
+            var UserTypePart2 = [10,22];//Study,Reception
+            var UserTypePart3 = [19];//Service
+            var UserTypePart4 = [5];//Doctor
+            var UserTypePart5 = [7];//Chef
+            var UserTypePart6 = [6, 14, 21];//Activity D,Activity Aide,Regional D of HW
+            var UserTypePart7 = [11,12,20];//UCP,HCA,PSW
+            var UserTypePart8 = [4, 15, 16, 17, 18];//RN,LPN,IA,IAA,RPN
+            var UserTypePart9 = [1,2,3,13,9];//Head Office Group
+
+
+            var DUList = UserTypePart5.concat(UserTypePart9);
+            var HOListnot = UserTypePart2;
+            var IAList = UserTypePart6.concat(UserTypePart5.concat(UserTypePart8.concat(UserTypePart9)));
+            var IAAList = UserTypePart6.concat(UserTypePart9);
+            var IDAList = UserTypePart5.concat(UserTypePart9);
+            var IFRAList = UserTypePart8.concat(UserTypePart9);
+            var IRCAList = UserTypePart8.concat(UserTypePart9);
+            var RAList = UserTypePart6.concat(UserTypePart5.concat(UserTypePart8.concat(UserTypePart9)));
+            var RAAList = UserTypePart6.concat(UserTypePart9);
+            var RDAList = UserTypePart5.concat(UserTypePart9);
+            var RFRAList = UserTypePart8.concat(UserTypePart9);
+            var RRCAList = UserTypePart8.concat(UserTypePart9);
+            var PNListnot = UserTypePart1.concat(UserTypePart2.concat(UserTypePart3.concat(UserTypePart4)));
+            var RIList = UserTypePart7.concat(UserTypePart8.concat(UserTypePart9));
+            var RBListnot = UserTypePart1.concat(UserTypePart2);
+            var RPList = UserTypePart6.concat(UserTypePart3.concat(UserTypePart9));
+            var NRList = UserTypePart9;
+            var SAEList = UserTypePart6.concat(UserTypePart9)
+
+            //$.get("/Home/Number", {}, function (data) {
+            //    if (data[0].Value != 0 && DUList.includes(someValueInt)) { number[0].innerHTML = data[0].Value; number[0].parentElement.parentElement.style.display = "block"; }
+            //    if (data[1].Value != 0 && DUList.includes(someValueInt)) { number[1].innerHTML = data[1].Value; number[1].parentElement.parentElement.style.display = "block"; }
+            //    if (data[2].Value != 0 && !HOListnot.includes(someValueInt)) { number[2].innerHTML = data[2].Value; number[2].parentElement.parentElement.style.display = "block"; }
+            //    if (data[3].Value != 0 && !HOListnot.includes(someValueInt)) { number[3].innerHTML = data[3].Value; number[3].parentElement.parentElement.style.display = "block"; }
+            //    if (data[4].Value != 0 && IAList.includes(someValueInt)) { number[4].innerHTML = data[4].Value; number[4].parentElement.parentElement.style.display = "block"; }
+            //    if (data[5].Value != 0 && IAAList.includes(someValueInt)) { number[5].innerHTML = data[5].Value; number[5].parentElement.parentElement.style.display = "block"; }
+            //    if (data[6].Value != 0 && IDAList.includes(someValueInt)) { number[6].innerHTML = data[6].Value; number[6].parentElement.parentElement.style.display = "block"; }
+            //    if (data[7].Value != 0 && IFRAList.includes(someValueInt)) { number[7].innerHTML = data[7].Value; number[7].parentElement.parentElement.style.display = "block"; }
+            //    if (data[8].Value != 0 && IRCAList.includes(someValueInt)) { number[8].innerHTML = data[8].Value; number[8].parentElement.parentElement.style.display = "block"; }
+            //    if (data[9].Value != 0 && !PNListnot.includes(someValueInt)) { number[9].innerHTML = data[9].Value; number[9].parentElement.parentElement.style.display = "block"; }
+            //    if (data[10].Value != 0 && !PNListnot.includes(someValueInt)) { number[10].innerHTML = data[10].Value; number[10].parentElement.parentElement.style.display = "block"; }
+            //    if (data[11].Value != 0 && RAList.includes(someValueInt)) { number[11].innerHTML = data[11].Value; number[11].parentElement.parentElement.style.display = "block"; }
+            //    if (data[12].Value != 0 && RAAList.includes(someValueInt)) { number[12].innerHTML = data[12].Value; number[12].parentElement.parentElement.style.display = "block"; }
+            //    if (data[13].Value != 0 && RDAList.includes(someValueInt)) { number[13].innerHTML = data[13].Value; number[13].parentElement.parentElement.style.display = "block"; }
+            //    if (data[14].Value != 0 && RFRAList.includes(someValueInt)) { number[14].innerHTML = data[14].Value; number[14].parentElement.parentElement.style.display = "block"; }
+            //    if (data[15].Value != 0 && RRCAList.includes(someValueInt)) { number[15].innerHTML = data[15].Value; number[15].parentElement.parentElement.style.display = "block"; }
+            //    if (data[16].Value != 0 && RIList.includes(someValueInt)) { number[16].innerHTML = data[16].Value; number[16].parentElement.parentElement.style.display = "block"; }
+            //    if (data[17].Value != 0 && RIList.includes(someValueInt)) { number[17].innerHTML = data[17].Value; number[17].parentElement.parentElement.style.display = "block"; }
+            //    if (data[18].Value != 0 && !RBListnot.includes(someValueInt)) { number[18].innerHTML = data[18].Value; number[18].parentElement.parentElement.style.display = "block"; }
+            //    if (data[19].Value != 0 && !RBListnot.includes(someValueInt)) { number[19].innerHTML = data[19].Value; number[19].parentElement.parentElement.style.display = "block"; }
+            //    if (data[20].Value != 0 && RPList.includes(someValueInt)) { number[20].innerHTML = data[20].Value; number[20].parentElement.parentElement.style.display = "block"; }
+            //    if (data[21].Value != 0 && RPList.includes(someValueInt)) { number[21].innerHTML = data[21].Value; number[21].parentElement.parentElement.style.display = "block"; }
+            //    if (data[22].Value != 0 && NRList.includes(someValueInt)) { number[22].innerHTML = data[22].Value; number[22].parentElement.parentElement.style.display = "block"; }
+            //    if (data[23].Value != 0 && NRList.includes(someValueInt)) { number[23].innerHTML = data[23].Value; number[23].parentElement.parentElement.style.display = "block"; }
+            //    if (data[24].Value != 0 && SAEList.includes(someValueInt)) { number[24].innerHTML = data[24].Value; number[24].parentElement.parentElement.style.display = "block"; }
+            //    if (data[25].Value != 0 && SAEList.includes(someValueInt)) { number[25].innerHTML = data[25].Value; number[25].parentElement.parentElement.style.display = "block"; }
+
+            //});
+
+            //$.get("/Home/Number", {}, function (data) {
+            //    for (a = 0; a < 26; a++) {
+            //        if (data[a].Value != 0) {
+            //            number[a].innerHTML = data[a].Value;
+            //        }
+            //        else {
+            //            number[a].parentElement.parentElement.style.display = "none";
+            //        }
+            //    }
+            //});
             $.get("/Home/Number_Part1", {}, function (data) {
-                for (a = 0; a < 26; a++) {
-                    if (data[a].Value != 0) {
-                        number[a].innerHTML = data[a].Value;
-                        number[a].parentElement.parentElement.style.display = "block";
-                    }
-                    else {
-                        number[a].parentElement.parentElement.style.display = "none";
-                    }
-
-                }
+                if (data[0].Value != 0 && DUList.includes(someValueInt)) { number[0].innerHTML = data[0].Value; number[0].parentElement.parentElement.style.display = "block"; }
+                if (data[1].Value != 0 && DUList.includes(someValueInt)) { number[1].innerHTML = data[1].Value; number[1].parentElement.parentElement.style.display = "block"; }
+                if (data[2].Value != 0 && !HOListnot.includes(someValueInt)) { number[2].innerHTML = data[2].Value; number[2].parentElement.parentElement.style.display = "block"; }
+                if (data[3].Value != 0 && !HOListnot.includes(someValueInt)) { number[3].innerHTML = data[3].Value; number[3].parentElement.parentElement.style.display = "block"; }
+                if (data[4].Value != 0 && IAList.includes(someValueInt)) { number[4].innerHTML = data[4].Value; number[4].parentElement.parentElement.style.display = "block"; }
+                if (data[5].Value != 0 && IAAList.includes(someValueInt)) { number[5].innerHTML = data[5].Value; number[5].parentElement.parentElement.style.display = "block"; }
+                if (data[6].Value != 0 && IDAList.includes(someValueInt)) { number[6].innerHTML = data[6].Value; number[6].parentElement.parentElement.style.display = "block"; }
+                if (data[7].Value != 0 && IFRAList.includes(someValueInt)) { number[7].innerHTML = data[7].Value; number[7].parentElement.parentElement.style.display = "block"; }
+                if (data[8].Value != 0 && IRCAList.includes(someValueInt)) { number[8].innerHTML = data[8].Value; number[8].parentElement.parentElement.style.display = "block"; }
+                if (data[9].Value != 0 && !PNListnot.includes(someValueInt)) { number[9].innerHTML = data[9].Value; number[9].parentElement.parentElement.style.display = "block"; }
+                if (data[10].Value != 0 && !PNListnot.includes(someValueInt)) { number[10].innerHTML = data[10].Value; number[10].parentElement.parentElement.style.display = "block"; }
+                if (data[11].Value != 0 && RAList.includes(someValueInt)) { number[11].innerHTML = data[11].Value; number[11].parentElement.parentElement.style.display = "block"; }
+                if (data[12].Value != 0 && RAAList.includes(someValueInt)) { number[12].innerHTML = data[12].Value; number[12].parentElement.parentElement.style.display = "block"; }
+                if (data[13].Value != 0 && RDAList.includes(someValueInt)) { number[13].innerHTML = data[13].Value; number[13].parentElement.parentElement.style.display = "block"; }
+                if (data[14].Value != 0 && RFRAList.includes(someValueInt)) { number[14].innerHTML = data[14].Value; number[14].parentElement.parentElement.style.display = "block"; }
+                if (data[15].Value != 0 && RRCAList.includes(someValueInt)) { number[15].innerHTML = data[15].Value; number[15].parentElement.parentElement.style.display = "block"; }
+                if (data[16].Value != 0 && RIList.includes(someValueInt)) { number[16].innerHTML = data[16].Value; number[16].parentElement.parentElement.style.display = "block"; }
+                if (data[17].Value != 0 && RIList.includes(someValueInt)) { number[17].innerHTML = data[17].Value; number[17].parentElement.parentElement.style.display = "block"; }
+                if (data[18].Value != 0 && !RBListnot.includes(someValueInt)) { number[18].innerHTML = data[18].Value; number[18].parentElement.parentElement.style.display = "block"; }
+                if (data[19].Value != 0 && !RBListnot.includes(someValueInt)) { number[19].innerHTML = data[19].Value; number[19].parentElement.parentElement.style.display = "block"; }
+                if (data[20].Value != 0 && RPList.includes(someValueInt)) { number[20].innerHTML = data[20].Value; number[20].parentElement.parentElement.style.display = "block"; }
+                if (data[21].Value != 0 && RPList.includes(someValueInt)) { number[21].innerHTML = data[21].Value; number[21].parentElement.parentElement.style.display = "block"; }
+                if (data[22].Value != 0 && NRList.includes(someValueInt)) { number[22].innerHTML = data[22].Value; number[22].parentElement.parentElement.style.display = "block"; }
+                if (data[23].Value != 0 && NRList.includes(someValueInt)) { number[23].innerHTML = data[23].Value; number[23].parentElement.parentElement.style.display = "block"; }
+                if (data[24].Value != 0 && SAEList.includes(someValueInt)) { number[24].innerHTML = data[24].Value; number[24].parentElement.parentElement.style.display = "block"; }
+                if (data[25].Value != 0 && SAEList.includes(someValueInt)) { number[25].innerHTML = data[25].Value; number[25].parentElement.parentElement.style.display = "block"; }
             });
             $.get("/Home/Number_Part2", {}, function (data) {
-                for (a = 0; a < 26; a++) {
-                    if (data[a].Value != 0) {
-                        number[a].innerHTML = data[a].Value;
-                        number[a].parentElement.parentElement.style.display = "block";
-                    }
-                    else {
-                        number[a].parentElement.parentElement.style.display = "none";
-                    }
-
-                }
+                if (data[0].Value != 0 && DUList.includes(someValueInt)) { number[0].innerHTML = data[0].Value; number[0].parentElement.parentElement.style.display = "block"; }
+                if (data[1].Value != 0 && DUList.includes(someValueInt)) { number[1].innerHTML = data[1].Value; number[1].parentElement.parentElement.style.display = "block"; }
+                if (data[2].Value != 0 && !HOListnot.includes(someValueInt)) { number[2].innerHTML = data[2].Value; number[2].parentElement.parentElement.style.display = "block"; }
+                if (data[3].Value != 0 && !HOListnot.includes(someValueInt)) { number[3].innerHTML = data[3].Value; number[3].parentElement.parentElement.style.display = "block"; }
+                if (data[4].Value != 0 && IAList.includes(someValueInt)) { number[4].innerHTML = data[4].Value; number[4].parentElement.parentElement.style.display = "block"; }
+                if (data[5].Value != 0 && IAAList.includes(someValueInt)) { number[5].innerHTML = data[5].Value; number[5].parentElement.parentElement.style.display = "block"; }
+                if (data[6].Value != 0 && IDAList.includes(someValueInt)) { number[6].innerHTML = data[6].Value; number[6].parentElement.parentElement.style.display = "block"; }
+                if (data[7].Value != 0 && IFRAList.includes(someValueInt)) { number[7].innerHTML = data[7].Value; number[7].parentElement.parentElement.style.display = "block"; }
+                if (data[8].Value != 0 && IRCAList.includes(someValueInt)) { number[8].innerHTML = data[8].Value; number[8].parentElement.parentElement.style.display = "block"; }
+                if (data[9].Value != 0 && !PNListnot.includes(someValueInt)) { number[9].innerHTML = data[9].Value; number[9].parentElement.parentElement.style.display = "block"; }
+                if (data[10].Value != 0 && !PNListnot.includes(someValueInt)) { number[10].innerHTML = data[10].Value; number[10].parentElement.parentElement.style.display = "block"; }
+                if (data[11].Value != 0 && RAList.includes(someValueInt)) { number[11].innerHTML = data[11].Value; number[11].parentElement.parentElement.style.display = "block"; }
+                if (data[12].Value != 0 && RAAList.includes(someValueInt)) { number[12].innerHTML = data[12].Value; number[12].parentElement.parentElement.style.display = "block"; }
+                if (data[13].Value != 0 && RDAList.includes(someValueInt)) { number[13].innerHTML = data[13].Value; number[13].parentElement.parentElement.style.display = "block"; }
+                if (data[14].Value != 0 && RFRAList.includes(someValueInt)) { number[14].innerHTML = data[14].Value; number[14].parentElement.parentElement.style.display = "block"; }
+                if (data[15].Value != 0 && RRCAList.includes(someValueInt)) { number[15].innerHTML = data[15].Value; number[15].parentElement.parentElement.style.display = "block"; }
+                if (data[16].Value != 0 && RIList.includes(someValueInt)) { number[16].innerHTML = data[16].Value; number[16].parentElement.parentElement.style.display = "block"; }
+                if (data[17].Value != 0 && RIList.includes(someValueInt)) { number[17].innerHTML = data[17].Value; number[17].parentElement.parentElement.style.display = "block"; }
+                if (data[18].Value != 0 && !RBListnot.includes(someValueInt)) { number[18].innerHTML = data[18].Value; number[18].parentElement.parentElement.style.display = "block"; }
+                if (data[19].Value != 0 && !RBListnot.includes(someValueInt)) { number[19].innerHTML = data[19].Value; number[19].parentElement.parentElement.style.display = "block"; }
+                if (data[20].Value != 0 && RPList.includes(someValueInt)) { number[20].innerHTML = data[20].Value; number[20].parentElement.parentElement.style.display = "block"; }
+                if (data[21].Value != 0 && RPList.includes(someValueInt)) { number[21].innerHTML = data[21].Value; number[21].parentElement.parentElement.style.display = "block"; }
+                if (data[22].Value != 0 && NRList.includes(someValueInt)) { number[22].innerHTML = data[22].Value; number[22].parentElement.parentElement.style.display = "block"; }
+                if (data[23].Value != 0 && NRList.includes(someValueInt)) { number[23].innerHTML = data[23].Value; number[23].parentElement.parentElement.style.display = "block"; }
+                if (data[24].Value != 0 && SAEList.includes(someValueInt)) { number[24].innerHTML = data[24].Value; number[24].parentElement.parentElement.style.display = "block"; }
+                if (data[25].Value != 0 && SAEList.includes(someValueInt)) { number[25].innerHTML = data[25].Value; number[25].parentElement.parentElement.style.display = "block"; }
             });
             $.get("/Home/Number_Part3", {}, function (data) {
-                for (a = 0; a < 26; a++) {
-                    if (data[a].Value != 0) {
-                        number[a].innerHTML = data[a].Value;
-                        number[a].parentElement.parentElement.style.display = "block";
-                    }
-                    else {
-                        number[a].parentElement.parentElement.style.display = "none";
-                    }
-
-                }
+                if (data[0].Value != 0 && DUList.includes(someValueInt)) { number[0].innerHTML = data[0].Value; number[0].parentElement.parentElement.style.display = "block"; }
+                if (data[1].Value != 0 && DUList.includes(someValueInt)) { number[1].innerHTML = data[1].Value; number[1].parentElement.parentElement.style.display = "block"; }
+                if (data[2].Value != 0 && !HOListnot.includes(someValueInt)) { number[2].innerHTML = data[2].Value; number[2].parentElement.parentElement.style.display = "block"; }
+                if (data[3].Value != 0 && !HOListnot.includes(someValueInt)) { number[3].innerHTML = data[3].Value; number[3].parentElement.parentElement.style.display = "block"; }
+                if (data[4].Value != 0 && IAList.includes(someValueInt)) { number[4].innerHTML = data[4].Value; number[4].parentElement.parentElement.style.display = "block"; }
+                if (data[5].Value != 0 && IAAList.includes(someValueInt)) { number[5].innerHTML = data[5].Value; number[5].parentElement.parentElement.style.display = "block"; }
+                if (data[6].Value != 0 && IDAList.includes(someValueInt)) { number[6].innerHTML = data[6].Value; number[6].parentElement.parentElement.style.display = "block"; }
+                if (data[7].Value != 0 && IFRAList.includes(someValueInt)) { number[7].innerHTML = data[7].Value; number[7].parentElement.parentElement.style.display = "block"; }
+                if (data[8].Value != 0 && IRCAList.includes(someValueInt)) { number[8].innerHTML = data[8].Value; number[8].parentElement.parentElement.style.display = "block"; }
+                if (data[9].Value != 0 && !PNListnot.includes(someValueInt)) { number[9].innerHTML = data[9].Value; number[9].parentElement.parentElement.style.display = "block"; }
+                if (data[10].Value != 0 && !PNListnot.includes(someValueInt)) { number[10].innerHTML = data[10].Value; number[10].parentElement.parentElement.style.display = "block"; }
+                if (data[11].Value != 0 && RAList.includes(someValueInt)) { number[11].innerHTML = data[11].Value; number[11].parentElement.parentElement.style.display = "block"; }
+                if (data[12].Value != 0 && RAAList.includes(someValueInt)) { number[12].innerHTML = data[12].Value; number[12].parentElement.parentElement.style.display = "block"; }
+                if (data[13].Value != 0 && RDAList.includes(someValueInt)) { number[13].innerHTML = data[13].Value; number[13].parentElement.parentElement.style.display = "block"; }
+                if (data[14].Value != 0 && RFRAList.includes(someValueInt)) { number[14].innerHTML = data[14].Value; number[14].parentElement.parentElement.style.display = "block"; }
+                if (data[15].Value != 0 && RRCAList.includes(someValueInt)) { number[15].innerHTML = data[15].Value; number[15].parentElement.parentElement.style.display = "block"; }
+                if (data[16].Value != 0 && RIList.includes(someValueInt)) { number[16].innerHTML = data[16].Value; number[16].parentElement.parentElement.style.display = "block"; }
+                if (data[17].Value != 0 && RIList.includes(someValueInt)) { number[17].innerHTML = data[17].Value; number[17].parentElement.parentElement.style.display = "block"; }
+                if (data[18].Value != 0 && !RBListnot.includes(someValueInt)) { number[18].innerHTML = data[18].Value; number[18].parentElement.parentElement.style.display = "block"; }
+                if (data[19].Value != 0 && !RBListnot.includes(someValueInt)) { number[19].innerHTML = data[19].Value; number[19].parentElement.parentElement.style.display = "block"; }
+                if (data[20].Value != 0 && RPList.includes(someValueInt)) { number[20].innerHTML = data[20].Value; number[20].parentElement.parentElement.style.display = "block"; }
+                if (data[21].Value != 0 && RPList.includes(someValueInt)) { number[21].innerHTML = data[21].Value; number[21].parentElement.parentElement.style.display = "block"; }
+                if (data[22].Value != 0 && NRList.includes(someValueInt)) { number[22].innerHTML = data[22].Value; number[22].parentElement.parentElement.style.display = "block"; }
+                if (data[23].Value != 0 && NRList.includes(someValueInt)) { number[23].innerHTML = data[23].Value; number[23].parentElement.parentElement.style.display = "block"; }
+                if (data[24].Value != 0 && SAEList.includes(someValueInt)) { number[24].innerHTML = data[24].Value; number[24].parentElement.parentElement.style.display = "block"; }
+                if (data[25].Value != 0 && SAEList.includes(someValueInt)) { number[25].innerHTML = data[25].Value; number[25].parentElement.parentElement.style.display = "block"; }
             });
 
 
@@ -1881,16 +2016,51 @@
             }
 
             function nextmonth() {
-                $.get("/Home/Number_nextmonth", {}, function (data) {
-                    for (a = 0; a < 14; a++) {
-                        if (data[a].Value != 0) {
-                            number[a + 26].innerHTML = data[a].Value;
-                        }
-                        else {
-                            number[a + 26].parentElement.parentElement.style.display = "none";
-                        }
-
-                    }
+                var number = $('#ggg_next span[class="badge"]');
+                var someValue = $('#UserTypeNum').val();
+                var someValueInt = parseInt(someValue);
+                var UserTypePart1 = [8];//Pharmacy
+                var UserTypePart2 = [10, 22];//Study,Reception
+                var UserTypePart3 = [19];//Service
+                var UserTypePart4 = [5];//Doctor
+                var UserTypePart5 = [7];//Chef
+                var UserTypePart6 = [6, 14, 21];//Activity D,Activity Aide,Regional D of HW
+                var UserTypePart7 = [11, 12, 20];//UCP,HCA,PSW
+                var UserTypePart8 = [4, 15, 16, 17, 18];//RN,LPN,IA,IAA,RPN
+                var UserTypePart9 = [1, 2, 3, 13, 9];//Head Office Group
+                var DUList = UserTypePart5.concat(UserTypePart9);
+                var HOListnot = UserTypePart2;
+                var IAList = UserTypePart6.concat(UserTypePart5.concat(UserTypePart8.concat(UserTypePart9)));
+                var IAAList = UserTypePart6.concat(UserTypePart9);
+                var IDAList = UserTypePart5.concat(UserTypePart9);
+                var IFRAList = UserTypePart8.concat(UserTypePart9);
+                var IRCAList = UserTypePart8.concat(UserTypePart9);
+                var RAList = UserTypePart6.concat(UserTypePart5.concat(UserTypePart8.concat(UserTypePart9)));
+                var RAAList = UserTypePart6.concat(UserTypePart9);
+                var RDAList = UserTypePart5.concat(UserTypePart9);
+                var RFRAList = UserTypePart8.concat(UserTypePart9);
+                var RRCAList = UserTypePart8.concat(UserTypePart9);
+                var PNListnot = UserTypePart1.concat(UserTypePart2.concat(UserTypePart3.concat(UserTypePart4)));
+                var RIList = UserTypePart7.concat(UserTypePart8.concat(UserTypePart9));
+                var RBListnot = UserTypePart1.concat(UserTypePart2);
+                var RPList = UserTypePart6.concat(UserTypePart3.concat(UserTypePart9));
+                var NRList = UserTypePart9;
+                var SAEList = UserTypePart6.concat(UserTypePart9)
+                $.get("/Home/Number_nextmonth", {}, function (data) {                   
+                    if (data[0].Value != 0 && !HOListnot.includes(someValueInt)) { number[0].innerHTML = data[0].Value; number[0].parentElement.parentElement.style.display = "block"; }
+                    if (data[1].Value != 0 && !HOListnot.includes(someValueInt)) { number[1].innerHTML = data[1].Value; number[1].parentElement.parentElement.style.display = "block"; }
+                    if (data[2].Value != 0 && IAList.includes(someValueInt)) { number[2].innerHTML = data[2].Value; number[2].parentElement.parentElement.style.display = "block"; }
+                    if (data[3].Value != 0 && IAAList.includes(someValueInt)) { number[3].innerHTML = data[3].Value; number[3].parentElement.parentElement.style.display = "block"; }
+                    if (data[4].Value != 0 && IDAList.includes(someValueInt)) { number[4].innerHTML = data[4].Value; number[4].parentElement.parentElement.style.display = "block"; }
+                    if (data[5].Value != 0 && IFRAList.includes(someValueInt)) { number[5].innerHTML = data[5].Value; number[5].parentElement.parentElement.style.display = "block"; }
+                    if (data[6].Value != 0 && IRCAList.includes(someValueInt)) { number[6].innerHTML = data[6].Value; number[6].parentElement.parentElement.style.display = "block"; }
+                    if (data[7].Value != 0 && RAList.includes(someValueInt)) { number[7].innerHTML = data[7].Value; number[7].parentElement.parentElement.style.display = "block"; }
+                    if (data[8].Value != 0 && RAAList.includes(someValueInt)) { number[8].innerHTML = data[8].Value; number[8].parentElement.parentElement.style.display = "block"; }
+                    if (data[9].Value != 0 && RDAList.includes(someValueInt)) { number[9].innerHTML = data[9].Value; number[9].parentElement.parentElement.style.display = "block"; }
+                    if (data[10].Value != 0 && RFRAList.includes(someValueInt)) { number[10].innerHTML = data[10].Value; number[10].parentElement.parentElement.style.display = "block"; }
+                    if (data[11].Value != 0 && RRCAList.includes(someValueInt)) { number[11].innerHTML = data[11].Value; number[11].parentElement.parentElement.style.display = "block"; }
+                    if (data[12].Value != 0 && SAEList.includes(someValueInt)) { number[12].innerHTML = data[12].Value; number[12].parentElement.parentElement.style.display = "block"; }
+                    if (data[13].Value != 0 && SAEList.includes(someValueInt)) { number[13].innerHTML = data[13].Value; number[13].parentElement.parentElement.style.display = "block"; }
                 });
 
                 document.getElementById("nextmonth").style.display = "none";

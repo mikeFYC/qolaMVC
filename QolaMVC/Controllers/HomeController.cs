@@ -940,7 +940,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
 
-            dynamic l_Json = to_do_list_function.get_to_do_list_number(user.ID, home.Id);
+            dynamic l_Json = to_do_list_function.get_to_do_list_number(user.ID, home.Id, user.UserType);
 
             return Json(l_Json, JsonRequestBehavior.AllowGet);
 
@@ -954,7 +954,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
 
-            dynamic l_Json = to_do_list_function.get_to_do_list_number_OtherPart(user.ID, home.Id);
+            dynamic l_Json = to_do_list_function.get_to_do_list_number_OtherPart(user.ID, home.Id, user.UserType);
 
             return Json(l_Json, JsonRequestBehavior.AllowGet);
 
@@ -968,7 +968,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
 
-            dynamic l_Json = to_do_list_function.get_to_do_list_number_InitialAssessmentPart(user.ID, home.Id);
+            dynamic l_Json = to_do_list_function.get_to_do_list_number_InitialAssessmentPart(user.ID, home.Id,user.UserType);
 
             return Json(l_Json, JsonRequestBehavior.AllowGet);
 
@@ -982,7 +982,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
 
-            dynamic l_Json = to_do_list_function.get_to_do_list_number_ReAssessmentPart(user.ID, home.Id);
+            dynamic l_Json = to_do_list_function.get_to_do_list_number_ReAssessmentPart(user.ID, home.Id, user.UserType);
 
             return Json(l_Json, JsonRequestBehavior.AllowGet);
 
@@ -996,7 +996,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
 
-            dynamic l_Json = to_do_list_function.get_to_do_list_number_nextmonth(user.ID, home.Id);
+            dynamic l_Json = to_do_list_function.get_to_do_list_number_nextmonth(user.ID, home.Id, user.UserType);
 
             return Json(l_Json, JsonRequestBehavior.AllowGet);
 

@@ -163,49 +163,7 @@
         max-height: 30vw;
     }
 </style>
-<script>
-    function mike_dropdown() {
-        if (document.getElementById('dropdown_li').className != 'nav-item dropdown show') {
-            document.getElementById('dropdown_li').className = 'nav-item dropdown show';
-        }
-        else {
-            document.getElementById('dropdown_li').className = 'nav-item dropdown';
-        }
-    }
 
-    function mike_dropdown_todolist() {
-        if (document.getElementById('dropdown_li_todolist').className != 'nav-item dropdown show') {
-            document.getElementById('dropdown_li_todolist').className = 'nav-item dropdown show';
-        }
-        else {
-            document.getElementById('dropdown_li_todolist').className = 'nav-item dropdown';
-        }
-
-        var number = $('span[class="badge_nav"]');
-        $.get("/Home/Number", {}, function (data) {
-            for (a = 0; a < 26; a++) {
-                if (data[a].Value != 0) {
-                    number[a].innerHTML = data[a].Value;
-                }
-                else {
-                    number[a].parentElement.style.display = "none";
-                }
-            }
-        });
-    }
-    function nextlayer_nav(ee) {
-
-        if (ee.parentElement.nextElementSibling.style.display != 'block') {
-            $('.ToDoListNav2').hide()
-            ee.parentElement.nextElementSibling.style.display = 'block';
-        }
-        else {
-            ee.parentElement.nextElementSibling.style.display = 'none';
-        }
-
-
-    }
-</script>
 
 <script src="~/Content/calendar/plugins/html2canvas/html2canvas.min.js"></script>
 <script src="~/Content/calendar/plugins/jspdf/jspdf.min.js"></script>
@@ -519,6 +477,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">@QolaMVC.Resources.Text.Close_big</button>
             </div>
+            <input type="hidden" id="UserTypeinMaster" value="@ViewBag.User.UserType" />
         </div>
 
     </div>
@@ -548,6 +507,102 @@
     </div>
 </div>
 
+
+<script>
+    function mike_dropdown() {
+        if (document.getElementById('dropdown_li').className != 'nav-item dropdown show') {
+            document.getElementById('dropdown_li').className = 'nav-item dropdown show';
+        }
+        else {
+            document.getElementById('dropdown_li').className = 'nav-item dropdown';
+        }
+    }
+
+    function mike_dropdown_todolist() {
+        if (document.getElementById('dropdown_li_todolist').className != 'nav-item dropdown show') {
+            document.getElementById('dropdown_li_todolist').className = 'nav-item dropdown show';
+        }
+        else {
+            document.getElementById('dropdown_li_todolist').className = 'nav-item dropdown';
+        }
+        var someValueMaster = $('#UserTypeinMaster').val();
+        var someValueIntMaster = parseInt(someValueMaster);
+
+        var UserTypePart1 = [8];//Pharmacy
+        var UserTypePart2 = [10, 22];//Study,Reception
+        var UserTypePart3 = [19];//Service
+        var UserTypePart4 = [5];//Doctor
+        var UserTypePart5 = [7];//Chef
+        var UserTypePart6 = [6, 14, 21];//Activity D,Activity Aide,Regional D of HW
+        var UserTypePart7 = [11, 12, 20];//UCP,HCA,PSW
+        var UserTypePart8 = [4, 15, 16, 17, 18];//RN,LPN,IA,IAA,RPN
+        var UserTypePart9 = [1, 2, 3, 13, 9];//Head Office Group
+
+        var DUList = UserTypePart5.concat(UserTypePart9);
+        var HOListnot = UserTypePart2;
+        var IAList = UserTypePart6.concat(UserTypePart5.concat(UserTypePart8.concat(UserTypePart9)));
+        var IAAList = UserTypePart6.concat(UserTypePart9);
+        var IDAList = UserTypePart5.concat(UserTypePart9);
+        var IFRAList = UserTypePart8.concat(UserTypePart9);
+        var IRCAList = UserTypePart8.concat(UserTypePart9);
+        var RAList = UserTypePart6.concat(UserTypePart5.concat(UserTypePart8.concat(UserTypePart9)));
+        var RAAList = UserTypePart6.concat(UserTypePart9);
+        var RDAList = UserTypePart5.concat(UserTypePart9);
+        var RFRAList = UserTypePart8.concat(UserTypePart9);
+        var RRCAList = UserTypePart8.concat(UserTypePart9);
+        var PNListnot = UserTypePart1.concat(UserTypePart2.concat(UserTypePart3.concat(UserTypePart4)));
+        var RIList = UserTypePart7.concat(UserTypePart8.concat(UserTypePart9));
+        var RBListnot = UserTypePart1.concat(UserTypePart2);
+        var RPList = UserTypePart6.concat(UserTypePart3.concat(UserTypePart9));
+        var NRList = UserTypePart9;
+        var SAEList = UserTypePart6.concat(UserTypePart9)
+
+        var number = $('span[class="badge_nav"]');
+        for (a = 0; a < 26; a++) {
+            number[a].parentElement.style.display = "none";
+        }
+        $.get("/Home/Number", {}, function (data) {
+            if (data[0].Value != 0 && DUList.includes(someValueIntMaster)) { number[0].innerHTML = data[0].Value; $(number[0].parentElement).show() }
+            if (data[1].Value != 0 && DUList.includes(someValueIntMaster)) { number[1].innerHTML = data[1].Value; $(number[1].parentElement).show() }
+            if (data[2].Value != 0 && !HOListnot.includes(someValueIntMaster)) { number[2].innerHTML = data[2].Value; $(number[2].parentElement).show() }
+            if (data[3].Value != 0 && !HOListnot.includes(someValueIntMaster)) { number[3].innerHTML = data[3].Value; $(number[3].parentElement).show() }
+            if (data[4].Value != 0 && IAList.includes(someValueIntMaster)) { number[4].innerHTML = data[4].Value; $(number[4].parentElement).show() }
+            if (data[5].Value != 0 && IAAList.includes(someValueIntMaster)) { number[5].innerHTML = data[5].Value; $(number[5].parentElement).show() }
+            if (data[6].Value != 0 && IDAList.includes(someValueIntMaster)) { number[6].innerHTML = data[6].Value; $(number[6].parentElement).show() }
+            if (data[7].Value != 0 && IFRAList.includes(someValueIntMaster)) { number[7].innerHTML = data[7].Value; $(number[7].parentElement).show() }
+            if (data[8].Value != 0 && IRCAList.includes(someValueIntMaster)) { number[8].innerHTML = data[8].Value; $(number[8].parentElement).show() }
+            if (data[9].Value != 0 && !PNListnot.includes(someValueIntMaster)) { number[9].innerHTML = data[9].Value; $(number[9].parentElement).show() }
+            if (data[10].Value != 0 && !PNListnot.includes(someValueIntMaster)) { number[10].innerHTML = data[10].Value; $(number[10].parentElement).show() }
+            if (data[11].Value != 0 && RAList.includes(someValueIntMaster)) { number[11].innerHTML = data[11].Value; $(number[11].parentElement).show() }
+            if (data[12].Value != 0 && RAAList.includes(someValueIntMaster)) { number[12].innerHTML = data[12].Value; $(number[12].parentElement).show() }
+            if (data[13].Value != 0 && RDAList.includes(someValueIntMaster)) { number[13].innerHTML = data[13].Value; $(number[13].parentElement).show() }
+            if (data[14].Value != 0 && RFRAList.includes(someValueIntMaster)) { number[14].innerHTML = data[14].Value; $(number[14].parentElement).show() }
+            if (data[15].Value != 0 && RRCAList.includes(someValueIntMaster)) { number[15].innerHTML = data[15].Value; $(number[15].parentElement).show() }
+            if (data[16].Value != 0 && RIList.includes(someValueIntMaster)) { number[16].innerHTML = data[16].Value; $(number[16].parentElement).show() }
+            if (data[17].Value != 0 && RIList.includes(someValueIntMaster)) { number[17].innerHTML = data[17].Value; $(number[17].parentElement).show() }
+            if (data[18].Value != 0 && !RBListnot.includes(someValueIntMaster)) { number[18].innerHTML = data[18].Value; $(number[18].parentElement).show() }
+            if (data[19].Value != 0 && !RBListnot.includes(someValueIntMaster)) { number[19].innerHTML = data[19].Value; $(number[19].parentElement).show() }
+            if (data[20].Value != 0 && RPList.includes(someValueIntMaster)) { number[20].innerHTML = data[20].Value; $(number[20].parentElement).show() }
+            if (data[21].Value != 0 && RPList.includes(someValueIntMaster)) { number[21].innerHTML = data[21].Value; $(number[21].parentElement).show() }
+            if (data[22].Value != 0 && NRList.includes(someValueIntMaster)) { number[22].innerHTML = data[22].Value; $(number[22].parentElement).show() }
+            if (data[23].Value != 0 && NRList.includes(someValueIntMaster)) { number[23].innerHTML = data[23].Value; $(number[23].parentElement).show() }
+            if (data[24].Value != 0 && SAEList.includes(someValueIntMaster)) { number[24].innerHTML = data[24].Value; $(number[24].parentElement).show() }
+            if (data[25].Value != 0 && SAEList.includes(someValueIntMaster)) { number[25].innerHTML = data[25].Value; $(number[25].parentElement).show() }
+        });
+    }
+    function nextlayer_nav(ee) {
+
+        if (ee.parentElement.nextElementSibling.style.display != 'block') {
+            $('.ToDoListNav2').hide()
+            ee.parentElement.nextElementSibling.style.display = 'block';
+        }
+        else {
+            ee.parentElement.nextElementSibling.style.display = 'none';
+        }
+
+
+    }
+</script>
 
 <script>
     //function nav_profile_button(ee) {
