@@ -947,6 +947,20 @@ namespace QolaMVC.Controllers
         }
 
         [HttpGet]
+        public ActionResult Number_FAST()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+
+            dynamic l_Json = to_do_list_function.get_to_do_list_number_FAST(user.ID, home.Id, user.UserType);
+
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+
+        }
+
+        [HttpGet]
         public ActionResult Number_Part1()
         {
             var home = (HomeModel)TempData["Home"];
