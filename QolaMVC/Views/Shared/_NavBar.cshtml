@@ -352,7 +352,7 @@
                                         <li class="list-group-item ToDoListNav2" id="RA_nav_nextlayer" style="display:none;">
 
                                             <ul class="list-group secondlayerinNAV" id="RA_ul_nav">
-                                                <li class="list-group-item ToDoListNav" type="Acticity Assessment" id="RAA_nav"><a class="one_nav noBOLDandSMALL" href="#" data-toggle="modal" data-target="#ToDoList_Nav_Modal" style="color:black" onclick="RAA_click_nav(this)"> Acticity Assessment</a><span class="badge_nav">0</span></li>
+                                                <li class="list-group-item ToDoListNav" type="Activity Assessment" id="RAA_nav"><a class="one_nav noBOLDandSMALL" href="#" data-toggle="modal" data-target="#ToDoList_Nav_Modal" style="color:black" onclick="RAA_click_nav(this)"> Activity Assessment</a><span class="badge_nav">0</span></li>
                                                 <li class="list-group-item ToDoListNav" type="Dietary Assessment" id="RDA_nav"><a class="one_nav noBOLDandSMALL" href="#" data-toggle="modal" data-target="#ToDoList_Nav_Modal" style="color:black" onclick="RDA_click_nav(this)"> Dietary Assessment</a><span class="badge_nav">0</span></li>
                                                 <li class="list-group-item ToDoListNav" type="Fall Risk Assessment" id="RFRA_nav"><a class="one_nav noBOLDandSMALL" href="#" data-toggle="modal" data-target="#ToDoList_Nav_Modal" style="color:black" onclick="RFRA_click_nav(this)"> Fall Risk Assessment</a><span class="badge_nav">0</span></li>
                                                 <li class="list-group-item ToDoListNav" type="Resident Care Assessment" id="RRCA_nav"><a class="one_nav noBOLDandSMALL" href="#" data-toggle="modal" data-target="#ToDoList_Nav_Modal" style="color:black" onclick="RRCA_click_nav(this)"> Resident Care Assessment</a><span class="badge_nav">0</span></li>
@@ -362,7 +362,7 @@
                                         <li class="list-group-item ToDoListNav" id="RI_nav"><a class="one_nav" style="cursor:pointer;" onclick="nextlayer_nav(this)">Resident Incidents</a><span class="badge_nav">0</span></li>
                                         <li class="list-group-item ToDoListNav2" id="RI_nav_nextlayer" style="display:none;">
                                             <ul class="list-group secondlayerinNAV" id="RI_ul_nav">
-                                                <li class="list-group-item ToDoListNav" type="Resident Fall"><a class="one_nav noBOLDandSMALL" href="#" data-toggle="modal" data-target="#ToDoList_Nav_Modal" style="color:black" onclick="RI_click_nav(this)"> Resident Fall</a><span class="badge_nav">0</span></li>
+                                                <li class="list-group-item ToDoListNav" type="Resident Fall"><a class="one_nav noBOLDandSMALL" href="#" data-toggle="modal" data-target="#ToDoList_Nav_Modal2" style="color:black" onclick="RI_click_nav(this)"> Resident Fall</a><span class="badge_nav">0</span></li>
                                             </ul>
                                         </li>
                                         <li class="list-group-item ToDoListNav" id="RB_nav"><a class="one_nav" style="cursor:pointer;" onclick="nextlayer_nav(this)">Residents Birthday</a><span class="badge_nav">0</span></li>
@@ -387,6 +387,12 @@
                                         <li class="list-group-item ToDoListNav2" id="SAE_nav_nextlayer" style="display:none;">
                                             <ul class="list-group secondlayerinNAV" id="SA_ul_nav">
                                                 <li class="list-group-item ToDoListNav" type="Suggested Activity Event"><a class="one_nav noBOLDandSMALL" href="#" data-toggle="modal" data-target="#ToDoList_Nav_Modal" style="color:black" onclick="SA_click_nav(this)"> Suggested Activity Event</a><span class="badge_nav">0</span></li>
+                                            </ul>
+                                        </li>
+                                        <li class="list-group-item ToDoListNav" id="NoteR_nav"><a class="one_nav" style="cursor:pointer;" onclick="nextlayer_nav(this)">Progress Note Reminder</a><span class="badge_nav">0</span></li>
+                                        <li class="list-group-item ToDoListNav2" id="NoteR_nav_nextlayer" style="display:none;">
+                                            <ul class="list-group secondlayerinNAV" id="NoteR_ul_nav">
+                                                <li class="list-group-item ToDoListNav" type="Progress Note Reminder"><a class="one_nav noBOLDandSMALL" href="#" data-toggle="modal" data-target="#ToDoList_Nav_Modal2" style="color:black" onclick="NoteR_click_nav(this)"> Note Reminder</a><span class="badge_nav">0</span></li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -507,6 +513,29 @@
     </div>
 </div>
 
+<div class="modal fade" id="ToDoList_Nav_Modal2" role="dialog" style="right:0">
+    <div class="modal-dialog" style="left:0;right:0;max-width:100%;width:90vw;">
+
+        <!-- Modal content-->
+        <div class="modal-content" style="">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+                <br>
+            </div>
+            <div class="modal-body">
+                <table class="miketable table-bordered">
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script>
     function mike_dropdown() {
@@ -517,7 +546,6 @@
             document.getElementById('dropdown_li').className = 'nav-item dropdown';
         }
     }
-
     function mike_dropdown_todolist() {
         if (document.getElementById('dropdown_li_todolist').className != 'nav-item dropdown show') {
             document.getElementById('dropdown_li_todolist').className = 'nav-item dropdown show';
@@ -558,7 +586,7 @@
         var SAEList = UserTypePart6.concat(UserTypePart9)
 
         var number = $('span[class="badge_nav"]');
-        for (a = 0; a < 26; a++) {
+        for (a = 0; a < 28; a++) {
             number[a].parentElement.style.display = "none";
         }
         $.get("/Home/Number_FAST", {}, function (data) {
@@ -588,6 +616,9 @@
             if (data[23].Value != 0 && NRList.includes(someValueIntMaster)) { number[23].innerHTML = data[23].Value; $(number[23].parentElement).show() }
             if (data[24].Value != 0 && SAEList.includes(someValueIntMaster)) { number[24].innerHTML = data[24].Value; $(number[24].parentElement).show() }
             if (data[25].Value != 0 && SAEList.includes(someValueIntMaster)) { number[25].innerHTML = data[25].Value; $(number[25].parentElement).show() }
+            if (data[26].Value != 0) { number[26].innerHTML = data[26].Value; $(number[26].parentElement).show() }
+            if (data[27].Value != 0) { number[27].innerHTML = data[27].Value; $(number[27].parentElement).show() }
+            
         });
     }
     function nextlayer_nav(ee) {
@@ -652,7 +683,6 @@
     function DU_click_nav(ee) {
         ee.parentElement.parentElement.parentElement.style.display = "none";
         $('#dropdown_li_todolist').removeClass('show');
-        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
         $('div[id="ToDoList_Nav_Modal"] tbody').empty();
         $('div[id="ToDoList_Nav_Modal"] thead').empty();
         $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Dietary Update');
@@ -678,7 +708,6 @@
     function HO_click_nav(ee) {
         ee.parentElement.parentElement.parentElement.style.display = "none";
         $('#dropdown_li_todolist').removeClass('show');
-        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
         $('div[id="ToDoList_Nav_Modal"] tbody').empty();
         $('div[id="ToDoList_Nav_Modal"] thead').empty();
         $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Resident Away');
@@ -703,7 +732,6 @@
     function IAA_click_nav(ee) {
         ee.parentElement.parentElement.parentElement.style.display = "none";
         $('#dropdown_li_todolist').removeClass('show');
-        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
         $('div[id="ToDoList_Nav_Modal"] tbody').empty();
         $('div[id="ToDoList_Nav_Modal"] thead').empty();
         $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Initial Activity Assessment');
@@ -728,7 +756,6 @@
     function IDA_click_nav(ee) {
         ee.parentElement.parentElement.parentElement.style.display = "none";
         $('#dropdown_li_todolist').removeClass('show');
-        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
         $('div[id="ToDoList_Nav_Modal"] tbody').empty();
         $('div[id="ToDoList_Nav_Modal"] thead').empty();
         $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Initial Dietary Assessment');
@@ -753,7 +780,6 @@
     function IFRA_click_nav(ee) {
         ee.parentElement.parentElement.parentElement.style.display = "none";
         $('#dropdown_li_todolist').removeClass('show');
-        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
         $('div[id="ToDoList_Nav_Modal"] tbody').empty();
         $('div[id="ToDoList_Nav_Modal"] thead').empty();
         $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Initial Fall Risk Assessment');
@@ -778,7 +804,6 @@
     function IRCA_click_nav(ee) {
         ee.parentElement.parentElement.parentElement.style.display = "none";
         $('#dropdown_li_todolist').removeClass('show');
-        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
         $('div[id="ToDoList_Nav_Modal"] tbody').empty();
         $('div[id="ToDoList_Nav_Modal"] thead').empty();
         $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Initial Resident Care Assessment');
@@ -803,7 +828,6 @@
     function PN_click_nav(ee) {
         ee.parentElement.parentElement.parentElement.style.display = "none";
         $('#dropdown_li_todolist').removeClass('show');
-        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
         $('div[id="ToDoList_Nav_Modal"] tbody').empty();
         $('div[id="ToDoList_Nav_Modal"] thead').empty();
         $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Progress Note');
@@ -830,7 +854,6 @@
 
         ee.parentElement.parentElement.parentElement.style.display = "none";
         $('#dropdown_li_todolist').removeClass('show');
-        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
         $('div[id="ToDoList_Nav_Modal"] tbody').empty();
         $('div[id="ToDoList_Nav_Modal"] thead').empty();
         $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Acknowledge Note');
@@ -858,7 +881,6 @@
     function RAA_click_nav(ee) {
         ee.parentElement.parentElement.parentElement.style.display = "none";
         $('#dropdown_li_todolist').removeClass('show');
-        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
         $('div[id="ToDoList_Nav_Modal"] tbody').empty();
         $('div[id="ToDoList_Nav_Modal"] thead').empty();
         $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Re-Activity Assessment');
@@ -884,7 +906,6 @@
     function RDA_click_nav(ee) {
         ee.parentElement.parentElement.parentElement.style.display = "none";
         $('#dropdown_li_todolist').removeClass('show');
-        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
         $('div[id="ToDoList_Nav_Modal"] tbody').empty();
         $('div[id="ToDoList_Nav_Modal"] thead').empty();
         $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Re-Dietary Assessment');
@@ -911,7 +932,6 @@
     function RFRA_click_nav(ee) {
         ee.parentElement.parentElement.parentElement.style.display = "none";
         $('#dropdown_li_todolist').removeClass('show');
-        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
         $('div[id="ToDoList_Nav_Modal"] tbody').empty();
         $('div[id="ToDoList_Nav_Modal"] thead').empty();
         $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Re-Fall Risk Assessment');
@@ -937,7 +957,6 @@
     function RRCA_click_nav(ee) {
         ee.parentElement.parentElement.parentElement.style.display = "none";
         $('#dropdown_li_todolist').removeClass('show');
-        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
         $('div[id="ToDoList_Nav_Modal"] tbody').empty();
         $('div[id="ToDoList_Nav_Modal"] thead').empty();
         $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Re-Resident Care Assessment');
@@ -963,14 +982,13 @@
     function RI_click_nav(ee) {
         ee.parentElement.parentElement.parentElement.style.display = "none";
         $('#dropdown_li_todolist').removeClass('show');
-        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '90vw');
-        $('div[id="ToDoList_Nav_Modal"] tbody').empty();
-        $('div[id="ToDoList_Nav_Modal"] thead').empty();
-        $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Resident Fall');
-        $('div[id="ToDoList_Nav_Modal"] thead').append('<tr><th style="width:5vw;">Suite No</th><th style="width:5vw;"> Name</th><th style="width:12vw;">Detail</th><th style="width:40vw">Note</th><th>Action Note</th><th style="width:10vw;">Acknowledge</th></tr>');
+        $('div[id="ToDoList_Nav_Modal2"] tbody').empty();
+        $('div[id="ToDoList_Nav_Modal2"] thead').empty();
+        $('div[id="ToDoList_Nav_Modal2"] .modal-title').html('Resident Fall');
+        $('div[id="ToDoList_Nav_Modal2"] thead').append('<tr><th style="width:5vw;">Suite No</th><th style="width:5vw;"> Name</th><th style="width:12vw;">Detail</th><th style="width:40vw">Note</th><th>Action Note</th><th style="width:10vw;">Acknowledge</th></tr>');
 
         $.get("/Home/RI_CLICK", {}, function (data) {
-            var view = $('div[id="ToDoList_Nav_Modal"] tbody');
+            var view = $('div[id="ToDoList_Nav_Modal2"] tbody');
             for (var i = 0; i < data.length; i++) {
                 view.append(
                     "<tr name='" + data[i][2].Value + "' PNid='" + data[i][1].Value + "'>" +
@@ -1000,7 +1018,6 @@
     function RB_click_nav(ee) {
         ee.parentElement.parentElement.parentElement.style.display = "none";
         $('#dropdown_li_todolist').removeClass('show');
-        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
         $('div[id="ToDoList_Nav_Modal"] tbody').empty();
         $('div[id="ToDoList_Nav_Modal"] thead').empty();
         $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Resident Birthday');
@@ -1025,7 +1042,6 @@
     function RP_click_nav(ee) {
         ee.parentElement.parentElement.parentElement.style.display = "none";
         $('#dropdown_li_todolist').removeClass('show');
-        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
         $('div[id="ToDoList_Nav_Modal"] tbody').empty();
         $('div[id="ToDoList_Nav_Modal"] thead').empty();
         $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Resident Birthday');
@@ -1049,7 +1065,6 @@
     function NR_click_nav(ee) {
         ee.parentElement.parentElement.parentElement.style.display = "none";
         $('#dropdown_li_todolist').removeClass('show');
-        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
         $('div[id="ToDoList_Nav_Modal"] tbody').empty();
         $('div[id="ToDoList_Nav_Modal"] thead').empty();
         $('div[id="ToDoList_Nav_Modal"] .modal-title').html('New Resident');
@@ -1073,7 +1088,6 @@
     function SA_click_nav(ee) {
         ee.parentElement.parentElement.parentElement.style.display = "none";
         $('#dropdown_li_todolist').removeClass('show');
-        $('div[id="ToDoList_Nav_Modal"] .modal-dialog').css('width', '60vw');
         $('div[id="ToDoList_Nav_Modal"] tbody').empty();
         $('div[id="ToDoList_Nav_Modal"] thead').empty();
         $('div[id="ToDoList_Nav_Modal"] .modal-title').html('Suggested Activity Event');
@@ -1093,6 +1107,31 @@
             }
         });
     }
+
+    function NoteR_click_nav(ee) {
+        ee.parentElement.parentElement.parentElement.style.display = "none";
+        $('#dropdown_li_todolist').removeClass('show');
+        $('div[id="ToDoList_Nav_Modal2"] tbody').empty();
+        $('div[id="ToDoList_Nav_Modal2"] thead').empty();
+        $('div[id="ToDoList_Nav_Modal2"] .modal-title').html('Progress Note Reminder');
+        $('div[id="ToDoList_Nav_Modal2"] thead').append('<tr><th>S.No</th><th> Suite No</th><th>Name</th><th>Title</th><th>Notes</th><th>Action</th></tr>');
+
+        $.get("/Home/Progress_Note_Reminder", {}, function (data) {
+            var view = $('div[id="ToDoList_Nav_Modal2"] tbody');
+            for (var i = 0; i < data.length; i++) {
+                view.append(
+                    "<tr name='" + data[i][7].Value + "'>" +
+                    "<td>" + data[i][0].Value + " <\/td>" +
+                    "<td>" + data[i][2].Value + " <\/td>" +
+                    "<td>" + data[i][3].Value + " " + data[i][4].Value + " <\/td>" +
+                    "<td>" + data[i][5].Value + " <\/td>" +
+                    "<td>" + data[i][6].Value + "<\/td>" +
+                    "<td><button class='btn btn-primary' onclick='Progress_Note_Reminder_Dismiss_Click()'>Dismiss</button><\/td>" +
+                    "<\/tr>");
+            }
+        });
+    }
+    
 
     document.body.addEventListener("click", function (e) {
         if ($(e.target).closest('#dropdown_li_todolist').length)

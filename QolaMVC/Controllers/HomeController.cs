@@ -961,48 +961,6 @@ namespace QolaMVC.Controllers
         }
 
         [HttpGet]
-        public ActionResult Number_Part1()
-        {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
-            TempData.Keep("User");
-            TempData.Keep("Home");
-
-            dynamic l_Json = to_do_list_function.get_to_do_list_number_OtherPart(user.ID, home.Id, user.UserType);
-
-            return Json(l_Json, JsonRequestBehavior.AllowGet);
-
-        }
-
-        [HttpGet]
-        public ActionResult Number_Part2()
-        {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
-            TempData.Keep("User");
-            TempData.Keep("Home");
-
-            dynamic l_Json = to_do_list_function.get_to_do_list_number_InitialAssessmentPart(user.ID, home.Id,user.UserType);
-
-            return Json(l_Json, JsonRequestBehavior.AllowGet);
-
-        }
-
-        [HttpGet]
-        public ActionResult Number_Part3()
-        {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
-            TempData.Keep("User");
-            TempData.Keep("Home");
-
-            dynamic l_Json = to_do_list_function.get_to_do_list_number_ReAssessmentPart(user.ID, home.Id, user.UserType);
-
-            return Json(l_Json, JsonRequestBehavior.AllowGet);
-
-        }
-
-        [HttpGet]
         public ActionResult Number_nextmonth()
         {
             var home = (HomeModel)TempData["Home"];
@@ -1011,6 +969,33 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
 
             dynamic l_Json = to_do_list_function.get_to_do_list_number_nextmonth(user.ID, home.Id, user.UserType);
+
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+
+        }
+
+        [HttpPost]
+        public void Progress_Note_Reminder_Dismiss_Click(int PN_ID)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+
+            to_do_list_function.Progress_Note_Reminder_Dismiss_Click(PN_ID);
+
+
+        }
+
+        [HttpGet]
+        public ActionResult Number_nextmonth_FAST()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+
+            dynamic l_Json = to_do_list_function.get_to_do_list_number_nextmonth_FAST(home.Id, user.UserType);
 
             return Json(l_Json, JsonRequestBehavior.AllowGet);
 
