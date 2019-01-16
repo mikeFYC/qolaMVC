@@ -3524,9 +3524,9 @@ namespace QolaMVC.DAL
             l_Events.EmergencyResidentList = new List<ResidentEmergencyListModel_single>();
             ResidentEmergencyListModel_single l_Event;
             string storeProcedure = "";
-            if (orderType == 1) storeProcedure = "GET_Emergency_Resident_Details_mike";
-            else if (orderType == 2) storeProcedure = "GET_Emergency_Resident_Details_mike_LowHigh";
-            else if (orderType == 3) storeProcedure = "GET_Emergency_Resident_Details_mike_HighLow";
+            if (orderType == 1) storeProcedure = "GET_Emergency_Resident_Details_mike_FAST";
+            else if (orderType == 2) storeProcedure = "GET_Emergency_Resident_Details_mike_LowHigh_FAST";
+            else if (orderType == 3) storeProcedure = "GET_Emergency_Resident_Details_mike_HighLow_FAST";
             SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
             try
             {
