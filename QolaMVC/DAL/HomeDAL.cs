@@ -2101,7 +2101,7 @@ namespace QolaMVC.DAL
                         l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
                         l_Event.note = Convert.ToString(homeTypeRow["note"]);
                         l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
-
+                        l_Event.MemoryCardColor = Convert.ToString(homeTypeRow["MemoryCareColor"]);
                         l_Event.Special = Convert.ToInt32(homeTypeRow["Special"]);
                         l_Event.Code = Convert.ToString(homeTypeRow["code"]);
 
@@ -2160,7 +2160,7 @@ namespace QolaMVC.DAL
                         l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
                         l_Event.note = Convert.ToString(homeTypeRow["note"]);
                         l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
-
+                        l_Event.MemoryCardColor = Convert.ToString(homeTypeRow["MemoryCareColor"]);
                         l_Event.Special = Convert.ToInt32(homeTypeRow["Special"]);
                         l_Event.Code = Convert.ToString(homeTypeRow["code"]);
 
@@ -2251,7 +2251,7 @@ namespace QolaMVC.DAL
                         l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
                         l_Event.note = Convert.ToString(homeTypeRow["note"]);
                         l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
-
+                        l_Event.MemoryCardColor = Convert.ToString(homeTypeRow["MemoryCareColor"]);
                         l_Event.Special = Convert.ToInt32(homeTypeRow["Special"]);
                         l_Event.Code = Convert.ToString(homeTypeRow["code"]);
 
@@ -2310,7 +2310,7 @@ namespace QolaMVC.DAL
                         l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
                         l_Event.note = Convert.ToString(homeTypeRow["note"]);
                         l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
-
+                        l_Event.MemoryCardColor = Convert.ToString(homeTypeRow["MemoryCareColor"]);
                         l_Event.Special = Convert.ToInt32(homeTypeRow["Special"]);
                         l_Event.Code = Convert.ToString(homeTypeRow["code"]);
 
@@ -2401,7 +2401,7 @@ namespace QolaMVC.DAL
                         l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
                         l_Event.note = Convert.ToString(homeTypeRow["note"]);
                         l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
-
+                        l_Event.MemoryCardColor = Convert.ToString(homeTypeRow["MemoryCareColor"]);
                         l_Event.Special = Convert.ToInt32(homeTypeRow["Special"]);
                         l_Event.Code = Convert.ToString(homeTypeRow["code"]);
 
@@ -2460,7 +2460,7 @@ namespace QolaMVC.DAL
                         l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
                         l_Event.note = Convert.ToString(homeTypeRow["note"]);
                         l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
-
+                        l_Event.MemoryCardColor = Convert.ToString(homeTypeRow["MemoryCareColor"]);
                         l_Event.Special = Convert.ToInt32(homeTypeRow["Special"]);
                         l_Event.Code = Convert.ToString(homeTypeRow["code"]);
 
@@ -2551,7 +2551,7 @@ namespace QolaMVC.DAL
                         l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
                         l_Event.note = Convert.ToString(homeTypeRow["note"]);
                         l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
-
+                        l_Event.MemoryCardColor = Convert.ToString(homeTypeRow["MemoryCareColor"]);
                         l_Event.Special = Convert.ToInt32(homeTypeRow["Special"]);
                         l_Event.Code = Convert.ToString(homeTypeRow["code"]);
 
@@ -2610,7 +2610,7 @@ namespace QolaMVC.DAL
                         l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
                         l_Event.note = Convert.ToString(homeTypeRow["note"]);
                         l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
-
+                        l_Event.MemoryCardColor = Convert.ToString(homeTypeRow["MemoryCareColor"]);
                         l_Event.Special = Convert.ToInt32(homeTypeRow["Special"]);
                         l_Event.Code = Convert.ToString(homeTypeRow["code"]);
 
@@ -3328,6 +3328,7 @@ namespace QolaMVC.DAL
                         l_Event.note = Convert.ToString(homeTypeRow["note"]);
 
                         l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
+                        l_Event.MemoryCardColor = Convert.ToString(homeTypeRow["MemoryCareColor"]);
                         l_Event.Special = Convert.ToInt32(homeTypeRow["Special"]);
                         l_Event.Code = Convert.ToString(homeTypeRow["code"]);
 
@@ -3384,6 +3385,7 @@ namespace QolaMVC.DAL
                         l_Event.note = Convert.ToString(homeTypeRow["note"]);
 
                         l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
+                        l_Event.MemoryCardColor = Convert.ToString(homeTypeRow["MemoryCareColor"]);
                         l_Event.Special = Convert.ToInt32(homeTypeRow["Special"]);
                         l_Event.Code = Convert.ToString(homeTypeRow["code"]);
 
@@ -3440,6 +3442,7 @@ namespace QolaMVC.DAL
                         l_Event.note = Convert.ToString(homeTypeRow["note"]);
 
                         l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
+                        l_Event.MemoryCardColor = Convert.ToString(homeTypeRow["MemoryCareColor"]);
                         l_Event.Special = Convert.ToInt32(homeTypeRow["Special"]);
                         l_Event.Code = Convert.ToString(homeTypeRow["code"]);
 
@@ -3496,6 +3499,7 @@ namespace QolaMVC.DAL
                         l_Event.note = Convert.ToString(homeTypeRow["note"]);
 
                         l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
+                        l_Event.MemoryCardColor = Convert.ToString(homeTypeRow["MemoryCareColor"]);
                         l_Event.Special = Convert.ToInt32(homeTypeRow["Special"]);
                         l_Event.Code = Convert.ToString(homeTypeRow["code"]);
 
@@ -3968,9 +3972,10 @@ namespace QolaMVC.DAL
         public static List<Dictionary<string, string>> addEVENTStol_Events(Collection<ActivityEventModel> EVENTS)
         {
             List<Dictionary<string, string>> l_Events = new List<Dictionary<string, string>>();
-
+            
             foreach (var l_Data in EVENTS)
             {
+                if (l_Data.MemoryCardColor == null) l_Data.MemoryCardColor = "";
                 var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
                 var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
 
@@ -3987,6 +3992,7 @@ namespace QolaMVC.DAL
                     { "Venue", l_Data.Venue},
                     { "note", l_Data.note},
                     { "Category", l_Data.CategoryId},
+                    { "MemoryCardColor", l_Data.MemoryCardColor},
                     { "ActivityId", l_Data.ActivityId.ToString()},
                     { "Special", l_Data.Special.ToString()},
                     { "Code", l_Data.Code}
@@ -4004,7 +4010,7 @@ namespace QolaMVC.DAL
 
             var ggstart = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramStartDate.Day);
             var ggend = new DateTime(l_Data.ProgramStartDate.Year, l_Data.ProgramStartDate.Month, l_Data.ProgramEndDate.Day);
-
+            if (l_Data.MemoryCardColor == null) l_Data.MemoryCardColor = "";
             var columns = new Dictionary<string, string>
                 {
                     { "id", l_Data.ProgramId.ToString()},
@@ -4018,6 +4024,7 @@ namespace QolaMVC.DAL
                     { "Venue", l_Data.Venue},
                     { "note", l_Data.note},
                     { "Category", l_Data.CategoryId},
+                    { "MemoryCardColor", l_Data.MemoryCardColor},
                     { "ActivityId", l_Data.ActivityId.ToString()},
                     { "Special", l_Data.Special.ToString()},
                     { "Code", l_Data.Code}
