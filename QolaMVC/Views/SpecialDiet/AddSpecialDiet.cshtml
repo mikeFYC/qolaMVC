@@ -12,6 +12,9 @@
         width: 900px !important;
         max-width: 1000px !important;
     }
+    .required_sign {
+        color: red;
+    }
 </style>
 <!-- START PAGE-CONTAINER -->
 <div class="page-container">
@@ -51,16 +54,16 @@
                                 {
                                     @Html.AntiForgeryToken()
                                     @Html.ValidationSummary(true)
-                                <div class="row">
+                                    <div class="row">
 
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="staticEmail" class="col-form-label">@QolaMVC.Resources.Text.Name*</label>
-                                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(m => m.Name, null, new { @style = "color: red; font-style: italic;" })
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="staticEmail" class="col-form-label">@QolaMVC.Resources.Text.Name<span class="required_sign">&nbsp;*</span></label>
+                                                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.Name, null, new { @style = "color: red; font-style: italic;" })
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                                     <br>
                                     <div class="row">
                                         <div class="col-md-12">
@@ -87,3 +90,16 @@
 
 
         @RenderPage("~/Views/Shared/_Footer.cshtml")
+        <script>
+            $('form').submit(function (event) {
+                if ($('#Name').val().trim() == '') {
+                    tempAlert("Mandatory Needed", 2000);
+                    return false;
+
+                }
+                else {
+                    form = this;
+                    form.submit();
+                }
+            });
+        </script>

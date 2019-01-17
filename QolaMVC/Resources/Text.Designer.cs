@@ -178,6 +178,15 @@ namespace QolaMVC.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Suite.
+        /// </summary>
+        public static string AddSuite {
+            get {
+                return ResourceManager.GetString("AddSuite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add User.
         /// </summary>
         public static string AddUser {
@@ -471,6 +480,15 @@ namespace QolaMVC.Resources {
         public static string EditBuilding {
             get {
                 return ResourceManager.GetString("EditBuilding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Suite.
+        /// </summary>
+        public static string EditSuite {
+            get {
+                return ResourceManager.GetString("EditSuite", resourceCulture);
             }
         }
         

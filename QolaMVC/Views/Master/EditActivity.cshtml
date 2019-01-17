@@ -13,6 +13,9 @@
         width: 900px !important;
         max-width: 1000px !important;
     }
+    .required_sign {
+        color: red;
+    }
 </style>
 <!-- START PAGE-CONTAINER -->
 <div class="page-container">
@@ -51,92 +54,94 @@
                             <div class="col-md-8 offset-md-2">
                                 @using (Html.BeginForm("EditActivity", "Master", new { p_ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "p-t-15", @role = "form", enctype = "multipart/form-data" }))
                                 {
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="staticEmail" class="col-form-label">@QolaMVC.Resources.Text.Category</label>
-                                                <select name="Category" class="form-control">
-                                                    @{
-                                                        foreach (var l_Cat in (List<QolaMVC.Models.ActivityCategoryModel>)ViewBag.Categories)
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="" class="col-form-label">@QolaMVC.Resources.Text.Category<span class="required_sign">&nbsp;*</span></label>
+                                            <select name="Category" class="form-control">
+                                                @{
+                                                    foreach (var l_Cat in (List<QolaMVC.Models.ActivityCategoryModel>)ViewBag.Categories)
+                                                    {
+                                                        if (l_Cat.Id == Model.Category.Id)
                                                         {
-                                                            if (l_Cat.Id == Model.Category.Id)
-                                                            {
-                                                                <option value="@l_Cat.Id" selected>@l_Cat.EnglishName</option>
-                                                            }
-                                                            else
-                                                            {
-                                                                <option value="@l_Cat.Id">@l_Cat.EnglishName</option>
-                                                            }
+                                                            <option value="@l_Cat.Id" selected>@l_Cat.EnglishName</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@l_Cat.Id">@l_Cat.EnglishName</option>
                                                         }
                                                     }
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="staticEmail" class="col-form-label">@QolaMVC.Resources.Text.Province</label>
-                                                <select name="Province" class="form-control" style="height:25px;width:85%;">
-                                                    <option value="@Model.Province" selected>@Model.Province</option>
-                                                    <option value="National">National</option>
-                                                    <option value="Alberta">Alberta</option>
-                                                    <option value="British Columbia">British Columbia</option>
-                                                    <option value="Manitoba">Manitoba</option>
-                                                    <option value="New Brunswick">New Brunswick</option>
-                                                    <option value="Newfoundland and Labrador">Newfoundland and Labrador</option>
-                                                    <option value="Northwest Territories">Northwest Territories</option>
-                                                    <option value="Nova Scotia">Nova Scotia</option>
-                                                    <option value="Nunavut">Nunavut</option>
-                                                    <option value="Ontario">Ontario</option>
-                                                    <option value="Prince Edward Island">Prince Edward Island</option>
-                                                    <option value="Quebec">Quebec</option>
-                                                    <option value="Saskatchewan">Saskatchewan</option>
-                                                    <option value="Yukon">Yukon</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="staticEmail" class="col-form-label">@QolaMVC.Resources.Text.Name_en</label>
-                                                @Html.TextBoxFor(m => m.EnglishName, new { @class = "form-control" })
-                                                @Html.HiddenFor(m => m.Id, new { @class = "form-control" })
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="staticEmail" class="col-form-label">@QolaMVC.Resources.Text.Name_fr</label>
-                                                @Html.TextBoxFor(m => m.FrenchName, new { @class = "form-control" })
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="staticEmail" class="col-form-label">@QolaMVC.Resources.Text.FunPicture</label>
-                                                @*@Html.TextBoxFor(m => m.FunPicture, new { @class = "form-control" })*@
-                                                <input type="file" id="FileUpload" name="FileUpload"/>
-                                                <img id="image" src="/Content/assets/Images/Activity_mike/@Model.FunPicture" class="img-responsive" style="margin-left:10%;height:40%;width:25%;">
-
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="staticEmail" class="col-form-label">@QolaMVC.Resources.Text.Color</label>
-                                                @*<input type="color" class="form-control" id="exampleInputAmount" name="Color">*@
-                                                <input class="jscolor {hash:true} jscolor-active form-control" name="Color" id="exampleInputAmount" value="" autocomplete="off" style="background-image: none;">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="staticEmail" class="col-form-label">@QolaMVC.Resources.Text.ShowThisInAssessment</label>
-                                                @Html.CheckBoxFor(m => m.ShowInAssessment)
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="staticEmail" class="col-form-label">@QolaMVC.Resources.Text.ActivityDisplayTitleEx</label>
-                                                @Html.TextBoxFor(m => m.DisplayTitle, new { @class = "form-control" })
-                                            </div>
+                                                }
+                                            </select>
                                         </div>
                                     </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="" class="col-form-label">@QolaMVC.Resources.Text.Province<span class="required_sign">&nbsp;*</span></label>
+                                            <select name="Province" class="form-control" style="height:25px;width:85%;">
+                                                <option value="@Model.Province" selected>@Model.Province</option>
+                                                <option value="National">National</option>
+                                                <option value="Alberta">Alberta</option>
+                                                <option value="British Columbia">British Columbia</option>
+                                                <option value="Manitoba">Manitoba</option>
+                                                <option value="New Brunswick">New Brunswick</option>
+                                                <option value="Newfoundland and Labrador">Newfoundland and Labrador</option>
+                                                <option value="Northwest Territories">Northwest Territories</option>
+                                                <option value="Nova Scotia">Nova Scotia</option>
+                                                <option value="Nunavut">Nunavut</option>
+                                                <option value="Ontario">Ontario</option>
+                                                <option value="Prince Edward Island">Prince Edward Island</option>
+                                                <option value="Quebec">Quebec</option>
+                                                <option value="Saskatchewan">Saskatchewan</option>
+                                                <option value="Yukon">Yukon</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="" class="col-form-label">@QolaMVC.Resources.Text.Name_en<span class="required_sign">&nbsp;*</span></label>
+                                            @Html.TextBoxFor(m => m.EnglishName, new { @class = "form-control" })
+                                            @Html.HiddenFor(m => m.Id, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="" class="col-form-label">@QolaMVC.Resources.Text.Name_fr<span class="required_sign">&nbsp;*</span></label>
+                                            @Html.TextBoxFor(m => m.FrenchName, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="" class="col-form-label">@QolaMVC.Resources.Text.FunPicture</label>
+                                            @*@Html.TextBoxFor(m => m.FunPicture, new { @class = "form-control" })*@
+                                            <input type="file" id="FileUpload" name="FileUpload" />
+                                            <img id="image" src="/Content/assets/Images/Activity_mike/@Model.FunPicture" class="img-responsive" style="margin-left:10%;height:40%;width:25%;">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="display:none;">
+                                        <div class="form-group">
+                                            <label for="" class="col-form-label">@QolaMVC.Resources.Text.Color</label>
+                                            @*<input type="color" class="form-control" id="exampleInputAmount" name="Color">*@
+                                            <input class="jscolor {hash:true} jscolor-active form-control" name="Color" id="exampleInputAmount" value="" autocomplete="off" style="background-image: none;">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="staticEmail" class="col-form-label">@QolaMVC.Resources.Text.ActivityDisplayTitleEx</label>
+                                            @Html.TextBoxFor(m => m.DisplayTitle, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" >
+                                        <div class="form-group">
+                                            <label for="staticEmail" class="col-form-label">@QolaMVC.Resources.Text.ShowThisInAssessment</label>
+                                            @Html.CheckBoxFor(m => m.ShowInAssessment)
+                                        </div>
+                                    </div>
+
+                                </div>
                                     <br>
                                     <div class="row">
                                         <div class="col-md-12">
@@ -186,4 +191,17 @@
             }
         });
     });
+
+    $('form').submit(function (event) {
+        if ($('#EnglishName').val().trim() == '' || $('#FrenchName').val().trim() == '' || $('select[name="Province"]').val().trim() == '') {
+            tempAlert("Mandatory Needed", 2000);
+            return false;
+
+        }
+        else {
+            form = this;
+            form.submit();
+        }
+    });
+
 </script>

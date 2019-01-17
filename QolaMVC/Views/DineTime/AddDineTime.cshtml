@@ -12,6 +12,9 @@
         width: 900px !important;
         max-width: 1000px !important;
     }
+    .required_sign {
+        color: red;
+    }
 </style>
 <!-- START PAGE-CONTAINER -->
 <div class="page-container">
@@ -52,23 +55,23 @@
                                 {
                                     @Html.AntiForgeryToken()
                                     @Html.ValidationSummary(true)
-                                <div class="row">
+                                    <div class="row">
 
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="staticEmail" class="col-form-label">@QolaMVC.Resources.Text.DineTime*</label>
-                                            @Html.TextBoxFor(m => m.DineTime, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(m => m.DineTime, null, new { @style = "color: red; font-style: italic;" })
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="staticEmail" class="col-form-label">@QolaMVC.Resources.Text.DineTime<span class="required_sign">&nbsp;*</span></label>
+                                                @Html.TextBoxFor(m => m.DineTime, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.DineTime, null, new { @style = "color: red; font-style: italic;" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="staticEmail" class="col-form-label">@QolaMVC.Resources.Text.Code<span class="required_sign">&nbsp;*</span></label>
+                                                @Html.TextBoxFor(m => m.ShortName, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.ShortName, null, new { @style = "color: red; font-style: italic;" })
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="staticEmail" class="col-form-label">@QolaMVC.Resources.Text.Code*</label>
-                                            @Html.TextBoxFor(m => m.ShortName, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(m => m.ShortName, null, new { @style = "color: red; font-style: italic;" })
-                                        </div>
-                                    </div>
-                                </div>
                                     <br>
                                     <div class="row">
                                         <div class="col-md-12">
@@ -95,3 +98,16 @@
 
 
         @RenderPage("~/Views/Shared/_Footer.cshtml")
+        <script>
+            $('form').submit(function (event) {
+                if ($('#DineTime').val().trim() == '' || $('#ShortName').val().trim() == '') {
+                    tempAlert("Mandatory Needed", 2000);
+                    return false;
+
+                }
+                else {
+                    form = this;
+                    form.submit();
+                }
+            });
+        </script>

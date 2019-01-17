@@ -11,6 +11,9 @@
         width: 900px !important;
         max-width: 1000px !important;
     }
+    .required_sign {
+        color: red;
+    }
 </style>
 <!-- START PAGE-CONTAINER -->
 <div class="page-container">
@@ -26,7 +29,7 @@
                     <!-- <div class="inner"> -->
                     <div class="row align-items-center">
                         <div class="col-md-9">
-                            <h3>@QolaMVC.Resources.Text.Suite</h3>
+                            <h3>@QolaMVC.Resources.Text.EditSuite</h3>
                         </div>
                     </div>
                     <!-- </div> -->
@@ -50,52 +53,52 @@
                                 {
                                     @Html.AntiForgeryToken()
                                     @Html.ValidationSummary(true)
-                                <div class="row">
+                                    <div class="row">
 
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="staticEmail" class="col-form-label">@QolaMVC.Resources.Text.Home_Name*</label>
-                                            <select name="HomeID" class="form-control">
-                                                @{
-                                                    foreach (var l_Home in (IEnumerable<QolaMVC.Models.HomeModel>)ViewBag.Homes)
-                                                    {
-                                                        if (Model != null && Model.HomeID == l_Home.Id)
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="staticEmail" class="col-form-label">@QolaMVC.Resources.Text.Home_Name<span class="required_sign">&nbsp;*</span></label>
+                                                <select name="HomeID" class="form-control">
+                                                    @{
+                                                        foreach (var l_Home in (IEnumerable<QolaMVC.Models.HomeModel>)ViewBag.Homes)
                                                         {
-                                                            <option value="@l_Home.Id" selected>@l_Home.Name</option>
-                                                        }
-                                                        else
-                                                        {
-                                                            <option value="@l_Home.Id">@l_Home.Name</option>
+                                                            if (Model != null && Model.HomeID == l_Home.Id)
+                                                            {
+                                                                <option value="@l_Home.Id" selected>@l_Home.Name</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@l_Home.Id">@l_Home.Name</option>
+                                                            }
                                                         }
                                                     }
-                                                }
-                                            </select>
-                                            @*@Html.TextBoxFor(m => m.Home, new { @class = "form-control" })*@
-                                            @Html.ValidationMessageFor(m => m.HomeID, null, new { @style = "color: red; font-style: italic;" })
+                                                </select>
+                                                @*@Html.TextBoxFor(m => m.Home, new { @class = "form-control" })*@
+                                                @Html.ValidationMessageFor(m => m.HomeID, null, new { @style = "color: red; font-style: italic;" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="staticEmail" class="col-form-label">@QolaMVC.Resources.Text.SuiteNo<span class="required_sign">&nbsp;*</span></label>
+                                                @Html.TextBoxFor(m => m.Suite_No, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.Suite_No, null, new { @style = "color: red; font-style: italic;" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="staticEmail" class="col-form-label">@QolaMVC.Resources.Text.FloorNo<span class="required_sign">&nbsp;*</span></label>
+                                                @Html.TextBoxFor(m => m.Floor_No, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.Floor_No, null, new { @style = "color: red; font-style: italic;" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="staticEmail" class="col-form-label">@QolaMVC.Resources.Text.numberofRooms<span class="required_sign">&nbsp;*</span></label>
+                                                @Html.TextBoxFor(m => m.No_Of_Rooms, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.No_Of_Rooms, null, new { @style = "color: red; font-style: italic;" })
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="staticEmail" class="col-form-label">@QolaMVC.Resources.Text.SuiteNo*</label>
-                                            @Html.TextBoxFor(m => m.Suite_No, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(m => m.Suite_No, null, new { @style = "color: red; font-style: italic;" })
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="staticEmail" class="col-form-label">@QolaMVC.Resources.Text.FloorNo*</label>
-                                            @Html.TextBoxFor(m => m.Floor_No, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(m => m.Floor_No, null, new { @style = "color: red; font-style: italic;" })
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="staticEmail" class="col-form-label">@QolaMVC.Resources.Text.numberofRooms</label>
-                                            @Html.TextBoxFor(m => m.No_Of_Rooms, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(m => m.No_Of_Rooms, null, new { @style = "color: red; font-style: italic;" })
-                                        </div>
-                                    </div>
-                                </div>
                                     <br>
                                     <div class="row">
                                         <div class="col-md-12">
@@ -122,3 +125,33 @@
 
 
         @RenderPage("~/Views/Shared/_Footer.cshtml")
+        <script>
+            $('form').submit(function (event) {
+                if ($('#Suite_No').val().trim() == '' || $('#Floor_No').val().trim() == '' || $('#No_Of_Rooms').val().trim() == '') {
+                    tempAlert("Mandatory Needed", 2000);
+                    return false;
+
+                }
+                else if ($.isNumeric($('#Floor_No').val().trim()) == false) {
+                    tempAlert("Floor No. need a number", 2000);
+                    return false;
+                }
+                else if (parseInt($('#Floor_No').val().trim()) >127) {
+                    tempAlert("Floor No. too large", 2000);
+                    return false;
+                }
+                else if ($.isNumeric($('#No_Of_Rooms').val().trim()) == false) {
+                    tempAlert("Room No. need a number", 2000);
+                    return false;
+                }
+                else if (parseInt($('#No_Of_Rooms').val().trim()) >127) {
+                    tempAlert("Room No. too large", 2000);
+                    return false;
+                }
+
+                else {
+                    form = this;
+                    form.submit();
+                }
+            });
+        </script>

@@ -901,11 +901,13 @@ namespace QolaMVC.Controllers
         [HttpGet]
         public ActionResult Menu(int p_HomeId)
         {
-            var user = (UserModel)TempData["User"];
             TempData["Home"] = HomeDAL.GetHomeById(p_HomeId);
+            var user = (UserModel)TempData["User"];
+            var home = (HomeModel)TempData["Home"];
             TempData.Keep("User");
             TempData.Keep("Home");
             ViewBag.User = user;
+            ViewBag.Home = home;
             HomeModel l_Home = HomeDAL.GetHomeById(p_HomeId);
             TempData["occupy"] = HomeDAL.GetOccupybyID(p_HomeId);
             //dynamic l_Json=to_do_list_function.get_to_do_list_number( user.ID, l_Home.Id);
@@ -1169,35 +1171,36 @@ namespace QolaMVC.Controllers
             var user = (UserModel)TempData["User"];
             var home = (HomeModel)TempData["Home"];
             var resident = ResidentsDAL.GetResidentById(p_ResidentId);
-            var progressNotes = ProgressNotesDAL.GetProgressNotesCollections(resident.ID, DateTime.Now, DateTime.Now, "A");
 
-            PhoneArrangement(resident);
+            if (user.UserType == 5)
+            {
+                return RedirectToAction("ResidentMenu2", new { p_ResidentId=p_ResidentId });
+            }
+            else
+            {
+                var progressNotes = ProgressNotesDAL.GetProgressNotesCollections(resident.ID, DateTime.Now, DateTime.Now, "A");
+                PhoneArrangement(resident);
+                //ViewBag.Message = TempData["Message"];
+                ViewBag.Message = "";
+                TempData["Resident"] = resident;
+                TempData.Keep("User");
+                TempData.Keep("Home");
+                TempData.Keep("Resident");
+                ViewBag.User = user;
+                ViewBag.Home = home;
+                ViewBag.Resident = resident;
+                ViewBag.ProgressNotes = progressNotes;
+                ProgressNotesHelper.RegisterSession(resident);
+                TempData["NOTE"] = "NO";
+                TempData["archive"] = "NO";
+                TempData["pass"] = "";
+                ViewBag.TableSH = update_Suite_Handler_Table.get_innerHTML_temperary2(resident.ID);
+                PlanOfCareModel l_Model = GET_one_CarePlan();
+                ViewBag.careplan = l_Model;
+                return View(resident);
+            }
 
-            //ViewBag.Message = TempData["Message"];
-            ViewBag.Message = "";
 
-            TempData["Resident"] = resident;
-
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
-
-            ViewBag.User = user;
-            ViewBag.Home = home;
-            ViewBag.Resident = resident;
-
-            ViewBag.ProgressNotes = progressNotes;
-            ProgressNotesHelper.RegisterSession(resident);
-            TempData["NOTE"] = "NO";
-            TempData["archive"] = "NO";
-            TempData["pass"] = "";
-
-            ViewBag.TableSH = update_Suite_Handler_Table.get_innerHTML_temperary2(resident.ID);
-
-            PlanOfCareModel l_Model = GET_one_CarePlan();
-            ViewBag.careplan = l_Model;
-
-            return View(resident);
         }
 
         public void pointArrangement(FallRiskAssessmentModel model)

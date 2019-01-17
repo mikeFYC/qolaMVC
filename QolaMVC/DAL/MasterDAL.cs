@@ -209,6 +209,48 @@ namespace QolaMVC.DAL
             }
         }
 
+        public static List<ActivityModel> GetAllActivity_Filter(string search)
+        {
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                List<ActivityModel> l_Collection = new List<ActivityModel>();
+                l_Conn.Open();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_All_Activity_Filter", l_Conn);
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@search", search);
+                SqlDataReader l_Reader = l_Cmd.ExecuteReader();
+
+                while (l_Reader.Read())
+                {
+                    ActivityModel l_Model = new ActivityModel();
+                    ActivityCategoryModel l_Category = new ActivityCategoryModel();
+
+                    l_Model.Id = Convert.ToInt32(l_Reader["Id"]);
+                    l_Model.EnglishName = Convert.ToString(l_Reader["ActivityNameEnglish"]);
+                    l_Model.FrenchName = Convert.ToString(l_Reader["ActivityNameFrench"]);
+                    l_Model.Color = Convert.ToString(l_Reader["ActivityColor"]);
+                    l_Model.FunPicture = Convert.ToString(l_Reader["FunPicture"]);
+                    l_Model.Province = Convert.ToString(l_Reader["Province"]);
+                    l_Model.ShowInAssessment = Convert.ToBoolean(l_Reader["ShowInAssessment"]);
+                    l_Model.DisplayTitle = Convert.ToString(l_Reader["ActivityDisplayTitle"]);
+
+                    l_Category.Id = Convert.ToInt32(l_Reader["CategoryId"]);
+                    l_Category.FrenchName = Convert.ToString(l_Reader["CategoryNameFrench"]);
+                    l_Category.EnglishName = Convert.ToString(l_Reader["CategoryNameEnglish"]);
+
+                    l_Model.Category = l_Category;
+                    l_Collection.Add(l_Model);
+                }
+
+                return l_Collection;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(".GetAllActivity_Filter\n" + ex.Message);
+            }
+        }
+
         public static int AddActivity(ActivityModel p_Model)
         {
             string exception = string.Empty;

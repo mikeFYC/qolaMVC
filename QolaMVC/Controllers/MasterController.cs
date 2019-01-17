@@ -133,7 +133,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-
+            
             MasterDAL.AddActivityCategory(p_Model);
             return RedirectToAction("ActivityCategory");
         }
@@ -156,23 +156,31 @@ namespace QolaMVC.Controllers
             return View();
         }
 
-        public ActionResult Activity()
+        public ActionResult Activity(string search="")
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
-            var resident = (ResidentModel)TempData["Resident"];
-             
+            var resident = (ResidentModel)TempData["Resident"];    
             ViewBag.User = user;
             ViewBag.Resident = resident;
             ViewBag.Home = home;
-
-
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
+            List<ActivityModel> l_Model;
+
             ViewBag.Message = TempData["Message"];
-            List<ActivityModel> l_Model = MasterDAL.GetAllActivity();
+            if (search == "")
+            {
+                l_Model = MasterDAL.GetAllActivity();
+            }
+            else
+            {
+                l_Model = MasterDAL.GetAllActivity_Filter(search);
+            }
+
+
             return View(l_Model);
         }
 
@@ -195,6 +203,7 @@ namespace QolaMVC.Controllers
                 l_Category.Id = Convert.ToInt32(Request.Form["Category"]);
                 p_Model.Category = l_Category;
 
+                if (p_Model.DisplayTitle == null) p_Model.DisplayTitle = "";
                 int id = MasterDAL.AddActivity(p_Model);
 
                 
@@ -267,6 +276,7 @@ namespace QolaMVC.Controllers
                 l_category.Id = l_CategoryId;
 
                 p_Model.Category = l_category;
+                if (p_Model.DisplayTitle == null) p_Model.DisplayTitle = "";
                 MasterDAL.UpdateActivity(p_Model);
 
                 for (int i = 0; i < Request.Files.Count; i++)

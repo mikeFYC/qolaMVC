@@ -11,6 +11,9 @@
         width: 900px !important;
         max-width: 1000px !important;
     }
+    .required_sign {
+        color: red;
+    }
 </style>
 <!-- START PAGE-CONTAINER -->
 <div class="page-container">
@@ -51,29 +54,29 @@
                                 {
                                     @Html.AntiForgeryToken()
                                     @Html.ValidationSummary(true)
-                                <div class="row">
+                                    <div class="row">
 
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="staticEmail" class="col-form-label">@QolaMVC.Resources.Text.Home_Name*</label>
-                                            @Html.TextBoxFor(m => m.Allergy_Name, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(m => m.Allergy_Name, null, new { @style = "color: red; font-style: italic;" })
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="staticEmail" class="col-form-label">@QolaMVC.Resources.Text.AllergyName<span class="required_sign">&nbsp;*</span></label>
+                                                @Html.TextBoxFor(m => m.Allergy_Name, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.Allergy_Name, null, new { @style = "color: red; font-style: italic;" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="staticEmail" class="col-form-label">@QolaMVC.Resources.Text.Category<span class="required_sign">&nbsp;*</span></label>
+                                                @Html.TextBoxFor(m => m.Category, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.Category, null, new { @style = "color: red; font-style: italic;" })
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="staticEmail" class="col-form-label">@QolaMVC.Resources.Text.SuiteNo*</label>
-                                            @Html.TextBoxFor(m => m.Category, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(m => m.Category, null, new { @style = "color: red; font-style: italic;" })
-                                        </div>
-                                    </div>
-                                </div>
                                     <br>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <input type="button" class="btn btn-primary btn-lg" onclick="location.href='@Url.Action("List", "Allergy")'" value="@QolaMVC.Resources.Text.Back_big">
                                             <button class="btn btn-danger btn-lg">@QolaMVC.Resources.Text.Update_big</button>
-                                            
+
                                         </div>
                                     </div>
                                 }
@@ -94,3 +97,20 @@
 
 
         @RenderPage("~/Views/Shared/_Footer.cshtml")
+        <script>
+            $('form').submit(function (event) {
+                if ($('#Allergy_Name').val().trim() == '' || $('#Category').val().trim() == '') {
+                    tempAlert("Mandatory Needed", 2000);
+                    return false;
+
+                }
+                else if ($.isNumeric($('#Category').val().trim()) == false) {
+                    tempAlert("Category need a number", 2000);
+                    return false;
+                }
+                else {
+                    form = this;
+                    form.submit();
+                }
+            });
+        </script>

@@ -68,7 +68,7 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@Home", p_Model.HomeID);
                 l_Cmd.Parameters.AddWithValue("@suite_no", p_Model.Suite_No);
                 l_Cmd.Parameters.AddWithValue("@floor_no", p_Model.Floor_No);
-                l_Cmd.Parameters.AddWithValue("@no_of_rooms", p_Model.No_Of_Rooms);
+                l_Cmd.Parameters.AddWithValue("@no_of_rooms",p_Model.No_Of_Rooms);
                 l_Cmd.Parameters.AddWithValue("@modifiedby", userID);
                 l_Cmd.ExecuteNonQuery();
 

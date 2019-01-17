@@ -1711,7 +1711,7 @@ namespace QolaMVC.Controllers
             ProgressNotesDAL.AddNewProgressNotes(p_Model);
             TempData["Message"] = "Progress note added successfully";
 
-            return Redirect("/Home/ResidentMenu/?p_ResidentId="+resident.ID);
+            return Redirect("/Home/ResidentMenu2/?p_ResidentId="+resident.ID);
         }
 
         public ActionResult UnusualIncident(string index)
