@@ -289,37 +289,54 @@
                                         <input type="image" style="width:1.1vw;height:1.5vh;position:absolute;margin-top:-5.3vh;margin-left:92%;background-color:white;border-radius:20%;opacity:0.90;" src="/Content/pages/img/icoedit.png" data-toggle="modal" data-target="#Calendar_Name_Change" onclick="calendar_change_name_click(this)">
                                     </li>
 
-                                    @{
-                                        List<string> Hannah = new List<string>() { "hsommerville", "cokwuokenye", "acabral", "mfeng" };
-                                    }
-                                    @{
-                                        if (Hannah.Contains(ViewBag.User.UserName)==true)
-                                        {
-                                            <li class="nav-item hannahselector" style="width:22%;margin-left:5%;display:none;">
-                                                <label style="display:inline-block;font-size:1vw;font-weight:bold;">Category:</label>
-                                                <select class="nav-link" id="categorychoose" style="display:inline-block;width:68%;" onchange="changeCategory2(this.value)">
-                                                    <option value="0">All</option>
-                                                    @{
-                                                        foreach (var Category in ViewBag.ActivityCategory)
-                                                        {
-                                                            <option value="@Category.Id">@Category.EnglishName</option>
-                                                        }
-                                                    }
-                                                </select>
-                                            </li>
-                                            <li class="nav-item hannahselector" style="display:none;">
-                                                <button class="btn btn-primary" id="HannahAdd" href="#" data-toggle="modal" data-target="#AddEvent_Hannan" style="font-size:1vw;font-weight:bold;" onclick="resetForm3()">ADD</button>
 
-                                            </li>
-                                        }
-                                        else
-                                        {
-                                            <input type="hidden" id="categorychoose" value="0"/>
-                                        }
-                                    }
+
+
+
 
 
                                 </ul>
+                                <div class="hannahselector" style="width:100%;display:none;">
+                                    <div class="nav-item" style="width:19%;display:inline-block;">
+                                        <label style="display:inline-block;font-size:1vw;font-weight:bold;">Category:</label>
+                                        <select class="nav-link" id="categorychoose" style="display:inline-block;width:68%;padding:.5em .5em .5em 0 !important;font-size:0.9vw;" onchange="changeCategory2(this.value)">
+                                            <option value="0">All</option>
+                                            @{
+                                                foreach (var Category in ViewBag.ActivityCategory)
+                                                {
+                                                    <option value="@Category.Id">@Category.EnglishName</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div id="memoryColorDiv" style="width:auto;display:none;">
+                                        @{
+                                            foreach (var Category in ViewBag.ActivityCategory)
+                                            {
+                                                if (Category.EnglishName != "All Day" && Category.EnglishName != "QQQ")
+                                                {
+                                                    <div style="width:15px;height:15px;background-color:@Category.MemoryCareColor;display:inline-block;"></div>
+                                                    <label class="control-label" style="color:black;font-size:1vw;">@Category.EnglishName</label>
+                                                }
+                                            }
+                                        }
+
+                                    </div>
+
+                                    @{
+                                        List<string> Hannah = new List<string>() { "hsommerville", "cokwuokenye", "acabral", "mfeng" };
+                                    }
+                                    @if (Hannah.Contains(ViewBag.User.UserName) == true)
+                                    {
+                                        <div class="" style="display:inline-block;float:right;">
+                                            <button class="btn btn-group-sm btn-primary" id="HannahAdd" href="#" data-toggle="modal" data-target="#AddEvent_Hannan" style="font-size:0.9vw;font-weight:bold;border-radius:0.25rem;" onclick="resetForm3()">Add Special Event</button>
+
+                                        </div>
+                                    }
+
+                                </div>
+
                                 <br>
                                 <div class="tab-content" id="pills-tabContent">
 
@@ -414,7 +431,7 @@
                             </div>
                         </div>
 
-                        <div id="day_div" class="fromHTMLtestdiv" style="display:block;margin-top:21vh;margin-left:-2.5%; z-index:0;position:absolute;width:105%;">
+                        <div id="day_div" class="fromHTMLtestdiv" style="display:block;margin-top:25vh;margin-left:-2.5%; z-index:0;position:absolute;width:105%;">
 
                             <div class="container-fluid container-fixed-lg" id="main_page">
                                 <div class="card">
@@ -488,7 +505,7 @@
 
                         </div>
 
-                        <div id="day_div2" class="fromHTMLtestdiv" style="display:none;margin-top:21vh;margin-left:-2.5%; z-index:0;position:absolute;width:105%;">
+                        <div id="day_div2" class="fromHTMLtestdiv" style="display:none;margin-top:25vh;margin-left:-2.5%; z-index:0;position:absolute;width:105%;">
 
                             <div class="container-fluid container-fixed-lg" id="main_page">
                                 <div class="card">
@@ -561,7 +578,7 @@
 
                         </div>
 
-                        <div id="day_div3" class="fromHTMLtestdiv" style="display:none;margin-top:21vh;margin-left:-2.5%; z-index:0;position:absolute;width:105%;">
+                        <div id="day_div3" class="fromHTMLtestdiv" style="display:none;margin-top:25vh;margin-left:-2.5%; z-index:0;position:absolute;width:105%;">
 
                             <div class="container-fluid container-fixed-lg" id="main_page">
                                 <div class="card">
@@ -634,7 +651,7 @@
 
                         </div>
 
-                        <div id="day_div4" class="fromHTMLtestdiv" style="display:none;margin-top:21vh;margin-left:-2.5%; z-index:0;position:absolute;width:105%;">
+                        <div id="day_div4" class="fromHTMLtestdiv" style="display:none;margin-top:25vh;margin-left:-2.5%; z-index:0;position:absolute;width:105%;">
 
                             <div class="container-fluid container-fixed-lg" id="main_page">
                                 <div class="card">
@@ -1775,6 +1792,7 @@
         $('#PrintDAY').css({ "display": "inline-block" });
         resetbuttoncolor();
         $('.hannahselector').hide();
+        $('#memoryColorDiv').css('display', 'none');
     }
 
     function calendar_two() {
@@ -1800,6 +1818,7 @@
         $('#PrintDAY').css({ "display": "inline-block" });
         resetbuttoncolor();
         $('.hannahselector').hide();
+        $('#memoryColorDiv').css('display', 'inline-block');
     }
 
     function calendar_three() {
@@ -1824,6 +1843,7 @@
         $('#PrintDAY').css({ "display": "inline-block" });
         resetbuttoncolor();
         $('.hannahselector').hide();
+        $('#memoryColorDiv').css('display', 'none');
     }
 
     function calendar_four() {
@@ -1848,6 +1868,7 @@
         $('#PrintDAY').css({ "display": "inline-block" });
         resetbuttoncolor();
         $('.hannahselector').hide();
+        $('#memoryColorDiv').css('display', 'none');
     }
 
     function calendar_change_name_click(ee) {
