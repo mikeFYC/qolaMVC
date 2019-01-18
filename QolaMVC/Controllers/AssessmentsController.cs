@@ -896,7 +896,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-
+            if (p_Model.Color == null) p_Model.Color = "";
             AssessmentDAL.AddNewCUOL(p_Model);
             TempData["Message"] = "Added CUOL";
             ViewBag.Message = "Added CUOL";

@@ -371,6 +371,7 @@
                                                     <div class="col-mike-7">
                                                         @*@Html.TextBoxFor(m => m.BirthDate, new { @class = "form-control", id = "DOB", @type = "date", @Value = Model.BirthDate.ToString("yyyy-MM-dd") })*@
                                                         @Html.TextBoxFor(model => model.BirthDate, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control", id = "DOB" })
+                                                        @*<input class="form-control" id="testdatetime"/>*@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -1707,16 +1708,20 @@
                 if (ee.value == '1') {
                     $('#SignificatOther').prop('disabled', false);
                     $('#AnniversaryDate').prop('disabled', false);
+                    var today = new Date();
+                    var currentmonth = today.getMonth() + 1;
+                    $('#AnniversaryDate').val(today.getFullYear() + '-' + (currentmonth < 10 ? '0' + currentmonth.toString() : currentmonth.toString()) + '-' + today.getDate());
                 }
                 else {
                     $('#SignificatOther').prop('disabled', true);
                     $('#AnniversaryDate').prop('disabled', true);
+                    $('#AnniversaryDate').val('');
                 }
             }
 
         </script>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>*@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.1.62/jquery.inputmask.bundle.js"></script>
 
         <script>
@@ -1861,4 +1866,11 @@
             }
 
 
+
+            //$('#testdatetime').datepicker({
+            //    dateFormat: "yy-mm-dd",
+            //    changeMonth: true,
+            //    changeYear: true,
+            //    yearRange: "-100:+10"
+            //}); 
         </script>
