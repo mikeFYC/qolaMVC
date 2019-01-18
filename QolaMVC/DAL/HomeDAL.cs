@@ -1293,7 +1293,6 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-
         public static Collection<ActivityEventModel> GetActivityEvents_SACColor(int homeid, int residentID)
         {
             string exception = string.Empty;
@@ -1348,7 +1347,6 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-
         public static Collection<ActivityEventModel> GetActivityEvents_C2_SACnotColor(int homeid, int residentID)
         {
             string exception = string.Empty;
@@ -1403,7 +1401,6 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-
         public static Collection<ActivityEventModel> GetActivityEvents_C2_SACColor(int homeid, int residentID)
         {
             string exception = string.Empty;
@@ -1458,7 +1455,6 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-
         public static Collection<ActivityEventModel> GetActivityEvents_C3_SACnotColor(int homeid, int residentID)
         {
             string exception = string.Empty;
@@ -1513,7 +1509,6 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-
         public static Collection<ActivityEventModel> GetActivityEvents_C3_SACColor(int homeid, int residentID)
         {
             string exception = string.Empty;
@@ -1568,7 +1563,6 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-
         public static Collection<ActivityEventModel> GetActivityEvents_C4_SACnotColor(int homeid, int residentID)
         {
             string exception = string.Empty;
@@ -1623,7 +1617,6 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-
         public static Collection<ActivityEventModel> GetActivityEvents_C4_SACColor(int homeid, int residentID)
         {
             string exception = string.Empty;
@@ -1678,7 +1671,6 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-
 
         public static Collection<ActivityEventModel> GetActivityEvents_SACnotColor_between_ALL(int homeid, int residentID, string start, string end,int calendar_number)
         {
@@ -1738,7 +1730,6 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-
         public static Collection<ActivityEventModel> GetActivityEvents_SACColor_between_ALL(int homeid, int residentID, string start, string end,int calendar_number)
         {
             string exception = string.Empty;
@@ -1797,8 +1788,6 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-
-
 
 
         public static Collection<ActivityEventModel> GetActivityEvents_mike_SAC(DateTime datemike, int homeid, int residentID)
