@@ -1680,6 +1680,127 @@ namespace QolaMVC.DAL
         }
 
 
+        public static Collection<ActivityEventModel> GetActivityEvents_SACnotColor_between_ALL(int homeid, int residentID, string start, string end,int calendar_number)
+        {
+            string exception = string.Empty;
+            Collection<ActivityEventModel> l_Events = new Collection<ActivityEventModel>();
+            ActivityEventModel l_Event;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_Activity_Events_SACnotColor_between_all", l_Conn);
+                l_Cmd.Parameters.AddWithValue("@homeid", homeid);
+                l_Cmd.Parameters.AddWithValue("@residentID", residentID);
+                l_Cmd.Parameters.AddWithValue("@start", start);
+                l_Cmd.Parameters.AddWithValue("@end", end);
+                l_Cmd.Parameters.AddWithValue("@calendar_number", calendar_number);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                DataSet homeReceive = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(homeReceive);
+
+                if ((homeReceive != null) && (homeReceive.Tables.Count > 0) && (homeReceive.Tables[0].Rows.Count > 0))
+                {
+                    foreach (DataRow homeTypeRow in homeReceive.Tables[0].Rows)
+                    {
+                        l_Event = new ActivityEventModel();
+
+                        l_Event.ProgramId = Convert.ToInt32(homeTypeRow["Id"]);
+                        l_Event.ActivityId = Convert.ToInt32(homeTypeRow["ActivityId"]);
+                        l_Event.ProgramName = Convert.ToString(homeTypeRow["EventTitle"]);
+                        l_Event.ProgramStartDate = Convert.ToDateTime(homeTypeRow["StartDate"]);
+                        l_Event.ProgramEndDate = Convert.ToDateTime(homeTypeRow["EndDate"]);
+                        l_Event.ProgramStartTime = Convert.ToString(homeTypeRow["StartTime"]);
+                        l_Event.ProgramEndTime = Convert.ToString(homeTypeRow["EndTime"]);
+                        l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
+                        l_Event.note = Convert.ToString(homeTypeRow["note"]);
+                        l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
+                        l_Event.MemoryCardColor = Convert.ToString(homeTypeRow["MemoryCareColor"]);
+                        l_Event.Special = Convert.ToInt32(homeTypeRow["Special"]);
+                        l_Event.Code = Convert.ToString(homeTypeRow["code"]);
+
+                        l_Events.Add(l_Event);
+                    }
+                }
+                return l_Events;
+            }
+            catch (Exception ex)
+            {
+                exception = "GetActivityEvents_SACnotColor_between_ALL |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+        public static Collection<ActivityEventModel> GetActivityEvents_SACColor_between_ALL(int homeid, int residentID, string start, string end,int calendar_number)
+        {
+            string exception = string.Empty;
+            Collection<ActivityEventModel> l_Events = new Collection<ActivityEventModel>();
+            ActivityEventModel l_Event;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_Activity_Events_SACColor_between_all", l_Conn);
+                l_Cmd.Parameters.AddWithValue("@homeid", homeid);
+                l_Cmd.Parameters.AddWithValue("@residentID", residentID);
+                l_Cmd.Parameters.AddWithValue("@start", start);
+                l_Cmd.Parameters.AddWithValue("@end", end);
+                l_Cmd.Parameters.AddWithValue("@calendar_number", calendar_number);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                DataSet homeReceive = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(homeReceive);
+
+                if ((homeReceive != null) && (homeReceive.Tables.Count > 0) && (homeReceive.Tables[0].Rows.Count > 0))
+                {
+                    foreach (DataRow homeTypeRow in homeReceive.Tables[0].Rows)
+                    {
+                        l_Event = new ActivityEventModel();
+
+                        l_Event.ProgramId = Convert.ToInt32(homeTypeRow["Id"]);
+                        l_Event.ActivityId = Convert.ToInt32(homeTypeRow["ActivityId"]);
+                        l_Event.ProgramName = Convert.ToString(homeTypeRow["EventTitle"]);
+                        l_Event.ProgramStartDate = Convert.ToDateTime(homeTypeRow["StartDate"]);
+                        l_Event.ProgramEndDate = Convert.ToDateTime(homeTypeRow["EndDate"]);
+                        l_Event.ProgramStartTime = Convert.ToString(homeTypeRow["StartTime"]);
+                        l_Event.ProgramEndTime = Convert.ToString(homeTypeRow["EndTime"]);
+                        l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
+                        l_Event.note = Convert.ToString(homeTypeRow["note"]);
+                        l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
+                        l_Event.MemoryCardColor = Convert.ToString(homeTypeRow["MemoryCareColor"]);
+                        l_Event.Special = Convert.ToInt32(homeTypeRow["Special"]);
+                        l_Event.Code = Convert.ToString(homeTypeRow["code"]);
+
+                        l_Events.Add(l_Event);
+                    }
+                }
+                return l_Events;
+            }
+            catch (Exception ex)
+            {
+                exception = "GetActivityEvents_SACColor_between_ALL |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+
+
+
         public static Collection<ActivityEventModel> GetActivityEvents_mike_SAC(DateTime datemike, int homeid, int residentID)
         {
             string exception = string.Empty;

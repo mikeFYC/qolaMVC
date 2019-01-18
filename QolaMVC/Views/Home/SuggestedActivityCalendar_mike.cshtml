@@ -657,7 +657,10 @@
             if ($('#calendar #imgBot').length == 0) {
                 getImage();
             }
+            refetch_one_Calendar_Events_Based_On_Current_Date_Between_And_Calendar_forSAC();
         }, 300)
+        
+
 
     }
 
@@ -675,7 +678,7 @@
 
         //$('#PrintWAM').hide();
         //$('#PrintDAY').show();
-
+        
 
         setTimeout(function () {
             $("#calendar2").fullCalendar("changeView", "month");
@@ -683,7 +686,10 @@
             if ($('#calendar2 #imgBot').length == 0) {
                 getImage();
             }
+            refetch_one_Calendar_Events_Based_On_Current_Date_Between_And_Calendar_forSAC();
         }, 300)
+        
+
 
 
     }
@@ -708,7 +714,10 @@
             if ($('#calendar3 #imgBot').length == 0) {
                 getImage();
             }
+            refetch_one_Calendar_Events_Based_On_Current_Date_Between_And_Calendar_forSAC();
         }, 300)
+        
+
 
     }
 
@@ -732,7 +741,9 @@
             if ($('#calendar4 #imgBot').length == 0) {
                 getImage();
             }
+            refetch_one_Calendar_Events_Based_On_Current_Date_Between_And_Calendar_forSAC();
         }, 300)
+        
 
 
 
@@ -770,6 +781,8 @@
         if ($(whichcalendar + ' #imgBot').length == 0) {
             getImage();
         }
+        refetch_one_Calendar_Events_Based_On_Current_Date_Between_And_Calendar_forSAC();
+
 
 
     }
@@ -807,6 +820,8 @@
         if ($(whichcalendar + ' #imgBot').length == 0) {
             getImage();
         }
+        refetch_one_Calendar_Events_Based_On_Current_Date_Between_And_Calendar_forSAC();
+
     }
 
     function Update_When_Change_Date(dateselect) {
@@ -899,116 +914,465 @@
         return this.slice(0, idx) + str + this.slice(idx + Math.abs(rem));
     };
 
+    function getStartEnddate_onlymonth(showdate) {
+        var ggg = [];
+
+        var showdate = showdate.splice(showdate.length - 4, 0, "01 ");
+        var newshowdate = new Date(showdate);
+
+        var y = newshowdate.getFullYear();
+        var m = newshowdate.getMonth();
+        var firstDay = new Date(y, m, 1);
+        var lastDay = new Date(y, m + 1, 0);
+
+        if (firstDay.getMonth() + 1 < 10) {
+            monthstring_first = '0' + (firstDay.getMonth() + 1).toString();
+        }
+        else {
+            monthstring_first = (firstDay.getMonth() + 1).toString();
+        }
+
+        if (lastDay.getMonth() + 1 < 10) {
+            monthstring_last = '0' + (lastDay.getMonth() + 1).toString();
+        }
+        else {
+            monthstring_last = (lastDay.getMonth() + 1).toString();
+        }
+
+
+        var firstDayString = firstDay.getFullYear() + '-' + monthstring_first + '-01';
+        var lastDayString = lastDay.getFullYear() + '-' + monthstring_last + '-' + lastDay.getDate();
+        ggg.push(firstDayString);
+        ggg.push(lastDayString);
+
+        return ggg;
+    }
+
+    function refetch_one_Calendar_Events_Based_On_Current_Date_Between_And_Calendar_forSAC() {
+        var tab = $('#hiddentab').val();
+
+        if (tab == "a" || tab == "") {
+            var showdate = document.getElementById("lblCalendarMsg").innerHTML;
+            var ggg = getStartEnddate_onlymonth(showdate);
+            var firstDayString = ggg[0];
+            var lastDayString = ggg[1];
+            $('#calendar').fullCalendar("removeEvents");
+            $.ajax({
+                type: "GET",
+                url: "/home/getEvents_mike_SACnotColor_between_ALL",
+                data: { start: firstDayString, end: lastDayString, calendar_number:1 },
+                success: function (data) {
+                    $.each(data, function (i, v) {
+                        data.push({
+                            Id: v.id,
+                            title: v.title,
+                            start: v.startT,
+                            end: v.endT != null ? v.endT : null,
+                            startDate: v.startDate,
+                            Venue: v.Venue,
+                            Note: v.note,
+                            Category: v.Category,
+                            MemoryCardColor: v.MemoryCardColor,
+                            ActivityID: v.ActivityId,
+                            startTime: v.startTime,
+                            special: v.Special,
+                            code: v.Code
+                        });
+
+                    })
+                    $('#calendar').fullCalendar('renderEvents', data);
+
+                    $.ajax({
+                        type: "GET",
+                        url: "/home/getEvents_mike_SACColor_between_ALL",
+                        data: { start: firstDayString, end: lastDayString, calendar_number: 1 },
+                        success: function (data) {
+                            $.each(data, function (i, v) {
+
+
+                                data.push({
+                                    Id: v.id,
+                                    title: v.title,
+                                    start: v.startT,
+                                    end: v.endT != null ? v.endT : null,
+                                    startDate: v.startDate,
+                                    Venue: v.Venue,
+                                    Note: v.note,
+                                    Category: v.Category,
+                                    MemoryCardColor: v.MemoryCardColor,
+                                    ActivityID: v.ActivityId,
+                                    startTime: v.startTime,
+                                    special: v.Special,
+                                    code: v.Code,
+                                    color: 'yellow'
+                                });
+
+                            })
+                            $('#calendar').fullCalendar('renderEvents', data);
+
+                        },
+
+                        error: function (error) {
+                            tempAlert('failed', 2000);
+                        }
+                    })
+                },
+
+                error: function (error) {
+                    tempAlert('failed', 2000);
+                }
+            })
+            
+        }
+        else if (tab == "b") {
+            var showdate = document.getElementById("lblCalendarMsg2").innerHTML;
+            var ggg = getStartEnddate_onlymonth(showdate);
+            var firstDayString = ggg[0];
+            var lastDayString = ggg[1];
+
+            $('#calendar2').fullCalendar("removeEvents");
+            $.ajax({
+                type: "GET",
+                url: "/home/getEvents_mike_SACnotColor_between_ALL",
+                data: { start: firstDayString, end: lastDayString, calendar_number: 2 },
+                success: function (data) {
+                    $.each(data, function (i, v) {
+
+
+                        data.push({
+                            Id: v.id,
+                            title: v.title,
+                            start: v.startT,
+                            end: v.endT != null ? v.endT : null,
+                            startDate: v.startDate,
+                            Venue: v.Venue,
+                            Note: v.note,
+                            Category: v.Category,
+                            MemoryCardColor: v.MemoryCardColor,
+                            ActivityID: v.ActivityId,
+                            startTime: v.startTime,
+                            special: v.Special,
+                            code: v.Code
+                        });
+
+                    })
+                    $('#calendar2').fullCalendar('renderEvents', data);
+                    $.ajax({
+                        type: "GET",
+                        url: "/home/getEvents_mike_SACColor_between_ALL",
+                        data: { start: firstDayString, end: lastDayString, calendar_number: 2 },
+                        success: function (data) {
+                            $.each(data, function (i, v) {
+
+
+                                data.push({
+                                    Id: v.id,
+                                    title: v.title,
+                                    start: v.startT,
+                                    end: v.endT != null ? v.endT : null,
+                                    startDate: v.startDate,
+                                    Venue: v.Venue,
+                                    Note: v.note,
+                                    Category: v.Category,
+                                    MemoryCardColor: v.MemoryCardColor,
+                                    ActivityID: v.ActivityId,
+                                    startTime: v.startTime,
+                                    special: v.Special,
+                                    code: v.Code,
+                                    color: 'yellow'
+                                });
+
+                            })
+                            $('#calendar2').fullCalendar('renderEvents', data);
+
+                        },
+
+                        error: function (error) {
+                            tempAlert('failed', 2000);
+                        }
+                    })
+                },
+
+                error: function (error) {
+                    tempAlert('failed', 2000);
+                }
+            })
+
+        }
+        else if (tab == "c") {
+            var showdate = document.getElementById("lblCalendarMsg3").innerHTML;
+            var ggg = getStartEnddate_onlymonth(showdate);
+            var firstDayString = ggg[0];
+            var lastDayString = ggg[1];
+
+            $('#calendar3').fullCalendar("removeEvents");
+            $.ajax({
+                type: "GET",
+                url: "/home/getEvents_mike_SACnotColor_between_ALL",
+                data: { start: firstDayString, end: lastDayString, calendar_number: 3 },
+                success: function (data) {
+                    $.each(data, function (i, v) {
+
+
+                        data.push({
+                            Id: v.id,
+                            title: v.title,
+                            start: v.startT,
+                            end: v.endT != null ? v.endT : null,
+                            startDate: v.startDate,
+                            Venue: v.Venue,
+                            Note: v.note,
+                            Category: v.Category,
+                            MemoryCardColor: v.MemoryCardColor,
+                            ActivityID: v.ActivityId,
+                            startTime: v.startTime,
+                            special: v.Special,
+                            code: v.Code
+                        });
+
+                    })
+                    $('#calendar3').fullCalendar('renderEvents', data);
+                    $.ajax({
+                        type: "GET",
+                        url: "/home/getEvents_mike_SACColor_between_ALL",
+                        data: { start: firstDayString, end: lastDayString, calendar_number: 3 },
+                        success: function (data) {
+                            $.each(data, function (i, v) {
+
+
+                                data.push({
+                                    Id: v.id,
+                                    title: v.title,
+                                    start: v.startT,
+                                    end: v.endT != null ? v.endT : null,
+                                    startDate: v.startDate,
+                                    Venue: v.Venue,
+                                    Note: v.note,
+                                    Category: v.Category,
+                                    MemoryCardColor: v.MemoryCardColor,
+                                    ActivityID: v.ActivityId,
+                                    startTime: v.startTime,
+                                    special: v.Special,
+                                    code: v.Code,
+                                    color: 'yellow'
+                                });
+
+                            })
+                            $('#calendar3').fullCalendar('renderEvents', data);
+
+                        },
+
+                        error: function (error) {
+                            tempAlert('failed', 2000);
+                        }
+                    })
+                },
+
+                error: function (error) {
+                    tempAlert('failed', 2000);
+                }
+            })
+
+        }
+        else if (tab == "d") {
+            var showdate = document.getElementById("lblCalendarMsg4").innerHTML;
+            var ggg = getStartEnddate_onlymonth(showdate);
+            var firstDayString = ggg[0];
+            var lastDayString = ggg[1];
+
+            $('#calendar4').fullCalendar("removeEvents");
+            $.ajax({
+                type: "GET",
+                url: "/home/getEvents_mike_SACnotColor_between_ALL",
+                data: { start: firstDayString, end: lastDayString, calendar_number: 4 },
+                success: function (data) {
+                    $.each(data, function (i, v) {
+
+
+                        data.push({
+                            Id: v.id,
+                            title: v.title,
+                            start: v.startT,
+                            end: v.endT != null ? v.endT : null,
+                            startDate: v.startDate,
+                            Venue: v.Venue,
+                            Note: v.note,
+                            Category: v.Category,
+                            MemoryCardColor: v.MemoryCardColor,
+                            ActivityID: v.ActivityId,
+                            startTime: v.startTime,
+                            special: v.Special,
+                            code: v.Code
+                        });
+
+                    })
+                    $('#calendar4').fullCalendar('renderEvents', data);
+                    $.ajax({
+                        type: "GET",
+                        url: "/home/getEvents_mike_SACColor_between_ALL",
+                        data: { start: firstDayString, end: lastDayString, calendar_number: 4 },
+                        success: function (data) {
+                            $.each(data, function (i, v) {
+
+
+                                data.push({
+                                    Id: v.id,
+                                    title: v.title,
+                                    start: v.startT,
+                                    end: v.endT != null ? v.endT : null,
+                                    startDate: v.startDate,
+                                    Venue: v.Venue,
+                                    Note: v.note,
+                                    Category: v.Category,
+                                    MemoryCardColor: v.MemoryCardColor,
+                                    ActivityID: v.ActivityId,
+                                    startTime: v.startTime,
+                                    special: v.Special,
+                                    code: v.Code,
+                                    color: 'yellow'
+                                });
+
+                            })
+                            $('#calendar4').fullCalendar('renderEvents', data);
+
+                        },
+
+                        error: function (error) {
+                            tempAlert('failed', 2000);
+                        }
+                    })
+                },
+
+                error: function (error) {
+                    tempAlert('failed', 2000);
+                }
+            })
+
+        }
+            
+        
+
+
+
+
+
+
+    }
+
 </script>
 
 <script>
 
     $(document).ready(function () {
 
-        $.ajax({
-            type: "GET",
-            url: "/home/getEvents_mike_SACnotColor",
-            success: function (data) {
-                $.each(data, function (i, v) {
-                    data.push({
-                        Id: v.id,
-                        title: v.title,
-                        start: v.startT,
-                        end: v.endT != null ? v.endT : null,
-                        startDate: v.startDate,
-                        Venue: v.Venue,
-                        Note: v.note,
-                        Category: v.Category,
-                        ActivityID: v.ActivityId,
-                        startTime: v.startTime
-                    });
-                })
-                GenerationCalendar(data);
-            },
+        //$.ajax({
+        //    type: "GET",
+        //    url: "/home/getEvents_mike_SACnotColor",
+        //    success: function (data) {
+        //        $.each(data, function (i, v) {
+        //            data.push({
+        //                Id: v.id,
+        //                title: v.title,
+        //                start: v.startT,
+        //                end: v.endT != null ? v.endT : null,
+        //                startDate: v.startDate,
+        //                Venue: v.Venue,
+        //                Note: v.note,
+        //                Category: v.Category,
+        //                ActivityID: v.ActivityId,
+        //                startTime: v.startTime
+        //            });
+        //        })
+        //        GenerationCalendar(data);
+        //    },
 
-            error: function (error) {
-                tempAlert('Failed', 2000);
-            }
-        })
+        //    error: function (error) {
+        //        tempAlert('Failed', 2000);
+        //    }
+        //})
 
-        $.ajax({
-            type: "GET",
-            url: "/home/getEvents_C2_mike_SACnotColor",
-            success: function (data) {
-                $.each(data, function (i, v) {
-                    data.push({
-                        Id: v.id,
-                        title: v.title,
-                        start: v.startT,
-                        end: v.endT != null ? v.endT : null,
-                        startDate: v.startDate,
-                        Venue: v.Venue,
-                        Note: v.note,
-                        Category: v.Category,
-                        ActivityID: v.ActivityId,
-                        startTime: v.startTime
-                    });
-                })
-                GenerationCalendar2(data);
-            },
+        //$.ajax({
+        //    type: "GET",
+        //    url: "/home/getEvents_C2_mike_SACnotColor",
+        //    success: function (data) {
+        //        $.each(data, function (i, v) {
+        //            data.push({
+        //                Id: v.id,
+        //                title: v.title,
+        //                start: v.startT,
+        //                end: v.endT != null ? v.endT : null,
+        //                startDate: v.startDate,
+        //                Venue: v.Venue,
+        //                Note: v.note,
+        //                Category: v.Category,
+        //                ActivityID: v.ActivityId,
+        //                startTime: v.startTime
+        //            });
+        //        })
+        //        GenerationCalendar2(data);
+        //    },
 
-            error: function (error) {
-                tempAlert('Failed', 2000);
-            }
-        })
+        //    error: function (error) {
+        //        tempAlert('Failed', 2000);
+        //    }
+        //})
 
-        $.ajax({
-            type: "GET",
-            url: "/home/getEvents_C3_mike_SACnotColor",
-            success: function (data) {
-                $.each(data, function (i, v) {
-                    data.push({
-                        Id: v.id,
-                        title: v.title,
-                        start: v.startT,
-                        end: v.endT != null ? v.endT : null,
-                        startDate: v.startDate,
-                        Venue: v.Venue,
-                        Note: v.note,
-                        Category: v.Category,
-                        ActivityID: v.ActivityId,
-                        startTime: v.startTime
-                    });
-                })
-                GenerationCalendar3(data);
-            },
+        //$.ajax({
+        //    type: "GET",
+        //    url: "/home/getEvents_C3_mike_SACnotColor",
+        //    success: function (data) {
+        //        $.each(data, function (i, v) {
+        //            data.push({
+        //                Id: v.id,
+        //                title: v.title,
+        //                start: v.startT,
+        //                end: v.endT != null ? v.endT : null,
+        //                startDate: v.startDate,
+        //                Venue: v.Venue,
+        //                Note: v.note,
+        //                Category: v.Category,
+        //                ActivityID: v.ActivityId,
+        //                startTime: v.startTime
+        //            });
+        //        })
+        //        GenerationCalendar3(data);
+        //    },
 
-            error: function (error) {
-                tempAlert('Failed', 2000);
-            }
-        })
+        //    error: function (error) {
+        //        tempAlert('Failed', 2000);
+        //    }
+        //})
 
-        $.ajax({
-            type: "GET",
-            url: "/home/getEvents_C4_mike_SACnotColor",
-            success: function (data) {
-                $.each(data, function (i, v) {
-                    data.push({
-                        Id: v.id,
-                        title: v.title,
-                        start: v.startT,
-                        end: v.endT != null ? v.endT : null,
-                        startDate: v.startDate,
-                        Venue: v.Venue,
-                        Note: v.note,
-                        Category: v.Category,
-                        ActivityID: v.ActivityId,
-                        startTime: v.startTime
-                    });
-                })
-                GenerationCalendar4(data);
-            },
+        //$.ajax({
+        //    type: "GET",
+        //    url: "/home/getEvents_C4_mike_SACnotColor",
+        //    success: function (data) {
+        //        $.each(data, function (i, v) {
+        //            data.push({
+        //                Id: v.id,
+        //                title: v.title,
+        //                start: v.startT,
+        //                end: v.endT != null ? v.endT : null,
+        //                startDate: v.startDate,
+        //                Venue: v.Venue,
+        //                Note: v.note,
+        //                Category: v.Category,
+        //                ActivityID: v.ActivityId,
+        //                startTime: v.startTime
+        //            });
+        //        })
+        //        GenerationCalendar4(data);
+        //    },
 
-            error: function (error) {
-                tempAlert('Failed', 2000);
-            }
-        })
+        //    error: function (error) {
+        //        tempAlert('Failed', 2000);
+        //    }
+        //})
 
+        GenerationCalendar({});
+        GenerationCalendar2({});
+        GenerationCalendar3({});
+        GenerationCalendar4({});
 
         function GenerationCalendar(events) {
             $('#calendar').fullCalendar('destroy');
@@ -1029,14 +1393,29 @@
                 dayNamesShort: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
                 eventColor: 'white',
                 events: events,
+                eventRender: function (event, element) {
+                    //$(element).css('border-top', '1px solid grey');
+                    //$(element).css('border-bottom', '1px solid grey');
+                    if (event.code != undefined && event.code.trim() != '') {
+                        element.find('.fc-title').append("<span> - " + event.code + "</span>");
+                    }
+                },
             });
-
-
+            var showdate = document.getElementById("lblCalendarMsg").innerHTML;
+            var ggg = getStartEnddate_onlymonth(showdate);
+            var firstDayString = ggg[0];
+            var lastDayString = ggg[1];
             $.ajax({
                 type: "GET",
-                url: "/home/getEvents_mike_SACColor",
+                url: "/home/getEvents_mike_SACnotColor_between_ALL",
+                data: { start: firstDayString, end: lastDayString, calendar_number: 1 },
                 success: function (data) {
+
+
+
                     $.each(data, function (i, v) {
+
+
                         data.push({
                             Id: v.id,
                             title: v.title,
@@ -1046,17 +1425,88 @@
                             Venue: v.Venue,
                             Note: v.note,
                             Category: v.Category,
+                            MemoryCardColor: v.MemoryCardColor,
                             ActivityID: v.ActivityId,
                             startTime: v.startTime,
-                            color: 'yellow'
+                            special: v.Special,
+                            code: v.Code
                         });
+
                     })
-                    $('#calendar').fullCalendar('renderEvents', data, true);
+                    $('#calendar').fullCalendar('renderEvents', data);
                     getImage();
+                    $.ajax({
+                        type: "GET",
+                        url: "/home/getEvents_mike_SACColor_between_ALL",
+                        data: { start: firstDayString, end: lastDayString, calendar_number: 1 },
+                        success: function (data) {
+
+
+
+                            $.each(data, function (i, v) {
+
+
+                                data.push({
+                                    Id: v.id,
+                                    title: v.title,
+                                    start: v.startT,
+                                    end: v.endT != null ? v.endT : null,
+                                    startDate: v.startDate,
+                                    Venue: v.Venue,
+                                    Note: v.note,
+                                    Category: v.Category,
+                                    MemoryCardColor: v.MemoryCardColor,
+                                    ActivityID: v.ActivityId,
+                                    startTime: v.startTime,
+                                    special: v.Special,
+                                    code: v.Code,
+                                    color: 'yellow'
+                                });
+
+                            })
+                            $('#calendar').fullCalendar('renderEvents', data);
+
+                        },
+
+                        error: function (error) {
+                            tempAlert('failed', 2000);
+                        }
+                    })
 
                 },
-                error: function (error) { tempAlert('Failed', 2000); }
+
+                error: function (error) {
+                    tempAlert('failed', 2000);
+                }
             })
+
+
+
+            //$.ajax({
+            //    type: "GET",
+            //    url: "/home/getEvents_mike_SACColor",
+            //    success: function (data) {
+            //        $.each(data, function (i, v) {
+            //            data.push({
+            //                Id: v.id,
+            //                title: v.title,
+            //                start: v.startT,
+            //                end: v.endT != null ? v.endT : null,
+            //                startDate: v.startDate,
+            //                Venue: v.Venue,
+            //                Note: v.note,
+            //                Category: v.Category,
+            //                ActivityID: v.ActivityId,
+            //                startTime: v.startTime,
+            //                color: 'yellow'
+            //            });
+            //        })
+            //        $('#calendar').fullCalendar('renderEvents', data, true);
+            //        getImage();
+
+            //    },
+            //    error: function (error) { tempAlert('Failed', 2000); }
+            //})
 
         }
 
@@ -1078,33 +1528,40 @@
                 dayNamesShort: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
                 eventColor: 'white',
                 events: events,
+                eventRender: function (event, element) {
+                    //$(element).css('border-top', '1px solid grey');
+                    //$(element).css('border-bottom', '1px solid grey');
+                    if (event.code != undefined && event.code.trim() != '') {
+                        element.find('.fc-title').append("<span> - " + event.code + "</span>");
+                    }
+                },
             });
 
-            $.ajax({
-                type: "GET",
-                url: "/home/getEvents_C2_mike_SACColor",
-                success: function (data) {
-                    $.each(data, function (i, v) {
-                        data.push({
-                            Id: v.id,
-                            title: v.title,
-                            start: v.startT,
-                            end: v.endT != null ? v.endT : null,
-                            startDate: v.startDate,
-                            Venue: v.Venue,
-                            Note: v.note,
-                            Category: v.Category,
-                            ActivityID: v.ActivityId,
-                            startTime: v.startTime,
-                            color: 'yellow'
-                        });
-                    })
-                    $('#calendar2').fullCalendar('renderEvents', data, true);
+            //$.ajax({
+            //    type: "GET",
+            //    url: "/home/getEvents_C2_mike_SACColor",
+            //    success: function (data) {
+            //        $.each(data, function (i, v) {
+            //            data.push({
+            //                Id: v.id,
+            //                title: v.title,
+            //                start: v.startT,
+            //                end: v.endT != null ? v.endT : null,
+            //                startDate: v.startDate,
+            //                Venue: v.Venue,
+            //                Note: v.note,
+            //                Category: v.Category,
+            //                ActivityID: v.ActivityId,
+            //                startTime: v.startTime,
+            //                color: 'yellow'
+            //            });
+            //        })
+            //        $('#calendar2').fullCalendar('renderEvents', data, true);
 
 
-                },
-                error: function (error) { tempAlert('Failed', 2000); }
-            })
+            //    },
+            //    error: function (error) { tempAlert('Failed', 2000); }
+            //})
 
         }
 
@@ -1127,32 +1584,39 @@
                 dayNamesShort: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
                 eventColor: 'white',
                 events: events,
+                eventRender: function (event, element) {
+                    //$(element).css('border-top', '1px solid grey');
+                    //$(element).css('border-bottom', '1px solid grey');
+                    if (event.code != undefined && event.code.trim() != '') {
+                        element.find('.fc-title').append("<span> - " + event.code + "</span>");
+                    }
+                },
             });
 
-            $.ajax({
-                type: "GET",
-                url: "/home/getEvents_C3_mike_SACColor",
-                success: function (data) {
-                    $.each(data, function (i, v) {
-                        data.push({
-                            Id: v.id,
-                            title: v.title,
-                            start: v.startT,
-                            end: v.endT != null ? v.endT : null,
-                            startDate: v.startDate,
-                            Venue: v.Venue,
-                            Note: v.note,
-                            Category: v.Category,
-                            ActivityID: v.ActivityId,
-                            startTime: v.startTime,
-                            color: 'yellow'
-                        });
-                    })
-                    $('#calendar3').fullCalendar('renderEvents', data, true);
+            //$.ajax({
+            //    type: "GET",
+            //    url: "/home/getEvents_C3_mike_SACColor",
+            //    success: function (data) {
+            //        $.each(data, function (i, v) {
+            //            data.push({
+            //                Id: v.id,
+            //                title: v.title,
+            //                start: v.startT,
+            //                end: v.endT != null ? v.endT : null,
+            //                startDate: v.startDate,
+            //                Venue: v.Venue,
+            //                Note: v.note,
+            //                Category: v.Category,
+            //                ActivityID: v.ActivityId,
+            //                startTime: v.startTime,
+            //                color: 'yellow'
+            //            });
+            //        })
+            //        $('#calendar3').fullCalendar('renderEvents', data, true);
 
-                },
-                error: function (error) { tempAlert('Failed', 2000); }
-            })
+            //    },
+            //    error: function (error) { tempAlert('Failed', 2000); }
+            //})
 
         }
 
@@ -1174,34 +1638,43 @@
                 dayNamesShort: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
                 eventColor: 'white',
                 events: events,
+                eventRender: function (event, element) {
+                    //$(element).css('border-top', '1px solid grey');
+                    //$(element).css('border-bottom', '1px solid grey');
+                    if (event.code != undefined && event.code.trim() != '') {
+                        element.find('.fc-title').append("<span> - " + event.code + "</span>");
+                    }
+                },
             });
 
-            $.ajax({
-                type: "GET",
-                url: "/home/getEvents_C4_mike_SACColor",
-                success: function (data) {
-                    $.each(data, function (i, v) {
-                        data.push({
-                            Id: v.id,
-                            title: v.title,
-                            start: v.startT,
-                            end: v.endT != null ? v.endT : null,
-                            startDate: v.startDate,
-                            Venue: v.Venue,
-                            Note: v.note,
-                            Category: v.Category,
-                            ActivityID: v.ActivityId,
-                            startTime: v.startTime,
-                            color: 'yellow'
-                        });
-                    })
-                    $('#calendar4').fullCalendar('renderEvents', data, true);
+            //$.ajax({
+            //    type: "GET",
+            //    url: "/home/getEvents_C4_mike_SACColor",
+            //    success: function (data) {
+            //        $.each(data, function (i, v) {
+            //            data.push({
+            //                Id: v.id,
+            //                title: v.title,
+            //                start: v.startT,
+            //                end: v.endT != null ? v.endT : null,
+            //                startDate: v.startDate,
+            //                Venue: v.Venue,
+            //                Note: v.note,
+            //                Category: v.Category,
+            //                ActivityID: v.ActivityId,
+            //                startTime: v.startTime,
+            //                color: 'yellow'
+            //            });
+            //        })
+            //        $('#calendar4').fullCalendar('renderEvents', data, true);
 
-                },
-                error: function (error) { tempAlert('Failed', 2000); }
-            })
+            //    },
+            //    error: function (error) { tempAlert('Failed', 2000); }
+            //})
 
         }
+
+
 
     });
 
@@ -1362,15 +1835,14 @@
             heightactualtop = '200'
         }
         else {
-            heightactualtop = (parseInt($(whichcalendar + ' .fc-day').css("height"))).toString();
+            heightactualtop = (parseInt($(whichcalendar + ' .fc-day[data-date="' + firstDaystring + '"]').css("height"))).toString();
         }
         if (heightactualbot > 200) {
             heightactualbot = '200'
         }
         else {
-            heightactualbot = (parseInt($(whichcalendar + ' .fc-day').css("height")) - 10).toString();
+            heightactualbot = (parseInt($(whichcalendar + ' .fc-day[data-date="' + lastDaystring + '"]').css("height")) - 10).toString();
         }
-
         $(whichcalendar + ' #imgTop').height(heightactualtop);
         $(whichcalendar + ' #imgTop').show();
 
@@ -1431,13 +1903,13 @@
             heightactualtop = '200'
         }
         else {
-            heightactualtop = (parseInt($(whichcalendar + ' .fc-day').css("height"))).toString();
+            heightactualtop = (parseInt($(whichcalendar + ' .fc-day[data-date="' + firstDaystring + '"]').css("height"))).toString();
         }
         if (heightactualbot > 200) {
             heightactualbot = '200'
         }
         else {
-            heightactualbot = (parseInt($(whichcalendar + ' .fc-day').css("height")) - 10).toString();
+            heightactualbot = (parseInt($(whichcalendar + ' .fc-day[data-date="' + lastDaystring + '"]').css("height")) - 10).toString();
         }
 
 
@@ -1498,13 +1970,13 @@
             heightactualtop = '200'
         }
         else {
-            heightactualtop = (parseInt($(whichcalendar + ' .fc-day').css("height"))).toString();
+            heightactualtop = (parseInt($(whichcalendar + ' .fc-day[data-date="' + firstDaystring + '"]').css("height"))).toString();
         }
         if (heightactualbot > 200) {
             heightactualbot = '200'
         }
         else {
-            heightactualbot = (parseInt($(whichcalendar + ' .fc-day').css("height")) - 10).toString();
+            heightactualbot = (parseInt($(whichcalendar + ' .fc-day[data-date="' + lastDaystring + '"]').css("height")) - 10).toString();
         }
 
 

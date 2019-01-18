@@ -2513,6 +2513,49 @@ namespace QolaMVC.Controllers
         }
 
 
+        public JsonResult getEvents_mike_SACnotColor_between_ALL(string start,string end,int calendar_number)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            var l_ActivityEvents = HomeDAL.GetActivityEvents_SACnotColor_between_ALL(home.Id, resident.ID,start,end, calendar_number);
+
+            List<Dictionary<string, string>> l_Events = HomeDAL.addEVENTStol_Events(l_ActivityEvents);
+
+            return Json(l_Events, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult getEvents_mike_SACColor_between_ALL(string start, string end, int calendar_number)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            var l_ActivityEvents = HomeDAL.GetActivityEvents_SACColor_between_ALL(home.Id, resident.ID, start, end, calendar_number);
+
+            List<Dictionary<string, string>> l_Events = HomeDAL.addEVENTStol_Events(l_ActivityEvents);
+
+            return Json(l_Events, JsonRequestBehavior.AllowGet);
+        }
+
+
         [HttpGet]
         public ActionResult update_day_div1_SAC(string datesel)
         {
