@@ -747,9 +747,31 @@
                                                             }
                                                             @*<td class="text-center"><b>Description</b></td>*@
                                                             <td class="" style="width:20%;padding:1% !important;"><p style="margin-bottom:3px !important;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p><p class="text-center" style="font-size:1.3em;"><b>Description</b></p></td>
-                                                            <td class="" style="width:28%;padding:1% !important;"><p style="margin-bottom:3px !important;"><b class="POAcarelist" id="POACare1" style="color:@POAC1color;cursor:pointer;" onclick="POAclick(this)">@POAC1</b><b class="POAfinancelist" id="POAFinance1" style="float:right;color:@POAF1color;cursor:pointer;" onclick="POAclick(this)">@POAF1</b></p><p class="text-center" style="font-size:1.3em;"><b>1st Contact</b></p></td>
-                                                            <td class="" style="width:28%;padding:1% !important;"><p style="margin-bottom:3px !important;"><b class="POAcarelist" id="POACare2" style="color:@POAC2color;cursor:pointer;" onclick="POAclick(this)">@POAC2</b><b class="POAfinancelist" id="POAFinance2" style="float:right;color:@POAF2color;cursor:pointer;" onclick="POAclick(this)">@POAF2</b></p><p class="text-center" style="font-size:1.3em;"><b>2nd Contact</b></p></td>
-                                                            <td class="" style="width:28%;padding:1% !important;"><p style="margin-bottom:3px !important;"><b class="POAcarelist" id="POACare3" style="color:@POAC3color;cursor:pointer;" onclick="POAclick(this)">@POAC3</b><b class="POAfinancelist" id="POAFinance3" style="float:right;color:@POAF3color;cursor:pointer;" onclick="POAclick(this)">@POAF3</b></p><p class="text-center" style="font-size:1.3em;"><b>3rd Contact</b></p></td>
+                                                            <td class="" style="width:28%;padding:1% !important;">
+                                                                <p style="margin-bottom:3px !important;">
+                                                                    <b class="POAcarelist" id="POACare1" style="color:@POAC1color;cursor:pointer;" onclick="POAclick(this)">@POAC1</b>
+                                                                    <input class="POA_pencil" type="image" style="width:1.2vw;height:1.2vw;display:none;" src="/Content/pages/img/icoedit.png" onclick="POA_pencil_click(this)">
+                                                                    <b class="POAfinancelist" id="POAFinance1" style="float:right;color:@POAF1color;cursor:pointer;" onclick="POAclick(this)">@POAF1</b>
+                                                                    <input class="POA_pencil" type="image" style="width:1.2vw;height:1.2vw;display:none;float:right;" src="/Content/pages/img/icoedit.png" onclick="POA_pencil_click(this)">
+                                                                </p>                      
+                                                                    <p class="text-center" style="font-size:1.3em;"><b>1st Contact</b></p>
+                                                            </td>
+                                                            <td class="" style="width:28%;padding:1% !important;">
+                                                                <p style="margin-bottom:3px !important;">
+                                                                    <b class="POAcarelist" id="POACare2" style="color:@POAC2color;cursor:pointer;" onclick="POAclick(this)">@POAC2</b>
+                                                                    <input class="POA_pencil" type="image" style="width:1.2vw;height:1.2vw;display:none;" src="/Content/pages/img/icoedit.png" onclick="POA_pencil_click(this)">
+                                                                    <b class="POAfinancelist" id="POAFinance2" style="float:right;color:@POAF2color;cursor:pointer;" onclick="POAclick(this)">@POAF2</b>
+                                                                    <input class="POA_pencil" type="image" style="width:1.2vw;height:1.2vw;display:none;float:right;" src="/Content/pages/img/icoedit.png" onclick="POA_pencil_click(this)">
+                                                                </p>
+                                                                <p class="text-center" style="font-size:1.3em;"><b>2nd Contact</b></p></td>
+                                                            <td class="" style="width:28%;padding:1% !important;">
+                                                                <p style="margin-bottom:3px !important;">
+                                                                    <b class="POAcarelist" id="POACare3" style="color:@POAC3color;cursor:pointer;" onclick="POAclick(this)">@POAC3</b>
+                                                                    <input class="POA_pencil" type="image" style="width:1.2vw;height:1.2vw;display:none;" src="/Content/pages/img/icoedit.png" onclick="POA_pencil_click(this)">
+                                                                    <b class="POAfinancelist" id="POAFinance3" style="float:right;color:@POAF3color;cursor:pointer;" onclick="POAclick(this)">@POAF3</b>
+                                                                    <input class="POA_pencil" type="image" style="width:1.2vw;height:1.2vw;display:none;float:right;" src="/Content/pages/img/icoedit.png" onclick="POA_pencil_click(this)">
+                                                                </p>
+                                                                <p class="text-center" style="font-size:1.3em;"><b>3rd Contact</b></p></td>
                                                         </tr>
 
                                                         <tr>
@@ -3133,7 +3155,15 @@
                 }
 
 
-
+                function POA_pencil_click(ee) {
+                    if (ee.previousElementSibling.style.color == 'red') {
+                        ee.previousElementSibling.style.color = 'black';
+                    }
+                    else {
+                        ee.previousElementSibling.style.color = 'red';
+                    }
+                    
+                }
 
                 $(window).load(function () {
                     var phones = [{ "mask": "(###) ###-####" }, { "mask": "(###) ###-####" }];
@@ -3313,6 +3343,8 @@
                     var c = b.replaceAll('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', 'POA Finance')
                     $('#POAtitle').html(c);
 
+                    $('.POA_pencil').show();
+
                     $('#table2_Contract1_1').hide();
                     $('#table2_Contract1_2').show();
 
@@ -3361,8 +3393,9 @@
                 }
 
                 function table2_SAVE() {
-
+                    $('.POA_pencil').hide();
                     var postdata = {
+
                         ID: $('#residentID').val(),
                         POACareStatus: $('#POACare1').css('color') == "rgb(255, 0, 0)" ? 'Y' : 'N',
                         POACareType2Status: $('#POACare2').css('color') == "rgb(255, 0, 0)" ? 'Y' : 'N',
@@ -3411,6 +3444,7 @@
                             $('#table2_Email1_1').html($('#table2_Email1_2').val());
                             $('#table2_Email2_1').html($('#table2_Email2_2').val());
                             $('#table2_Email3_1').html($('#table2_Email3_2').val());
+                            
                             
                         },
                         error: function (errorThrown) {

@@ -71,11 +71,25 @@
                             <div class="col-md-12">
                                 <div class="col-md-1">
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-8">
                                     <img src="~/Content/assets/img/logo (2).png" />
                                 </div>
-                                <div class="col-md-5">
-                                    <h4 style="font-weight:bold;">@ViewBag.Home.Name</h4>   
+                                <div class="" style="width:auto;float:right;display:inline-block;">
+                                    @if (ViewBag.Home != null)
+                                    {
+                                        var name_first_two_words = "";
+                                        var words = ViewBag.Home.Name.Split(' ');
+                                        if (words.Length >= 2)
+                                        {
+                                            name_first_two_words = words[0] + " " + words[1];
+                                        }
+                                        else
+                                        {
+                                            name_first_two_words = words[0];
+                                        }
+                                    <h4 style="font-weight:bold;">@name_first_two_words</h4>
+                                    }
+                                    
                                 </div>
                             </div>
                             
@@ -168,7 +182,7 @@
                                             var userNameType = @Model.Where(c => c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().userNameType;
                                             <td class="align-middle colorBlack">@Model.Where(c => c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().TimeStamp.ToShortTimeString()</td>
                                             <td class="align-middle colorBlack">@Model.Where(c => c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().Amount</td>
-                                            <td class="align-middle colorBlack" style="padding:5px 30px 5px 30px !important"><div style="background-color:@color;width:100%;height:10px;"></div></td>
+                                            <td class="align-middle colorBlack">@color</td>
                                             <td class="align-middle colorBlack">@Model.Where(c => c.TimeStamp.Year.ToString() == yearstr && c.TimeStamp.Month.ToString() == monthstr && c.TimeStamp.Day.ToString() == daystr).FirstOrDefault().Comments</td>
                                             <td><label class="form-control-label text-center" style="width:100%;font-size:1em;">@userName<br>@userNameType</label></td>
                                         }
@@ -316,7 +330,7 @@
                         var filename = $('.filename').val();
                         doc.save(filename + '.pdf');
                     });
-                $('#CUOL_PRINT').hide();
+                //$('#CUOL_PRINT').hide();
                 $('#toselect').show();
 
 

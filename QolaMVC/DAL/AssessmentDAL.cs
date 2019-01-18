@@ -4031,6 +4031,8 @@ namespace QolaMVC.DAL
                         l_OCTF.Comments = Convert.ToString(dataReceive.Tables[0].Rows[index]["Comments"]);
                         l_OCTF.ResidentID = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
                         l_OCTF.TimeStamp = Convert.ToDateTime(dataReceive.Tables[0].Rows[index]["dtmTimeStamp"]);
+                        l_OCTF.userName = Convert.ToString(dataReceive.Tables[0].Rows[index]["userName"]);
+                        l_OCTF.userNameType = Convert.ToString(dataReceive.Tables[0].Rows[index]["userNameType"]);
                         l_OCTFs.Add(l_OCTF);
                     }
                 }

@@ -18,5 +18,7 @@ namespace QolaMVC.Models
         public string Comments { get; set; }
         public int EnteredBy { get; set; }
         public DateTime TimeStamp { get; set; }
+        public string userName { get; set; }
+        public string userNameType { get; set; }
     }
 }

@@ -942,7 +942,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-
+            p_Model.Initials = "";
             AssessmentDAL.AddNewOCTF(p_Model);
             TempData["Message"] = "Added OCTF";
             ViewBag.Message = "Added OCTF";
@@ -993,6 +993,44 @@ namespace QolaMVC.Controllers
             }
             TempData.Keep("index");
             return View(vm_single);
+        }
+
+        public ActionResult New_OCCC(string index)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+            var vm = new Collection<OCCC>();
+            var vm_single = new OCCC();
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            vm = AssessmentDAL.getOCCCbyResidentID(resident.ID, home.Id);
+            vm.Insert(0, new OCCC());
+            List<DateTime> l_AssessmentDates = new List<DateTime>();
+            foreach (var l_A in vm)
+            {
+                l_AssessmentDates.Add(l_A.dtmTimeStamp);
+            }
+            ViewBag.AssessmentDates = l_AssessmentDates;
+
+            if (index == null || index == "")
+            {
+                TempData["index"] = "0";
+                vm_single = vm[0];
+            }
+            else
+            {
+                TempData["index"] = index;
+                vm_single = vm[int.Parse(index)];
+            }
+            
+            TempData.Keep("index");
+            return View("OCCC", vm_single);
         }
 
         public ActionResult Add_OCCC(OCCC p_Model)
