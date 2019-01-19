@@ -351,8 +351,14 @@
                                                     <li class="clear_bg"><label id="lblCalendarMsg" style="font-weight:bolder;font-size:2em;margin-top:1.5vh;color:black;">@TempData["datechoose"].ToString()</label></li>
                                                     <li class="Nextbtn"><a id="imgNextbtn_a" href="#" onclick="nextday_mike()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
                                                     @*<li class="Goto_Today"><button class="btn btn-primary text-white" onclick="Goto_Today()" style="border-radius:1vw;margin-top:2%;margin-left:30vw;">Today</button></li>*@
+
                                                 </ul>
+                                                <div class="LoadandEmpty" style="float:right;display:none;height:100%;margin-top:-6.5vh">
+                                                    <button class="btn btn-primary" style="font-size:0.7vw;border-radius:0.25rem;" onclick="LoadPreviousMonth()">Load Previous Month</button>
+                                                    <button class="btn btn-primary" style="font-size:0.7vw;border-radius:0.25rem;" onclick="EmptyAllEvents()">Empty All Events</button>
+                                                </div>
                                                 <input type="hidden" id="tempdate" value="@TempData["datechoose"].ToString()" />
+
                                             </div>
                                             @*<img  id="imgTop" src="~/Content/CalendarTheme/Images/MonthlyActivity/dec2018Theme1_6.JPG" style="position:fixed;width:10px;height:10px;display:none;z-index:10;" />*@
                                             <div id="fromHTMLtestdivPrint1">
@@ -375,6 +381,10 @@
                                                     <li class="Nextbtn"><a href="#" onclick="nextday_mike()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
                                                     @*<li class="Goto_Today"><button class="btn btn-primary text-white" onclick="Goto_Today()" style="border-radius:1vw;margin-top:2%;margin-left:30vw;">Today</button></li>*@
                                                 </ul>
+                                                <div class="LoadandEmpty" style="float:right;display:none;height:100%;margin-top:-6.5vh">
+                                                    <button class="btn btn-primary" style="font-size:0.7vw;border-radius:0.25rem;" onclick="LoadPreviousMonth()">Load Previous Month</button>
+                                                    <button class="btn btn-primary" style="font-size:0.7vw;border-radius:0.25rem;" onclick="EmptyAllEvents()">Empty All Events</button>
+                                                </div>
                                             </div>
                                             <div id="fromHTMLtestdivPrint2">
                                                 <section id='calendar2'></section>
@@ -397,6 +407,10 @@
                                                     <li class="Nextbtn"><a href="#" onclick="nextday_mike()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
                                                     @*<li class="Goto_Today"><button class="btn btn-primary text-white" onclick="Goto_Today()" style="border-radius:1vw;margin-top:2%;margin-left:30vw;">Today</button></li>*@
                                                 </ul>
+                                                <div class="LoadandEmpty" style="float:right;display:none;height:100%;margin-top:-6.5vh">
+                                                    <button class="btn btn-primary" style="font-size:0.7vw;border-radius:0.25rem;" onclick="LoadPreviousMonth()">Load Previous Month</button>
+                                                    <button class="btn btn-primary" style="font-size:0.7vw;border-radius:0.25rem;" onclick="EmptyAllEvents()">Empty All Events</button>
+                                                </div>
                                             </div>
                                             <div id="fromHTMLtestdivPrint3">
                                                 <section id='calendar3'></section>
@@ -419,6 +433,10 @@
                                                     <li class="Nextbtn"><a href="#" onclick="nextday_mike()"><img id="imgNextbtn" src="~/Content/pages/img/next.png" alt="" /></a></li>
                                                     @*<li class="Goto_Today"><button class="btn btn-primary text-white" onclick="Goto_Today()" style="border-radius:1vw;margin-top:2%;margin-left:30vw;">Today</button></li>*@
                                                 </ul>
+                                                <div class="LoadandEmpty" style="float:right;display:none;height:100%;margin-top:-6.5vh">
+                                                    <button class="btn btn-primary" style="font-size:0.7vw;border-radius:0.25rem;" onclick="LoadPreviousMonth()">Load Previous Month</button>
+                                                    <button class="btn btn-primary" style="font-size:0.7vw;border-radius:0.25rem;" onclick="EmptyAllEvents()">Empty All Events</button>
+                                                </div>
                                             </div>
                                             <div id="fromHTMLtestdivPrint4">
                                                 <section id='calendar4'></section>
@@ -1793,6 +1811,7 @@
         resetbuttoncolor();
         $('.hannahselector').hide();
         $('#memoryColorDiv').css('display', 'none');
+        $('.LoadandEmpty').hide();
     }
 
     function calendar_two() {
@@ -1819,6 +1838,7 @@
         resetbuttoncolor();
         $('.hannahselector').hide();
         $('#memoryColorDiv').css('display', 'inline-block');
+        $('.LoadandEmpty').hide();
     }
 
     function calendar_three() {
@@ -1844,6 +1864,7 @@
         resetbuttoncolor();
         $('.hannahselector').hide();
         $('#memoryColorDiv').css('display', 'none');
+        $('.LoadandEmpty').hide();
     }
 
     function calendar_four() {
@@ -1869,6 +1890,7 @@
         resetbuttoncolor();
         $('.hannahselector').hide();
         $('#memoryColorDiv').css('display', 'none');
+        $('.LoadandEmpty').hide();
     }
 
     function calendar_change_name_click(ee) {
@@ -4969,6 +4991,166 @@
         Update_When_Change_Date(today.toString());
     }
 
+    function LoadPreviousMonth(ee) {
+
+        tempAlert3("Do You Want To Load All Events From Previous Month?");
+
+    }
+
+    function EmptyAllEvents(ee) {
+
+        tempAlert4("Do You Want To Delete All Events From Current Month?");
+
+    }
+
+    function tempAlert3(msg) {
+        var el = document.createElement("div");
+        el.setAttribute("style", "position:fixed;top:2%;left:29%;width:40vw;text-align:center;background-color:white;z-index:9999;color:black;padding:2vw 2vw 1vw 3vw;border-radius:1vw;font-size:1.4vw;font-weight:bold;border:black solid;");
+        el.innerHTML = "<div class='col-md-4'><img src=\"\/Content\/assets\/img\/qola_logo3.png\" style=\"width:100%;height:100%;\" \/><\/div><div class='col-md-8' style='padding-top:10px;'>" + msg + "<br><br><div style='width:90%;'><button class='btn btn-primary pull-right' style='display:inline-block;' onclick='this.parentNode.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode.parentNode);'>No<\/button><button class='btn btn-danger pull-right' style='display:inline-block;margin-right:10px' onclick='AddAllEventFromPreviousMonth(this)'>Yes<\/button><\/div><\/div>";
+
+        //el.parentNode.removeChild(el);
+
+
+        document.body.appendChild(el);
+
+    }
+
+    function tempAlert4(msg) {
+        var el = document.createElement("div");
+        el.setAttribute("style", "position:fixed;top:2%;left:29%;width:40vw;text-align:center;background-color:white;z-index:9999;color:black;padding:2vw 2vw 1vw 3vw;border-radius:1vw;font-size:1.4vw;font-weight:bold;border:black solid;");
+        el.innerHTML = "<div class='col-md-4'><img src=\"\/Content\/assets\/img\/qola_logo3.png\" style=\"width:100%;height:100%;\" \/><\/div><div class='col-md-8' style='padding-top:10px;'>" + msg + "<br><br><div style='width:90%;'><button class='btn btn-primary pull-right' style='display:inline-block;' onclick='this.parentNode.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode.parentNode);'>No<\/button><button class='btn btn-danger pull-right' style='display:inline-block;margin-right:10px' onclick='RemoveAllEventFromCurrentMonth(this)'>Yes<\/button><\/div><\/div>";
+
+        //el.parentNode.removeChild(el);
+
+
+        document.body.appendChild(el);
+
+    }
+
+    function AddAllEventFromPreviousMonth(ee) {
+        ee.parentNode.parentNode.parentNode.parentNode.removeChild(ee.parentNode.parentNode.parentNode);
+        var calendarnum;
+        var xx = scrollX;
+        var yy = scrollY;
+        var tab = $('#hiddentab').val();
+        var whichcalendar = "";
+        var calendarDate = "";
+        if (tab == "a" || tab == "") {
+            calendarnum = 1;
+            whichcalendar = "#calendar";
+            calendarDate = "#lblCalendarMsg";
+        }
+        else if (tab == "b") {
+            calendarnum = 2;
+            whichcalendar = "#calendar2";
+            calendarDate = "#lblCalendarMsg2";
+        }
+        else if (tab == "c") {
+            calendarnum = 3;
+            whichcalendar = "#calendar3";
+            calendarDate = "#lblCalendarMsg3";
+        }
+        else if (tab == "d") {
+            calendarnum = 4;
+            whichcalendar = "#calendar4";
+            calendarDate = "#lblCalendarMsg4";
+        }
+        if ($(whichcalendar).fullCalendar('clientEvents').length > 0) {
+            tempAlert("Empty Events First",2000)
+        }
+        else {
+            var dateshow = $(calendarDate).html();
+            $.get("/Home/Add_All_Activity_From_Prev_Month_Mike", { calendarnumber: calendarnum, destinationFirstDate: dateshow }, function (data) {
+                for (var ind = 0; ind < data.length; ind++) {
+                    var event = {
+                        Id: data[ind].id,
+                        title: data[ind].title,
+                        start: data[ind].startT,
+                        end: data[ind].endT != null ? data[ind].endT : null,
+                        startDate: data[ind].startDate,
+                        Venue: data[ind].Venue,
+                        Note: data[ind].note,
+                        Category: data[ind].Category,
+                        MemoryCardColor: data[ind].MemoryCardColor,
+                        ActivityID: data[ind].ActivityId,
+                        startTime: data[ind].startTime,
+                        special: data[ind].Special,
+                        code: data[ind].Code
+                    };
+                    $(whichcalendar).fullCalendar('renderEvent', event, true);
+                }
+                update_day_div();
+                scroll(xx, yy);
+            });
+        }
+
+
+
+    }
+
+    function RemoveAllEventFromCurrentMonth(ee) {
+        ee.parentNode.parentNode.parentNode.parentNode.removeChild(ee.parentNode.parentNode.parentNode);
+        var calendarnum;
+        var xx = scrollX;
+        var yy = scrollY;
+        var tab = $('#hiddentab').val();
+        var whichcalendar = "";
+        var calendarDate = "";
+        if (tab == "a" || tab == "") {
+            calendarnum = 1;
+            whichcalendar = "#calendar";
+            calendarDate = "#lblCalendarMsg";
+        }
+        else if (tab == "b") {
+            calendarnum = 2;
+            whichcalendar = "#calendar2";
+            calendarDate = "#lblCalendarMsg2";
+        }
+        else if (tab == "c") {
+            calendarnum = 3;
+            whichcalendar = "#calendar3";
+            calendarDate = "#lblCalendarMsg3";
+        }
+        else if (tab == "d") {
+            calendarnum = 4;
+            whichcalendar = "#calendar4";
+            calendarDate = "#lblCalendarMsg4";
+        }
+        if ($(whichcalendar).fullCalendar('clientEvents').length == 0) {
+            tempAlert("No Events Found", 2000)
+        }
+        else {
+            var dateshow = $(calendarDate).html();
+            $.get("/Home/Delete_All_Activity_From_Current_Month_Mike", { calendarnumber: calendarnum, destinationFirstDate: dateshow}, function (data) {
+                $(whichcalendar).fullCalendar("removeEvents");
+                for (var ind = 0; ind < data.length; ind++) {
+                    var event = {
+                        Id: data[ind].id,
+                        title: data[ind].title,
+                        start: data[ind].startT,
+                        end: data[ind].endT != null ? data[ind].endT : null,
+                        startDate: data[ind].startDate,
+                        Venue: data[ind].Venue,
+                        Note: data[ind].note,
+                        Category: data[ind].Category,
+                        MemoryCardColor: data[ind].MemoryCardColor,
+                        ActivityID: data[ind].ActivityId,
+                        startTime: data[ind].startTime,
+                        special: data[ind].Special,
+                        code: data[ind].Code
+                    };
+                    $(whichcalendar).fullCalendar('renderEvent', event, true);
+                }
+                update_day_div();
+                scroll(xx, yy);
+            });
+        }
+
+
+    }
+
+
+
 
     //$('.printBtn').on('click', function () {
 
@@ -5195,6 +5377,7 @@
         }
         refetch_one_Calendar_Events_Based_On_Current_Date_Between_And_Calendar();
         $('.hannahselector').show();
+        $('.LoadandEmpty').css('display','inline-block');
 
 
 
@@ -5218,6 +5401,7 @@
 
         refetch_one_Calendar_Events_Based_On_Current_Date_Between_And_Calendar();
         $('.hannahselector').show();
+        $('.LoadandEmpty').hide();
     });
     $("#day1").click(function () {
         //$('#calendar1Parent').css('width', '60%');
@@ -5235,6 +5419,7 @@
         $('#month1').css("background-color", "#015093");
         $('#week1').css("background-color", "#015093");
         $('.hannahselector').hide();
+        $('.LoadandEmpty').hide();
     });
 
     $("#month2").click(function () {
@@ -5262,6 +5447,7 @@
         }
         refetch_one_Calendar_Events_Based_On_Current_Date_Between_And_Calendar();
         $('.hannahselector').show();
+        $('.LoadandEmpty').css('display', 'inline-block');
     });
     $("#week2").click(function () {
         //$('#calendar2Parent').css('width', '100%');
@@ -5282,6 +5468,7 @@
 
         refetch_one_Calendar_Events_Based_On_Current_Date_Between_And_Calendar();
         $('.hannahselector').show();
+        $('.LoadandEmpty').hide();
     });
     $("#day2").click(function () {
         //$('#calendar2Parent').css('width', '60%');
@@ -5299,6 +5486,7 @@
         $('#week2').css("background-color", "#015093");
         $('#month2').css("background-color", "#015093");
         $('.hannahselector').hide();
+        $('.LoadandEmpty').hide();
     });
 
     $("#month3").click(function () {
@@ -5326,6 +5514,7 @@
         }
         refetch_one_Calendar_Events_Based_On_Current_Date_Between_And_Calendar();
         $('.hannahselector').show();
+        $('.LoadandEmpty').css('display', 'inline-block');
     });
     $("#week3").click(function () {
         //$('#calendar3Parent').css('width', '100%');
@@ -5346,6 +5535,7 @@
 
         refetch_one_Calendar_Events_Based_On_Current_Date_Between_And_Calendar();
         $('.hannahselector').show();
+        $('.LoadandEmpty').hide();
     });
     $("#day3").click(function () {
         //$('#calendar3Parent').css('width', '60%');
@@ -5363,6 +5553,7 @@
         $('#week3').css("background-color", "#015093");
         $('#month3').css("background-color", "#015093");
         $('.hannahselector').hide();
+        $('.LoadandEmpty').hide();
     });
 
     $("#month4").click(function () {
@@ -5390,6 +5581,7 @@
         }
         refetch_one_Calendar_Events_Based_On_Current_Date_Between_And_Calendar();
         $('.hannahselector').show();
+        $('.LoadandEmpty').css('display', 'inline-block');
     });
     $("#week4").click(function () {
         //$('#calendar4Parent').css('width', '100%');
@@ -5411,6 +5603,7 @@
 
         refetch_one_Calendar_Events_Based_On_Current_Date_Between_And_Calendar();
         $('.hannahselector').show();
+        $('.LoadandEmpty').hide();
     });
     $("#day4").click(function () {
         //$('#calendar4Parent').css('width', '60%');
@@ -5428,6 +5621,7 @@
         $('#week4').css("background-color", "#015093");
         $('#month4').css("background-color", "#015093");
         $('.hannahselector').hide();
+        $('.LoadandEmpty').hide();
     });
 
 

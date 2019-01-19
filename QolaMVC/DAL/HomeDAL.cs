@@ -4147,5 +4147,135 @@ namespace QolaMVC.DAL
         }
 
 
+        public static Collection<ActivityEventModel> Add_All_Activity_From_Prev_Month_Mike(int homeID, int daydiff, int calendarnumber,string destinationMonthFirstDay)
+        {
+            string exception = string.Empty;
+            Collection<ActivityEventModel> l_Events = new Collection<ActivityEventModel>();
+            ActivityEventModel l_Event;
+            //UserModel l_User;
+            //ResidentModel l_Resident;
+            //SuiteModel l_Suite;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("Add_All_Activity_From_Prev_Month_Mike", l_Conn);
+                l_Cmd.Parameters.AddWithValue("@homeID", homeID);
+                l_Cmd.Parameters.AddWithValue("@daydiff", daydiff);
+                l_Cmd.Parameters.AddWithValue("@calendarnumber", calendarnumber);
+                l_Cmd.Parameters.AddWithValue("@destinationMonthFirstDay", destinationMonthFirstDay);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                DataSet homeReceive = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(homeReceive);
+
+                if ((homeReceive != null) && (homeReceive.Tables.Count > 0) && (homeReceive.Tables[0].Rows.Count > 0))
+                {
+                    if (homeReceive.Tables[0].Columns.Contains("numofevents") == true)
+                    {
+                        l_Event = new ActivityEventModel();
+                        l_Event.ProgramId = -1;
+                        l_Events.Add(l_Event);
+                        return l_Events;
+                    }
+                    else
+                    {
+                        foreach (DataRow homeTypeRow in homeReceive.Tables[0].Rows)
+                        {
+                            l_Event = new ActivityEventModel();
+                            l_Event.ProgramId = Convert.ToInt32(homeTypeRow["Id"]);
+                            l_Event.ActivityId = Convert.ToInt32(homeTypeRow["ActivityId"]);
+                            l_Event.ProgramName = Convert.ToString(homeTypeRow["EventTitle"]);
+                            l_Event.ProgramStartDate = Convert.ToDateTime(homeTypeRow["StartDate"]);
+                            l_Event.ProgramEndDate = Convert.ToDateTime(homeTypeRow["EndDate"]);
+                            l_Event.ProgramStartTime = Convert.ToString(homeTypeRow["StartTime"]);
+                            l_Event.ProgramEndTime = Convert.ToString(homeTypeRow["EndTime"]);
+                            l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
+                            l_Event.note = Convert.ToString(homeTypeRow["note"]);
+                            l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
+                            l_Event.MemoryCardColor = Convert.ToString(homeTypeRow["MemoryCareColor"]);
+                            l_Event.Special = Convert.ToInt32(homeTypeRow["Special"]);
+                            l_Event.Code = Convert.ToString(homeTypeRow["code"]);
+                            l_Events.Add(l_Event);
+                        }
+                    }
+                    
+                }
+                return l_Events;
+            }
+            catch (Exception ex)
+            {
+                exception = "Add_All_Activity_From_Prev_Month_Mike |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+        public static Collection<ActivityEventModel> Delete_All_Activity_From_Current_Month_Mike(int homeID, int calendarnumber, string destinationMonthFirstDay)
+        {
+            string exception = string.Empty;
+            Collection<ActivityEventModel> l_Events = new Collection<ActivityEventModel>();
+            ActivityEventModel l_Event;
+            //UserModel l_User;
+            //ResidentModel l_Resident;
+            //SuiteModel l_Suite;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("Delete_All_Activity_From_Current_Month_Mike", l_Conn);
+                l_Cmd.Parameters.AddWithValue("@homeID", homeID);
+                l_Cmd.Parameters.AddWithValue("@calendarnumber", calendarnumber);
+                l_Cmd.Parameters.AddWithValue("@destinationMonthFirstDay", destinationMonthFirstDay);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                DataSet homeReceive = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(homeReceive);
+
+                if ((homeReceive != null) && (homeReceive.Tables.Count > 0) && (homeReceive.Tables[0].Rows.Count > 0))
+                {
+                    foreach (DataRow homeTypeRow in homeReceive.Tables[0].Rows)
+                    {
+                        l_Event = new ActivityEventModel();
+                        l_Event.ProgramId = Convert.ToInt32(homeTypeRow["Id"]);
+                        l_Event.ActivityId = Convert.ToInt32(homeTypeRow["ActivityId"]);
+                        l_Event.ProgramName = Convert.ToString(homeTypeRow["EventTitle"]);
+                        l_Event.ProgramStartDate = Convert.ToDateTime(homeTypeRow["StartDate"]);
+                        l_Event.ProgramEndDate = Convert.ToDateTime(homeTypeRow["EndDate"]);
+                        l_Event.ProgramStartTime = Convert.ToString(homeTypeRow["StartTime"]);
+                        l_Event.ProgramEndTime = Convert.ToString(homeTypeRow["EndTime"]);
+                        l_Event.Venue = Convert.ToString(homeTypeRow["Venue"]);
+                        l_Event.note = Convert.ToString(homeTypeRow["note"]);
+                        l_Event.CategoryId = Convert.ToString(homeTypeRow["categoryID"]);
+                        l_Event.MemoryCardColor = Convert.ToString(homeTypeRow["MemoryCareColor"]);
+                        l_Event.Special = Convert.ToInt32(homeTypeRow["Special"]);
+                        l_Event.Code = Convert.ToString(homeTypeRow["code"]);
+                        l_Events.Add(l_Event);
+                    }
+                }
+                return l_Events;
+            }
+            catch (Exception ex)
+            {
+                exception = "Delete_All_Activity_From_Current_Month_Mike |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+
+
     }
 }

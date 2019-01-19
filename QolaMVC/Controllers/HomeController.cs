@@ -3176,8 +3176,57 @@ namespace QolaMVC.Controllers
             return temp;
         }
 
+        [HttpGet]
+        public JsonResult Add_All_Activity_From_Prev_Month_Mike(int calendarnumber, string destinationFirstDate)
+        {
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("Home");
+            ViewBag.Home = home;
 
-      
+            int daydiff = 0;
+            string destinationFirstDateFinal = DateTime.Parse(destinationFirstDate).ToString("yyyy-MM-dd");
+            int destinationFirstDateFinal_int = (int)(DateTime.Parse(destinationFirstDate).DayOfWeek);
+            int previousFirstDateFinal_int = (int)(DateTime.Parse(destinationFirstDate).AddMonths(-1).DayOfWeek);
+            if(destinationFirstDateFinal_int>= previousFirstDateFinal_int)
+            {
+                daydiff = 28;
+            }
+            else
+            {
+                daydiff = 35;
+            }
+
+            var l_ActivityEvents = HomeDAL.Add_All_Activity_From_Prev_Month_Mike(home.Id, daydiff, calendarnumber, destinationFirstDateFinal);
+
+            List<Dictionary<string, string>> l_Events = HomeDAL.addEVENTStol_Events(l_ActivityEvents);
+
+
+            return Json(l_Events, JsonRequestBehavior.AllowGet);
+
+
+        }
+
+        [HttpGet]
+        public JsonResult Delete_All_Activity_From_Current_Month_Mike(int calendarnumber, string destinationFirstDate)
+        {
+            var home = (HomeModel)TempData["Home"];
+            TempData.Keep("Home");
+            ViewBag.Home = home;
+
+            string destinationFirstDateFinal = DateTime.Parse(destinationFirstDate).ToString("yyyy-MM-dd");
+
+            var l_ActivityEvents = HomeDAL.Delete_All_Activity_From_Current_Month_Mike(home.Id, calendarnumber, destinationFirstDateFinal);
+
+            List<Dictionary<string, string>> l_Events = HomeDAL.addEVENTStol_Events(l_ActivityEvents);
+
+            return Json(l_Events, JsonRequestBehavior.AllowGet);
+
+
+        }
+
+
+
+
 
 
 
