@@ -943,6 +943,12 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             TempData.Keep("Resident");
             p_Model.Initials = "";
+
+            if (p_Model.AssessmentResult == null) p_Model.AssessmentResult = "";
+            if (p_Model.LevelProtocol == null) p_Model.LevelProtocol = "";
+            if (p_Model.LevelOfAssistance == null) p_Model.LevelOfAssistance = "";
+            if (p_Model.Comments == null) p_Model.Comments = "";
+
             AssessmentDAL.AddNewOCTF(p_Model);
             TempData["Message"] = "Added OCTF";
             ViewBag.Message = "Added OCTF";
@@ -1044,6 +1050,10 @@ namespace QolaMVC.Controllers
             p_Model.homeID = home.Id;
             p_Model.modified_by = user.ID;
             p_Model.residentID = resident.ID;
+
+            if (p_Model.comments == null) p_Model.comments = "";
+            if (p_Model.Location == null) p_Model.Location = "";
+
             AssessmentDAL.Add_OCCC(p_Model);
             string ind = TempData["index"].ToString();
             return RedirectToAction("OCCC", new { index = ind });

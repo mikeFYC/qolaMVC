@@ -4068,7 +4068,6 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@LevelProtocol", p_Model.LevelProtocol);
                 l_Cmd.Parameters.AddWithValue("@LevelOfAssistance", p_Model.LevelOfAssistance);
                 l_Cmd.Parameters.AddWithValue("@Initials", p_Model.Initials);
-                if (p_Model.Comments == null) p_Model.Comments = "";
                 l_Cmd.Parameters.AddWithValue("@Comments", p_Model.Comments);
                 l_Cmd.ExecuteNonQuery();
             }
