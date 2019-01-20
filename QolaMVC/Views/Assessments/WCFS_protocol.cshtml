@@ -1,0 +1,516 @@
+﻿@model QolaMVC.Models.MasterDetails
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+<style>
+
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+
+    .sizeclass{
+        font-size:1.2vw;
+        color:black;
+    }
+
+    input[type=checkbox] {
+        /* Double-sized Checkboxes */
+        -ms-transform: scale(2); /* IE */
+        -moz-transform: scale(2); /* FF */
+        -webkit-transform: scale(2); /* Safari and Chrome */
+        -o-transform: scale(2); /* Opera */
+        padding: 10px;
+    }
+    table {
+        border-collapse: collapse;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+    }
+</style>
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+    <!-- START PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+                        <div style="width:74%;display:inline-block;">
+                            <h3>Wound Care Flow Sheet Protocol</h3>
+                        </div>
+                        <div style="width:25%;display:inline-block;">
+                            <a href="~/Assessments/" class="btn btn-primary"><i class="fa fa-backward"></i> Back</a>
+                            <button class="btn btn-danger" id="" onclick="PRINTPDF()"><i class="fa fa-file-pdf-o"></i> Print</button>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+            <input type="hidden" value="Wound-Care-Flow-Sheet-Protocol" name="" class="filename">
+            <div style="height: 60px;"></div>
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg" id="fromHTMLtestdiv">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+                <div class="card p-3">
+                    <div class="card-block">
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                                <div class="row" id="FirstRow">
+                                    <div class="col-2">
+                                        <label for="" class="col-form-label"><b>Resident: </b></label>
+                                        <label>@ViewBag.Resident.FirstName @ViewBag.Resident.LastName </label>
+                                    </div>
+                                    <div class="col-2">
+                                        <label for="" class="col-form-label"><b>Suite No: </b></label>
+                                        <label>@ViewBag.Resident.SuiteNo</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="hidden" name="category" value="a" />
+                                        <div class="form-group" style="width:100%;">
+                                            <div style="display:inline-block">
+                                                <label style="font-weight:bold;">Select date : </label>
+                                            </div>
+                                            <div style="display:inline-block">
+                                                <select name="chklinkid" id="chklinkid" class="form-control" onchange="onchange_submit()">
+
+                                                    <option value="0">-- NEW --</option>
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                        @*<button type="button" class="btn btn-primary col-md-4" id="btnGetCurData">Submit</button>*@
+
+                                    </div>
+                                </div>
+                                <hr>
+
+                                <div class="row" id="">
+                                    <div class="col-md-9">
+                                        <img src="~/Content/assets/img/ahs.png" class="img-responsive">
+                                    </div>
+                                    <div class="col-md-3 text-right">
+                                        <p></p>
+                                        <p></p>
+                                        <p class="sizeclass" style="font-weight:bold;color:black;font-size:1.2vw;">Wound Care</p>
+                                        <p class="sizeclass" style="font-weight:bold;color:black;font-size:1.2vw;">Wound Protocol</p>
+
+
+                                    </div>
+                                </div>
+
+                                <hr>
+                                @*<button type="button" class="btn btn-success " id="btnClear">Add New*</button>*@
+                                <br />
+
+                                <table class="sizeclass" style="width:100%;">
+                                    <thead style="font-weight:bold;background-color:lightgray;">
+                                        <tr>
+                                            <th><div class="col-md-12">Wound Assessment</div></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="" style="width:100%;">
+
+                                                    <div class="col-md-6"></div>
+                                                    <div class="col-md-5"></div>
+                                                    <div class="col-md-6">
+                                                        <div class="row" style="height:15vh;">
+
+                                                            <div class="col-md-12 sizeclass form-inline">
+                                                                Wound # &nbsp; <input class="" style="width:10%;" />&nbsp; of &nbsp; <input class="" style="width:10%;" />
+                                                            </div>
+                                                            <br>
+                                                            <br>
+                                                            <div class="col-md-12 sizeclass">Location - Mark and number site of wound:</div>
+                                                            <br>
+                                                            <br>
+                                                        </div>
+                                                        <div>
+                                                            <div class="col-md-12 text-center" id="canvasDIV" style="height:60vh;">
+                                                                <canvas id="canvasforBodyImage" style="width:80%;"></canvas>
+                                                                <br>
+                                                                <div class="text-center"><button class="btn btn-primary" type="button" onclick="canvasclear()">clear</button></div>
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="" style="width:100%;height:15vh;">
+                                                            <div style="height:3vh;"></div>
+                                                            <div style="width:60%;float:right;border:1px solid black;height:12vh;text-align:center;vertical-align:middle;">
+                                                                <p style="line-height:12vh;font-weight:bold;font-size:1.5vw;color:black;">Affix Client Label</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12 text-center" id="canvasDIV2" style="height:60vh;">
+                                                                <canvas id="canvasforBodyImage2" style="width:80%;"></canvas>
+                                                                <br>
+                                                                <div class="text-center"><button class="btn btn-primary" type="button" onclick="canvasclear2()">clear</button></div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <br>
+
+                                <table class="sizeclass" style="width:100%;">
+                                    <thead style="font-weight:bold;background-color:lightgray;">
+                                        <tr>
+                                            <th colspan="4"><div class="col-md-12">Wound Type</div></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><div class="col-md-12">Ulcer : &nbsp; &nbsp; <input type="checkbox" />&nbsp; Pressure &nbsp;&nbsp;<input type="checkbox" />&nbsp; Arterial &nbsp;&nbsp;<input type="checkbox" />&nbsp; Venous</div></td>
+                                            <td><div class="col-md-12"><input type="checkbox" />&nbsp; Surgical Wound </div></td>
+                                            <td><div class="col-md-12"><input type="checkbox" />&nbsp; Skin Tear </div></td>
+                                            <td><div class="col-md-12"><input type="checkbox" />&nbsp; Other: <input style="width:40%;" /> </div></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <br>
+
+                                <table class="sizeclass" style="width:100%;">
+                                    <thead style="font-weight:bold;background-color:lightgray;">
+                                        <tr>
+                                            <th colspan="3"><div class="col-md-12">Wound Protocol</div></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><div class="col-md-12">Date</div></td>
+                                            <td><div class="col-md-12"><input type="date" style="width:60%;" /></div></td>
+                                            <td rowspan="3"><div class="col-md-12">Protocol: <br><textarea></textarea></div></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td><div class="col-md-12">Frequency</div></td>
+                                            <td><div class="col-md-12"><input style="width:60%;" /></div></td>
+
+
+                                        </tr>
+                                        <tr>
+                                            <td><div class="col-md-12">Initiated by:(name& discipline)</div></td>
+                                            <td><div class="col-md-12"><input style="width:60%;" /></div></td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <br>
+
+                                <table class="sizeclass" style="width:100%;">
+                                    <thead style="font-weight:bold;background-color:lightgray;">
+                                        <tr>
+                                            <th colspan="2"><div class="col-md-12">Assignment of Care to HCA (PSL Only)</div></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><div class="col-md-12">Assigned to HCA</div></td>
+                                            <td><div class="col-md-12"><input type="checkbox" />&nbsp; Yes &nbsp;&nbsp;<input type="checkbox" />&nbsp; No </div></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td><div class="col-md-12">Date of initial assignment </div></td>
+                                            <td><div class="col-md-12"><input type="date" style="width:60%;" /></div></td>
+
+
+                                        </tr>
+                                        <tr>
+                                            <td><div class="col-md-12">Assigned by:(name& discipline)</div></td>
+                                            <td><div class="col-md-12"><input style="width:60%;" /></div></td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <br>
+
+                                <table class="sizeclass" style="width:100%;">
+                                    <thead style="border-bottom:1px solid black;font-weight:bold;background-color:lightgray;">
+                                        <tr>
+                                            <th colspan="4"><div class="col-md-12">This form must be used with the <span style="color:blue;text-decoration-line:underline;">Wound Care Flow Sheet for LPNs</span> and <span style="color:blue;text-decoration-line:underline;">Wound Care Flow Sheet for HCAs</span>.  For further information on how to use these forms, refer to the <span style="color:blue;text-decoration-line:underline;">Wound Care Flow Sheet User Guide</span>.</div></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+
+
+                                <div class="row">
+
+                                    <div class="row" style="width:100%;">
+                                        <div class="text-right" style="width:49%;display:inline-block;">
+                                        </div>
+                                        <div class="text-right" style="width:49%;display:inline-block;">
+                                            <br>
+                                            <button id="btnSave" class="btn btn-primary">Save</button>
+                                            @*<a class="btn btn-danger" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Next</a>*@
+                                        </div>
+                                    </div>
+                                    <input id="hiddeninput1" type="hidden" value="@TempData["index"]" />
+
+                                </div>
+                            </div>
+                            @*@Html.Partial("~/Views/Shared/PostClinic_monitorPage2.cshtml", Model)*@
+
+
+
+                            <input id="canvasDots" type="hidden" name="canvasImageDot" value="" />
+                            <input id="canvasDots2" type="hidden" name="canvasImageDot2" value="" />
+
+                            <!-- END PLACE PAGE CONTENT HERE -->
+                        </div>
+                        <!-- END CONTAINER FLUID -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END PAGE CONTENT -->
+        @RenderPage("~/Views/Shared/_Footer.cshtml")
+        <script type="text/javascript" src="~/Content/assets/plugins/jquery/jquery-1.11.1.min.js"></script>
+
+        <script>
+
+            function PRINTPDF() {
+
+                scrollTo(0, 0);
+                $('#btnSave').hide();
+                document.getElementById('FirstRow').style.marginTop = "100px";
+                document.getElementById('fromHTMLtestdiv').style.marginLeft = "-10px";
+                $('.content').height($('.content').height());
+                var srcEl = document.getElementById("fromHTMLtestdiv");
+                var scaleFactor = 1.5;
+
+                var originalWidth = srcEl.offsetWidth;
+                var originalHeight = srcEl.offsetHeight;
+                // Force px size (no %, EMs, etc)
+                srcEl.style.width = originalWidth + "px";
+                srcEl.style.height = originalHeight + "px";
+
+                // Position the element at the top left of the document because of bugs in html2canvas. The bug exists when supplying a custom canvas, and   //the rendering on the custom canvas based on the offset of the source element on the page; thus the source element MUST be at 0, 0.
+                // See html2canvas issues #790, #820, #893, #922
+                srcEl.style.position = "absolute";
+                srcEl.style.top = "0";
+                srcEl.style.left = "0";
+
+                // Create scaled canvas
+                var scaledCanvas = document.createElement("canvas");
+                scaledCanvas.width = originalWidth * scaleFactor;
+                scaledCanvas.height = originalHeight * scaleFactor;
+                scaledCanvas.style.width = originalWidth + "px";
+                scaledCanvas.style.height = originalHeight + "px";
+                var scaledContext = scaledCanvas.getContext("2d");
+                scaledContext.scale(scaleFactor, scaleFactor);
+
+                html2canvas(srcEl, { canvas: scaledCanvas })
+                    .then(function (canvas) {
+                        var imgData = canvas.toDataURL('image/png');
+                        var imgWidth = 210;
+                        var pageHeight = 295;
+                        var imgHeight = canvas.height * imgWidth / canvas.width;
+                        var heightLeft = imgHeight;
+
+                        var doc = new jsPDF('p', 'mm');
+                        var position = 0;
+
+                        doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                        doc.setTextColor('#000');
+                        var context = canvas.getContext('2d');
+                        context.scale(2, 2);
+                        heightLeft -= pageHeight;
+
+                        while (heightLeft >= 0) {
+                            position = heightLeft - imgHeight;
+                            doc.addPage();
+                            doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                            var context = canvas.getContext('2d');
+                            context.scale(2, 2);
+                            doc.setTextColor('#000');
+                            heightLeft -= pageHeight;
+                        }
+                        var filename = $('.filename').val();
+                        doc.save(filename + '.pdf');
+                    });
+                //$('#OCCC_PRINT').hide();
+                $('#btnSave').show();
+                $('#fromHTMLtestdiv').css("margin-left", "-10px");
+
+
+            }
+
+            function canvasclear() {
+                var canvas = document.getElementById('canvasforBodyImage')
+                canvas.width = canvas.height = 500;
+                canvas.style.width = "80%";
+                canvas.style.height = "90%";
+                var context2 = canvas.getContext('2d');
+                context2.clearRect(0, 0, canvas.width, canvas.height);
+
+                img = new Image();
+                img.src = '/Content/assets/img/WCFS_bodyImage1.JPG';
+                img.onload = function () {
+                    context2.drawImage(img, 0, 0, 500, 500);
+                }
+                $('#canvasDots').val('');
+            }
+
+            function canvasclear2() {
+                var canvas = document.getElementById('canvasforBodyImage2')
+                canvas.width = canvas.height = 500;
+                canvas.style.width = "80%";
+                canvas.style.height = "90%";
+                
+                var context2 = canvas.getContext('2d');
+                context2.clearRect(0, 0, canvas.width, canvas.height);
+
+                img = new Image();
+                img.src = '/Content/assets/img/WCFS_bodyImage2.JPG';
+                img.onload = function () {
+                    context2.drawImage(img, 0, 200, 500, 300);
+                }
+                $('#canvasDots2').val('');
+            }
+
+            $(document).ready(function () {
+
+                var canvas = document.getElementById('canvasforBodyImage')
+                canvas.width = canvas.height = 500;
+                canvas.style.width = "80%";
+                canvas.style.height = "90%";
+                //canvas.style.height = ($(canvas).height() * 0.8).toString()+"px";
+                var ctx = canvas.getContext('2d');
+                img = new Image();
+                img.src = '/Content/assets/img/WCFS_bodyImage1.JPG';
+                img.onload = function () {
+                    ctx.drawImage(img, 0, 0, 500, 500);
+                }
+
+                $('#canvasforBodyImage').click(function (ev) {
+                    var canvas = document.getElementById('canvasforBodyImage');
+                    var pageX = ev.pageX;
+                    var pageY = ev.pageY;
+                    var canvasX = $('#canvasforBodyImage').offset().left;
+                    var canvasY = $('#canvasforBodyImage').offset().top;
+                    var canvasWidth = $('#canvasforBodyImage').width();
+                    var canvasHeight = $('#canvasforBodyImage').height();
+                    var finalCanvasX = (pageX - canvasX) / canvasWidth * 500;
+                    var finalCanvasY = (pageY - canvasY) / canvasHeight * 500;
+
+
+                    var canvas = document.getElementById('canvasforBodyImage');
+                    var ctx = canvas.getContext('2d');
+                    ctx.fillStyle = 'red';
+                    ctx.beginPath();
+                    ctx.arc(finalCanvasX, finalCanvasY, 4, 0, 2 * Math.PI);
+                    ctx.stroke();
+                    ctx.fill();
+
+                    $('#canvasDots').val($('#canvasDots').val() + finalCanvasX + ',' + finalCanvasY + ';')
+
+                })
+
+
+
+                var canvas2 = document.getElementById('canvasforBodyImage2')
+                canvas2.width = canvas2.height = 500;
+                canvas2.style.width = "80%";
+                canvas2.style.height = "90%";
+                //canvas2.style.marginTop = "10%";
+                //canvas.style.height = ($(canvas).height() * 0.8).toString()+"px";
+                var ctx2 = canvas2.getContext('2d');
+                img2 = new Image();
+                img2.src = '/Content/assets/img/WCFS_bodyImage2.JPG';
+                img2.onload = function () {
+                    ctx2.drawImage(img2, 0, 200, 500, 300);
+                }
+
+                $('#canvasforBodyImage2').click(function (ev) {
+                    var canvas = document.getElementById('canvasforBodyImage2');
+                    var pageX = ev.pageX;
+                    var pageY = ev.pageY;
+                    var canvasX = $('#canvasforBodyImage2').offset().left;
+                    var canvasY = $('#canvasforBodyImage2').offset().top;
+                    var canvasWidth = $('#canvasforBodyImage2').width();
+                    var canvasHeight = $('#canvasforBodyImage2').height();
+                    var finalCanvasX = (pageX - canvasX) / canvasWidth * 500;
+                    var finalCanvasY = (pageY - canvasY) / canvasHeight * 500;
+
+
+                    var canvas = document.getElementById('canvasforBodyImage2');
+                    var ctx = canvas.getContext('2d');
+                    ctx.fillStyle = 'red';
+                    ctx.beginPath();
+                    ctx.arc(finalCanvasX, finalCanvasY, 4, 0, 2 * Math.PI);
+                    ctx.stroke();
+                    ctx.fill();
+
+                    $('#canvasDots2').val($('#canvasDots2').val() + finalCanvasX + ',' + finalCanvasY + ';')
+
+                })
+
+            });
+
+            $(window).load(function () {
+
+                var dotssplit = $('#canvasDots').val().split(';');
+                var canvas = document.getElementById('canvasforBodyImage')
+                var ctx = canvas.getContext('2d');
+                for (var index = 0; index < dotssplit.length; index++) {
+                    if (dotssplit[index] != '') {
+                        var dotssplit2 = dotssplit[index].split(',');
+                        ctx.fillStyle = 'red';
+                        ctx.beginPath();
+                        ctx.arc(dotssplit2[0], dotssplit2[1], 4, 0, 2 * Math.PI);
+                        ctx.stroke();
+                        ctx.fill();
+                    }
+                }
+
+
+
+                var dotssplit3 = $('#canvasDots2').val().split(';');
+                var canvas = document.getElementById('canvasforBodyImage2')
+                var ctx = canvas.getContext('2d');
+                for (var index = 0; index < dotssplit3.length; index++) {
+                    if (dotssplit3[index] != '') {
+                        var dotssplit4 = dotssplit3[index].split(',');
+                        ctx.fillStyle = 'red';
+                        ctx.beginPath();
+                        ctx.arc(dotssplit4[0], dotssplit4[1], 4, 0, 2 * Math.PI);
+                        ctx.stroke();
+                        ctx.fill();
+                    }
+                }
+            })
+
+
+
+
+
+           
+
+
+
+        </script>
