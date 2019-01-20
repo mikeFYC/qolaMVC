@@ -461,40 +461,86 @@
     }
 
     function Print_list() {
-        var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+        $('#ListView_firstRow').hide();
+        $('#ListView_lastRow').hide();
+        $('#ListView_overflow').css('height', 'auto');
+        var mywindow = window.open('', 'PRINT', 'height=1500,width=1200');
 
         mywindow.document.write('<html><head><title>' + document.title + '</title>');
-        mywindow.document.write('</head><body >');
-        mywindow.document.write('<h1>' + document.title + '</h1>');
+        //mywindow.document.write('<link href="/Content/bootstrap.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/site.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/assets/plugins/pace/pace-theme-flash.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/assets/plugins/font-awesome/css/font-awesome.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/assets/plugins/jquery-scrollbar/jquery.scrollbar.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/assets/plugins/select2/css/select2.min.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/assets/plugins/switchery/css/switchery.min.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/pages/css/pages-icons.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/assets/css/pages.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/assets/css/datatables.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/assets/css/style.css" rel="stylesheet">');
+
+        mywindow.document.write('<link rel="stylesheet" href="/Content/mike_print/Dining_Attendance_print.css">');;
+        mywindow.document.write('</head><body>');
+        mywindow.document.write('<h1 class="text-center">QOLA Dining Attendance List View</h1>');
         mywindow.document.write(document.getElementById("pills-profile1").innerHTML);
         mywindow.document.write('</body></html>');
 
         mywindow.document.close(); // necessary for IE >= 10
         mywindow.focus(); // necessary for IE >= 10*/
+        setTimeout(function () {
+            mywindow.print();
+            mywindow.close();
+        }, 2000);
 
-        mywindow.print();
-        mywindow.close();
-
+        $('#ListView_firstRow').show();
+        $('#ListView_lastRow').show();
+        $('#ListView_overflow').css('height', '69vh');
         return true;
+
     }
 
     function Print_floor() {
-        var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+        $('#FloorView_firstRow').hide();
+        $('#FloorView_lastRow').hide();
+        $('#FloorView_overflow').css('height', 'auto');
+        var mywindow = window.open('', 'PRINT', 'height=1500,width=1200');
 
         mywindow.document.write('<html><head><title>' + document.title + '</title>');
-        mywindow.document.write('</head><body >');
-        mywindow.document.write('<h1>' + document.title + '</h1>');
+        //mywindow.document.write('<link href="/Content/bootstrap.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/site.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/assets/plugins/pace/pace-theme-flash.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/assets/plugins/font-awesome/css/font-awesome.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/assets/plugins/jquery-scrollbar/jquery.scrollbar.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/assets/plugins/select2/css/select2.min.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/assets/plugins/switchery/css/switchery.min.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/pages/css/pages-icons.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/assets/css/pages.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/assets/css/datatables.css" rel="stylesheet">');
+        mywindow.document.write('<link href="/Content/assets/css/style.css" rel="stylesheet">');
+
+        mywindow.document.write('<link rel="stylesheet" href="/Content/mike_print/Dining_Attendance_print.css">');;
+        mywindow.document.write('</head><body>');
+        mywindow.document.write('<h1 class="text-center">QOLA Dining Attendance Floor View</h1>');
         mywindow.document.write(document.getElementById("pills-contact1").innerHTML);
         mywindow.document.write('</body></html>');
 
         mywindow.document.close(); // necessary for IE >= 10
         mywindow.focus(); // necessary for IE >= 10*/
+        setTimeout(function () {
+            mywindow.print();
+            mywindow.close();
+        }, 2000);
 
-        mywindow.print();
-        mywindow.close();
-
+        $('#FloorView_firstRow').show();
+        $('#FloorView_lastRow').show();
+        $('#FloorView_overflow').css('height', '69vh');
         return true;
+
     }
+
+
 
 
 </script>
@@ -862,11 +908,11 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="pills-profile1" role="tabpanel" aria-labelledby="pills-profile-tab">
-                                <div class="row" style="overflow:auto;height:73vh;">
+                                <div id="ListView_overflow" class="row" style="overflow:auto;height:69vh;">
                                     @*<div class="col-md-12">
                                             <h6>Resident List   <a href="#" onclick="list_select_all()">Select All</a></h6>
                                         </div>*@
-                                    <div class="col-md-12 text-center">
+                                    <div class="col-md-12 text-center" id="ListView_firstRow">
                                         <br>
                                         <button type="button" class="btn btn-primary" style="margin-bottom:1vw;margin-left:3vw;" data-dismiss="modal" onclick="list_savebutton()">SAVE</button>
                                         @*<button type="button" class="btn btn-secondary" style="margin-bottom:1vw" onclick="list_clearbutton()">CLEAR</button>*@
@@ -874,7 +920,7 @@
                                     </div>
                                     <br>
                                     <div class="col-md-6" style="border: 1px solid #000;">
-                                        <table class="attend" id="list_table">
+                                        <table class="attend" id="list_table" style="width:95%">
                                             <tbody>
                                                 @{
                                                     for (int i = 0; i < Model.LIST_RESIDENT.Count; i = i + 2)
@@ -986,7 +1032,7 @@
                                         </table>
                                     </div>
 
-                                    <div class="col-md-12 text-center">
+                                    <div class="col-md-12 text-center" id="ListView_lastRow">
                                         <br><br><br><br><br><br>
                                         <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="list_savebutton()">SAVE</button>
                                         <button type="button" class="btn btn-secondary" onclick="list_clearbutton()">CLEAR</button>
@@ -994,11 +1040,11 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="pills-contact1" role="tabpanel" aria-labelledby="pills-contact-tab">
-                                <div class="row" style="overflow:auto;height:73vh;">
+                                <div id="FloorView_overflow" class="row" style="overflow:auto;height:69vh;">
                                     @*<div class="col-md-12">
                                             <h6>Resident List   <a href="#" onclick="floor_select_all()">Select All</a></h6>
                                         </div>*@
-                                    <div class="col-md-12 text-center">
+                                    <div class="col-md-12 text-center" id="FloorView_firstRow">
                                         <br>
                                         <button type="button" class="btn btn-primary" style="margin-bottom:1vw;margin-left:3vw;" data-dismiss="modal" onclick="floor_savebutton()">SAVE</button>
                                         @*<button type="button" class="btn btn-secondary" style="margin-bottom:1vw" onclick="floor_clearbutton()">CLEAR</button>*@
@@ -1100,7 +1146,7 @@
                                         }
                                     }
 
-                                    <div class="col-md-12 text-center">
+                                    <div class="col-md-12 text-center" id="FloorView_lastRow">
                                         <br><br><br><br><br><br>
                                         <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="floor_savebutton()">SAVE</button>
                                         <button type="button" class="btn btn-secondary" onclick="floor_clearbutton()">CLEAR</button>
