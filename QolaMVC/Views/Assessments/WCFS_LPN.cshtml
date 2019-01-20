@@ -1,0 +1,369 @@
+﻿@model QolaMVC.Models.MasterDetails
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+<style>
+
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+
+    .sizeclass {
+        font-size: 1.1vw;
+        color: black;
+    }
+
+    input[type=checkbox] {
+        /* Double-sized Checkboxes */
+        -ms-transform: scale(2); /* IE */
+        -moz-transform: scale(2); /* FF */
+        -webkit-transform: scale(2); /* Safari and Chrome */
+        -o-transform: scale(2); /* Opera */
+        padding: 10px;
+    }
+
+    table {
+        border-collapse: collapse;
+    }
+
+    table, th, td{
+        border: 1px solid black;
+
+    }
+    table, th div, td div{
+
+        padding: 0 5px 0 5px !important;
+    }
+</style>
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+    <!-- START PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+                        <div style="width:74%;display:inline-block;">
+                            <h3>Wound Care Flow Sheet LPNs</h3>
+                        </div>
+                        <div style="width:25%;display:inline-block;">
+                            <a href="~/Assessments/" class="btn btn-primary"><i class="fa fa-backward"></i> Back</a>
+                            <button class="btn btn-danger" id="" onclick="PRINTPDF()"><i class="fa fa-file-pdf-o"></i> Print</button>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+            <input type="hidden" value="Wound-Care-Flow-Sheet-Protocol" name="" class="filename">
+            <div style="height: 60px;"></div>
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg" id="fromHTMLtestdiv">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+                <div class="card p-3">
+                    <div class="card-block">
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                                <div class="row" id="FirstRow">
+                                    <div class="col-2">
+                                        <label for="" class="col-form-label"><b>Resident: </b></label>
+                                        <label>@ViewBag.Resident.FirstName @ViewBag.Resident.LastName </label>
+                                    </div>
+                                    <div class="col-2">
+                                        <label for="" class="col-form-label"><b>Suite No: </b></label>
+                                        <label>@ViewBag.Resident.SuiteNo</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="hidden" name="category" value="a" />
+                                        <div class="form-group" style="width:100%;">
+                                            <div style="display:inline-block">
+                                                <label style="font-weight:bold;">Select date : </label>
+                                            </div>
+                                            <div style="display:inline-block">
+                                                <select name="chklinkid" id="chklinkid" class="form-control" onchange="onchange_submit()">
+
+                                                    <option value="0">-- NEW --</option>
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                        @*<button type="button" class="btn btn-primary col-md-4" id="btnGetCurData">Submit</button>*@
+
+                                    </div>
+                                </div>
+
+                                <hr>
+
+                                <div class="row" id="">
+                                    <div class="col-md-9">
+                                        <img src="~/Content/assets/img/ahs.png" class="img-responsive">
+                                    </div>
+                                    <div class="col-md-3 text-right">
+                                        <p></p>
+                                        <p></p>
+                                        <p class="sizeclass" style="font-weight:bold;color:black;font-size:1.2vw;">Wound Care</p>
+                                        <p class="sizeclass" style="font-weight:bold;color:black;font-size:1.2vw;">Flow Sheet for LPNs</p>
+
+
+                                    </div>
+                                </div>
+
+                                <hr>
+
+
+
+
+                                <div class="" style="width:100%;">
+
+                                    <div class="col-md-6"></div>
+                                    <div class="col-md-5"></div>
+                                    <div class="col-md-6">
+                                        <div class="row" style="height:15vh;">
+
+                                            <div class="col-md-12 sizeclass form-inline">
+                                                Wound # &nbsp; <input class="" style="width:10%;" />&nbsp; of &nbsp; <input class="" style="width:10%;" />
+                                            </div>
+                                            <br>
+                                            <br>
+                                            <div class="col-md-12 sizeclass">Location: <input style="width:30%;"/></div>
+                                            <br>
+                                            <br>
+                                        </div>
+                                                        
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="" style="width:100%;height:15vh;">
+                                            <div style="width:60%;float:right;border:1px solid black;height:12vh;text-align:center;vertical-align:middle;">
+                                                <p style="line-height:12vh;font-weight:bold;font-size:1.5vw;color:black;">Client Label</p>
+                                            </div>
+                                        </div>
+                                                        
+                                    </div>
+                                </div>
+
+                                <br>
+
+                                <table class="sizeclass" style="width:100%;">
+                                    <thead style="font-weight:bold;background-color:lightgray;">
+                                        <tr>
+                                            <th colspan="2" style="width:24%;"><div class="col-md-12">Date: <input type="date"/></div></th>
+                                            <th style="width:19%;"></th>
+                                            <th style="width:19%;"></th>
+                                            <th style="width:19%;"></th>
+                                            <th style="width:19%;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="2"><div class="col-md-12"><b>Wound Size</b> (cm)<br>Length / Width / Depth</div></td>
+                                            <td><div class="col-md-12">L:<input style="width:20%;" />&nbsp;  W:<input style="width:20%;" />&nbsp; D:<input style="width:20%;" /> </div></td>
+                                            <td><div class="col-md-12">L:<input style="width:20%;" />&nbsp;  W:<input style="width:20%;" />&nbsp; D:<input style="width:20%;" /> </div></td>
+                                            <td><div class="col-md-12">L:<input style="width:20%;" />&nbsp;  W:<input style="width:20%;" />&nbsp; D:<input style="width:20%;" /> </div></td>
+                                            <td><div class="col-md-12">L:<input style="width:20%;" />&nbsp;  W:<input style="width:20%;" />&nbsp; D:<input style="width:20%;" /> </div></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td><div class="col-md-12"><b>Undermining / Tunneling</b><br> N/A or length in cm and location using clock concept, e.g. 3cm at 6o’clock)</div></td>
+                                            <td style="width:5%;"><img src="~/Content/assets/img/WCFS_clock.jpg" style="width:100%;" /></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+
+
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><div class="col-md-12"><b>% of Eschar &/or Wound Bed Color:</b><br> Red: Granular / Pink: Epithelial / Yellow: Slough / Black: Eschar</div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><div class="col-md-12"><b>Pain:</b> score 0-10<br>(Before / During / After dressing change) </div></td>
+                                            <td><div class="col-md-12">B:<input style="width:20%;" />&nbsp;  D:<input style="width:20%;" />&nbsp; A:<input style="width:20%;" /> </div></td>
+                                            <td><div class="col-md-12">B:<input style="width:20%;" />&nbsp;  D:<input style="width:20%;" />&nbsp; A:<input style="width:20%;" /> </div></td>
+                                            <td><div class="col-md-12">B:<input style="width:20%;" />&nbsp;  D:<input style="width:20%;" />&nbsp; A:<input style="width:20%;" /> </div></td>
+                                            <td><div class="col-md-12">B:<input style="width:20%;" />&nbsp;  D:<input style="width:20%;" />&nbsp; A:<input style="width:20%;" /> </div></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><div class="col-md-12"><b>Drainage Amount:</b><br> (Nil / Scant / Small / Moderate / Large) </div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><div class="col-md-12"><b>Drainage Color:</b><br> (SE - Serous / SA - Sanguinous / SS - Serosanguinous / P - Purulent / Other)</div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><div class="col-md-12"><b>Odor:</b><br> (None / Mild / Foul) </div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><div class="col-md-12"><b>Peri-wound (around wound) Skin Condition:</b><br> (Intact/Red/Macerated(wet)/Hard/Edema) </div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><div class="col-md-12"><b>Wound Edge Condition:</b><br> (Intact / Rolled / Detached / Undermining) </div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><div class="col-md-12"><b>Dressing Changed as per Protocol: </b><br> (Yes / No & comment) </div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><div class="col-md-12"><b>Concern / Comment:</b><br> (Infected / swab taken / Other) </div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><div class="col-md-12"><b>Name / Signature:</b></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                            <td><div class="col-md-12"><input /></div></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <br>
+
+
+
+
+                                <div class="row">
+
+                                    <div class="row" style="width:100%;">
+                                        <div class="text-right" style="width:49%;display:inline-block;">
+                                        </div>
+                                        <div class="text-right" style="width:49%;display:inline-block;">
+                                            <br>
+                                            <button id="btnSave" class="btn btn-primary">Save</button>
+                                            @*<a class="btn btn-danger" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Next</a>*@
+                                        </div>
+                                    </div>
+                                    <input id="hiddeninput1" type="hidden" value="@TempData["index"]" />
+
+                                </div>
+                            </div>
+                            @*@Html.Partial("~/Views/Shared/PostClinic_monitorPage2.cshtml", Model)*@
+
+
+                            <!-- END PLACE PAGE CONTENT HERE -->
+                        </div>
+                        <!-- END CONTAINER FLUID -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END PAGE CONTENT -->
+        @RenderPage("~/Views/Shared/_Footer.cshtml")
+        <script type="text/javascript" src="~/Content/assets/plugins/jquery/jquery-1.11.1.min.js"></script>
+
+        <script>
+
+            function PRINTPDF() {
+
+                scrollTo(0, 0);
+                $('#btnSave').hide();
+                document.getElementById('FirstRow').style.marginTop = "100px";
+                document.getElementById('fromHTMLtestdiv').style.marginLeft = "-10px";
+                $('.content').height($('.content').height());
+                var srcEl = document.getElementById("fromHTMLtestdiv");
+                var scaleFactor = 1.5;
+
+                var originalWidth = srcEl.offsetWidth;
+                var originalHeight = srcEl.offsetHeight;
+                // Force px size (no %, EMs, etc)
+                srcEl.style.width = originalWidth + "px";
+                srcEl.style.height = originalHeight + "px";
+
+                // Position the element at the top left of the document because of bugs in html2canvas. The bug exists when supplying a custom canvas, and   //the rendering on the custom canvas based on the offset of the source element on the page; thus the source element MUST be at 0, 0.
+                // See html2canvas issues #790, #820, #893, #922
+                srcEl.style.position = "absolute";
+                srcEl.style.top = "0";
+                srcEl.style.left = "0";
+
+                // Create scaled canvas
+                var scaledCanvas = document.createElement("canvas");
+                scaledCanvas.width = originalWidth * scaleFactor;
+                scaledCanvas.height = originalHeight * scaleFactor;
+                scaledCanvas.style.width = originalWidth + "px";
+                scaledCanvas.style.height = originalHeight + "px";
+                var scaledContext = scaledCanvas.getContext("2d");
+                scaledContext.scale(scaleFactor, scaleFactor);
+
+                html2canvas(srcEl, { canvas: scaledCanvas })
+                    .then(function (canvas) {
+                        var imgData = canvas.toDataURL('image/png');
+                        var imgWidth = 210;
+                        var pageHeight = 295;
+                        var imgHeight = canvas.height * imgWidth / canvas.width;
+                        var heightLeft = imgHeight;
+
+                        var doc = new jsPDF('p', 'mm');
+                        var position = 0;
+
+                        doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                        doc.setTextColor('#000');
+                        var context = canvas.getContext('2d');
+                        context.scale(2, 2);
+                        heightLeft -= pageHeight;
+
+                        while (heightLeft >= 0) {
+                            position = heightLeft - imgHeight;
+                            doc.addPage();
+                            doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                            var context = canvas.getContext('2d');
+                            context.scale(2, 2);
+                            doc.setTextColor('#000');
+                            heightLeft -= pageHeight;
+                        }
+                        var filename = $('.filename').val();
+                        doc.save(filename + '.pdf');
+                    });
+                //$('#OCCC_PRINT').hide();
+                $('#btnSave').show();
+                $('#fromHTMLtestdiv').css("margin-left", "-10px");
+
+
+            }
+
+
+
+
+
+
+
+
+
+
+
+        </script>

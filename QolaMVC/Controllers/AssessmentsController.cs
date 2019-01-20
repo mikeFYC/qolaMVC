@@ -1185,6 +1185,50 @@ namespace QolaMVC.Controllers
             return View();
         }
 
+        public ActionResult WCFS_LPN(string index)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+            var vm = new Collection<MRAF>();
+            var vm_single = new MRAF();
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            vm = AssessmentDAL.getMRAF(resident.ID, home.Id);
+            vm.Insert(0, new MRAF());
+
+
+            List<DateTime> l_AssessmentDates = new List<DateTime>();
+            foreach (var l_A in vm)
+            {
+                l_AssessmentDates.Add(l_A.DateEntered);
+            }
+            ViewBag.AssessmentDates = l_AssessmentDates;
+            if (index == null || index == "")
+            {
+                TempData["index"] = "0";
+                //vm_single = vm[0];
+            }
+            else
+            {
+                TempData["index"] = index;
+                vm_single = vm[int.Parse(index)];
+            }
+            TempData.Keep("index");
+
+            if (vm_single.DateEnteredString == null || vm_single.DateEnteredString == "")
+            {
+                vm_single.DateEnteredString = DateTime.Now.ToString("yyyy-MM-dd");
+            }
+
+            return View();
+        }
+
         #endregion
 
 
