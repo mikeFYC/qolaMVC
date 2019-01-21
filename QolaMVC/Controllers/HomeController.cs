@@ -2896,7 +2896,14 @@ namespace QolaMVC.Controllers
                     l_Model.ProgramId = temp;
                     l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
                     l_Model.MemoryCardColor = MasterDAL.GetActivityCategoryById(Int32.Parse(l_Model.CategoryId)).MemoryCareColor;
-                    l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
+                    if (l_Model.Venue != "")
+                    {
+                        l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
+                    }
+                    else
+                    {
+                        l_Model.Code = "";
+                    }
                     l_Model.Special = 0;
                     EVENTS.Add(l_Model);
                 }
@@ -2924,7 +2931,15 @@ namespace QolaMVC.Controllers
                     l_Model.ProgramId = temp;
                     l_Model.CategoryId = HomeDAL.GetCategoryIdbyActivityID(l_Model.ActivityId).ToString();
                     l_Model.MemoryCardColor = MasterDAL.GetActivityCategoryById(Int32.Parse(l_Model.CategoryId)).MemoryCareColor;
-                    l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
+                    if (l_Model.Venue != "")
+                    {
+                        l_Model.Code = HomeDAL.GetCodebyVenue(Int32.Parse(l_Model.Venue));
+                    }
+                    else
+                    {
+                        l_Model.Code = "";
+                    }
+                    
                     l_Model.Special = 0;
                     EVENTS.Add(l_Model);
                 }

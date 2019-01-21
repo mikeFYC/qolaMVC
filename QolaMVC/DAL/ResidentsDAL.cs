@@ -185,12 +185,18 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@qolaResident", Convert.ToChar(updateResidentGeneralInfo.QolaResident));
                 l_Cmd.Parameters.AddWithValue("@suiteHandlerId", updateResidentGeneralInfo.SuiteHandler);
                 l_Cmd.Parameters.AddWithValue("@DNRStatus", updateResidentGeneralInfo.DNRStatus);
-                l_Cmd.Parameters.AddWithValue("@FullCodeStatus", updateResidentGeneralInfo.FullCodeStatus);
+                l_Cmd.Parameters.AddWithValue("@FullCodeStatus", updateResidentGeneralInfo.FullCodeStatus);               
+
                 DateTime aniversary = updateResidentGeneralInfo.AnniversaryDate;
-                if (aniversary.Day != 1 && aniversary.Month != 1 && aniversary.Year != 1)
+                if (aniversary.Day == 1 && aniversary.Month == 1 && aniversary.Year == 1)
+                {
+                    l_Cmd.Parameters.AddWithValue("@aniversaryDate", DBNull.Value);
+                }
+                else
                 {
                     l_Cmd.Parameters.AddWithValue("@aniversaryDate", updateResidentGeneralInfo.AnniversaryDate);
                 }
+
                 l_Cmd.Parameters.AddWithValue("@religiousType", updateResidentGeneralInfo.ReligionType);
                 l_Cmd.Parameters.AddWithValue("@voterType", updateResidentGeneralInfo.VoterType);
                 l_Cmd.Parameters.AddWithValue("@readType", updateResidentGeneralInfo.ReadType);

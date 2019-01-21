@@ -261,7 +261,7 @@
                     <!-- <div class="inner"> -->
                     <div class="row align-items-center">
                         <div style="width:85%;">
-                            <h3>Add New Residents</h3>
+                            <h3>Add New Resident</h3>
                         </div>
                         <div style="width:10%;display:inline-block;">
                             <button onclick="location.href='/Home/Menu/?p_HomeId=@ViewBag.Home.Id';" class="btn btn-primary"><i class="fa fa-backward"></i> Back</button>
@@ -369,9 +369,7 @@
                                                 <div class="form-group row">
                                                     <label for="" class="col-mike-5 col-form-label">Birth Date<span class="required_sign">&nbsp;*</span></label>
                                                     <div class="col-mike-7">
-                                                        @*@Html.TextBoxFor(m => m.BirthDate, new { @class = "form-control", id = "DOB", @type = "date", @Value = Model.BirthDate.ToString("yyyy-MM-dd") })*@
-                                                        @Html.TextBoxFor(model => model.BirthDate, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control", id = "DOB" })
-                                                        @*<input class="form-control" id="testdatetime"/>*@
+                                                        <input class = "form-control" id = "DOB" name="BirthDate" value="@Model.BirthDate.ToString("yyyy-MM-dd")" autocomplete="off"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -434,8 +432,16 @@
                                                 <div class="form-group row">
                                                     <label for="" class="col-mike-5 col-form-label">Anniversary Date</label>
                                                     <div class="col-mike-7">
-                                                        @*<input type="date" name="AnniversaryDate" class="form-control" id="AnniversaryDate">*@
-                                                        @Html.TextBoxFor(m => m.AnniversaryDate, "{0:yyyy-MM-dd}", new { @class = "form-control", name = "AnniversaryDate", id = "AnniversaryDate", type = "date",disabled="true" })
+                                                        @if (Model.AnniversaryDate == DateTime.MinValue)
+                                                        {
+                                                            <input name="AnniversaryDate" class="form-control" id="AnniversaryDate" disabled autocomplete="off" />
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.TextBoxFor(m => m.AnniversaryDate, new { @class = "form-control", name = "AnniversaryDate", id = "AnniversaryDate", disabled = "true", autocomplete = "off" })
+                                                        }
+
+
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -545,20 +551,13 @@
                                                 <div class="form-group row">
                                                     <label for="" class="col-mike-5 col-form-label">Move In Date<span class="required_sign">&nbsp;*</span></label>
                                                     <div class="col-mike-7">
-                                                        @*<input type="date" name="MoveInDate" class="form-control" id="MoveInDate" onchange="getAvailableSuites();" required>(MM/DD/YYYY)*@
-                                                        @Html.TextBoxFor(m => m.MoveInDate, "{0:yyyy-MM-dd}", new { @class = "form-control", id = "MoveInDate", type = "date", name = "MoveInDate", onchange = "getAvailableSuites();" })
+                                                        <input class="form-control" id="MoveInDate" name="MoveInDate" value="@Model.MoveInDate.ToString("yyyy-MM-dd")" onchange="getAvailableSuites()" autocomplete="off"/>
 
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="" class="col-mike-5 col-form-label">Occupancy<span class="required_sign">&nbsp;*</span></label>
                                                     <div class="col-mike-7">
-                                                        @*<select id="Occupancy" name="Occupancy" class="form-control" onchange="getAvailableSuites();" required>
-                    <option value="">-- Select --</option>
-                    <option value="1">Single</option>
-                    <option value="2">Double</option>
-                    <option value="3">Triple</option>
-                </select>*@
                                                         @Html.DropDownListFor(x => x.Occupancy, Model.OccupancyList, new { @class = "form-control", id = "Occupancy", name = "Occupancy", onchange = "getAvailableSuites();" })
                                                     </div>
                                                 </div>
@@ -586,14 +585,13 @@
                                                 <div class="form-group row pad">
                                                     <div class="col-mike-5">
                                                         <div class="form-check form-check-inline movesp">
-                                                            @*<input class="form-check-input" name="DNRStatus" value="Y" type="checkbox" id="DNRStatus">*@
                                                             @Html.CheckBoxFor(m => m.DNRStatusIndex, new { @class = "form-check-input", name = "DNRStatus", id = "DNRStatus" })
                                                             <label class="form-check-label" for="DNRStatus">DNR</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-mike-7">
                                                         <div class="form-check form-check-inline movesp">
-                                                            @*<input class="form-check-input" name="FullCodeStatus" value="Y" type="checkbox" id="FullCodeStatus">*@
+                                                            
                                                             @Html.CheckBoxFor(m => m.FullCodeStatusIndex, new { @class = "form-check-input", name = "FullCodeStatus", id = "FullCodeStatus" })
                                                             <label class="form-check-label" for="FullCodeStatus">Full Code</label>
                                                         </div>
@@ -1016,7 +1014,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group row">
+                                                <div class="form-group row" style="display:none;">
                                                     <label for="" class="col-mike-3 col-form-label">Tertiary Contact#</label>
                                                     <div class="col-mike-3">
                                                         <div class="row">
@@ -1025,13 +1023,6 @@
                                                                 @Html.TextBoxFor(m => m.Third_phone1, new { @class = "form-control", name = "Third_phone1", id = "Third_phone1", group = "phonegroup" })
                                                             </div>
                                                             <div class="col-mike-4">
-                                                                @*<select class="form-control" name="Third_phone_type1">
-                                                                    <option value="">Select</option>
-                                                                    <option value="1">Home</option>
-                                                                    <option value="2">Work</option>
-                                                                    <option value="3">Mobile</option>
-                                                                    <option value="4">Other</option>
-                                                                </select>*@
                                                                 @Html.DropDownListFor(x => x.Third_phone_type1, Model.PhoneTypeList, new { @class = "form-control", id = "Third_phone_type1" })
                                                             </div>
                                                         </div>
@@ -1039,36 +1030,20 @@
                                                     </div>
                                                     <div class="col-mike-3">
                                                         <div class="row">
-                                                            <div class="col-mike-8">
-                                                                @*<input type="text" class="form-control" id="" name="Third_phone2" group="phonegroup">*@
+                                                            <div class="col-mike-8">             
                                                                 @Html.TextBoxFor(m => m.Third_phone2, new { @class = "form-control", name = "Third_phone2", id = "Third_phone2", group = "phonegroup" })
                                                             </div>
                                                             <div class="col-mike-4">
-                                                                @*<select class="form-control" name="Third_phone_type2">
-                                                                    <option value="">Select</option>
-                                                                    <option value="1">Home</option>
-                                                                    <option value="2">Work</option>
-                                                                    <option value="3">Mobile</option>
-                                                                    <option value="4">Other</option>
-                                                                </select>*@
                                                                 @Html.DropDownListFor(x => x.Third_phone_type2, Model.PhoneTypeList, new { @class = "form-control", id = "Third_phone_type2" })
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-mike-3">
                                                         <div class="row">
-                                                            <div class="col-mike-8">
-                                                                @*<input type="text" class="form-control" id="" name="Third_phone3" group="phonegroup">*@
+                                                            <div class="col-mike-8">  
                                                                 @Html.TextBoxFor(m => m.Third_phone3, new { @class = "form-control", name = "Third_phone3", id = "Third_phone3", group = "phonegroup" })
                                                             </div>
                                                             <div class="col-mike-4">
-                                                                @*<select class="form-control" name="Third_phone_type3">
-                                                                    <option value="">Select</option>
-                                                                    <option value="1">Home</option>
-                                                                    <option value="2">Work</option>
-                                                                    <option value="3">Mobile</option>
-                                                                    <option value="4">Other</option>
-                                                                </select>*@
                                                                 @Html.DropDownListFor(x => x.Third_phone_type3, Model.PhoneTypeList, new { @class = "form-control", id = "Third_phone_type3" })
                                                             </div>
                                                         </div>
@@ -1389,10 +1364,11 @@
                                                 <h5>Insurance Info</h5>
                                                 <hr>
                                                 <div class="row">
-                                                    <div class="col-md-12">
+                                                    <div class="col-md-6">
                                                         <div class="form-group row">
-                                                            <label for="" class="col-mike-3 col-form-label">Insurance Company</label>
-                                                            <div class="col-mike-9">
+                                                            <label for="" class="col-mike-5 col-form-label">Insurance Company</label>
+                                                            <div class="col-md-1"></div>
+                                                            <div class="col-md-6">
                                                                 @*<input type="text" class="form-control" id="" name="InsuranceCompany">*@
                                                                 @Html.TextBoxFor(m => m.InsuranceCompany, new { @class = "form-control" })
                                                             </div>
@@ -1710,7 +1686,7 @@
                     $('#AnniversaryDate').prop('disabled', false);
                     var today = new Date();
                     var currentmonth = today.getMonth() + 1;
-                    $('#AnniversaryDate').val(today.getFullYear() + '-' + (currentmonth < 10 ? '0' + currentmonth.toString() : currentmonth.toString()) + '-' + today.getDate());
+                    //$('#AnniversaryDate').val(today.getFullYear() + '-' + (currentmonth < 10 ? '0' + currentmonth.toString() : currentmonth.toString()) + '-' + today.getDate());
                 }
                 else {
                     $('#SignificatOther').prop('disabled', true);
@@ -1867,10 +1843,11 @@
 
 
 
-            //$('#testdatetime').datepicker({
-            //    dateFormat: "yy-mm-dd",
-            //    changeMonth: true,
-            //    changeYear: true,
-            //    yearRange: "-100:+10"
-            //}); 
+            $('#AnniversaryDate,#MoveInDate,#DOB').datepicker({
+                dateFormat: "yy-mm-dd",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-110:+30",
+                defaultDate: new Date()
+            }); 
         </script>

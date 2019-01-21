@@ -378,7 +378,7 @@
                                                                     <div class="form-group row">
                                                                         <label for="" class="col-md-4 col-form-label">Return Date</label>
                                                                         <div class="col-md-6">
-                                                                            <input type="date" class="form-control" id="dateinput_archive" onchange="selection_onchange_empty_suite()">
+                                                                            <input class="form-control" id="dateinput_archive" onchange="selection_onchange_empty_suite()" autocomplete="off">
                                                                         </div>
                                                                         <div class="col-md-2">
                                                                             <p style="font-size:0.8vw;float:left;margin-left:-1vw;">(MM/DD/YYYY)</p>
@@ -612,7 +612,7 @@
                                                                 <div>
                                                                     Date Of Birth:
                                                                     <span id="table1_birth1">@Model.BirthDate.ToString("yyyy-MM-dd")</span>
-                                                                    <input class="form-control" type="date" id="table1_birth2" value="@Model.BirthDate.ToString("yyyy-MM-dd")" style="display:none;" />
+                                                                    <input class="form-control" id="table1_birth2" value="@Model.BirthDate.ToString("yyyy-MM-dd")" style="display:none;"  autocomplete="off"/>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -655,11 +655,11 @@
 
                                                                 if (@Model.MaritalStatus != 1)
                                                                 {
-                                                                    <td>Anniversity Date: <span id="table1_AnniversaryDate1">N/A</span><input class="form-control" type="date" id="table1_AnniversaryDate2" value="" style="display:none;" disabled /></td>
+                                                                    <td>Anniversity Date: <span id="table1_AnniversaryDate1">N/A</span><input class="form-control" id="table1_AnniversaryDate2" value="" style="display:none;" disabled   autocomplete="off"/></td>
                                                                 }
                                                                 else
                                                                 {
-                                                                    <td>Anniversity Date: <span id="table1_AnniversaryDate1">@AnnDate</span><input class="form-control" type="date" id="table1_AnniversaryDate2" value="@AnnDate" style="display:none;" /></td>
+                                                                    <td>Anniversity Date: <span id="table1_AnniversaryDate1">@AnnDate</span><input class="form-control" id="table1_AnniversaryDate2" value="@AnnDate" style="display:none;"   autocomplete="off"/></td>
                                                                 }
                                                             }
 
@@ -2643,11 +2643,11 @@
                                                                         <div class="row align-center align-content-center">
                                                                             <div class="col-md-5">
                                                                                 <div>From</div>
-                                                                                <input id="searchFrom" name="From" type="date" class="form-control searchInput" onkeydown="return false;">
+                                                                                <input id="searchFrom" name="From" class="form-control searchInput" onkeydown="return false;" autocomplete="off">
                                                                             </div>
                                                                             <div class="col-md-5">
                                                                                 <div>To</div>
-                                                                                <input id="searchTo" name="To" type="date" class="form-control searchInput" onkeydown="return false;">
+                                                                                <input id="searchTo" name="To" class="form-control searchInput" onkeydown="return false;" autocomplete="off">
                                                                             </div>
                                                                             <div style="width:15%;display:inline-block;">
                                                                                 <div>&nbsp; </div>
@@ -3671,6 +3671,15 @@
                         $('#table1_AnniversaryDate2').prop('disabled', true);
                     }
                 }
+
+
+                $('#dateinput_archive,#table1_birth2,#table1_AnniversaryDate2,#searchFrom,#searchTo').datepicker({
+                    dateFormat: "yy-mm-dd",
+                    changeMonth: true,
+                    changeYear: true,
+                    yearRange: "-110:+30",
+                    defaultDate: new Date()
+                }); 
 
             </script>
 
