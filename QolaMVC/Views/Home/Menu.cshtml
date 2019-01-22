@@ -7,6 +7,13 @@
 <style>
     .badge {
         float: right;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    .nobadge {
+        float: none;
+        margin-top: 40%;
+        font-size: 0.8vw;
     }
 
     .one {
@@ -29,10 +36,10 @@
 
 
 
-    .list-group-item div {
+    .list-group-item div:nth-child(3) {
         display: none;
-        top: 0%;
-        margin-left: -315%;
+        top: -10%;
+        margin-left: -307%;
         position: absolute;
         z-index: 200;
         background-image: url('../../Content/pages/img/Rmenu_arrow.png');
@@ -129,30 +136,28 @@
     #ggg .hidefromBegin, #ggg_next .hidefromBegin {
         background-color: transparent;
         color: #015093;
-        border-top: 1px solid #015093;
+        border-top: 1px solid skyblue;
+        padding: 0;
     }
 
     #ggg .hidefromBegin li a, #ggg_next .hidefromBegin li a {
         color: black;
     }
 
-    .err {
+    .leftnumber {
+        width: 17%;
+        height: 45px;
         display: inline-block;
-        position: relative;
+        padding: 0px;
+        border-right: 3px solid #FFB380;
+        vertical-align:top;
     }
-
-        .err:before {
-            content: "~~~~~~~~~~~~~~~";
-            font-size: 0.6em;
-            font-weight: bold;
-            font-family: 'Comic Sans MS';
-            color: #015093;
-            width: 100%;
-            position: absolute;
-            top: 95%;
-            left: -1px;
-            overflow: hidden;
-        }
+    .FirstLayerToDoListText {
+        width: 77%;
+        height: 100%;
+        display: inline-block;
+        padding: 6px;
+    }
 </style>
 
 <style>
@@ -519,24 +524,34 @@
 
 
                         <div class="AlertBox">
-                            <div class="ShowAlert" show='N' id="dvShowAlert">
-                                <p class="text-center err" style="width:100%;font-size:2vw;padding-top:20px;font-weight:bold;font-family:'Comic Sans MS';color:#015093;">To Do List&nbsp;</p>
-                                <div style="margin-top:0.8vw;width:100%;display:inline-block;">
-
-                                    <label class="text-center" id="nextmonth" style="width:6vw;height:1.6vw;margin-left:4.5vw;margin-top:-0.6vw;font-size:1.5vw;padding-top:4px;font-weight:bold;font-family:'Comic Sans MS';color:#015093;">@DateTime.Now.ToString("MMMM")</label>
-                                    <label class="text-center" id="previousmonth" style="width:6vw;height:1.6vw;margin-left:4.5vw;margin-top:-0.6vw;font-size:1.5vw;padding-top:4px;font-weight:bold;display:none;font-family:'Comic Sans MS';color:#015093;">@DateTime.Now.AddMonths(1).ToString("MMMM")</label>
+                            <div style="height:80px;">
+                                <div style="width:17.3%;height:100%;display:inline-block;border-right:3px solid #FFB380;"></div>
+                                <div class="ShowAlert" show='N' id="dvShowAlert" style="width:77%;height:100%;display:inline-block;">
+                                    <p id="nextmonth" class="text-center" style="width:70%;font-size:2vw;padding-top:7px;display:inline-block;font-weight:bold;font-family:'Comic Sans MS';color:#015093;">@DateTime.Now.ToString("MMMM")</p>
+                                    <p id="previousmonth" class="text-center" style="width:70%;font-size:2vw;padding-top:7px;font-weight:bold;display:none;font-family:'Comic Sans MS';color:#015093;">@DateTime.Now.AddMonths(1).ToString("MMMM")</p>
                                     <a id="left_arrow_mike" href="#" style="display:none;font-size:1.3vw;color:#015093;" onclick="previousmonth()"><span class="glyphicon glyphicon-chevron-left"></span></a>
-                                    <a id="right_arrow_mike" href="#" style="font-size:1.3vw;color:#015093;" onclick="nextmonth()"><span class="glyphicon glyphicon-chevron-right"></span></a>
+                                    <a id="right_arrow_mike" href="#" style="font-size:1.3vw;color:#015093;display:inline-block;" onclick="nextmonth()"><span class="glyphicon glyphicon-chevron-right"></span></a>
+                                    <div style="margin-top:0.8vw;width:100%;display:inline-block;">   
+                                    </div>
                                 </div>
                             </div>
+
                             <div class="float_box" id="ggg">
                                 <ul class="list-group" id="to_do_list_1">
-                                    <li class="list-group-item hidefromBegin" id="DU" style="cursor:pointer;" onclick="nextlayer(this)"><a class="one">Dietary Update<span class="badge">0</span></a><div><ul id="DU_ul"><li type="Dietary Update" onclick="DU_click(this)" style="cursor:pointer;" data-toggle="modal" data-target="#Table60"><a href="#"><span class="badge">0</span> Dietary Update</a></li></ul></div></li>
-                                    <li class="list-group-item hidefromBegin" id="HO" style="cursor:pointer;" onclick="nextlayer(this)"><a class="one" >Hospitalization<span class="badge">0</span></a><div><ul id="HO_ul"><li type="Resident Away" onclick="HO_click(this)" style="cursor:pointer;" data-toggle="modal" data-target="#Table60"><a href="#"><span class="badge">0</span> Resident Away</a></li></ul></div></li>
+                                    <li class="list-group-item hidefromBegin" id="DU" style="cursor:pointer;" onclick="nextlayer(this)">
+                                        <div class="text-center leftnumber"><span class="badge nobadge">0</span></div>
+                                        <div class="FirstLayerToDoListText"><a class="one">Dietary Update</a></div>
+                                        <div class="subdiv"><ul id="DU_ul"><li type="Dietary Update" onclick="DU_click(this)" style="cursor:pointer;" data-toggle="modal" data-target="#Table60"><a href="#"><span class="badge">0</span> Dietary Update</a></li></ul></div>
+                                    </li>
+                                    <li class="list-group-item hidefromBegin" id="HO" style="cursor:pointer;" onclick="nextlayer(this)">
+                                        <div class="text-center leftnumber"><span class="badge nobadge">0</span></div>
+                                        <div class="FirstLayerToDoListText"><a class="one">Hospitalization</a></div>
+                                        <div class="subdiv"><ul id="HO_ul"><li type="Resident Away" onclick="HO_click(this)" style="cursor:pointer;" data-toggle="modal" data-target="#Table60"><a href="#"><span class="badge">0</span> Resident Away</a></li></ul></div>
+                                    </li>
                                     <li class="list-group-item hidefromBegin" id="IA" style="cursor:pointer;" onclick="nextlayer(this)">
-                                        <a class="one">Initial Assessments<span class="badge">0</span></a>
-
-                                        <div style="margin-left:-315% !important">
+                                        <div class="text-center leftnumber"><span class="badge nobadge">0</span></div>
+                                        <div class="FirstLayerToDoListText"><a class="one">Initial Assessments</a></div>
+                                        <div class="subdiv">
                                             <ul id="IA_ul">
                                                 <li class="hidefromBegin2" type="Initial Activity Assessment" id="IAA" onclick="IAA_click(this)" style="cursor:pointer;" data-toggle="modal" data-target="#Table60"><a href="#"><span class="badge">0</span> Activity Assessment</a></li>
                                                 <li class="hidefromBegin2" type="Initial Dietary Assessment" id="IDA" onclick="IDA_click(this)" style="cursor:pointer;" data-toggle="modal" data-target="#Table60"><a href="#"><span class="badge">0</span> Dietary Assessment</a></li>
@@ -546,18 +561,19 @@
                                         </div>
                                     </li>
                                     <li class="list-group-item hidefromBegin" id="PN" style="cursor:pointer;" onclick="nextlayer(this)">
-                                        <a class="one" >Progress Notes<span class="badge">0</span></a>
-                                        <div style="margin-left:-315% !important">
+                                        <div class="text-center leftnumber"><span class="badge nobadge">0</span></div>
+                                        <div class="FirstLayerToDoListText"><a class="one">Progress Notes</a></div>    
+                                        <div class="subdiv">
                                             <ul id="PN_ul">
                                                 <li type="Progress Notes" id="PN" onclick="PN_click(this)" style="cursor:pointer;" data-toggle="modal" data-target="#Table60"><a href="#"><span class="badge">0</span> Progress Notes</a></li>
                                                 @*<li type="Acknowledge Notes" id="AN"><a href="#" data-toggle="modal" data-target="#Acknowledge_Notes"  onclick="AN_click(this)"><span class="badge">0</span> Acknowledge Notes</a></li>*@
                                             </ul>
                                         </div>
                                     </li>
-                                    <li class="list-group-item hidefromBegin" id="RA"style="cursor:pointer;" onclick="nextlayer(this)">
-                                        <a class="one" >Reassessments<span class="badge">0</span></a>
-
-                                        <div>
+                                    <li class="list-group-item hidefromBegin" id="RA" style="cursor:pointer;" onclick="nextlayer(this)">
+                                        <div class="text-center leftnumber"><span class="badge nobadge">0</span></div>
+                                        <div class="FirstLayerToDoListText"><a class="one">Reassessments</a></div>                                   
+                                        <div class="subdiv">
                                             <ul id="RA_ul">
                                                 <li class="hidefromBegin2" type="Activity Assessment" id="RAA" onclick="RAA_click(this)" style="cursor:pointer;" data-toggle="modal" data-target="#Table60"><a href="#"><span class="badge">0</span> Activity Assessment</a></li>
                                                 <li class="hidefromBegin2" type="Dietary Assessment" id="RDA" onclick="RDA_click(this)" style="cursor:pointer;" data-toggle="modal" data-target="#Table60"><a href="#"><span class="badge">0</span> Dietary Assessment</a></li>
@@ -566,22 +582,50 @@
                                             </ul>
                                         </div>
                                     </li>
-                                    <li class="list-group-item hidefromBegin" id="RI" style="cursor:pointer;" onclick="nextlayer(this)"><a class="one" >Resident Incidents<span id="resident_incident_badge1" class="badge">0</span></a><div><ul id="RI_ul"><li type="Resident Fall" onclick="RI_click(this)" style="cursor:pointer;" data-toggle="modal" data-target="#Table90"><a href="#"><span id="resident_incident_badge2" class="badge">0</span> Resident Fall</a></li></ul></div></li>
-                                    <li class="list-group-item hidefromBegin" id="RB" style="cursor:pointer;" onclick="nextlayer(this)"><a class="one" >Residents Birthday<span class="badge">0</span></a><div><ul id="RB_ul"><li type="Birthday" onclick="RB_click(this)" style="cursor:pointer;" data-toggle="modal" data-target="#Table60"><a href="#"><span class="badge">0</span> Birthday</a></li></ul></div></li>
-                                    <li class="list-group-item hidefromBegin" id="RP" style="cursor:pointer;" onclick="nextlayer(this)"><a class="one" >Residents Profile<span class="badge">0</span></a><div><ul id="RP_ul"><li type="Profile Image" onclick="RP_click(this)" style="cursor:pointer;" data-toggle="modal" data-target="#Table60"><a href="#"><span class="badge">0</span> Profile Image</a></li></ul></div></li>
-                                    <li class="list-group-item hidefromBegin" id="NR" style="cursor:pointer;" onclick="nextlayer(this)"><a class="one" >New Resident<span class="badge">0</span></a><div><ul id="NR_ul"><li type="New Resident" onclick="NR_click(this)" style="cursor:pointer;" data-toggle="modal" data-target="#Table60"><a href="#"><span class="badge">0</span> New Resident</a></li></ul></div></li>
-                                    <li class="list-group-item hidefromBegin" id="SAE" style="cursor:pointer;" onclick="nextlayer(this)"><a class="one" >Suggested Activity Event<span class="badge">0</span></a><div><ul id="SA_ul"><li type="Suggested Activity Event" onclick="SA_click(this)" style="cursor:pointer;" data-toggle="modal" data-target="#Table60"><a href="#"><span class="badge">0</span> Suggested Activity Event</a></li></ul></div></li>
-                                    <li class="list-group-item hidefromBegin" id="NoteR" style="cursor:pointer;" onclick="nextlayer(this)"><a class="one" >Progress Note Reminder<span id="note_reminder_badge1" class="badge">0</span></a><div><ul id="NoteR_ul"><li type="Progress Note Reminder" onclick="Reminder_click(this)" style="cursor:pointer;" data-toggle="modal" data-target="#Table90"><a href="#"><span id="note_reminder_badge2" class="badge">0</span>Note Reminder</a></li></ul></div></li>
+                                    <li class="list-group-item hidefromBegin" id="RI" style="cursor:pointer;" onclick="nextlayer(this)">
+                                        <div class="text-center leftnumber"><span id="resident_incident_badge1" class="badge nobadge">0</span></div>
+                                        <div class="FirstLayerToDoListText"><a class="one">Resident Incidents</a></div>
+                                        <div class="subdiv"><ul id="RI_ul"><li type="Resident Fall" onclick="RI_click(this)" style="cursor:pointer;" data-toggle="modal" data-target="#Table90"><a href="#"><span id="resident_incident_badge2" class="badge">0</span> Resident Fall</a></li></ul></div>
+                                    </li>
+                                    <li class="list-group-item hidefromBegin" id="RB" style="cursor:pointer;" onclick="nextlayer(this)">
+                                        <div class="text-center leftnumber"><span class="badge nobadge">0</span></div>
+                                        <div class="FirstLayerToDoListText"><a class="one">Residents Birthday</a></div>
+                                        <div class="subdiv"><ul id="RB_ul"><li type="Birthday" onclick="RB_click(this)" style="cursor:pointer;" data-toggle="modal" data-target="#Table60"><a href="#"><span class="badge">0</span> Birthday</a></li></ul></div>
+                                    </li>
+                                    <li class="list-group-item hidefromBegin" id="RP" style="cursor:pointer;" onclick="nextlayer(this)">
+                                        <div class="text-center leftnumber"><span class="badge nobadge">0</span></div>
+                                        <div class="FirstLayerToDoListText"><a class="one">Residents Profile</a></div>  
+                                        <div class="subdiv"><ul id="RP_ul"><li type="Profile Image" onclick="RP_click(this)" style="cursor:pointer;" data-toggle="modal" data-target="#Table60"><a href="#"><span class="badge">0</span> Profile Image</a></li></ul></div>
+                                    </li>
+                                    <li class="list-group-item hidefromBegin" id="NR" style="cursor:pointer;" onclick="nextlayer(this)">
+                                        <div class="text-center leftnumber"><span class="badge nobadge">0</span></div>
+                                        <div class="FirstLayerToDoListText"><a class="one">New Resident</a></div>    
+                                        <div class="subdiv"><ul id="NR_ul"><li type="New Resident" onclick="NR_click(this)" style="cursor:pointer;" data-toggle="modal" data-target="#Table60"><a href="#"><span class="badge">0</span> New Resident</a></li></ul></div>
+                                    </li>
+                                    <li class="list-group-item hidefromBegin" id="SAE" style="cursor:pointer;" onclick="nextlayer(this)">
+                                        <div class="text-center leftnumber"><span class="badge nobadge">0</span></div>
+                                        <div class="FirstLayerToDoListText"><a class="one">Suggested Activity Event</a></div>
+                                        <div class="subdiv"><ul id="SA_ul"><li type="Suggested Activity Event" onclick="SA_click(this)" style="cursor:pointer;" data-toggle="modal" data-target="#Table60"><a href="#"><span class="badge">0</span> Suggested Activity Event</a></li></ul></div>
+                                    </li>
+                                    <li class="list-group-item hidefromBegin" id="NoteR" style="cursor:pointer;" onclick="nextlayer(this)">
+                                        <div class="text-center leftnumber"><span id="note_reminder_badge1" class="badge nobadge">0</span></div>
+                                        <div class="FirstLayerToDoListText"><a class="one">Progress Note Reminder</a></div> 
+                                        <div class="subdiv"><ul id="NoteR_ul"><li type="Progress Note Reminder" onclick="Reminder_click(this)" style="cursor:pointer;" data-toggle="modal" data-target="#Table90"><a href="#"><span id="note_reminder_badge2" class="badge">0</span>Note Reminder</a></li></ul></div>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="float_box" id="ggg_next">
                                 @*next month*@
                                 <ul class="list-group" id="to_do_list_2" style="display:none;">
-                                    <li class="list-group-item hidefromBegin" id="HO_nextmonth" style="cursor:pointer;" onclick="nextlayer(this)"><a class="one">Hospitalization<span class="badge">0</span></a><div><ul id="HO_nextmonth_ul"><li type="Resident Away" onclick="HO_nextmonth_click(this)" style="cursor:pointer;" data-toggle="modal" data-target="#Table60"><a href="#"><span class="badge">0</span> Resident Away</a></li></ul></div></li>
+                                    <li class="list-group-item hidefromBegin" id="HO_nextmonth" style="cursor:pointer;" onclick="nextlayer(this)">
+                                        <div class="text-center leftnumber"><span class="badge nobadge">0</span></div>
+                                        <div class="FirstLayerToDoListText"><a class="one">Hospitalization</a></div>
+                                        <div class="subdiv"><ul id="HO_nextmonth_ul"><li type="Resident Away" onclick="HO_nextmonth_click(this)" style="cursor:pointer;" data-toggle="modal" data-target="#Table60"><a href="#"><span class="badge">0</span> Resident Away</a></li></ul></div>
+                                    </li>
                                     <li class="list-group-item hidefromBegin" id="IA_nextmonth" style="cursor:pointer;" onclick="nextlayer(this)">
-                                        <a class="one">Initial Assessments<span class="badge">0</span></a>
-
-                                        <div>
+                                        <div class="text-center leftnumber"><span class="badge nobadge">0</span></div>
+                                        <div class="FirstLayerToDoListText"><a class="one">Initial Assessments</a></div>
+                                        <div class="subdiv">
                                             <ul id="IA_nextmonth_ul">
                                                 <li class="hidefromBegin2" type="Initial Activity Assessment" id="IAA_nextmonth" onclick="IAA_nextmonth_click(this)" style="cursor:pointer;" data-toggle="modal" data-target="#Table60"><a href="#"><span class="badge">0</span> Initial Activity Assessment</a></li>
                                                 <li class="hidefromBegin2" type="Initial Dietary Assessment" id="IDA_nextmonth" onclick="IDA_nextmonth_click(this)" style="cursor:pointer;" data-toggle="modal" data-target="#Table60"><a href="#"><span class="badge">0</span> Initial Dietary Assessment</a></li>
@@ -591,9 +635,9 @@
                                         </div>
                                     </li>
                                     <li class="list-group-item hidefromBegin" id="RA_nextmonth" style="cursor:pointer;" onclick="nextlayer(this)">
-                                        <a class="one">Reassessments<span class="badge">0</span></a>
-
-                                        <div>
+                                        <div class="text-center leftnumber"><span class="badge nobadge">0</span></div>
+                                        <div class="FirstLayerToDoListText"><a class="one">Reassessments</a></div>
+                                        <div class="subdiv">
                                             <ul id="RA_nextmonth_ul">
                                                 <li class="hidefromBegin2" type="Acticity Assessment" id="RAA_nextmonth" onclick="RAA_nextmonth_click(this)" style="cursor:pointer;" data-toggle="modal" data-target="#Table60"><a href="#"><span class="badge">0</span> Acticity Assessment</a></li>
                                                 <li class="hidefromBegin2" type="Dietary Assessment" id="RDA_nextmonth" onclick="RDA_nextmonth_click(this)" style="cursor:pointer;" data-toggle="modal" data-target="#Table60"><a href="#"><span class="badge">0</span> Dietary Assessment</a></li>
@@ -602,7 +646,11 @@
                                             </ul>
                                         </div>
                                     </li>
-                                    <li class="list-group-item hidefromBegin" id="SAE_nextmonth" style="cursor:pointer;" onclick="nextlayer(this)"><a class="one">Suggested Activity Event<span class="badge">0</span></a><div><ul id="SA_nextmonth_ul"><li type="Suggested Activity Event" onclick="SA_nextmonth_click(this)" style="cursor:pointer;" data-toggle="modal" data-target="#Table60"><a href="#"><span class="badge">0</span> Suggested Activity Event</a></li></ul></div></li>
+                                    <li class="list-group-item hidefromBegin" id="SAE_nextmonth" style="cursor:pointer;" onclick="nextlayer(this)">
+                                        <div class="text-center leftnumber"><span class="badge nobadge">0</span></div>
+                                        <div class="FirstLayerToDoListText"><a class="one">Suggested Activity Event</a></div>   
+                                        <div class="subdiv"><ul id="SA_nextmonth_ul"><li type="Suggested Activity Event" onclick="SA_nextmonth_click(this)" style="cursor:pointer;" data-toggle="modal" data-target="#Table60"><a href="#"><span class="badge">0</span> Suggested Activity Event</a></li></ul></div>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -727,7 +775,7 @@
 
             var someValue = $('#UserTypeNum').val();
             var someValueInt = parseInt(someValue);
-            var number = $('#ggg span[class="badge"]');
+            var number = $('#ggg .badge');
             //for (a = 0; a < 26; a++) {
             //    number[a].parentElement.parentElement.style.display = "none";
             //}
@@ -1528,7 +1576,7 @@
             }
 
             function nextmonth() {
-                var number = $('#ggg_next span[class="badge"]');
+                var number = $('#ggg_next .badge');
                 var someValue = $('#UserTypeNum').val();
                 var someValueInt = parseInt(someValue);
                 var UserTypePart1 = [8];//Pharmacy
@@ -1584,8 +1632,8 @@
                 document.getElementById("to_do_list_1").style.display = "none";
                 document.getElementById("to_do_list_2").style.display = "block";
 
-                var div_list = $('#ggg ul li[class=list-group-item] div');
-                var div_list2 = $('#ggg_next ul li[class=list-group-item] div');
+                var div_list = $('#ggg ul .list-group-item .subdiv');
+                var div_list2 = $('#ggg_next ul .list-group-item .subdiv');
                 for (var ind = 0; ind < div_list.length; ind++) {
                     div_list[ind].style.display = "none";
                 }
@@ -1604,8 +1652,8 @@
                 document.getElementById("to_do_list_2").style.display = "none";
                 document.getElementById("to_do_list_1").style.display = "block";
 
-                var div_list = $('#ggg ul li[class=list-group-item] div');
-                var div_list2 = $('#ggg_next ul li[class=list-group-item] div');
+                var div_list = $('#ggg ul .list-group-item .subdiv');
+                var div_list2 = $('#ggg_next ul .list-group-item .subdiv');
                 for (var ind = 0; ind < div_list.length; ind++) {
                     div_list[ind].style.display = "none";
                 }
@@ -1629,8 +1677,8 @@
                 if ($(e.target).closest('.AlertBox').length)
                     return;
                 else {
-                    var div_list = $('#ggg ul .list-group-item div');
-                    var div_list2 = $('#ggg_next ul .list-group-item div');
+                    var div_list = $('#ggg ul .list-group-item .subdiv');
+                    var div_list2 = $('#ggg_next ul .list-group-item .subdiv');
                     for (var ind = 0; ind < div_list.length; ind++) {
                         div_list[ind].style.display = "none";
                     }
