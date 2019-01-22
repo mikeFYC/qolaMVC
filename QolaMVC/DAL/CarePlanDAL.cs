@@ -632,9 +632,9 @@ namespace QolaMVC.DAL
                         l_Assessment.MealEscort.Dinner = Convert.ToString(dataReceive.Tables[0].Rows[index]["ME_Dinner"]);
 
                         l_Assessment.Behaviour.BehaviourCollection = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Behavior"]));
-                        l_Assessment.Behaviour.HarmToSelf = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["HarmToSelf"]);
-                        l_Assessment.Behaviour.Smoker = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["smoker"]);
-                        l_Assessment.Behaviour.RiskOfWandering = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["RiskOfWandering"]);
+                        l_Assessment.Behaviour.HarmToSelf = Convert.ToString(dataReceive.Tables[0].Rows[index]["HarmToSelf"]);
+                        l_Assessment.Behaviour.Smoker = Convert.ToString(dataReceive.Tables[0].Rows[index]["smoker"]);
+                        l_Assessment.Behaviour.RiskOfWandering = Convert.ToString(dataReceive.Tables[0].Rows[index]["RiskOfWandering"]);
                         l_Assessment.Behaviour.CognitiveStatus = Convert.ToString(dataReceive.Tables[0].Rows[index]["CognitiveStatus"]);
                         l_Assessment.Behaviour.OtherInfo = Convert.ToString(dataReceive.Tables[0].Rows[index]["OtherInfo"]);
 
@@ -1106,9 +1106,9 @@ namespace QolaMVC.DAL
                         l_Assessment.ResidentId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
                         l_Assessment.CarePlanId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["CarePlanId"]);
                         l_Assessment.BehaviourCollection = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Behavior"]));
-                        l_Assessment.HarmToSelf = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["HarmToSelf"]);
-                        l_Assessment.Smoker = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["smoker"]);
-                        l_Assessment.RiskOfWandering = Convert.ToBoolean(dataReceive.Tables[0].Rows[index]["RiskOfWandering"]);
+                        l_Assessment.HarmToSelf = Convert.ToString(dataReceive.Tables[0].Rows[index]["HarmToSelf"]);
+                        l_Assessment.Smoker = Convert.ToString(dataReceive.Tables[0].Rows[index]["smoker"]);
+                        l_Assessment.RiskOfWandering = Convert.ToString(dataReceive.Tables[0].Rows[index]["RiskOfWandering"]);
                         l_Assessment.CognitiveStatus = Convert.ToString(dataReceive.Tables[0].Rows[index]["CognitiveStatus"]);
                         l_Assessment.OtherInfo = Convert.ToString(dataReceive.Tables[0].Rows[index]["OtherInfo"]);
                     }

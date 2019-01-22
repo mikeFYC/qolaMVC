@@ -93,6 +93,7 @@
                         </form>
                     </div>
 
+
                 </div>
                 <div class="card" id="fromHTMLtestdiv">
                     <hr>
@@ -124,72 +125,48 @@
                             </thead>
                             <tbody>
                                 @{
-                                    var count = 0;
                                     var risk = "";
-                                    foreach (var single in Model.EmergencyResidentList)
+                                    for (var index=0;index<Model.EmergencyResidentList.Count();index++)
                                     {
+                                        var single = Model.EmergencyResidentList[index];
                                         risk = "NoRisk";
                                         if (single.RiskLevel != "")
                                         {
                                             risk = single.RiskLevel.Replace(" ", "");
                                         }
 
-                                        <tr class="@risk">
-                                            @{
-                                                if (single.totalScore == "")
-                                                {
-                                                    <td class="align-middle" style="background-color:white;"></td>}
-                                                else
-                                                {
-                                                    if (Int32.Parse(single.totalScore) == 0)
-                                                    {
-                                                        <td class="align-middle" style="background-color:white;"></td>}
-                                                    else if (Int32.Parse(single.totalScore) <= 5)
-                                                    {
-                                                        <td class="align-middle" style="background-color:green;"></td>}
-                                                    else if (Int32.Parse(single.totalScore) <= 9)
-                                                    {
-                                                        <td class="align-middle" style="background-color:yellow;"></td>}
-                                                    else
-                                                    {
-                                                        <td class="align-middle" style="background-color:red;"></td>}
-                                                }
-                                            }
-                                            <td class="align-middle">@single.suiteNo</td>
-                                            <td class="align-middle">@single.FullName</td>
-                                            <td class="align-middle">@single.Gendar</td>
-                                            <td class="align-middle">@single.phone</td>
-                                            <td class="align-middle">@single.contact</td>
-                                            <td class="align-middle">@single.contact_phone_final</td>
-                                            @{
-                                                if (single.totalScore == "")
-                                                {
-                                                    <td class="align-middle" style="background-color:white;"></td>}
-                                                else
-                                                {
-                                                    if (Int32.Parse(single.totalScore) == 0)
-                                                    {
-                                                        <td class="align-middle" style="background-color:white;"></td>}
-                                                    else if (Int32.Parse(single.totalScore) <= 5)
-                                                    {
-                                                        <td class="align-middle" style="background-color:green;"></td>}
-                                                    else if (Int32.Parse(single.totalScore) <= 9)
-                                                    {
-                                                        <td class="align-middle" style="background-color:yellow;"></td>}
-                                                    else
-                                                    {
-                                                        <td class="align-middle" style="background-color:red;"></td>}
-                                                }
-                                            }
-                                            <td class="align-middle">@single.Mobility</td>
-                                            <td class="align-middle">@Html.Raw(single.Comments)</td>
-                                        </tr>
+                                        var colorRisk = "";
 
-                                        count++;
-                                        @*if (count % 15 == 0)
+                                        if (Int32.Parse(single.totalScore) == 0)
                                         {
-                                            <tr class="pagebreak"></tr>
-                                        }*@
+                                            colorRisk = "white";
+                                        }
+                                        else if (Int32.Parse(single.totalScore) <= 5)
+                                        {
+                                            colorRisk = "green";
+                                        }
+                                        else if (Int32.Parse(single.totalScore) <= 9)
+                                        {
+                                            colorRisk = "yellow";
+                                        }
+                                        else
+                                        {
+                                            colorRisk = "red";
+                                        }
+
+
+                                <tr class="@risk">
+                                    <td class="align-middle" style="background-color:@colorRisk;"></td>
+                                    <td class="align-middle">@single.suiteNo</td>
+                                    <td class="align-middle">@single.FullName</td>
+                                    <td class="align-middle">@single.Gendar</td>
+                                    <td class="align-middle">@single.phone</td>
+                                    <td class="align-middle">@single.contact</td>
+                                    <td class="align-middle">@single.contact_phone_final</td>
+                                    <td class="align-middle" style="background-color:@colorRisk;"></td>
+                                    <td class="align-middle">@single.Mobility</td>
+                                    <td class="align-middle">@Html.Raw(single.Comments)</td>
+                                </tr>
                                     }
                                 }
                             </tbody>

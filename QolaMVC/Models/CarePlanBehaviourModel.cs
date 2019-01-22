@@ -12,9 +12,9 @@ namespace QolaMVC.Models
         public int ResidentId { get; set; }
         public int CarePlanId { get; set; }
         public Collection<QOLACheckboxModel> BehaviourCollection { get; set; }
-        public bool HarmToSelf { get; set; }
-        public bool Smoker { get; set; }
-        public bool RiskOfWandering { get; set; }
+        public string HarmToSelf { get; set; }
+        public string Smoker { get; set; }
+        public string RiskOfWandering { get; set; }
         public string CognitiveStatus { get; set; }
         public string OtherInfo { get; set; }
     }
