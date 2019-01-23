@@ -1035,6 +1035,9 @@ namespace QolaMVC.Controllers
                 var l_Behaviour = new CarePlanBehaviourModel();
                 l_Behaviour.BehaviourCollection = new Collection<QOLACheckboxModel>();
                 QolaCulture.InitBehaviour(ref l_Behaviour);
+                l_Behaviour.HarmToSelf = "";
+                l_Behaviour.Smoker = "";
+                l_Behaviour.RiskOfWandering = "";
                 l_Model.Behaviour = l_Behaviour;
 
                 var l_CognitiveFunction = new CarePlanCognitiveFunctionModel();
