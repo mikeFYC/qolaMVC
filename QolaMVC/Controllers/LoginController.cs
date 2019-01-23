@@ -37,6 +37,18 @@ namespace QolaMVC.Controllers
         }
 
 
+        public ActionResult ErrorPage()
+        {
+            return View();
+        }
+
+
+        public int GetSessionTimeLeft(DateTime timebegin)
+        {
+            
+            return Session.Timeout- (DateTime.Now - timebegin).Minutes;
+        }
+
         public ActionResult ChangeLanguage(string LanguageAbbrevation)
         {
             if (LanguageAbbrevation != null)
