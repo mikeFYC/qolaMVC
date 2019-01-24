@@ -82,14 +82,24 @@
     }
 
     $(function () {
-        setInterval("GetSessionTimeLeft()", 60000);
+        setInterval("GetSessionTimeLeft2()", 60000);
     });
 
-    function GetSessionTimeLeft() {
-        var timeNow = $('#timeNow').val()
-        $.get('/Login/GetSessionTimeLeft', { timebegin: timeNow}, function (data) {
-            $('#SessionTimeOutSpan').html(data);
-        })
+    //function GetSessionTimeLeft() {
+    //    var timeNow = $('#timeNow').val()
+    //    $.get('/Login/GetSessionTimeLeft', { timebegin: timeNow}, function (data) {
+    //        $('#SessionTimeOutSpan').html(data);
+    //    })
+    //}
+
+    function GetSessionTimeLeft2() {
+        if (parseInt($('#SessionTimeOutSpan').html()) - 1 == 0) {
+            window.location.href = "/Login/Index";
+        }
+        else {
+            $('#SessionTimeOutSpan').html(parseInt($('#SessionTimeOutSpan').html()) - 1);
+        }
+        
     }
 
 </script>

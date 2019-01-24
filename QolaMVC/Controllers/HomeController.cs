@@ -901,6 +901,7 @@ namespace QolaMVC.Controllers
         [HttpGet]
         public ActionResult Menu(int p_HomeId)
         {
+            Session["check"] = "live";
             TempData["Home"] = HomeDAL.GetHomeById(p_HomeId);
             var user = (UserModel)TempData["User"];
             var home = (HomeModel)TempData["Home"];

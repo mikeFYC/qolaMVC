@@ -46,7 +46,7 @@ namespace QolaMVC.Controllers
         public int GetSessionTimeLeft(DateTime timebegin)
         {
             
-            return Session.Timeout- (DateTime.Now - timebegin).Minutes;
+            return Session.Timeout- (int)Math.Floor((DateTime.Now - timebegin).TotalMinutes);
         }
 
         public ActionResult ChangeLanguage(string LanguageAbbrevation)

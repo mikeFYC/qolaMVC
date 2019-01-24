@@ -8,6 +8,7 @@ using System.Web.Routing;
 using System.Web.Http;
 using System.Net.Mail;
 using System.Diagnostics;
+using System.ComponentModel;
 
 namespace QolaMVC
 {
@@ -59,6 +60,12 @@ namespace QolaMVC
             mail.IsBodyHtml = true;
             string htmlBody;
             htmlBody = exc.Message + "<br><br>"+ location;
+
+            if (Session["check"] == null)
+            {
+                htmlBody = "Session Expired<br><br>" + htmlBody;
+            }
+
             mail.Body = htmlBody;
             SmtpServer.Port = 587;
             SmtpServer.UseDefaultCredentials = false;
