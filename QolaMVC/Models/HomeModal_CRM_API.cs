@@ -13,6 +13,6 @@ namespace QolaMVC.Models
         public string Address { get; set; }
         public string City { get; set; }
         public string Province { get; set; }
-        public string ProvinceName { get; set; }
+        public int ProvinceID { get; set; }
     }
 }

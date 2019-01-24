@@ -62,6 +62,8 @@ namespace QolaMVC.Controllers
                         home.Address = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_address"]);
                         home.City = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_city"]);
                         home.Province = Convert.ToString(homesReceive.Tables[0].Rows[index]["ProvinceName"]);
+                        home.ProvinceID = Convert.ToInt32(homesReceive.Tables[0].Rows[index]["fd_province"]);
+                        
                         homes.Add(home);
                     }
                 }
@@ -131,7 +133,7 @@ namespace QolaMVC.Controllers
         }
 
         [HttpPost]
-        public Boolean POST_RESIDENT_MOVE_IN(ResidentModal_CRM_API InputModal)
+        public object[] POST_RESIDENT_MOVE_IN(ResidentModal_CRM_API InputModal)
         {
 
 
@@ -207,7 +209,10 @@ namespace QolaMVC.Controllers
             ResidentsDAL.SetUp_ResidentModel_ListItems(p_Model);
 
             p_Model.ModifiedBy = new UserModel();
+            p_Model.ModifiedBy.ID = 1;
+            p_Model.Occupancy = 1;
             p_Model.ModifiedOn = DateTime.Now;
+            p_Model.MoveInDate = DateTime.Now;
 
             int[] RR = new int[2];
             RR = ResidentsDAL.AddNewResidentGeneralInfo(p_Model);
@@ -215,16 +220,34 @@ namespace QolaMVC.Controllers
             bool result2 = ResidentsDAL.UpdateResidentGeneralInfo(p_Model);
             bool result3 = ResidentsDAL.UpdateResidentMedicalInfo_mike(p_Model);
 
+            string[] arrayMain = new string[22];
+            for (int a = 0; a < arrayMain.Length; a++)
+            {
+                if (a == 0)
+                {
+                    MasterDAL.save_button(a + 1, p_Model.ModifiedBy.ID, RR[0]);
+                }
+                else
+                {
+                    MasterDAL.save_button(a + 1, RR[0]);
+                }
+            }
+
+
+            object[] resultArray = new object[2];
 
             if (RR[0] > 0 && result1 == true && result2 == true && result3 == true)
             {
-                return true;
+                resultArray[0] = true;
+                resultArray[1] = "Resident Move In Successfully";
+
             }
             else
             {
-                return false;
+                resultArray[0] = false;
+                resultArray[1] = "Resident Move In Failed";
             }
-
+            return resultArray;
         }
     }
 }
