@@ -99,10 +99,15 @@ namespace QolaMVC.Controllers
             if (ModelState.IsValid)
             {
                 VenueDAL.AddVenue(data);
+                TempData["notice"] = "Add Successfully";
                 return RedirectToAction("List");
             }
             else
-            return RedirectToAction("List");
+            {
+                TempData["notice"] = "Add Failed";
+                return RedirectToAction("List");
+            }
+            
 
         }
 
@@ -144,10 +149,15 @@ namespace QolaMVC.Controllers
             if (ModelState.IsValid)
             {
                 VenueDAL.EditVenue(data, id);
+                TempData["notice"] = "Edit Successfully";
                 return RedirectToAction("List");
             }
             else
+            {
+                TempData["notice"] = "Edit Failed";
                 return RedirectToAction("List");
+            }
+                
         }
 
         // GET: Suite/Delete/5

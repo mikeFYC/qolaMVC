@@ -83,29 +83,29 @@
                                             @{ int i = 1; }
                                             @{ foreach (var l_AC in Model)
                                                 {
-                                                <tr>
-                                                    <td class="align-middle">@i</td>
-                                                    <td class="align-middle">@l_AC.EnglishName</td>
-                                                    <td class="align-middle">@l_AC.FrenchName</td>
-                                                    <td class="align-middle">
-                                                        <a class="btn btn-success btn-xs" href="~/Master/EditActivityCategory/?CategoryId=@l_AC.Id">
-                                                            <i class="fa fa-pencil"></i>
-                                                        </a>
-                                                    </td>
-                                                    <td class="align-middle">
+                                                    <tr>
+                                                        <td class="align-middle">@i</td>
+                                                        <td class="align-middle">@l_AC.EnglishName</td>
+                                                        <td class="align-middle">@l_AC.FrenchName</td>
+                                                        <td class="align-middle">
+                                                            <a class="btn btn-success btn-xs" href="~/Master/EditActivityCategory/?CategoryId=@l_AC.Id">
+                                                                <i class="fa fa-pencil"></i>
+                                                            </a>
+                                                        </td>
+                                                        <td class="align-middle">
 
-                                                        <a class="btn btn-danger btn-xs" href="~/Master/DeleteActivityCategory/?CategoryId=@l_AC.Id">
-                                                            <i class="fa fa-trash-o"></i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
+                                                            <a class="btn btn-danger btn-xs" onclick="DELETE(@l_AC.Id)">
+                                                                <i class="fa fa-trash-o" style="color:white;"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
 
-                                                i = i + 1;
-                                                    }
+                                                    i = i + 1;
                                                 }
+                                            }
                                         </tbody>
                                     </table>
-
+                                    <input type="hidden" id="notice" value="@TempData["notice"]" />
                                 </div>
                           
                             </div>
@@ -123,3 +123,28 @@
 
 
         @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+<script>
+    if ($('#notice').val() != '') {
+        tempAlert($('#notice').val(), 2000);
+    }
+
+    function tempAlert2(msg, id) {
+        var el = document.createElement("div");
+        el.setAttribute("style", "position:fixed;top:2%;left:31%;width:35vw;background-color:white;z-index:9999;color:black;padding:2vw 3vw 2vw 3vw;border-radius:1vw;font-size:1.2em;font-weight:bold;border:black solid;");
+        el.innerHTML = "<img src=\"\/Content\/assets\/img\/qola_logo3.png\" style=\"width:120px;height:80px;display:inline-block\" \/><div style=\"margin-left:3vw;display:inline-block;width:50%;position:absolute;margin-top:3%;\">" + msg + "<\/div><div style='width:90%;'><button class='btn btn-primary pull-right' style='display:inline-block;' onclick='this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);'>No<\/button><button class='btn btn-danger pull-right' style='display:inline-block;margin-right:10px' onclick=\"DELETETRUE(this," + id + ")\">Yes<\/button><\/div>";
+        document.body.appendChild(el);
+
+    }
+
+    function DELETE(id) {
+        tempAlert2("Delete ActivityCategory ?",id)
+    }
+
+    function DELETETRUE(ee, id) {
+        ee.parentNode.parentNode.parentNode.removeChild(ee.parentNode.parentNode);
+        window.location.href = "/Master/DeleteActivityCategory/?CategoryId=" + id;
+        
+    }
+
+</script>

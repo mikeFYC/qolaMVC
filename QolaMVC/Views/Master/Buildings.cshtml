@@ -60,7 +60,7 @@
                                                 <button type="button" class="btn btn-danger" onclick="search_func()">@QolaMVC.Resources.Text.Search</button>
                                             </form>
                                         </div>
-                                        <div class="py-4 text-right" style="display:inline-block;width:15%;"> 
+                                        <div class="py-4 text-right" style="display:inline-block;width:15%;">
                                             <a class="btn btn-lg btn-primary" href="~/Master/AddBuildings">@QolaMVC.Resources.Text.AddNew</a>
                                         </div>
                                     </div>
@@ -81,7 +81,7 @@
                                         <tbody>
                                             @{
                                                 for (var ind = 0; ind < Model.Count(); ind++)
-                                                {     
+                                                {
                                                     <tr>
                                                         <td class="align-middle">@Model[ind].Province.Name</td>
                                                         <td class="align-middle">@Model[ind].Name</td>
@@ -99,12 +99,12 @@
                                                                 <i class="fa fa-trash-o"></i>
                                                             </button>
                                                         </td>
-                                                    </tr>       
+                                                    </tr>
                                                 }
                                             }
                                         </tbody>
                                     </table>
-
+                                    <input type="hidden" id="notice" value="@TempData["notice"]" />
                                 </div>
                                 
                             </div>
@@ -131,6 +131,10 @@
 
 
         <script>
+
+            if ($('#notice').val() != '') {
+                tempAlert($('#notice').val(), 2000);
+            }
 
             function tempAlert2(msg, id) {
                 var el = document.createElement("div");

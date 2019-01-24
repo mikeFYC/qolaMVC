@@ -54,17 +54,17 @@
                                     <div class="row">
                                         <div class="py-4 text-left" style="display:inline-block;width:80%;">
                                             <form class="form-inline">
-                                            @using (Html.BeginForm("List", "DineTime", FormMethod.Get))
-                                            {
+                                                @using (Html.BeginForm("List", "DineTime", FormMethod.Get))
+                                                {
 
-                                                <div class="form-group pr-1">
-                                                    <div class="input-group">
-                                                        @*@Html.TextBox("value", null, new { @class = "form-control", @placeholder = "Search for" })*@
-                                                        <input class="form-control" id="search_value" value="" />
+                                                    <div class="form-group pr-1">
+                                                        <div class="input-group">
+                                                            @*@Html.TextBox("value", null, new { @class = "form-control", @placeholder = "Search for" })*@
+                                                            <input class="form-control" id="search_value" value="" />
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <button type="button" class="btn btn-danger" onclick="search_DineTime()">@QolaMVC.Resources.Text.Search</button>
-                                            }
+                                                    <button type="button" class="btn btn-danger" onclick="search_DineTime()">@QolaMVC.Resources.Text.Search</button>
+                                                }
                                             </form>
                                         </div>
                                         <div class="py-4 text-right" style="display:inline-block;width:15%;">
@@ -109,7 +109,7 @@
                                             }
                                         </tbody>
                                     </table>
-
+                                    <input type="hidden" id="notice" value="@TempData["notice"]" />
                                 </div>
 
                             </div>
@@ -129,6 +129,11 @@
         @RenderPage("~/Views/Shared/_Footer.cshtml")
 
         <script>
+
+            if ($('#notice').val() != '') {
+                tempAlert($('#notice').val(), 2000);
+            }
+
             function search_DineTime() {
                 var a = $('#search_value').val();
                 window.location.href = "/DineTime/List?search=" + a;

@@ -101,10 +101,15 @@ namespace QolaMVC.Controllers
             if (ModelState.IsValid)
             {
                 SuiteDAL.AddSuite(add_tbl_suite,user.ID);
+                TempData["notice"] = "Add Successfully";
                 return RedirectToAction("List");
             }
             else
-            return RedirectToAction("List");
+            {
+                TempData["notice"] = "Add Failed";
+                return RedirectToAction("List");
+            }
+            
 
         }
 
@@ -152,10 +157,15 @@ namespace QolaMVC.Controllers
             if (ModelState.IsValid)
             {
                 SuiteDAL.EditSuite(suite, id);
+                TempData["notice"] = "Edit Successfully";
                 return RedirectToAction("List");
             }
             else
+            {
+                TempData["notice"] = "Edit Failed";
                 return RedirectToAction("List");
+            }
+                
         }
 
         // GET: Suite/Delete/5
@@ -197,6 +207,7 @@ namespace QolaMVC.Controllers
                 // TODO: Add delete logic here
 
                 SuiteDAL.DeleteSuite(id);
+                TempData["notice"] = "Delete Successfully";
                 return RedirectToAction("List");
             }
             catch

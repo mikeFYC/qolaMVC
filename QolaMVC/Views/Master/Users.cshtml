@@ -235,6 +235,7 @@
                                     <input type="hidden" id="totalPage" value="@Math.Ceiling(Decimal.Parse((Model.Count() / 50.0).ToString()))" />
                                     <input type="hidden" id="totalPage2" value="@Math.Ceiling(Decimal.Parse((((List<QolaMVC.Models.UserModel>)ViewBag.InactiveUsers).Count() / 50.0).ToString()))" />
                                     <input type="hidden" id="searchstring" value="@TempData["search"]" />
+                                    <input type="hidden" id="notice" value="@TempData["notice"]" />
                                 </div>
                             </div>
                         </div>
@@ -260,6 +261,10 @@
 
 
         <script>
+
+            if ($('#notice').val() != '') {
+                tempAlert($('#notice').val(), 2000);
+            }
 
     function tempAlert2(msg, id) {
         var el = document.createElement("div");

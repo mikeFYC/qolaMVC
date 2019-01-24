@@ -124,6 +124,7 @@
                                     <input type="hidden" id="startID" value="@TempData["start"]" />
                                     <input type="hidden" id="searchstring" value="@TempData["search"]" />
                                     <input type="hidden" id="totalPage" value="@Math.Ceiling(Decimal.Parse((Model.Count() / 50.0).ToString()))" />
+                                    <input type="hidden" id="notice" value="@TempData["notice"]" />
                                 </div>
 
                             </div>
@@ -143,6 +144,11 @@
         @RenderPage("~/Views/Shared/_Footer.cshtml")
 
         <script>
+
+            if ($('#notice').val() != '') {
+                tempAlert($('#notice').val(), 2000);
+            }
+
             function search_Allergy() {
                 var a = $('#search_value').val();
                 window.location.href = "/Allergy/List?search=" + a;

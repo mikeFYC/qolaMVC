@@ -55,23 +55,23 @@
                                     <div class="row">
                                         <div class="py-4 text-left" style="display:inline-block;width:80%;">
                                             <form class="form-inline">
-                                @using (Html.BeginForm("List", "Venue", FormMethod.Get))
-                                {
-                                                <div class="form-group pr-1">
-                                                    @*<div class="input-group">
-                                                        <select class="form-control" name="column" id="column">
-                                                            <option value="*">All fields</option>
-                                                            <option value="0">Home</option>
-                                                            <option value="1">Code</option>
-                                                            <option value="2">Venue</option>
-                                                        </select>
-                                                    </div>*@
-                                                    <div class="input-group">
-                                                        <input class="form-control" id="search_value" value=""/>
+                                                @using (Html.BeginForm("List", "Venue", FormMethod.Get))
+                                                {
+                                                    <div class="form-group pr-1">
+                                                        @*<div class="input-group">
+                                <select class="form-control" name="column" id="column">
+                                    <option value="*">All fields</option>
+                                    <option value="0">Home</option>
+                                    <option value="1">Code</option>
+                                    <option value="2">Venue</option>
+                                </select>
+                            </div>*@
+                                                        <div class="input-group">
+                                                            <input class="form-control" id="search_value" value="" />
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <button type="button" class="btn btn-danger" onclick="search_Venue()">@QolaMVC.Resources.Text.Search</button>
-                                }
+                                                    <button type="button" class="btn btn-danger" onclick="search_Venue()">@QolaMVC.Resources.Text.Search</button>
+                                                }
                                             </form>
                                         </div>
                                         <div class="py-4 text-right" style="display:inline-block;width:15%;">
@@ -117,7 +117,7 @@
                                             }
                                         </tbody>
                                     </table>
-
+                                    <input type="hidden" id="notice" value="@TempData["notice"]" />
                                 </div>
 
                             </div>
@@ -137,6 +137,10 @@
         @RenderPage("~/Views/Shared/_Footer.cshtml")
 
 <script>
+    if ($('#notice').val() != '') {
+        tempAlert($('#notice').val(), 2000);
+    }
+
     function tempAlert2(msg, id) {
         var el = document.createElement("div");
         el.setAttribute("style", "position:fixed;top:2%;left:31%;width:35vw;background-color:white;z-index:9999;color:black;padding:2vw 3vw 2vw 3vw;border-radius:1vw;font-size:1.2em;font-weight:bold;border:black solid;");

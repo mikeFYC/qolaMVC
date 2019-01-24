@@ -82,6 +82,7 @@ namespace QolaMVC.Controllers
             try
             {
                 MasterDAL.UpdateActivityCategory(p_Model);
+                TempData["notice"] = "Edit Successfully";
                 return RedirectToAction("ActivityCategory");
             }
             catch (Exception ex)
@@ -108,6 +109,7 @@ namespace QolaMVC.Controllers
             try
             {
                 MasterDAL.DeleteActivityCategory(CategoryId);
+                TempData["notice"] = "Delete Successfully";
                 TempData["Message2"] = "Successfully Deleted Activity Category";
                 TempData["MessageType2"] = "success";
                 return RedirectToAction("ActivityCategory"); ;
@@ -135,6 +137,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("Resident");
             
             MasterDAL.AddActivityCategory(p_Model);
+            TempData["notice"] = "Add Successfully";
             return RedirectToAction("ActivityCategory");
         }
 
@@ -216,7 +219,7 @@ namespace QolaMVC.Controllers
                     System.IO.Stream fileContent = file.InputStream;
                     file.SaveAs(Server.MapPath("~/Content/assets/Images/Activity_mike/") + id.ToString() + ".png");
                 }
-
+                TempData["notice"] = "Add Successfully";
                 return RedirectToAction("Activity");
             }
             catch (Exception ex)
@@ -288,10 +291,9 @@ namespace QolaMVC.Controllers
                     System.IO.Stream fileContent = file.InputStream;
                     file.SaveAs(Server.MapPath("~/Content/assets/Images/Activity_mike/") + p_Model.Id.ToString() + ".png");
                 }
-
-
-                TempData["Message"] = "Successfully updated Activity";
-                TempData["MessageType"] = "success";
+                TempData["notice"] = "Edit Successfully";
+                //TempData["Message"] = "Successfully updated Activity";
+                //TempData["MessageType"] = "success";
 
                 return RedirectToAction("Activity");
             }
@@ -320,9 +322,9 @@ namespace QolaMVC.Controllers
             {
 
                 MasterDAL.DeleteActivity(ActivityId);
-
-                TempData["Message"] = "Successfully Deleted Activity";
-                TempData["MessageType"] = "success";
+                TempData["notice"] = "Delete Successfully";
+                //TempData["Message"] = "Successfully Deleted Activity";
+                //TempData["MessageType"] = "success";
                 return RedirectToAction("Activity"); ;
             }
             catch (Exception ex)
@@ -540,6 +542,10 @@ namespace QolaMVC.Controllers
                     TempData["EDIT"] = "";
                     return View("AddUser", p_Model);
                 }
+                else
+                {
+                    TempData["notice"] = "Add Successfully";
+                }
             }
             else if (p_Model.ID > 0)
             {
@@ -548,6 +554,10 @@ namespace QolaMVC.Controllers
                     TempData["sameuname"] = "true";
                     TempData["EDIT"] = "true";
                     return View("AddUser", p_Model);
+                }
+                else
+                {
+                    TempData["notice"] = "Edit Successfully";
                 }
             }
 
@@ -682,6 +692,7 @@ namespace QolaMVC.Controllers
                 p_Model.IconImage = "images/home_ico/" + identity.ToString() + ".PNG";
                 p_Model.Id = identity;
                 HomeDAL.UpdateHome(p_Model);
+                TempData["notice"] = "Add Successfully";
 
             }
             else if (p_Model.Id > 0)
@@ -704,6 +715,10 @@ namespace QolaMVC.Controllers
                 {
                     TempData["EDIT"] = "true";
                     return View("AddBuildings", p_Model);
+                }
+                else
+                {
+                    TempData["notice"] = "Edit Successfully";
                 }
             }
 
