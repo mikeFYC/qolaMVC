@@ -1840,7 +1840,7 @@
 
 
 
-    <div class="container-fixed-lg footer" style="left:0;bottom:-3vh !important;position:fixed !important;background-color:#fff;border-top:1px solid #e6e6e6;width:100%;">
+    <div class="container-fixed-lg footer" style="left:0;bottom:-3vh !important;position:fixed !important;background-color:#fff;border-top:1px solid #e6e6e6;width:100%;z-index:400;">
         <div class="copyright sm-text-center" style="padding:5px 0 25px 5px !important;width:50%;display:inline-block;border-top:none;">
             <p class="small no-margin pull-left sm-pull-reset">
                 <span class="hint-text">Copyright &copy; 2018</span>
@@ -1870,7 +1870,6 @@
             <div style="float:right;display:inline-block;padding:5px 5px 25px 5px !important;color:black;font-weight:bold;font-size:1.1vw;border-left:1px solid gray">@name_first_two_words</div>
         }
         <div style="float:right;display:inline-block;padding:5px 5px 25px 5px !important;color:black;font-size:1.1vw;">Session Time Left: <span id="SessionTimeOutSpan">@Session.Timeout</span></div>
-        <input id="timeNow" type="hidden" value="@DateTime.Now" />
 
     </div>
 
@@ -5652,14 +5651,17 @@
 
 
     $(function () {
-        setInterval("GetSessionTimeLeft()", 60000);
+        setInterval("GetSessionTimeLeft2()", 60000);
     });
 
-    function GetSessionTimeLeft() {
-        var timeNow = $('#timeNow').val()
-        $.get('/Login/GetSessionTimeLeft', { timebegin: timeNow }, function (data) {
-            $('#SessionTimeOutSpan').html(data);
-        })
+    function GetSessionTimeLeft2() {
+        if (parseInt($('#SessionTimeOutSpan').html()) - 1 == 0) {
+            window.location.href = "/Login/Index";
+        }
+        else {
+            $('#SessionTimeOutSpan').html(parseInt($('#SessionTimeOutSpan').html()) - 1);
+        }
+
     }
 
 </script>
