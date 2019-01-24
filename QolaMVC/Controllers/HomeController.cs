@@ -911,24 +911,6 @@ namespace QolaMVC.Controllers
             ViewBag.Home = home;
             HomeModel l_Home = HomeDAL.GetHomeById(p_HomeId);
             TempData["occupy"] = HomeDAL.GetOccupybyID(p_HomeId);
-            //dynamic l_Json=to_do_list_function.get_to_do_list_number( user.ID, l_Home.Id);
-            //TempData["DU"] = l_Json.DU;
-            //TempData["HO"] = l_Json.HO;
-            //TempData["IDA"] = l_Json.IDA;
-            //TempData["IAA"] = l_Json.IAA;
-            //TempData["IFRA"] = l_Json.IFRA;
-            //TempData["IRCA"] = l_Json.IRCA;
-            //TempData["RDA"] = l_Json.RDA;
-            //TempData["RAA"] = l_Json.RAA;
-            //TempData["RFRA"] = l_Json.RFRA;
-            //TempData["RRCA"] = l_Json.RRCA;
-            //TempData["PN"] = l_Json.PN;
-            //TempData["AN"] = l_Json.AN;
-            //TempData["RB"] = l_Json.RB;
-            //TempData["RI"] = l_Json.RI;
-            //TempData["RP"] = l_Json.RP;
-            //TempData["NR"] = l_Json.NR;
-            //TempData["SAE"] = l_Json.SAE;
 
             TempData["ToDoListinNav"] = "true";
 
