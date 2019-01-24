@@ -97,7 +97,7 @@
                                             </select>*@
 
                                             <button class="btn btn-default btn-sm" onclick="formsubmit2_prev()">Prev</button>
-                                            <label id="pageID" class="form-check-label" style="font-weight:bold;color:black;font-size:1.2vw;padding-left:0.4rem !important;" value="@TempData["start"]"><span id="currentpage">@TempData["start"]</span>/@Math.Ceiling(Decimal.Parse((Model.Count() / 50.0).ToString()))  </label>
+                                            <label id="pageID" class="form-check-label" style="font-weight:bold;color:black;font-size:1.2vw;padding-left:0.4rem !important;" value="1"><span id="currentpage">1</span>/@Math.Ceiling(Decimal.Parse((Model.Count() / 50.0).ToString()))  </label>
                                             <button class="btn btn-default btn-sm" onclick="formsubmit2_next()">Next</button>
 
                                         </div>
@@ -122,8 +122,7 @@
                                         </thead>
                                         <tbody id="tbodyUser">
                                             @{
-                                                var start = int.Parse(TempData["start"].ToString());
-                                                for (var ind = (start-1)*50; ind < (start)*50; ind++)
+                                                for (var ind = 0; ind < 50; ind++)
                                                 {
                                                     if (ind < Model.Count())
                                                     {
@@ -156,7 +155,7 @@
                                 <div class="tab-pane fade" id="pills-achive" role="tabpanel" aria-labelledby="pills-achive-tab">
 
                                     <div class="row">
-                                        <div class="col-md-6 py-4 text-left">
+                                        <div class="py-4 text-left" style="width:50%;display:inline-block;">
                                             <form class="form-inline">
                                                 <div class="form-group pr-1">
                                                     @*<div class="input-group">
@@ -176,7 +175,14 @@
                                                 <button type="button" class="btn btn-danger" onclick="search_func2()">Search</button>
                                             </form>
                                         </div>
-                                        <div class="col-md-6 py-4 text-right">
+
+                                        <div class="py-4 text-right" style="width:24.5%;display:inline-block;">
+                                            <button class="btn btn-default btn-sm" onclick="formsubmit2_inactive_prev()">Prev</button>
+                                            <label id="pageID2" class="form-check-label" style="font-weight:bold;color:black;font-size:1.2vw;padding-left:0.4rem !important;" value="1"><span id="currentpage2">1</span>/@Math.Ceiling(Decimal.Parse((((List<QolaMVC.Models.UserModel>)ViewBag.InactiveUsers).Count() / 50.0).ToString()))  </label>
+                                            <button class="btn btn-default btn-sm" onclick="formsubmit2_inactive_next()">Next</button>
+                                        </div>
+
+                                        <div class="py-4 text-right">
                                             @*<a class="btn btn-lg btn-primary" href="#">Add New</a>*@
                                         </div>
                                     </div>
@@ -194,35 +200,40 @@
                                                 <th class="text-white">Delete</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="tbodyInactiveUser">
                                             @{
-                                                foreach (var l_User in (IEnumerable<QolaMVC.Models.UserModel>)ViewBag.InactiveUsers)
+                                                for (var ind2 = 0; ind2 < 50; ind2++)
                                                 {
-                                                    <tr>
-                                                        <td class="align-middle">@l_User.UserTypeName</td>
-                                                        <td class="align-middle">@l_User.UserName</td>
-                                                        <td class="align-middle">@l_User.FirstName</td>
-                                                        <td class="align-middle">@l_User.LastName</td>
-                                                        <td class="align-middle">@l_User.HomeName</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td class="align-middle">
-                                                            <button class="btn btn-default btn-xs" onclick="edituser(@l_User.ID)">
-                                                                <i class="fa fa-pencil"></i>
-                                                            </button>
-                                                        </td>
-                                                        <td class="align-middle">
-                                                            <button class="btn btn-danger btn-xs" onclick="delete_user(@l_User.ID,'@l_User.FirstName'+' '+'@l_User.LastName')">
-                                                                <i class="fa fa-trash-o"></i>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
+                                                    if (ind2 < ((List<QolaMVC.Models.UserModel>)ViewBag.InactiveUsers).Count())
+                                                    {
+                                                        var l_User = ((List<QolaMVC.Models.UserModel>)ViewBag.InactiveUsers)[ind2];
+                                                        <tr>
+                                                            <td class="align-middle">@l_User.UserTypeName</td>
+                                                            <td class="align-middle">@l_User.UserName</td>
+                                                            <td class="align-middle">@l_User.FirstName</td>
+                                                            <td class="align-middle">@l_User.LastName</td>
+                                                            <td class="align-middle">@l_User.HomeName</td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td class="align-middle">
+                                                                <button class="btn btn-default btn-xs" onclick="edituser(@l_User.ID)">
+                                                                    <i class="fa fa-pencil"></i>
+                                                                </button>
+                                                            </td>
+                                                            <td class="align-middle">
+                                                                <button class="btn btn-danger btn-xs" onclick="delete_user(@l_User.ID,'@l_User.FirstName'+' '+'@l_User.LastName')">
+                                                                    <i class="fa fa-trash-o"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    }
+
                                                 }
                                             }
                                         </tbody>
                                     </table>
-                                    <input type="hidden" id="startID" value="@TempData["start"]" />
                                     <input type="hidden" id="totalPage" value="@Math.Ceiling(Decimal.Parse((Model.Count() / 50.0).ToString()))" />
+                                    <input type="hidden" id="totalPage2" value="@Math.Ceiling(Decimal.Parse((((List<QolaMVC.Models.UserModel>)ViewBag.InactiveUsers).Count() / 50.0).ToString()))" />
                                     <input type="hidden" id="searchstring" value="@TempData["search"]" />
                                 </div>
                             </div>
@@ -249,8 +260,6 @@
 
 
         <script>
-
-    $('#selectpage').val($('#startID').val());
 
     function tempAlert2(msg, id) {
         var el = document.createElement("div");
@@ -366,7 +375,81 @@
 
         }
 
+            }
+
+
+    function formsubmit2_inactive_prev() {
+        var search_value = $('#searchstring').val();
+        var index = parseInt($('#pageID2').attr('value')) - 1;
+        if (index >= 1) {
+            $.get("/Master/GetInactiveUserList", { index: index, search: search_value }, function (data) {
+                $('#currentpage2').html(index.toString());
+                $('#pageID2').attr('value', index.toString());
+                $('#tbodyInactiveUser').empty();
+                for (var i = 0; i < data.length; i++) {
+                    $('#tbodyInactiveUser').append('<tr>' +
+                        '<td class="align-middle">' + data[i][1].Value + '</td>' +
+                        '<td class="align-middle">' + data[i][2].Value + '</td>' +
+                        '<td class="align-middle">' + data[i][3].Value + '</td>' +
+                        '<td class="align-middle">' + data[i][4].Value + '</td>' +
+                        '<td class="align-middle">' + data[i][5].Value + '</td>' +
+                        '<td></td>' +
+                        '<td></td>' +
+                        '<td class="align-middle">' +
+                        '<button class="btn btn-default btn-xs" onclick="edituser(' + data[i][0].Value + ')">' +
+                        '<i class="fa fa-pencil"></i>' +
+                        '</button>' +
+                        '</td>' +
+                        '<td class="align-middle">' +
+                        '<button class="btn btn-danger btn-xs" onclick="delete_user(' + data[i][0].Value + ',\'' + data[i][0].Value + '\'+\' \'+\'' + data[i][0].Value + '\')">' +
+                        '<i class="fa fa-trash-o"></i>' +
+                        '</button>' +
+                        '</td>' +
+                        '</tr>');
+                }
+            });
+
+        }
+
     }
+
+    function formsubmit2_inactive_next() {
+        var search_value = $('#searchstring').val();
+        var index = parseInt($('#pageID2').attr('value')) + 1;
+        var maxPage = parseInt($('#totalPage2').val());
+        if (index <= maxPage) {
+            $.get("/Master/GetInactiveUserList", { index: index, search: search_value }, function (data) {
+                $('#currentpage2').html(index.toString());
+                $('#pageID2').attr('value', index.toString());
+                $('#tbodyInactiveUser').empty();
+                for (var i = 0; i < data.length; i++) {
+                    $('#tbodyInactiveUser').append('<tr>' +
+                        '<td class="align-middle">' + data[i][1].Value + '</td>' +
+                        '<td class="align-middle">' + data[i][2].Value + '</td>' +
+                        '<td class="align-middle">' + data[i][3].Value + '</td>' +
+                        '<td class="align-middle">' + data[i][4].Value + '</td>' +
+                        '<td class="align-middle">' + data[i][5].Value + '</td>' +
+                        '<td></td>' +
+                        '<td></td>' +
+                        '<td class="align-middle">' +
+                        '<button class="btn btn-default btn-xs" onclick="edituser(' + data[i][0].Value + ')">' +
+                        '<i class="fa fa-pencil"></i>' +
+                        '</button>' +
+                        '</td>' +
+                        '<td class="align-middle">' +
+                        '<button class="btn btn-danger btn-xs" onclick="delete_user(' + data[i][0].Value + ',\'' + data[i][3].Value + '\'+\' \'+\'' + data[i][4].Value + '\')">' +
+                        '<i class="fa fa-trash-o"></i>' +
+                        '</button>' +
+                        '</td>' +
+                        '</tr>');
+                }
+            });
+
+        }
+
+    }
+
+
 
     function delete_user(id,qq) {
         tempAlert2("Are You Sure About Delete User: " + qq, id);

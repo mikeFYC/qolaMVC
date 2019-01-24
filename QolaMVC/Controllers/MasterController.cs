@@ -352,7 +352,7 @@ namespace QolaMVC.Controllers
 
         #region Users
 
-        public ActionResult Users(string index,string str)
+        public ActionResult Users(string str)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -380,14 +380,6 @@ namespace QolaMVC.Controllers
                 List<UserModel> l_UsersInactive = UserDAL.GetUsersCollections_Filter(user.Home, user.UserType, 'I', str);
                 ViewBag.InactiveUsers = l_UsersInactive;
                 TempData["search"] = str;
-            }
-            if(index==null || index == "")
-            {
-                TempData["start"] = "1";
-            }
-            else
-            {
-                TempData["start"] = index;
             }
             
 
@@ -421,7 +413,7 @@ namespace QolaMVC.Controllers
 
             for(int a = (index - 1) * 50; a< index*50; a++)
             {
-                if (l_Users[a] != null)
+                if (a < l_Users.Count())
                 {
                     dynamic l_J = new System.Dynamic.ExpandoObject();
                     l_J.ID = l_Users[a].ID;
@@ -438,6 +430,51 @@ namespace QolaMVC.Controllers
             }
             return Json(l_Json, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpGet]
+        public ActionResult GetInactiveUserList(int index, string search)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            List<UserModel> l_UsersInactive;
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            if (search == null || search == "")
+            {
+                l_UsersInactive = UserDAL.GetUsersCollections(user.Home, user.UserType, 'I');
+            }
+            else
+            {
+                l_UsersInactive = UserDAL.GetUsersCollections_Filter(user.Home, user.UserType, 'I', search);
+            }
+            List<dynamic> l_Json = new List<dynamic>();
+
+            for (int a = (index - 1) * 50; a < index * 50; a++)
+            {
+
+                if (a < l_UsersInactive.Count())
+                {
+                    dynamic l_J = new System.Dynamic.ExpandoObject();
+                    l_J.ID = l_UsersInactive[a].ID;
+                    l_J.UserTypeName = l_UsersInactive[a].UserTypeName;
+                    l_J.UserName = l_UsersInactive[a].UserName;
+                    l_J.FirstName = l_UsersInactive[a].FirstName;
+                    l_J.LastName = l_UsersInactive[a].LastName;
+                    l_J.HomeName = l_UsersInactive[a].HomeName;
+                    l_J.Mobile = l_UsersInactive[a].Mobile;
+                    l_J.Email = l_UsersInactive[a].Email;
+                    l_Json.Add(l_J);
+                }
+
+            }
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
 
         public ActionResult AddUser()
         {
@@ -493,15 +530,6 @@ namespace QolaMVC.Controllers
                     if (prop.GetValue(p_Model) == null) { prop.SetValue(p_Model, ""); }
                 }
             }
-            //if (p_Model.Address == null) p_Model.Address = "";
-            //if (p_Model.City == null) p_Model.City = "";
-            //if (p_Model.PostalCode == null) p_Model.PostalCode = "";
-            //if (p_Model.Province == null) p_Model.Province = "";
-            //if (p_Model.Country == null) p_Model.Country = "";
-            //if (p_Model.Email == null) p_Model.Email = "";
-            //if (p_Model.WorkPhone == null) p_Model.WorkPhone = "";
-            //if (p_Model.HomePhone == null) p_Model.HomePhone = "";
-            //if (p_Model.Mobile == null) p_Model.Mobile = "";
             p_Model.ModifiedBy = user.ID;
             TempData["sameuname"] = "";
             if (p_Model.ID == 0)
