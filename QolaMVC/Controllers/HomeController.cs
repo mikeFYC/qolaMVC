@@ -6203,6 +6203,36 @@ namespace QolaMVC.Controllers
 
         }
 
+        [HttpPost]
+        public int ChangeMainPhoto()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            for (int i = 0; i < Request.Files.Count; i++)
+            {
+                HttpPostedFileBase file = Request.Files[i];
+                int fileSize = file.ContentLength;
+                if (fileSize > 0)
+                {
+                    string fileName = file.FileName;
+                    string mimeType = file.ContentType;
+                    System.IO.Stream fileContent = file.InputStream;
+                    file.SaveAs(Server.MapPath("/Content/assets/img/login_home.jpg"));
+                }
+            }
+
+            return 1;
+
+
+
+
+        }
+
 
         [HttpPost]
         public ActionResult EditProfileTable1(ResidentModel postdata)

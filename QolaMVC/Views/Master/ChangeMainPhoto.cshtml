@@ -49,48 +49,48 @@
 
                 <div class="card">
                     <div class="card-block">
+                        
+                            <div class="row">
+                                <div class="col-md-10 offset-md-1">
 
-                        <div class="row">
-                            <div class="col-md-10 offset-md-1">
 
+                                    <div class="row">
 
-                                <div class="row">
-
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <div class="col-md-3"><label for="" class="col-form-label" style="font-size:1.1vw;display:inline-block;">@QolaMVC.Resources.Text.ChangeMainPhoto :</label></div>
-                                            <div class="col-md-8"><input class="" type="file" style="font-size:1.1vw;display:inline-block;" onchange="readURL(this);" /></div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <div class="col-md-3"><label for="" class="col-form-label" style="font-size:1.1vw;display:inline-block;">@QolaMVC.Resources.Text.ChangeMainPhoto :</label></div>
+                                                <div class="col-md-8"><input id="edit_main_photo" name="file" class="" type="file" style="font-size:1.1vw;display:inline-block;" onchange="readURL(this);" /></div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <div class="col-md-3"></div>
-                                            <div class="col-md-8">
-                                                <div id="preview" class="upload__preview" style="width:99%;height:88%;">
-                                                    <img id="blah" src="/Content/assets/img/login_home.jpg" data-src="/Content/assets/img/login_home.jpg" data-src-retina="/Content/assets/img/login_home.jpg" style="border-width:1px;border-style:Solid;width:100%;height:100%;display:inline-block;">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <div class="col-md-3"></div>
+                                                <div class="col-md-8">
+                                                    <div id="preview" class="upload__preview" style="width:99%;height:88%;">
+                                                        <img id="blah" src="/Content/assets/img/login_home.jpg" data-src="/Content/assets/img/login_home.jpg" data-src-retina="/Content/assets/img/login_home.jpg" style="border-width:1px;border-style:Solid;width:100%;height:100%;display:inline-block;">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <div class="col-md-3"></div>
-                                            <div class="col-md-8">
-                                                <button class="btn btn-danger btn-lg" onclick="ChangeMainPhoto_Save()">@QolaMVC.Resources.Text.Save_big</button>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <div class="col-md-3"></div>
+                                                <div class="col-md-8">
+                                                    <button onclick="ChangeMainPhoto_Save()" class="btn btn-danger btn-lg">@QolaMVC.Resources.Text.Save_big</button>
+                                                </div>
                                             </div>
+
                                         </div>
-                                        
                                     </div>
+
                                 </div>
-
                             </div>
-                        </div>
-
+                      
                     </div>
                 </div>
 
@@ -120,5 +120,30 @@
 
                     reader.readAsDataURL(input.files[0]);
                 }
+            }
+
+
+            function ChangeMainPhoto_Save() {
+                var formdata = new FormData();
+                var fileInput = document.getElementById('edit_main_photo');
+                for (i = 0; i < fileInput.files.length; i++) {
+                    formdata.append(fileInput.files[i].name, fileInput.files[i]);
+                }
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/Home/ChangeMainPhoto');
+                xhr.send(formdata);
+                xhr.onreadystatechange = function () {
+                    if (xhr.responseText == 1) {
+                        tempAlert("Photo Upload successfully", 2000);
+                        setTimeout(function () {
+                            window.location.href = "/Home";
+                        }, 2000);
+                    }
+                    else {
+                        tempAlert("Update Failed", 2000);
+                    }
+                }
+
+
             }
         </script>
