@@ -766,7 +766,19 @@ namespace QolaMVC.Controllers
 
         #endregion
 
-
+        public ActionResult ChangeMainPhoto()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+            return View();
+        }
 
         public ActionResult ChangePassword()
         {

@@ -1,0 +1,124 @@
+﻿
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+<style>
+
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+
+    .required_sign {
+        color: red;
+    }
+</style>
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3>@QolaMVC.Resources.Text.ChangeMainPhoto</h3>
+                        </div>
+
+
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+
+            <div style="height: 60px;"></div>
+
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+
+
+                <div class="card">
+                    <div class="card-block">
+
+                        <div class="row">
+                            <div class="col-md-10 offset-md-1">
+
+
+                                <div class="row">
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="col-md-3"><label for="" class="col-form-label" style="font-size:1.1vw;display:inline-block;">@QolaMVC.Resources.Text.ChangeMainPhoto :</label></div>
+                                            <div class="col-md-8"><input class="" type="file" style="font-size:1.1vw;display:inline-block;" onchange="readURL(this);" /></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="col-md-3"></div>
+                                            <div class="col-md-8">
+                                                <div id="preview" class="upload__preview" style="width:99%;height:88%;">
+                                                    <img id="blah" src="/Content/assets/img/login_home.jpg" data-src="/Content/assets/img/login_home.jpg" data-src-retina="/Content/assets/img/login_home.jpg" style="border-width:1px;border-style:Solid;width:100%;height:100%;display:inline-block;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="col-md-3"></div>
+                                            <div class="col-md-8">
+                                                <button class="btn btn-danger btn-lg" onclick="ChangeMainPhoto_Save()">@QolaMVC.Resources.Text.Save_big</button>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!-- END PLACE PAGE CONTENT HERE -->
+            </div>
+            <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+
+
+
+
+        @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+        <script>
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#blah')
+                            .attr('src', e.target.result)
+                        //.width(150)
+                        //.height(200);
+                    };
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+        </script>

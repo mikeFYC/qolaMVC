@@ -295,6 +295,15 @@ namespace QolaMVC.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change Main Photo.
+        /// </summary>
+        public static string ChangeMainPhoto {
+            get {
+                return ResourceManager.GetString("ChangeMainPhoto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change Password.
         /// </summary>
         public static string ChangePassword {
