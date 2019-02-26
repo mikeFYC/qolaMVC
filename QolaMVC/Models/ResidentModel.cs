@@ -1106,6 +1106,8 @@ namespace QolaMVC.Models
         public IEnumerable<SelectListItem> HandDominanceList { get; set; }
         public IEnumerable<SelectListItem> AbilityToWriteList { get; set; }
         public IEnumerable<SelectListItem> EducationLevelList { get; set; }
+        public IEnumerable<SelectListItem> MarketResourceList { get; set; }
+        
 
 
         public bool callHospital_replacement { get; set; }
@@ -1159,7 +1161,9 @@ namespace QolaMVC.Models
         public bool FullCodeStatusIndex { get; set; }
         public bool NoPhoneNumberIndex { get; set; }
 
-
+        public string MarketResource { get; set; }
+        public bool AHR_index { get; set; }
+        public char AHR { get; set; }
 
     }
 }

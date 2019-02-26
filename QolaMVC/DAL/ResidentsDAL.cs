@@ -99,6 +99,10 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@veteranType", addResidentGeneralInfo.VeteranType);
                 l_Cmd.Parameters.AddWithValue("@eduType", addResidentGeneralInfo.EducationType);
                 l_Cmd.Parameters.AddWithValue("@culturalPreferences", addResidentGeneralInfo.CulturalPreferences);
+
+                l_Cmd.Parameters.AddWithValue("@MarketResource", addResidentGeneralInfo.MarketResource);
+                l_Cmd.Parameters.AddWithValue("@AHR", addResidentGeneralInfo.AHR);
+
                 residentId = l_Cmd.ExecuteNonQuery();
                 if (residentId > 0)
                 {
@@ -2775,6 +2779,18 @@ namespace QolaMVC.DAL
                 new SelectListItem { Value = "College/ University Graduate", Text = "College/ University Graduate" },
                 new SelectListItem { Value = "Other", Text = "Other" },
             };
+            AAA.MarketResourceList = new[]{
+                new SelectListItem { Value = "", Text = "-- Select --" },
+                new SelectListItem { Value = "aa", Text = "aa" },
+                new SelectListItem { Value = "bb", Text = "bb" },
+                new SelectListItem { Value = "cc", Text = "cc" },
+                new SelectListItem { Value = "dd", Text = "dd" },
+                new SelectListItem { Value = "ee", Text = "ee" },
+                new SelectListItem { Value = "ff", Text = "ff" },
+                new SelectListItem { Value = "gg", Text = "gg" },
+            };
+
+
         }
 
         public static void UpdateResidentGeneralInfo1(ResidentModel p_Model)

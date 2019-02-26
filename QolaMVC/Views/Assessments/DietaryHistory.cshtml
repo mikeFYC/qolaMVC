@@ -282,7 +282,7 @@
                                 </div>
                                 <div class="col-md-8">
                                     <div class="form-group row">
-                                        <label for="" class="col-md-3 col-form-label" style="font-size:1vw;">Allergies/Sensitivities</label>
+                                        <label for="" class="col-md-3 col-form-label" style="font-size:1em;">Allergies/Sensitivities</label>
                                         <div class="col-md-6">
                                             <input type="text" class="form-control" id="allergies_TEXT" onchange="onchange_allergies_TEXT()"/>
                                         </div>
@@ -456,6 +456,12 @@
 </script>
 
         <script>
+
+            if ($('#noAllergy').prop("checked") == true) {
+                $(document.getElementById("noAllergy").parentElement.parentElement.nextElementSibling).hide();
+                $('#allergytable').hide();
+            }
+
             var index_date = $('#hiddeninput1').val();
             $('#selectdate').val(index_date);
 
@@ -471,7 +477,6 @@
 
             }
 
-
             function DU_Acknowledge() {
                 var id = $('#hiddeninput2').val();
                 var homeid = $('#hiddeninput3').val();
@@ -484,7 +489,6 @@
                     }
                 });
             }
-
 
             var DIFF = $('#hiddeninput4').val();
             var ack = $('#hiddeninput5').val();
@@ -544,6 +548,18 @@
                     form.submit();
                 }
             });
+
+            $('#noAllergy').click(function () {
+                if (this.checked == true) {
+                    $(this.parentElement.parentElement.nextElementSibling).hide();
+                    $('#allergytable tbody').empty();
+                    $('#allergytable').hide();
+                }
+                else {
+                    $(this.parentElement.parentElement.nextElementSibling).show();
+                    $('#allergytable').show();
+                }
+            })
 
         </script>
 
