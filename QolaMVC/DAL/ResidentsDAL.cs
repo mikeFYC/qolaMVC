@@ -101,7 +101,7 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@culturalPreferences", addResidentGeneralInfo.CulturalPreferences);
 
                 l_Cmd.Parameters.AddWithValue("@MarketResource", addResidentGeneralInfo.MarketResource);
-                l_Cmd.Parameters.AddWithValue("@AHR", addResidentGeneralInfo.AHR);
+                l_Cmd.Parameters.AddWithValue("@AHS", addResidentGeneralInfo.AHS);
 
                 residentId = l_Cmd.ExecuteNonQuery();
                 if (residentId > 0)

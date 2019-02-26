@@ -1040,19 +1040,22 @@
                                                                         <p class="ptitle_grey">Medical History</p>
                                                                     </div>
                                                                     <div class="borderB" style="height:240px;">
-                                                                        <textarea class="pcontent" style="width:98% !important;overflow:hidden;height:auto;border:none;">@Model.HealthHistory</textarea>
+                                                                        <textarea class="pcontent" style="width:98% !important;overflow:hidden;height:auto;border:none;">@ViewBag.careplan.MedicalHistory</textarea>
                                                                     </div>
                                                                     <div class="text-center" style="width:100%;">
                                                                         <p class="ptitle_grey">Current Diagnoses</p>
                                                                     </div>
                                                                     <div class="borderB" style="height:240px;">
-                                                                        <textarea class="pcontent" style="width:98% !important;overflow:hidden;height:auto;border:none;">@Model.CurrentDiagnoses</textarea>
+                                                                        <textarea class="pcontent" style="width:98% !important;overflow:hidden;height:auto;border:none;">@ViewBag.careplan.CurrentDiagnosis</textarea>
                                                                     </div>
                                                                     <div class="text-center" style="width:100%;">
                                                                         <p class="ptitle_grey">Allergies</p>
                                                                     </div>
                                                                     <div class="borderB" style="height:140px;">
-                                                                        <textarea class="pcontent" style="width:98% !important;overflow:hidden;height:auto;border:none;">@Model.Alergies</textarea>
+                                                                        @{
+                                                                            var foodallergy = @ViewBag.careplan.Nutrition.Allergies.ToString().replace("||", ";");
+                                                                        }
+                                                                        <textarea class="pcontent" style="width:98% !important;overflow:hidden;height:auto;border:none;">@foodallergy</textarea>
                                                                     </div>
                                                                     <div class="text-center" style="width:100%;">
                                                                         <p class="ptitle_grey">Physician</p>
@@ -1383,7 +1386,7 @@
 
                                                                     <div style="width:31%;display:inline-block;border:1px solid black;height:150px;vertical-align:top;position:absolute;margin-left:32%;">
                                                                         <div class="text-center" style="width:100%;">
-                                                                            <p class="ptitle_grey">Allergies</p>
+                                                                            <p class="ptitle_grey">Medical Allergies</p>
                                                                         </div>
                                                                         <div class="">
                                                                             @{
@@ -1877,7 +1880,7 @@
 
                                                                     <div style="width:31%;display:inline-block;border:1px solid black;height:200px;vertical-align:top;position:absolute;margin-left:32%;">
                                                                         <div class="text-center" style="width:100%;">
-                                                                            <p class="ptitle_grey" style="margin-bottom:0px !important;">Allergies/Sensitivities</p>
+                                                                            <p class="ptitle_grey" style="margin-bottom:0px !important;">Food Allergies</p>
                                                                         </div>
                                                                         <div class="borderB" style="height:100px;">
                                                                             @{

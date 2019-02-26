@@ -13,6 +13,10 @@ namespace QolaMVC.Models
         public string Assessed_Full { get; set; }
         public string LevelOfCare { get; set; }
         public string LevelOfCare_Full { get; set; }
+
+        public string MedicalHistory { get; set; }
+        public string CurrentDiagnosis { get; set; }
+
         public CarePlanVitalSignsModel VitalSigns { get; set; }
         public CarePlanPersonalHygieneModel PersonalHygiene { get; set; }
         public CarePlanAssistanceWithModel AssistanceWith { get; set; }

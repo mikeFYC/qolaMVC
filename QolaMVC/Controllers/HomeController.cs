@@ -1866,7 +1866,7 @@ namespace QolaMVC.Controllers
 
             if (p_Model.DNRStatusIndex == true) p_Model.DNRStatus = 'Y';
             if (p_Model.FullCodeStatusIndex == true)  p_Model.FullCodeStatus = 'Y';
-            if (p_Model.AHR_index == true) p_Model.AHR = 'Y';
+            if (p_Model.AHS_index == true) p_Model.AHS = 'Y';
 
             foreach (PropertyInfo prop in typeof(ResidentModel).GetProperties())
             {

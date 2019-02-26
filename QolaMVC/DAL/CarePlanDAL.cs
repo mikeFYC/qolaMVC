@@ -28,6 +28,8 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@LevelOfCare", p_Model.LevelOfCare);
                 l_Cmd.Parameters.AddWithValue("@CompleteStatus", p_Model.CompleteStatus);
                 l_Cmd.Parameters.AddWithValue("@EnteredBy", p_Model.EnteredBy.ID);
+                l_Cmd.Parameters.AddWithValue("@MedicalHistory", p_Model.MedicalHistory);
+                l_Cmd.Parameters.AddWithValue("@CurrentDiagnosis", p_Model.CurrentDiagnosis);
                 DataSet dataReceive = new DataSet();
 
                 l_DA.SelectCommand = l_Cmd;
@@ -553,6 +555,8 @@ namespace QolaMVC.DAL
                         l_Assessment.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
                         l_Assessment.Assessed = Convert.ToString(dataReceive.Tables[0].Rows[index]["Assessed"]);
                         l_Assessment.LevelOfCare = Convert.ToString(dataReceive.Tables[0].Rows[index]["LevelOfCare"]);
+                        l_Assessment.MedicalHistory = Convert.ToString(dataReceive.Tables[0].Rows[index]["MedicalHistory"]);
+                        l_Assessment.CurrentDiagnosis = Convert.ToString(dataReceive.Tables[0].Rows[index]["CurrentDiagnosis"]);
                         l_Assessment.CompleteStatus = Convert.ToString(dataReceive.Tables[0].Rows[index]["CompleteStatus"]);
                         l_Resident.ID = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
                         l_Assessment.Resident = l_Resident;
