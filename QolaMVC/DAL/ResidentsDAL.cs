@@ -2679,10 +2679,10 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static Collection<int> GetAvailableSuitesNumber(int homeId, DateTime dateinput, int occupancynumber)
+        public static Collection<string> GetAvailableSuitesNumber(int homeId, DateTime dateinput, int occupancynumber)
         {
             string exception = string.Empty;
-            Collection<int> residents = new Collection<int>();
+            Collection<string> residents = new Collection<string>();
             SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
 
             SqlDataAdapter l_DA = new SqlDataAdapter();
@@ -2698,9 +2698,10 @@ namespace QolaMVC.DAL
             for (int i = 0; i <= residentReceive.Rows.Count - 1; i++)
             {
                 var cell = residentReceive.Rows[i][0];
-                if (int.TryParse(cell.ToString(), out int n) == true)
-                    residents.Add(int.Parse(cell.ToString()));
-                
+                //if (int.TryParse(cell.ToString(), out int n) == true)
+                //    residents.Add(int.Parse(cell.ToString()));
+                residents.Add(cell.ToString());
+
             }
             return residents;
             

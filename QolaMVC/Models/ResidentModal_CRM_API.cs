@@ -48,8 +48,33 @@ namespace QolaMVC.Models
         public string Contact2Phone { get; set; }
         public string Contact2Email { get; set; }
 
-        public string Community { get; set; }
-        public string CommunityNote { get; set; }
+        public int Occupancy { get; set; }
+        public DateTime MoveInDate { get; set; }
+        public string Financing { get; set; }
+        public string Prospect2FirstName { get; set; }
+        public string Prospect2LastName { get; set; }
+        public string Prospect2DateOfBirth { get; set; }
+        public string Prospect2MartialStatus { get; set; }
+        public string Prospect2Relationship { get; set; }
+        public string Prospect2Finance { get; set; }
+        public List<ProspectAssessment> ProspectAssessments { get; set; }
 
+        public DateTime DateofContract { get; set; }
+        public string TypesofInquiry { get; set; }
+        public string Market { get; set; }
+        public string ThirdPartyAgency  { get; set; }
+        public string PrimaryContact { get; set; }
+        public string ProspectType { get; set; }
+
+        public string Contact1Relationship { get; set; }
+        public string Contact2Relationship { get; set; }
+
+    }
+
+
+    public class ProspectAssessment
+    {
+        public string Question { get; set; }
+        public string Answer { get; set; }
     }
 }
