@@ -2781,13 +2781,27 @@ namespace QolaMVC.DAL
             };
             AAA.MarketResourceList = new[]{
                 new SelectListItem { Value = "", Text = "-- Select --" },
-                new SelectListItem { Value = "aa", Text = "aa" },
-                new SelectListItem { Value = "bb", Text = "bb" },
-                new SelectListItem { Value = "cc", Text = "cc" },
-                new SelectListItem { Value = "dd", Text = "dd" },
-                new SelectListItem { Value = "ee", Text = "ee" },
-                new SelectListItem { Value = "ff", Text = "ff" },
-                new SelectListItem { Value = "gg", Text = "gg" },
+                new SelectListItem { Value = "APFM", Text = "APFM" },
+                new SelectListItem { Value = "Building Signage", Text = "Building Signage" },
+                new SelectListItem { Value = "Community Poster", Text = "Community Poster" },
+                new SelectListItem { Value = "Direct Mail", Text = "Direct Mail" },
+                new SelectListItem { Value = "Facebook", Text = "Facebook" },
+                new SelectListItem { Value = "Google", Text = "Google" },
+                new SelectListItem { Value = "Hospital", Text = "Hospital" },
+                new SelectListItem { Value = "Kiosk", Text = "Kiosk" },
+                new SelectListItem { Value = "Newspaper Ad", Text = "Newspaper Ad" },
+                new SelectListItem { Value = "Not Sure/Don’t Know", Text = "Not Sure/Don’t Know" },
+                new SelectListItem { Value = "Other", Text = "Other" },
+                new SelectListItem { Value = "Other Paid", Text = "Other Paid" },
+                new SelectListItem { Value = "Outdoor Ads", Text = "Outdoor Ads" },
+                new SelectListItem { Value = "Radio Ad", Text = "Radio Ad" },
+                new SelectListItem { Value = "Regional Health Service", Text = "Regional Health Service" },
+                new SelectListItem { Value = "Resident", Text = "Resident" },
+                new SelectListItem { Value = "Seniors Zen", Text = "Seniors Zen" },
+                new SelectListItem { Value = "Sponsored Event", Text = "Sponsored Event" },
+                new SelectListItem { Value = "Staff", Text = "Staff" },
+                new SelectListItem { Value = "TV Ad", Text = "TV Ad" },
+                new SelectListItem { Value = "Website", Text = "Website" }
             };
 
 
