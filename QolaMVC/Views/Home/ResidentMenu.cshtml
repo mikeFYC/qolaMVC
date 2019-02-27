@@ -1051,12 +1051,18 @@
                                                                     <div class="text-center" style="width:100%;">
                                                                         <p class="ptitle_grey">Allergies</p>
                                                                     </div>
-                                                                    <div class="borderB" style="height:140px;">
-                                                                        @{
-                                                                            var foodallergy = @ViewBag.careplan.Nutrition.Allergies.ToString().replace("||", ";");
-                                                                        }
-                                                                        <textarea class="pcontent" style="width:98% !important;overflow:hidden;height:auto;border:none;">@foodallergy</textarea>
+                                                                    @{
+                                                                        var foodallergy = @ViewBag.careplan.Nutrition.Allergies.ToString().Replace("||", ",");
+                                                                        var mediallergy = @ViewBag.careplan.Medication.Allergies.ToString().Replace("||", ",");
+
+                                                                    }
+                                                                    <div class="borderB" style="height:70px;">
+                                                                        <p class="pcontent" style="width:98% !important;overflow:hidden;height:auto;border:none;"><b>Food:</b> <br/>@foodallergy</p>
                                                                     </div>
+                                                                    <div class="borderB" style="height:70px;">
+                                                                        <p class="pcontent" style="width:98% !important;overflow:hidden;height:auto;border:none;"><b>Medical:</b> <br/>@mediallergy</p>
+                                                                    </div>
+
                                                                     <div class="text-center" style="width:100%;">
                                                                         <p class="ptitle_grey">Physician</p>
                                                                     </div>
@@ -1892,7 +1898,14 @@
                                                                                     {
                                                                                         if (nutri_allergy[a] != "")
                                                                                         {
-                                                                                            str4 = str4 + nutri_allergy[a] + ": " + nutri_allergy[a + 1] + "; ";
+                                                                                            if (nutri_allergy[a + 1] == "")
+                                                                                            {
+                                                                                                str4 = str4 + nutri_allergy[a] + "; ";
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                str4 = str4 + nutri_allergy[a] + ": " + nutri_allergy[a + 1] + "; ";
+                                                                                            }
                                                                                         }
                                                                                     }
                                                                                 }

@@ -682,7 +682,7 @@ namespace QolaMVC.DAL
                         l_Assessment.Medication.CompletedBy = Convert.ToString(dataReceive.Tables[0].Rows[index]["CompletedBy"]);
                         l_Assessment.Medication.Agency = Convert.ToString(dataReceive.Tables[0].Rows[index]["Agency"]);
                         l_Assessment.Medication.Pharmacy = Convert.ToString(dataReceive.Tables[0].Rows[index]["Pharmacy"]);
-                        l_Assessment.Medication.Allergies = Convert.ToString(dataReceive.Tables[0].Rows[index]["Allergies"]);
+                        l_Assessment.Medication.Allergies = Convert.ToString(dataReceive.Tables[0].Rows[index]["medical_Allergies"]);
 
                         l_Assessment.SensoryAbilities.Vision = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Vision"]));
                         l_Assessment.SensoryAbilities.Hearing = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Hearing"]));
