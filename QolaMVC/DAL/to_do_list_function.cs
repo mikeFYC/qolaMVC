@@ -268,7 +268,8 @@ namespace QolaMVC.DAL
                                 " and SSH.fd_move_in_date is not null" +
                                 " and GETDATE() < isNULL(SSH.fd_move_out_date, '2200-09-01')" +
                                 " and isNULL(SSH.fd_hospital,'')!='Y'" +
-                                " and SSH.fd_resident_id not in (select distinct ResidentId from [dbo].[tbl_AB_DietaryAssessment])";
+                                " and SSH.fd_resident_id not in (select distinct ResidentId from [dbo].[tbl_AB_DietaryAssessment])"+
+                                " and R.AHS='Y' ";
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
             if (rd.HasRows)
@@ -308,7 +309,8 @@ namespace QolaMVC.DAL
                                 " on R.fd_id = SSH.fd_resident_id" +
                                 " where SSH.fd_home_id =" + homeid +
                                 " and DATEADD(d, 1, EOMONTH(current_timestamp))<SSH.fd_move_in_date" +
-                                " and SSH.fd_resident_id not in (select distinct ResidentId from [dbo].[tbl_AB_DietaryAssessment])";
+                                " and SSH.fd_resident_id not in (select distinct ResidentId from [dbo].[tbl_AB_DietaryAssessment])"+
+                                " and R.AHS='Y' ";
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
             if (rd.HasRows)
@@ -429,7 +431,8 @@ namespace QolaMVC.DAL
                                 " and SSH.fd_move_in_date is not null" +
                                 " and GETDATE()< isNULL(SSH.fd_move_out_date, '2200-09-01')" +
                                 " and isNULL(SSH.fd_hospital,'')!= 'Y'" +
-                                " and SSH.fd_resident_id not in (select distinct ResidentId from[dbo].[tbl_AB_CarePlan])";
+                                " and SSH.fd_resident_id not in (select distinct ResidentId from[dbo].[tbl_AB_CarePlan])"+
+                                " and (R.AHS != 'Y' or R.AHS is null) ";
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
             if (rd.HasRows)
@@ -466,7 +469,8 @@ namespace QolaMVC.DAL
                                 " on R.fd_id = SSH.fd_resident_id" +
                                 " where SSH.fd_home_id =" + homeid +
                                 " and DATEADD(d, 1, EOMONTH(current_timestamp))< SSH.fd_move_in_date" +
-                                " and SSH.fd_resident_id not in (select distinct ResidentId from[dbo].[tbl_AB_CarePlan])";
+                                " and SSH.fd_resident_id not in (select distinct ResidentId from[dbo].[tbl_AB_CarePlan])"+
+                                " and (R.AHS != 'Y' or R.AHS is null) ";
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
             if (rd.HasRows)
@@ -770,9 +774,10 @@ namespace QolaMVC.DAL
                                 " where SH.fd_home_id =" + homeid +
                                 " and GETDATE()> SH.fd_move_in_date" +
                                 " and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')" +
-                                " and AA.DateEntered > DATEADD(MM, -3, GETDATE())" +
+                                " and AA.DateEntered > DATEADD(MM, -5, GETDATE())" +
                                 " )" +
                                 " and R.fd_id in (select distinct ResidentId from [tbl_AB_DietaryAssessment])" +
+                                " and R.AHS = 'Y' " +
                                 " group by SSH.fd_resident_id,SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date";
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
@@ -828,9 +833,10 @@ namespace QolaMVC.DAL
                                 " where SH.fd_home_id =" + homeid +
                                 " and GETDATE()> SH.fd_move_in_date" +
                                 " and GETDATE()< isNULL(SH.fd_move_out_date, '2200-09-01')" +
-                                " and AA.DateEntered > DATEADD(MM,-3,DATEADD(d, 1, EOMONTH(current_timestamp)))" +
+                                " and AA.DateEntered > DATEADD(MM,-5,DATEADD(d, 1, EOMONTH(current_timestamp)))" +
                                 " )" +
                                 " and R.fd_id in (select distinct ResidentId from [tbl_AB_DietaryAssessment])" +
+                                " and R.AHS = 'Y' " +
                                 " group by SSH.fd_resident_id,SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date";
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
@@ -1006,6 +1012,7 @@ namespace QolaMVC.DAL
                                 " and AA.DateEntered > DATEADD(MM, -5, GETDATE())" +
                                 " ) " +
                                 " and R.fd_id in (select distinct ResidentId from[tbl_AB_CarePlan])" +
+                                " and (R.AHS != 'Y' or R.AHS is null) " +
                                 " group by SSH.fd_resident_id,SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date; ";
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
@@ -1065,6 +1072,7 @@ namespace QolaMVC.DAL
                                 " and AA.DateEntered > DATEADD(MM,-5,DATEADD(d, 1, EOMONTH(current_timestamp)))" +
                                 " ) " +
                                 " and R.fd_id in (select distinct ResidentId from[tbl_AB_CarePlan])" +
+                                " and (R.AHS != 'Y' or R.AHS is null) " +
                                 " group by SSH.fd_resident_id,SSH.fd_suite_no, R.fd_first_name, R.fd_last_name, SSH.fd_move_in_date; ";
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();

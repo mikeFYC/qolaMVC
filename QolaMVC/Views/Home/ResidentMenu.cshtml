@@ -1052,9 +1052,16 @@
                                                                         <p class="ptitle_grey">Allergies</p>
                                                                     </div>
                                                                     @{
-                                                                        var foodallergy = @ViewBag.careplan.Nutrition.Allergies.ToString().Replace("||", ",");
-                                                                        var mediallergy = @ViewBag.careplan.Medication.Allergies.ToString().Replace("||", ",");
-
+                                                                        var mediallergy = "";
+                                                                        var foodallergy = "";
+                                                                        if (@ViewBag.careplan.Nutrition.Allergies != null)
+                                                                        {
+                                                                            foodallergy = @ViewBag.careplan.Nutrition.Allergies.ToString().Replace("||", ",");
+                                                                        }
+                                                                        if (@ViewBag.careplan.Medication.Allergies != null)
+                                                                        {
+                                                                            mediallergy = @ViewBag.careplan.Medication.Allergies.ToString().Replace("||", ",");
+                                                                        }
                                                                     }
                                                                     <div class="borderB" style="height:70px;">
                                                                         <p class="pcontent" style="width:98% !important;overflow:hidden;height:auto;border:none;"><b>Food:</b> <br/>@foodallergy</p>
