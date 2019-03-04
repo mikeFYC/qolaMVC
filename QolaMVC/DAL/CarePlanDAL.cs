@@ -30,6 +30,11 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@EnteredBy", p_Model.EnteredBy.ID);
                 l_Cmd.Parameters.AddWithValue("@MedicalHistory", p_Model.MedicalHistory);
                 l_Cmd.Parameters.AddWithValue("@CurrentDiagnosis", p_Model.CurrentDiagnosis);
+                l_Cmd.Parameters.AddWithValue("@HealthCardNumber", p_Model.HealthCardNumber);
+                l_Cmd.Parameters.AddWithValue("@InsuranceCompany", p_Model.InsuranceCompany);
+                l_Cmd.Parameters.AddWithValue("@ContactNumber", p_Model.ContactNumber);
+                l_Cmd.Parameters.AddWithValue("@GroupNumber", p_Model.GroupNumber);
+                l_Cmd.Parameters.AddWithValue("@FuneralArrangements", p_Model.FuneralArrangements);
                 DataSet dataReceive = new DataSet();
 
                 l_DA.SelectCommand = l_Cmd;
@@ -557,6 +562,11 @@ namespace QolaMVC.DAL
                         l_Assessment.LevelOfCare = Convert.ToString(dataReceive.Tables[0].Rows[index]["LevelOfCare"]);
                         l_Assessment.MedicalHistory = Convert.ToString(dataReceive.Tables[0].Rows[index]["MedicalHistory"]);
                         l_Assessment.CurrentDiagnosis = Convert.ToString(dataReceive.Tables[0].Rows[index]["CurrentDiagnosis"]);
+                        l_Assessment.HealthCardNumber = Convert.ToString(dataReceive.Tables[0].Rows[index]["HealthCardNumber"]);
+                        l_Assessment.InsuranceCompany = Convert.ToString(dataReceive.Tables[0].Rows[index]["InsuranceCompany"]);
+                        l_Assessment.ContactNumber = Convert.ToString(dataReceive.Tables[0].Rows[index]["ContactNumber"]);
+                        l_Assessment.GroupNumber = Convert.ToString(dataReceive.Tables[0].Rows[index]["GroupNumber"]);
+                        l_Assessment.FuneralArrangements = Convert.ToString(dataReceive.Tables[0].Rows[index]["FuneralArrangements"]);
                         l_Assessment.CompleteStatus = Convert.ToString(dataReceive.Tables[0].Rows[index]["CompleteStatus"]);
                         l_Resident.ID = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
                         l_Assessment.Resident = l_Resident;

@@ -16,20 +16,16 @@ namespace QolaMVC.Controllers
         // GET: qolabridge
         public void Index()
         {
-            SHA256 mySHA256 = SHA256Managed.Create();
-            byte[] AESkey = mySHA256.ComputeHash(Encoding.Default.GetBytes("KyFe&64F0"));
-            byte[] AESIV = new byte[16] { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 };
-
             if (Request.UrlReferrer.Authority == "qola.ca" || Request.UrlReferrer.Authority == "localhost:56272")
             {
-                PostDataToCRM(AESkey, AESIV);
+                PostDataToCRM();
             }
             else if (Request.UrlReferrer.Authority == "crm.qola.ca")
             {
                 if (Request.Form.Count > 0)
                 {
                     string before_decoder = Request.Form["action_type"];
-                    string ActionType = DecryptAesManaged(before_decoder, AESkey, AESIV);
+                    string ActionType = AES256.DecryptText(before_decoder);
                     if (ActionType == "Logout")
                     {
                         ProcessLogOutQola();
@@ -41,13 +37,13 @@ namespace QolaMVC.Controllers
                         string qola_sessionid = "";
 
                         if (Request.Form["Destination_page"]!=null)
-                            Destination_page = DecryptAesManaged(Request.Form["Destination_page"], AESkey, AESIV);
+                            Destination_page = AES256.DecryptText(Request.Form["Destination_page"]);
 
                         if (Request.Form["user_id"] != null)
-                            user_id = Int32.Parse(DecryptAesManaged(Request.Form["user_id"], AESkey, AESIV));
+                            user_id = Int32.Parse(AES256.DecryptText(Request.Form["user_id"]));
 
                         if (Request.Form["user_id"] != null)
-                            qola_sessionid = DecryptAesManaged(Request.Form["qola_sessionid"], AESkey, AESIV);
+                            qola_sessionid = AES256.DecryptText(Request.Form["qola_sessionid"]);
 
                         ProcessRedirect(user_id, Destination_page);
                     }
@@ -56,7 +52,7 @@ namespace QolaMVC.Controllers
 
         }
 
-        protected void PostDataToCRM(byte[] AESkey, byte[] AESIV)
+        protected void PostDataToCRM()
         {
             var user = (UserModel)TempData["User"];
             var home = (HomeModel)TempData["Home"];
@@ -65,19 +61,17 @@ namespace QolaMVC.Controllers
             ViewBag.User = user;
             ViewBag.Home = home;
             string sessionID = HttpContext.Session.SessionID;
-            //string a = EncryptAesManaged("1", AESkey, AESIV);
-            //string b = DecryptAesManaged(a, AESkey, AESIV);
 
             string remoteUrl = "https://crmtest.qola.ca/crm-bridge/auth/login ";
             Dictionary<string, string> collections = new Dictionary<string, string>();
-            collections.Add("qola_sessionid", EncryptAesManaged(sessionID, AESkey, AESIV));
-            collections.Add("user_id", EncryptAesManaged(user.ID.ToString(), AESkey, AESIV));
-            collections.Add("user_name", EncryptAesManaged(user.UserName, AESkey, AESIV));
-            collections.Add("first_name", EncryptAesManaged(user.FirstName, AESkey, AESIV));
-            collections.Add("last_name", EncryptAesManaged(user.LastName, AESkey, AESIV));
-            collections.Add("home_id", EncryptAesManaged(home.Id.ToString(), AESkey, AESIV));
-            collections.Add("email", EncryptAesManaged(user.Email, AESkey, AESIV));
-            collections.Add("designation_id", EncryptAesManaged(user.UserType.ToString(), AESkey, AESIV));
+            collections.Add("qola_sessionid", AES256.EncryptText(sessionID));
+            collections.Add("user_id", AES256.EncryptText(user.ID.ToString()));
+            collections.Add("user_name", AES256.EncryptText(user.UserName));
+            collections.Add("first_name", AES256.EncryptText(user.FirstName));
+            collections.Add("last_name", AES256.EncryptText(user.LastName));
+            collections.Add("home_id", AES256.EncryptText(home.Id.ToString()));
+            collections.Add("email", AES256.EncryptText(user.Email));
+            collections.Add("designation_id", AES256.EncryptText(user.UserType.ToString()));
 
             string html = "<html><head>";
             html += "</head><body onload='document.forms[0].submit()'>";
@@ -127,106 +121,113 @@ namespace QolaMVC.Controllers
             Response.End();
         }
 
-        static string EncryptAesManaged(string raw,byte[] key,byte[] iv)
+
+
+    }
+
+
+    public class AES256
+    {
+        protected static string _encKey = "KyFe&64F0";
+        public static string EncryptText(string input)
         {
-            // Create Aes that generates a new key and initialization vector (IV).    
-            // Same key must be used in encryption and decryption    
-            using (AesManaged aes = new AesManaged())
-            {
-                aes.KeySize = 256;
-                aes.Key = key;
-                aes.IV = iv;
-                // Encrypt string   
-                byte[] encrypted = Encrypt(raw, aes.Key, aes.IV);
-                // Print encrypted string   
-                //string S = Encoding.Default.GetString(encrypted);
-                string S = Convert.ToBase64String(encrypted);
+            // Get the bytes of the string
+            byte[] bytesToBeEncrypted = Encoding.UTF8.GetBytes(input);
+            byte[] passwordBytes = Encoding.UTF8.GetBytes(_encKey);
 
-                //byte[] B = Encoding.Default.GetBytes(S);
+            // Hash the password with SHA256
+            passwordBytes = SHA256.Create().ComputeHash(passwordBytes);
 
-                return S;
-                // Decrypt the bytes to a string.    
-                //string decrypted = Decrypt(encrypted, aes.Key, aes.IV);
-                // Print decrypted string. It should be same as raw data    
-                //Console.WriteLine("Decrypted data: {decrypted}");
-            }
+            byte[] bytesEncrypted = AES_Encrypt(bytesToBeEncrypted, passwordBytes);
 
+            string result = Convert.ToBase64String(bytesEncrypted);
+
+            return result;
         }
-        static string DecryptAesManaged(string raw, byte[] key, byte[] iv)
-        {
-            // Create Aes that generates a new key and initialization vector (IV).    
-            // Same key must be used in encryption and decryption    
-            using (AesManaged aes = new AesManaged())
-            {
-                aes.KeySize = 256;
-                aes.Key = key;
-                aes.IV = iv;
-                // Encrypt string    
-                byte[] encrypted = Convert.FromBase64String(raw);
-                // Print encrypted string    
-                //return System.Text.Encoding.UTF8.GetString(encrypted);
-                // Decrypt the bytes to a string.    
-                string decrypted = Decrypt(encrypted, aes.Key, aes.IV);
-                // Print decrypted string. It should be same as raw data    
-                return decrypted;
-            }
 
-        }
-        static byte[] Encrypt(string plainText, byte[] Key, byte[] IV)
+        public static string DecryptText(string input)
         {
-            byte[] encrypted;
-            // Create a new AesManaged.    
-            using (AesManaged aes = new AesManaged())
+            // Get the bytes of the string
+            byte[] bytesToBeDecrypted = Convert.FromBase64String(input);
+            byte[] passwordBytes = Encoding.UTF8.GetBytes(_encKey);
+            passwordBytes = SHA256.Create().ComputeHash(passwordBytes);
+
+            byte[] bytesDecrypted = AES_Decrypt(bytesToBeDecrypted, passwordBytes);
+
+            string result = Encoding.UTF8.GetString(bytesDecrypted);
+
+            return result;
+        }
+
+        private static byte[] AES_Encrypt(byte[] bytesToBeEncrypted, byte[] passwordBytes)
+        {
+            byte[] encryptedBytes = null;
+
+            // Set your salt here, change it to meet your flavor:
+            // The salt bytes must be at least 8 bytes.
+            byte[] saltBytes = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 };
+
+            using (MemoryStream ms = new MemoryStream())
             {
-                // Create encryptor    
-                ICryptoTransform encryptor = aes.CreateEncryptor(Key, IV);
-                // Create MemoryStream    
-                using (MemoryStream ms = new MemoryStream())
+                using (RijndaelManaged AES = new RijndaelManaged())
                 {
-                    // Create crypto stream using the CryptoStream class. This class is the key to encryption    
-                    // and encrypts and decrypts data from any given stream. In this case, we will pass a memory stream    
-                    // to encrypt    
-                    using (CryptoStream cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write))
+                    AES.KeySize = 256;
+                    AES.BlockSize = 128;
+
+                    var key = new Rfc2898DeriveBytes(passwordBytes, saltBytes, 1000);
+                    AES.Key = key.GetBytes(AES.KeySize / 8);
+                    AES.IV = key.GetBytes(AES.BlockSize / 8);
+
+                    AES.Mode = CipherMode.CBC;
+
+                    using (var cs = new CryptoStream(ms, AES.CreateEncryptor(), CryptoStreamMode.Write))
                     {
-                        // Create StreamWriter and write data to a stream    
-                        using (StreamWriter sw = new StreamWriter(cs))
-                            sw.Write(plainText);
-                        encrypted = ms.ToArray();
+                        cs.Write(bytesToBeEncrypted, 0, bytesToBeEncrypted.Length);
+                        cs.Close();
                     }
+                    encryptedBytes = ms.ToArray();
                 }
             }
-            // Return encrypted data    
-            return encrypted;
+
+            return encryptedBytes;
+            //end public byte[] AES_Encrypt
         }
-        static string Decrypt(byte[] cipherText, byte[] Key, byte[] IV)
+
+        private static byte[] AES_Decrypt(byte[] bytesToBeDecrypted, byte[] passwordBytes)
         {
-            string plaintext = null;
-            // Create AesManaged    
-            using (AesManaged aes = new AesManaged())
+            byte[] decryptedBytes = null;
+
+            // Set your salt here, change it to meet your flavor:
+            // The salt bytes must be at least 8 bytes.
+            byte[] saltBytes = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 };
+
+            using (MemoryStream ms = new MemoryStream())
             {
-                // Create a decryptor    
-                ICryptoTransform decryptor = aes.CreateDecryptor(Key, IV);
-                // Create the streams used for decryption.    
-                using (MemoryStream ms = new MemoryStream(cipherText))
+                using (RijndaelManaged AES = new RijndaelManaged())
                 {
-                    // Create crypto stream    
-                    using (CryptoStream cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read))
+                    AES.KeySize = 256;
+                    AES.BlockSize = 128;
+
+                    var key = new Rfc2898DeriveBytes(passwordBytes, saltBytes, 1000);
+                    AES.Key = key.GetBytes(AES.KeySize / 8);
+                    AES.IV = key.GetBytes(AES.BlockSize / 8);
+
+                    AES.Mode = CipherMode.CBC;
+
+                    using (var cs = new CryptoStream(ms, AES.CreateDecryptor(), CryptoStreamMode.Write))
                     {
-                        // Read crypto stream    
-                        using (StreamReader reader = new StreamReader(cs))
-                            plaintext = reader.ReadToEnd();
+                        cs.Write(bytesToBeDecrypted, 0, bytesToBeDecrypted.Length);
+                        cs.Close();
                     }
+                    decryptedBytes = ms.ToArray();
                 }
+                //end public byte[] AES_Decrypt
             }
-            return plaintext;
+
+            return decryptedBytes;
         }
 
-
-
-
-
-
-
+        //end class SimpleAES
     }
 
 
