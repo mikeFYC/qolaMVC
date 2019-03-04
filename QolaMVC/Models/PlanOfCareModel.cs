@@ -16,6 +16,11 @@ namespace QolaMVC.Models
 
         public string MedicalHistory { get; set; }
         public string CurrentDiagnosis { get; set; }
+        public string HealthCardNumber { get; set; }
+        public string InsuranceCompany { get; set; }
+        public string ContactNumber { get; set; }
+        public string GroupNumber { get; set; }
+        public string FuneralArrangements { get; set; }
 
         public CarePlanVitalSignsModel VitalSigns { get; set; }
         public CarePlanPersonalHygieneModel PersonalHygiene { get; set; }

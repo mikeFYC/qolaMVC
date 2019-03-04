@@ -17,7 +17,7 @@ namespace QolaMVC.Controllers
         public void Index()
         {
             SHA256 mySHA256 = SHA256Managed.Create();
-            byte[] AESkey = mySHA256.ComputeHash(Encoding.Default.GetBytes("xxxxxxxxxx"));
+            byte[] AESkey = mySHA256.ComputeHash(Encoding.Default.GetBytes("KyFe&64F0"));
             byte[] AESIV = new byte[16] { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 };
 
             if (Request.UrlReferrer.Authority == "qola.ca" || Request.UrlReferrer.Authority == "localhost:56272")
@@ -64,13 +64,13 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             ViewBag.User = user;
             ViewBag.Home = home;
-
+            string sessionID = HttpContext.Session.SessionID;
             //string a = EncryptAesManaged("1", AESkey, AESIV);
             //string b = DecryptAesManaged(a, AESkey, AESIV);
 
-            string remoteUrl = "https://crm.qola.ca/CRMBridge";
+            string remoteUrl = "https://crmtest.qola.ca/crm-bridge/auth/login ";
             Dictionary<string, string> collections = new Dictionary<string, string>();
-            collections.Add("qola_sessionid", EncryptAesManaged("1", AESkey, AESIV));
+            collections.Add("qola_sessionid", EncryptAesManaged(sessionID, AESkey, AESIV));
             collections.Add("user_id", EncryptAesManaged(user.ID.ToString(), AESkey, AESIV));
             collections.Add("user_name", EncryptAesManaged(user.UserName, AESkey, AESIV));
             collections.Add("first_name", EncryptAesManaged(user.FirstName, AESkey, AESIV));
@@ -139,8 +139,10 @@ namespace QolaMVC.Controllers
                 // Encrypt string   
                 byte[] encrypted = Encrypt(raw, aes.Key, aes.IV);
                 // Print encrypted string   
-                string S = Encoding.Default.GetString(encrypted);
-                byte[] B = Encoding.Default.GetBytes(S);
+                //string S = Encoding.Default.GetString(encrypted);
+                string S = Convert.ToBase64String(encrypted);
+
+                //byte[] B = Encoding.Default.GetBytes(S);
 
                 return S;
                 // Decrypt the bytes to a string.    
@@ -160,7 +162,7 @@ namespace QolaMVC.Controllers
                 aes.Key = key;
                 aes.IV = iv;
                 // Encrypt string    
-                byte[] encrypted = Encoding.Default.GetBytes(raw);
+                byte[] encrypted = Convert.FromBase64String(raw);
                 // Print encrypted string    
                 //return System.Text.Encoding.UTF8.GetString(encrypted);
                 // Decrypt the bytes to a string.    

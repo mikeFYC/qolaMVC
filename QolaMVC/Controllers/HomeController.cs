@@ -866,7 +866,6 @@ namespace QolaMVC.Controllers
         }
 
 
-
         public ActionResult Index()
         {
             //var context = Request.GetOwinContext();

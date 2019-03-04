@@ -1728,7 +1728,5 @@ namespace QolaMVC.DAL
             return l_J;
         }
 
-
-
     }
 }

@@ -1010,7 +1010,30 @@ namespace QolaMVC.DAL
 
 
 
-
+        public static List<UserModel> mike_test()
+        {
+            List<UserModel> GGS = new List<UserModel>();
+            UserModel GG;
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = "data source=LAPTOP-CPN90309\\SQLEXPRESS;initial catalog=QOLAProductionFinal;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework";
+            conn.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = "select * from tableA";
+            cmd.Connection = conn;
+            SqlDataReader rd = cmd.ExecuteReader();
+            if (rd.HasRows)
+                while (rd.Read())
+                {
+                    GG = new UserModel();
+                    GG.ID = Int32.Parse(rd["id"].ToString());
+                    GG.Name = rd["name"].ToString();
+                    GG.ModifiedBy = Int32.Parse(rd["age"].ToString());
+                    GG.UserName = rd["grade"].ToString();
+                    GGS.Add(GG);
+                }
+            conn.Close();
+            return GGS;
+        }
 
 
 
