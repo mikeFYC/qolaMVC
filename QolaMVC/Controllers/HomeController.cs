@@ -1818,26 +1818,6 @@ namespace QolaMVC.Controllers
             ViewBag.User = user;
             ViewBag.Home = home;
 
-
-            TempData["tab1class"] = "nav-link active";
-            TempData["tab4class"] = "nav-link";
-            TempData["body1class"] = "tab-pane fade show active";
-            TempData["body4class"] = "tab-pane fade";
-
-            if (TempData["level"]!=null)
-            {
-                TempData["tab1class"] = "nav-link";
-                TempData["tab4class"] = "nav-link active";
-                TempData["body1class"] = "tab-pane fade";
-                TempData["body4class"] = "tab-pane fade show active";
-            }
-
-            if (TempData["ResidentID"] != null)
-            {
-                TempData.Keep("ResidentID");
-            }
-
-
             ResidentModel AA = new ResidentModel();
             ResidentsDAL.SetUp_ResidentModel_ListItems(AA);
 
@@ -1963,11 +1943,6 @@ namespace QolaMVC.Controllers
             p_Model.SuiteIds= SuiteDAL.GetSuiteID_By_SuiteNo_and_Homeid(p_Model.SuiteNo, home.Id);
 
             ResidentsDAL.SetUp_ResidentModel_ListItems(p_Model);
-            if (Sub == "Submit/Next")
-            {
-                TempData["level"] = "LAST";
-                TempData.Keep("level");
-            }
 
             p_Model.ModifiedBy = user;
             p_Model.ModifiedOn = DateTime.Now;
@@ -2012,15 +1987,11 @@ namespace QolaMVC.Controllers
                 }
             }
 
-
-            TempData["ResidentID"] = RR[0];
-            TempData.Keep("ResidentID");
-
             //ResidentsDAL.update_checklist(user.ID,RR[0]);
             TempData["p_Model"] = p_Model;
             TempData.Keep("p_Model");
 
-            return RedirectToAction("AddNewResident");
+            return RedirectToAction("ResidentMenu",new { p_ResidentId= RR[0] });
         }
 
 
@@ -6143,6 +6114,7 @@ namespace QolaMVC.Controllers
             }
 
             ResidentsDAL.UpdateResidentGeneralInfo1(postdata);
+
 
             return Json(new { msg = "Successfully added "});
         }
