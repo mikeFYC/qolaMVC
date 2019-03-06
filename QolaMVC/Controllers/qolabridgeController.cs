@@ -16,7 +16,7 @@ namespace QolaMVC.Controllers
         // GET: qolabridge
         public void Index()
         {
-            if (Request.UrlReferrer.Authority == "qola.ca" || Request.UrlReferrer.Authority == "localhost:56272")
+            if (Request.UrlReferrer.Authority == "2.qola.ca" || Request.UrlReferrer.Authority == "localhost:56272")
             {
                 PostDataToCRM();
             }
