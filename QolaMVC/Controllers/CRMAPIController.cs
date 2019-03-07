@@ -143,6 +143,7 @@ namespace QolaMVC.Controllers
             object[] resultArray = new object[2];
 
             ResidentModel p_Model = new ResidentModel();
+            ResidentModel p_Model2 = new ResidentModel();
 
             p_Model.Home = new HomeModel();
             p_Model.Home.Id = InputModal.FacilityId;
@@ -216,7 +217,6 @@ namespace QolaMVC.Controllers
 
             if (InputModal.Prospect2FirstName != null && InputModal.Prospect2FirstName != "")
             {
-                ResidentModel p_Model2 = new ResidentModel();
 
                 p_Model2.Home = new HomeModel();
                 p_Model2.Home.Id = InputModal.FacilityId;
@@ -274,6 +274,23 @@ namespace QolaMVC.Controllers
             }
 
 
+            if (InputModal.ProspectAssessments != null)
+            {
+                if (InputModal.ProspectAssessments.Count() > 0)
+                {
+                    foreach (var single in InputModal.ProspectAssessments)
+                    {
+                        add_PN_for_ProspectAssessments(RR[0], DateTime.Now, "Question:"+single.Question+"; Answers:"+single.Answer+";", p_Model.ModifiedBy.ID, DateTime.Now);
+
+                        if (RR2[0] > 0)
+                        {
+                            add_PN_for_ProspectAssessments(RR2[0], DateTime.Now, "Question:" + single.Question + "; Answers:" + single.Answer + ";", p_Model.ModifiedBy.ID, DateTime.Now);
+                        }
+                            
+                    }
+                }
+            }
+
 
             if (RR[0] > 0 && result1 == true && result2 == true && result3 == true)
             {
@@ -289,7 +306,36 @@ namespace QolaMVC.Controllers
             return resultArray;
         }
 
+        public static int add_PN_for_ProspectAssessments(int residentid, DateTime dateselect, string note, int userid, DateTime modified_time)
+        {
+            try
+            {
+                SqlConnection conn = new SqlConnection();
+                conn.ConnectionString = Constants.ConnectionString.PROD;
+                conn.Open();
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText =
+                        " insert into [dbo].[tbl_Progress_Notes]" +
+                        " (fd_resident_id,fd_date,fd_title,fd_note,fd_status,fd_modified_by,fd_modified_on,fd_category)" +
+                        " values" +
+                        " (@residentid, @date, 'Prospect Assessments', @note, 'A', @userid, @modifieddate, 5)";
+                cmd.Parameters.AddWithValue("@residentid", residentid);
+                cmd.Parameters.AddWithValue("@date", dateselect);
+                cmd.Parameters.AddWithValue("@note", note);
+                cmd.Parameters.AddWithValue("@userid", userid);
+                cmd.Parameters.AddWithValue("@modifieddate", modified_time);
+                cmd.Connection = conn;
+                SqlDataReader rd = cmd.ExecuteReader();
+                conn.Close();
+                return 1;
+            }
+            catch (Exception eee)
+            {
+                return 0;
+            }
 
+
+        }
 
     }
 }
