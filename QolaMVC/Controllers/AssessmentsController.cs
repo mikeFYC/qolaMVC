@@ -2428,6 +2428,12 @@ namespace QolaMVC.Controllers
             }
             TempData.Keep("index");
 
+            if (resident.MaritalStatus == 1) resident.MaritalStatustext = "Married";
+            else if (resident.MaritalStatus == 2) resident.MaritalStatustext = "Widowed";
+            else if (resident.MaritalStatus == 3) resident.MaritalStatustext = "Single";
+            else if (resident.MaritalStatus == 4) resident.MaritalStatustext = "Divorced";
+            else resident.MaritalStatustext = "";
+
             return View(single);
         }
 
@@ -2504,10 +2510,16 @@ namespace QolaMVC.Controllers
             ViewBag.User = user;
             ViewBag.Resident = resident;
             ViewBag.Home = home;
-            
-            if (p_Model.Comment == null) { p_Model.Comment = ""; }
-            if (p_Model.SAE == null) { p_Model.SAE = ""; }
-            foreach(var a in p_Model.ActivityAssessments)
+
+            foreach (PropertyInfo prop in typeof(ActivityAssessmentCollectionViewModel).GetProperties())
+            {
+                if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                {
+                    if (prop.GetValue(p_Model) == null) { prop.SetValue(p_Model, ""); }
+                }
+            }
+
+            foreach (var a in p_Model.ActivityAssessments)
             {
                 if (a.Value == null) { a.Value = ""; }
             }

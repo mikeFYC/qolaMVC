@@ -411,6 +411,21 @@ namespace QolaMVC.DAL
                     l_Model.DateEntered = Convert.ToDateTime(l_Reader["DateEntered"]);
                     l_Model.Comment = Convert.ToString(l_Reader["Comments"]);
                     l_Model.SAE = Convert.ToString(l_Reader["SAE"]);
+                    l_Model.SignificatOther = Convert.ToString(l_Reader["SignificatOther"]);
+                    if (l_Reader["AnniversaryDate"].ToString() == "")
+                    {
+                        l_Model.AnniversaryDate = DateTime.MinValue;
+                    }
+                    else
+                    {
+                        l_Model.AnniversaryDate = Convert.ToDateTime(l_Reader["AnniversaryDate"]);
+                    }
+                    
+                    l_Model.Number_of_children = Convert.ToString(l_Reader["Number_of_children"]);
+                    l_Model.Number_of_grandchildren = Convert.ToString(l_Reader["Number_of_grandchildren"]);
+                    l_Model.OtherLanguage = Convert.ToString(l_Reader["OtherLanguage"]);
+                    l_Model.Vetaran = Convert.ToString(l_Reader["Vetaran"]);
+                    l_Model.VeteranOther = Convert.ToString(l_Reader["VeteranOther"]);
 
                     SqlCommand l_Cmd2 = new SqlCommand("spAB_Get_ActivityAssessmentByAssessmentId", l_Conn);
                     l_Cmd2.CommandType = System.Data.CommandType.StoredProcedure;
@@ -451,8 +466,7 @@ namespace QolaMVC.DAL
                         l_CategoryModel.EnglishName = Convert.ToString(l_CategoryReader["CategoryNameEnglish"]);
                         l_CategoryModel.FrenchName = Convert.ToString(l_CategoryReader["CategoryNameFrench"]);
                         l_CategoryModel.MemoryCareColor = Convert.ToString(l_CategoryReader["MemoryCareColor"]);
-
-                        l_CategoryCollection.Add(l_CategoryModel);
+                        if(l_CategoryModel.Id!=1)   l_CategoryCollection.Add(l_CategoryModel);
                     }
 
                     l_Model.Category = l_CategoryCollection;
@@ -516,8 +530,7 @@ namespace QolaMVC.DAL
                     l_CategoryModel.EnglishName = Convert.ToString(l_CategoryReader["CategoryNameEnglish"]);
                     l_CategoryModel.FrenchName = Convert.ToString(l_CategoryReader["CategoryNameFrench"]);
                     l_CategoryModel.MemoryCareColor = Convert.ToString(l_CategoryReader["MemoryCareColor"]);
-
-                    l_CategoryCollection.Add(l_CategoryModel);
+                    if (l_CategoryModel.Id != 1)    l_CategoryCollection.Add(l_CategoryModel);
                 }
 
                 l_Model.Category = l_CategoryCollection;
@@ -545,6 +558,22 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@EnteredBy", p_EnteredBy);
                 l_Cmd.Parameters.AddWithValue("@Comments", p_Model.Comment);
                 l_Cmd.Parameters.AddWithValue("@SAE", p_Model.SAE);
+                l_Cmd.Parameters.AddWithValue("@SignificatOther", p_Model.SignificatOther);
+                if (p_Model.AnniversaryDate == DateTime.MinValue)
+                {
+                    l_Cmd.Parameters.AddWithValue("@AnniversaryDate", DBNull.Value);
+                }
+                else
+                {
+                    l_Cmd.Parameters.AddWithValue("@AnniversaryDate", p_Model.AnniversaryDate);
+                }
+                
+                l_Cmd.Parameters.AddWithValue("@Number_of_children", p_Model.Number_of_children);
+                l_Cmd.Parameters.AddWithValue("@Number_of_grandchildren", p_Model.Number_of_grandchildren);
+                l_Cmd.Parameters.AddWithValue("@OtherLanguage", p_Model.OtherLanguage);
+                l_Cmd.Parameters.AddWithValue("@Vetaran", p_Model.Vetaran);
+                l_Cmd.Parameters.AddWithValue("@VeteranOther", p_Model.VeteranOther);
+
                 SqlDataReader l_Reader = l_Cmd.ExecuteReader();
 
                 while (l_Reader.Read())

@@ -15,5 +15,13 @@ namespace QolaMVC.Models
 
         public string Comment { get; set; }
         public string SAE { get; set; }
+
+        public string SignificatOther { get; set; }
+        public DateTime AnniversaryDate { get; set; }
+        public string Number_of_children { get; set; }
+        public string Number_of_grandchildren { get; set; }
+        public string OtherLanguage { get; set; }
+        public string Vetaran { get; set; }
+        public string VeteranOther { get; set; }
     }
 }

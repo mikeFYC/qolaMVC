@@ -12,7 +12,7 @@
         max-width: 1000px !important;
     }
     #AA_firstrow label{
-        font-size:1.1vw;
+        font-size:0.9vw;
     }
 
     .table tbody tr td{
@@ -53,97 +53,203 @@
 
                 <div class="card">
                     <div class="card-block">
-                        <div class="row" id="AA_firstrow">
-                            <div class="col-2">
-                                <label for="" class="col-form-label"><b>Resident: </b></label>
-                                <label>@ViewBag.Resident.FirstName @ViewBag.Resident.LastName </label>
-                            </div>
-                            <div class="col-2">
-                                <label for="" class="col-form-label"><b>Suite No: </b></label>
-                                <label>@ViewBag.Resident.SuiteNo</label>
-                            </div>                         
-                            <div class="">
-                                <label for="" class="col-form-label"><b>Assessment History:</b></label>
-                                
-                            </div>
-                            <div class="col-2">
-                                <select class="form-control" name="AssessmentDate" id="selectdate" onchange="formsubmit(this)">
 
-                                    @if (ViewBag.AssessmentDates != null && ViewBag.AssessmentDates[0].ToShortDateString() != "1/1/0001")
-                                    {
-                                        for (var ind = 0; ind < ((List<DateTime>)ViewBag.AssessmentDates).Count(); ind++)
-                                        {
-                                            <option value=@ind>@(((List<DateTime>)ViewBag.AssessmentDates)[ind].ToString("yyyy-MM-dd"))</option>
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <option value="0"></option>}
-
-                                </select>
-                                <input type="hidden" id="ID_ID" name="Id" value="" />
-                                
-                            </div>
-                            <div style="width:99%"><hr></div>
-                            <div class="col-md-8">
-                                
-                                <p style="font-size:1.1vw;font-weight:bold;color:red">P = Past Interest    C = Current Interest   W = Would Like to Learn/Do</p>
-
-                                @*<input type="reset" form="AssessmentForm" class="btn btn-primary" value="Clear" />*@
-                            </div>
-
-                            <hr>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-8"></div>
-                            <div class="col-md-3">
-                                @*<div class="row">
-
-                                <div class="col-md-12 text-right">
-                                    <div class="row">
-                                        <form action="~/Assessments/Activity" method="post">
-                                            <div class="col-md-6 text-right">
-                                                <p class="text-right">Assessment History:</p>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <select name="AssessmentDate" id="" onchange="this.form.submit()">
-                                                    @if (ViewBag.AssessmentDates != null)
-                                                    {
-                                                        <option value="new">New</option>
-                                                        foreach (var l_Date in (List<DateTime>)ViewBag.AssessmentDates)
-                                                        {
-
-                                                            if (Model.DateEntered == l_Date)
-                                                            {
-                                                                <option value="@l_Date" selected>@l_Date</option>
-                                                            }
-                                                            else
-                                                            {
-                                                                <option value="@l_Date">@l_Date</option>
-                                                            }
-                                                        }
-                                                    }
-                                                </select>
-                                            </div>
-                                        </form>
-                                    </div>
-
-                                </div>
-                            </div>*@
-
-                                <div class="row">
-                                    <div class="col-md-3"></div>
-                                    <div>
-                                        <input id="SAVE1" type="submit" form="AssessmentForm" class="btn btn-primary" value="Save" />
-                                        @*<a href="#" class="btn btn-primary">Print PDF</a>*@
-                                        @*<button class="btn btn-danger print" id="AA_PRINT" >Print PDF</button>*@
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
                         <form action="~/Assessments/SubmitActivityAssessment" id="AssessmentForm" method="post">
+
+                            <div class="row" id="AA_firstrow">
+
+                                <div class="col-2">
+                                    <div class="">
+                                        <div class="col-md-12">
+                                            <label for="" class="col-form-label"><b>Resident: </b></label>
+                                            <label>@ViewBag.Resident.FirstName @ViewBag.Resident.LastName </label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-2">
+                                    <label for="" class="col-form-label"><b>Suite No: </b></label>
+                                    <label>@ViewBag.Resident.SuiteNo</label>
+                                </div>
+                                <div class="">
+                                    <label for="" class="col-form-label"><b>Assessment History:</b></label>
+
+                                </div>
+                                <div class="col-2">
+                                    <select class="form-control" name="AssessmentDate" id="selectdate" onchange="formsubmit(this)">
+
+                                        @if (ViewBag.AssessmentDates != null && ViewBag.AssessmentDates[0].ToShortDateString() != "1/1/0001")
+                                        {
+                                            for (var ind = 0; ind < ((List<DateTime>)ViewBag.AssessmentDates).Count(); ind++)
+                                            {
+                                                <option value=@ind>@(((List<DateTime>)ViewBag.AssessmentDates)[ind].ToString("yyyy-MM-dd"))</option>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <option value="0"></option>}
+
+                                    </select>
+                                    <input type="hidden" id="ID_ID" name="Id" value="" />
+
+                                </div>
+                                <div class="col-2">
+                                </div>
+                                <div class="col-2">
+                                    <div class="row">
+                                        <div>
+                                            <input id="SAVE1" type="submit" form="AssessmentForm" class="btn btn-primary" value="Save" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="width:99%"><hr></div>
+
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="" style="width:49% !important;display:inline-block !important">
+
+                                            <div class="col-md-12">
+                                                <label for="" class="col-md-5 col-form-label">Marital Status</label>
+                                                <div class="col-md-5 col-form-label">
+                                                    <label>@ViewBag.Resident.MaritalStatustext</label>
+                                                </div>
+                                            </div>
+                                            @if (ViewBag.Resident.MaritalStatus == 1)
+                                            {
+                                                <div class="col-md-12">
+                                                    <label for="" class="col-md-5 col-form-label">Significant Other</label>
+                                                    <div class="col-md-7">
+                                                        @Html.TextBoxFor(m => m.SignificatOther, new { @class = "form-control", name = "SignificatOther", id = "SignificatOther", placeholder = "Significant Other" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <label for="" class="col-md-5 col-form-label">Anniversary Date</label>
+                                                    <div class="col-md-7">
+                                                        @if (Model.AnniversaryDate == DateTime.MinValue)
+                                                        {
+                                                            <input name="AnniversaryDate" class="form-control" id="AnniversaryDate" autocomplete="off" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <input name="AnniversaryDate" class="form-control" id="AnniversaryDate" autocomplete="off" value="@Model.AnniversaryDate.ToString("yyyy-MM-dd")"/>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="col-md-12">
+                                                    <label for="" class="col-md-5 col-form-label">Significant Other</label>
+                                                    <div class="col-md-7">
+                                                        @Html.TextBoxFor(m => m.SignificatOther, new { @class = "form-control", placeholder = "Significant Other", disabled = "true" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <label for="" class="col-md-5 col-form-label">Anniversary Date</label>
+                                                    <div class="col-md-7">
+                                                        @if (Model.AnniversaryDate == DateTime.MinValue)
+                                                        {
+                                                            <input name="AnniversaryDate" class="form-control" id="AnniversaryDate" disabled autocomplete="off" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <input name="AnniversaryDate" class="form-control" id="AnniversaryDate" autocomplete="off" value="@Model.AnniversaryDate.ToString("yyyy-MM-dd")" disabled />
+                                                        }
+                                                    </div>
+                                                </div>
+                                            }
+
+                                            <div class="col-md-12">
+                                                <label for="" class="col-md-5 col-form-label">Number of Children</label>
+                                                <div class="col-md-7">
+                                                    @Html.TextBoxFor(x => x.Number_of_children, new { @class = "form-control", placeholder = "Number of Children" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label for="" class="col-md-5 col-form-label">Number of Grandchildren</label>
+                                                <div class="col-md-7">
+                                                    @Html.TextBoxFor(x => x.Number_of_grandchildren, new { @class = "form-control", placeholder = "Number of Grandchildren" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+
+                                            </div>
+                                        </div>
+
+                                        <div class="" style="width:49% !important;display:inline-block !important">
+                                            <div class="col-md-12">
+                                                <label for="" class="col-md-5 col-form-label">Primary Language</label>
+                                                <div class="col-md-7">
+                                                    @Html.TextBoxFor(m => m.OtherLanguage, new { @class = "form-control", placeholder = "Primary Language" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="">
+                                                    <label class="col-md-5 col-form-label">Veteran</label>
+                                                    <div class="col-md-7">
+                                                        <div class="row pad2">
+                                                            <div class="" id="ActivityVetaran" style="width:80%;">
+                                                                <div>
+                                                                    @Html.RadioButtonFor(m => m.Vetaran, "Army", new { @class = "form-check-input" })
+                                                                    <label class="form-check-label" for="">Army</label>
+                                                                </div>
+                                                                <div>
+                                                                    @Html.RadioButtonFor(m => m.Vetaran, "Navy", new { @class = "form-check-input" })
+
+                                                                    <label class="form-check-label" for="">Navy</label>
+                                                                </div>
+                                                                <div>
+                                                                    @Html.RadioButtonFor(m => m.Vetaran, "Air Force", new { @class = "form-check-input" })
+
+                                                                    <label class="form-check-label" for="">Air Force</label>
+                                                                </div>
+                                                                <div>
+                                                                    @Html.RadioButtonFor(m => m.Vetaran, "Other", new { @class = "form-check-input" })
+
+                                                                    <label class="form-check-label" for="">Other</label>
+                                                                </div>
+                                                                <div>
+                                                                    @Html.RadioButtonFor(m => m.Vetaran, "None", new { @class = "form-check-input" })
+                                                                    <label class="form-check-label" for="">None of the above </label>
+                                                                </div>
+                                                                <label class="" for="">Other</label>
+                                                                <br>
+                                                                @if (Model.Vetaran == "Other")
+                                                                {
+                                                                    @Html.TextBoxFor(m => m.VeteranOther, new { @class = "form-control", placeholder = "Veteran Other", name = "VeteranOther", id = "VeteranOther"})
+                                                                }
+                                                                else
+                                                                {
+                                                                    @Html.TextBoxFor(m => m.VeteranOther, new { @class = "form-control", placeholder = "Veteran Other", name = "VeteranOther", id = "VeteranOther", disabled = "true" })
+                                                                }
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div style="width:99%"><hr></div>
+                                <div class="col-md-8">
+
+                                    <p style="font-size:1.1vw;font-weight:bold;color:red">P = Past Interest    C = Current Interest   W = Would Like to Learn/Do</p>
+
+                                    @*<input type="reset" form="AssessmentForm" class="btn btn-primary" value="Clear" />*@
+                                </div>
+
+                                <hr>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-8"></div>
+
+                            </div>
+
 
 
 
@@ -160,10 +266,10 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <td class="text-center"  style="width:20%"><b>P</b></td>
-                                                        <td class="text-center"  style="width:20%"><b>C</b></td>
-                                                        <td class="text-center"  style="width:20%"><b>W</b></td>
-                                                        <td class="text-center"  style="width:40% !important"></td>
+                                                        <td class="text-center" style="width:20%"><b>P</b></td>
+                                                        <td class="text-center" style="width:20%"><b>C</b></td>
+                                                        <td class="text-center" style="width:20%"><b>W</b></td>
+                                                        <td class="text-center" style="width:40% !important"></td>
                                                     </tr>
                                                     @for (int index = 0; index < Model.ActivityAssessments.Where(m => m.Activity.Category.Id == l_Category.Id).Count(); index = index + 2)
                                                     {
@@ -260,7 +366,7 @@
                                                                     {
                                                                         <input class="form-check-input" type="radio" name="ActivityAssessments[@identity2].Value" id="ActivityAssessments[@identity2].Value" value="P" />
                                                                     }
-                                                                    
+
                                                                     @*@Html.RadioButtonFor(m => m.ActivityAssessments.Where(s => s.Activity.Category.Id == l_Category.Id).ToList()[index2].Value, "P", new { @class = "form-check-input" })*@
                                                                 </div>
                                                             </td>
@@ -292,7 +398,7 @@
                                                                     @*@Html.RadioButtonFor(m => m.ActivityAssessments.Where(s => s.Activity.Category.Id == l_Category.Id).ToList()[index2].Value, "W", new { @class = "form-check-input" })*@
                                                                 </div>
                                                             </td>
-                                                            <td class="text-center"  style="font-size:1vw;">
+                                                            <td class="text-center" style="font-size:1vw;">
                                                                 @*@Html.HiddenFor(m => m.ActivityAssessments.Where(s => s.Activity.Category.Id == l_Category.Id).ToList()[index2].Activity.Id)*@
                                                                 <input class="form-check-input" type="hidden" name="ActivityAssessments[@identity2].Id" id="ActivityAssessments[@identity2].Id" value="@id2" />
                                                                 <input class="form-check-input" type="hidden" name="ActivityAssessments[@identity2].Activity.Id" id="ActivityAssessments[@identity2].Activity.Id" value="@id2" />
@@ -362,7 +468,7 @@
     var index_date = $('#hiddeninput1').val();
     $('#selectdate').val(index_date);
 
-    $('input[type="radio"]').mousedown(function (e) {
+    $('input[type="radio"]:not(#ActivityVetaran input[type="radio"])').mousedown(function (e) {
         var $self = $(this);
         if ($self.is(':checked')) {
             var uncheck = function () {
@@ -394,7 +500,7 @@
     }
 
     $('form').submit(function (event) {
-        if (!$("input[type='radio']:checked").val()) {
+        if (!$("input[type='radio']:not(#ActivityVetaran input[type='radio']):checked").val()) {
             tempAlert("Choose at least 1 Option", 2000);
             return false;
 
@@ -402,6 +508,28 @@
         else {
             form = this;
             form.submit();
+        }
+    });
+
+
+    $('#AnniversaryDate').datepicker({
+        dateFormat: "yy-mm-dd",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-110:+30",
+        defaultDate: new Date()
+    }); 
+
+    
+
+    $('#ActivityVetaran input[type="radio"]').click(function () {
+        if ($('#ActivityVetaran input[value="Other"]').is(':checked'))
+        {
+            $('#VeteranOther').prop('disabled', false);
+        }
+        else {
+            $('#VeteranOther').val('');
+            $('#VeteranOther').prop('disabled', true);
         }
     });
 
