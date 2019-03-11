@@ -1081,6 +1081,38 @@ namespace QolaMVC.Controllers
             return l_Model;
         }
 
+        public ActivityAssessmentCollectionViewModel GET_one_Activity()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            ActivityAssessmentCollectionViewModel l_Model = new ActivityAssessmentCollectionViewModel();
+
+            var l_Activity = MasterDAL.GetActivityAssessments(resident.ID);
+            if (l_Activity.Count == 0)
+            {
+                foreach (PropertyInfo prop in typeof(ActivityAssessmentCollectionViewModel).GetProperties())
+                {
+                    if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
+                    {
+                        if (prop.GetValue(l_Model) == null) { prop.SetValue(l_Model, ""); }
+                    }
+                }
+            }
+            else
+            {
+                l_Model = l_Activity[0];
+            }
+            return l_Model;
+        }
+
         public void PhoneArrangement(ResidentModel resident)
         {
             if (resident.HomePhoneType1 == 1) { resident.First_phone1 = resident.HomePhone1; resident.First_phone_type1 = 1; }
@@ -1182,6 +1214,10 @@ namespace QolaMVC.Controllers
                 ViewBag.TableSH = update_Suite_Handler_Table.get_innerHTML_temperary2(resident.ID);
                 PlanOfCareModel l_Model = GET_one_CarePlan();
                 ViewBag.careplan = l_Model;
+
+                ActivityAssessmentCollectionViewModel l_Model2 = GET_one_Activity();
+                ViewBag.activity = l_Model2;
+
                 return View(resident);
             }
 

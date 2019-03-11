@@ -631,7 +631,7 @@
                                                         <tr>
                                                             <td><div>Phone Number: <span id="table1_Phone1">@Model.Phone</span><input class="form-control phonemask" type="text" id="table1_Phone2" value="@Model.Phone" style="display:none;" /> </div></td>
                                                             <td><div>Health Card #: <span id="table1_MBhealthNumber1">@ViewBag.careplan.HealthCardNumber</span><span id="table1_MBhealthNumber2" style="display:none;">@ViewBag.careplan.HealthCardNumber</span></div></td>
-                                                            <td><div>Primary Language: <span id="table1_OtherLanguage1">@Model.OtherLanguage</span><input class="form-control" type="text" id="table1_OtherLanguage2" value="@Model.OtherLanguage" style="display:none;" /></div></td>
+                                                            <td><div>Primary Language: <span id="table1_OtherLanguage1">@ViewBag.activity.OtherLanguage</span><span id="table1_OtherLanguage2" style="display:none;">@ViewBag.activity.OtherLanguage</span></div></td>
                                                         </tr>
                                                         <tr>
                                                             <td>
@@ -649,29 +649,29 @@
                                                             @{
                                                                 if (@Model.MaritalStatus != 1)
                                                                 {
-                                                                    <td>Significant Other: <span id="table1_SignificatOther1">N/A</span><input class="form-control" type="text" id="table1_SignificatOther2" value="" style="display:none;" disabled /></td>
+                                                                    <td>Significant Other: <span id="table1_SignificatOther1">N/A</span><span id="table1_SignificatOther2" style="display:none;" disabled>@ViewBag.activity.SignificatOther</span></td>
                                                                 }
                                                                 else
                                                                 {
-                                                                    <td>Significant Other: <span id="table1_SignificatOther1">@Model.SignificatOther</span><input class="form-control" type="text" id="table1_SignificatOther2" value="@Model.SignificatOther" style="display:none;" /></td>
+                                                                    <td>Significant Other: <span id="table1_SignificatOther1">@ViewBag.activity.SignificatOther</span><span id="table1_SignificatOther2" style="display:none;">@ViewBag.activity.SignificatOther</span></td>
                                                                 }
                                                             }
 
 
                                                             @{
                                                                 var AnnDate = "";
-                                                                if (@Model.AnniversaryDate.ToString("yyyy-MM-dd") != "0001-01-01")
+                                                                if (@ViewBag.activity.AnniversaryDate.ToString("yyyy-MM-dd") != "0001-01-01")
                                                                 {
-                                                                    AnnDate = @Model.AnniversaryDate.ToString("yyyy-MM-dd");
+                                                                    AnnDate = @ViewBag.activity.AnniversaryDate.ToString("yyyy-MM-dd");
                                                                 }
 
                                                                 if (@Model.MaritalStatus != 1)
                                                                 {
-                                                                    <td>Anniversity Date: <span id="table1_AnniversaryDate1">N/A</span><input class="form-control" id="table1_AnniversaryDate2" value="" style="display:none;" disabled   autocomplete="off"/></td>
+                                                                    <td>Anniversity Date: <span id="table1_AnniversaryDate1">N/A</span><span id="table1_AnniversaryDate2" style="display:none;" disabled>@AnnDate</span></td>
                                                                 }
                                                                 else
                                                                 {
-                                                                    <td>Anniversity Date: <span id="table1_AnniversaryDate1">@AnnDate</span><input class="form-control" id="table1_AnniversaryDate2" value="@AnnDate" style="display:none;"   autocomplete="off"/></td>
+                                                                    <td>Anniversity Date: <span id="table1_AnniversaryDate1">@AnnDate</span><span id="table1_AnniversaryDate2" style="display:none;">@AnnDate</span></td>
                                                                 }
                                                             }
 
@@ -680,29 +680,21 @@
                                                         </tr>
                                                         <tr>
                                                             <td>
-                                                                Number of Children: <span id="table1_Number_of_children1">@Model.Number_of_children</span>
-                                                                <input class="form-control" id="table1_Number_of_children2" style="display:none;" value="@Model.Number_of_children" />
+                                                                Number of Children: <span id="table1_Number_of_children1">@ViewBag.activity.Number_of_children</span>
+                                                                <span id="table1_Number_of_children2" style="display:none;"  >@ViewBag.activity.Number_of_children</span>
 
                                                             </td>
                                                             <td>
-                                                                Number of Grandchildren: <span id="table1_Number_of_grandchildren1">@Model.Number_of_grandchildren</span>
-                                                                <input class="form-control" id="table1_Number_of_grandchildren2" style="display:none;" value="@Model.Number_of_grandchildren" />
+                                                                Number of Grandchildren: <span id="table1_Number_of_grandchildren1">@ViewBag.activity.Number_of_grandchildren</span>
+                                                                <span id="table1_Number_of_grandchildren2" style="display:none;">@ViewBag.activity.Number_of_grandchildren</span>
 
                                                             </td>
                                                             <td>
                                                                 Veteran:
-                                                                <span id="table1_Vetaran1">@Model.Vetaran</span>
+                                                                <span id="table1_Vetaran1">@ViewBag.activity.Vetaran</span>
                                                                 @*<input class="form-control" type="text" id="table1_Vetaran2" value="@Model.Vetaran" style="display:none;" />*@
-                                                                <select class="table1_item form-control" id="table1_Vetaran2" style="display:none;width:40%;" onchange="table1_Vetaran2onChange(this)">
-                                                                    <option value="@Model.Vetaran" selected>@Model.Vetaran</option>
-                                                                    <option value=""></option>
-                                                                    <option value="Army">Army</option>
-                                                                    <option value="Navy">Navy</option>
-                                                                    <option value="Air Force">Air Force</option>
-                                                                    <option value="Other">Other</option>
-                                                                    <option value="None of the Above">None of the Above</option>
-                                                                </select>
-                                                                <input class="form-control" type="text" id="table1_Vetaran3" style="width:35%;display:none;" onchange="table1_Vetaran3onChange(this)" />
+                                                                <span class="table1_item form-control" id="table1_Vetaran2" style="display:none;width:40%;" >@ViewBag.activity.Vetaran</span>
+                                                                @*<input class="form-control" type="text" id="table1_Vetaran3" style="width:35%;display:none;" onchange="table1_Vetaran3onChange(this)" />*@
                                                             </td>
                                                         </tr>
                                                         <tr style="display:none;">
@@ -3212,34 +3204,8 @@
                     $('#table1_Phone1').hide();
                     $('#table1_Phone2').show();
 
-                    $('#table1_MBhealthNumber1').hide();
-                    $('#table1_MBhealthNumber2').show();
-
-                    $('#table1_OtherLanguage1').hide();
-                    $('#table1_OtherLanguage2').show();
-
                     $('#table1_MaritalStatustext1').hide();
                     $('#table1_MaritalStatustext2').show();
-
-                    $('#table1_SignificatOther1').hide();
-                    $('#table1_SignificatOther2').show();
-
-                    $('#table1_AnniversaryDate1').hide();
-                    $('#table1_AnniversaryDate2').show();
-
-                    $('#table1_Number_of_children1').hide();
-                    $('#table1_Number_of_children2').show();
-
-                    $('#table1_Number_of_grandchildren1').hide();
-                    $('#table1_Number_of_grandchildren2').show();
-
-                    $('#table1_Vetaran1').hide();
-                    $('#table1_Vetaran2 option:eq(0)').val($('#table1_Vetaran1').html());
-                    $('#table1_Vetaran2 option:eq(0)').html($('#table1_Vetaran1').html());
-                    $('#table1_Vetaran2 option:eq(0)').prop('selected', true);
-                    $('#table1_Vetaran2 option:eq(5)').val('Other');
-
-                    $('#table1_Vetaran2').show();
 
                 }
 
@@ -3253,14 +3219,7 @@
                         Gendar: $('#table1_gendar2').val(),
                         BirthDate: $('#table1_birth2').val(),
                         Phone: $('#table1_Phone2').val(),
-                        MBhealthNumber: $('#table1_MBhealthNumber2').html(),
-                        OtherLanguage: $('#table1_OtherLanguage2').val(),
-                        MaritalStatus: $('#table1_MaritalStatustext2').val(),
-                        SignificatOther: $('#table1_SignificatOther2').val(),
-                        AnniversaryDate: $('#table1_AnniversaryDate2').val(),
-                        Number_of_children: $('#table1_Number_of_children2').val(),
-                        Number_of_grandchildren: $('#table1_Number_of_grandchildren2').val(),
-                        Vetaran: $('#table1_Vetaran2').val()
+                        MaritalStatus: $('#table1_MaritalStatustext2').val()
                     }
 
                     $.ajax({
@@ -3281,30 +3240,23 @@
                             $('#table1_gendar1').html($('#table1_gendar2').find(":selected").text());
                             $('#table1_birth1').html($('#table1_birth2').val());
                             $('#table1_Phone1').html($('#table1_Phone2').val());
-                            //$('#table1_MBhealthNumber1').html($('#table1_MBhealthNumber2').val());
-                            $('#table1_OtherLanguage1').html($('#table1_OtherLanguage2').val());
                             $('#table1_MaritalStatustext1').html($('#table1_MaritalStatustext2').find(":selected").text());
-                            $('#table1_SignificatOther1').html($('#table1_SignificatOther2').val());
-                            $('#table1_AnniversaryDate1').html($('#table1_AnniversaryDate2').val());
-                            $('#table1_Number_of_children1').html($('#table1_Number_of_children2').val());
-                            $('#table1_Number_of_grandchildren1').html($('#table1_Number_of_grandchildren2').val());
-                            $('#table1_Vetaran1').html($('#table1_Vetaran2').val());
 
 
                             if ($('#table1_MaritalStatustext2').val() != '1') {
                                 $('#table1_SignificatOther1').html('N/A');
                                 $('#table1_AnniversaryDate1').html('N/A');
                             }
-                            
-
+                            else {
+                                $('#table1_SignificatOther1').html($('#table1_SignificatOther2').html());
+                                $('#table1_AnniversaryDate1').html($('#table1_AnniversaryDate2').html());
+                            }
                         },
                         error: function (errorThrown) {
                             console.log(errorThrown);
                         }
                     });
-
-
-                    
+   
                     $('#table1_SAVE').hide();
                     $('#table1_EDIT').show();
 
@@ -3320,32 +3272,8 @@
                     $('#table1_Phone2').hide();
                     $('#table1_Phone1').show();
 
-                    $('#table1_MBhealthNumber2').hide();
-                    $('#table1_MBhealthNumber1').show();
-
-                    $('#table1_OtherLanguage2').hide();
-                    $('#table1_OtherLanguage1').show();
-
                     $('#table1_MaritalStatustext2').hide();
                     $('#table1_MaritalStatustext1').show();
-
-
-                    $('#table1_SignificatOther2').hide();
-                    $('#table1_SignificatOther1').show();
-
-                    $('#table1_AnniversaryDate2').hide();
-                    $('#table1_AnniversaryDate1').show();
-
-                    $('#table1_Number_of_children2').hide();
-                    $('#table1_Number_of_children1').show();
-
-                    $('#table1_Number_of_grandchildren2').hide();
-                    $('#table1_Number_of_grandchildren1').show();
-
-                    $('#table1_Vetaran2').hide();
-                    $('#table1_Vetaran1').show();
-
-                    $('#table1_Vetaran3').css('display', 'none');
 
 
                 }
@@ -3665,20 +3593,20 @@
 
                 }
 
-                function table1_Vetaran2onChange(ee) {
-                    if (ee.value == 'Other') {
-                        $('#table1_Vetaran3').val('');
-                        $('#table1_Vetaran3').css('display', 'inline-block');
-                    }
-                    else {
-                        $('#table1_Vetaran3').val('');
-                        $('#table1_Vetaran3').css('display', 'none');
-                    }
-                }
+                //function table1_Vetaran2onChange(ee) {
+                //    if (ee.value == 'Other') {
+                //        $('#table1_Vetaran3').val('');
+                //        $('#table1_Vetaran3').css('display', 'inline-block');
+                //    }
+                //    else {
+                //        $('#table1_Vetaran3').val('');
+                //        $('#table1_Vetaran3').css('display', 'none');
+                //    }
+                //}
 
-                function table1_Vetaran3onChange(ee) {
-                    $('#table1_Vetaran2 option:eq(5)').val(ee.value);
-                }
+                //function table1_Vetaran3onChange(ee) {
+                //    $('#table1_Vetaran2 option:eq(5)').val(ee.value);
+                //}
 
                 function table1_MaritalStatustext2onChange(ee) {
                     if (ee.value == "1") {
@@ -3694,7 +3622,7 @@
                 }
 
 
-                $('#dateinput_archive,#table1_birth2,#table1_AnniversaryDate2,#searchFrom,#searchTo').datepicker({
+                $('#dateinput_archive,#table1_birth2,#searchFrom,#searchTo').datepicker({
                     dateFormat: "yy-mm-dd",
                     changeMonth: true,
                     changeYear: true,

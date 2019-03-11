@@ -2828,22 +2828,8 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@Gendar", p_Model.Gendar);
                 l_Cmd.Parameters.AddWithValue("@BirthDate", p_Model.BirthDate);
                 l_Cmd.Parameters.AddWithValue("@Phone", p_Model.Phone);
-                l_Cmd.Parameters.AddWithValue("@MBhealthNumber", p_Model.MBhealthNumber);
-                l_Cmd.Parameters.AddWithValue("@OtherLanguage", p_Model.OtherLanguage);
                 l_Cmd.Parameters.AddWithValue("@MaritalStatus", p_Model.MaritalStatus);
-                l_Cmd.Parameters.AddWithValue("@SignificatOther", p_Model.SignificatOther);
-                if (p_Model.AnniversaryDate==DateTime.MinValue)
-                {
-                    l_Cmd.Parameters.AddWithValue("@AnniversaryDate", DBNull.Value);
-                }
-                else
-                {
-                    l_Cmd.Parameters.AddWithValue("@AnniversaryDate", p_Model.AnniversaryDate);
-                }
                 
-                l_Cmd.Parameters.AddWithValue("@Number_of_children", p_Model.Number_of_children);
-                l_Cmd.Parameters.AddWithValue("@Number_of_grandchildren", p_Model.Number_of_grandchildren);
-                l_Cmd.Parameters.AddWithValue("@Vetaran", p_Model.Vetaran);
                 l_Cmd.ExecuteNonQuery();
             }
             catch (Exception ex)
