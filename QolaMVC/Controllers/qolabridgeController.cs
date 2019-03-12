@@ -62,6 +62,27 @@ namespace QolaMVC.Controllers
             ViewBag.Home = home;
             string sessionID = HttpContext.Session.SessionID;
 
+
+            string homeidlist = "";
+            if (user.Home.Substring(0, 1) == "0")
+            {
+                var homeall = HomeDAL.GetHomeCollections_mike();
+                foreach(var single in homeall)
+                {
+                    homeidlist += single.Id.ToString() + ",";
+                }
+            }
+            else
+            {
+                homeidlist = user.Home.ToString();
+            }
+
+            if (homeidlist.Substring(homeidlist.Length - 1, 1) == ",")
+            {
+                homeidlist = homeidlist.Substring(0, homeidlist.Length - 1);
+            }
+
+
             string remoteUrl = "https://crmtest.qola.ca/crm-bridge/auth/login ";
             Dictionary<string, string> collections = new Dictionary<string, string>();
             collections.Add("qola_sessionid", AES256.EncryptText(sessionID));
@@ -70,7 +91,7 @@ namespace QolaMVC.Controllers
             collections.Add("first_name", AES256.EncryptText(user.FirstName));
             collections.Add("last_name", AES256.EncryptText(user.LastName));
             collections.Add("current_home_id", AES256.EncryptText(home.Id.ToString()));
-            collections.Add("home_id", AES256.EncryptText("15,33"));
+            collections.Add("home_id", AES256.EncryptText(homeidlist));
             collections.Add("email", AES256.EncryptText(user.Email));
             collections.Add("designation_id", AES256.EncryptText(user.UserType.ToString()));
 
