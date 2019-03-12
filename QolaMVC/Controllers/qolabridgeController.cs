@@ -69,7 +69,8 @@ namespace QolaMVC.Controllers
             collections.Add("user_name", AES256.EncryptText(user.UserName));
             collections.Add("first_name", AES256.EncryptText(user.FirstName));
             collections.Add("last_name", AES256.EncryptText(user.LastName));
-            collections.Add("home_id", AES256.EncryptText(home.Id.ToString()));
+            collections.Add("current_home_id", AES256.EncryptText(home.Id.ToString()));
+            collections.Add("home_id", AES256.EncryptText("15,33"));
             collections.Add("email", AES256.EncryptText(user.Email));
             collections.Add("designation_id", AES256.EncryptText(user.UserType.ToString()));
 
@@ -89,6 +90,7 @@ namespace QolaMVC.Controllers
             Response.End();
         }
 
+        [HttpPost]
         protected void ProcessLogOutQola()
         {
             string remoteUrl = "/Login/LogOut";
