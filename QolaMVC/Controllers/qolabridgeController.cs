@@ -111,10 +111,9 @@ namespace QolaMVC.Controllers
             Response.End();
         }
 
-        [HttpPost]
         public void ProcessLogOutQola()
         {
-            string remoteUrl = "/Login/LogOut";
+            string remoteUrl = "https://2.qola.ca/Login/LogOut";
             string html = "<html><head>";
             html += "</head><body onload='document.forms[0].submit()'>";
             html += string.Format("<form name='PostForm' method='POST' action='{0}'>", remoteUrl);
