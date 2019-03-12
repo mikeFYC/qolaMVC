@@ -112,7 +112,7 @@ namespace QolaMVC.Controllers
         }
 
         [HttpPost]
-        protected void ProcessLogOutQola()
+        public void ProcessLogOutQola()
         {
             string remoteUrl = "/Login/LogOut";
             string html = "<html><head>";
