@@ -834,6 +834,103 @@ namespace QolaMVC.DAL
             }
         }
 
+        public static Collection<CarePlanNutritionModel> Get_AllergyReport_fromDietary(int homeID)
+        {
+            string exception = string.Empty;
+            Collection<CarePlanNutritionModel> l_Assessments = new Collection<CarePlanNutritionModel>();
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("Get_AllergyReport_fromDietary", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@homeID", homeID);
+                DataSet dataReceive = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(dataReceive);
+
+                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
+                {
+                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        CarePlanNutritionModel l_Assessment = new CarePlanNutritionModel();
+                        l_Assessment.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
+                        l_Assessment.ResidentId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_Assessment.CarePlanId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["CarePlanId"]);
+                        l_Assessment.NutritionStatus = Convert.ToString(dataReceive.Tables[0].Rows[index]["NutritionStatus"]);
+                        l_Assessment.Risk = Convert.ToString(dataReceive.Tables[0].Rows[index]["Risk"]);
+                        l_Assessment.AssistiveDevices = Convert.ToString(dataReceive.Tables[0].Rows[index]["AssistiveDevices"]);
+                        l_Assessment.Texture = Convert.ToString(dataReceive.Tables[0].Rows[index]["Texture"]);
+                        l_Assessment.Other = Convert.ToString(dataReceive.Tables[0].Rows[index]["Other"]);
+                        l_Assessment.Diet = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Diet"]));
+                        l_Assessment.OtherDiet = Convert.ToString(dataReceive.Tables[0].Rows[index]["OtherDiet"]);
+                        l_Assessment.Notes = Convert.ToString(dataReceive.Tables[0].Rows[index]["Notes"]);
+                        l_Assessment.Allergies = Convert.ToString(dataReceive.Tables[0].Rows[index]["Allergies"]);
+                        l_Assessments.Add(l_Assessment);
+                    }
+                }
+                return l_Assessments;
+            }
+            catch (Exception ex)
+            {
+                exception = "CarePlanDAL GetResidentsPlanOfCare |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+        public static Collection<CarePlanNutritionModel> Get_AllergyReport_fromCarePlan(int homeID)
+        {
+            string exception = string.Empty;
+            Collection<CarePlanNutritionModel> l_Assessments = new Collection<CarePlanNutritionModel>();
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("Get_AllergyReport_fromCarePlan", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@homeID", homeID);
+                DataSet dataReceive = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(dataReceive);
+
+                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
+                {
+                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        CarePlanNutritionModel l_Assessment = new CarePlanNutritionModel();
+                        l_Assessment.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
+                        l_Assessment.ResidentId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_Assessment.CarePlanId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["CarePlanId"]);
+                        l_Assessment.NutritionStatus = Convert.ToString(dataReceive.Tables[0].Rows[index]["NutritionStatus"]);
+                        l_Assessment.Risk = Convert.ToString(dataReceive.Tables[0].Rows[index]["Risk"]);
+                        l_Assessment.AssistiveDevices = Convert.ToString(dataReceive.Tables[0].Rows[index]["AssistiveDevices"]);
+                        l_Assessment.Texture = Convert.ToString(dataReceive.Tables[0].Rows[index]["Texture"]);
+                        l_Assessment.Other = Convert.ToString(dataReceive.Tables[0].Rows[index]["Other"]);
+                        l_Assessment.Diet = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Diet"]));
+                        l_Assessment.OtherDiet = Convert.ToString(dataReceive.Tables[0].Rows[index]["OtherDiet"]);
+                        l_Assessment.Notes = Convert.ToString(dataReceive.Tables[0].Rows[index]["Notes"]);
+                        l_Assessment.Allergies = Convert.ToString(dataReceive.Tables[0].Rows[index]["Allergies"]);
+                        l_Assessments.Add(l_Assessment);
+                    }
+                }
+                return l_Assessments;
+            }
+            catch (Exception ex)
+            {
+                exception = "CarePlanDAL GetResidentsPlanOfCare |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
         public static Collection<SpecialDietReportModel> GetSpecialDietReport(int p_HomeId)
         {
             string exception = string.Empty;
@@ -893,6 +990,90 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
+
+        public static Collection<CarePlanNutritionModel> Get_SpecialDietReport_fromDietary(int homeID)
+        {
+            string exception = string.Empty;
+            Collection<CarePlanNutritionModel> l_Assessments = new Collection<CarePlanNutritionModel>();
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("Get_SpecialDietReport_fromDietary", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@homeID", homeID);
+                DataSet dataReceive = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(dataReceive);
+
+                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
+                {
+                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        CarePlanNutritionModel l_Assessment = new CarePlanNutritionModel();
+                        l_Assessment.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
+                        l_Assessment.ResidentId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_Assessment.CarePlanId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["CarePlanId"]);
+                        l_Assessment.Diet = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Diet"]));
+                        l_Assessment.OtherDiet = Convert.ToString(dataReceive.Tables[0].Rows[index]["OtherDiet"]);
+                        l_Assessments.Add(l_Assessment);
+                    }
+                }
+                return l_Assessments;
+            }
+            catch (Exception ex)
+            {
+                exception = "CarePlanDAL GetResidentsPlanOfCare |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+        public static Collection<CarePlanNutritionModel> Get_SpecialDietReport_fromCarePlan(int homeID)
+        {
+            string exception = string.Empty;
+            Collection<CarePlanNutritionModel> l_Assessments = new Collection<CarePlanNutritionModel>();
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("Get_SpecialDietReport_fromCarePlan", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@homeID", homeID);
+                DataSet dataReceive = new DataSet();
+                l_DA.SelectCommand = l_Cmd;
+                l_DA.Fill(dataReceive);
+
+                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
+                {
+                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
+                    {
+                        CarePlanNutritionModel l_Assessment = new CarePlanNutritionModel();
+                        l_Assessment.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
+                        l_Assessment.ResidentId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
+                        l_Assessment.CarePlanId = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["CarePlanId"]);
+                        l_Assessment.Diet = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Diet"]));
+                        l_Assessment.OtherDiet = Convert.ToString(dataReceive.Tables[0].Rows[index]["OtherDiet"]);
+                        l_Assessments.Add(l_Assessment);
+                    }
+                }
+                return l_Assessments;
+            }
+            catch (Exception ex)
+            {
+                exception = "CarePlanDAL GetResidentsPlanOfCare |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
 
         public static Collection<DietaryLikesModel> GetLikesReport(int p_HomeId)
         {
