@@ -68,6 +68,9 @@ namespace QolaMVC.Controllers
             return View("Index");
         }
 
+        
+
+
         public ActionResult BowelMovement()
         {
             var home = (HomeModel)TempData["Home"];
@@ -2773,6 +2776,24 @@ namespace QolaMVC.Controllers
             TempData.Keep("index");
             return View(CustData);
             //return View();
+        }
+
+        public ActionResult PleuralCatheterDrainage()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+
+
+
+            return View();
         }
 
 
