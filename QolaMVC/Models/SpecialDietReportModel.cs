@@ -9,6 +9,7 @@ namespace QolaMVC.Models
     public class SpecialDietReportModel
     {
         public int Id { get; set; }
+        public int HomeID { get; set; }
         public int ResidentID { get; set; }
         public string ResidentName { get; set; }
         public string SuiteNo { get; set; }

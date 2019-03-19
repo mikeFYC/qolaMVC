@@ -42,50 +42,27 @@
             <div class="container-fluid container-fixed-lg">
                 <!-- BEGIN PlACE PAGE CONTENT HERE -->
                 <div class="row">
-                   
                     <div class="col-md-8 py-4 text-left">
-                        <form class="form-inline">
-                            <div class="form-group pr-1">
-                                <div class="input-group">
-                                    <label>Home: </label>
-                                    <select class="form-control">
-                                        <option>All fields</option>
-                                        <option>First Name</option>
-                                        <option>Last Name</option>
-                                        <option>Suite No</option>
-                                        <option>Emergency Contact</option>
-                                        <option>Physician</option>
-                                    </select>
-                                </div>
-                                <div class="input-group">
-                                    <label>Diet Allergy: </label>
-                                    <select class="form-control">
-                                        <option>All fields</option>
-                                        <option>First Name</option>
-                                        <option>Last Name</option>
-                                        <option>Suite No</option>
-                                        <option>Emergency Contact</option>
-                                        <option>Physician</option>
-                                    </select>
-                                </div>
-                                <div class="input-group">
-                                    <label>Floor: </label>
-                                    <select class="form-control">
-                                        <option>All fields</option>
-                                        <option>First Name</option>
-                                        <option>Last Name</option>
-                                        <option>Suite No</option>
-                                        <option>Emergency Contact</option>
-                                        <option>Physician</option>
-                                    </select>
-                                </div>
+                        <div class="form-inline">
+                            <div class="input-group">
+                                <label>&nbsp;Sort By:&nbsp;</label>
+                                <select id="SortById" class="form-control">
+                                    <option value="1">Suite No</option>
+                                    <option value="2">Name</option>
+                                    <option value="3">Assessed Date</option>
+                                </select>
                             </div>
-                            <button type="submit" class="btn btn-primary">View</button>
-                            </form>
-                    </div>
-                        <div class="col-md-4 py-4 text-right">
-                            <a class="btn btn-lg btn-primary" href="~/PDF/SpecialDietReport/?p_HomeId=@ViewBag.HomeId">Print PDF</a>
+                            <div class="input-group">
+                                <label>&nbsp;Search By:&nbsp;</label>
+                                <input id="SearchById" class="form-control" value="" />
+                            </div>
+                            <button id="View_Button" type="button" class="btn btn-primary" style="margin-left:1%;" onclick="View_Button_Click()">View</button>
                         </div>
+                    </div>
+                    <div class="col-md-3 py-4 text-right">
+                        <a class="btn btn-lg btn-primary text-white" onclick="Print_PDF_Click()">Print PDF</a>
+                    </div>
+
                 </div>
 
                 <div class="card">
@@ -93,33 +70,39 @@
                         <table class="table table-bordered">
                             <thead class="bg-primary">
                                 <tr>
-                                    <th class="text-white">Name</th>
-                                    <th class="text-white">Suite</th>
-                                    <th class="text-white">Resident Name</th>
-                                    <th class="text-white">Assessed Date</th>
-                                    <th class="text-white">Likes</th>
-                                    <th class="text-white">DisLikes</th>
+                                    <th class="text-white" style="width:5%;">Suite</th>
+                                    <th class="text-white" style="width:10%;">Resident Name</th>
+                                    <th class="text-white" style="width:10%;">Assessed Date</th>
+                                    <th class="text-white" style="width:13%;">Diet Type</th>
+                                    <th class="text-white" style="width:5%;">Texture</th>
+                                    <th class="text-white" style="width:15%;">Allergies</th>
+                                    <th class="text-white" style="width:15%;">Likes</th>
+                                    <th class="text-white" style="width:15%;">DisLikes</th>
                                     <th class="text-white">Notes</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="tbodyID">
                                 @foreach (var m in Model)
                                 {
-                                <tr>
-                                    <td class="align-middle">@m.Diet</td>
-                                    <td class="align-middle">@m.Suite.SuiteNo</td>
-                                    <td class="align-middle">@m.Resident.ShortName</td>
-                                    <td class="align-middle">@m.DateEntered</td>
-                                    <td class="align-middle">@m.Likes</td>
-                                    <td class="align-middle">@m.DisLikes</td>
-                                    <td class="align-middle"></td>
-                                </tr>
+                                    <tr>
+                                        <td class="align-middle">@m.SuiteNo</td>
+                                        <td class="align-middle">@m.ResidentName</td>
+                                        <td class="align-middle">@m.DateEntered.ToString("yyyy-MM-dd")</td>
+                                        <td class="align-middle">@Html.Raw(m.DietType)</td>
+                                        <td class="align-middle">@m.Texture</td>
+                                        <td class="align-middle">@Html.Raw(m.Allergies)</td>
+                                        <td class="align-middle">@m.Likes</td>
+                                        <td class="align-middle">@m.DisLikes</td>
+                                        <td class="align-middle">@m.Notes</td>
+                                    </tr>
                                 }
                             </tbody>
                         </table>
                     </div>
                 </div>
-
+                <input type="hidden" id="SortHidden" value="1" />
+                <input type="hidden" id="SearchHidden" value="" />
+                <input type="hidden" id="HomeIDHidden" value="@ViewBag.HomeId" />
 
                 <!-- END PLACE PAGE CONTENT HERE -->
             </div>
@@ -129,3 +112,43 @@
 
 
         @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+
+        <script>
+            function View_Button_Click(){
+        var SortById = $('#SortById').val();
+        var SearchById = $('#SearchById').val();
+        $.ajax({
+            type: "GET",
+            url: "/Reports/SpecialDietReport_RefreshPage",
+            data: { SortBy: SortById, SearchBy: SearchById },
+            success: function (data) {
+                $('#SortHidden').val(SortById);
+                $('#tbodyID').empty();
+                for (var i = 0; i < data.length; i++) {
+                    $('#tbodyID').append('<tr>'+
+                        '<td class="align-middle">' + data[i][3].Value + '</td>' +
+                        '<td class="align-middle">' + data[i][2].Value + '</td>' +
+                        '<td class="align-middle">' + data[i][10].Value + '</td>' +
+                        '<td class="align-middle">' + data[i][11].Value + '</td>' +
+                        '<td class="align-middle">' + data[i][7].Value + '</td>' +
+                        '<td class="align-middle">' + data[i][9].Value + '</td>' +
+                        '<td class="align-middle">' + data[i][5].Value + '</td>' +
+                        '<td class="align-middle">' + data[i][6].Value + '</td>' +
+                        '<td class="align-middle">' + data[i][8].Value + '</td>'+
+                        '</tr>');
+                }
+            },
+            error: function (error) {
+                tempAlert('failed', 2000);
+            }
+        })
+            }
+
+            function Print_PDF_Click() {
+                var HomeIDHidden = $('#HomeIDHidden').val();
+                var SortHidden = $('#SortHidden').val();
+                location.href = "/PDF/SpecialDietReport/?p_HomeId=" + HomeIDHidden + "&sortby=" + SortHidden;
+            }
+
+        </script>

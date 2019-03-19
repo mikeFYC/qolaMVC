@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using Newtonsoft.Json;
 using QolaMVC.Models;
@@ -833,7 +834,6 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-
         public static Collection<CarePlanNutritionModel> Get_AllergyReport_fromDietary(int homeID)
         {
             string exception = string.Empty;
@@ -981,8 +981,7 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-
-        public static Collection<SpecialDietReportModel> Get_SpecialDietReport_fromDietary(int homeID)
+        public static Collection<SpecialDietReportModel> Get_SpecialDietReport_fromAll(int homeID,string HighLightString,int orderby)
         {
             string exception = string.Empty;
             Collection<SpecialDietReportModel> l_Assessments = new Collection<SpecialDietReportModel>();
@@ -990,10 +989,11 @@ namespace QolaMVC.DAL
             try
             {
                 SqlDataAdapter l_DA = new SqlDataAdapter();
-                SqlCommand l_Cmd = new SqlCommand("Get_SpecialDietReport_fromDietary", l_Conn);
+                SqlCommand l_Cmd = new SqlCommand("Get_SpecialDietReport_fromAll", l_Conn);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 l_Cmd.Parameters.AddWithValue("@homeID", homeID);
+                l_Cmd.Parameters.AddWithValue("@orderby", orderby);
                 DataSet dataReceive = new DataSet();
                 l_DA.SelectCommand = l_Cmd;
                 l_DA.Fill(dataReceive);
@@ -1003,73 +1003,35 @@ namespace QolaMVC.DAL
                     for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
                     {
                         SpecialDietReportModel l_Assessment = new SpecialDietReportModel();
-                        l_Assessment.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
+                        l_Assessment.HomeID = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["fd_home_id"]);
                         l_Assessment.ResidentID = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
-                        l_Assessment.SuiteNo = Convert.ToString(dataReceive.Tables[0].Rows[index]["SuiteNo"]);
+                        l_Assessment.ResidentName = Convert.ToString(dataReceive.Tables[0].Rows[index]["Name"]);
+                        l_Assessment.SuiteNo = Convert.ToString(dataReceive.Tables[0].Rows[index]["fd_suite_no"]);
+                        l_Assessment.FloorNo = Convert.ToString(dataReceive.Tables[0].Rows[index]["fd_floor"]);
                         l_Assessment.Likes = Convert.ToString(dataReceive.Tables[0].Rows[index]["Likes"]);
                         l_Assessment.DisLikes = Convert.ToString(dataReceive.Tables[0].Rows[index]["DisLikes"]);
-                        l_Assessment.DateEntered = Convert.ToDateTime(dataReceive.Tables[0].Rows[index]["DateEntere"]);
                         l_Assessment.Texture = Convert.ToString(dataReceive.Tables[0].Rows[index]["Texture"]);
-                        l_Assessment.Allergies = Convert.ToString(dataReceive.Tables[0].Rows[index]["Allergies"]);
                         l_Assessment.Notes = Convert.ToString(dataReceive.Tables[0].Rows[index]["Notes"]);
-                        l_Assessment.Diet = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Diet"]));
-
-                        foreach(var gg in l_Assessment.Diet)
-                        {
-                            if (gg.IsSelected == true) l_Assessment.DietType += gg.Name;
-                        }
-
-                        l_Assessments.Add(l_Assessment);
-                    }
-                }
-                return l_Assessments;
-            }
-            catch (Exception ex)
-            {
-                exception = "Get_SpecialDietReport_fromDietary |" + ex.ToString();
-                throw;
-            }
-            finally
-            {
-                l_Conn.Close();
-            }
-        }
-        public static Collection<SpecialDietReportModel> Get_SpecialDietReport_fromCarePlan(int homeID)
-        {
-            string exception = string.Empty;
-            Collection<SpecialDietReportModel> l_Assessments = new Collection<SpecialDietReportModel>();
-            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
-            try
-            {
-                SqlDataAdapter l_DA = new SqlDataAdapter();
-                SqlCommand l_Cmd = new SqlCommand("Get_SpecialDietReport_fromCarePlan", l_Conn);
-                l_Conn.Open();
-                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                l_Cmd.Parameters.AddWithValue("@homeID", homeID);
-                DataSet dataReceive = new DataSet();
-                l_DA.SelectCommand = l_Cmd;
-                l_DA.Fill(dataReceive);
-
-                if ((dataReceive != null) & dataReceive.Tables.Count > 0)
-                {
-                    for (int index = 0; index <= dataReceive.Tables[0].Rows.Count - 1; index++)
-                    {
-                        SpecialDietReportModel l_Assessment = new SpecialDietReportModel();
-                        l_Assessment.Id = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["Id"]);
-                        l_Assessment.ResidentID = Convert.ToInt32(dataReceive.Tables[0].Rows[index]["ResidentId"]);
-                        l_Assessment.SuiteNo = Convert.ToString(dataReceive.Tables[0].Rows[index]["SuiteNo"]);
-                        l_Assessment.Likes = Convert.ToString(dataReceive.Tables[0].Rows[index]["Likes"]);
-                        l_Assessment.DisLikes = Convert.ToString(dataReceive.Tables[0].Rows[index]["DisLikes"]);
-                        l_Assessment.DateEntered = Convert.ToDateTime(dataReceive.Tables[0].Rows[index]["DateEntere"]);
-                        l_Assessment.Texture = Convert.ToString(dataReceive.Tables[0].Rows[index]["Texture"]);
                         l_Assessment.Allergies = Convert.ToString(dataReceive.Tables[0].Rows[index]["Allergies"]);
-                        l_Assessment.Notes = Convert.ToString(dataReceive.Tables[0].Rows[index]["Notes"]);
+                        l_Assessment.DateEntered = Convert.ToDateTime(dataReceive.Tables[0].Rows[index]["DateEntered"]);
                         l_Assessment.Diet = JsonConvert.DeserializeObject<Collection<QOLACheckboxModel>>(Convert.ToString(dataReceive.Tables[0].Rows[index]["Diet"]));
-
-                        foreach (var gg in l_Assessment.Diet)
+                        l_Assessment.DietType = Convert.ToString(dataReceive.Tables[0].Rows[index]["DietType"]);
+                        if (l_Assessment.DietType == "")
                         {
-                            if (gg.IsSelected == true) l_Assessment.DietType += gg.Name;
+                            foreach (var gg in l_Assessment.Diet)
+                            {
+                                if (gg.IsSelected == true) l_Assessment.DietType += gg.Name + ", ";
+                            }
                         }
+                        if (HighLightString.Trim() != "")
+                        {
+                            l_Assessment.DietType = Regex.Replace(l_Assessment.DietType, HighLightString, "<span style='background-color:yellow;'>" + HighLightString + "</span>", RegexOptions.IgnoreCase);
+                            l_Assessment.Allergies = Regex.Replace(l_Assessment.Allergies, HighLightString, "<span style='background-color:yellow;'>" + HighLightString + "</span>", RegexOptions.IgnoreCase);
+                            l_Assessment.Likes = Regex.Replace(l_Assessment.Likes, HighLightString, "<span style='background-color:yellow;'>" + HighLightString + "</span>", RegexOptions.IgnoreCase);
+                            l_Assessment.DisLikes = Regex.Replace(l_Assessment.DisLikes, HighLightString, "<span style='background-color:yellow;'>" + HighLightString + "</span>", RegexOptions.IgnoreCase);
+                        }
+                        
+
 
                         l_Assessments.Add(l_Assessment);
                     }
@@ -1086,6 +1048,7 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
+
 
         public static Collection<DietaryLikesModel> GetLikesReport(int p_HomeId)
         {
