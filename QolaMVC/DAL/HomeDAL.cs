@@ -773,58 +773,6 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static Collection<DietaryAllergyReportModel> GetDietaryAllergyReport(int p_HomeId)
-        {
-            string exception = string.Empty;
-            Collection<DietaryAllergyReportModel> l_Reports = new Collection<DietaryAllergyReportModel>();
-            DietaryAllergyReportModel l_Report;
-            UserModel l_User;
-            ResidentModel l_Resident;
-            SuiteModel l_Suite;
-            AllergiesModel l_Allergy;
-
-            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
-            try
-            {
-                SqlDataAdapter l_DA = new SqlDataAdapter();
-                SqlCommand l_Cmd = new SqlCommand("spAB_Get_DietaryAssessmentAllergies", l_Conn);
-                l_Conn.Open();
-                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                l_Cmd.Parameters.AddWithValue("@HomeId", p_HomeId);
-                DataSet homeReceive = new DataSet();
-                l_DA.SelectCommand = l_Cmd;
-                l_DA.Fill(homeReceive);
-
-                if ((homeReceive != null) && (homeReceive.Tables.Count > 0) && (homeReceive.Tables[0].Rows.Count > 0))
-                {
-                    foreach (DataRow homeTypeRow in homeReceive.Tables[0].Rows)
-                    {
-                        l_Report = new DietaryAllergyReportModel();
-                        
-                        l_Report.Id = Convert.ToInt32(homeTypeRow["Id"]);
-                        l_Report.ResidentName = Convert.ToString(homeTypeRow["ResidentName"]);
-                        l_Report.ResidentId = Convert.ToInt32(homeTypeRow["ResidentId"]);
-                        l_Report.SuiteNo = Convert.ToString(homeTypeRow["Suite"]);
-                        l_Report.Allergy = Convert.ToString(homeTypeRow["Allergy"]);
-                        l_Report.DateEntered = Convert.ToDateTime(homeTypeRow["DateEntered"]);
-
-
-                        l_Reports.Add(l_Report);
-                    }
-                }
-                return l_Reports;
-            }
-            catch (Exception ex)
-            {
-                exception = "GetDietaryAllergyReport |" + ex.ToString();
-                //Log.Write(exception);
-                throw;
-            }
-            finally
-            {
-                l_Conn.Close();
-            }
-        }
         public static List<DietaryAllergyReportModel> Get_AllergyReport_fromAll(int homeID, int orderby, string HighLightString, string searchby)
         {
             string exception = string.Empty;
@@ -880,56 +828,6 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static Collection<SpecialDietReportModel> GetSpecialDietReport(int p_HomeId)
-        {
-            string exception = string.Empty;
-            Collection<SpecialDietReportModel> l_Reports = new Collection<SpecialDietReportModel>();
-            SpecialDietReportModel l_Report;
-            
-            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
-            try
-            {
-                SqlDataAdapter l_DA = new SqlDataAdapter();
-                SqlCommand l_Cmd = new SqlCommand("spAB_Get_DietaryAssessmentDiets", l_Conn);
-                l_Conn.Open();
-                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                l_Cmd.Parameters.AddWithValue("@HomeId", p_HomeId);
-                DataSet homeReceive = new DataSet();
-                l_DA.SelectCommand = l_Cmd;
-                l_DA.Fill(homeReceive);
-
-                if ((homeReceive != null) && (homeReceive.Tables.Count > 0) && (homeReceive.Tables[0].Rows.Count > 0))
-                {
-                    foreach (DataRow homeTypeRow in homeReceive.Tables[0].Rows)
-                    {
-                        l_Report = new SpecialDietReportModel();
-                        
-                        l_Report.Id = Convert.ToInt32(homeTypeRow["Id"]);
-                        l_Report.ResidentName = Convert.ToString(homeTypeRow["ResidentName"]);
-                        l_Report.ResidentID = Convert.ToInt32(homeTypeRow["ResidentId"]);
-                        l_Report.SuiteNo = Convert.ToString(homeTypeRow["Suite"]);
-                        l_Report.DietType = Convert.ToString(homeTypeRow["Diet"]);
-                        l_Report.Likes = Convert.ToString(homeTypeRow["Likes"]);
-                        l_Report.DisLikes = Convert.ToString(homeTypeRow["DisLikes"]);
-                        l_Report.DateEntered = Convert.ToDateTime(homeTypeRow["DateEntered"]);
-
-
-                        l_Reports.Add(l_Report);
-                    }
-                }
-                return l_Reports;
-            }
-            catch (Exception ex)
-            {
-                exception = "GetSpecialDietReport |" + ex.ToString();
-                //Log.Write(exception);
-                throw;
-            }
-            finally
-            {
-                l_Conn.Close();
-            }
-        }
         public static Collection<SpecialDietReportModel> Get_SpecialDietReport_fromAll(int homeID,int orderby, string HighLightString, string searchby)
         {
             string exception = string.Empty;
@@ -998,7 +896,6 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-
 
         public static Collection<DietaryLikesModel> GetLikesReport(int p_HomeId)
         {
@@ -1112,10 +1009,6 @@ namespace QolaMVC.DAL
             }
         }
 
-
-
-
-
         public static List<UserModel> mike_test()
         {
             List<UserModel> GGS = new List<UserModel>();
@@ -1140,10 +1033,6 @@ namespace QolaMVC.DAL
             conn.Close();
             return GGS;
         }
-
-
-
-
 
         #region tabs in activity calendar
 
@@ -1918,7 +1807,6 @@ namespace QolaMVC.DAL
             }
         }
 
-
         public static Collection<ActivityEventModel> GetActivityEvents_mike_SAC(DateTime datemike, int homeid, int residentID)
         {
             string exception = string.Empty;
@@ -2148,12 +2036,7 @@ namespace QolaMVC.DAL
             }
         }
 
-
-
         #endregion
-
-
-
 
         public static int GetCategoryIdbyActivityID(int activityID)
         {
@@ -2452,7 +2335,6 @@ namespace QolaMVC.DAL
             }
         }
 
-
         public static Collection<ActivityEventModel> GetActivityEvents_C2(int homeid)
         {
             string exception = string.Empty;
@@ -2602,7 +2484,6 @@ namespace QolaMVC.DAL
             }
         }
 
-
         public static Collection<ActivityEventModel> GetActivityEvents_C3(int homeid)
         {
             string exception = string.Empty;
@@ -2751,7 +2632,6 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-
 
         public static Collection<ActivityEventModel> GetActivityEvents_C4(int homeid)
         {
@@ -3759,7 +3639,6 @@ namespace QolaMVC.DAL
             }
         }
 
-
         public static ResidentEmergencyListModel get_EmergencyList(int homeid,int orderType)
         {
             string exception = string.Empty;
@@ -3992,7 +3871,6 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-
 
         public static void Change_Calendar_Name(int homeId,int number, string newName,int userId)
         {
@@ -4275,7 +4153,6 @@ namespace QolaMVC.DAL
             return l_Events;
         }
 
-
         public static Collection<ActivityEventModel> Add_All_Activity_From_Prev_Month_Mike(int homeID, int daydiff, int calendarnumber,string destinationMonthFirstDay)
         {
             string exception = string.Empty;
@@ -4403,7 +4280,6 @@ namespace QolaMVC.DAL
                 l_Conn.Close();
             }
         }
-
 
 
     }

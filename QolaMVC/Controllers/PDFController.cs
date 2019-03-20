@@ -40,7 +40,6 @@ namespace QolaMVC.Controllers
             iTextSharp.text.Font font5 = iTextSharp.text.FontFactory.GetFont(FontFactory.HELVETICA, 9);
             iTextSharp.text.Font font4 = iTextSharp.text.FontFactory.GetFont(FontFactory.HELVETICA, 8);
 
-
             PdfPTable table = new PdfPTable(5);
             float[] widths = new float[] { 2f, 4f, 2f, 4f, 4f};
             table.HorizontalAlignment = Element.ALIGN_LEFT;
@@ -76,28 +75,13 @@ namespace QolaMVC.Controllers
             l_Texture.HorizontalAlignment = Element.ALIGN_LEFT;
             l_Texture.BackgroundColor = BaseColor.LIGHT_GRAY;
 
-
             table.AddCell(l_Suite);
             table.AddCell(l_ResidentName);
             table.AddCell(l_AssessedDate);
             table.AddCell(l_DietType);
             table.AddCell(l_Texture);
 
-
             var l_DietAllergyReport = HomeDAL.Get_AllergyReport_fromAll(p_HomeId, sortby, "", searchby);
-
-            //foreach (var r in l_DietAllergyReport)
-            //{
-            //    if (l_DietAllergyReport.Count > 0)
-            //    {
-            //        table.AddCell(new Phrase(r.SuiteNo, font4));
-            //        table.AddCell(new Phrase(r.ResidentName, font4));
-            //        table.AddCell(new Phrase(r.DateEntered.ToString("yyyy-MM-dd"), font4));
-            //        table.AddCell(new Phrase(r.Allergy, font4));
-            //        table.AddCell(new Phrase(r.Note, font4));
-
-            //    }
-            //}
 
             for (int r = 0; r< l_DietAllergyReport.Count();r++)
             {
