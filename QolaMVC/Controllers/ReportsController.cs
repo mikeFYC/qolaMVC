@@ -401,7 +401,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
-            var l_DietaryAllergyReport = HomeDAL.GetDietaryAllergyReport(home.Id);
+            var l_DietaryAllergyReport = HomeDAL.Get_AllergyReport_fromAll(home.Id, 1, "", "");
             return View(l_DietaryAllergyReport);
             //return new Rotativa.ViewAsPdf("CarePlan", resident);
             //return new MvcRazorToPdf.PdfActionResult(resident);
@@ -423,7 +423,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
-            var l_SpecialDietReport = HomeDAL.Get_SpecialDietReport_fromAll(home.Id,"",1);
+            var l_SpecialDietReport = HomeDAL.Get_SpecialDietReport_fromAll(home.Id,1,"","");
 
             return View(l_SpecialDietReport);
             //return new Rotativa.ViewAsPdf("CarePlan", resident);
@@ -431,7 +431,7 @@ namespace QolaMVC.Controllers
         }
 
         [HttpGet]
-        public ActionResult SpecialDietReport_RefreshPage(int SortBy, string SearchBy)
+        public ActionResult SpecialDietReport_RefreshPage(int SortBy, string HighLight, string SearchBy)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -443,7 +443,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
-            var l_SpecialDietReport = HomeDAL.Get_SpecialDietReport_fromAll(home.Id, SearchBy, SortBy);
+            var l_SpecialDietReport = HomeDAL.Get_SpecialDietReport_fromAll(home.Id, SortBy, HighLight, SearchBy);
             List<dynamic> l_Json = new List<dynamic>();
 
             for (int a = 0; a < l_SpecialDietReport.Count(); a++)

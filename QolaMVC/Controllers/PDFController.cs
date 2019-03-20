@@ -19,7 +19,7 @@ namespace QolaMVC.Controllers
             return View();
         }
 
-        public void SpecialDietReport(int p_HomeId, int sortby)
+        public void SpecialDietReport(int p_HomeId, int sortby, string searchby)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -100,7 +100,7 @@ namespace QolaMVC.Controllers
             table.AddCell(l_DisLikes);
             table.AddCell(l_Notes);
 
-            var l_SpecialDietReport = HomeDAL.Get_SpecialDietReport_fromAll(p_HomeId,"", sortby);
+            var l_SpecialDietReport = HomeDAL.Get_SpecialDietReport_fromAll(p_HomeId, sortby, "", searchby);
 
             foreach (var r in l_SpecialDietReport)
             {

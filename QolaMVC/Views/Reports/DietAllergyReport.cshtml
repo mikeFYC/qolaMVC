@@ -1,4 +1,4 @@
-﻿@model IEnumerable<QolaMVC.Models.DietaryAllergyReportModel>
+﻿@model List<QolaMVC.Models.DietaryAllergyReportModel>
 
 @RenderPage("~/Views/Shared/_Header.cshtml")
 @RenderPage("~/Views/Shared/_SideBar.cshtml")
@@ -57,6 +57,10 @@
                                 </select>
                             </div>
                             <div class="input-group">
+                                <label>&nbsp;HighLight:&nbsp;</label>
+                                <input id="HighLightId" class="form-control" value="" />
+                            </div>
+                            <div class="input-group">
                                 <label>&nbsp;Search By:&nbsp;</label>
                                 <input id="SearchById" class="form-control" value="" />
                             </div>
@@ -70,23 +74,55 @@
                         <table class="table table-bordered">
                             <thead class="bg-primary">
                                 <tr>
-                                    <th class="text-white">Allergy Name</th>
-                                    <th class="text-white">Suite</th>
-                                    <th class="text-white">Resident Name</th>
-                                    <th class="text-white">Assessed Date</th>
+                                    <th class="text-white" style="width:10%;">Suite</th>
+                                    <th class="text-white" style="width:20%;">Resident Name</th>
+                                    <th class="text-white" style="width:10%;">Assessed Date</th>
+                                    <th class="text-white" style="width:20%;">Allergy Name</th>
                                     <th class="text-white">Notes</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach(var m in Model) {
-                                    <tr>
-                                        <td class="align-middle">@m.Allergy.Name </td>
-                                        <td class="align-middle">@m.Suite.SuiteNo</td>
-                                        <td class="align-middle">@m.Resident.ShortName</td>
-                                        <td class="align-middle">@m.DateEntered</td>
-                                        <td class="align-middle"></td>
-                                    </tr>
+                                @for (int m = 0; m < Model.Count(); m++)
+                                {
+                                    
+                                    if (m >= 1 && Model[m].ResidentId == Model[m - 1].ResidentId)
+                                    {
+                                        <tr>
+                                            <td class="align-middle"></td>
+                                            <td class="align-middle"></td>
+                                            <td class="align-middle"></td>
+                                            <td class="align-middle">@Model[m].Allergy</td>
+                                            <td class="align-middle">@Model[m].Note</td>
+                                        </tr>
                                     }
+                                    else
+                                    {
+                                        if (m + 1 < Model.Count() && Model[m].ResidentId == Model[m + 1].ResidentId)
+                                        {
+                                            <tr>
+                                                <td class="align-middle" style="border-bottom:none">@Model[m].SuiteNo</td>
+                                                <td class="align-middle" style="border-bottom:none">@Model[m].ResidentName</td>
+                                                <td class="align-middle" style="border-bottom:none">@Model[m].DateEntered.ToString("yyyy-MM-dd")</td>
+                                                <td class="align-middle">@Model[m].Allergy</td>
+                                                <td class="align-middle">@Model[m].Note</td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td class="align-middle">@Model[m].SuiteNo</td>
+                                                <td class="align-middle">@Model[m].ResidentName</td>
+                                                <td class="align-middle">@Model[m].DateEntered.ToString("yyyy-MM-dd")</td>
+                                                <td class="align-middle">@Model[m].Allergy</td>
+                                                <td class="align-middle">@Model[m].Note</td>
+                                            </tr>
+                                        }
+
+                                    }
+                                    
+
+
+                                }
                             </tbody>
                         </table>
                     </div>

@@ -57,6 +57,10 @@
                                 </select>
                             </div>
                             <div class="input-group">
+                                <label>&nbsp;HighLight:&nbsp;</label>
+                                <input id="HighLightId" class="form-control" value="" />
+                            </div>
+                            <div class="input-group">
                                 <label>&nbsp;Search By:&nbsp;</label>
                                 <input id="SearchById" class="form-control" value="" />
                             </div>
@@ -116,40 +120,41 @@
 
 
         <script>
-            function View_Button_Click(){
-        var SortById = $('#SortById').val();
-        var SearchById = $('#SearchById').val();
-        $.ajax({
-            type: "GET",
-            url: "/Reports/SpecialDietReport_RefreshPage",
-            data: { SortBy: SortById, SearchBy: SearchById },
-            success: function (data) {
-                $('#SortHidden').val(SortById);
-                $('#tbodyID').empty();
-                for (var i = 0; i < data.length; i++) {
-                    $('#tbodyID').append('<tr>'+
-                        '<td class="align-middle">' + data[i][3].Value + '</td>' +
-                        '<td class="align-middle">' + data[i][2].Value + '</td>' +
-                        '<td class="align-middle">' + data[i][10].Value + '</td>' +
-                        '<td class="align-middle">' + data[i][11].Value + '</td>' +
-                        '<td class="align-middle">' + data[i][7].Value + '</td>' +
-                        '<td class="align-middle">' + data[i][9].Value + '</td>' +
-                        '<td class="align-middle">' + data[i][5].Value + '</td>' +
-                        '<td class="align-middle">' + data[i][6].Value + '</td>' +
-                        '<td class="align-middle">' + data[i][8].Value + '</td>'+
-                        '</tr>');
-                }
-            },
-            error: function (error) {
-                tempAlert('failed', 2000);
-            }
-        })
-            }
+            function View_Button_Click() {
+                var SortById = $('#SortById').val();
+                var HighLightId = $('#HighLightId').val();
+                var SearchById = $('#SearchById').val();
+                $.ajax({
+                    type: "GET",
+                    url: "/Reports/SpecialDietReport_RefreshPage",
+                    data: { SortBy: SortById, HighLight: HighLightId, SearchBy: SearchById},
+                    success: function (data) {
+                        $('#SortHidden').val(SortById);
+                        $('#tbodyID').empty();
+                        for (var i = 0; i < data.length; i++) {
+                            $('#tbodyID').append('<tr>'+
+                                '<td class="align-middle">' + data[i][3].Value + '</td>' +
+                                '<td class="align-middle">' + data[i][2].Value + '</td>' +
+                                '<td class="align-middle">' + data[i][10].Value + '</td>' +
+                                '<td class="align-middle">' + data[i][11].Value + '</td>' +
+                                '<td class="align-middle">' + data[i][7].Value + '</td>' +
+                                '<td class="align-middle">' + data[i][9].Value + '</td>' +
+                                '<td class="align-middle">' + data[i][5].Value + '</td>' +
+                                '<td class="align-middle">' + data[i][6].Value + '</td>' +
+                                '<td class="align-middle">' + data[i][8].Value + '</td>'+
+                                '</tr>');
+                        }
+                    },
+                    error: function (error) {
+                        tempAlert('failed', 2000);
+                    }
+                })
+                    }
 
-            function Print_PDF_Click() {
-                var HomeIDHidden = $('#HomeIDHidden').val();
-                var SortHidden = $('#SortHidden').val();
-                location.href = "/PDF/SpecialDietReport/?p_HomeId=" + HomeIDHidden + "&sortby=" + SortHidden;
-            }
+                    function Print_PDF_Click() {
+                        var HomeIDHidden = $('#HomeIDHidden').val();
+                        var SortHidden = $('#SortHidden').val();
+                        location.href = "/PDF/SpecialDietReport/?p_HomeId=" + HomeIDHidden + "&sortby=" + SortHidden;
+                    }
 
         </script>
