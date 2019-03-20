@@ -81,10 +81,10 @@
                                     <th class="text-white">Notes</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="tbodyID">
                                 @for (int m = 0; m < Model.Count(); m++)
                                 {
-                                    
+
                                     if (m >= 1 && Model[m].ResidentId == Model[m - 1].ResidentId)
                                     {
                                         <tr>
@@ -119,7 +119,7 @@
                                         }
 
                                     }
-                                    
+
 
 
                                 }
@@ -127,7 +127,10 @@
                         </table>
                     </div>
                 </div>
-
+                <input type="hidden" id="SortHidden" value="1" />
+                <input type="hidden" id="HighLightHidden" value="" />
+                <input type="hidden" id="SearchHidden" value="" />
+                <input type="hidden" id="HomeIDHidden" value="@ViewBag.Home.Id" />
 
                 <!-- END PLACE PAGE CONTENT HERE -->
             </div>
@@ -137,3 +140,67 @@
 
 
         @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+<script>
+
+    function View_Button_Click() {
+        var SortById = $('#SortById').val();
+        var HighLightId = $('#HighLightId').val();
+        var SearchById = $('#SearchById').val();
+        $.ajax({
+            type: "GET",
+            url: "/Reports/DietAllergyReport_RefreshPage",
+            data: { SortBy: SortById, HighLight: HighLightId, SearchBy: SearchById },
+            success: function (data) {
+                $('#SortHidden').val(SortById);
+                $('#SearchHidden').val(SearchById);
+                $('#tbodyID').empty();
+                for (var i = 0; i < data.length; i++) {
+                    if (i >= 1 && data[i][6].Value == data[i - 1][6].Value) {
+                        $('#tbodyID').append('<tr>' +
+                            '<td class="align-middle"></td>' +
+                            '<td class="align-middle"></td>' +
+                            '<td class="align-middle"></td>' +
+                            '<td class="align-middle">' + data[i][3].Value + '</td>' +
+                            '<td class="align-middle">' + data[i][4].Value + '</td>' +
+                            '</tr>');
+                    }
+                    else {
+                        if (i + 1 < data.length && data[i][6].Value == data[i + 1][6].Value) {
+                            $('#tbodyID').append('<tr>' +
+                                '<td class="align-middle" style="border-bottom:none">' + data[i][0].Value + '</td>' +
+                                '<td class="align-middle" style="border-bottom:none">' + data[i][1].Value + '</td>' +
+                                '<td class="align-middle" style="border-bottom:none">' + data[i][2].Value + '</td>' +
+                                '<td class="align-middle">' + data[i][3].Value + '</td>' +
+                                '<td class="align-middle">' + data[i][4].Value + '</td>' +
+                                '</tr>');
+                        }
+                        else {
+                            $('#tbodyID').append('<tr>' +
+                                '<td class="align-middle">' + data[i][0].Value + '</td>' +
+                                '<td class="align-middle">' + data[i][1].Value + '</td>' +
+                                '<td class="align-middle">' + data[i][2].Value + '</td>' +
+                                '<td class="align-middle">' + data[i][3].Value + '</td>' +
+                                '<td class="align-middle">' + data[i][4].Value + '</td>' +
+                                '</tr>');
+                        }
+                    }
+
+
+
+
+                }
+            },
+            error: function (error) {
+                tempAlert('failed', 2000);
+            }
+        })
+    }
+
+    function Print_PDF_Click() {
+        var HomeIDHidden = $('#HomeIDHidden').val();
+        var SortHidden = $('#SortHidden').val();
+        var SearchHidden = $('#SearchHidden').val();
+        location.href = "/PDF/DietAllergyReport/?p_HomeId=" + HomeIDHidden + "&sortby=" + SortHidden + "&searchby=" + SearchHidden;
+    }
+</script>

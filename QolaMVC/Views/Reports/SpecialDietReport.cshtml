@@ -106,8 +106,9 @@
                     </div>
                 </div>
                 <input type="hidden" id="SortHidden" value="1" />
+                <input type="hidden" id="HighLightHidden" value="" />
                 <input type="hidden" id="SearchHidden" value="" />
-                <input type="hidden" id="HomeIDHidden" value="@ViewBag.HomeId" />
+                <input type="hidden" id="HomeIDHidden" value="@ViewBag.Home.Id" />
 
                 <!-- END PLACE PAGE CONTENT HERE -->
             </div>
@@ -130,6 +131,7 @@
                     data: { SortBy: SortById, HighLight: HighLightId, SearchBy: SearchById},
                     success: function (data) {
                         $('#SortHidden').val(SortById);
+                        $('#SearchHidden').val(SearchById);
                         $('#tbodyID').empty();
                         for (var i = 0; i < data.length; i++) {
                             $('#tbodyID').append('<tr>'+
@@ -149,12 +151,13 @@
                         tempAlert('failed', 2000);
                     }
                 })
-                    }
+            }
 
-                    function Print_PDF_Click() {
-                        var HomeIDHidden = $('#HomeIDHidden').val();
-                        var SortHidden = $('#SortHidden').val();
-                        location.href = "/PDF/SpecialDietReport/?p_HomeId=" + HomeIDHidden + "&sortby=" + SortHidden;
-                    }
+            function Print_PDF_Click() {
+                var HomeIDHidden = $('#HomeIDHidden').val();
+                var SortHidden = $('#SortHidden').val();
+                var SearchHidden = $('#SearchHidden').val();
+                location.href = "/PDF/SpecialDietReport/?p_HomeId=" + HomeIDHidden + "&sortby=" + SortHidden + "&searchby=" + SearchHidden;
+            }
 
         </script>
