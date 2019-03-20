@@ -390,18 +390,14 @@ namespace QolaMVC.Controllers
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
-            var resident = (ResidentModel)TempData["Resident"];
 
             ViewBag.User = user;
-            ViewBag.Resident = resident;
             ViewBag.Home = home;
-
 
             TempData.Keep("User");
             TempData.Keep("Home");
-            TempData.Keep("Resident");
 
-            var l_DietaryAllergyReport = HomeDAL.GetDietaryAllergyReport(home.Id);
+            var l_DietaryAllergyReport = HomeDAL.Get_AllergyReport_fromAll(home.Id, 1, "", "");
             return View(l_DietaryAllergyReport);
             //return new Rotativa.ViewAsPdf("CarePlan", resident);
             //return new MvcRazorToPdf.PdfActionResult(resident);
@@ -411,22 +407,87 @@ namespace QolaMVC.Controllers
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
-            var resident = (ResidentModel)TempData["Resident"];
 
+            ViewBag.User = user;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+
+            var l_SpecialDietReport = HomeDAL.Get_SpecialDietReport_fromAll(home.Id,1,"","");
+
+            return View(l_SpecialDietReport);
+            //return new Rotativa.ViewAsPdf("CarePlan", resident);
+            //return new MvcRazorToPdf.PdfActionResult(resident);
+        }
+
+        [HttpGet]
+        public ActionResult SpecialDietReport_RefreshPage(int SortBy, string HighLight, string SearchBy)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
             ViewBag.User = user;
             ViewBag.Resident = resident;
             ViewBag.Home = home;
-            ViewBag.HomeId = home.Id;
-
-
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
-            var l_SpecialDietReport = HomeDAL.GetSpecialDietReport(home.Id);
-            return View(l_SpecialDietReport);
-            //return new Rotativa.ViewAsPdf("CarePlan", resident);
-            //return new MvcRazorToPdf.PdfActionResult(resident);
+            var l_SpecialDietReport = HomeDAL.Get_SpecialDietReport_fromAll(home.Id, SortBy, HighLight, SearchBy);
+            List<dynamic> l_Json = new List<dynamic>();
+
+            for (int a = 0; a < l_SpecialDietReport.Count(); a++)
+            {
+                dynamic l_J = new System.Dynamic.ExpandoObject();
+                l_J.HomeID = l_SpecialDietReport[a].HomeID;
+                l_J.ResidentID = l_SpecialDietReport[a].ResidentID;
+                l_J.ResidentName = l_SpecialDietReport[a].ResidentName;
+                l_J.SuiteNo = l_SpecialDietReport[a].SuiteNo;
+                l_J.FloorNo = l_SpecialDietReport[a].FloorNo;
+                l_J.Likes = l_SpecialDietReport[a].Likes;
+                l_J.DisLikes = l_SpecialDietReport[a].DisLikes;
+                l_J.Texture = l_SpecialDietReport[a].Texture;
+                l_J.Notes = l_SpecialDietReport[a].Notes;
+                l_J.Allergies = l_SpecialDietReport[a].Allergies;
+                l_J.DateEntered = l_SpecialDietReport[a].DateEntered.ToString("yyyy-MM-dd");
+                l_J.DietType = l_SpecialDietReport[a].DietType;
+                l_Json.Add(l_J);
+               
+            }
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult DietAllergyReport_RefreshPage(int SortBy, string HighLight, string SearchBy)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            var l_DietAllergyReport = HomeDAL.Get_AllergyReport_fromAll(home.Id, SortBy, HighLight, SearchBy);
+            List<dynamic> l_Json = new List<dynamic>();
+
+            for (int a = 0; a < l_DietAllergyReport.Count(); a++)
+            {
+                dynamic l_J = new System.Dynamic.ExpandoObject();
+                l_J.SuiteNo = l_DietAllergyReport[a].SuiteNo;
+                l_J.ResidentName = l_DietAllergyReport[a].ResidentName;
+                l_J.DateEntered = l_DietAllergyReport[a].DateEntered.ToString("yyyy-MM-dd");
+                l_J.Allergy = l_DietAllergyReport[a].Allergy;
+                l_J.Note = l_DietAllergyReport[a].Note;             
+                l_J.HomeID = l_DietAllergyReport[a].HomeId;
+                l_J.ResidentID = l_DietAllergyReport[a].ResidentId;
+                l_Json.Add(l_J);
+
+            }
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult LikesReport()

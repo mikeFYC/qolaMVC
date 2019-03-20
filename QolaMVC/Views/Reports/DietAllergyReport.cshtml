@@ -1,4 +1,4 @@
-﻿@model IEnumerable<QolaMVC.Models.DietaryAllergyReportModel>
+﻿@model List<QolaMVC.Models.DietaryAllergyReportModel>
 
 @RenderPage("~/Views/Shared/_Header.cshtml")
 @RenderPage("~/Views/Shared/_SideBar.cshtml")
@@ -27,8 +27,12 @@
                 <div class="container-fluid container-fixed-lg">
                     <!-- <div class="inner"> -->
                     <div class="row align-items-center">
-                        <div class="col-md-8">
+                        <div class="col-md-9">
                             <h3>Allergy</h3>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="/HomeReports/" class="btn btn-primary"><i class="fa fa-backward"></i> Back</a>
+                            <button class="btn btn-danger" onclick="Print_PDF_Click()"><i class="fa fa-file-pdf-o"></i> Print</button>
                         </div>
                     </div>
                     <!-- </div> -->
@@ -43,47 +47,25 @@
                 <!-- BEGIN PlACE PAGE CONTENT HERE -->
                 <div class="row">
                     <div class="col-md-8 py-4 text-left">
-                        <form class="form-inline">
-                            <div class="form-group pr-1">
-                                @*<div class="input-group">
-                                    <label>Home: </label>
-                                    <select class="form-control">
-                                        <option>All fields</option>
-                                        <option>First Name</option>
-                                        <option>Last Name</option>
-                                        <option>Suite No</option>
-                                        <option>Emergency Contact</option>
-                                        <option>Physician</option>
-                                    </select>
-                                </div>*@
-                                <div class="input-group">
-                                    <label>Diet Allergy:&nbsp;</label>
-                                    <select class="form-control">
-                                        <option>All fields</option>
-                                        <option>First Name</option>
-                                        <option>Last Name</option>
-                                        <option>Suite No</option>
-                                        <option>Emergency Contact</option>
-                                        <option>Physician</option>
-                                    </select>
-                                </div>
-                                <div class="input-group">
-                                    <label>&nbsp;&nbsp;&nbsp;Floor:&nbsp;</label>
-                                    <select class="form-control">
-                                        <option>All fields</option>
-                                        <option>First Name</option>
-                                        <option>Last Name</option>
-                                        <option>Suite No</option>
-                                        <option>Emergency Contact</option>
-                                        <option>Physician</option>
-                                    </select>
-                                </div>
+                        <div class="form-inline">
+                            <div class="input-group">
+                                <label>&nbsp;Sort By:&nbsp;</label>
+                                <select id="SortById" class="form-control">
+                                    <option value="1">Suite No</option>
+                                    <option value="2">Name</option>
+                                    <option value="3">Assessed Date</option>
+                                </select>
                             </div>
-                            <button type="submit" class="btn btn-primary">View</button>
-                        </form>
-                    </div>
-                    <div class="col-md-4 py-4 text-right">
-                        <a class="btn btn-lg btn-primary" href="addallergy.php">Print PDF</a>
+                            <div class="input-group">
+                                <label>&nbsp;HighLight:&nbsp;</label>
+                                <input id="HighLightId" class="form-control" value="" />
+                            </div>
+                            <div class="input-group">
+                                <label>&nbsp;Search By:&nbsp;</label>
+                                <input id="SearchById" class="form-control" value="" />
+                            </div>
+                            <button id="View_Button" type="button" class="btn btn-primary" style="margin-left:1%;" onclick="View_Button_Click()">View</button>
+                        </div>
                     </div>
                 </div>
 
@@ -92,28 +74,63 @@
                         <table class="table table-bordered">
                             <thead class="bg-primary">
                                 <tr>
-                                    <th class="text-white">Allergy Name</th>
-                                    <th class="text-white">Suite</th>
-                                    <th class="text-white">Resident Name</th>
-                                    <th class="text-white">Assessed Date</th>
+                                    <th class="text-white" style="width:10%;">Suite</th>
+                                    <th class="text-white" style="width:20%;">Resident Name</th>
+                                    <th class="text-white" style="width:10%;">Assessed Date</th>
+                                    <th class="text-white" style="width:20%;">Allergy Name</th>
                                     <th class="text-white">Notes</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @foreach(var m in Model) {
-                                    <tr>
-                                        <td class="align-middle">@m.Allergy.Name </td>
-                                        <td class="align-middle">@m.Suite.SuiteNo</td>
-                                        <td class="align-middle">@m.Resident.ShortName</td>
-                                        <td class="align-middle">@m.DateEntered</td>
-                                        <td class="align-middle"></td>
-                                    </tr>
+                            <tbody id="tbodyID">
+                                @for (int m = 0; m < Model.Count(); m++)
+                                {
+
+                                    if (m >= 1 && Model[m].ResidentId == Model[m - 1].ResidentId)
+                                    {
+                                        <tr>
+                                            <td class="align-middle"></td>
+                                            <td class="align-middle"></td>
+                                            <td class="align-middle"></td>
+                                            <td class="align-middle">@Model[m].Allergy</td>
+                                            <td class="align-middle">@Model[m].Note</td>
+                                        </tr>
                                     }
+                                    else
+                                    {
+                                        if (m + 1 < Model.Count() && Model[m].ResidentId == Model[m + 1].ResidentId)
+                                        {
+                                            <tr>
+                                                <td class="align-middle" style="border-bottom:none">@Model[m].SuiteNo</td>
+                                                <td class="align-middle" style="border-bottom:none">@Model[m].ResidentName</td>
+                                                <td class="align-middle" style="border-bottom:none">@Model[m].DateEntered.ToString("yyyy-MM-dd")</td>
+                                                <td class="align-middle">@Model[m].Allergy</td>
+                                                <td class="align-middle">@Model[m].Note</td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td class="align-middle">@Model[m].SuiteNo</td>
+                                                <td class="align-middle">@Model[m].ResidentName</td>
+                                                <td class="align-middle">@Model[m].DateEntered.ToString("yyyy-MM-dd")</td>
+                                                <td class="align-middle">@Model[m].Allergy</td>
+                                                <td class="align-middle">@Model[m].Note</td>
+                                            </tr>
+                                        }
+
+                                    }
+
+
+
+                                }
                             </tbody>
                         </table>
                     </div>
                 </div>
-
+                <input type="hidden" id="SortHidden" value="1" />
+                <input type="hidden" id="HighLightHidden" value="" />
+                <input type="hidden" id="SearchHidden" value="" />
+                <input type="hidden" id="HomeIDHidden" value="@ViewBag.Home.Id" />
 
                 <!-- END PLACE PAGE CONTENT HERE -->
             </div>
@@ -123,3 +140,63 @@
 
 
         @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+<script>
+
+    function View_Button_Click() {
+        var SortById = $('#SortById').val();
+        var HighLightId = $('#HighLightId').val();
+        var SearchById = $('#SearchById').val();
+        $.ajax({
+            type: "GET",
+            url: "/Reports/DietAllergyReport_RefreshPage",
+            data: { SortBy: SortById, HighLight: HighLightId, SearchBy: SearchById },
+            success: function (data) {
+                $('#SortHidden').val(SortById);
+                $('#SearchHidden').val(SearchById);
+                $('#tbodyID').empty();
+                for (var i = 0; i < data.length; i++) {
+                    if (i >= 1 && data[i][6].Value == data[i - 1][6].Value) {
+                        $('#tbodyID').append('<tr>' +
+                            '<td class="align-middle"></td>' +
+                            '<td class="align-middle"></td>' +
+                            '<td class="align-middle"></td>' +
+                            '<td class="align-middle">' + data[i][3].Value + '</td>' +
+                            '<td class="align-middle">' + data[i][4].Value + '</td>' +
+                            '</tr>');
+                    }
+                    else {
+                        if (i + 1 < data.length && data[i][6].Value == data[i + 1][6].Value) {
+                            $('#tbodyID').append('<tr>' +
+                                '<td class="align-middle" style="border-bottom:none">' + data[i][0].Value + '</td>' +
+                                '<td class="align-middle" style="border-bottom:none">' + data[i][1].Value + '</td>' +
+                                '<td class="align-middle" style="border-bottom:none">' + data[i][2].Value + '</td>' +
+                                '<td class="align-middle">' + data[i][3].Value + '</td>' +
+                                '<td class="align-middle">' + data[i][4].Value + '</td>' +
+                                '</tr>');
+                        }
+                        else {
+                            $('#tbodyID').append('<tr>' +
+                                '<td class="align-middle">' + data[i][0].Value + '</td>' +
+                                '<td class="align-middle">' + data[i][1].Value + '</td>' +
+                                '<td class="align-middle">' + data[i][2].Value + '</td>' +
+                                '<td class="align-middle">' + data[i][3].Value + '</td>' +
+                                '<td class="align-middle">' + data[i][4].Value + '</td>' +
+                                '</tr>');
+                        }
+                    }
+                }
+            },
+            error: function (error) {
+                tempAlert('failed', 2000);
+            }
+        })
+    }
+
+    function Print_PDF_Click() {
+        var HomeIDHidden = $('#HomeIDHidden').val();
+        var SortHidden = $('#SortHidden').val();
+        var SearchHidden = $('#SearchHidden').val();
+        location.href = "/PDF/DietAllergyReport/?p_HomeId=" + HomeIDHidden + "&sortby=" + SortHidden + "&searchby=" + SearchHidden;
+    }
+</script>

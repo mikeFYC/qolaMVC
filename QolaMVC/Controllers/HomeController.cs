@@ -6434,5 +6434,66 @@ public class pdfHeaderFooter2 : PdfPageEventHelper
 
 }
 
+public class pdfHeaderFooterNormal : PdfPageEventHelper
+{
+    int i = 1;
+    private string homename;
+    private string reportName;
+
+    public pdfHeaderFooterNormal(string name,string report)
+    {
+        homename = name;
+        reportName = report;
+    }
+    public override void OnStartPage(PdfWriter writer, Document document)
+    {
+
+        base.OnOpenDocument(writer, document);
+        iTextSharp.text.Font headerFont = FontFactory.GetFont(BaseFont.TIMES_ROMAN, 10f);
+        PdfPTable tabHeader = new PdfPTable(new float[] { 1F, 1F });
+        tabHeader.SpacingAfter = 1F;
+
+        tabHeader.TotalWidth = PageSize.A4.Width-60;
+
+        PdfPCell cell1 = new PdfPCell(new Phrase("QOLA Date printed: " + DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString(), headerFont));
+        cell1.Border = 0;
+        cell1.HorizontalAlignment = Element.ALIGN_LEFT;
+        tabHeader.AddCell(cell1);
+
+        PdfPCell cell = new PdfPCell(new Phrase(homename, headerFont)); 
+        cell.Border = 0;
+        cell.HorizontalAlignment = Element.ALIGN_RIGHT;
+        tabHeader.AddCell(cell);
+
+        tabHeader.WriteSelectedRows(0, -1, 29, (document.PageSize.Height - 10), writer.DirectContent);
+    }
+    public override void OnEndPage(PdfWriter writer, Document document)
+    {
+        base.OnEndPage(writer, document);
+        base.OnEndPage(writer, document);
+        iTextSharp.text.Font footerFont = FontFactory.GetFont(BaseFont.TIMES_ROMAN, 10f);
+        PdfPTable tabFot = new PdfPTable(new float[] { 9f, 8f });
+
+        tabFot.TotalWidth = PageSize.A4.Width - 60;
+        tabFot.WidthPercentage = 100f;
+
+        PdfPCell cell1 = new PdfPCell(new Phrase(reportName, footerFont));
+        cell1.Border = 0;
+
+        cell1.HorizontalAlignment = Element.ALIGN_LEFT;
+
+        tabFot.AddCell(cell1);
+
+
+        PdfPCell cell = new PdfPCell(new Phrase("Page" + " - " + i++, footerFont));
+        cell.Border = 0;
+
+        cell.HorizontalAlignment = Element.ALIGN_RIGHT;
+        tabFot.AddCell(cell);
+        tabFot.WriteSelectedRows(0, -1, 29, document.Bottom - 3, writer.DirectContent);
+    }
+
+}
+
 
 
