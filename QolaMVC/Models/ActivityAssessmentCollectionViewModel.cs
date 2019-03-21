@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace QolaMVC.Models
 {
@@ -23,5 +24,10 @@ namespace QolaMVC.Models
         public string OtherLanguage { get; set; }
         public string Vetaran { get; set; }
         public string VeteranOther { get; set; }
+        public string TshirtSize { get; set; }
+
+        public IEnumerable<SelectListItem> TshirtSizeList { get; set; }
+
+
     }
 }

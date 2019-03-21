@@ -2434,6 +2434,8 @@ namespace QolaMVC.Controllers
             else if (resident.MaritalStatus == 4) resident.MaritalStatustext = "Divorced";
             else resident.MaritalStatustext = "";
 
+            AssessmentDAL.SetUp_ActivityAssessmentModel_ListItems(single);
+
             return View(single);
         }
 

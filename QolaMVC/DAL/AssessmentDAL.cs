@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace QolaMVC.DAL
 {
@@ -4328,7 +4329,17 @@ namespace QolaMVC.DAL
             }
         }
 
-
+        public static void SetUp_ActivityAssessmentModel_ListItems(ActivityAssessmentCollectionViewModel AAA)
+        {
+            AAA.TshirtSizeList =  new[]{
+                new SelectListItem { Value = "", Text = "--- Select ---" },
+                new SelectListItem { Value = "X-Small", Text = "X-Small" },
+                new SelectListItem { Value = "Small", Text = "Small" },
+                new SelectListItem { Value = "Medium", Text = "Medium" },
+                new SelectListItem { Value = "Large", Text = "Large" },
+                new SelectListItem { Value = "X-Large", Text = "X-Large" },
+            };
+    }
 
 
 

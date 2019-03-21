@@ -426,6 +426,7 @@ namespace QolaMVC.DAL
                     l_Model.OtherLanguage = Convert.ToString(l_Reader["OtherLanguage"]);
                     l_Model.Vetaran = Convert.ToString(l_Reader["Vetaran"]);
                     l_Model.VeteranOther = Convert.ToString(l_Reader["VeteranOther"]);
+                    l_Model.TshirtSize = Convert.ToString(l_Reader["TshirtSize"]);
 
                     SqlCommand l_Cmd2 = new SqlCommand("spAB_Get_ActivityAssessmentByAssessmentId", l_Conn);
                     l_Cmd2.CommandType = System.Data.CommandType.StoredProcedure;
@@ -573,6 +574,7 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@OtherLanguage", p_Model.OtherLanguage);
                 l_Cmd.Parameters.AddWithValue("@Vetaran", p_Model.Vetaran);
                 l_Cmd.Parameters.AddWithValue("@VeteranOther", p_Model.VeteranOther);
+                l_Cmd.Parameters.AddWithValue("@TshirtSize", p_Model.TshirtSize);
 
                 SqlDataReader l_Reader = l_Cmd.ExecuteReader();
 
