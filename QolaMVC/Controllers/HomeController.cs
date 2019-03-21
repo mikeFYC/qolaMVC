@@ -1857,17 +1857,12 @@ namespace QolaMVC.Controllers
             ResidentModel AA = new ResidentModel();
             ResidentsDAL.SetUp_ResidentModel_ListItems(AA);
 
-            ResidentModel p_Model = (ResidentModel)TempData["p_Model"];
-            if (p_Model == null)
-            {
-                AA.BirthDate = DateTime.Now;
-                AA.MoveInDate = DateTime.Now;
-                return View(AA);
-            }
-            else
-            {
-                return View(p_Model);
-            }
+            //ResidentModel p_Model = (ResidentModel)TempData["p_Model"];
+
+            AA.BirthDate = DateTime.Now;
+            AA.MoveInDate = DateTime.Now;
+            return View(AA);
+
         }
 
         [HttpPost]
@@ -1881,7 +1876,7 @@ namespace QolaMVC.Controllers
 
             if (p_Model.DNRStatusIndex == true) p_Model.DNRStatus = 'Y';
             if (p_Model.FullCodeStatusIndex == true)  p_Model.FullCodeStatus = 'Y';
-            if (p_Model.AHS_index == true) p_Model.AHS = 'Y';
+            //if (p_Model.AHS_index == true) p_Model.AHS = 'Y';
 
             foreach (PropertyInfo prop in typeof(ResidentModel).GetProperties())
             {
@@ -2024,8 +2019,8 @@ namespace QolaMVC.Controllers
             }
 
             //ResidentsDAL.update_checklist(user.ID,RR[0]);
-            TempData["p_Model"] = p_Model;
-            TempData.Keep("p_Model");
+            //TempData["p_Model"] = p_Model;
+            //TempData.Keep("p_Model");
 
             return RedirectToAction("ResidentMenu",new { p_ResidentId= RR[0] });
         }

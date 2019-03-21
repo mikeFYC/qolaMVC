@@ -177,8 +177,7 @@ namespace QolaMVC.Controllers
             p_Model.CellPhoneType2 = 1;
             p_Model.Email2 = InputModal.ProspectContact2Email;
             p_Model.Relationship2 = InputModal.ProspectContact2Relationship;
-            if (InputModal.ProspectFinancing == true) p_Model.AHS = 'Y';
-            else if (InputModal.ProspectFinancing == false) p_Model.AHS = 'N';
+            p_Model.AHS = InputModal.ProspectFinancing;
 
 
             //if (p_Model.DNRStatusIndex == true) p_Model.DNRStatus = 'Y';
@@ -250,8 +249,7 @@ namespace QolaMVC.Controllers
                 p_Model2.CellPhoneType2 = 1;
                 p_Model2.Email2 = InputModal.Prospect2Contact2Email;
                 p_Model2.Relationship2 = InputModal.Prospect2Contact2Relationship;
-                if (InputModal.Prospect2Financing == true) p_Model2.AHS = 'Y';
-                else if (InputModal.Prospect2Financing == false) p_Model2.AHS = 'N';
+                p_Model2.AHS = InputModal.Prospect2Financing;
 
                 foreach (PropertyInfo prop in typeof(ResidentModel).GetProperties())
                 {

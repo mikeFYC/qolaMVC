@@ -101,7 +101,8 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@culturalPreferences", addResidentGeneralInfo.CulturalPreferences);
 
                 l_Cmd.Parameters.AddWithValue("@MarketResource", addResidentGeneralInfo.MarketResource);
-                l_Cmd.Parameters.AddWithValue("@AHS", addResidentGeneralInfo.AHS);
+                l_Cmd.Parameters.AddWithValue("@AHS", addResidentGeneralInfo.AHS == true? 'Y':'\0');
+                l_Cmd.Parameters.AddWithValue("@RESPITE", addResidentGeneralInfo.RESPITE == true ? 'Y': '\0');
 
                 residentId = l_Cmd.ExecuteNonQuery();
                 if (residentId > 0)
@@ -573,7 +574,7 @@ namespace QolaMVC.DAL
             try
             {
                 SqlDataAdapter l_DA = new SqlDataAdapter();
-                SqlCommand l_Cmd = new SqlCommand("Get_Resident_By_Id_include_Market_and_AHS", l_Conn);
+                SqlCommand l_Cmd = new SqlCommand("Get_Resident_By_Id_include_new_Items", l_Conn);
                 l_Conn.Open();
                 l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 l_Cmd.Parameters.AddWithValue("@id", residentId);
@@ -799,7 +800,8 @@ namespace QolaMVC.DAL
                         resident.Suite_Handler_Status = Convert.ToString(residentTypeRow["suite_handler_status"]);
 
                         resident.MarketResource = Convert.ToString(residentTypeRow["MarketResource"]);
-                        resident.AHS = Convert.ToChar(residentTypeRow["AHS"]);
+                        resident.AHS = Convert.ToChar(residentTypeRow["AHS"]) == 'Y' ? true : false;
+                        resident.RESPITE = Convert.ToChar(residentTypeRow["RESPITE"]) == 'Y' ? true : false;
 
 
                     }

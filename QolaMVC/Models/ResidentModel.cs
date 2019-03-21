@@ -1162,8 +1162,8 @@ namespace QolaMVC.Models
         public bool NoPhoneNumberIndex { get; set; }
 
         public string MarketResource { get; set; }
-        public bool AHS_index { get; set; }
-        public char AHS { get; set; }
+        public bool AHS { get; set; }
+        public bool RESPITE { get; set; }
 
     }
 }
