@@ -5354,7 +5354,7 @@ namespace QolaMVC.Controllers
 
             ViewBag.ActivityCategory = MasterDAL.GetAllActivityCategory();
 
-
+            ViewBag.AllHome = HomeDAL.GetHomeCollections();
 
             return View(LIST_VIEW_RESIDENT);
 

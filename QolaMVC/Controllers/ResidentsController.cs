@@ -128,11 +128,13 @@ namespace QolaMVC.Controllers
             ProgressNotesHelper.RegisterSession(resident);
             TempData["Table"] = update_Suite_Handler_Table.get_innerHTML(resident.ID);
 
-            //TempData["Table2"] = update_Suite_Handler_Table.get_innerHTML_temperary(resident.ID);
+
 
             ViewBag.TableEDIT = update_Suite_Handler_Table.get_innerHTML_temperary2(resident.ID);
 
             TempData["hospital"] = "NO";
+
+            ViewBag.UserHome = HomeDAL.GetHomeByUser(user.ID);
 
             return View(resident);
         }

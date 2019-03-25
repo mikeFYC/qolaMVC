@@ -202,7 +202,7 @@
                                         <h6>@Model.Gendar</h6>
                                         <h6>@Model.BirthDate.ToShortDateString()</h6>
                                         @{
-                                            if (ViewBag.User.ID == 1338 || ViewBag.User.ID == 1346 || ViewBag.User.ID == 1552)
+                                            if (ViewBag.User.ID == 1338 || ViewBag.User.ID == 1346 || ViewBag.User.ID == 1552 || ViewBag.User.UserName=="mfeng")
                                             {
                                                 <button class="edit_button" id="EDIT_BUTTON" onclick="edit_button_click()">
                                                     EDIT
@@ -239,37 +239,10 @@
                                                                 <td style="padding:10px !important;">
                                                                     <select class="edit_home form-control" onchange="edit_selection_onchange_empty_suite(this)">
                                                                         <option value=@rd.homeid selected>@rd.homename</option>
-                                                                        <option value="15">Auburn Heights Retirement Residence</option>
-                                                                        <option value="5"> Laurel Heights Retirement Residence </option>
-                                                                        <option value="26">Lewis Estates</option>
-                                                                        <option value="35">Mactaggart Place Retirement Residence</option>
-                                                                        <option value="1"> Rutherford Heights Retirement Residence </option>
-                                                                        <option value="33">Sage Hill Retirement Residence</option>
-                                                                        <option value="31">St. Albert Retirement Residence</option>
-                                                                        <option value="3"> Summerwood Village Retirement Residence </option>
-                                                                        <option value="30">River Ridge 2 Retirement Residence</option>
-                                                                        <option value="4"> River Ridge Retirement Residence </option>
-                                                                        <option value="17">Seine River Retirement Residence</option>
-                                                                        <option value="6"> Shaftesbury Park Retirement Residence </option>
-                                                                        <option value="18">Sturgeon Creek I Retirement Residence</option>
-                                                                        <option value="13">Sturgeon Creek II Retirement Residence</option>
-                                                                        <option value="12">Victoria Landing Retirement Residence</option>
-                                                                        <option value="2"> Beacon Heights Retirement Residence </option>
-                                                                        <option value="7"> Cedarcroft Place Retirement Residence </option>
-                                                                        <option value="27">Chapel Hill Retirement Residence</option>
-                                                                        <option value="32">Cit&#233; Parkway Retirement Residence</option>
-                                                                        <option value="34">Eagleson Retirement Residence</option>
-                                                                        <option value="28">Mccarthy Place</option>
-                                                                        <option value="29">Sample</option>
-                                                                        <option value="16">College Park II Retirement Residence</option>
-                                                                        <option value="8"> College Park Retirement Residence </option>
-                                                                        <option value="14">Preston Park II Retirement Residence</option>
-                                                                        <option value="11">Preston Park Retirement Residence</option>
-                                                                        <option value="20">465, Boulevard De La Gappe</option>
-                                                                        <option value="21">475 Boulevard De La Gappe</option>
-                                                                        <option value="22">485 Boulevard De La Gappe</option>
-                                                                        <option value="23">495 Boulevard De La Gappe</option>
-                                                                        <option value="19">Chateau Symmes Retirement Residence</option>
+                                                                        @foreach (var building in ViewBag.UserHome)
+                                                                        {
+                                                                        <option value="@building.Id">@building.Name</option>
+                                                                        }
                                                                     </select>
                                                                 </td>
                                                                 <td style="padding:10px !important;">
@@ -318,21 +291,21 @@
 
                                     </div>
                                     <br />
-                                    <select name="" id="select_option_in_edit_form" class="form-control" style="min-width:40vw;display:none;">
+                                    @*<select name="" id="select_option_in_edit_form" class="form-control" style="min-width:40vw;">
                                         <option value="">----- Choose the Last Action you want to undo -----</option>
                                         <option value="only_delete">Application Suite</option>
                                         <option value="delete_and_update_move_out">Change Occupancy/Internal Transfer/Transfer to ASC HOME</option>
                                         <option value="update_move_out_and_note_and_pass_away">Passed Away</option>
                                         <option value="only_update_note">Hospitalization</option>
                                         <option value="update_move_out_and_note">ALL Other Move Out</option>
-                                    </select>
+                                    </select>*@
                                     <br>
                                     <button class="btn btn-primary" id="BACK_Button_in_Edit" onclick="Back_in_edit_button_click()">
                                         BACK
                                     </button>
-                                    <button class="btn btn-danger" id="SAVE_Button_in_Edit" onclick="UNDO_in_edit_button_click()" style="display:none;">
+                                    @*<button class="btn btn-danger" id="SAVE_Button_in_Edit" onclick="UNDO_in_edit_button_click()">
                                         UNDO
-                                    </button>
+                                    </button>*@
                                     <button class="btn btn-danger" id="Edit_Button" onclick="Edit_Button_Save()">
                                         UPDATE
                                     </button>
@@ -349,43 +322,46 @@
                                     </div>
                                     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                         <li class="nav-item">
-                                            <a class="nav-link" id="ApplicationSuite" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true" onclick="option_button_click(this.id)">Additional Suite</a>
+                                            <a class="nav-link" id="ApplicationSuite" data-toggle="pill" href="#"  onclick="option_button_click(this.id)">Additional Suite</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="ChangeOccupancy" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false" onclick="option_button_click(this.id)">Change Occupancy</a>
+                                            <a class="nav-link" id="ChangeOccupancy" data-toggle="pill" href="#" onclick="option_button_click(this.id)">Change Occupancy</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="InternalTransfer" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false" onclick="option_button_click(this.id)">Internal Transfer</a>
+                                            <a class="nav-link" id="InternalTransfer" data-toggle="pill" href="#" onclick="option_button_click(this.id)">Internal Transfer</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="TransfertoASCHOME" data-toggle="pill" href="#pills-other" role="tab" aria-controls="pills-contact" aria-selected="false" onclick="option_button_click(this.id)">Transfer to ASC HOME</a>
+                                            <a class="nav-link" id="TransfertoASCHOME" data-toggle="pill" href="#" onclick="option_button_click(this.id)">Transfer to ASC HOME</a>
                                         </li>
                                     </ul>
                                     <h4 style="font-weight:bolder;">Move Out</h4>
                                     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                         <li class="nav-item">
-                                            <a class="nav-link" id="EndofLease" data-toggle="pill" href="#pills-home2" role="tab" aria-controls="pills-home" aria-selected="true" onclick="option_button_click(this.id)">End of Lease</a>
+                                            <a class="nav-link" id="EndofLease" data-toggle="pill" href="#" onclick="option_button_click(this.id)">Returned Home</a>
+                                        </li>
+                                        @*<li class="nav-item">
+                                            <a class="nav-link" id="Palliative" data-toggle="pill" href="#" onclick="option_button_click(this.id)">Palliative</a>
+                                        </li>*@
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="LTC" data-toggle="pill" href="#" onclick="option_button_click(this.id)">LTC</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="Palliative" data-toggle="pill" href="#pills-profile2" role="tab" aria-controls="pills-profile" aria-selected="false" onclick="option_button_click(this.id)">Palliative</a>
+                                            <a class="nav-link" id="OtherRetirement" data-toggle="pill" href="#"  onclick="option_button_click(this.id)">Other Retirement</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="LTC" data-toggle="pill" href="#pills-contact2" role="tab" aria-controls="pills-contact" aria-selected="false" onclick="option_button_click(this.id)">LTC</a>
+                                            <a class="nav-link" id="PassedAway" data-toggle="pill" href="#" onclick="option_button_click(this.id)">Passed Away</a>
                                         </li>
+                                        @*<li class="nav-item">
+                                            <a class="nav-link" id="Other" data-toggle="pill" href="#" onclick="option_button_click(this.id)">Other</a>
+                                        </li>*@
                                         <li class="nav-item">
-                                            <a class="nav-link" id="OtherRetirement" data-toggle="pill" href="#pills-other2" role="tab" aria-controls="pills-contact" aria-selected="false" onclick="option_button_click(this.id)">Other Retirement</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" id="PassedAway" data-toggle="pill" href="#pills-passed" role="tab" aria-controls="pills1" aria-selected="false" onclick="option_button_click(this.id)">Passed Away</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" id="Other" data-toggle="pill" href="#pills-other3" role="tab" aria-controls="pills2" aria-selected="false" onclick="option_button_click(this.id)">Other</a>
+                                            <a class="nav-link" id="Respite" data-toggle="pill" href="#" onclick="option_button_click(this.id)">Respite</a>
                                         </li>
                                     </ul>
                                     <h4 style="font-weight:bolder;">Hospital</h4>
                                     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                         <li class="nav-item">
-                                            <a class="nav-link" id="Hospitalization" data-toggle="pill" href="#pills-home2" role="tab" aria-controls="pills-home" aria-selected="true" onclick="option_button_click_hos(this.id)">Hospitalization</a>
+                                            <a class="nav-link" id="Hospitalization" data-toggle="pill" href="#" onclick="option_button_click_hos(this.id)">Hospitalization</a>
                                         </li>
                                     </ul>
 
@@ -602,37 +578,10 @@
                                                         <div class="col-md-7">
                                                             <select class="form-control" name="ctl00$QOLAContent$ddlHome" id="QOLAContent_ddlHome" style="height:27px;" onchange="selection_onchange_empty_suite()">
                                                                 <option value="">--Home--</option>
-                                                                <option value="15">Auburn Heights Retirement Residence</option>
-                                                                <option value="5">Laurel Heights Retirement Residence</option>
-                                                                <option value="26">Lewis Estates</option>
-                                                                <option value="35">Mactaggart Place Retirement Residence</option>
-                                                                <option value="1">Rutherford Heights Retirement Residence</option>
-                                                                <option value="33">Sage Hill Retirement Residence</option>
-                                                                <option value="31">St. Albert Retirement Residence</option>
-                                                                <option value="3">Summerwood Village Retirement Residence</option>
-                                                                <option value="30">River Ridge 2 Retirement Residence</option>
-                                                                <option value="4">River Ridge Retirement Residence</option>
-                                                                <option value="17">Seine River Retirement Residence</option>
-                                                                <option value="6">Shaftesbury Park Retirement Residence</option>
-                                                                <option value="18">Sturgeon Creek I Retirement Residence</option>
-                                                                <option value="13">Sturgeon Creek II Retirement Residence</option>
-                                                                <option value="12">Victoria Landing Retirement Residence</option>
-                                                                <option value="2">Beacon Heights Retirement Residence</option>
-                                                                <option value="7">Cedarcroft Place Retirement Residence</option>
-                                                                <option value="27">Chapel Hill Retirement Residence</option>
-                                                                <option value="32">Cit&#233; Parkway Retirement Residence</option>
-                                                                <option value="34">Eagleson Retirement Residence</option>
-                                                                <option value="28">Mccarthy Place</option>
-                                                                <option value="29">Sample</option>
-                                                                <option value="16">College Park II Retirement Residence</option>
-                                                                <option value="8">College Park Retirement Residence</option>
-                                                                <option value="14">Preston Park II Retirement Residence</option>
-                                                                <option value="11">Preston Park Retirement Residence</option>
-                                                                <option value="20">465, Boulevard De La Gappe</option>
-                                                                <option value="21">475 Boulevard De La Gappe</option>
-                                                                <option value="22">485 Boulevard De La Gappe</option>
-                                                                <option value="23">495 Boulevard De La Gappe</option>
-                                                                <option value="19">Chateau Symmes Retirement Residence</option>
+                                                                @foreach (var building in ViewBag.UserHome)
+                                                                {
+                                                                    <option value="@building.Id">@building.Name</option>
+                                                                }
                                                             </select>
                                                         </div>
                                                         
