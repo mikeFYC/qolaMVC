@@ -73,8 +73,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("Home");
             TempData.Keep("Resident");
 
-            Collection<HomeModel> l_Homes = HomeDAL.GetHomeCollections();
-            ViewBag.Homes = l_Homes;
+            ViewBag.AllHome = HomeDAL.GetHomeCollections();
 
             return View();
         }
@@ -125,6 +124,8 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
+
+            ViewBag.AllHome = HomeDAL.GetHomeCollections();
 
             return View(VenueDAL.GetVenue_By_Id(id));
         }

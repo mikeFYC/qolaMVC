@@ -889,7 +889,17 @@ namespace QolaMVC.Controllers
 
                 ViewBag.User = l_User;
                 TempData.Keep("User");
-                return View(l_Homes.Where(m => m.ProvinceName == "Alberta"));
+                
+                Collection<HomeModel> Home_temp = new Collection<HomeModel>();
+                foreach ( var Home in l_Homes)
+                {
+                    if(Home.Province.ID==1 || Home.ModifiedOn > Convert.ToDateTime("2019-03-01"))
+                    {
+                        Home_temp.Add(Home);
+                    }
+                }
+                return View(Home_temp);
+                //return View(l_Homes.Where(m => m.ProvinceName == "Alberta"));
             }
             else
             {
