@@ -471,6 +471,7 @@ namespace QolaMVC.DAL
                         home.TotalSuites = Convert.ToInt32(homesReceive.Tables[0].Rows[index]["fd_total_suite"]);
                         home.NumberOfSuites = Convert.ToInt32(homesReceive.Tables[0].Rows[index]["fd_no_of_suites"]);
                         home.PostalCode = Convert.ToString(homesReceive.Tables[0].Rows[index]["fd_qola_resident_count"]);
+                        home.ModifiedOn = Convert.ToDateTime(homesReceive.Tables[0].Rows[index]["fd_modified_on"]);
                         homes.Add(home);
                     }
                 }
