@@ -30,44 +30,60 @@ namespace QolaMVC
 
         protected void Application_Error(object sender, EventArgs e)
         {
+            string userinfo = "";
+            string location = "";
+            string htmlBody = "";
+            string sessionExpire = "";
+            UserModel userEX = new UserModel();
             Exception exc = Server.GetLastError();
+
+            if (Session["check"] == null)
+            {
+                sessionExpire = "Session Expired<br><br>";
+            }
+            htmlBody = exc.Message;
 
             var httpContext = ((HttpApplication)sender).Context;
             httpContext.Response.Clear();
             httpContext.ClearError();
-            UserModel userEX = new UserModel();
+            
             if (Session["USER"] == null)
             {
                 ExecuteErrorActionInHomeController(httpContext, exc);
                 userEX = (UserModel)Session["USER"];
-            }
 
-
-
-            var st = new StackTrace(exc, true); // create the stack trace
-            var query = st.GetFrames()         // get the frames
-                          .Select(frame => new
-                          {                   // get the info
-                              FileName = frame.GetFileName(),
-                              LineNumber = frame.GetFileLineNumber(),
-                              ColumnNumber = frame.GetFileColumnNumber(),
-                              Method = frame.GetMethod(),
-                              Class = frame.GetMethod().DeclaringType,
-                          });
-            string location = "";
-            if (userEX != null)
-            {
-                location = userEX.FirstName + " " + userEX.LastName + "<br>" + userEX.ID + "<br>";
-            }
-
-            foreach (var single in query.ToList())
-            {
-                if (single.FileName != null)
+                if (userEX != null)
                 {
-                    location += single.FileName + "<br>" + single.Method + "<br><br>";
+                    userinfo = userEX.FirstName + " " + userEX.LastName + "<br>" + userEX.ID + "<br><br>";
                 }
+
+                var st = new StackTrace(exc, true); // create the stack trace
+                var query = st.GetFrames()         // get the frames
+                              .Select(frame => new
+                              {                   // get the info
+                              FileName = frame.GetFileName(),
+                                  LineNumber = frame.GetFileLineNumber(),
+                                  ColumnNumber = frame.GetFileColumnNumber(),
+                                  Method = frame.GetMethod(),
+                                  Class = frame.GetMethod().DeclaringType,
+                              });
+                foreach (var single in query.ToList())
+                {
+                    if (single.FileName != null)
+                    {
+                        location += single.FileName + "<br>" + single.Method + "<br><br>";
+                    }
+                }
+                            
+                SendEmail(userinfo, location, htmlBody, sessionExpire);
+                Server.ClearError();
             }
 
+            Response.Redirect("/Login/ErrorPage?para="+ htmlBody);
+        }
+        
+        private void SendEmail(string userinfo, string location, string htmlBody, string sessionExpire)
+        {
             SmtpClient SmtpServer = new SmtpClient("smtp.live.com");
             var mail = new MailMessage();
             mail.From = new MailAddress("mike@qola.ca");
@@ -75,25 +91,13 @@ namespace QolaMVC
             mail.To.Add("ashley@qola.ca");
             mail.Subject = "QOLA Error Happened";
             mail.IsBodyHtml = true;
-            string htmlBody;
-            htmlBody = exc.Message + "<br><br>" + location;
 
-            if (Session["check"] == null)
-            {
-                htmlBody = "Session Expired<br><br>" + htmlBody;
-            }
-
-            mail.Body = htmlBody;
+            mail.Body = sessionExpire + userinfo + location + htmlBody;
             SmtpServer.Port = 587;
             SmtpServer.UseDefaultCredentials = false;
             SmtpServer.Credentials = new System.Net.NetworkCredential("mike@qola.ca", "fyc19920320");
             SmtpServer.EnableSsl = true;
             SmtpServer.Send(mail);
-
-
-            Server.ClearError();
-
-            Response.Redirect("/Login/ErrorPage");
         }
 
         private void ExecuteErrorActionInHomeController(HttpContext httpContext, Exception exception)
