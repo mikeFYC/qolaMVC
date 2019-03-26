@@ -907,6 +907,12 @@ namespace QolaMVC.Controllers
             }
         }
 
+        public void ERROR()
+        {
+            var user = (UserModel)TempData["User"];
+            Session["USER"] = user;         
+        }
+
         [HttpGet]
         public ActionResult Menu(int p_HomeId)
         {
