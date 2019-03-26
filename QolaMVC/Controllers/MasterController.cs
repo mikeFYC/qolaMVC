@@ -500,6 +500,8 @@ namespace QolaMVC.Controllers
             TempData["EDIT"] = "";
             TempData["sameuname"] = "";
 
+            ViewBag.UserHome = HomeDAL.GetHomeByUser(user.ID);
+
             return View(usersample);
         }
 
