@@ -10,6 +10,7 @@ using System.Net.Mail;
 using System.Diagnostics;
 using System.ComponentModel;
 using QolaMVC.Models;
+using QolaMVC.Controllers;
 
 namespace QolaMVC
 {
