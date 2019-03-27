@@ -168,7 +168,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static int Hospitalization(int userid, int homeid, int redidentid, string suiteno, int occupancy, string leaving, string ExpectedReturn, string ActualReturn, string notes, DateTime modify_on, string reason,int RATable_ID)
+        public static int Hospitalization(int userid, int homeid, int redidentid, string suiteno, int occupancy, string leaving, string ActualReturn, string notes, DateTime modify_on, string reason,int RATable_ID)
         {
             using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
             using (var cmdGARead = new SqlCommand("Suite_Handler_Hospitalization", conn)
@@ -183,7 +183,6 @@ namespace QolaMVC.DAL
                 cmdGARead.Parameters.AddWithValue("@suiteno", suiteno);
                 cmdGARead.Parameters.AddWithValue("@occupancy", occupancy);
                 cmdGARead.Parameters.AddWithValue("@leaving", leaving);
-                cmdGARead.Parameters.AddWithValue("@expectedreturn", ExpectedReturn);
                 cmdGARead.Parameters.AddWithValue("@actualreturn", ActualReturn);
                 cmdGARead.Parameters.AddWithValue("@notes", notes);
                 cmdGARead.Parameters.AddWithValue("@modify_on", modify_on);
@@ -306,10 +305,11 @@ namespace QolaMVC.DAL
                                 " WHEN 1 THEN 'Single'" +
                                 " WHEN 2 THEN 'Double'" +
                                 " WHEN 3 THEN 'Triple'" +
-                                " END as fd_occupancy, SH.fd_status,SH.fd_notes,isNULL(SH.fd_hospital,'') as hospital, SH.fd_id, H.fd_id, SH.fd_occupancy" +
-                                " FROM tbl_Suite S" +
-                                " INNER JOIN tbl_Suite_Handler SH ON S.fd_id = SH.fd_suite_id" +
-                                " inner join tbl_Home H on H.fd_id = SH.fd_home_id" +
+                                " END as fd_occupancy, SH.fd_status,SH.fd_notes,isNULL(SH.fd_hospital,'') as hospital, SH.fd_id, H.fd_id, SH.fd_occupancy,SHS.fd_reason" +
+                                " FROM tbl_Suite_Handler SH" +
+                                " INNER JOIN tbl_Suite S ON S.fd_id = SH.fd_suite_id" +
+                                " INNER JOIN tbl_Suite_Handler_Status SHS ON SHS.fd_id = SH.fd_status" +
+                                " INNER JOIN tbl_Home H on H.fd_id = SH.fd_home_id" +
                                 " WHERE SH.fd_resident_id =" + residentID;
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
@@ -336,23 +336,8 @@ namespace QolaMVC.DAL
                     AA.SHid = rd[8].ToString();
                     AA.homeid = rd[9].ToString();
                     AA.occuID = rd[10].ToString();
-                    if (AA.status == "1") AA.reason = "Single suite";
-                    else if (AA.status == "2") AA.reason = "Double suite";
-                    else if (AA.status == "3") AA.reason = "Triple suite";
-                    else if (AA.status == "4") AA.reason = "Transfer to another ASC Home";
-                    else if (AA.status == "5") AA.reason = "End of Lease";
-                    else if (AA.status == "6") AA.reason = "Palliative care";
-                    else if (AA.status == "7") AA.reason = "LTC";
-                    else if (AA.status == "8") AA.reason = "Transfer to Other Retirement home";
-                    else if (AA.status == "9") AA.reason = " Passed Away";
-                    else if (AA.status == "10") AA.reason = "Other";
-                    else if (AA.status == "11") AA.reason = "Hospitalization";
-                    else if (AA.status == "12") AA.reason = "Personal Leave";
-                    else if (AA.status == "13") AA.reason = "Medical Leave";
-                    else if (AA.status == "14") AA.reason = "Reason Unknown";
-                    else if (AA.status == "15") AA.reason = "New Resident";
-                    else  AA.reason = "";
-                   
+                    AA.reason = rd[11].ToString();
+
 
                     AAlist.Add(AA);
                 }

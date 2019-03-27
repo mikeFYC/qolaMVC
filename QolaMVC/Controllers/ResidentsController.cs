@@ -363,7 +363,7 @@ namespace QolaMVC.Controllers
         }
 
         [HttpPost]
-        public int saveButton_Hospitalization(string leaving, string ExpectedReturn, string ActualReturn, string notes, string reason, string suiteno,int Resident_Away_Table_ID)
+        public int saveButton_Hospitalization(string leaving, string ActualReturn, string notes, string reason, string suiteno,int Resident_Away_Table_ID)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -380,7 +380,7 @@ namespace QolaMVC.Controllers
             
             else
             {
-                int returnint = update_Suite_Handler_Table.Hospitalization(user.ID, home.Id, resident.ID, suiteno, resident.Occupancy, leaving, ExpectedReturn, ActualReturn, notes, DateTime.Now, reason, Resident_Away_Table_ID);
+                int returnint = update_Suite_Handler_Table.Hospitalization(user.ID, home.Id, resident.ID, suiteno, resident.Occupancy, leaving, ActualReturn, notes, DateTime.Now, reason, Resident_Away_Table_ID);
                 return returnint;
             }
         }

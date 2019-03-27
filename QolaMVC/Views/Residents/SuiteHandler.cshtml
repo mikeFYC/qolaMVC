@@ -32,13 +32,13 @@
         margin-top: 10px;
     }
     #edit_table tbody tr td{
-        font-size:1vw;
+        font-size:0.9vw;
     }
     #edit_table tbody tr td select{
-        font-size: 1vw;
+        font-size: 0.9vw;
     }
     #edit_table tbody tr input {
-        font-size: 1vw;
+        font-size: 0.9vw;
     }
 
 </style>
@@ -100,7 +100,7 @@
             document.getElementById("Hospitalization").className = "nav-link";
         }
         if (document.getElementById("Hospitalization").className == "nav-link") {
-            document.getElementById("EndofLease").className = "nav-link";
+            document.getElementById("ReturnedHome").className = "nav-link";
             document.getElementById("Palliative").className = "nav-link";
             document.getElementById("LTC").className = "nav-link";
             document.getElementById("OtherRetirement").className = "nav-link";
@@ -190,8 +190,8 @@
                 <div class="card">
                     <div class="card-block">
                         <div class="row">
-                            <div class="" style="width:30%;margin-left:2%;">
-                                <div class="row">
+                            <div class="" style="width:100%;margin-left:2%;">
+                                <div class="row" style="width:30%;">
                                     <div class="" style="width:45%;display:inline-block;">
                                         <img src="~/Content/assets/@Model.ResidentImage"
                                              style="width:70%"
@@ -211,18 +211,18 @@
                                         }
                                     </div>
                                 </div>
-                                <div id="editform" style="display:none">
+                                <div id="editform" style="display:none;min-width:70vw;">
                                     <br />
-                                    <div class="row" style="min-width:93vw">
+                                    <div class="row">
                                         @*@(new HtmlString(TempData["table2"].ToString()))*@
                                         <table class="table table-bordered" style="margin-left:1vw" id="edit_table">
                                             <thead class="bg-primary">
                                                 <tr>
                                                     <th class="text-white text-center" style="width:5% !important;"></th>
-                                                    <th class="text-white text-center" style="width:24% !important;">Home</th>
+                                                    <th class="text-white text-center" style="width:26% !important;">Home</th>
                                                     <th class="text-white text-center" style="width:7% !important;">Suite No</th>
-                                                    <th class="text-white text-center" style="width:14% !important;">Move In Date</th>
-                                                    <th class="text-white text-center" style="width:14% !important;">Move Out Date</th>
+                                                    <th class="text-white text-center" style="width:12% !important;">Move In Date</th>
+                                                    <th class="text-white text-center" style="width:12% !important;">Move Out Date</th>
                                                     <th class="text-white text-center" style="width:9% !important;">Occupancy</th>
                                                     <th class="text-white text-center">Notes</th>
                                                     <th class="text-white text-center" style="width:5% !important;">Hospital</th>
@@ -237,7 +237,7 @@
                                                             <tr id=@rd.SHid>
                                                                 <td style="padding:10px !important;"><input type="checkbox" class="checkboxlist" id=@rd.SHid /></td>
                                                                 <td style="padding:10px !important;">
-                                                                    <select class="edit_home form-control" onchange="edit_selection_onchange_empty_suite(this)">
+                                                                    <select class="edit_home form-control" onchange="edit_selection_onchange_empty_suite(this)" style="min-width:100%;">
                                                                         <option value=@rd.homeid selected>@rd.homename</option>
                                                                         @foreach (var building in ViewBag.UserHome)
                                                                         {
@@ -337,7 +337,7 @@
                                     <h4 style="font-weight:bolder;">Move Out</h4>
                                     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                         <li class="nav-item">
-                                            <a class="nav-link" id="EndofLease" data-toggle="pill" href="#" onclick="option_button_click(this.id)">Returned Home</a>
+                                            <a class="nav-link" id="ReturnedHome" data-toggle="pill" href="#" onclick="option_button_click(this.id)">Returned Home</a>
                                         </li>
                                         @*<li class="nav-item">
                                             <a class="nav-link" id="Palliative" data-toggle="pill" href="#" onclick="option_button_click(this.id)">Palliative</a>
@@ -369,32 +369,6 @@
                                         <div class="row" style="min-width:75vw">
                                             @(new HtmlString(TempData["table"].ToString()))
                                         </div>
-                                        @*<div class="row">
-            <table class="table table-bordered" style="margin-left:1vw">
-                <thead class="bg-primary">
-                    <tr>
-                        <th class="text-white text-center">Home</th>
-                        <th class="text-white text-center">Suite No</th>
-                        <th class="text-white text-center">Move In Date</th>
-                        <th class="text-white text-center">Move Out Date</th>
-                        <th class="text-white text-center">Occupancy</th>
-                        <th class="text-white text-center">Status</th>
-                        <th class="text-white text-center">Notes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>@Model.Home.Name</td>
-                        <td>@Model.SuiteNo</td>
-                        <td>@Model.MoveInDate.ToString("MMMM dd, yyyy")</td>
-                        <td>@Model.MoveOutDate.ToString("MMMM dd, yyyy")</td>
-                        <td>@Model.Occupancy</td>
-                        <td>@Model.Suite_Handler_Status</td>
-                        <td>@Model.Suite_Handler_Notes</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>*@
 
                                         <div class="tab-pane fade" id="pills-ApplicationSuite" role="tabpanel" aria-labelledby="pills-home-tab">
                                             <br>
@@ -639,15 +613,15 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="tab-pane fade" id="pills-EndofLease" role="tabpanel" aria-labelledby="pills-home-tab">
+                                        <div class="tab-pane fade" id="pills-ReturnedHome" role="tabpanel" aria-labelledby="pills-home-tab">
                                             <br>
                                             <br>
-                                            <div class="row">
+                                            <div class="row" style="margin-left:2%;">
                                                 <div class="col-md-12">
                                                     <div class="form-group row">
-                                                        <label for="dateinputEndofLease" class="col-md-2 col-form-label">Move out Date</label>
+                                                        <label for="dateinputReturnedHome" class="col-md-2 col-form-label">Move out Date</label>
                                                         <div class="col-md-3">
-                                                            <input class="form-control jsdatepicker" id="dateinputEndofLease" autocomplete="off">
+                                                            <input class="form-control jsdatepicker" id="dateinputReturnedHome" autocomplete="off">
                                                         </div>
                                                         <div class="col-md-2">
                                                             <p style="font-size: 9px; float: left">(YYYY/MM/DD)</p>
@@ -657,9 +631,9 @@
 
                                                 <div class="col-md-12">
                                                     <div class="form-group row">
-                                                        <label for="notes_EndofLease" class="col-md-2 col-form-label">Notes</label>
+                                                        <label for="notes_ReturnedHome" class="col-md-2 col-form-label">Notes</label>
                                                         <div class="col-md-4">
-                                                            <textarea class="textarea" id="notes_EndofLease" rows="5" style="width: 95% !important;"></textarea>
+                                                            <textarea class="textarea" id="notes_ReturnedHome" rows="5" style="width: 95% !important;"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -681,7 +655,7 @@
                                         <div class="tab-pane fade" id="pills-Palliative" role="tabpanel" aria-labelledby="pills-profile-tab">
                                             <br>
                                             <br>
-                                            <div class="row">
+                                            <div class="row" style="margin-left:2%;">
                                                 <div class="col-md-12">
                                                     <div class="form-group row">
                                                         <label for="dateinputPalliative" class="col-md-2 col-form-label">Move out Date</label>
@@ -720,7 +694,7 @@
                                         <div class="tab-pane fade" id="pills-LTC" role="tabpanel" aria-labelledby="pills-contact-tab">
                                             <br>
                                             <br>
-                                            <div class="row">
+                                            <div class="row" style="margin-left:2%;">
                                                 <div class="col-md-12">
                                                     <div class="form-group row">
                                                         <label for="dateinputLTC" class="col-md-2 col-form-label">Move Out Date</label>
@@ -758,7 +732,7 @@
                                         <div class="tab-pane fade" id="pills-OtherRetirement" role="tabpanel" aria-labelledby="pills-contact-tab">
                                             <br>
                                             <br>
-                                            <div class="row">
+                                            <div class="row" style="margin-left:2%;">
                                                 <div class="col-md-12">
                                                     <div class="form-group row">
                                                         <label for="dateinputOtherRetirement" class="col-md-2 col-form-label">Move Out Date</label>
@@ -796,7 +770,7 @@
                                         <div class="tab-pane fade" id="pills-PassedAway" role="tabpanel" aria-labelledby="pills-contact-tab">
                                             <br>
                                             <br>
-                                            <div class="row">
+                                            <div class="row" style="margin-left:2%;">
                                                 <div class="col-md-12">
                                                     <div class="form-group row">
                                                         <label for="passawaydatePassedAway" class="col-md-2 col-form-label">Pass Away Date</label>
@@ -845,7 +819,7 @@
                                         <div class="tab-pane fade" id="pills-Other" role="tabpanel" aria-labelledby="pills-contact-tab">
                                             <br>
                                             <br>
-                                            <div class="row">
+                                            <div class="row" style="margin-left:2%;">
                                                 <div class="col-md-12">
                                                     <div class="form-group row">
                                                         <label for="dateinputOther" class="col-md-2 col-form-label">Move Out Date</label>
@@ -883,7 +857,7 @@
                                         <div class="tab-pane fade" id="pills-Respite" role="tabpanel" aria-labelledby="pills-profile-tab">
                                             <br>
                                             <br>
-                                            <div class="row">
+                                            <div class="row" style="margin-left:2%;">
                                                 <div class="col-md-12">
                                                     <div class="form-group row">
                                                         <label for="dateinputRespite" class="col-md-2 col-form-label">Move out Date</label>
@@ -924,7 +898,7 @@
                                             <br>
                                             <br>
                                             <div class="row" style="margin-left:2%;">
-                                                <div class="" style="width:49%;display:inline-block;">
+                                                <div class="col-md-6">
                                                     <div class="form-group row">
                                                         <label for="leavingDate_Hospitalization" class="col-md-4 col-form-label">Leaving Date</label>
                                                         <div class="col-md-5">
@@ -935,18 +909,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="" style="width:49%;display:inline-block;">
-                                                    <div class="form-group row">
-                                                        <label for="ExpectedReturnDate_Hospitalization" class="col-md-4 col-form-label">Expected Return Date</label>
-                                                        <div class="col-md-5">
-                                                            <input class="form-control jsdatepicker" id="ExpectedReturnDate_Hospitalization" autocomplete="off">
-                                                        </div>
-                                                        <div class="col-md-2">
-                                                            <p style="font-size: 9px; float: left">(YYYY/MM/DD)</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="" style="width:49%;display:inline-block;">
+                                                <div class="col-md-5"></div>
+                                                <div class="col-md-6">
                                                     <div class="form-group row">
                                                         <label for="ActualReturnDate_Hospitalization" class="col-md-4 col-form-label">Actual Return Date</label>
                                                         <div class="col-md-5">
@@ -957,11 +921,12 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="" style="width:98%;display:inline-block;">
+                                                <div class="col-md-5"></div>
+                                                <div class="col-md-12">
                                                     <div class="form-group row">
                                                         <label for="notes_Hospitalization" class="col-md-2 col-form-label">Notes</label>
                                                         <div class="col-md-4">
-                                                            <textarea class="textarea" id="notes_Hospitalization" rows="5" style="width: 95% !important;"></textarea>
+                                                            <textarea class="textarea" id="notes_Hospitalization" rows="5" style="width:95% !important;"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1316,7 +1281,7 @@
                 var id = group[0].id;
                 var move_out_reason = group[0].innerHTML;
                 var a = $('#leavingDate_' + id).val().toString();
-                var b = $('#ExpectedReturnDate_' + id).val().toString();
+                //var b = $('#ExpectedReturnDate_' + id).val().toString();
                 var c = $('#ActualReturnDate_' + id).val().toString();
                 var d = $('#notes_' + id).val();
                 var tbodys = document.getElementById("showtable").getElementsByTagName("tbody");
@@ -1328,7 +1293,7 @@
                     tempAlert("Leaving Date cannot be empty", 2000);
                 }
                 else {
-                    $.post("/Residents/saveButton_Hospitalization", { leaving: a, ExpectedReturn: b, ActualReturn: c, notes: d, reason: move_out_reason, suiteno: suitenos, Resident_Away_Table_ID: RATable_ID }, function (data) {
+                    $.post("/Residents/saveButton_Hospitalization", { leaving: a, ActualReturn: c, notes: d, reason: move_out_reason, suiteno: suitenos, Resident_Away_Table_ID: RATable_ID }, function (data) {
                         if (data == 1) {
                             //location.reload();
                             //alert("Update successfully");
@@ -1392,6 +1357,9 @@
                 }
                 else if (suiteno == "0") {
                     tempAlert("Suite No cannot be empty", 2000);
+                }
+                else if (movein == "") {
+                    tempAlert("Move In cannot be empty", 2000);
                 }
                 else {
                     $.get("/Residents/EDIT_SAVE_function", { a: SHid, b: homeID, c: suiteno, d: movein, e: moveout, f: occu, g: notes, h: hos }, function (data) {

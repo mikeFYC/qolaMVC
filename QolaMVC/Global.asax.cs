@@ -30,6 +30,7 @@ namespace QolaMVC
 
         protected void Application_Error(object sender, EventArgs e)
         {
+
             string userinfo = "";
             string location = "";
             string htmlBody = "";
@@ -46,7 +47,7 @@ namespace QolaMVC
             var httpContext = ((HttpApplication)sender).Context;
             httpContext.Response.Clear();
             httpContext.ClearError();
-            
+
             if (Session["USER"] == null)
             {
                 ExecuteErrorActionInHomeController(httpContext, exc);
@@ -59,14 +60,14 @@ namespace QolaMVC
 
                 var st = new StackTrace(exc, true); // create the stack trace
                 var query = st.GetFrames()         // get the frames
-                              .Select(frame => new
-                              {                   // get the info
-                              FileName = frame.GetFileName(),
-                                  LineNumber = frame.GetFileLineNumber(),
-                                  ColumnNumber = frame.GetFileColumnNumber(),
-                                  Method = frame.GetMethod(),
-                                  Class = frame.GetMethod().DeclaringType,
-                              });
+                                .Select(frame => new
+                                {                   // get the info
+                                FileName = frame.GetFileName(),
+                                    LineNumber = frame.GetFileLineNumber(),
+                                    ColumnNumber = frame.GetFileColumnNumber(),
+                                    Method = frame.GetMethod(),
+                                    Class = frame.GetMethod().DeclaringType,
+                                });
                 foreach (var single in query.ToList())
                 {
                     if (single.FileName != null)
@@ -74,12 +75,15 @@ namespace QolaMVC
                         location += single.FileName + "<br>" + single.Method + "<br><br>";
                     }
                 }
-                            
+
                 SendEmail(userinfo, location, htmlBody, sessionExpire);
                 Server.ClearError();
             }
 
-            Response.Redirect("/Login/ErrorPage?para="+ htmlBody);
+            Response.Redirect("/Login/ErrorPage?para=" + htmlBody.Replace("\r", "").Replace("\n", "").Replace("\\", "").Replace("/", ""));
+            
+
+
         }
         
         private void SendEmail(string userinfo, string location, string htmlBody, string sessionExpire)

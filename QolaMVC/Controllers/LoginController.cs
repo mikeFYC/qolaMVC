@@ -37,7 +37,7 @@ namespace QolaMVC.Controllers
         }
 
 
-        public ActionResult ErrorPage(string para)
+        public ActionResult ErrorPage(string para="")
         {
             ViewBag.parameter = para;
             return View();

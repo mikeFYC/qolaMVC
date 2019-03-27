@@ -257,12 +257,16 @@
 
         var SHid = ee.parentElement.parentElement.id;
 
-        $('select[name=' + SHid + ']').children('option:not(:first)').remove();
-        $.get("/Residents/Available2", { home_value: c, term: b, occu: a }, function (data) {
-            for (var i = 0; i < data.length; i++) {
-                $('select[name=' + SHid +']').append('<option value="' + data[i][0].Value + '">' + data[i][0].Value + '</option>');
-            }
-        });
+        if (b != '') {
+            $('select[name=' + SHid + ']').children('option').slice(2).remove();
+            $.get("/Residents/Available2", { home_value: c, term: b, occu: a }, function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    $('select[name=' + SHid + ']').append('<option value="' + data[i][0].Value + '">' + data[i][0].Value + '</option>');
+                }
+            });
+        }
+
+
     }
 
     function clearButton() {
