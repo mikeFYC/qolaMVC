@@ -579,6 +579,9 @@ namespace QolaMVC.Controllers
             TempData.Keep("Resident");
             TempData["EDIT"] = "true";
             UserModel usersample = UserDAL.Get_User_By_Id(userid);
+
+            ViewBag.UserHome = HomeDAL.GetHomeByUser(user.ID);
+
             return View("AddUser", usersample);
         }
 
