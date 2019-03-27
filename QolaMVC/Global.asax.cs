@@ -46,7 +46,7 @@ namespace QolaMVC
 
             var httpContext = ((HttpApplication)sender).Context;
             httpContext.Response.Clear();
-            httpContext.ClearError();
+            //httpContext.ClearError();
 
             if (Session["USER"] == null)
             {
@@ -77,10 +77,10 @@ namespace QolaMVC
                 }
 
                 SendEmail(userinfo, location, htmlBody, sessionExpire);
-                Server.ClearError();
+                //Server.ClearError();
             }
 
-            Response.Redirect("/Login/ErrorPage?para=" + htmlBody.Replace("\r", "").Replace("\n", "").Replace("\\", "").Replace("/", ""));
+            //Response.Redirect("/Login/ErrorPage");
             
 
 
