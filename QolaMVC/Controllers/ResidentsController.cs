@@ -213,7 +213,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            if (update_Suite_Handler_Table.check_date_validation(term) == false && user.ID != 1338 && user.ID!=1346)
+            if (update_Suite_Handler_Table.check_date_validation(term) == false && user.UserType != 1)
             {
                 return 3;
             }
@@ -237,7 +237,7 @@ namespace QolaMVC.Controllers
             {
                 return 2;
             }
-            else if (update_Suite_Handler_Table.check_date_validation(transferdate) == false && user.ID != 1338 && user.ID != 1346)
+            else if (update_Suite_Handler_Table.check_date_validation(transferdate) == false && user.UserType != 1)
             {
                 return 3;
             }
@@ -267,7 +267,7 @@ namespace QolaMVC.Controllers
             {
                 return 2;
             }
-            else if (update_Suite_Handler_Table.check_date_validation(transferdate) == false && user.ID != 1338 && user.ID != 1346)
+            else if (update_Suite_Handler_Table.check_date_validation(transferdate) == false && user.UserType != 1)
             {
                 return 3;
             }
@@ -297,7 +297,7 @@ namespace QolaMVC.Controllers
             {
                 return 2;
             }
-            else if (update_Suite_Handler_Table.check_date_validation(transferdate) == false && user.ID != 1338 && user.ID != 1346)
+            else if (update_Suite_Handler_Table.check_date_validation(transferdate) == false && user.UserType != 1)
             {
                 return 3;
             }
@@ -323,7 +323,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            if (update_Suite_Handler_Table.check_date_validation(moveout) == false && user.ID != 1338 && user.ID != 1346)
+            if (update_Suite_Handler_Table.check_date_validation(moveout) == false && user.UserType != 1)
             {
                 return 3;
             }
@@ -347,7 +347,7 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            if ((update_Suite_Handler_Table.check_date_validation(moveout) == false || update_Suite_Handler_Table.check_date_validation(passaway) == false) && user.ID != 1338 && user.ID != 1346)
+            if ((update_Suite_Handler_Table.check_date_validation(moveout) == false || update_Suite_Handler_Table.check_date_validation(passaway) == false) && user.UserType!=1)
             {
                 return 3;
             }
@@ -363,7 +363,7 @@ namespace QolaMVC.Controllers
         }
 
         [HttpPost]
-        public int saveButton_Hospitalization(string leaving, string ActualReturn, string notes, string reason, string suiteno,int Resident_Away_Table_ID)
+        public int saveButton_Hospitalization(string leaving, string ActualReturn,string hos_moveout,string hos_passaway, string notes, int reason,int Resident_Away_Table_ID, int SHtableID)
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -373,14 +373,14 @@ namespace QolaMVC.Controllers
             TempData.Keep("Resident");
              
             
-            if ((update_Suite_Handler_Table.check_date_validation(DateTime.Parse(leaving)) == false) && user.ID != 1338 && user.ID != 1346)
+            if ((update_Suite_Handler_Table.check_date_validation(DateTime.Parse(leaving)) == false) && user.UserType != 1)
             {
                 return 3;
             }
             
             else
             {
-                int returnint = update_Suite_Handler_Table.Hospitalization(user.ID, home.Id, resident.ID, suiteno, resident.Occupancy, leaving, ActualReturn, notes, DateTime.Now, reason, Resident_Away_Table_ID);
+                int returnint = update_Suite_Handler_Table.Hospitalization(user.ID, leaving, ActualReturn, hos_moveout, hos_passaway, notes, reason, Resident_Away_Table_ID, SHtableID);
                 return returnint;
             }
         }
@@ -423,7 +423,7 @@ namespace QolaMVC.Controllers
         }
 
         [HttpGet]
-        public string get_Leaving_date()
+        public ActionResult get_Hospital_Info()
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -431,22 +431,19 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            string returnleaving = update_Suite_Handler_Table.get_Leaving_date(resident.ID);
-            return returnleaving;
+            List<string> returnleaving = update_Suite_Handler_Table.get_Hospital_Info(resident.ID);
+            List<dynamic> l_Json = new List<dynamic>();
+            dynamic l_J = new System.Dynamic.ExpandoObject();
+            l_J.id = returnleaving[0];
+            l_J.leavingDate = returnleaving[1];
+            l_J.note = returnleaving[2];
+            l_Json.Add(l_J);
+            
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+
         }
 
-        [HttpGet]
-        public string get_Resident_Away_Schedule()
-        {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
-            var resident = (ResidentModel)TempData["Resident"];
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
-            string returnleaving = update_Suite_Handler_Table.get_Resident_Away_Schedule(resident.ID);
-            return returnleaving;
-        }
+
 
         #endregion
 
