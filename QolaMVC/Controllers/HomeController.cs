@@ -2903,7 +2903,7 @@ namespace QolaMVC.Controllers
             ViewBag.User = user;
             ViewBag.Home = home;
 
-            if (ViewBag.User.ID == 1338 || ViewBag.User.ID == 1346 || ViewBag.User.ID == 20 || ViewBag.User.ID == 1552)
+            if (user.UserType==1)
             {
                 Collection<ActivityEventModel> EVENTS = new Collection<ActivityEventModel>();
                 ActivityEventModel l_Model;
@@ -6049,7 +6049,7 @@ namespace QolaMVC.Controllers
 
             notes = "Reason: " + reason + "; Notes: " + notes;
 
-            if (update_Suite_Handler_Table.check_date_validation(returndate) == false && user.ID != 1338 && user.ID != 1346)
+            if (update_Suite_Handler_Table.check_date_validation(returndate) == false && user.UserType != 1)
             {
                 return 2;
             }

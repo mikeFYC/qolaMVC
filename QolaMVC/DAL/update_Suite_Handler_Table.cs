@@ -168,7 +168,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static int Hospitalization(int userid, int homeid, int redidentid, string suiteno, int occupancy, string leaving, string ActualReturn, string notes, DateTime modify_on, string reason,int RATable_ID)
+        public static int Hospitalization(int userid, string leaving, string ActualReturn,string hos_moveout, string notes , int reason,int RATable_ID,int SHtableID)
         {
             using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
             using (var cmdGARead = new SqlCommand("Suite_Handler_Hospitalization", conn)
@@ -178,16 +178,13 @@ namespace QolaMVC.DAL
             {
                 conn.Open();
                 cmdGARead.Parameters.AddWithValue("@UserID", userid);
-                cmdGARead.Parameters.AddWithValue("@homeID", homeid);
-                cmdGARead.Parameters.AddWithValue("@redidentid", redidentid);
-                cmdGARead.Parameters.AddWithValue("@suiteno", suiteno);
-                cmdGARead.Parameters.AddWithValue("@occupancy", occupancy);
                 cmdGARead.Parameters.AddWithValue("@leaving", leaving);
                 cmdGARead.Parameters.AddWithValue("@actualreturn", ActualReturn);
+                cmdGARead.Parameters.AddWithValue("@hos_moveout", hos_moveout);
                 cmdGARead.Parameters.AddWithValue("@notes", notes);
-                cmdGARead.Parameters.AddWithValue("@modify_on", modify_on);
                 cmdGARead.Parameters.AddWithValue("@reason", reason);
                 cmdGARead.Parameters.AddWithValue("@RATable_ID", RATable_ID);
+                cmdGARead.Parameters.AddWithValue("@SHtableID", SHtableID);
                 cmdGARead.Parameters.Add("@returnint", SqlDbType.VarChar, 30);
                 cmdGARead.Parameters["@returnint"].Direction = ParameterDirection.Output;
                 cmdGARead.ExecuteNonQuery();
@@ -234,13 +231,13 @@ namespace QolaMVC.DAL
             conn.ConnectionString = Constants.ConnectionString.PROD;
             conn.Open();
             SqlCommand cmd = new SqlCommand();
-            cmd.CommandText =   " SELECT H.fd_name,S.fd_suite_no, SH.fd_move_in_date,SH.fd_move_out_date,CASE SH.fd_occupancy "+
+            cmd.CommandText =   " SELECT SH.fd_id,H.fd_name,S.fd_suite_no, SH.fd_move_in_date,SH.fd_move_out_date,CASE SH.fd_occupancy " +
                                 " WHEN 1 THEN 'Single'"+
                                 " WHEN 2 THEN 'Double'"+
                                 " WHEN 3 THEN 'Triple'"+
                                 " END as fd_occupancy, SH.fd_status,SH.fd_notes,isNULL(SH.fd_hospital,'') as hospital" +
-                                " FROM tbl_Suite S" +
-                                " INNER JOIN tbl_Suite_Handler SH ON S.fd_id = SH.fd_suite_id" +
+                                " FROM tbl_Suite_Handler SH" +
+                                " INNER JOIN tbl_Suite S ON S.fd_id = SH.fd_suite_id" +
                                 " inner join tbl_Home H on H.fd_id = SH.fd_home_id" +
                                 " WHERE SH.fd_resident_id ="+ residentID;
             cmd.Connection = conn;
@@ -263,28 +260,22 @@ namespace QolaMVC.DAL
                 while (rd.Read())
                 {
 
-                    table.Append("<tr>");
-                    table.Append("<td>" + rd[0] + "</td>");
+                    table.Append("<tr id='" + rd[0] +"'>");
                     table.Append("<td>" + rd[1] + "</td>");
-                    if (rd[2] != null && rd[2].ToString() != "")
+                    table.Append("<td>" + rd[2] + "</td>");
+                    table.Append("<td>" + DateTime.Parse(rd[3].ToString()).ToString("MMMM dd, yyyy") + "</td>");
+                    
+                    if (rd[4] != null && rd[4].ToString() != "")
                     {
-                        table.Append("<td>" + DateTime.Parse(rd[2].ToString()).ToString("MMMM dd, yyyy") + "</td>");
+                        table.Append("<td>" + DateTime.Parse(rd[4].ToString()).ToString("MMMM dd, yyyy") + "</td>");
                     }
                     else
                     {
-                        table.Append("<td>" + rd[2] + "</td>");
+                        table.Append("<td></td>");
                     }
-                    if (rd[3] != null && rd[3].ToString() != "")
-                    {
-                        table.Append("<td>" + DateTime.Parse(rd[3].ToString()).ToString("MMMM dd, yyyy") + "</td>");
-                    }
-                    else
-                    {
-                        table.Append("<td>" + rd[3] + "</td>");
-                    }
-                    table.Append("<td>" + rd[4] + "</td>");
-                    table.Append("<td>" + rd[6] + "</td>");
+                    table.Append("<td>" + rd[5] + "</td>");
                     table.Append("<td>" + rd[7] + "</td>");
+                    table.Append("<td>" + rd[8] + "</td>");
                     table.Append("</tr>");
                 }
             table.Append("</tbody>");
