@@ -423,7 +423,7 @@ namespace QolaMVC.Controllers
         }
 
         [HttpGet]
-        public string get_Leaving_date()
+        public ActionResult get_Hospital_Info()
         {
             var home = (HomeModel)TempData["Home"];
             var user = (UserModel)TempData["User"];
@@ -431,22 +431,19 @@ namespace QolaMVC.Controllers
             TempData.Keep("User");
             TempData.Keep("Home");
             TempData.Keep("Resident");
-            string returnleaving = update_Suite_Handler_Table.get_Leaving_date(resident.ID);
-            return returnleaving;
+            List<string> returnleaving = update_Suite_Handler_Table.get_Hospital_Info(resident.ID);
+            List<dynamic> l_Json = new List<dynamic>();
+            dynamic l_J = new System.Dynamic.ExpandoObject();
+            l_J.id = returnleaving[0];
+            l_J.leavingDate = returnleaving[1];
+            l_J.note = returnleaving[2];
+            l_Json.Add(l_J);
+            
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+
         }
 
-        [HttpGet]
-        public string get_Resident_Away_Schedule()
-        {
-            var home = (HomeModel)TempData["Home"];
-            var user = (UserModel)TempData["User"];
-            var resident = (ResidentModel)TempData["Resident"];
-            TempData.Keep("User");
-            TempData.Keep("Home");
-            TempData.Keep("Resident");
-            string returnleaving = update_Suite_Handler_Table.get_Resident_Away_Schedule(resident.ID);
-            return returnleaving;
-        }
+
 
         #endregion
 

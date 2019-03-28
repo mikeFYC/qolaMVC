@@ -893,7 +893,7 @@ namespace QolaMVC.Controllers
                 Collection<HomeModel> Home_temp = new Collection<HomeModel>();
                 foreach ( var Home in l_Homes)
                 {
-                    if(Home.Province.ID==1 || Home.ModifiedOn > Convert.ToDateTime("2019-03-01"))
+                    if(Home.Province.ID==1 || Home.Id==27)//Chapel Hill
                     {
                         Home_temp.Add(Home);
                     }

@@ -337,48 +337,35 @@ namespace QolaMVC.DAL
         }
 
 
-        public static string get_Leaving_date(int residentID)
-        {
-            string retu="";
-            SqlConnection conn = new SqlConnection();
-            conn.ConnectionString = Constants.ConnectionString.PROD;
-            conn.Open();
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandText = "select top(1)[fd_hospital_leaving] from [tbl_Suite_Handler] where [fd_hospital]='Y' and fd_resident_id="+ residentID + " order by fd_modified_on DESC";
-            cmd.Connection = conn;
-            SqlDataReader rd = cmd.ExecuteReader();
-            if (rd.HasRows)
-                while (rd.Read())
-                {
-                    if (rd[0] == null || rd[0].ToString() == "")
-                        retu = "";
-                    else
-                        retu = rd[0].ToString();
-                }
-            conn.Close();
-            return retu;
-        }
 
-        public static string get_Resident_Away_Schedule(int residentID)
+        public static List<string> get_Hospital_Info(int residentID)
         {
-            string retu = "";
+            List<string> retu = new List<string>();
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Constants.ConnectionString.PROD;
             conn.Open();
             SqlCommand cmd = new SqlCommand();
-            cmd.CommandText = " select top(1)RA.fd_id from tbl_Resident_Away_Schedule RA left join tbl_Suite_Handler SH on RA.fd_resident_id=SH.fd_resident_id"+
+            cmd.CommandText = " select top(1)RA.fd_id,RA.fd_leaving_date,isNULL(RA.fd_note,'') from tbl_Resident_Away_Schedule RA left join tbl_Suite_Handler SH on RA.fd_resident_id=SH.fd_resident_id" +
                               " where RA.fd_actual_return_date is null and RA.fd_home_id = 15 and SH.fd_pass_away_date is null and fd_move_out_date is null"+
                               " and RA.fd_resident_id="+residentID + " order by RA.fd_created_on DESC";
             cmd.Connection = conn;
             SqlDataReader rd = cmd.ExecuteReader();
             if (rd.HasRows)
+            {
                 while (rd.Read())
                 {
-                    if (rd[0] == null || rd[0].ToString() == "")
-                        retu = "";
-                    else
-                        retu = rd[0].ToString();
+                    retu.Add(rd[0].ToString());
+                    retu.Add(Convert.ToDateTime(rd[1].ToString()).ToString("yyyy-MM-dd"));
+                    retu.Add(rd[2].ToString());
                 }
+            }
+
+            else
+            {
+                retu.Add("");
+                retu.Add("");
+                retu.Add("");
+            }
             conn.Close();
             return retu;
         }

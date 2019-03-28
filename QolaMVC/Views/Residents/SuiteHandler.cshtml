@@ -67,17 +67,11 @@
 
         $('#Hospital_None').attr('class', 'nav-link active');
 
-        $.get("/Residents/get_Leaving_date", {}, function (data) {
-            if (data != "") {
-
-                $.get("/Residents/get_Resident_Away_Schedule", {}, function (data2) {
-                    if (data2 != "") {
-                        $('#Resident_Away_Table_Id').val(data2);
-                    }
-                });
-
-                var a = $('#leavingDate_Hospitalization');
-                a[0].value = data;
+        $.get("/Residents/get_Hospital_Info", {}, function (data) {
+            if (data[0][0].Value != '') {
+                $('#leavingDate_Hospitalization').val(data[0][0].Value);
+                $('#Resident_Away_Table_Id').val(data[0][1].Value);
+                $('#notes_Hospitalization').val(data[0][2].Value);
             }
         });
 
@@ -1005,17 +999,11 @@
         <script>
             var a = $("#jsNote").val();
             if (a == "YES") {
-                $.get("/Residents/get_Leaving_date", {}, function (data) {
-                    if (data != "") {
-
-                        $.get("/Residents/get_Resident_Away_Schedule", {}, function (data2) {
-                            if (data2 != "") {
-                                $('#Resident_Away_Table_Id').val(data2);
-                            }
-                        });
-
-                        var a = $('#leavingDate_Hospitalization');
-                        a[0].value = data;
+                $.get("/Residents/get_Hospital_Info", {}, function (data) {
+                    if (data[0][0].Value!='') {
+                        $('#leavingDate_Hospitalization').val(data[0][0].Value);
+                        $('#Resident_Away_Table_Id').val(data[0][1].Value);
+                        $('#notes_Hospitalization').val(data[0][2].Value);    
                     }
                 });
                 document.getElementById("Hospitalization").className = "nav-link active";
@@ -1305,6 +1293,7 @@
             }
 
             function saveButton_Hospitalization() {
+                var id = $("a[class='nav-link active']:first").attr('id');
                 var selectReason = $('#hos_hidden_select').val();
                 var RATable_ID = $('#Resident_Away_Table_Id').val();
                 var a = $('#leavingDate_' + id).val().toString();

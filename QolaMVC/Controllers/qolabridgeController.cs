@@ -67,7 +67,8 @@ namespace QolaMVC.Controllers
             if (user.Home.Substring(0, 1) == "0")
             {
                 var homeall = HomeDAL.GetHomeCollections_mike();
-                foreach(var single in homeall)
+                //var homeall = HomeDAL.GetHomeCollections();
+                foreach (var single in homeall)
                 {
                     homeidlist += single.Id.ToString() + ",";
                 }
