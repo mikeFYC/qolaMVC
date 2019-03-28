@@ -69,8 +69,8 @@
 
         $.get("/Residents/get_Hospital_Info", {}, function (data) {
             if (data[0][0].Value != '') {
-                $('#leavingDate_Hospitalization').val(data[0][0].Value);
-                $('#Resident_Away_Table_Id').val(data[0][1].Value);
+                $('#leavingDate_Hospitalization').val(data[0][1].Value);
+                $('#Resident_Away_Table_Id').val(data[0][0].Value);
                 $('#notes_Hospitalization').val(data[0][2].Value);
             }
         });
@@ -918,27 +918,28 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-5"></div>
-                                                
-                                                <ul class="nav nav-pills mb-3" id="pills-hos" role="tablist">
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" id="Hospital_None" data-toggle="pill" href="#" selectvalue="0" onclick="hospital_select(this)">NONE</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" id="Hospital_MoveOut" data-toggle="pill" href="#" selectvalue="1" onclick="hospital_select(this)">DID NOT RETURN/MOVED OUT</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" id="Hospital_ReturnHome" data-toggle="pill" href="#" selectvalue="2" onclick="hospital_select(this)">RETURNED HOME</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" id="Hospital_LTC" data-toggle="pill" href="#" selectvalue="3" onclick="hospital_select(this)">LTC</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" id="Hospital_OtherRetirement" data-toggle="pill" href="#" selectvalue="4" onclick="hospital_select(this)">OTHER RETIREMENT</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" id="Hospital_PassAway" data-toggle="pill" href="#" selectvalue="5" onclick="hospital_select(this)">PASSED AWAY</a>
-                                                    </li>
-                                                </ul>
+                                                <div id="" class="col-md-12">
+                                                    <div class="form-group row">
+                                                        <label for="" id="" class="col-md-2 col-form-label">DID NOT RETURN/MOVED OUT</label>
+                                                        <div class="col-md-7">
+                                                            <ul class="nav nav-pills mb-3" id="pills-hos" role="tablist">
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" id="Hospital_ReturnHome" selectvalue="1" style="cursor:pointer;" onclick="hospital_select(this)">RETURNED HOME</a>
+                                                                </li>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" id="Hospital_LTC" selectvalue="2" style="cursor:pointer;" onclick="hospital_select(this)">LTC</a>
+                                                                </li>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" id="Hospital_OtherRetirement" selectvalue="3" style="cursor:pointer;" onclick="hospital_select(this)">OTHER RETIREMENT</a>
+                                                                </li>
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" id="Hospital_PassAway" selectvalue="4" style="cursor:pointer;" onclick="hospital_select(this)">PASSED AWAY</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                                 <div id="hos_moveout" class="col-md-6" style="display:none;">
                                                     <div class="form-group row">
                                                         <label for="Hospitalization_moveoutdate" id="hos_moveout_label" class="col-md-4 col-form-label">Move Out Date</label>
@@ -950,9 +951,21 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
+                                                <div class="col-md-5"></div>
+                                                <div id="hos_passaway" class="col-md-6" style="display:none;">
+                                                    <div class="form-group row">
+                                                        <label for="Hospitalization_passawaydate" id="hos_passaway_label" class="col-md-4 col-form-label">Pass Away Date</label>
+                                                        <div class="col-md-5">
+                                                            <input class="form-control jsdatepicker" id="Hospitalization_passawaydate" autocomplete="off">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <p style="font-size: 9px; float: left">(YYYY/MM/DD)</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5"></div>
 
-                                                
+
                                                 <div class="col-md-12">
                                                     <div class="form-group row">
                                                         <label for="notes_Hospitalization" class="col-md-2 col-form-label">Notes</label>
@@ -1001,8 +1014,8 @@
             if (a == "YES") {
                 $.get("/Residents/get_Hospital_Info", {}, function (data) {
                     if (data[0][0].Value!='') {
-                        $('#leavingDate_Hospitalization').val(data[0][0].Value);
-                        $('#Resident_Away_Table_Id').val(data[0][1].Value);
+                        $('#leavingDate_Hospitalization').val(data[0][1].Value);
+                        $('#Resident_Away_Table_Id').val(data[0][0].Value);
                         $('#notes_Hospitalization').val(data[0][2].Value);    
                     }
                 });
@@ -1301,12 +1314,13 @@
                 var d = $('#notes_' + id).val();
                 var SHtableID = $('#showtable tbody tr:last').attr('id');
                 var hos_moveout = $('#Hospitalization_moveoutdate').val();
+                var hos_passaway = $('#Hospitalization_passawaydate').val();
                 if (a == "") {
                     //alert("Leaving Date cannot be empty");
                     tempAlert("Leaving Date cannot be empty", 2000);
                 }
                 else {
-                    $.post("/Residents/saveButton_Hospitalization", { leaving: a, ActualReturn: c, hos_moveout: hos_moveout, notes: d, reason: selectReason, Resident_Away_Table_ID: RATable_ID, SHtableID: SHtableID }, function (data) {
+                    $.post("/Residents/saveButton_Hospitalization", { leaving: a, ActualReturn: c, hos_moveout: hos_moveout, hos_passaway: hos_passaway, notes: d, reason: selectReason, Resident_Away_Table_ID: RATable_ID, SHtableID: SHtableID }, function (data) {
                         if (data == 1) {
                             //location.reload();
                             //alert("Update successfully");
@@ -1396,26 +1410,28 @@
             }
 
             function hospital_select(ee) {
-                var select = $(ee).attr('selectvalue');
-                $('#hos_hidden_select').val(select);
-                if (select == 0 || select == 2) {
-                    $('#hos_moveout').hide();
-                    $('#ActualReturnDate_Hospitalization').prop('disabled', false);
-                }
-                else {                 
+                if ($(ee).attr('class') == 'nav-link') {
+                    var select = $(ee).attr('selectvalue');
+                    $('#hos_hidden_select').val(select);
+                    $(ee).parent().siblings().children().attr('class', 'nav-link');
+                    $(ee).attr('class', 'nav-link active');
+                    $('#hos_moveout').show();
                     $('#ActualReturnDate_Hospitalization').val("");
                     $('#ActualReturnDate_Hospitalization').prop('disabled', true);
-                    $('#hos_moveout').show();
-                    if (select == 5) {
-                        $('#hos_moveout_label').html("Pass Away Date");
-
+                    if (select == 4) {
+                        $('#hos_passaway').show();
                     }
                     else {
-                        $('#hos_moveout_label').html("Move Out Date");
+                        $('#hos_passaway').hide();
                     }
                 }
-
-                
+                else {
+                    $('#hos_moveout').hide();
+                    $('#hos_passaway').hide();
+                    $('#hos_hidden_select').val('0');
+                    $(ee).attr('class', 'nav-link');
+                    $('#ActualReturnDate_Hospitalization').prop('disabled', false);
+                }              
 
             }
 

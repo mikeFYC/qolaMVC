@@ -168,7 +168,7 @@ namespace QolaMVC.DAL
             }
         }
 
-        public static int Hospitalization(int userid, string leaving, string ActualReturn,string hos_moveout, string notes , int reason,int RATable_ID,int SHtableID)
+        public static int Hospitalization(int userid, string leaving, string ActualReturn,string hos_moveout, string hos_passaway, string notes , int reason,int RATable_ID,int SHtableID)
         {
             using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
             using (var cmdGARead = new SqlCommand("Suite_Handler_Hospitalization", conn)
@@ -181,6 +181,7 @@ namespace QolaMVC.DAL
                 cmdGARead.Parameters.AddWithValue("@leaving", leaving);
                 cmdGARead.Parameters.AddWithValue("@actualreturn", ActualReturn);
                 cmdGARead.Parameters.AddWithValue("@hos_moveout", hos_moveout);
+                cmdGARead.Parameters.AddWithValue("@hos_passaway", hos_passaway);
                 cmdGARead.Parameters.AddWithValue("@notes", notes);
                 cmdGARead.Parameters.AddWithValue("@reason", reason);
                 cmdGARead.Parameters.AddWithValue("@RATable_ID", RATable_ID);
