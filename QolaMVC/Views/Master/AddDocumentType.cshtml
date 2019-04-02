@@ -1,0 +1,92 @@
+﻿@model QolaMVC.Models.DocumentTypeModel
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+<script src="~/Content/jscolor/jscolor.js"></script>
+<style>
+
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+
+    .required_sign {
+        color: red;
+    }
+</style>
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3>@QolaMVC.Resources.Text.AddDocumentType</h3>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+            <div style="height: 60px;"></div>
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-md-8 offset-md-2">
+                                @using (Html.BeginForm("AddDocumentType", "Master", new { p_ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "p-t-15", @role = "form", enctype = "multipart/form-data" }))
+                                {
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="" class="col-form-label">@QolaMVC.Resources.Text.DocumentTypeName<span class="required_sign">&nbsp;*</span></label>
+                                                @Html.TextBoxFor(m => m.Type, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <input type="button" class="btn btn-primary btn-lg" onclick="location.href='@Url.Action("DocumentType", "Master")'" value="@QolaMVC.Resources.Text.Back_big">
+                                            <button class="btn btn-danger btn-lg">@QolaMVC.Resources.Text.Save_big</button>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="notice" value="@TempData["notice"]" />
+                </div>
+                <!-- END PLACE PAGE CONTENT HERE -->
+            </div>
+            <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+
+        @RenderPage("~/Views/Shared/_Footer.cshtml")
+        <script>
+            if ($('#notice').val() != '') {
+                tempAlert($('#notice').val(), 2000);
+            }
+
+            $('form').submit(function (event) {
+                if ($('#Type').val().trim() == '') {
+                    tempAlert("Mandatory Needed", 2000);
+                    return false;
+                }
+                else {
+                    form = this;
+                    form.submit();
+                }
+            });
+        </script>

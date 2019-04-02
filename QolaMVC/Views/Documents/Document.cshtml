@@ -1,0 +1,150 @@
+﻿@model QolaMVC.Models.Documents
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+<script src="~/Content/jscolor/jscolor.js"></script>
+<style>
+    .form-tabs .nav-link {
+        font-size: 1rem;
+    }
+
+    .modal-xlg {
+        width: 900px !important;
+        max-width: 1000px !important;
+    }
+
+    .required_sign {
+        color: red;
+    }
+</style>
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3>@QolaMVC.Resources.Text.UploadDocument</h3>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+            <div style="height: 60px;"></div>
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+                <div class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-md-8 offset-md-2">
+                                @using (Html.BeginForm("Document", "Documents", new { p_ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @id = "frmDocument", @class = "p-t-15", @role = "form", enctype = "multipart/form-data" }))
+                                {
+                                    <div class="row">
+                                        <div class="col-md-6"></div>
+                                        <div class="col-md-5"></div>
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label for="" class="col-form-label">@QolaMVC.Resources.Text.DocumentTypeName<span class="required_sign">&nbsp;*</span></label>
+                                                <select id="documentType" class="form-control" name="DocumentType.Id">
+                                                    <option value="0">-- Select --</option>
+                                                    @foreach (var item in ViewBag.AllDocumentType)
+                                                    {
+                                                        <option value="@item.Id">@item.Type</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label for="" class="col-form-label">@QolaMVC.Resources.Text.DocumentTitleName<span class="required_sign">&nbsp;*</span></label>
+                                                @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label for="" class="col-form-label">Document<span class="required_sign">&nbsp;*</span></label>
+                                                <input type="file" id="documentFileUpload" name="documentFileUpload" />
+                                                <br>
+                                                <label id="lblFileName" class="col-form-label">@Model.FileName</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <input type="button" class="btn btn-primary btn-lg" onclick="location.href='@Url.Action("ResidentMenu", "Home", new RouteValueDictionary(new { p_ResidentId = ViewBag.Resident.ID }))'" value="@QolaMVC.Resources.Text.Back_big">
+                                            @if (Model.Id > 0)
+                                            {
+                                                <button type="button" id="btnSave" class="btn btn-danger btn-lg"><span id="btnSaveLoading"></span>@QolaMVC.Resources.Text.Update_big</button>
+                                            }
+                                            else
+                                            {
+                                                <button type="button"  id="btnSave" class="btn btn-danger btn-lg"><span id="btnSaveLoading"></span>@QolaMVC.Resources.Text.Save_big</button>
+                                            }
+                                        </div>
+                                    </div>
+                                    <input type="hidden" id="model_documentType" value="@Model.DocumentType.Id" />
+                                    <input type="hidden" name="ID" id="model_id" value="@Model.Id" />
+                                }
+                                <input type="hidden" id="notice" value="@TempData["notice"]" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END PLACE PAGE CONTENT HERE -->
+            </div>
+            <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+
+        @RenderPage("~/Views/Shared/_Footer.cshtml")
+        <script>
+            if ($('#notice').val() != '') {
+                tempAlert($('#notice').val(), 2000);
+            }
+
+            var documentTypeId = $('#model_documentType').val();
+            var choose = $('select[name="DocumentType.Id"] option[value="' + documentTypeId + '"]')
+            if (choose[0] != undefined) {
+                choose[0].selected = true;
+            }
+            $('#btnSave').click(function (event) {
+                var index = $('#model_id').val();
+                if ($('#Title').val().trim() == '' || $('select[name="DocumentType.Id"]').val() == "0" || ($('input[type="file"]').val() == "" && index == 0)) {
+                    tempAlert("Mandatory Needed", 2000);
+                    return false;
+                }
+                else {
+                    form = $('#frmDocument');
+
+                    $('#btnSaveLoading').html('<i class="fa fa-refresh fa-spin"></i>');
+                    $('#btnSave').prop('disabled', true);
+
+                    form.submit();
+                }
+            });
+
+            $(function () {
+                $('#documentFileUpload').change(function () {
+                    var input = this;
+                    var url = $(this).val();
+                    var ext = url.substring(url.lastIndexOf('.') + 1).toLowerCase();
+                    if (input.files && input.files[0]) {
+                        var reader = new FileReader();
+
+                        reader.onload = function (e) {
+                            //$('#image').attr('src', e.target.result);
+                        }
+                        reader.readAsDataURL(input.files[0]);
+                        $('#lblFileName').text(input.files[0].name);
+                    }
+                });
+            });
+        </script>

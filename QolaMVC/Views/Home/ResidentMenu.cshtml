@@ -301,28 +301,35 @@
                                 }
 
 
-                                    <div class="Row" style="padding: 5px;">
-                                        @if (Forms.Contains(ViewBag.User.UserType) == false)
+                                <div class="Row" style="padding: 5px;">
+                                    @if (Forms.Contains(ViewBag.User.UserType) == false)
+                                    {
+                                        <a href="#" style="padding: 5px;" class="btn btn-primary" onclick="form_click(this)">Forms</a>
+                                    }
+
+                                    @if (Personal_Calendar.Contains(ViewBag.User.UserType) == false)
+                                    {
+                                        <a href="~/Home/PersonalCalendar" style="padding: 5px;" class="btn btn-primary">Personal Calendar</a>
+                                    }
+
+                                    @if (SAE.Contains(ViewBag.User.UserType) == false)
+                                    {
+                                        if (@TempData["archive"].ToString() == "NO")
                                         {
-                                            <a href="#" style="padding: 5px;" class="btn btn-primary" onclick="form_click(this)">Forms</a>
+                                            <a href="~/Home/SuggestedActivityCalendar_mike" id="SAC_a_tag" style="padding: 5px;" class="btn btn-primary">Suggested Activity Calendar</a>
                                         }
-
-                                        @if (Personal_Calendar.Contains(ViewBag.User.UserType) == false)
-                                        {
-                                            <a href="~/Home/PersonalCalendar" style="padding: 5px;" class="btn btn-primary">Personal Calendar</a>
-                                        }
-
-                                        @if (SAE.Contains(ViewBag.User.UserType) == false)
-                                        {
-                                            if (@TempData["archive"].ToString() == "NO")
-                                            {
-                                                <a href="~/Home/SuggestedActivityCalendar_mike" id="SAC_a_tag" style="padding: 5px;" class="btn btn-primary">Suggested Activity Calendar</a>
-                                            }
-                                        }
+                                    }
 
 
-                                    </div>
-                                
+                                </div>
+
+
+                                @*uploading document change*@
+                                <div class="Row" style="padding: 5px;">
+                                    <a href="/Documents/Document/" style="padding: 5px;" class="btn btn-primary ml-3">New Document</a>
+                                </div>
+                                @*uploading document change end*@
+
 
                                 @{
                                     if (@TempData["pass"].ToString() == "" && @TempData["archive"].ToString() == "YES")
@@ -471,8 +478,8 @@
                                                 <div class="row">
                                                     <div class="col-md-12 text-center">
                                                         @*<button class="btn btn-danger" data-dismiss="modal">
-                                    BACK
-                                </button>*@
+                                                            BACK
+                                                        </button>*@
                                                         <button class="btn btn-danger" onclick="saveButton_archive()" style="width:6vw;">
                                                             SAVE
                                                         </button>
@@ -512,9 +519,7 @@
                                             <li class="nav-item">
                                                 <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true" onclick="tab_click(this)"><b>General Info</b> </a>
                                             </li>
-                                            @*<li class="nav-item" style="display:none;">
-                                                <a class="nav-link" id="pills-medication-tab" data-toggle="pill" href="#pills-medication" role="tab" aria-controls="pills-medication" aria-selected="false" onclick="tab_click(this)"><b>Medication History</b></a>
-                                            </li>*@
+
                                             @if (Plan_Of_Care.Contains(ViewBag.User.UserType) == false)
                                             {
                                                 <li class="nav-item">
@@ -522,9 +527,6 @@
                                                 </li>
                                             }
 
-                                            @*<li class="nav-item">
-                                                <a class="nav-link" id="pills-goals-tab" data-toggle="pill" href="#pills-goals" role="tab" aria-controls="pills-goals" aria-selected="false"><b>Resident Specific Goals</b></a>
-                                            </li>*@
                                             @if (Progress_Note.Contains(ViewBag.User.UserType) == false)
                                             {
                                                 <li class="nav-item">
@@ -532,13 +534,27 @@
                                                 </li>
                                             }
 
-                                            @*<li class="nav-item" style="display:none;">
-                                                <a class="nav-link" id="pills-story-tab" data-toggle="pill" href="#pills-story" role="tab" aria-controls="pills-story" aria-selected="false" onclick="tab_click(this)"><b>Life Story Summary</b></a>
-                                            </li>*@
+                                            @*uploading document change*@
+                                            <li class="nav-item">
+                                                <a class="nav-link" id="documents-tab" data-toggle="pill" href="#documents" role="tab" aria-controls="documents" aria-selected="true" onclick="tab_click(this)"><b>Documents</b> </a>
+                                            </li>
+                                            @*uploading document change end*@
 
                                             <li class="nav-item">
                                                 <button class="btn btn-danger" id="print_PoC" onclick="PoC_PRINT()" style="border-radius:0.3vw;height:40px;margin-left:30%;display:none;">Print PoC</button>
                                             </li>
+
+
+                                            @*<li class="nav-item" style="display:none;">
+                                                <a class="nav-link" id="pills-medication-tab" data-toggle="pill" href="#pills-medication" role="tab" aria-controls="pills-medication" aria-selected="false" onclick="tab_click(this)"><b>Medication History</b></a>
+                                            </li>*@
+                                            @*<li class="nav-item">
+                                                <a class="nav-link" id="pills-goals-tab" data-toggle="pill" href="#pills-goals" role="tab" aria-controls="pills-goals" aria-selected="false"><b>Resident Specific Goals</b></a>
+                                            </li>*@
+                                            @*<li class="nav-item" style="display:none;">
+                                                <a class="nav-link" id="pills-story-tab" data-toggle="pill" href="#pills-story" role="tab" aria-controls="pills-story" aria-selected="false" onclick="tab_click(this)"><b>Life Story Summary</b></a>
+                                            </li>*@
+
 
                                         </ul>
                                         <div class="tab-content" id="pills-tabContent">
@@ -632,7 +648,7 @@
                                                                 <div>
                                                                     Date Of Birth:
                                                                     <span id="table1_birth1">@Model.BirthDate.ToString("yyyy-MM-dd")</span>
-                                                                    <input class="form-control" id="table1_birth2" value="@Model.BirthDate.ToString("yyyy-MM-dd")" style="display:none;"  autocomplete="off"/>
+                                                                    <input class="form-control" id="table1_birth2" value="@Model.BirthDate.ToString("yyyy-MM-dd")" style="display:none;" autocomplete="off" />
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -689,7 +705,7 @@
                                                         <tr>
                                                             <td>
                                                                 Number of Children: <span id="table1_Number_of_children1">@ViewBag.activity.Number_of_children</span>
-                                                                <span id="table1_Number_of_children2" style="display:none;"  >@ViewBag.activity.Number_of_children</span>
+                                                                <span id="table1_Number_of_children2" style="display:none;">@ViewBag.activity.Number_of_children</span>
 
                                                             </td>
                                                             <td>
@@ -701,7 +717,7 @@
                                                                 Veteran:
                                                                 <span id="table1_Vetaran1">@ViewBag.activity.Vetaran</span>
                                                                 @*<input class="form-control" type="text" id="table1_Vetaran2" value="@Model.Vetaran" style="display:none;" />*@
-                                                                <span class="table1_item form-control" id="table1_Vetaran2" style="display:none;width:40%;" >@ViewBag.activity.Vetaran</span>
+                                                                <span class="table1_item form-control" id="table1_Vetaran2" style="display:none;width:40%;">@ViewBag.activity.Vetaran</span>
                                                                 @*<input class="form-control" type="text" id="table1_Vetaran3" style="width:35%;display:none;" onchange="table1_Vetaran3onChange(this)" />*@
                                                             </td>
                                                         </tr>
@@ -765,8 +781,8 @@
                                                                     <input class="POA_pencil" type="image" style="width:1.2vw;height:1.2vw;display:none;" src="/Content/pages/img/icoedit.png" onclick="POA_pencil_click(this)">
                                                                     <b class="POAfinancelist" id="POAFinance1" style="float:right;color:@POAF1color;cursor:pointer;" onclick="POAclick(this)">@POAF1</b>
                                                                     <input class="POA_pencil" type="image" style="width:1.2vw;height:1.2vw;display:none;float:right;" src="/Content/pages/img/icoedit.png" onclick="POA_pencil_click(this)">
-                                                                </p>                      
-                                                                    <p class="text-center" style="font-size:1.3em;"><b>1st Contact</b></p>
+                                                                </p>
+                                                                <p class="text-center" style="font-size:1.3em;"><b>1st Contact</b></p>
                                                             </td>
                                                             <td class="" style="width:28%;padding:1% !important;">
                                                                 <p style="margin-bottom:3px !important;">
@@ -775,7 +791,8 @@
                                                                     <b class="POAfinancelist" id="POAFinance2" style="float:right;color:@POAF2color;cursor:pointer;" onclick="POAclick(this)">@POAF2</b>
                                                                     <input class="POA_pencil" type="image" style="width:1.2vw;height:1.2vw;display:none;float:right;" src="/Content/pages/img/icoedit.png" onclick="POA_pencil_click(this)">
                                                                 </p>
-                                                                <p class="text-center" style="font-size:1.3em;"><b>2nd Contact</b></p></td>
+                                                                <p class="text-center" style="font-size:1.3em;"><b>2nd Contact</b></p>
+                                                            </td>
                                                             <td class="" style="width:28%;padding:1% !important;">
                                                                 <p style="margin-bottom:3px !important;">
                                                                     <b class="POAcarelist" id="POACare3" style="color:@POAC3color;cursor:pointer;" onclick="POAclick(this)">@POAC3</b>
@@ -783,7 +800,8 @@
                                                                     <b class="POAfinancelist" id="POAFinance3" style="float:right;color:@POAF3color;cursor:pointer;" onclick="POAclick(this)">@POAF3</b>
                                                                     <input class="POA_pencil" type="image" style="width:1.2vw;height:1.2vw;display:none;float:right;" src="/Content/pages/img/icoedit.png" onclick="POA_pencil_click(this)">
                                                                 </p>
-                                                                <p class="text-center" style="font-size:1.3em;"><b>3rd Contact</b></p></td>
+                                                                <p class="text-center" style="font-size:1.3em;"><b>3rd Contact</b></p>
+                                                            </td>
                                                         </tr>
 
                                                         <tr>
@@ -920,85 +938,6 @@
                                                 </table>
 
                                             </div>
-                                            <div class="tab-pane fade" id="pills-medication" role="tabpanel" aria-labelledby="pills-medication-tab">
-
-                                                <table class="table table-bordered">
-                                                    <thead class="bg-primary">
-                                                        <tr>
-                                                            <th class="text-white text-center" colspan="8">Medication Details</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td class="text-center"><b>S.No</b></td>
-                                                            <td class="text-center"><b>Form</b></td>
-                                                            <td class="text-center"><b>Drug</b></td>
-                                                            <td class="text-center"><b>Start Date</b></td>
-                                                            <td class="text-center"><b>End Date</b></td>
-                                                            <td class="text-center"><b>Time</b></td>
-                                                            <td class="text-center"><b>Sig</b></td>
-                                                            <td class="text-center"><b>Status</b></td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td>1</td>
-                                                            <td>Tablet</td>
-                                                            <td>Trihexyphenidyl</td>
-                                                            <td>10-27-2014</td>
-                                                            <td></td>
-                                                            <td>06:00AM|01:00PM</td>
-                                                            <td>1 TABLET BY MOUTH EVERY MORNING| 1 TABLET BY MOUTH EVERY MORNING</td>
-                                                            <td>AAP</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>2</td>
-                                                            <td>Eye Drops</td>
-                                                            <td>EYE LUBE</td>
-                                                            <td>10-28-2015</td>
-                                                            <td></td>
-                                                            <td>09:00PM</td>
-                                                            <td>INSTILL 1 DROP EACH EYE AT BED TIME</td>
-                                                            <td>AAP</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="8"><b>Legend :</b>DIS-Discontinue, HLD-Hold, RLS-Release, CAN-Cancel, AAP-Acknowledge and Approved, PEN-Pending.</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="8"><b>Disclaimer :</b>All information provided has been obtained exclusively from the resident, guardian, power of attorney or family member thereof. We have not independently verified the information, and, as such, it may contain errors, omissions or inaccuracies. Use of the information by third-parties shall be solely at their own risk. All Seniors Care Living Centres, or any related entity, assumes no responsibility or liability for damages of any kind resulting from any reliance or use of the information.</td>
-                                                        </tr>
-
-                                                    </tbody>
-                                                </table>
-                                                <br><br>
-                                                <table class="table table-bordered">
-                                                    <thead class="bg-primary">
-                                                        <tr>
-                                                            <th class="text-white text-center" colspan="3">Medical Allergy Details</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td class="text-center"><b>S.No</b></td>
-                                                            <td class="text-center"><b>Medical Allergy</b></td>
-                                                            <td class="text-center"><b>Notes</b></td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td>1</td>
-                                                            <td>Hydantoins</td>
-                                                            <td></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>2</td>
-                                                            <td>tape</td>
-                                                            <td></td>
-                                                        </tr>
-
-
-                                                    </tbody>
-                                                </table>
-
-                                            </div>
 
                                             <div class="tab-pane fade" id="pills-care" role="tabpanel" aria-labelledby="pills-care-tab">
                                                 <div id="fromHTMLtestdiv">
@@ -1064,10 +1003,10 @@
                                                                         }
                                                                     }
                                                                     <div class="borderB" style="height:70px;">
-                                                                        <p class="pcontent" style="width:98% !important;overflow:hidden;height:auto;border:none;"><b>Food:</b> <br/>@foodallergy</p>
+                                                                        <p class="pcontent" style="width:98% !important;overflow:hidden;height:auto;border:none;"><b>Food:</b> <br />@foodallergy</p>
                                                                     </div>
                                                                     <div class="borderB" style="height:70px;">
-                                                                        <p class="pcontent" style="width:98% !important;overflow:hidden;height:auto;border:none;"><b>Medical:</b> <br/>@mediallergy</p>
+                                                                        <p class="pcontent" style="width:98% !important;overflow:hidden;height:auto;border:none;"><b>Medical:</b> <br />@mediallergy</p>
                                                                     </div>
 
                                                                     <div class="text-center" style="width:100%;">
@@ -1259,7 +1198,7 @@
 
                                                                     <div class="text-center" style="width:100%;">
                                                                         <p class="ptitle_grey" style="margin-bottom:0px !important;">Funeral Arrangements</p>
-                                                                        
+
 
 
                                                                     </div>
@@ -1403,7 +1342,7 @@
                                                                         </div>
                                                                         <div class="">
                                                                             <p><span class="pcontent">@mediallergy</span></p>
-                                                                                    
+
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -2422,226 +2361,8 @@
 
 
                                             </div>
-                                            <div class="tab-pane fade" id="pills-goals" role="tabpanel" aria-labelledby="pills-goals-tab">
 
-                                                <table style="border: 1px solid #000; padding: 3px;">
-                                                    <tbody>
-                                                        <tr>
-                                                            <th colspan="3" style="border-bottom: 0px solid;border-left: 1px solid;border-right: 1px solid; border-top: 1px solid;">Resident Need/Goal: Skin and Wound Care</th>
-                                                            <th style="border-bottom: 1px solid;border-top: 1px solid;border-left: 1px solid Black;border-Right: 0px solid;width:10%;">Date </th>
-                                                            <td colspan="2" style="border-bottom: 1px solid;border-top: 1px solid;border-left: 0px solid Black;border-Right: 1px solid; width:20%;">11-22-2016</td>
-
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="3" style="border-top: 0px solid;border-bottom: 1px solid; border-left: 1px solid;">SkinWoundtest</td>
-                                                            <th style="border: 1px solid Black;">Point Of Contact </th>
-                                                            <td colspan="2" style="border: 1px solid Black;">Test Nurse T (Developer - RN)</td>
-
-                                                        </tr>
-                                                        <tr>
-                                                            <th colspan="3" style="border-bottom: 0px solid;border-left: 1px solid;border-top: 1px solid Black;"><u>Action/Intervention</u></th>
-                                                            <th style="border: 1px solid Black;">Goal Met</th>
-                                                            <th style="border: 1px solid Black;">Change in Need</th>
-                                                            <th style="border: 1px solid Black;">Ineffective</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th colspan="3" style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid;">(Direction to Staff) </th>
-                                                            <td style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid Black;border-right: 1px solid;"></td>
-                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid Black;border-right: 0px solid;"></td>
-                                                            <td style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid Black;border-right: 1px solid;"></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid Black;border-right: 0px solid;">11-22-2016 -    </td>
-                                                            <td style="border-bottom: 1px solid #000;border-left: 0px solid;border-top: 0px solid Black;border-right: 0px solid;">SkinFollowUp</td>
-                                                            <td style="border-bottom: 1px solid #000;border-left: 0px solid;border-top: 0px solid Black;border-right: 0px solid;">Admin Admin <br> (Head Office)</td>
-                                                            <td style="border-bottom: 1px solid Black;border-top: 1px solid Black;border-left: 1px solid Black;border-Right: 0px solid;"></td>
-                                                            <td style="border-bottom: 1px solid Black;border-top: 1px solid Black;border-left: 1px solid Black;border-Right: 0px solid;"></td>
-                                                            <td style="border-bottom: 1px solid Black;border-top: 1px solid Black;border-left: 1px solid Black;border-Right: 1px solid Black;"></td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td colspan="3" style="border-bottom: 0px solid;border-top: 1px solid;border-left: 1px solid;">Outcomes / Effectiveness </td>
-                                                            <td style="border-bottom: 0px solid black;border-top: 1px solid;border-left: 0px solid;"></td>
-                                                            <td></td>
-                                                            <td style="border-bottom: 0px solid #000;border-left: 0px solid;border-top: 0px solid Black;border-right: 1px solid;"></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td style="border-bottom: 1px solid Black;border-left: 1px solid;border-top: 0px solid;border-right: 0px solid">11-22-2016 -    </td>
-                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid">Skinwoundoutcome</td>
-                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid">Admin Admin <br> (Head Office)</td>
-                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid">11-08-2016</td>
-                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid"></td>
-                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 1px solid"></td>
-                                                        </tr>
-
-
-                                                    </tbody>
-                                                </table>
-                                                <br><br>
-                                                <table style="border: 1px solid #000; padding: 3px;">
-                                                    <tbody>
-                                                        <tr>
-                                                            <th colspan="3" style="border-bottom: 0px solid;border-left: 1px solid;border-right: 1px solid; border-top: 1px solid;">Resident Need/Goal: Physician</th>
-                                                            <th style="border-bottom: 1px solid;border-top: 1px solid;border-left: 1px solid Black;border-Right: 0px solid;width:10%;">Date </th>
-                                                            <td colspan="2" style="border-bottom: 1px solid;border-top: 1px solid;border-left: 0px solid Black;border-Right: 1px solid; width:20%;">11-22-2016</td>
-
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="3" style="border-top: 0px solid;border-bottom: 1px solid; border-left: 1px solid;">physician test</td>
-                                                            <th style="border: 1px solid Black;">Point Of Contact </th>
-                                                            <td colspan="2" style="border: 1px solid Black;">Test Nurse T (Developer - RN)</td>
-
-                                                        </tr>
-                                                        <tr>
-                                                            <th colspan="3" style="border-bottom: 0px solid;border-left: 1px solid;border-top: 1px solid Black;"><u>Action/Intervention</u></th>
-                                                            <th style="border: 1px solid Black;">Goal Met</th>
-                                                            <th style="border: 1px solid Black;">Change in Need</th>
-                                                            <th style="border: 1px solid Black;">Ineffective</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th colspan="3" style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid;">(Direction to Staff) </th>
-                                                            <td style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid Black;border-right: 1px solid;"></td>
-                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid Black;border-right: 0px solid;"></td>
-                                                            <td style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid Black;border-right: 1px solid;"></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid Black;border-right: 0px solid;">11-22-2016 -    </td>
-                                                            <td style="border-bottom: 1px solid #000;border-left: 0px solid;border-top: 0px solid Black;border-right: 0px solid;">SkinFollowUp</td>
-                                                            <td style="border-bottom: 1px solid #000;border-left: 0px solid;border-top: 0px solid Black;border-right: 0px solid;">Admin Admin <br> (Head Office)</td>
-                                                            <td style="border-bottom: 1px solid Black;border-top: 1px solid Black;border-left: 1px solid Black;border-Right: 0px solid;"></td>
-                                                            <td style="border-bottom: 1px solid Black;border-top: 1px solid Black;border-left: 1px solid Black;border-Right: 0px solid;"></td>
-                                                            <td style="border-bottom: 1px solid Black;border-top: 1px solid Black;border-left: 1px solid Black;border-Right: 1px solid Black;"></td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td colspan="3" style="border-bottom: 0px solid;border-top: 1px solid;border-left: 1px solid;">Outcomes / Effectiveness </td>
-                                                            <td style="border-bottom: 0px solid black;border-top: 1px solid;border-left: 0px solid;"></td>
-                                                            <td></td>
-                                                            <td style="border-bottom: 0px solid #000;border-left: 0px solid;border-top: 0px solid Black;border-right: 1px solid;"></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td style="border-bottom: 1px solid Black;border-left: 1px solid;border-top: 0px solid;border-right: 0px solid">11-22-2016 -    </td>
-                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid">Skinwoundoutcome</td>
-                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid">Admin Admin <br> (Head Office)</td>
-                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid">11-08-2016</td>
-                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid"></td>
-                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 1px solid"></td>
-                                                        </tr>
-
-
-                                                    </tbody>
-                                                </table>
-                                                <br><br>
-                                                <table style="border: 1px solid #000; padding: 3px;">
-                                                    <tbody>
-                                                        <tr>
-                                                            <th colspan="3" style="border-bottom: 0px solid;border-left: 1px solid;border-right: 1px solid; border-top: 1px solid;">Resident Need/Goal: Assistance with Ambulation</th>
-                                                            <th style="border-bottom: 1px solid;border-top: 1px solid;border-left: 1px solid Black;border-Right: 0px solid;width:10%;">Date </th>
-                                                            <td colspan="2" style="border-bottom: 1px solid;border-top: 1px solid;border-left: 0px solid Black;border-Right: 1px solid; width:20%;">11-22-2016</td>
-
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="3" style="border-top: 0px solid;border-bottom: 1px solid; border-left: 1px solid;">testno22</td>
-                                                            <th style="border: 1px solid Black;">Point Of Contact </th>
-                                                            <td colspan="2" style="border: 1px solid Black;">Test Nurse T (Developer - RN)</td>
-
-                                                        </tr>
-                                                        <tr>
-                                                            <th colspan="3" style="border-bottom: 0px solid;border-left: 1px solid;border-top: 1px solid Black;"><u>Action/Intervention</u></th>
-                                                            <th style="border: 1px solid Black;">Goal Met</th>
-                                                            <th style="border: 1px solid Black;">Change in Need</th>
-                                                            <th style="border: 1px solid Black;">Ineffective</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th colspan="3" style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid;">(Direction to Staff) </th>
-                                                            <td style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid Black;border-right: 1px solid;"></td>
-                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid Black;border-right: 0px solid;"></td>
-                                                            <td style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid Black;border-right: 1px solid;"></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid Black;border-right: 0px solid;">11-22-2016 -    </td>
-                                                            <td style="border-bottom: 1px solid #000;border-left: 0px solid;border-top: 0px solid Black;border-right: 0px solid;">SkinFollowUp</td>
-                                                            <td style="border-bottom: 1px solid #000;border-left: 0px solid;border-top: 0px solid Black;border-right: 0px solid;">Admin Admin <br> (Head Office)</td>
-                                                            <td style="border-bottom: 1px solid Black;border-top: 1px solid Black;border-left: 1px solid Black;border-Right: 0px solid;"></td>
-                                                            <td style="border-bottom: 1px solid Black;border-top: 1px solid Black;border-left: 1px solid Black;border-Right: 0px solid;"></td>
-                                                            <td style="border-bottom: 1px solid Black;border-top: 1px solid Black;border-left: 1px solid Black;border-Right: 1px solid Black;"></td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td colspan="3" style="border-bottom: 0px solid;border-top: 1px solid;border-left: 1px solid;">Outcomes / Effectiveness </td>
-                                                            <td style="border-bottom: 0px solid black;border-top: 1px solid;border-left: 0px solid;"></td>
-                                                            <td></td>
-                                                            <td style="border-bottom: 0px solid #000;border-left: 0px solid;border-top: 0px solid Black;border-right: 1px solid;"></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td style="border-bottom: 1px solid Black;border-left: 1px solid;border-top: 0px solid;border-right: 0px solid">11-22-2016 -    </td>
-                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid">Skinwoundoutcome</td>
-                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid">Admin Admin <br> (Head Office)</td>
-                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid">11-08-2016</td>
-                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid"></td>
-                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 1px solid"></td>
-                                                        </tr>
-
-
-                                                    </tbody>
-                                                </table>
-                                                <br><br>
-                                                <table style="border: 1px solid #000; padding: 3px;">
-                                                    <tbody>
-                                                        <tr>
-                                                            <th colspan="3" style="border-bottom: 0px solid;border-left: 1px solid;border-right: 1px solid; border-top: 1px solid;">Resident Need/Goal: Assistance with Ambulation  </th>
-                                                            <th style="border-bottom: 1px solid;border-top: 1px solid;border-left: 1px solid Black;border-Right: 0px solid;width:10%;">Date </th>
-                                                            <td colspan="2" style="border-bottom: 1px solid;border-top: 1px solid;border-left: 0px solid Black;border-Right: 1px solid; width:20%;">11-22-2016</td>
-
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="3" style="border-top: 0px solid;border-bottom: 1px solid; border-left: 1px solid;">Test Goal</td>
-                                                            <th style="border: 1px solid Black;">Point Of Contact </th>
-                                                            <td colspan="2" style="border: 1px solid Black;">Test Nurse T (Developer - RN)</td>
-
-                                                        </tr>
-                                                        <tr>
-                                                            <th colspan="3" style="border-bottom: 0px solid;border-left: 1px solid;border-top: 1px solid Black;"><u>Action/Intervention</u></th>
-                                                            <th style="border: 1px solid Black;">Goal Met</th>
-                                                            <th style="border: 1px solid Black;">Change in Need</th>
-                                                            <th style="border: 1px solid Black;">Ineffective</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th colspan="3" style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid;">(Direction to Staff) </th>
-                                                            <td style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid Black;border-right: 1px solid;"></td>
-                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid Black;border-right: 0px solid;"></td>
-                                                            <td style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid Black;border-right: 1px solid;"></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td style="border-bottom: 0px solid;border-left: 1px solid;border-top: 0px solid Black;border-right: 0px solid;">11-22-2016 -    </td>
-                                                            <td style="border-bottom: 1px solid #000;border-left: 0px solid;border-top: 0px solid Black;border-right: 0px solid;">SkinFollowUp</td>
-                                                            <td style="border-bottom: 1px solid #000;border-left: 0px solid;border-top: 0px solid Black;border-right: 0px solid;">Admin Admin <br> (Head Office)</td>
-                                                            <td style="border-bottom: 1px solid Black;border-top: 1px solid Black;border-left: 1px solid Black;border-Right: 0px solid;"></td>
-                                                            <td style="border-bottom: 1px solid Black;border-top: 1px solid Black;border-left: 1px solid Black;border-Right: 0px solid;"></td>
-                                                            <td style="border-bottom: 1px solid Black;border-top: 1px solid Black;border-left: 1px solid Black;border-Right: 1px solid Black;"></td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td colspan="3" style="border-bottom: 0px solid;border-top: 1px solid;border-left: 1px solid;">Outcomes / Effectiveness </td>
-                                                            <td style="border-bottom: 0px solid black;border-top: 1px solid;border-left: 0px solid;"></td>
-                                                            <td></td>
-                                                            <td style="border-bottom: 0px solid #000;border-left: 0px solid;border-top: 0px solid Black;border-right: 1px solid;"></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td style="border-bottom: 1px solid Black;border-left: 1px solid;border-top: 0px solid;border-right: 0px solid">11-22-2016 -    </td>
-                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid">Skinwoundoutcome</td>
-                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid">Admin Admin <br> (Head Office)</td>
-                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid">11-08-2016</td>
-                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 0px solid"></td>
-                                                            <td style="border-bottom: 1px solid Black;border-left: 0px solid;border-top: 0px solid;border-right: 1px solid"></td>
-                                                        </tr>
-
-
-                                                    </tbody>
-                                                </table>
-
-                                            </div>
-                                            <div class="tab-pane fade" id="pills-notes" role="tabpanel" aria-labelledby="pills-notes-tab" style="min-width:90vw;">
+                                            <div class="tab-pane fade" id="pills-notes" role="tabpanel" aria-labelledby="pills-notes-tab">
                                                 <div class="row">
                                                     <div class="col-md-12 mb-2">
                                                         <a href="/Assessments/ProgressNotes/" style="padding: 8px;font-size:1vw;" class="btn btn-primary ml-3">New Progress Note</a>
@@ -2724,8 +2445,120 @@
                                                 </table>
 
                                             </div>
-                                            <div class="tab-pane fade" id="pills-story" role="tabpanel" aria-labelledby="pills-story-tab">
 
+                                            @*uploading document change*@
+
+                                            <div class="tab-pane fade" id="documents" role="tabpanel" aria-labelledby="pills-notes-tab">
+                                                <div class="row">
+                                                    <div class="col-md-12 mb-2">
+                                                        <a href="/Documents/Document/" style="padding: 8px;font-size:1vw;" class="btn btn-primary ml-3">New Document</a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <div class="card card-default">
+                                                        <div class="card-header  separator">
+                                                            <div class="card-title">
+                                                                Search Document
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-block my-2">
+                                                            <form action="/" method="post">
+                                                                <div class="row">
+                                                                    <div style="width:54%;display:inline-block;">
+                                                                        <div class="row align-center align-content-center">
+                                                                            <div class="col-md-5">
+                                                                                <div>Select Document Type</div>
+                                                                                <select id="documentType" class="table1_item form-control" style="height:35px;width:100%;float:left;">
+                                                                                    <option selected="selected" value="">-- Select --</option>
+                                                                                    @foreach (var item in ViewBag.AllDocumentType)
+                                                                                    {
+                                                                                        <option value="@item.Id">@item.Type</option>
+                                                                                    }
+                                                                                </select>
+                                                                            </div>
+                                                                            <div style="width:15%;display:inline-block;">
+                                                                                <div>&nbsp; </div>
+                                                                                <input id="btnSearchDocument" type="button" value="Search" class="btn btn-block btn-primary">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <table class="table table-bordered fbody" id="ProgressNoteTable">
+                                                    <thead class="bg-primary">
+                                                        <tr>
+                                                            <th class="text-white text-center" colspan="7">Documents</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="tblDocumentList">
+                                                        <tr>
+                                                            <td class="text-center"><b>S.No</b></td>
+                                                            <td class="text-center"><b>Document Type</b></td>
+                                                            <td class="text-center"><b>Title</b></td>
+                                                            @*<td class="text-center"><b>File Name</b></td>*@
+                                                            <td class="text-center"><b>Created On</b></td>
+                                                            <td class="text-center" style="width:12vw;"><b>Created By</b></td>
+                                                            <td class="text-center"><b>Actions</b></td>
+                                                        </tr>
+                                                        @{
+                                                            int sr = 1;
+                                                            var documentsList = (IEnumerable<QolaMVC.Models.Documents>)ViewBag.DocumentListByResident;
+                                                            foreach (var item in documentsList)
+                                                            {
+                                                                <tr id="trDocument_@item.Id">
+                                                                    <td>@sr</td>
+                                                                    <td>@item.DocumentType.Type </td>
+                                                                    <td>@item.Title </td>
+                                                                    @*<td>@item.FileName </td>*@
+                                                                    <td>@item.CreatedOn</td>
+                                                                    <td>@item.CreatedByUserName</td>
+                                                                    <td>
+                                                                        <a id="btnEditDocument" class="btn btn-success btn-xs" title="Edit" href="/Documents/Document?DocumentId=@item.Id">
+                                                                            <i class="fa fa-pencil"></i>
+                                                                        </a>
+
+                                                                        <a id="btnDeleteDocument" class="btn btn-danger btn-xs" title="Delete" href="JavaScript:Void(0);" onclick="deletedocument_click(@item.Id, '@item.DocumentType.Type')">
+                                                                            <i class="fa fa-trash-o" style="color:white;"></i>
+                                                                        </a>
+
+                                                                        <a id="btnDownloadDocument" class="btn btn-success btn-xs" title="Download" href="/Documents/DownloadFile?DocumentTypeName=@item.DocumentType.Type&fileName=@item.FileName">
+                                                                            <i class="fa fa-download" style="color:white;"></i>
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                                sr = sr + 1;
+                                                            }
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                                <input type="hidden" id="notice" value="@TempData["notice"]" />
+                                            </div>
+
+                                            @*uploading document change end*@
+
+
+
+                                            @*<div class="tab-pane fade" id="pills-medication" role="tabpanel" aria-labelledby="pills-medication-tab">
+                                                <table class="table table-bordered">
+                                                    <thead class="bg-primary">
+                                                        <tr>
+                                                            <th class="text-white text-center" colspan="8">Medication Details</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>*@
+                                            @*<div class="tab-pane fade" id="pills-goals" role="tabpanel" aria-labelledby="pills-goals-tab">
+                                                <table style="border: 1px solid #000; padding: 3px;">
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>*@
+                                            @*<div class="tab-pane fade" id="pills-story" role="tabpanel" aria-labelledby="pills-story-tab">
                                                 <table class="table table-bordered">
                                                     <thead class="bg-primary">
                                                         <tr>
@@ -2733,170 +2566,11 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-
-                                                        <tr>
-                                                            <td>Name: Sample John</td>
-                                                            <td>Gender: Male</td>
-                                                            <td>Date Of Birth: 05-20-1941</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Marital Status: Married </td>
-                                                            <td>Birth Place: Toronto</td>
-                                                            <td>Phone: (416) 728-1418</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Physician: Dr. Smith</td>
-                                                            <td>Physician Phone: (416) 444-4444 </td>
-                                                            <td>Fax #:</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Contract Number:</td>
-                                                            <td colspan="2">POA Care: Ckg</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Care Home Phone: (987) 568-4561</td>
-                                                            <td>Care Work Phone: (545) 642-1564 </td>
-                                                            <td>Care Email: Nir@mit.com</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="3">POA Finance: Fkg</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Finance Home Phone: (789) 462-5198</td>
-                                                            <td>Finance Work Phone: (544) 652-1987  </td>
-                                                            <td>Finance Email: niranch.harvey@gmail.com</td>
-                                                        </tr>
                                                     </tbody>
                                                 </table>
-                                                <br><br>
-                                                <table class="table table-bordered">
-                                                    <thead class="bg-primary">
-                                                        <tr>
-                                                            <th class="text-white text-center" colspan="4">Contact Details</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td class="text-center"><b>Description</b></td>
-                                                            <td class="text-center"><b>1st Contact</b></td>
-                                                            <td class="text-center"><b>2nd Contact</b></td>
-                                                            <td class="text-center"><b>3rd Contact</b></td>
-                                                        </tr>
+                                            </div>*@
 
-                                                        <tr>
-                                                            <td>Contact</td>
-                                                            <td>Hannah Sommerville</td>
-                                                            <td></td>
-                                                            <td></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Contact</td>
-                                                            <td>Hannah Sommerville</td>
-                                                            <td></td>
-                                                            <td></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Address</td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Relationship</td>
-                                                            <td>daughter</td>
-                                                            <td></td>
-                                                            <td></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Primary Contact </td>
-                                                            <td>(416) 728-1418 (Home)   </td>
-                                                            <td></td>
-                                                            <td></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Secondary Contact </td>
-                                                            <td>(416) 728-1418 (Home)   </td>
-                                                            <td></td>
-                                                            <td></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Tertiary Contact </td>
-                                                            <td>(416) 728-1418 (Home)   </td>
-                                                            <td></td>
-                                                            <td></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>E-Mail</td>
-                                                            <td>hsommerville@allseniorscare.com   </td>
-                                                            <td></td>
-                                                            <td></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                                <br><br>
-                                                <table class="table table-bordered">
-                                                    <thead class="bg-primary">
-                                                        <tr>
-                                                            <th class="text-white text-center" colspan="7">Suite Details</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td class="text-center"><b>S.No </b></td>
-                                                            <td class="text-center"><b>Home</b></td>
-                                                            <td class="text-center"><b>Suite No </b></td>
-                                                            <td class="text-center"><b>Move In Date </b></td>
-                                                            <td class="text-center"><b>Move Out Date</b></td>
-                                                            <td class="text-center"><b>Occupancy</b></td>
-                                                            <td class="text-center"><b>Reason</b></td>
-                                                        </tr>
 
-                                                        <tr>
-                                                            <td>1</td>
-                                                            <td>Sample</td>
-                                                            <td>1</td>
-                                                            <td>10-26-2015</td>
-                                                            <td></td>
-                                                            <td>Single</td>
-                                                            <td>New</td>
-                                                        </tr>
-
-                                                    </tbody>
-                                                </table>
-                                                <br><br>
-                                                <table class="table table-bordered">
-                                                    <thead class="bg-primary">
-                                                        <tr>
-                                                            <th class="text-white text-center" colspan="7">Other Details</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-
-                                                        <tr>
-                                                            <td>Favourite song: Singing in the rain</td>
-                                                            <td>Favourite movie: Breakfast at Tiffany's </td>
-                                                            <td>Number of children: 1</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Number of grandchildren: 1</td>
-                                                            <td>Favourite dessert: Chocolate cake</td>
-                                                            <td>Favourite drink: Earl Gray Tea</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Favourite flower: Peonies</td>
-                                                            <td>Favourite pets: Dogs</td>
-                                                            <td>Wakeup time: 10:00pm</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Go to bed at: 9:00am</td>
-                                                            <td>Favourite past time: Knitting</td>
-                                                            <td></td>
-                                                        </tr>
-
-                                                    </tbody>
-                                                </table>
-
-                                            </div>
                                         </div>
                                     </div>
 
@@ -2983,6 +2657,14 @@
                 }
             </script>
             <script>
+
+                //uploading document change
+                if ($('#notice').val() != '') {
+                    tempAlert($('#notice').val(), 2000);
+                }
+                //uploading document change end
+
+
                 var a = $("#jsNote").val();
                 if (a == "YES") {
                     document.getElementById("pills-home-tab").className = "nav-link";
@@ -3637,6 +3319,76 @@
                     yearRange: "-110:+30",
                     defaultDate: new Date()
                 }); 
+
+
+                $("#btnSearchDocument").click(function () {
+                    var residentId = $('#residentID').val();
+                    var documentTypeId = $('#documentType option:selected').val();
+
+                    $.ajax({
+                        url: '/Documents/searchDocuments?residentId=' + residentId + '&documentTypeId=' + documentTypeId,
+                        type: 'post',
+                        dataType: 'json',
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                            $('#tblDocumentList').empty();
+                            var HtmlHeader = '<tr><td class= "text-center" > <b>S.No</b></td><td class="text - center"><b>Document Type</b></td><td class="text - center"><b>Title</b></td><td class="text - center"><b>Created On</b></td><td class="text - center" style="width: 12vw;"><b>Created By</b></td><td class="text-center"><b>Actions</b></td></tr >';
+                            $('#tblDocumentList').append(HtmlHeader);
+
+                            for (var i = 0; i < data.length; i++) {
+                                var HtmlRow = "<tr id='trDocument_" + data[i].Id + "'>";
+                                HtmlRow += "<td>" + (i + 1) + "</td>";
+                                HtmlRow += "<td>" + data[i].DocumentType.Type + " </td>";
+                                HtmlRow += "<td>" + data[i].Title + " </td>";
+                                HtmlRow += "<td>" + data[i].CreatedOn + "</td>";
+                                HtmlRow += "<td>" + data[i].CreatedByUserName + "</td>";
+                                HtmlRow += "<td>";
+                                HtmlRow += "<a id='btnEditDocument' class='btn btn-success btn-xs' title='Edit' href='/Documents/Document?DocumentId=" + data[i].Id + "'><i class='fa fa-pencil'></i></a>";
+                                HtmlRow += '<a id="btnDeleteDocument" class="btn btn-danger btn-xs" title="Delete" href="JavaScript:Void(0);" onclick="deletedocument_click(' + data[i].Id + ',\'' + data[i].DocumentType.Type + '\')"><i class="fa fa-trash-o" style="color:white;"></i></a>';
+                                HtmlRow += " <a id='btnDownloadDocument' class='btn btn-success btn-xs' title='Download' href='/Documents/DownloadFile?DocumentTypeName=" + data[i].DocumentType.Type + "&fileName=" + data[i].FileName + "'><i class='fa fa-download' style='color:white;'></i></a>";
+                                HtmlRow += "</td>";
+                                HtmlRow += "</tr>";
+                                $('#tblDocumentList').append(HtmlRow);
+                            }
+                        },
+                        error: function (errorThrown) {
+
+                        }
+                    });
+                });
+
+                function deletedocument_click(documentId, documentTypeName) {
+                    deleteAlert("Delete Document ?", documentId, "'" + documentTypeName + "'")
+                }
+
+                function DELETEDOCUMENT(ee, documentId, documentTypeName) {
+                    ee.parentNode.parentNode.parentNode.removeChild(ee.parentNode.parentNode);
+                    $.ajax({
+                        url: '/Documents/DeleteDocument?DocumentId=' + documentId + "&DocumentTypeName=" + documentTypeName,
+                        type: 'post',
+                        dataType: 'json',
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                            if (data == "Success") {
+                                $('#trDocument_' + documentId).remove();
+                                tempAlert("Delete Successfully", 2000);
+                            }
+                            else {
+                                tempAlert(data, 2000);
+                            }
+                        },
+                        error: function (errorThrown) {
+
+                        }
+                    });
+                }
+
+                function deleteAlert(msg, id, docTypeName) {
+                    var el = document.createElement("div");
+                    el.setAttribute("style", "position:fixed;top:2%;left:31%;width:35vw;background-color:white;z-index:9999;color:black;padding:2vw 3vw 2vw 3vw;border-radius:1vw;font-size:1.2em;font-weight:bold;border:black solid;");
+                    el.innerHTML = "<img src=\"\/Content\/assets\/img\/qola_logo3.png\" style=\"width:120px;height:80px;display:inline-block\" \/><div style=\"margin-left:3vw;display:inline-block;width:50%;position:absolute;margin-top:3%;\">" + msg + "<\/div><div style='width:90%;'><button class='btn btn-primary pull-right' style='display:inline-block;' onclick='this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);'>No<\/button><button class='btn btn-danger pull-right' style='display:inline-block;margin-right:10px' onclick=\"DELETEDOCUMENT(this, " + id + ", " + docTypeName + ")\">Yes<\/button><\/div>";
+                    document.body.appendChild(el);
+                }
 
             </script>
 

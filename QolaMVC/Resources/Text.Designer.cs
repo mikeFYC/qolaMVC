@@ -160,6 +160,15 @@ namespace QolaMVC.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AddDocumentType.
+        /// </summary>
+        public static string AddDocumentType {
+            get {
+                return ResourceManager.GetString("AddDocumentType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add New.
         /// </summary>
         public static string AddNew {
@@ -448,6 +457,33 @@ namespace QolaMVC.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DocumentTitleName.
+        /// </summary>
+        public static string DocumentTitleName {
+            get {
+                return ResourceManager.GetString("DocumentTitleName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DocumentType.
+        /// </summary>
+        public static string DocumentType {
+            get {
+                return ResourceManager.GetString("DocumentType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DocumentTypeName.
+        /// </summary>
+        public static string DocumentTypeName {
+            get {
+                return ResourceManager.GetString("DocumentTypeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string Edit {
@@ -489,6 +525,15 @@ namespace QolaMVC.Resources {
         public static string EditBuilding {
             get {
                 return ResourceManager.GetString("EditBuilding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EditDocumentType.
+        /// </summary>
+        public static string EditDocumentType {
+            get {
+                return ResourceManager.GetString("EditDocumentType", resourceCulture);
             }
         }
         
@@ -1020,6 +1065,15 @@ namespace QolaMVC.Resources {
         public static string Update_small {
             get {
                 return ResourceManager.GetString("Update_small", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UploadDocument.
+        /// </summary>
+        public static string UploadDocument {
+            get {
+                return ResourceManager.GetString("UploadDocument", resourceCulture);
             }
         }
         

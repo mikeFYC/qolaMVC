@@ -698,6 +698,213 @@ namespace QolaMVC.DAL
             return a;
         }
 
+
+        #region UploadDocument
+
+        public static List<DocumentTypeModel> GetAllDocumentType()
+        {
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                List<DocumentTypeModel> l_Collection = new List<DocumentTypeModel>();
+                l_Conn.Open();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_All_DocumentType", l_Conn);
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlDataReader l_Reader = l_Cmd.ExecuteReader();
+
+                while (l_Reader.Read())
+                {
+                    DocumentTypeModel l_Model = new DocumentTypeModel();
+
+                    l_Model.Id = Convert.ToInt32(l_Reader["Id"]);
+                    l_Model.Type = Convert.ToString(l_Reader["DocumentTypeName"]);
+
+                    l_Collection.Add(l_Model);
+                }
+
+                return l_Collection;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(".GetAllDocumentType\n" + ex.Message);
+            }
+        }
+
+        public static List<DocumentTypeModel> GetAllDocumentType_Filter(string search)
+        {
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                List<DocumentTypeModel> l_Collection = new List<DocumentTypeModel>();
+                l_Conn.Open();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_All_DocumentType_Filter", l_Conn);
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@search", search);
+                SqlDataReader l_Reader = l_Cmd.ExecuteReader();
+
+                while (l_Reader.Read())
+                {
+                    DocumentTypeModel l_Model = new DocumentTypeModel();
+
+                    l_Model.Id = Convert.ToInt32(l_Reader["Id"]);
+                    l_Model.Type = Convert.ToString(l_Reader["DocumentTypeName"]);
+
+                    l_Collection.Add(l_Model);
+                }
+
+                return l_Collection;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(".GetAllDocumentType_Filter\n" + ex.Message);
+            }
+        }
+
+        public static int AddDocumentType(DocumentTypeModel p_Model)
+        {
+            string exception = string.Empty;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Add_DocumentType", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@DocumentTypeName", p_Model.Type);
+                l_Cmd.Parameters.AddWithValue("@UserId", p_Model.UserId);
+
+                SqlParameter returnVal = l_Cmd.Parameters.Add("tempid", SqlDbType.Int);
+                returnVal.Direction = ParameterDirection.ReturnValue;
+                l_Cmd.ExecuteNonQuery();
+                return Convert.ToInt32(returnVal.Value);
+            }
+            catch (Exception ex)
+            {
+                exception = "AddDocumentType |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+        public static DocumentTypeModel GetDocumentTypeById(int p_DocumentTypeId)
+        {
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                DocumentTypeModel l_Model = new DocumentTypeModel();
+                l_Conn.Open();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_DocumentType_By_Id", l_Conn);
+                l_Cmd.Parameters.AddWithValue("@DocumentTypeId", p_DocumentTypeId);
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlDataReader l_Reader = l_Cmd.ExecuteReader();
+
+                while (l_Reader.Read())
+                {
+                    l_Model.Id = Convert.ToInt32(l_Reader["Id"]);
+                    l_Model.Type = Convert.ToString(l_Reader["DocumentTypeName"]);
+                }
+
+                return l_Model;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(".GetDocumentTypeById\n" + ex.Message);
+            }
+        }
+
+        public static int UpdateDocumentType(DocumentTypeModel p_Model)
+        {
+            string exception = string.Empty;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Update_DocumentType", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@DocumentTypeId", p_Model.Id);
+                l_Cmd.Parameters.AddWithValue("@DocumentTypeName", p_Model.Type);
+                l_Cmd.Parameters.AddWithValue("@UserId", p_Model.UserId);
+                SqlParameter returnVal = l_Cmd.Parameters.Add("tempid", SqlDbType.Int);
+                returnVal.Direction = ParameterDirection.ReturnValue;
+                l_Cmd.ExecuteNonQuery();
+                return Convert.ToInt32(returnVal.Value);
+            }
+            catch (Exception ex)
+            {
+                exception = "UpdateDocumentType |" + ex.ToString();
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+        public static void DeleteDocumentType(int p_DocumentTypeId)
+        {
+            string exception = string.Empty;
+
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                SqlDataAdapter l_DA = new SqlDataAdapter();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Delete_DocumentType", l_Conn);
+                l_Conn.Open();
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@DocumentTypeId", p_DocumentTypeId);
+                l_Cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                exception = "DeleteDocumentType |" + ex.ToString();
+                //Log.Write(exception);
+                throw;
+            }
+            finally
+            {
+                l_Conn.Close();
+            }
+        }
+
+        public static List<EditDocumentTypeModel> GetAllResidentsByDocumentType(int documentTypeId)
+        {
+            SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD);
+            try
+            {
+                List<EditDocumentTypeModel> l_Collection = new List<EditDocumentTypeModel>();
+                l_Conn.Open();
+                SqlCommand l_Cmd = new SqlCommand("spAB_Get_All_Residents_By_DocumentType", l_Conn);
+                l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                l_Cmd.Parameters.AddWithValue("@documentTypeId", documentTypeId);
+                SqlDataReader l_Reader = l_Cmd.ExecuteReader();
+
+                while (l_Reader.Read())
+                {
+                    EditDocumentTypeModel l_Model = new EditDocumentTypeModel();
+
+                    l_Model.ResidentId = Convert.ToInt32(l_Reader["ResidentId"]);
+                    l_Model.ResidentName = Convert.ToString(l_Reader["ResidentName"]);
+                    l_Model.OldDocumentTypeName = Convert.ToString(l_Reader["OldDocumentTypeName"]);
+
+                    l_Collection.Add(l_Model);
+                }
+
+                return l_Collection;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(".GetAllResidentsByDocumentType\n" + ex.Message);
+            }
+        }
+
+        #endregion
+
     }
 }
  

@@ -1199,6 +1199,7 @@ namespace QolaMVC.Controllers
 
         }
 
+        //uploading document change temp
         public ActionResult ResidentMenu(int p_ResidentId)
         {
             var user = (UserModel)TempData["User"];
@@ -1230,6 +1231,9 @@ namespace QolaMVC.Controllers
                 ViewBag.TableSH = update_Suite_Handler_Table.get_innerHTML_temperary2(resident.ID);
                 PlanOfCareModel l_Model = GET_one_CarePlan();
                 ViewBag.careplan = l_Model;
+
+                ViewBag.AllDocumentType = MasterDAL.GetAllDocumentType();
+                ViewBag.DocumentListByResident = DocumentsDAL.GetDocumentListByResident(resident.ID, (int?)null);
 
                 ActivityAssessmentCollectionViewModel l_Model2 = GET_one_Activity();
                 ViewBag.activity = l_Model2;
@@ -6148,10 +6152,11 @@ namespace QolaMVC.Controllers
 
         }
 
-
+        //uploading document change temp
         [HttpPost]
         public ActionResult EditProfileTable1(ResidentModel postdata)
         {
+            var resident = (ResidentModel)TempData["Resident"];
             foreach (PropertyInfo prop in typeof(ResidentModel).GetProperties())
             {
                 if (prop.PropertyType.Name == "String" || prop.PropertyType.Name == "string")
@@ -6162,6 +6167,17 @@ namespace QolaMVC.Controllers
 
             ResidentsDAL.UpdateResidentGeneralInfo1(postdata);
 
+            //Rename folder name by new document type
+            string source = Server.MapPath("~/Upload/Documents/" + Convert.ToString(postdata.ID) + "/" + Convert.ToString(resident.FirstName) + " " + Convert.ToString(resident.LastName) + "/");
+            string destination = Server.MapPath("~/Upload/Documents/" + Convert.ToString(postdata.ID) + "/" + Convert.ToString(postdata.FirstName) + " " + Convert.ToString(postdata.LastName) + "/");
+            bool exists = System.IO.Directory.Exists(source);
+            if (exists && (source != destination))
+            {
+                System.IO.Directory.Move(source, destination);
+            }
+            resident.FirstName = postdata.FirstName;
+            resident.LastName = postdata.LastName;
+            TempData.Keep("Resident");
 
             return Json(new { msg = "Successfully added "});
         }
