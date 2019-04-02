@@ -822,5 +822,198 @@ namespace QolaMVC.Controllers
             
         }
 
+
+
+        #region UploadDocument
+
+        public ActionResult DocumentType(string search = "")
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            List<DocumentTypeModel> l_Model;
+
+            ViewBag.Message = TempData["Message"];
+            if (search == "")
+            {
+                l_Model = MasterDAL.GetAllDocumentType();
+            }
+            else
+            {
+                l_Model = MasterDAL.GetAllDocumentType_Filter(search);
+            }
+
+            return View(l_Model);
+        }
+
+        [HttpPost]
+        public ActionResult AddDocumentType(DocumentTypeModel p_Model)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            try
+            {
+                p_Model.UserId = user.ID;
+                int id = MasterDAL.AddDocumentType(p_Model);
+
+                if (id == -1)
+                {
+                    TempData["notice"] = "Document type already exists";
+                    return RedirectToAction("AddDocumentType");
+                }
+                else
+                {
+                    TempData["notice"] = "Add Successfully";
+                    return RedirectToAction("DocumentType");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public ActionResult EditDocumentType(int DocumentTypeId)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            try
+            {
+                var l_DocumentType = MasterDAL.GetDocumentTypeById(DocumentTypeId);
+                return View(l_DocumentType);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public ActionResult EditDocumentType(DocumentTypeModel p_Model)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            try
+            {
+                //Rename folder name by new document type
+                List<EditDocumentTypeModel> editDocument = new List<EditDocumentTypeModel>();
+                editDocument = MasterDAL.GetAllResidentsByDocumentType(p_Model.Id);
+
+                if (editDocument.Count > 0)
+                {
+                    for (int i = 0; i < editDocument.Count; i++)
+                    {
+                        string source = Server.MapPath("~/Upload/Documents/" + Convert.ToString(editDocument[i].ResidentId) + "/" + Convert.ToString(editDocument[i].ResidentName) + "/" + Convert.ToString(editDocument[i].OldDocumentTypeName) + "/");
+                        string destination = Server.MapPath("~/Upload/Documents/" + Convert.ToString(editDocument[i].ResidentId) + "/" + Convert.ToString(editDocument[i].ResidentName) + "/" + Convert.ToString(p_Model.Type) + "/");
+                        bool exists = System.IO.Directory.Exists(source);
+                        if (exists && (source != destination))
+                        {
+                            System.IO.Directory.Move(source, destination);
+                        }
+                    }
+                }
+
+                p_Model.UserId = user.ID;
+                int id = MasterDAL.UpdateDocumentType(p_Model);
+
+                if (id == -1)
+                {
+                    TempData["notice"] = "Document type already exists";
+                    return RedirectToAction("EditDocumentType", new { DocumentTypeId = p_Model.Id });
+                }
+                else
+                {
+                    TempData["notice"] = "Edit Successfully";
+                    return RedirectToAction("DocumentType");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public ActionResult DeleteDocumentType(int DocumentTypeId)
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            try
+            {
+                MasterDAL.DeleteDocumentType(DocumentTypeId);
+                TempData["notice"] = "Delete Successfully";
+
+                return RedirectToAction("DocumentType"); ;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public ActionResult AddDocumentType()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            return View();
+        }
+
+        #endregion
+
+
     }
 }

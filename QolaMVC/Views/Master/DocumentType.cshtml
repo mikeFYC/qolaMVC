@@ -1,0 +1,165 @@
+﻿@model List<QolaMVC.Models.DocumentTypeModel>
+
+
+@RenderPage("~/Views/Shared/_Header.cshtml")
+@RenderPage("~/Views/Shared/_SideBar.cshtml")
+
+<style>
+    .home-box {
+        height: 250px;
+        background: center center no-repeat;
+        background-size: cover;
+    }
+</style>
+<script>
+    function message_close() {
+        document.getElementById("documentType_message_box").style.display = "none";
+    }
+</script>
+<!-- START PAGE-CONTAINER -->
+<div class="page-container">
+
+    @RenderPage("~/Views/Shared/_NavBar.cshtml")
+    <!-- START PAGE CONTENT WRAPPER -->
+    <!-- START PAGE CONTENT WRAPPER -->
+    <div class="page-content-wrapper">
+        <!-- START PAGE CONTENT -->
+        <div class="content">
+            <!-- START JUMBOTRON -->
+            <div class="jumbotron w-100" style="position: fixed; z-index: 400">
+                <div class="container-fluid container-fixed-lg">
+                    <!-- <div class="inner"> -->
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3>@QolaMVC.Resources.Text.DocumentType</h3>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!-- END JUMBOTRON -->
+
+            <div style="height: 60px;"></div>
+
+            <!-- START CONTAINER FLUID -->
+            <div class="container-fluid container-fixed-lg">
+                <!-- BEGIN PlACE PAGE CONTENT HERE -->
+
+                <div class="card">
+                    <div class="card-block">
+
+                        <div class="form-tabs mt-4">
+                            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                <li class="nav-item">
+                                    @*<a class="nav-link active" id="pills-active-tab" data-toggle="pill" href="#pills-active" role="tab" aria-controls="pills-active" aria-selected="true">Active User</a>*@
+                                </li>
+
+
+                            </ul>
+                            <div class="tab-content" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="pills-active" role="tabpanel" aria-labelledby="pills-active-tab">
+
+                                    <div class="row">
+                                        <div class="py-4 text-left" style="display:inline-block;width:80%;">
+                                            <form class="form-inline">
+                                                <div class="form-group pr-1">
+                                                    <div class="input-group">
+                                                        <input class="form-control" id="search_value" value="" />
+                                                    </div>
+                                                </div>
+                                                <button type="button" class="btn btn-danger" onclick="search_DocumentType()">@QolaMVC.Resources.Text.Search</button>
+                                            </form>
+
+                                        </div>
+                                        <div class="py-4 text-right" style="display:inline-block;width:15%;">
+                                            <a class="btn btn-lg btn-primary" href="~/Master/AddDocumentType">@QolaMVC.Resources.Text.AddNew</a>
+                                        </div>
+                                    </div>
+
+                                    @if (ViewBag.Message != null && ViewBag.Message != string.Empty)
+                                    {
+                                        <div class="alert alert-success" role="alert" id="documentType_message_box">
+                                            <button class="close" data-dismiss="alert" onclick="message_close()"></button>
+                                            @ViewBag.Message
+                                        </div>
+                                    }
+
+                                    <table class="table table-bordered">
+                                        <thead class="bg-primary">
+                                            <tr>
+                                                <th class="text-white">@QolaMVC.Resources.Text.SN</th>
+                                                <th class="text-white">@QolaMVC.Resources.Text.DocumentType</th>
+                                                <th class="text-white">@QolaMVC.Resources.Text.Edit</th>
+                                                <th class="text-white">@QolaMVC.Resources.Text.Delete_small</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{ int i = 1; }
+                                            @{ foreach (var l_DT in Model)
+                                                {
+                                                    <tr>
+                                                        <td class="align-middle">@i</td>
+                                                        <td class="align-middle">@l_DT.Type</td>
+                                                        <td class="align-middle">
+                                                            <a class="btn btn-success btn-xs" href="~/Master/EditDocumentType/?DocumentTypeId=@l_DT.Id">
+                                                                <i class="fa fa-pencil"></i>
+                                                            </a>
+                                                        </td>
+                                                        <td class="align-middle">
+
+                                                            <a class="btn btn-danger btn-xs" onclick="DELETE(@l_DT.Id)">
+                                                                <i class="fa fa-trash-o" style="color:white;"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+
+                                                    i = i + 1;
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                    <input type="hidden" id="notice" value="@TempData["notice"]" />
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+                <!-- END PLACE PAGE CONTENT HERE -->
+            </div>
+            <!-- END CONTAINER FLUID -->
+        </div>
+        <!-- END PAGE CONTENT -->
+
+        @RenderPage("~/Views/Shared/_Footer.cshtml")
+
+        <script>
+            if ($('#notice').val() != '') {
+                tempAlert($('#notice').val(), 2000);
+            }
+
+            function tempAlert2(msg, id) {
+                var el = document.createElement("div");
+                el.setAttribute("style", "position:fixed;top:2%;left:31%;width:35vw;background-color:white;z-index:9999;color:black;padding:2vw 3vw 2vw 3vw;border-radius:1vw;font-size:1.2em;font-weight:bold;border:black solid;");
+                el.innerHTML = "<img src=\"\/Content\/assets\/img\/qola_logo3.png\" style=\"width:120px;height:80px;display:inline-block\" \/><div style=\"margin-left:3vw;display:inline-block;width:50%;position:absolute;margin-top:3%;\">" + msg + "<\/div><div style='width:90%;'><button class='btn btn-primary pull-right' style='display:inline-block;' onclick='this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);'>No<\/button><button class='btn btn-danger pull-right' style='display:inline-block;margin-right:10px' onclick=\"DELETETRUE(this," + id + ")\">Yes<\/button><\/div>";
+                document.body.appendChild(el);
+            }
+
+            function DELETE(id) {
+                tempAlert2("Delete Document Type ?", id)
+            }
+
+            function DELETETRUE(ee, id) {
+                ee.parentNode.parentNode.parentNode.removeChild(ee.parentNode.parentNode);
+                window.location.href = "/Master/DeleteDocumentType/?DocumentTypeId=" + id;
+            }
+
+            function search_DocumentType() {
+                var a = $('#search_value').val();
+                window.location.href = "/Master/DocumentType?search=" + a;
+            }
+        </script>
