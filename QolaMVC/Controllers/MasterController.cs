@@ -498,7 +498,7 @@ namespace QolaMVC.Controllers
             UserModel usersample = new UserModel();
 
             TempData["EDIT"] = "";
-            TempData["sameuname"] = "";
+            //TempData["sameuname"] = "";
 
             ViewBag.UserHome = HomeDAL.GetHomeByUser(user.ID);
 
@@ -522,9 +522,13 @@ namespace QolaMVC.Controllers
 
             var l_Status = Convert.ToBoolean(Request.Form["Status"]);
             p_Model.Status = l_Status ? Constants.EnumerationTypes.AvailabilityStatus.A : Constants.EnumerationTypes.AvailabilityStatus.I;
-            if (p_Model.ID == 0)
+            if (p_Model.Password != null)
             {
                 p_Model.Password = Helpers.QolaCulture.Sha1Hash(p_Model.Password);
+            }
+            else
+            {
+                p_Model.Password = "";
             }
             
             foreach (PropertyInfo prop in typeof(UserModel).GetProperties())
@@ -535,12 +539,10 @@ namespace QolaMVC.Controllers
                 }
             }
             p_Model.ModifiedBy = user.ID;
-            TempData["sameuname"] = "";
             if (p_Model.ID == 0)
             {
                 if (UserDAL.AddNewUsers(p_Model) == -1)
                 {
-                    TempData["sameuname"] = "true";
                     TempData["EDIT"] = "";
                     return View("AddUser", p_Model);
                 }
@@ -553,7 +555,6 @@ namespace QolaMVC.Controllers
             {
                 if (UserDAL.UpdateUsers(p_Model)==false)
                 {
-                    TempData["sameuname"] = "true";
                     TempData["EDIT"] = "true";
                     return View("AddUser", p_Model);
                 }
@@ -599,6 +600,15 @@ namespace QolaMVC.Controllers
             return UserDAL.RemoveUsers(userid);
 
         }
+
+        [HttpGet]
+        public int CheckUsername(int userid,string username)
+        {
+            Func<int, string, int> check = UserDAL.CheckUsername;
+            return check(userid, username);
+        }
+
+
 
         #endregion
 

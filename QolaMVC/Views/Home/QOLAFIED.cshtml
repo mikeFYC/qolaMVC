@@ -292,11 +292,11 @@
                                             var foodallergy = "";
                                             if (@ViewBag.careplan.Nutrition.Allergies != null)
                                             {
-                                                foodallergy = @ViewBag.careplan.Nutrition.Allergies.ToString().Replace("||", ";");
+                                                foodallergy = @ViewBag.careplan.Nutrition.Allergies.ToString().Replace("||", ";").Replace("[]", "");
                                             }
                                             if (@ViewBag.careplan.Medication.Allergies != null)
                                             {
-                                                mediallergy = @ViewBag.careplan.Medication.Allergies.ToString().Replace("||", ";");
+                                                mediallergy = @ViewBag.careplan.Medication.Allergies.ToString().Replace("||", ";").Replace("[]", "");
                                             }
 
                                         }
@@ -1125,23 +1125,7 @@
                                                 <p class="ptitle_grey" style="margin-bottom:0px !important;">Food Allergies</p>
                                             </div>
                                             <div class="borderB" style="height:100px;">
-                                                @{
-                                                    var str4 = "";
-                                                    if (ViewBag.careplan.Nutrition.Allergies != null)
-                                                    {
-                                                        var nutri_allergy = ViewBag.careplan.Nutrition.Allergies.Split(new string[] { " || " }, StringSplitOptions.None);
-                                                        for (var a = 0; a < nutri_allergy.Length; a = a + 1)
-                                                        {
-                                                            if (nutri_allergy[a] != "")
-                                                            {
-                                                                str4 = str4 + nutri_allergy[a] + "; ";
-
-
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                <p><span class="pcontent">@str4</span></p>
+                                                <p><span class="pcontent">@foodallergy</span></p>
                                             </div>
                                             <div class="text-center" style="width:100%;">
                                                 <p class="ptitle_grey" style="margin-bottom:0px !important;">Appetite</p>
