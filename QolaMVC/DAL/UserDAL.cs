@@ -88,7 +88,7 @@ namespace QolaMVC.DAL
                 l_Cmd.Parameters.AddWithValue("@lastName", updateUsers.LastName);
                 l_Cmd.Parameters.AddWithValue("@userType", updateUsers.UserType);
                 l_Cmd.Parameters.AddWithValue("@userName", updateUsers.UserName);
-                //l_Cmd.Parameters.AddWithValue("@password", updateUsers.Password);
+                l_Cmd.Parameters.AddWithValue("@password", updateUsers.Password);
                 l_Cmd.Parameters.AddWithValue("@address", updateUsers.Address);
                 l_Cmd.Parameters.AddWithValue("@city", updateUsers.City);
                 l_Cmd.Parameters.AddWithValue("@postalCode", updateUsers.PostalCode);
@@ -848,7 +848,32 @@ namespace QolaMVC.DAL
             }
         }
 
+        public static int CheckUsername(int userid, string username)
+        {
+            try
+            {
+                using (SqlConnection l_Conn = new SqlConnection(Constants.ConnectionString.PROD))
+                {
+                    SqlDataAdapter l_DA = new SqlDataAdapter();
+                    SqlCommand l_Cmd = new SqlCommand("User_checkUserName", l_Conn);
+                    l_Conn.Open();
+                    l_Cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    l_Cmd.Parameters.AddWithValue("@userID", userid);
+                    l_Cmd.Parameters.AddWithValue("@username", username);
 
+                    SqlParameter returnParameter = l_Cmd.Parameters.Add("ReturnVal", SqlDbType.Int);
+                    returnParameter.Direction = ParameterDirection.ReturnValue;
+                    l_Cmd.ExecuteNonQuery();
+                    return Convert.ToInt32(returnParameter.Value);
+                }
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
+
+
+        }
 
     }
     #endregion

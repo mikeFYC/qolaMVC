@@ -313,7 +313,6 @@
                                     <input type="hidden" id="model_province" value="@Model.Province" />
                                     <input type="hidden" name="ID" id="model_id" value="@Model.ID" />
                                     <input type="hidden" id="EDIT_INDEX" value="@TempData["EDIT"]" />
-                                    <input type="hidden" id="sameuname" value="@TempData["sameuname"]" />
                                     <input type="hidden" id="userhome" value="@ViewBag.User.Home" />
                                 </form>
                             </div>
@@ -363,15 +362,6 @@
     }
     
 
-    var EDIT_INDEX = $('#EDIT_INDEX').val();
-    if (EDIT_INDEX == "true") {
-        var pass = $('input[name="Password"]');
-        pass[0].disabled = true;
-    }
-
-    if ($('#sameuname').val() == "true") {
-        tempAlert("UserName Duplicate",2000)
-    }
 
     $('#FirstName').change(function () {
         var first = $('#FirstName').val();
@@ -400,6 +390,8 @@
 
 
     $('form').submit(function (event) {
+        event.preventDefault();
+
         if (check_Alert() == true) {
             //$('#username_fake').attr("name", "username2");
             //$('#password_fake').attr("name", "password2");
@@ -415,11 +407,33 @@
             }
             $('#model_home').val(homestring);
             form = this;
-            form.submit();
+
+            var dataString = {
+                userid: $('#model_id').val(),
+                username: $('#UserName').val()
+            }
+            $.ajax({
+                async: false,
+                type: "Get",
+                url: "/Master/CheckUsername",
+                dataType: 'json',
+                contentType: 'application/json',
+                data: dataString,
+                success: function (data) {
+                    if (data == 0) {
+                        tempAlert("UserName Duplicate", 2000);
+                        return false;
+                    }
+                    else {
+                        form.submit();
+                    }
+                    
+                }
+            });
+
+            
         }
         else {
-
-
             check_Alert();
             return false;
         }
@@ -450,12 +464,12 @@
             tempAlert("UserName Needed", 2000);
             return false;
         }
-        else if ($('input[name="Password"]:eq(0)').val() == "" && EDIT_INDEX != "true") {
+        else if ($('input[name="Password"]:eq(0)').val().trim() == "" && EDIT_INDEX != "true") {
             tempAlert("Password Needed", 2000);
             return false;
 
         }
-        else if ($('input[name="Password"]:eq(0)').val().length < 5 && EDIT_INDEX != "true") {
+        else if ($('input[name="Password"]:eq(0)').val().trim().length < 5 && $('input[name="Password"]:eq(0)').val().trim().length > 0) {
             tempAlert("Password Too Short", 2000);
             return false;
         }
@@ -468,8 +482,7 @@
         }
     }
 
-    var expanded = false;
-
+    //var expanded = false;
     //function showCheckboxes() {
     //    var checkboxes = document.getElementById("checkboxes");
     //    if (!expanded) {
@@ -543,9 +556,6 @@
 
     });
 
-
-
-
     $('#checkboxes label input:first').change(function () {
         var checks = $('#checkboxes label input');
         if (checks[0].checked == true) {
@@ -556,6 +566,7 @@
             });
         }
     });
+
     $('#checkboxes label input').change(function () {
         var checks = $('#checkboxes label input');
         for (var gg = 1; gg < checks.length; gg++) {
@@ -564,10 +575,6 @@
             }
         }
     });
-
-
-
-
 
     function UserTypeChange(ee) {
         if (ee == '1') {
