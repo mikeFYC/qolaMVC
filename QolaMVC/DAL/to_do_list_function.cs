@@ -1493,7 +1493,7 @@ namespace QolaMVC.DAL
             using (var cmdGARead = new SqlCommand("to_do_list_number_by_mike_FAST", conn)
             {
                 CommandType = CommandType.StoredProcedure
-            })
+            }) 
             {
                 conn.Open();
                 cmdGARead.Parameters.AddWithValue("@UserID", userid);
