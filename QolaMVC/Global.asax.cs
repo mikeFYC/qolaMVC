@@ -99,7 +99,7 @@ namespace QolaMVC
             mail.Body = sessionExpire + userinfo + location + htmlBody;
             SmtpServer.Port = 587;
             SmtpServer.UseDefaultCredentials = false;
-            SmtpServer.Credentials = new System.Net.NetworkCredential("mike@qola.ca", "fyc19920320");
+            SmtpServer.Credentials = new System.Net.NetworkCredential("mike@qola.ca", "Password123");
             SmtpServer.EnableSsl = true;
             SmtpServer.Send(mail);
         }

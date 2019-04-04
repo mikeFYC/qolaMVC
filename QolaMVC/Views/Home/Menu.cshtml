@@ -823,7 +823,44 @@
                 if (data[27].Value != 0) { $('#note_reminder_badge2').html(data[24].Value); $('#note_reminder_badge2').parent().parent().css('display', 'block'); }
             });
 
+            function nextmonth() {
+                //var number = $('#ggg_next .badge');
 
+                $.get("/Home/Number_nextmonth_FAST", {}, function (data) {
+                    if (data[0].Value != 0 && !HOListnot.includes(someValueInt)) { $('#HObadge1_next').html(data[0].Value); $('#HObadge1_next').parent().parent().css('display', 'block'); }
+                    if (data[1].Value != 0 && !HOListnot.includes(someValueInt)) { $('#HObadge2_next').html(data[1].Value); $('#HObadge2_next').parent().parent().css('display', 'block'); }
+                    if (data[2].Value != 0 && IAList.includes(someValueInt)) { $('#IAbadge1_next').html(data[2].Value); $('#IAbadge1_next').parent().parent().css('display', 'block'); }
+                    if (data[3].Value != 0 && IAAList.includes(someValueInt)) { $('#IAbadge2_next').html(data[3].Value); $('#IAbadge2_next').parent().parent().css('display', 'block'); }
+                    if (data[4].Value != 0 && IDAList.includes(someValueInt)) { $('#IAbadge3_next').html(data[4].Value); $('#IAbadge3_next').parent().parent().css('display', 'block'); }
+                    if (data[5].Value != 0 && IFRAList.includes(someValueInt)) { $('#IAbadge4_next').html(data[5].Value); $('#IAbadge4_next').parent().parent().css('display', 'block'); }
+                    if (data[6].Value != 0 && IRCAList.includes(someValueInt)) { $('#IAbadge5_next').html(data[6].Value); $('#IAbadge5_next').parent().parent().css('display', 'block'); }
+                    if (data[7].Value != 0 && RAList.includes(someValueInt)) { $('#RAbadge1_next').html(data[7].Value); $('#RAbadge1_next').parent().parent().css('display', 'block'); }
+                    if (data[8].Value != 0 && RAAList.includes(someValueInt)) { $('#RAbadge2_next').html(data[8].Value); $('#RAbadge2_next').parent().parent().css('display', 'block'); }
+                    if (data[9].Value != 0 && RDAList.includes(someValueInt)) { $('#RAbadge3_next').html(data[9].Value); $('#RAbadge3_next').parent().parent().css('display', 'block'); }
+                    if (data[10].Value != 0 && RFRAList.includes(someValueInt)) { $('#RAbadge4_next').html(data[10].Value); $('#RAbadge4_next').parent().parent().css('display', 'block'); }
+                    if (data[11].Value != 0 && RRCAList.includes(someValueInt)) { $('#RAbadge5_next').html(data[11].Value); $('#RAbadge5_next').parent().parent().css('display', 'block'); }
+                    if (data[12].Value != 0 && SAEList.includes(someValueInt)) { $('#SAEbadge1_next').html(data[12].Value); $('#SAEbadge1_next').parent().parent().css('display', 'block'); }
+                    if (data[13].Value != 0 && SAEList.includes(someValueInt)) { $('#SAEbadge2_next').html(data[13].Value); $('#SAEbadge2_next').parent().parent().css('display', 'block'); }
+                });
+
+                document.getElementById("nextmonth").style.display = "none";
+                document.getElementById("previousmonth").style.display = "inline-block";
+
+                document.getElementById("right_arrow_mike").style.display = "none";
+                document.getElementById("left_arrow_mike").style.display = "inline-block";
+
+                document.getElementById("to_do_list_1").style.display = "none";
+                document.getElementById("to_do_list_2").style.display = "block";
+
+                var div_list = $('#ggg ul .list-group-item .subdiv');
+                var div_list2 = $('#ggg_next ul .list-group-item .subdiv');
+                for (var ind = 0; ind < div_list.length; ind++) {
+                    div_list[ind].style.display = "none";
+                }
+                for (var ind = 0; ind < div_list2.length; ind++) {
+                    div_list2[ind].style.display = "none";
+                }
+            }
 
             //$("#Resident_Incident").draggable({
             //    handle: ".modal-header"
@@ -1542,44 +1579,7 @@
                 });
             }
 
-            function nextmonth() {
-                //var number = $('#ggg_next .badge');
-
-                $.get("/Home/Number_nextmonth_FAST", {}, function (data) {
-                    if (data[0].Value != 0 && !HOListnot.includes(someValueInt)) { $('#HObadge1_next').html(data[0].Value); $('#HObadge1_next').parent().parent().css('display', 'block'); }
-                    if (data[1].Value != 0 && !HOListnot.includes(someValueInt)) { $('#HObadge2_next').html(data[1].Value); $('#HObadge2_next').parent().parent().css('display', 'block'); }
-                    if (data[2].Value != 0 && IAList.includes(someValueInt)) { $('#IAbadge1_next').html(data[2].Value); $('#IAbadge1_next').parent().parent().css('display', 'block'); }
-                    if (data[3].Value != 0 && IAAList.includes(someValueInt)) { $('#IAbadge2_next').html(data[3].Value); $('#IAbadge2_next').parent().parent().css('display', 'block'); }
-                    if (data[4].Value != 0 && IDAList.includes(someValueInt)) { $('#IAbadge3_next').html(data[4].Value); $('#IAbadge3_next').parent().parent().css('display', 'block'); }
-                    if (data[5].Value != 0 && IFRAList.includes(someValueInt)) { $('#IAbadge4_next').html(data[5].Value); $('#IAbadge4_next').parent().parent().css('display', 'block'); }
-                    if (data[6].Value != 0 && IRCAList.includes(someValueInt)) { $('#IAbadge5_next').html(data[6].Value); $('#IAbadge5_next').parent().parent().css('display', 'block'); }
-                    if (data[7].Value != 0 && RAList.includes(someValueInt)) { $('#RAbadge1_next').html(data[7].Value); $('#RAbadge1_next').parent().parent().css('display', 'block'); }
-                    if (data[8].Value != 0 && RAAList.includes(someValueInt)) { $('#RAbadge2_next').html(data[8].Value); $('#RAbadge2_next').parent().parent().css('display', 'block'); }
-                    if (data[9].Value != 0 && RDAList.includes(someValueInt)) { $('#RAbadge3_next').html(data[9].Value); $('#RAbadge3_next').parent().parent().css('display', 'block'); }
-                    if (data[10].Value != 0 && RFRAList.includes(someValueInt)) { $('#RAbadge4_next').html(data[10].Value); $('#RAbadge4_next').parent().parent().css('display', 'block'); }
-                    if (data[11].Value != 0 && RRCAList.includes(someValueInt)) { $('#RAbadge5_next').html(data[11].Value); $('#RAbadge5_next').parent().parent().css('display', 'block'); }
-                    if (data[12].Value != 0 && SAEList.includes(someValueInt)) { $('#SAEbadge1_next').html(data[12].Value); $('#SAEbadge1_next').parent().parent().css('display', 'block'); }
-                    if (data[13].Value != 0 && SAEList.includes(someValueInt)) { $('#SAEbadge2_next').html(data[13].Value); $('#SAEbadge2_next').parent().parent().css('display', 'block'); }
-                });
-
-                document.getElementById("nextmonth").style.display = "none";
-                document.getElementById("previousmonth").style.display = "inline-block";
-
-                document.getElementById("right_arrow_mike").style.display = "none";
-                document.getElementById("left_arrow_mike").style.display = "inline-block";
-
-                document.getElementById("to_do_list_1").style.display = "none";
-                document.getElementById("to_do_list_2").style.display = "block";
-
-                var div_list = $('#ggg ul .list-group-item .subdiv');
-                var div_list2 = $('#ggg_next ul .list-group-item .subdiv');
-                for (var ind = 0; ind < div_list.length; ind++) {
-                    div_list[ind].style.display = "none";
-                }
-                for (var ind = 0; ind < div_list2.length; ind++) {
-                    div_list2[ind].style.display = "none";
-                }
-            }
+            
 
             function previousmonth() {
                 document.getElementById("previousmonth").style.display = "none";
