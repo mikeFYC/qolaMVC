@@ -1739,6 +1739,26 @@ namespace QolaMVC.Controllers
             return View();
         }
 
+
+        [HttpGet]
+        public ActionResult ResponsiveBehaviourTrackingAndAssessmentTool()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            var resident = (ResidentModel)TempData["Resident"];
+
+            ViewBag.User = user;
+            ViewBag.Resident = resident;
+            ViewBag.Home = home;
+
+            TempData.Keep("User");
+            TempData.Keep("Home");
+            TempData.Keep("Resident");
+
+            return View();
+        }
+
+
         public tbl_postfallclinicalmonitoringBpage2 UpdateAssessmentPage2(tbl_postfallclinicalmonitoringBpage2 model, tbl_postfallclinicalmonitoringBpage2 residentdata)
         {
             residentdata.abnormalareasdescription = model.abnormalareasdescription;
