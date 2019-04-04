@@ -1610,53 +1610,54 @@ namespace QolaMVC.DAL
 
                     if (usertype == 6 || usertype == 14 || usertype == 21)
                     {
-                        l_J.IA = int.Parse(rd[2].ToString());
+                        l_J.IA = int.Parse(rd["IAA"].ToString());
                     }
                     else if (usertype == 7)
                     {
-                        l_J.IA = int.Parse(rd[3].ToString());
+                        l_J.IA = int.Parse(rd["IDA"].ToString());
                     }
                     else if (usertype == 4 || usertype == 15 || usertype == 16 || usertype == 17 || usertype == 18)
                     {
-                        l_J.IA = int.Parse(rd[4].ToString()) + int.Parse(rd[5].ToString());
+                        l_J.IA = int.Parse(rd["IFRA"].ToString()) + int.Parse(rd["IRCA"].ToString());
                     }
                     else
                     {
-                        l_J.IA = int.Parse(rd[2].ToString()) + int.Parse(rd[3].ToString()) + int.Parse(rd[4].ToString()) + int.Parse(rd[5].ToString());
+                        l_J.IA = int.Parse(rd["IAA"].ToString()) + int.Parse(rd["IDA"].ToString()) + int.Parse(rd["IFRA"].ToString()) + int.Parse(rd["IRCA"].ToString());
                     }
 
-                    l_J.IAA = rd[2];
-                    l_J.IDA = rd[3];
-                    l_J.IFRA = rd[4];
-                    l_J.IRCA = rd[5];
+                    l_J.IAA = rd["IAA"];
+                    l_J.IDA = rd["IDA"];
+                    l_J.IFRA = rd["IFRA"];
+                    l_J.IRCA = rd["IRCA"];
+
+                    l_J.PN_outer = rd["PN"];
+                    l_J.PN = rd["PN"];
 
                     if (usertype == 6 || usertype == 14 || usertype == 21)
                     {
-                        l_J.RA = int.Parse(rd[6].ToString());
+                        l_J.RA = int.Parse(rd["RAA"].ToString());
                     }
                     else if (usertype == 7)
                     {
-                        l_J.RA = int.Parse(rd[7].ToString());
+                        l_J.RA = int.Parse(rd["RDA"].ToString());
                     }
                     else if (usertype == 4 || usertype == 15 || usertype == 16 || usertype == 17 || usertype == 18)
                     {
-                        l_J.RA = int.Parse(rd[8].ToString()) + int.Parse(rd[9].ToString());
+                        l_J.RA = int.Parse(rd["RFRA"].ToString()) + int.Parse(rd["RRCA"].ToString());
                     }
                     else
                     {
-                        l_J.RA = int.Parse(rd[6].ToString()) + int.Parse(rd[7].ToString()) + int.Parse(rd[8].ToString()) + int.Parse(rd[9].ToString());
+                        l_J.RA = int.Parse(rd["RAA"].ToString()) + int.Parse(rd["RDA"].ToString()) + int.Parse(rd["RFRA"].ToString()) + int.Parse(rd["RRCA"].ToString());
                     }
 
-                    l_J.RAA = rd[6];
-                    l_J.RDA = rd[7];
-                    l_J.RFRA = rd[8];
-                    l_J.RRCA = rd[9];
-                    l_J.PN_outer = rd[10];
-                    l_J.PN = rd[10];
-                    l_J.RP_outer = rd[14];
-                    l_J.RP_inner = rd[14];
-                    l_J.PN_Reminder_outer = rd[17];
-                    l_J.PN_Reminder_inner = rd[17];
+                    l_J.RAA = rd["RAA"];
+                    l_J.RDA = rd["RDA"];
+                    l_J.RFRA = rd["RFRA"];
+                    l_J.RRCA = rd["RRCA"];
+                    l_J.RP_outer = rd["RP"];
+                    l_J.RP_inner = rd["RP"];
+                    l_J.PN_Reminder_outer = rd["PN_Reminder"];
+                    l_J.PN_Reminder_inner = rd["PN_Reminder"];
 
                 }
 
@@ -1687,19 +1688,18 @@ namespace QolaMVC.DAL
                 {
                     DataRow rd = homeReceive.Tables[0].Rows[0];
 
-                    l_J.DU_outer = rd[0];
-                    l_J.DU_inner = rd[0];
-                    l_J.HO_outer = rd[1];
-                    l_J.HO_inner = rd[1];
-                    l_J.RI_outer = rd[12];
-                    l_J.RI_inner = rd[12];
-                    l_J.RB_outer = rd[13];
-                    l_J.RB_inner = rd[13];
-                    l_J.NR_outer = rd[15];
-                    l_J.NR_inner = rd[15];
-                    l_J.SAE_outer = rd[16];
-                    l_J.SAE_inner = rd[16];
-
+                    l_J.DU_outer = rd["DU"];
+                    l_J.DU_inner = rd["DU"];
+                    l_J.HO_outer = rd["HO"];
+                    l_J.HO_inner = rd["HO"];
+                    l_J.RI_outer = rd["RI"];
+                    l_J.RI_inner = rd["RI"];
+                    l_J.RB_outer = rd["RB"];
+                    l_J.RB_inner = rd["RB"];
+                    l_J.NR_outer = rd["NR"];
+                    l_J.NR_inner = rd["NR"];
+                    l_J.SAE_outer = rd["SAE"];
+                    l_J.SAE_inner = rd["SAE"];
 
                 }
 

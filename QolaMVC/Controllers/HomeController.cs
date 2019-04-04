@@ -961,6 +961,34 @@ namespace QolaMVC.Controllers
         }
 
         [HttpGet]
+        public ActionResult Number_FAST_todolist()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+
+            dynamic l_Json = to_do_list_function.get_to_do_list_number_FAST_todolist(user.ID, home.Id, user.UserType);
+
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+
+        }
+
+        [HttpGet]
+        public ActionResult Number_FAST_notification()
+        {
+            var home = (HomeModel)TempData["Home"];
+            var user = (UserModel)TempData["User"];
+            TempData.Keep("User");
+            TempData.Keep("Home");
+
+            dynamic l_Json = to_do_list_function.get_to_do_list_number_FAST_notification(user.ID, home.Id, user.UserType);
+
+            return Json(l_Json, JsonRequestBehavior.AllowGet);
+
+        }
+
+        [HttpGet]
         public ActionResult Number_nextmonth()
         {
             var home = (HomeModel)TempData["Home"];
