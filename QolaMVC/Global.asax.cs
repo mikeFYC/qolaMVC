@@ -101,7 +101,7 @@ namespace QolaMVC
             SmtpServer.UseDefaultCredentials = false;
             SmtpServer.Credentials = new System.Net.NetworkCredential("mike@qola.ca", "Password123");
             SmtpServer.EnableSsl = true;
-            SmtpServer.Send(mail);
+            SmtpServer.Send(mail); 
         }
 
         private void ExecuteErrorActionInHomeController(HttpContext httpContext, Exception exception)
