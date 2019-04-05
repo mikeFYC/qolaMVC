@@ -1501,7 +1501,7 @@ namespace QolaMVC.DAL
 
                 cmdGARead.CommandType = System.Data.CommandType.StoredProcedure; 
                 DataSet homeReceive = new DataSet();
-                l_DA.SelectCommand = cmdGARead;
+                l_DA.SelectCommand = cmdGARead;  
                 l_DA.Fill(homeReceive);
 
                 if ((homeReceive != null) && (homeReceive.Tables.Count > 0) && (homeReceive.Tables[0].Rows.Count > 0))
