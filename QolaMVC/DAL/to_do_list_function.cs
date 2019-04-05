@@ -1585,6 +1585,134 @@ namespace QolaMVC.DAL
             return l_J;
         }
 
+        public static dynamic get_to_do_list_number_FAST_todolist(int userid, int homeid, int usertype)
+        {
+            SqlDataAdapter l_DA = new SqlDataAdapter();
+            dynamic l_J = new System.Dynamic.ExpandoObject();
+            using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
+            using (var cmdGARead = new SqlCommand("to_do_list_number_by_mike_FAST_todolist", conn)
+            {
+                CommandType = CommandType.StoredProcedure
+            })
+            {
+                conn.Open();
+                cmdGARead.Parameters.AddWithValue("@UserID", userid);
+                cmdGARead.Parameters.AddWithValue("@homeID", homeid);
+
+                cmdGARead.CommandType = System.Data.CommandType.StoredProcedure;
+                DataSet homeReceive = new DataSet();
+                l_DA.SelectCommand = cmdGARead;
+                l_DA.Fill(homeReceive);
+
+                if ((homeReceive != null) && (homeReceive.Tables.Count > 0) && (homeReceive.Tables[0].Rows.Count > 0))
+                {
+                    DataRow rd = homeReceive.Tables[0].Rows[0];
+
+                    if (usertype == 6 || usertype == 14 || usertype == 21)
+                    {
+                        l_J.IA = int.Parse(rd["IAA"].ToString());
+                    }
+                    else if (usertype == 7)
+                    {
+                        l_J.IA = int.Parse(rd["IDA"].ToString());
+                    }
+                    else if (usertype == 4 || usertype == 15 || usertype == 16 || usertype == 17 || usertype == 18)
+                    {
+                        l_J.IA = int.Parse(rd["IFRA"].ToString()) + int.Parse(rd["IRCA"].ToString());
+                    }
+                    else
+                    {
+                        l_J.IA = int.Parse(rd["IAA"].ToString()) + int.Parse(rd["IDA"].ToString()) + int.Parse(rd["IFRA"].ToString()) + int.Parse(rd["IRCA"].ToString());
+                    }
+
+                    l_J.IAA = rd["IAA"];
+                    l_J.IDA = rd["IDA"];
+                    l_J.IFRA = rd["IFRA"];
+                    l_J.IRCA = rd["IRCA"];
+
+                    l_J.PN_outer = rd["PN"];
+                    l_J.PN = rd["PN"];
+
+                    if (usertype == 6 || usertype == 14 || usertype == 21)
+                    {
+                        l_J.RA = int.Parse(rd["RAA"].ToString());
+                    }
+                    else if (usertype == 7)
+                    {
+                        l_J.RA = int.Parse(rd["RDA"].ToString());
+                    }
+                    else if (usertype == 4 || usertype == 15 || usertype == 16 || usertype == 17 || usertype == 18)
+                    {
+                        l_J.RA = int.Parse(rd["RFRA"].ToString()) + int.Parse(rd["RRCA"].ToString());
+                    }
+                    else
+                    {
+                        l_J.RA = int.Parse(rd["RAA"].ToString()) + int.Parse(rd["RDA"].ToString()) + int.Parse(rd["RFRA"].ToString()) + int.Parse(rd["RRCA"].ToString());
+                    }
+
+                    l_J.RAA = rd["RAA"];
+                    l_J.RDA = rd["RDA"];
+                    l_J.RFRA = rd["RFRA"];
+                    l_J.RRCA = rd["RRCA"];
+                    l_J.RP_outer = rd["RP"];
+                    l_J.RP_inner = rd["RP"];
+                    l_J.PN_Reminder_outer = rd["PN_Reminder"];
+                    l_J.PN_Reminder_inner = rd["PN_Reminder"];
+
+                }
+
+            }
+            return l_J;
+        }
+
+        public static dynamic get_to_do_list_number_FAST_notification(int userid, int homeid, int usertype)
+        {
+            SqlDataAdapter l_DA = new SqlDataAdapter();
+            dynamic l_J = new System.Dynamic.ExpandoObject();
+            using (var conn = new SqlConnection(Constants.ConnectionString.PROD))
+            using (var cmdGARead = new SqlCommand("to_do_list_number_by_mike_FAST_notification", conn)
+            {
+                CommandType = CommandType.StoredProcedure
+            })
+            {
+                conn.Open();
+                cmdGARead.Parameters.AddWithValue("@UserID", userid);
+                cmdGARead.Parameters.AddWithValue("@homeID", homeid);
+
+                cmdGARead.CommandType = System.Data.CommandType.StoredProcedure;
+                DataSet homeReceive = new DataSet();
+                l_DA.SelectCommand = cmdGARead;
+                l_DA.Fill(homeReceive);
+
+                if ((homeReceive != null) && (homeReceive.Tables.Count > 0) && (homeReceive.Tables[0].Rows.Count > 0))
+                {
+                    DataRow rd = homeReceive.Tables[0].Rows[0];
+
+                    l_J.DU_outer = rd["DU"];
+                    l_J.DU_inner = rd["DU"];
+                    l_J.HO_outer = rd["HO"];
+                    l_J.HO_inner = rd["HO"];
+                    l_J.RI_outer = rd["RI"];
+                    l_J.RI_inner = rd["RI"];
+                    l_J.RB_outer = rd["RB"];
+                    l_J.RB_inner = rd["RB"];
+                    l_J.NR_outer = rd["NR"];
+                    l_J.NR_inner = rd["NR"];
+                    l_J.SAE_outer = rd["SAE"];
+                    l_J.SAE_inner = rd["SAE"];
+
+                }
+
+                //cmdGARead.ExecuteNonQuery();
+                //SqlCommand cmd = new SqlCommand();
+                //cmd.CommandText = "SELECT * FROM [dbo].[mike_to_do_list_number_FAST]";
+                //cmd.Connection = conn;
+                //SqlDataReader rd = cmd.ExecuteReader();
+
+            }
+            return l_J;
+        }
+
         public static dynamic get_to_do_list_number_nextmonth(int userid, int homeid, int usertype)
         {
             dynamic l_J = new System.Dynamic.ExpandoObject();
