@@ -1499,7 +1499,7 @@ namespace QolaMVC.DAL
                 cmdGARead.Parameters.AddWithValue("@UserID", userid);
                 cmdGARead.Parameters.AddWithValue("@homeID", homeid);
 
-                cmdGARead.CommandType = System.Data.CommandType.StoredProcedure;
+                cmdGARead.CommandType = System.Data.CommandType.StoredProcedure; 
                 DataSet homeReceive = new DataSet();
                 l_DA.SelectCommand = cmdGARead;
                 l_DA.Fill(homeReceive);
